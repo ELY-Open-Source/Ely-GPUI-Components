@@ -1,6 +1,8 @@
+use std::collections::HashSet;
+
 use gpui::{
-    App, Hsla, IntoElement, Radians, RenderOnce, SharedString, Transformation, Window, prelude::*,
-    size, svg,
+    App, AssetSource, Global, Hsla, IntoElement, Radians, RenderOnce, SharedString, Transformation,
+    Window, prelude::*, size, svg,
 };
 
 use crate::theme::{ActiveTheme, IconSize};
@@ -343,7 +345,8 @@ icons! {
 
 #[derive(IntoElement)]
 pub struct Icon {
-    name: IconName,
+    path: SharedString,
+    bundled: bool,
     size: IconSize,
     color: Option<Hsla>,
     hover: Option<(SharedString, Hsla)>,
@@ -354,7 +357,16 @@ pub struct Icon {
 impl Icon {
     pub fn new(name: IconName) -> Self {
         Self {
-            name,
+            bundled: true,
+            ..Self::from_path(name.path())
+        }
+    }
+
+    /// Draws an SVG supplied by the application's asset source; a missing one fails at render.
+    pub fn from_path(path: impl Into<SharedString>) -> Self {
+        Self {
+            path: path.into(),
+            bundled: false,
             size: IconSize::Md,
             color: None,
             hover: None,
@@ -402,12 +414,32 @@ impl From<IconName> for Icon {
     }
 }
 
+/// App paths already found in the asset source.
+#[derive(Default)]
+struct FoundIcons(HashSet<SharedString>);
+
+impl Global for FoundIcons {}
+
+fn ensure_found(source: &dyn AssetSource, path: &str) {
+    match source.load(path) {
+        Ok(Some(_)) => {}
+        Ok(None) => panic!("ely: icon {path} is not in the app's asset source"),
+        Err(error) => panic!("ely: icon {path} failed to load: {error:#}"),
+    }
+}
+
 impl RenderOnce for Icon {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        if !self.bundled && !cx.default_global::<FoundIcons>().0.contains(&self.path) {
+            ensure_found(cx.asset_source().as_ref(), &self.path);
+            cx.default_global::<FoundIcons>()
+                .0
+                .insert(self.path.clone());
+        }
         let theme = cx.theme();
         let color = self.color.unwrap_or(theme.colors.fg);
         svg()
-            .path(self.name.path())
+            .path(self.path)
             .size(theme.icon_size(self.size))
             .flex_none()
             .text_color(color)
@@ -425,7 +457,7 @@ impl RenderOnce for Icon {
 
 #[cfg(test)]
 mod tests {
-    use super::IconName;
+    use super::{Icon, IconName, ensure_found};
 
     #[test]
     fn every_icon_ships_in_the_bundle() {
@@ -436,5 +468,26 @@ mod tests {
                 icon.path()
             );
         }
+    }
+
+    #[test]
+    fn an_app_path_draws_as_given_and_a_name_as_its_bundled_file() {
+        let custom = Icon::from_path("app-icons/mark.svg");
+        assert_eq!(custom.path.as_ref(), "app-icons/mark.svg");
+        assert!(!custom.bundled);
+        let named = Icon::new(IconName::Check);
+        assert_eq!(named.path.as_ref(), IconName::Check.path());
+        assert!(named.bundled);
+    }
+
+    #[test]
+    fn a_path_the_source_holds_is_found() {
+        ensure_found(&crate::Assets, IconName::Check.path());
+    }
+
+    #[test]
+    #[should_panic(expected = "ely: icon app-icons/missing.svg is not in the app's asset source")]
+    fn a_path_the_source_lacks_fails() {
+        ensure_found(&crate::Assets, "app-icons/missing.svg");
     }
 }

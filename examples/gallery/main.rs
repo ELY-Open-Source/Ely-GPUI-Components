@@ -20,6 +20,7 @@ macro_rules! asset {
     };
 }
 
+mod assets;
 #[cfg(not(target_family = "wasm"))]
 mod capture;
 mod pages;
@@ -42,7 +43,7 @@ use std::path::PathBuf;
 #[cfg(not(target_family = "wasm"))]
 use anyhow::{Context as _, Result, bail};
 #[cfg(not(target_family = "wasm"))]
-use ely_gpui_component::Assets;
+use assets::GalleryAssets;
 use ely_gpui_component::theme::{Mode, Theme};
 use gpui::{
     App, AppContext, Bounds, KeyBinding, Menu, MenuItem, SharedString, TitlebarOptions,
@@ -201,7 +202,7 @@ fn main() -> Result<()> {
     // A script aims across its page; stories hold part.
     let scripted = start.narrow.is_none() && start.story.is_none();
     gpui_platform::application()
-        .with_assets(Assets)
+        .with_assets(GalleryAssets)
         .run(move |cx: &mut App| {
             let window = launch(start, cx);
             if let Some(dir) = capture {

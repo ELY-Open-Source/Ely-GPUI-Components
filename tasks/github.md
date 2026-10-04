@@ -4,3 +4,4 @@
 - [x] G2 Issue #2: tree guides line up under the chevron and run unbroken across rows
 - [x] G3 Issue #3: Checkbox, Switch, Radio, Slider and Select name their role, label and state
 - [x] G4 Push, comment on #2 and #3, close #2
+- [x] G5 PR #4: `Icon::from_path` draws an app's SVG; a path the asset source lacks fails at render

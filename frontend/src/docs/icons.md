@@ -9,6 +9,7 @@ Ely bundles 306 Lucide 1.48.0 icons, each an `IconName` variant: `IconName::Chec
 | Call | Does |
 | --- | --- |
 | `Icon::new(name)` | Draws the icon at `IconSize::Md` in the theme's `fg`. |
+| `Icon::from_path(path)` | Draws an SVG from the application's asset source with the same defaults. |
 | `.size(IconSize::Xl)` | `Xs` to `Xxl`, from the theme's icon sizes. |
 | `.color(color)` | Any color; components pass theme colors. |
 | `.rotate(Radians(..))` | Turns the glyph inside its box. |
@@ -42,6 +43,12 @@ A name rule beats an extension rule, and both beat Ely's map.
 ## An app's own assets
 
 GPUI takes one asset source. An app with files of its own writes an `AssetSource` that answers its own paths and hands every other path to `Assets`. `init` panics unless `icons/check.svg` loads through it.
+
+Use `Icon::from_path("app-icons/mark.svg")` to draw one of those SVG assets with Ely's themed sizing and color. It also accepts an owned `String` or `SharedString`. Paths are asset keys resolved by `AssetSource`; a path it lacks panics on first draw. SVGs render as single-color masks; `IconName` and `IconPicker` continue to list the bundled icons.
+
+Compatible single-color SVGs can come from [Lucide](https://lucide.dev/), [Hugeicons](https://github.com/hugeicons/hugeicons), [Phosphor](https://github.com/phosphor-icons/core), [Remix Icon](https://github.com/Remix-Design/RemixIcon), or [Tabler](https://github.com/tabler/tabler-icons). The app supplies its chosen files and preserves their licenses; Ely does not download or register those catalogs.
+
+The example below includes its asset source. Copy [`examples/assets/mark.svg`](https://github.com/ZacharyZhang-NY/Ely-GPUI-Components/blob/main/examples/assets/mark.svg) with it, or supply your own SVG.
 
 ## A window of icons
 

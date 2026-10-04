@@ -6,14 +6,15 @@ use std::{
 };
 
 use anyhow::{Context as _, Result, anyhow, bail};
-use ely_gpui_component::Assets;
 use gpui::{Application, AsyncApp, SharedString, WindowHandle};
 use gpui_web::{CanvasFontFallback, WebBackendPreference, WebPlatform};
 use wasm_bindgen::prelude::*;
 use web_sys::UrlSearchParams;
 
 use crate::{
-    Start, choose, launch, pages,
+    Start,
+    assets::GalleryAssets,
+    choose, launch, pages,
     shell::{Choice, Gallery},
 };
 
@@ -97,7 +98,7 @@ pub fn start() {
     let http = Arc::new(platform.fetch_http_client());
     Application::with_platform(platform)
         .with_http_client(http)
-        .with_assets(Assets)
+        .with_assets(GalleryAssets)
         .run(move |cx| {
             cx.text_system()
                 .add_fonts(vec![Cow::Borrowed(HEBREW)])

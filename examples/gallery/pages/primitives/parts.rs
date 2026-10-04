@@ -14,6 +14,7 @@ use gpui::{
 };
 
 use crate::{
+    assets::CUSTOM_ICON,
     probe::probe,
     ui::{UNREAD, blocked, code, picture, row, section, specimen, specimens},
 };
@@ -44,7 +45,7 @@ pub fn icon(cx: &App) -> impl IntoElement + use<> {
     ];
     section(
         "Icon",
-        "Lucide, drawn as a mask. Color comes from the theme.",
+        "Bundled Lucide or an application's SVG asset, drawn as a themed mask.",
         cx,
     )
     .child(specimens().children(
@@ -54,6 +55,15 @@ pub fn icon(cx: &App) -> impl IntoElement + use<> {
         specimens().children(tones.map(|(color, name)| {
             specimen(name, Icon::new(IconName::CircleCheck).color(color), cx)
         })),
+    )
+    .child(
+        specimens().child(specimen(
+            "custom SVG",
+            Icon::from_path(CUSTOM_ICON)
+                .size(IconSize::Xl)
+                .color(colors.accent),
+            cx,
+        )),
     )
 }
 
