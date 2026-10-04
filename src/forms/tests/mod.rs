@@ -237,7 +237,7 @@ fn typing_commits_only_on_enter_and_steps(cx: &mut TestAppContext) {
     setup(cx);
     let (view, cx) = cx.add_window_view(|_, _| Committed { values: Vec::new() });
     cx.update(|window, cx| window.focus_next(cx));
-    cx.simulate_keystrokes("cmd-a");
+    cx.simulate_keystrokes("secondary-a");
     cx.simulate_input("12");
     assert!(
         view.read_with(cx, |view, _| view.values.is_empty()),
