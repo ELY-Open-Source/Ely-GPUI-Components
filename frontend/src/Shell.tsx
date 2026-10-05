@@ -23,6 +23,9 @@ function Header() {
         <Link to="/docs/" className="link" activeProps={{ "aria-current": "page" }}>
           Docs
         </Link>
+        <Link to="/showcase/" className="link" activeProps={{ "aria-current": "page" }}>
+          Showcase
+        </Link>
       </nav>
       <div className="end">
         <button className="tool sound" aria-label={sound ? "Sound off" : "Sound on"} aria-pressed={sound} onClick={() => setSound(!sound)}>

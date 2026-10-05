@@ -360,3 +360,20 @@
 | T50f | 2 | PASS | |
 | T50g | 1 | FAIL | the platforms row said the gallery builds on all six; macOS arm64 checks it with clippy |
 | T50g | 2 | PASS | |
+| S1 | 1 | PASS | codex gpt-6.1-sol high |
+| S2 | 1 | FAIL | entity-encoded hosts; inline code and encoded addresses in READMEs; counting off Twitter's; zoneless times; a category list; PNG by signature alone; junctions; HTML media declined: Markdown pictures only |
+| S2 | 2 | FAIL | zone offsets unchecked; undecodable PNGs; prose punctuation broke allowed addresses; install steps in words |
+| S2 | 3 | FAIL | trimming ate an allowed address's own `_`; fixed after the cap (prefix plus punctuation), tested, not reviewed again |
+| S3 | 1 | FAIL | pushes off main ran no checks; GitHub sources with a slash or a query got no stars |
+| S3 | 2 | FAIL | a test's pattern lost its escapes and the suite failed to load |
+| S3 | 3 | PASS | |
+| S4 | 1 | PASS | run 37250376319 green |
+| S5 | 1 | FAIL | dev and build replaced a local preview with the pin |
+| S5 | 2 | PASS | |
+| S6 | 1 | FAIL | the header clipped at 320px once Geist loaded; a long author overflowed |
+| S6 | 2 | PASS | |
+| S7 | 1 | FAIL | a README table overflowed at 320px |
+| S7 | 2 | PASS | |
+| S8 | 1 | FAIL | the card click matched names by substring; the unknown id could be a real one |
+| S8 | 2 | PASS | |
+| S9 | 1 | PASS | |

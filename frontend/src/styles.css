@@ -197,6 +197,41 @@ img.shot { display: block; max-width: 100%; height: auto; }
 .code .copy { position: absolute; top: 10px; right: 12px; padding: 4px 8px; font-size: 12px; color: var(--muted); transition: color 160ms ease-out; }
 .code .copy:hover { color: var(--fg); }
 
+.showcase, .app-page { padding: 160px 64px 64px; }
+.showcase h1 { font-size: clamp(48px, 7vw, 112px); line-height: 0.95; font-weight: 800; letter-spacing: -0.045em; }
+.lede { margin-top: 20px; font-size: 20px; line-height: 30px; max-width: 48ch; }
+.showcase .none { margin-top: 56px; }
+.filters { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; margin: -40px 0 56px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { height: 32px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; color: var(--muted); transition: color 160ms ease-out, border-color 160ms ease-out; }
+.chip span { color: var(--faint); font-variant-numeric: tabular-nums; }
+.chip:hover, .chip[aria-pressed="true"] { color: var(--fg); border-color: var(--fg); }
+.apps-title { margin: 0 0 24px; font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
+.apps { list-style: none; margin: 0 0 72px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 48px 32px; }
+.app a { display: grid; gap: 6px; border-radius: 12px; }
+.app-shot { display: block; aspect-ratio: 16 / 10; margin-bottom: 14px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--code); }
+.app-shot img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform 320ms ease-out; }
+.app a:hover .app-shot img { transform: scale(1.02); }
+.app-name { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 20px; line-height: 28px; font-weight: 700; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.app-tag { padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; font: 400 12px/20px var(--mono); letter-spacing: 0; color: var(--muted); }
+.app-by { font-size: 14px; color: var(--muted); overflow-wrap: anywhere; }
+.app-page .lede, .app-facts dd { overflow-wrap: anywhere; }
+.app-text { font-size: 15px; line-height: 24px; color: color-mix(in srgb, var(--fg) 82%, var(--bg)); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.app-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 4px; font: 400 12px/18px var(--mono); color: var(--faint); }
+.submit { display: grid; justify-items: start; gap: 20px; margin: 0 64px; padding: 96px 0 128px; border-top: 1px solid var(--line); }
+.submit h2 { font-size: clamp(32px, 4vw, 56px); line-height: 1; font-weight: 800; letter-spacing: -0.04em; }
+.app-page { max-width: 1080px; }
+.app-page h1 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 8px 0 12px; font-size: clamp(40px, 5vw, 80px); line-height: 1; font-weight: 800; letter-spacing: -0.04em; overflow-wrap: anywhere; }
+.app-page h1 .app-tag { font-size: 13px; }
+.app-links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 32px; }
+.app-facts { display: flex; flex-wrap: wrap; gap: 24px 48px; margin: 48px 0; }
+.app-facts dt { font: 400 12px/18px var(--mono); color: var(--faint); }
+.app-facts dd { margin: 4px 0 0; font-size: 15px; }
+.app-previews { display: grid; gap: 32px; }
+.app-previews img, .app-readme img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; }
+.app-readme { max-width: 720px; margin-top: 32px; }
+.app-readme th, .app-readme td { overflow-wrap: anywhere; }
+
 .missing { min-height: 70vh; display: grid; align-content: center; justify-items: start; gap: 24px; padding: 160px 64px; }
 .missing h1 { font-size: 64px; letter-spacing: -0.04em; }
 
@@ -224,8 +259,12 @@ img.shot { display: block; max-width: 100%; height: auto; }
 
 @media (max-width: 767px) {
   .bar { padding: 0 16px; gap: 12px; }
+  .bar nav { gap: 16px; }
   .bar .end { gap: 0; }
-  .hero, .chapters, .missing { padding-left: 20px; padding-right: 20px; }
+  .hero, .chapters, .missing, .showcase, .app-page { padding-left: 20px; padding-right: 20px; }
+  .showcase, .app-page { padding-top: 112px; }
+  .submit { margin: 0 20px; padding: 72px 0 96px; }
+  .filters { margin-top: -40px; }
   .reader, .docs { padding: 0 20px; }
   .chapters li { grid-template-columns: 40px minmax(0, 1fr); }
   .chapters .titles { grid-column: 2; margin-top: 8px; }
@@ -233,7 +272,7 @@ img.shot { display: block; max-width: 100%; height: auto; }
   .chapters .name { font-size: 22px; }
   .hero-iso { width: 100%; height: 55%; }
   .hero > :not(.iso) { max-width: none; }
-  .hero h1, .chapters h1 { font-size: 13vw; }
+  .hero h1, .chapters h1, .showcase h1 { font-size: 13vw; }
   .feature h2, .city h2, .close h2 { font-size: 10vw; }
   .feature, .city { padding: 112px 20px 48px; }
   .feature-iso { min-height: 220px; }
@@ -243,11 +282,15 @@ img.shot { display: block; max-width: 100%; height: auto; }
   .close { padding: 112px 20px; }
 }
 
-@media (max-width: 359px) {
-  .bar { padding: 0 12px; gap: 10px; }
-  .bar nav { gap: 14px; }
-  .bar .tool { width: 32px; }
+@media (max-width: 413px) {
   .bar .sound { display: none; }
+}
+
+@media (max-width: 359px) {
+  .bar { padding: 0 12px; gap: 8px; }
+  .bar nav { gap: 10px; }
+  .bar .link { font-size: 13px; }
+  .bar .tool { width: 30px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

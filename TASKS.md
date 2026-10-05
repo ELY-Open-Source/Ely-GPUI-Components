@@ -185,6 +185,7 @@ Per-component lines live in `tasks/`. Tags there:
 - [x] T50e Rendering · Platforms: CI builds and tests the crate on Linux, macOS and Windows, arm64 and x86_64
 - [x] T50f Rendering · Docs: a guide with an example `scripts/check.sh` compiles; AGENTS.md
 - [x] T50g Rendering · Acceptance: the checklist, item by item
+- [x] T51 Showcase · an apps page fed by a public repo — `tasks/showcase.md`
 
 ## T00 detail
 
