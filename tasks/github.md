@@ -11,4 +11,4 @@
 - [x] G6 Issue #7: an IME composition restarts the caret's blink, as every edit does; its ranges are logged; tested
 - [x] G7 Issue #6: `shell::ColumnShell`, a sidebar that runs to the window's top with the traffic lights, beside one or two panes that bring their own headers; tested
 - [x] G8 Issue #6: a Layout story, `stories.json`, AGENTS.md and the PRD line; the story runs live on the site
-- [ ] G9 Push, deploy, reply on #6 and #7, close #6
+- [x] G9 Push, deploy, reply on #6 and #7, close #6
