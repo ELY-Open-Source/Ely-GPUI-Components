@@ -1,4 +1,4 @@
-// Writes public/favicon.svg and public/apple-touch-icon.png from the header's mark.
+// Writes public/favicon.svg, public/apple-touch-icon.png and the repo's logo.png from the header's mark.
 import { chromium } from "@playwright/test";
 import { readFileSync, writeFileSync } from "node:fs";
 import { mark, points } from "../src/iso/mark.ts";
@@ -37,5 +37,8 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 180, height: 180 } });
 await page.setContent(`<style>body{margin:0}svg{display:block;width:180px;height:180px}</style>${svg(0.18, 0.16, rules(LIGHT), LIGHT.top)}`);
 await page.screenshot({ path: "public/apple-touch-icon.png" });
+await page.setViewportSize({ width: 2048, height: 2048 });
+await page.setContent(`<style>body{margin:0;background:none}svg{display:block;width:2048px;height:2048px}</style>${svg(0.04, 0.1, rules(LIGHT))}`);
+await page.screenshot({ path: "../logo.png", omitBackground: true });
 await browser.close();
-console.log("favicon: wrote public/favicon.svg and public/apple-touch-icon.png");
+console.log("favicon: wrote public/favicon.svg, public/apple-touch-icon.png and ../logo.png");
