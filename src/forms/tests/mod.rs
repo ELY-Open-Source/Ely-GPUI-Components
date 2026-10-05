@@ -389,3 +389,33 @@ fn only_a_focused_field_blinks(cx: &mut TestAppContext) {
     cx.run_until_parked();
     assert!(redraws.get() > 2, "a focused one blinks");
 }
+
+#[gpui::test]
+fn a_composition_shows_the_caret_as_typing_does(cx: &mut TestAppContext) {
+    let (fields, cx) = open(1, false, cx);
+    let field = fields[0].clone();
+    cx.update(|window, _| window.activate_window());
+    focus(&field, cx);
+    cx.run_until_parked();
+    let caret = |cx: &mut VisualTestContext| field.read_with(cx, |input, _| input.caret_on());
+    let blink_off = |cx: &mut VisualTestContext| {
+        cx.executor()
+            .advance_clock(std::time::Duration::from_millis(530));
+        cx.run_until_parked();
+    };
+    blink_off(cx);
+    assert!(!caret(cx), "the caret blinks off");
+    cx.update(|window, cx| {
+        field.update(cx, |input, cx| {
+            input.replace_text_in_range(None, "a", window, cx)
+        })
+    });
+    assert!(caret(cx), "typing shows the caret");
+    blink_off(cx);
+    cx.update(|window, cx| {
+        field.update(cx, |input, cx| {
+            input.replace_and_mark_text_in_range(None, "n", None, window, cx)
+        })
+    });
+    assert!(caret(cx), "a composition shows it too");
+}

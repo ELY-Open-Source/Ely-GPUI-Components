@@ -382,3 +382,4 @@
 | L3 | 1 | PASS | |
 | L4 | 1 | PASS | |
 | L5 | 1 | PASS | |
+| G6 | 1 | PASS | codex gpt-6.1-sol high |

@@ -94,6 +94,12 @@ impl EntityInputHandler for TextInput {
         if self.disabled {
             return;
         }
+        log::debug!(
+            "text input {:?}: compose {range_utf16:?} selecting {selected_utf16:?} marked {:?} selection {:?}",
+            cx.entity_id(),
+            self.marked,
+            self.selection
+        );
         let range = range_utf16
             .map(|range| self.range_from_utf16(&range))
             .or(self.marked.clone())
@@ -114,7 +120,7 @@ impl EntityInputHandler for TextInput {
             None => range.start + text.len()..range.start + text.len(),
         };
         self.reversed = false;
-        cx.notify();
+        self.restart_blink(cx);
     }
 
     fn bounds_for_range(
