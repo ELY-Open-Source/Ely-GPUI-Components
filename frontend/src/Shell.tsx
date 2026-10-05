@@ -2,6 +2,7 @@ import { Link, Outlet, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { REPO } from "./data";
 import { Icon } from "./icons";
+import { Mark } from "./Mark";
 import { useStill } from "./iso/Iso";
 import { smooth } from "./scroll";
 import { setSound, useSound } from "./iso/marimba";
@@ -14,7 +15,8 @@ function Header() {
   return (
     <header className="bar">
       <Link to="/" className="brand">
-        Ely
+        <Mark />
+        <span>Ely</span>
       </Link>
       <nav aria-label="Site">
         <Link to="/components/" className="link" activeProps={{ "aria-current": "page" }}>

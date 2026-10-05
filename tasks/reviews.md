@@ -377,3 +377,8 @@
 | S8 | 1 | FAIL | the card click matched names by substring; the unknown id could be a real one |
 | S8 | 2 | PASS | |
 | S9 | 1 | PASS | |
+| L1 | 1 | PASS | |
+| L2 | 1 | PASS | |
+| L3 | 1 | PASS | |
+| L4 | 1 | PASS | |
+| L5 | 1 | PASS | |

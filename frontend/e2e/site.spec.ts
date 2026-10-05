@@ -117,3 +117,22 @@ test("a live story that opens a window shows that window natively", async ({ pag
   await shot.scrollIntoViewIfNeeded();
   await expect.poll(() => shot.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
 });
+
+test("the header leads with the mark, and the home link keeps its name", async ({ page }) => {
+  await page.goto("/components/");
+  const home = page.getByRole("link", { name: "Ely", exact: true });
+  await expect(home.locator("svg.mark polygon")).toHaveCount(12);
+  await expect(home.locator("svg.mark .accent")).toHaveCount(3);
+  await home.click();
+  await expect(page).toHaveURL("/");
+});
+
+test("the favicon and the touch icon are served", async ({ page, request }) => {
+  await page.goto("/components/");
+  for (const [rel, type] of [["icon", "image/svg+xml"], ["apple-touch-icon", "image/png"]]) {
+    const href = await page.locator(`link[rel="${rel}"]`).getAttribute("href");
+    const res = await request.get(href!);
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain(type);
+  }
+});

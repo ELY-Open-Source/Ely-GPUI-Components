@@ -186,6 +186,7 @@ Per-component lines live in `tasks/`. Tags there:
 - [x] T50f Rendering · Docs: a guide with an example `scripts/check.sh` compiles; AGENTS.md
 - [x] T50g Rendering · Acceptance: the checklist, item by item
 - [x] T51 Showcase · an apps page fed by a public repo — `tasks/showcase.md`
+- [x] T52 Logo · an isometric mark for the header, favicon and OG image — `tasks/logo.md`
 
 ## T00 detail
 

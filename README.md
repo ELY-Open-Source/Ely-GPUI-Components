@@ -50,6 +50,7 @@ ELY_GALLERY_ASSETS=https://<site>/gallery/assets/ pnpm gallery   # the wasm gall
 pnpm dev        # or: pnpm build && pnpm preview; both fetch the showcase at showcase.lock's commit
 ELY_SHOWCASE=../../Ely-GPUI-Showcases pnpm dev   # the showcase from a local checkout
 node scripts/og.mjs   # with pnpm preview up: public/og.png from the hero
+node scripts/favicon.mjs   # public/favicon.svg and apple-touch-icon.png from the mark
 pnpm deploy     # Cloudflare, through wrangler
 ```
 

@@ -63,7 +63,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* Header */
 .bar { position: fixed; inset: 0 0 auto; z-index: 40; height: 64px; display: flex; align-items: center; gap: 32px; padding: 0 32px; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(18px); }
-.brand { font-weight: 800; font-size: 20px; letter-spacing: -0.03em; }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; letter-spacing: -0.03em; }
+.mark { display: block; height: 30px; width: auto; flex: none; stroke: var(--iso-line); stroke-width: 0.17; stroke-linejoin: round; }
+.mark .top { fill: var(--bg); }
+.mark .front { fill: var(--iso-side); }
+.mark .right { fill: var(--iso-shade); }
+.mark .accent { stroke: var(--accent); }
 .bar nav { display: flex; gap: 24px; }
 .link { font-size: 14px; font-weight: 400; color: var(--muted); transition: color 160ms ease-out; }
 .link:hover, .link[aria-current="page"] { color: var(--fg); }
@@ -260,6 +265,7 @@ img.shot { display: block; max-width: 100%; height: auto; }
 @media (max-width: 767px) {
   .bar { padding: 0 16px; gap: 12px; }
   .bar nav { gap: 16px; }
+  .brand span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .bar .end { gap: 0; }
   .hero, .chapters, .missing, .showcase, .app-page { padding-left: 20px; padding-right: 20px; }
   .showcase, .app-page { padding-top: 112px; }

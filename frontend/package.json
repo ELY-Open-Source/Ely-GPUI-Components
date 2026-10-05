@@ -11,7 +11,7 @@
     "local": "ELY_GALLERY_ASSETS=http://localhost:4173/gallery/assets/ pnpm gallery && pnpm build && vite preview --port 4173 --strictPort",
     "deploy": "wrangler deploy",
     "e2e": "playwright test",
-    "test": "node --test src/iso/engine.test.ts src/apps.test.ts"
+    "test": "node --test src/iso/engine.test.ts src/iso/mark.test.ts src/apps.test.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
