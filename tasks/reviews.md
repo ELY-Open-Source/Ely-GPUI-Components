@@ -383,3 +383,6 @@
 | L4 | 1 | PASS | |
 | L5 | 1 | PASS | |
 | G6 | 1 | PASS | codex gpt-6.1-sol high |
+| G7 | 1 | FAIL | at 280px a 200px sidebar left the Windows close button past the shell |
+| G7 | 2 | FAIL | Edit and Share beside the Windows buttons still pushed the close button to 322px |
+| G7 | 3 | FAIL | the host's items shrank to 0px, out of reach; fixed after the cap (one control's width at least, a wheel test), not reviewed again |

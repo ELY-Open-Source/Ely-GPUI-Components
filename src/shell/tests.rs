@@ -286,3 +286,190 @@ fn the_splash_bar_spans_its_column(cx: &mut TestAppContext) {
         "half the column, not {fill:?}"
     );
 }
+
+struct Columned {
+    platform: crate::theme::Platform,
+    middle: bool,
+    closes: usize,
+}
+
+impl Render for Columned {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        let column = |id: &'static str| super::ShellColumn::new(id).title(id);
+        let shell = super::ColumnShell::new("shell")
+            .platform(self.platform)
+            .on_close(move |_, cx| view.update(cx, |view, _| view.closes += 1))
+            .column(column("side").width(px(200.0)))
+            .when(self.middle, |shell| {
+                shell.column(column("list").width(px(160.0)))
+            })
+            .column(column("main"));
+        div()
+            .w(px(800.0))
+            .h(px(400.0))
+            .flex()
+            .flex_col()
+            .child(shell)
+    }
+}
+
+fn columned(
+    platform: crate::theme::Platform,
+    middle: bool,
+    cx: &mut TestAppContext,
+) -> (gpui::Entity<Columned>, &mut VisualTestContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Columned {
+        platform,
+        middle,
+        closes: 0,
+    });
+    settle(cx);
+    (view, cx)
+}
+
+fn column(ix: usize, cx: &mut VisualTestContext) -> gpui::Bounds<gpui::Pixels> {
+    let name: &'static str = ["column-shell-0", "column-shell-1", "column-shell-2"][ix];
+    cx.debug_bounds(name).expect("a column")
+}
+
+/// Set widths hold, the last column takes the rest, and every column runs the window's height.
+#[gpui::test]
+fn columns_keep_their_widths_and_the_last_fills(cx: &mut TestAppContext) {
+    let (_, cx) = columned(crate::theme::Platform::Linux, true, cx);
+    let (side, list, main) = (column(0, cx), column(1, cx), column(2, cx));
+    assert_eq!((side.size.width, list.size.width), (px(200.0), px(160.0)));
+    assert_eq!((list.left(), main.left()), (px(200.0), px(360.0)));
+    assert_eq!(main.right(), px(800.0));
+    assert!(
+        [side, list, main]
+            .iter()
+            .all(|c| c.size.height == px(400.0))
+    );
+}
+
+/// Windows' caption buttons end the last header, flush with the window's edge; the close runs `on_close`.
+#[gpui::test]
+fn windows_controls_end_the_last_header(cx: &mut TestAppContext) {
+    let (view, cx) = columned(crate::theme::Platform::Windows, false, cx);
+    let (controls, main) = (
+        cx.debug_bounds("column-shell-controls").expect("controls"),
+        column(1, cx),
+    );
+    assert_eq!(controls.right(), main.right());
+    assert!(controls.left() > main.left() && controls.bottom() <= main.top() + px(38.0));
+    let close = cx.debug_bounds("caption-Close").expect("a close button");
+    cx.simulate_click(close.center(), gpui::Modifiers::none());
+    settle(cx);
+    assert_eq!(view.read_with(cx, |view, _| view.closes), 1);
+}
+
+/// Drawn traffic lights lead the first header, inside the sidebar.
+#[gpui::test]
+fn drawn_traffic_lights_lead_the_first_header(cx: &mut TestAppContext) {
+    let (_, cx) = columned(crate::theme::Platform::Mac, true, cx);
+    let (lights, side) = (
+        cx.debug_bounds("column-shell-controls").expect("lights"),
+        column(0, cx),
+    );
+    assert!(lights.left() > side.left() && lights.right() < side.right());
+    assert_eq!(lights.center().y, side.top() + px(19.0));
+}
+
+/// The shell fills a padded column's width.
+#[gpui::test]
+fn a_column_shell_fills_its_container(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let width = crate::layout::tests::narrow_width(cx, "column-shell", |_, _| {
+        super::ColumnShell::new("shell")
+            .platform(crate::theme::Platform::Linux)
+            .column(super::ShellColumn::new("main"))
+            .into_any_element()
+    });
+    assert_eq!(width, px(240.0));
+}
+
+struct Unforced;
+
+impl Render for Unforced {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let lead = div().debug_selector(|| "lead".into()).size(px(10.0));
+        div().w(px(800.0)).h(px(400.0)).flex().flex_col().child(
+            super::ColumnShell::new("shell").column(super::ShellColumn::new("main").leading(lead)),
+        )
+    }
+}
+
+/// Unforced, macOS leaves the first header room for the system's lights; elsewhere Ely draws the theme's controls.
+#[gpui::test]
+fn an_unforced_shell_follows_the_system(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| Unforced);
+    settle(cx);
+    let drawn = cx.debug_bounds("column-shell-controls").is_some();
+    let lead = cx.debug_bounds("lead").expect("the lead").left();
+    match cfg!(target_os = "macos") {
+        true => assert_eq!((drawn, lead), (false, px(78.0))),
+        false => assert_eq!((drawn, lead), (true, px(12.0))),
+    }
+}
+
+struct NarrowShell;
+
+impl Render for NarrowShell {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let long = "A title long enough to run past any narrow column";
+        div().w(px(280.0)).h(px(200.0)).flex().flex_col().child(
+            super::ColumnShell::new("shell")
+                .platform(crate::theme::Platform::Windows)
+                .column(super::ShellColumn::new("side").width(px(200.0)).title(long))
+                .column(
+                    super::ShellColumn::new("main")
+                        .title(long)
+                        .action(
+                            div()
+                                .debug_selector(|| "edit".into())
+                                .child(Button::new("edit", "Edit")),
+                        )
+                        .action(
+                            div()
+                                .debug_selector(|| "share".into())
+                                .child(Button::new("share", "Share")),
+                        )
+                        .child(long),
+                ),
+        )
+    }
+}
+
+/// At 280px a set width gives way and the host's items scroll, so the caption buttons stay inside the shell.
+#[gpui::test]
+fn at_280px_the_caption_buttons_stay_inside_the_shell(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| NarrowShell);
+    settle(cx);
+    let (side, main) = (column(0, cx), column(1, cx));
+    let close = cx.debug_bounds("caption-Close").expect("a close button");
+    assert_eq!((side.left(), main.right()), (px(0.0), px(280.0)));
+    assert!(side.size.width < px(200.0), "{side:?} gave way");
+    assert!(
+        close.left() >= main.left() && close.right() <= px(280.0),
+        "{close:?} in {main:?}"
+    );
+    let items = cx.debug_bounds("column-shell-items-1").expect("the items");
+    let edit = cx.debug_bounds("edit").expect("Edit");
+    assert!(items.size.width >= px(32.0), "{items:?} holds a control");
+    assert!(items.contains(&edit.origin), "{edit:?} shows in {items:?}");
+    cx.simulate_event(gpui::ScrollWheelEvent {
+        position: items.center(),
+        delta: gpui::ScrollDelta::Pixels(gpui::point(px(-400.0), px(0.0))),
+        ..Default::default()
+    });
+    settle(cx);
+    let share = cx.debug_bounds("share").expect("Share");
+    assert!(
+        share.right() <= items.right() + px(0.5),
+        "{share:?} scrolls into {items:?}"
+    );
+}

@@ -55,7 +55,7 @@ enum Control {
     Close,
 }
 
-type OnClose = Rc<dyn Fn(&mut Window, &mut App)>;
+pub(super) type OnClose = Rc<dyn Fn(&mut Window, &mut App)>;
 
 fn run(control: Control, on_close: Option<&OnClose>, window: &mut Window, cx: &mut App) {
     log::info!("window controls: {control:?}");
@@ -249,6 +249,15 @@ fn round_buttons(
         .into_any_element()
 }
 
+/// Whether the system draws the window controls, and whose manner they take.
+pub(super) fn controls_style(platform: Option<Platform>, cx: &App) -> (bool, Platform) {
+    let system = platform.is_none() && cfg!(target_os = "macos");
+    match system {
+        true => (true, Platform::Mac),
+        false => (false, platform.unwrap_or(cx.theme().platform)),
+    }
+}
+
 /// The live close handler, read by the window's close request.
 struct CloseRoute {
     handler: Option<OnClose>,
@@ -256,7 +265,12 @@ struct CloseRoute {
 }
 
 /// Sends system closes to `handler` while the bar lives and holds one.
-fn route_close(id: &ElementId, handler: Option<OnClose>, window: &mut Window, cx: &mut App) {
+pub(super) fn route_close(
+    id: &ElementId,
+    handler: Option<OnClose>,
+    window: &mut Window,
+    cx: &mut App,
+) {
     let route = window.use_keyed_state(id.clone(), cx, |_, _| CloseRoute {
         handler: None,
         registered: false,
@@ -342,12 +356,8 @@ impl RenderOnce for TitleBar {
             route_close(&self.id, self.on_close.clone(), window, cx);
         }
         let bar = drag_region(self.id, window, cx);
+        let (system, style) = controls_style(self.platform, cx);
         let theme = cx.theme();
-        let system = self.platform.is_none() && cfg!(target_os = "macos");
-        let style = match system {
-            true => Platform::Mac,
-            false => self.platform.unwrap_or(theme.platform),
-        };
         let mut trailing = (!system).then_some(WindowControls {
             id: "window-controls".into(),
             platform: Some(style),
