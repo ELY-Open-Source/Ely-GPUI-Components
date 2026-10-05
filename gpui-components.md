@@ -123,6 +123,7 @@
 ## 4. 窗口与桌面外壳（Window & Shell）
 
 - TitleBar — 自定义标题栏（可拖动区域）
+- ColumnShell — 分栏外壳：侧栏通到窗口顶部，每栏自带可拖动标题（双栏 / 三栏）
 - WindowControls — 最小化 / 最大化 / 关闭（macOS 红绿灯、Windows、Linux 样式）
 - TrafficLights — macOS 风格窗口按钮
 - WindowDragRegion — 窗口拖拽区域

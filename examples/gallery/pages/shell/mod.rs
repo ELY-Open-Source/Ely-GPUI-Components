@@ -1,5 +1,6 @@
 mod bars;
 mod chrome;
+mod columns;
 mod status;
 mod system;
 mod windows;
@@ -102,6 +103,7 @@ const SCRIPT: &[Step] = &[
 fn render(window: &mut Window, cx: &mut App) -> AnyElement {
     div()
         .child(chrome::title_bar(cx))
+        .child(columns::column_shell(cx))
         .child(chrome::window_controls(cx))
         .child(chrome::drag_area(window, cx))
         .child(chrome::resize_border(cx))
