@@ -1,6 +1,6 @@
 name: Showcase
 
-# Moves the site's showcase pin to the Gitea catalog's main once its checks pass, then deploys.
+# Moves the site's showcase pin to the catalog's main once its checks pass, then deploys.
 on:
   schedule:
     - cron: "*/30 * * * *"
@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CATALOG: ZacharyZhang-NY/Ely-GPUI-Showcases
+  CATALOG: ELY-Open-Source/Ely-GPUI-Showcases
 
 jobs:
   check:
@@ -32,20 +32,22 @@ jobs:
           persist-credentials: false
       - id: head
         env:
-          API: ${{ github.server_url }}/api/v1/repos/${{ env.CATALOG }}
+          GH_TOKEN: ${{ github.token }}
           FORCE: ${{ inputs.deploy }}
         run: |
-          head=$(curl -fsS "$API/branches/main" | jq -r .commit.id)
+          head=$(gh api "repos/$CATALOG/branches/main" --jq .commit.sha)
           pinned=$(tr -d '[:space:]' < frontend/showcase.lock)
           if [ "$head" = "$pinned" ]; then
             echo "showcase: pinned at ${head:0:7}, the catalog's main"
             [ "$FORCE" = "true" ] && echo "commit=$head" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          status=$(curl -fsS "$API/commits/$head/status")
-          total=$(echo "$status" | jq .total_count)
-          state=$(echo "$status" | jq -r .state)
-          if [ "$total" -eq 0 ] || [ "$state" = "pending" ]; then
+          # Check runs from Actions, and any legacy commit statuses, each read as success, pending or what failed.
+          runs=$(gh api "repos/$CATALOG/commits/$head/check-runs?per_page=100" --jq '[.check_runs[] | if .status != "completed" then "pending" elif (.conclusion | IN("success", "skipped", "neutral")) then "success" else .conclusion end]')
+          statuses=$(gh api "repos/$CATALOG/commits/$head/status" --jq '[.statuses[].state]')
+          state=$(jq -rn --argjson runs "$runs" --argjson statuses "$statuses" '$runs + $statuses
+            | if length == 0 or any(. == "pending") then "pending" elif all(. == "success") then "success" else map(select(. != "success")) | first end')
+          if [ "$state" = "pending" ]; then
             echo "showcase: ${head:0:7}'s checks have not finished; next run looks again"
             [ "$FORCE" = "true" ] && echo "commit=$pinned" >> "$GITHUB_OUTPUT"
             exit 0
@@ -108,8 +110,8 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       - name: Commit the pin
         run: |
-          git config user.name 'gitea-actions'
-          git config user.email 'actions@git.zacharyzhang.com'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add frontend/showcase.lock
           git diff --cached --quiet && exit 0
           git commit -m "Site · Showcase: pin Ely-GPUI-Showcases at ${COMMIT:0:7}"
