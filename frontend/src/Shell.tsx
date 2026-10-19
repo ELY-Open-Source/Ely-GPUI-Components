@@ -36,8 +36,8 @@ function Header() {
         <button className="tool" aria-label={dark ? "Light mode" : "Dark mode"} onClick={() => setMode(dark ? "light" : "dark")}>
           <Icon name={dark ? "Sun" : "Moon"} />
         </button>
-        <a className="tool" href={REPO} rel="noopener" aria-label="Ely on Gitea">
-          <Icon name="Gitea" />
+        <a className="tool" href={REPO} rel="noopener" aria-label="Ely on GitHub">
+          <Icon name="GitHub" />
         </a>
       </div>
     </header>

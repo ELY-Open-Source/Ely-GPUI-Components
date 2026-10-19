@@ -12,7 +12,7 @@ Ely is not on crates.io. Depend on it by git, with GPUI at the snapshot Ely pins
 
 ```toml
 [dependencies]
-ely-gpui-component = { git = "https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Components" }
+ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components" }
 gpui = { package = "gpui-pre", version = "=0.3.8" }
 gpui_platform = { package = "gpui-pre-platform", version = "=0.3.8", features = ["font-kit"] }
 ```

@@ -7,7 +7,7 @@ Ely runs beside Longbridge's [GPUI Kit](https://gpui-kit.com) in one app and one
 ```toml
 [dependencies]
 gpui-kit = "0.7"
-ely-gpui-component = { git = "https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Components" }
+ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components" }
 ```
 
 Kit brings GPUI and puts it at its root, so the app writes `use gpui_kit::*` and lists no `gpui` line of its own. Ely follows Kit's default GPUI.
@@ -43,4 +43,4 @@ In debug builds Kit's `init` installs Kit's inspector. Call `ely_gpui_component:
 
 ## A whole app
 
-[`compat/kit/examples/start.rs`](https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Components/src/branch/main/compat/kit/examples/start.rs) puts Ely's heading and button beside Kit's field and dialog, and one button turns both themes. From a clone, run it with `cargo run --manifest-path compat/kit/Cargo.toml --example start`. The crate's tests hold each claim on this page.
+[`compat/kit/examples/start.rs`](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/compat/kit/examples/start.rs) puts Ely's heading and button beside Kit's field and dialog, and one button turns both themes. From a clone, run it with `cargo run --manifest-path compat/kit/Cargo.toml --example start`. The crate's tests hold each claim on this page.

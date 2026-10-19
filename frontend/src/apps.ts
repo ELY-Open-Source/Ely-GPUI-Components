@@ -26,7 +26,7 @@ export interface Catalog {
 
 export type Sort = "newest" | "stars";
 
-export const SUBMIT = "https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Showcases#submit-an-app";
+export const SUBMIT = "https://github.com/ELY-Open-Source/Ely-GPUI-Showcases#submit-an-app";
 
 /** Newest first, then most stars; or most stars, then newest. */
 export function sorted(apps: App[], sort: Sort): App[] {

@@ -6,7 +6,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Marked } from "marked";
 
-const REPO = "https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Showcases";
+const REPO = "ELY-Open-Source/Ely-GPUI-Showcases";
 const site = fileURLToPath(new URL("..", import.meta.url));
 const pub = join(site, "public", "showcase");
 const out = join(site, "src", "showcase.json");
@@ -15,7 +15,7 @@ const stamp = join(pub, ".commit");
 /** The catalog at `commit`, unpacked with its validator's packages. */
 async function fetchCatalog(commit) {
   const work = mkdtempSync(join(tmpdir(), "ely-showcase-"));
-  const url = `${REPO}/archive/${commit}.tar.gz`;
+  const url = `https://codeload.github.com/${REPO}/tar.gz/${commit}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`showcase: ${url} answered ${res.status}`);
   writeFileSync(join(work, "catalog.tar.gz"), Buffer.from(await res.arrayBuffer()));
