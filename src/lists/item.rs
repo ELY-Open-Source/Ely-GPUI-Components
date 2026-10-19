@@ -19,6 +19,8 @@ type OnClick = Rc<dyn Fn(&ClickEvent, &mut Window, &mut App)>;
 pub struct ListItem {
     id: ElementId,
     title: SharedString,
+    /// A field drawn in the title's place.
+    editor: Option<AnyElement>,
     description: Option<SharedString>,
     detail: Option<SharedString>,
     leading: Option<AnyElement>,
@@ -39,6 +41,7 @@ impl ListItem {
         Self {
             id: id.into(),
             title: title.into(),
+            editor: None,
             description: None,
             detail: None,
             leading: None,
@@ -69,6 +72,12 @@ impl ListItem {
     /// Strikes the title through, as a finished task has it.
     pub fn struck(mut self, struck: bool) -> Self {
         self.struck = struck;
+        self
+    }
+
+    /// A field in place of the title, as a row renamed in place has it; the title stays the row's name.
+    pub fn editor(mut self, editor: impl IntoElement) -> Self {
+        self.editor = Some(editor.into_any_element());
         self
     }
 
@@ -191,8 +200,9 @@ impl RenderOnce for ListItem {
                     .min_w_0()
                     .flex()
                     .flex_col()
-                    .child(
-                        line(self.title)
+                    .child(match self.editor {
+                        Some(editor) => div().min_w_0().child(editor).into_any_element(),
+                        None => line(self.title)
                             .text_size(theme.text_size(TextSize::Base))
                             .when(self.strong, |title| title.font_weight(FontWeight::SEMIBOLD))
                             .when(self.struck, |title| title.line_through())
@@ -200,8 +210,9 @@ impl RenderOnce for ListItem {
                                 colors.fg_muted
                             } else {
                                 colors.fg
-                            }),
-                    )
+                            })
+                            .into_any_element(),
+                    })
                     .children(self.description.map(|text| {
                         line(text.clone())
                             .debug_selector(|| format!("item-description-{text}"))

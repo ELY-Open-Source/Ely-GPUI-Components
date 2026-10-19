@@ -18,6 +18,7 @@ use crate::{
     theme::Theme,
 };
 
+mod editor;
 mod keys;
 
 fn setup(cx: &mut TestAppContext) {
