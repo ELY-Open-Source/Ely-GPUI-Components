@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # One leg per runner registered with git.zacharyzhang.com; macOS arm64 is the crate job above.
+        # GitHub-hosted runners; macOS arm64 is the crate job above.
         os: [ubuntu-24.04, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -31,15 +31,8 @@ jobs:
         with:
           toolchain: "1.95"
       - uses: Swatinem/rust-cache@v2
-      - if: runner.os != 'Linux'
-        run: cargo test --lib --features test-support --quiet
-      # The Linux job container runs as root, which ignores the file permissions the tests check.
-      - if: runner.os == 'Linux'
-        run: |
-          useradd --create-home ci
-          chmod o+x "$HOME"
-          chown -R ci "$GITHUB_WORKSPACE" "$HOME/.cargo" "$HOME/.rustup"
-          runuser -u ci -- env HOME=/home/ci CARGO_HOME="$HOME/.cargo" RUSTUP_HOME="$HOME/.rustup" PATH="$PATH"             cargo test --lib --features test-support --quiet
+      # Hosted runners test as a plain user, so the file permissions the tests check hold.
+      - run: cargo test --lib --features test-support --quiet
       - run: cargo build --example gallery
 
   site:
