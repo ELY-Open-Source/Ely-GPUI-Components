@@ -5,7 +5,7 @@ edition = "2024"
 rust-version = "1.95"
 license = "MIT"
 description = "A restrained component library for GPUI, in light and dark."
-repository = "https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Components"
+repository = "https://github.com/ELY-Open-Source/Ely-GPUI-Components"
 publish = false
 
 [features]

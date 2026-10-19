@@ -48,16 +48,13 @@ CI runs the same on every pull request. Fill in the pull request template: what 
 
 Ely is MIT. Unless you say otherwise, what you contribute is licensed the same way.
 
-## Opening a pull request on git.zacharyzhang.com
+## Opening a pull request on GitHub
 
-Forking is disabled on this server. Open pull requests with AGit instead:
-
-1. Register an account at https://git.zacharyzhang.com
-2. Clone, commit your changes, then push to a `refs/for/<target-branch>` ref:
+1. Fork https://github.com/ELY-Open-Source/Ely-GPUI-Components and clone your fork:
 
    ```bash
-   git clone https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Components.git
-   git push origin HEAD:refs/for/main -o topic=<short-name> -o title="<PR title>" -o description="<PR body>"
+   git clone https://github.com/<you>/Ely-GPUI-Components.git
    ```
 
-3. To update the pull request, push again with the same `topic`.
+2. Commit on a branch, push it to your fork, and open a pull request against `main`.
+3. To update the pull request, push to the same branch.

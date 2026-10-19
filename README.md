@@ -11,7 +11,7 @@ Status: early. `TASKS.md` tracks every component, chapter by chapter. To help, s
 
 ```toml
 [dependencies]
-ely-gpui-component = { git = "https://git.zacharyzhang.com/ZacharyZhang-NY/Ely-GPUI-Components" }
+ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components" }
 gpui = { package = "gpui-pre", version = "=0.3.8" }
 gpui_platform = { package = "gpui-pre-platform", version = "=0.3.8", features = ["font-kit"] }
 ```
