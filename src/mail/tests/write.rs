@@ -190,9 +190,11 @@ fn a_new_signature_from_the_owner_starts_the_field_over(cx: &mut TestAppContext)
 struct Replying {
     to: SharedString,
     cc: Vec<SharedString>,
+    bcc: Vec<SharedString>,
     sending: bool,
     check: fn(&str) -> bool,
     sent: Vec<String>,
+    blind: Vec<String>,
     changed: Vec<String>,
 }
 
@@ -211,13 +213,19 @@ impl Render for Replying {
         MailComposer::new("composer", words())
             .to([self.to.clone()])
             .cc(self.cc.clone())
+            .bcc(self.bcc.clone())
             .subject("Re: Samples")
             .busy(self.sending)
             .check(self.check)
             .on_change(move |draft, _, cx| {
                 watcher.update(cx, |host, _| host.changed.push(line(draft)))
             })
-            .on_send(move |draft, _, cx| owner.update(cx, |host, _| host.sent.push(line(draft))))
+            .on_send(move |draft, _, cx| {
+                owner.update(cx, |host, _| {
+                    host.sent.push(line(draft));
+                    host.blind.push(draft.bcc.join(","));
+                })
+            })
             .on_discard(|_, _| {})
     }
 }
@@ -235,9 +243,11 @@ fn replying<'a>(
     let (host, cx) = cx.add_window_view(|_, _| Replying {
         to: "ana@atrium.studio".into(),
         cc: cc.collect(),
+        bcc: Vec::new(),
         sending,
         check: forms::is_email,
         sent: Vec::new(),
+        blind: Vec::new(),
         changed: Vec::new(),
     });
     cx.update(|window, _| window.activate_window());
@@ -272,6 +282,23 @@ fn copies_given_show_and_go_out(cx: &mut TestAppContext) {
     assert_eq!(
         host.read_with(cx, |host, _| host.sent.clone()),
         ["ana@atrium.studio | cy@atrium.studio | Re: Samples"]
+    );
+}
+
+#[gpui::test]
+fn blind_copies_given_show_and_go_out(cx: &mut TestAppContext) {
+    let (host, cx) = replying(&[], false, cx);
+    host.update(cx, |host, cx| {
+        host.bcc = vec!["dee@atrium.studio".into()];
+        cx.notify();
+    });
+    settle(cx);
+    assert!(cx.debug_bounds("composer-bcc").is_some());
+    tab_to(5, cx);
+    press("space", cx);
+    assert_eq!(
+        host.read_with(cx, |host, _| host.blind.clone()),
+        ["dee@atrium.studio"]
     );
 }
 

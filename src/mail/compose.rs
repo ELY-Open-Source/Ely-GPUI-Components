@@ -58,7 +58,12 @@ enum Field {
 }
 
 /// The owner's addresses and subject a draft starts from.
-type Seed = (Vec<SharedString>, Vec<SharedString>, SharedString);
+type Seed = (
+    Vec<SharedString>,
+    Vec<SharedString>,
+    Vec<SharedString>,
+    SharedString,
+);
 
 /// The addresses, typed words, and subject being written.
 struct Composing {
@@ -76,11 +81,11 @@ struct Composing {
 
 impl Composing {
     /// Starts over from the owner's addresses and subject.
-    fn fill(&mut self, (to, cc, subject): Seed, cx: &mut Context<Self>) {
+    fn fill(&mut self, (to, cc, bcc, subject): Seed, cx: &mut Context<Self>) {
         self.to = to;
-        self.copies = !cc.is_empty();
+        self.copies = !cc.is_empty() || !bcc.is_empty();
         self.cc = cc;
-        self.bcc.clear();
+        self.bcc = bcc;
         self.typed = Default::default();
         self.subject
             .update(cx, |input, cx| input.set_text(subject.to_string(), cx));
@@ -112,6 +117,7 @@ pub struct MailComposer {
     contacts: Vec<Contact>,
     to: Vec<SharedString>,
     cc: Vec<SharedString>,
+    bcc: Vec<SharedString>,
     subject: SharedString,
     busy: bool,
     check: fn(&str) -> bool,
@@ -135,6 +141,7 @@ impl MailComposer {
             contacts: Vec::new(),
             to: Vec::new(),
             cc: Vec::new(),
+            bcc: Vec::new(),
             subject: SharedString::default(),
             busy: false,
             check: is_email,
@@ -165,6 +172,12 @@ impl MailComposer {
     /// The copies it starts with; Cc and Bcc then show.
     pub fn cc(mut self, addresses: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.cc = addresses.into_iter().map(Into::into).collect();
+        self
+    }
+
+    /// The blind copies it starts with; both show.
+    pub fn bcc(mut self, addresses: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
+        self.bcc = addresses.into_iter().map(Into::into).collect();
         self
     }
 
@@ -246,7 +259,12 @@ impl MailComposer {
 
 impl RenderOnce for MailComposer {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let seed = (self.to.clone(), self.cc.clone(), self.subject.clone());
+        let seed = (
+            self.to.clone(),
+            self.cc.clone(),
+            self.bcc.clone(),
+            self.subject.clone(),
+        );
         let state = window.use_keyed_state(
             (self.id.clone(), "draft"),
             cx,
