@@ -10,6 +10,7 @@ use crate::{
     data_display::Tag,
     documents::source,
     forms::{Pick, Run},
+    i18n::text,
     primitives::{Icon, IconName, Image, file_icon},
     theme::{ActiveTheme, AvatarSize, ControlSize, IconSize, Radius, TextSize},
     typography::{Ellipsis, format::file_size},
@@ -136,7 +137,7 @@ impl RenderOnce for AttachmentChip {
                 IconButton::new((self.id.clone(), "remove"), IconName::X)
                     .variant(ButtonVariant::Ghost)
                     .size(ControlSize::Sm)
-                    .tooltip("Remove")
+                    .tooltip(text(cx, "attachment.remove", &[]))
                     .on_click(move |_, window, cx| {
                         log::info!("attachment: removed");
                         remove(window, cx)

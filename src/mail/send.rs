@@ -9,6 +9,7 @@ use super::times::{
 use crate::{
     buttons::{Button, ButtonVariant},
     forms::Run,
+    i18n::text,
     menus::{Menu, MenuItem, SplitButton},
     typography::format,
 };
@@ -98,8 +99,9 @@ impl RenderOnce for ScheduleSend {
                     .item(pick_item("schedule send", &picking))
             });
         let send = self.on_send.clone();
+        let label = text(cx, "mail.send", &[]);
         let button = match menu {
-            Some(menu) => SplitButton::new((self.id.clone(), "send"), "Send", menu)
+            Some(menu) => SplitButton::new((self.id.clone(), "send"), label, menu)
                 .variant(ButtonVariant::Primary)
                 .on_click(move |_, window, cx| {
                     log::info!("schedule send: send");
@@ -108,7 +110,7 @@ impl RenderOnce for ScheduleSend {
                     }
                 })
                 .into_any_element(),
-            None => Button::new((self.id.clone(), "send"), "Send")
+            None => Button::new((self.id.clone(), "send"), label)
                 .variant(ButtonVariant::Primary)
                 .disabled(self.disabled)
                 .on_click(move |_, window, cx| {

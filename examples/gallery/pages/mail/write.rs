@@ -1,5 +1,6 @@
 use ely_gpui_component::{
     chat::Attachment,
+    forms::{Input, TextInput},
     mail::{Contact, MailComposer, ScheduleSend, SignatureEditor},
     theme::{ActiveTheme, Radius},
 };
@@ -59,6 +60,11 @@ pub fn composer(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         writing.clone(),
         writing,
     );
+    let words = window.use_keyed_state(("mail-words", now.round), cx, |window, cx| {
+        TextInput::new(window, cx)
+            .multi_line(6, 16)
+            .placeholder("Write your message")
+    });
     let theme = cx.theme();
     let frame = div()
         .w(px(560.))
@@ -67,7 +73,7 @@ pub fn composer(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         .border_color(theme.colors.border)
         .rounded(theme.radius(Radius::Lg))
         .child(
-            MailComposer::new(("mail-composer", now.round))
+            MailComposer::new(("mail-composer", now.round), Input::new(&words))
                 .contacts(contacts())
                 .signature(SIGNATURE)
                 .files(now.files.clone())
