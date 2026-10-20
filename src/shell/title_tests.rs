@@ -186,7 +186,7 @@ impl Render for Guarded {
     }
 }
 
-/// The drawn Close asks the window's close check, as the system does.
+/// The drawn Close asks the close check too.
 #[gpui::test]
 fn the_drawn_close_asks_the_close_check(cx: &mut TestAppContext) {
     cx.update(Theme::init);

@@ -58,7 +58,7 @@ impl Tags {
     }
 }
 
-/// Whether `text` ends inside a quoted string, as an address's local part.
+/// True when the text ends inside a quoted string.
 fn in_quotes(text: &str) -> bool {
     let (mut inside, mut escaped) = (false, false);
     for ch in text.chars() {
@@ -72,7 +72,7 @@ fn in_quotes(text: &str) -> bool {
     inside
 }
 
-/// A chip per tag, then a field. Enter or a comma outside quotes adds; Backspace on empty drops the last. With suggestions, the rows that hold the typed words float under it: Up and Down move, Enter or a press adds one, Escape sets them aside.
+/// Tag chips and a field; Enter or unquoted comma adds.
 #[derive(IntoElement)]
 pub struct TagInput {
     id: ElementId,

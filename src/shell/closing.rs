@@ -11,7 +11,7 @@ struct Checks(HashMap<WindowId, Check>);
 
 impl Global for Checks {}
 
-/// Asks `check` before the system or the drawn Close closes the window.
+/// Asks `check` before any Close removes the window.
 pub fn guard_close(
     window: &mut Window,
     cx: &mut App,
