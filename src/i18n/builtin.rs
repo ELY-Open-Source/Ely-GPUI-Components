@@ -91,6 +91,10 @@ const EN: &[(&str, &str)] = &[
     ("mail.compose.subject", "Subject"),
     ("mail.compose.attach", "Attach files"),
     ("mail.compose.discard", "Discard"),
+    (
+        "mail.signature.placeholder",
+        "Your name, your role, a way to reach you",
+    ),
     ("mail.send", "Send"),
     ("attachment.remove", "Remove"),
     ("mail.file.waiting", "Not downloaded"),
@@ -284,6 +288,7 @@ const ZH_CN: &[(&str, &str)] = &[
     ("mail.compose.subject", "主题"),
     ("mail.compose.attach", "添加附件"),
     ("mail.compose.discard", "舍弃"),
+    ("mail.signature.placeholder", "姓名、职务与联系方式"),
     ("mail.send", "发送"),
     ("attachment.remove", "移除"),
     ("mail.file.waiting", "未下载"),

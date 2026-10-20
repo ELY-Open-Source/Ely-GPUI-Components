@@ -72,11 +72,11 @@ fn a_suggested_person_and_a_subject_go_out_as_one_draft(cx: &mut TestAppContext)
 #[gpui::test]
 fn cc_and_bcc_show_once_asked(cx: &mut TestAppContext) {
     let (_, cx) = writing(composer, cx);
-    assert!(cx.debug_bounds("composer-Cc").is_none());
+    assert!(cx.debug_bounds("composer-cc").is_none());
     tab_to(2, cx);
     press("space", cx);
-    assert!(cx.debug_bounds("composer-Cc").is_some());
-    assert!(cx.debug_bounds("composer-Bcc").is_some());
+    assert!(cx.debug_bounds("composer-cc").is_some());
+    assert!(cx.debug_bounds("composer-bcc").is_some());
 }
 
 #[gpui::test]
@@ -191,27 +191,33 @@ struct Replying {
     to: SharedString,
     cc: Vec<SharedString>,
     sending: bool,
+    check: fn(&str) -> bool,
     sent: Vec<String>,
+    changed: Vec<String>,
+}
+
+fn line(draft: &crate::mail::Draft) -> String {
+    format!(
+        "{} | {} | {}",
+        draft.to.join(","),
+        draft.cc.join(","),
+        draft.subject
+    )
 }
 
 impl Render for Replying {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let owner = cx.entity();
+        let (owner, watcher) = (cx.entity(), cx.entity());
         MailComposer::new("composer", words())
             .to([self.to.clone()])
             .cc(self.cc.clone())
             .subject("Re: Samples")
-            .sending(self.sending)
-            .on_send(move |draft, _, cx| {
-                owner.update(cx, |host, _| {
-                    host.sent.push(format!(
-                        "{} | {} | {}",
-                        draft.to.join(","),
-                        draft.cc.join(","),
-                        draft.subject
-                    ))
-                })
+            .busy(self.sending)
+            .check(self.check)
+            .on_change(move |draft, _, cx| {
+                watcher.update(cx, |host, _| host.changed.push(line(draft)))
             })
+            .on_send(move |draft, _, cx| owner.update(cx, |host, _| host.sent.push(line(draft))))
             .on_discard(|_, _| {})
     }
 }
@@ -230,7 +236,9 @@ fn replying<'a>(
         to: "ana@atrium.studio".into(),
         cc: cc.collect(),
         sending,
+        check: forms::is_email,
         sent: Vec::new(),
+        changed: Vec::new(),
     });
     cx.update(|window, _| window.activate_window());
     settle(cx);
@@ -256,8 +264,8 @@ fn a_new_start_from_the_owner_begins_the_draft_over(cx: &mut TestAppContext) {
 #[gpui::test]
 fn copies_given_show_and_go_out(cx: &mut TestAppContext) {
     let (host, cx) = replying(&["cy@atrium.studio"], false, cx);
-    assert!(cx.debug_bounds("composer-Cc").is_some());
-    assert!(cx.debug_bounds("composer-Bcc").is_some());
+    assert!(cx.debug_bounds("composer-cc").is_some());
+    assert!(cx.debug_bounds("composer-bcc").is_some());
     // To, Cc, Bcc, the subject, then Send.
     tab_to(5, cx);
     press("space", cx);
@@ -273,4 +281,71 @@ fn while_sending_send_waits(cx: &mut TestAppContext) {
     tab_to(4, cx);
     press("space", cx);
     assert!(host.read_with(cx, |host, _| host.sent.is_empty()));
+}
+
+fn sent(host: &Entity<Replying>, cx: &mut VisualTestContext) -> Vec<String> {
+    host.read_with(cx, |host, _| host.sent.clone())
+}
+
+#[gpui::test]
+fn an_address_typed_but_not_added_still_goes(cx: &mut TestAppContext) {
+    let (host, cx) = replying(&["cy@atrium.studio"], false, cx);
+    tab_to(2, cx);
+    cx.simulate_input("bob@atrium.studio");
+    settle(cx);
+    tab_to(5, cx);
+    press("space", cx);
+    assert_eq!(
+        sent(&host, cx),
+        ["ana@atrium.studio | cy@atrium.studio,bob@atrium.studio | Re: Samples"]
+    );
+}
+
+#[gpui::test]
+fn typed_words_that_are_no_address_hold_send(cx: &mut TestAppContext) {
+    let (host, cx) = replying(&[], false, cx);
+    tab_to(1, cx);
+    cx.simulate_input("bob@");
+    settle(cx);
+    tab_to(4, cx);
+    assert!(
+        cx.debug_bounds("tag-input-unaccepted").is_some(),
+        "To says why"
+    );
+    press("space", cx);
+    assert!(sent(&host, cx).is_empty(), "Send stays off");
+}
+
+#[gpui::test]
+fn the_owner_says_what_an_address_is(cx: &mut TestAppContext) {
+    let (host, cx) = replying(&[], false, cx);
+    host.update(cx, |host, cx| {
+        host.to = "\"first last\"@atrium.studio".into();
+        host.check = |text| text.ends_with("@atrium.studio");
+        cx.notify();
+    });
+    settle(cx);
+    tab_to(4, cx);
+    press("space", cx);
+    assert_eq!(
+        sent(&host, cx),
+        ["\"first last\"@atrium.studio |  | Re: Samples"]
+    );
+}
+
+#[gpui::test]
+fn edits_reach_the_owner_as_drafts(cx: &mut TestAppContext) {
+    let (host, cx) = replying(&[], false, cx);
+    tab_to(1, cx);
+    cx.simulate_input("bo");
+    settle(cx);
+    tab_to(3, cx);
+    cx.simulate_input("!");
+    settle(cx);
+    let changed = host.read_with(cx, |host, _| host.changed.clone());
+    assert!(changed.contains(&"ana@atrium.studio,bo |  | Re: Samples".to_owned()));
+    assert_eq!(
+        changed.last().map(String::as_str),
+        Some("ana@atrium.studio,bo |  | Re: Samples!")
+    );
 }

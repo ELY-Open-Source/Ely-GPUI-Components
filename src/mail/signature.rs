@@ -7,6 +7,7 @@ use gpui::{
 
 use crate::{
     forms::{Input, InputEvent, OnValue, TextInput},
+    i18n::text,
     theme::{ActiveTheme, TextSize},
 };
 
@@ -69,6 +70,7 @@ impl SignatureEditor {
 impl RenderOnce for SignatureEditor {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let seed = self.text.clone();
+        let placeholder = text(cx, "mail.signature.placeholder", &[]);
         let signed = window.use_keyed_state(
             (self.id.clone(), "signed"),
             cx,
@@ -76,7 +78,7 @@ impl RenderOnce for SignatureEditor {
                 let input = cx.new(|cx| {
                     let mut input = TextInput::new(window, cx)
                         .multi_line(3, 6)
-                        .placeholder("Your name, your role, a way to reach you");
+                        .placeholder(placeholder);
                     input.set_text(seed.to_string(), cx);
                     input
                 });
@@ -105,35 +107,28 @@ impl RenderOnce for SignatureEditor {
                 }
             },
         );
-        let text = self.text.clone();
+        let given = self.text.clone();
         signed.update(cx, |signed, cx| {
             signed.on_change = self.on_change.clone();
-            if signed.seed == text {
+            if signed.seed == given {
                 return;
             }
-            signed.seed = text.clone();
-            if signed.sent.as_ref() == Some(&text) {
+            signed.seed = given.clone();
+            if signed.sent.as_ref() == Some(&given) {
                 return;
             }
             log::info!("signature editor: started over");
             signed
                 .input
-                .update(cx, |input, cx| input.set_text(text.to_string(), cx));
+                .update(cx, |input, cx| input.set_text(given.to_string(), cx));
         });
         let input = signed.read(cx).input.clone();
         let words = input.read(cx).text().to_string();
-        let theme = cx.theme();
         div()
             .flex()
             .flex_col()
             .gap_3()
             .child(Input::new(&input))
-            .child(
-                div()
-                    .text_size(theme.text_size(TextSize::Xs))
-                    .text_color(theme.colors.fg_subtle)
-                    .child("Under each message"),
-            )
             .child(signature_block(&words, cx))
     }
 }

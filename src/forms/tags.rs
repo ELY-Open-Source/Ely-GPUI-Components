@@ -18,11 +18,13 @@ use crate::{
 };
 
 type OnChange = Rc<dyn Fn(Vec<SharedString>, &mut Window, &mut App)>;
+type OnTyping = Rc<dyn Fn(SharedString, &mut Window, &mut App)>;
 
 struct Tags {
     input: Entity<TextInput>,
     tags: Vec<SharedString>,
     on_change: Option<OnChange>,
+    on_typing: Option<OnTyping>,
     dismissed: bool,
     _events: Subscription,
 }
@@ -65,6 +67,7 @@ pub struct TagInput {
     check: Option<fn(&str) -> bool>,
     suggestions: Vec<Choice>,
     on_change: Option<OnChange>,
+    on_typing: Option<OnTyping>,
 }
 
 impl TagInput {
@@ -79,6 +82,7 @@ impl TagInput {
             check: None,
             suggestions: Vec::new(),
             on_change: None,
+            on_typing: None,
         }
     }
 
@@ -87,7 +91,7 @@ impl TagInput {
         self
     }
 
-    /// Marks each tag that fails `check` as danger, as text that is not an address.
+    /// Marks failing tags, and typed words once left, as danger.
     pub fn check(mut self, check: fn(&str) -> bool) -> Self {
         self.check = Some(check);
         self
@@ -106,6 +110,15 @@ impl TagInput {
         self.on_change = Some(Rc::new(handler));
         self
     }
+
+    /// Gets the words in the field as they change.
+    pub fn on_typing(
+        mut self,
+        handler: impl Fn(SharedString, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_typing = Some(Rc::new(handler));
+        self
+    }
 }
 
 impl RenderOnce for TagInput {
@@ -117,6 +130,10 @@ impl RenderOnce for TagInput {
                 let events = cx.subscribe_in(&input, window, |tags, input, event, window, cx| {
                     if *event == InputEvent::Changed {
                         tags.dismissed = false;
+                        if let Some(on_typing) = tags.on_typing.clone() {
+                            let typed = SharedString::from(input.read(cx).text().to_string());
+                            on_typing(typed, window, cx);
+                        }
                     }
                     let comma =
                         *event == InputEvent::Changed && input.read(cx).text().ends_with(',');
@@ -128,6 +145,7 @@ impl RenderOnce for TagInput {
                     input,
                     tags: Vec::new(),
                     on_change: None,
+                    on_typing: None,
                     dismissed: false,
                     _events: events,
                 }
@@ -135,6 +153,7 @@ impl RenderOnce for TagInput {
         state.update(cx, |tags, _| {
             tags.tags = self.tags.clone();
             tags.on_change = self.on_change.clone();
+            tags.on_typing = self.on_typing.clone();
         });
         let input = state.read(cx).input.clone();
         let focused = input.read(cx).focus().is_focused(window);
@@ -142,6 +161,9 @@ impl RenderOnce for TagInput {
         let picker =
             window.use_keyed_state((self.id.clone(), "picker"), cx, |_, _| Picker::default());
         let typed = input.read(cx).text().trim().to_string();
+        let word = typed.trim_end_matches(',').trim();
+        let unaccepted =
+            !focused && !word.is_empty() && self.check.is_some_and(|check| !check(word));
         let rows: Rc<Vec<Choice>> = Rc::new(match typed.is_empty() {
             true => Vec::new(),
             false => matching(&self.suggestions, &typed)
@@ -220,10 +242,10 @@ impl RenderOnce for TagInput {
             .py_0p5()
             .rounded(theme.radius(Radius::Md))
             .border_1()
-            .border_color(if focused {
-                colors.focus
-            } else {
-                colors.border_strong
+            .border_color(match (focused, unaccepted) {
+                (true, _) => colors.focus,
+                (false, true) => colors.danger,
+                (false, false) => colors.border_strong,
             })
             .bg(colors.surface)
             .text_size(theme.text_size(TextSize::Base))
@@ -273,6 +295,9 @@ impl RenderOnce for TagInput {
             .children(chips)
             .child(
                 div()
+                    .when(unaccepted, |field| {
+                        field.debug_selector(|| "tag-input-unaccepted".into())
+                    })
                     .flex_1()
                     .min_w(theme.pane_min() / 2.0)
                     .px_1()
