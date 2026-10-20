@@ -1,6 +1,7 @@
 mod activity;
 mod bars;
 mod chrome;
+mod closing;
 mod columns;
 mod crash;
 mod dialogs;
@@ -20,6 +21,7 @@ mod windows;
 pub use activity::{ActivityBar, ActivityItem};
 pub use bars::{StatusBar, StatusBarItem, Toolbar, ToolbarGroup, ToolbarSeparator};
 pub use chrome::{TitleBar, WindowControls, drag_region};
+pub use closing::guard_close;
 pub use columns::{ColumnShell, ShellColumn};
 pub use crash::CrashReporter;
 pub use dialogs::{AboutDialog, SplashScreen};

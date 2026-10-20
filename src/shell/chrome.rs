@@ -66,7 +66,7 @@ fn run(control: Control, on_close: Option<&OnClose>, window: &mut Window, cx: &m
         (Control::Minimize, _) => window.minimize_window(),
         (Control::Maximize, _) => window.zoom_window(),
         (Control::Close, Some(close)) => close(window, cx),
-        (Control::Close, None) => window.remove_window(),
+        (Control::Close, None) => super::closing::close(window, cx),
     }
 }
 

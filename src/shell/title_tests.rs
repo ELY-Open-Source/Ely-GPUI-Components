@@ -1,9 +1,11 @@
+use std::{cell::Cell, rc::Rc};
+
 use gpui::{
     Context, IntoElement, Modifiers, MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent,
     ParentElement, Point, Render, TestAppContext, Window, div, point, prelude::*, px,
 };
 
-use super::{ColumnShell, ShellColumn, TitleBar, WindowControls};
+use super::{ColumnShell, ShellColumn, TitleBar, WindowControls, guard_close};
 use crate::theme::{Platform, Theme};
 
 struct Bar {
@@ -171,4 +173,54 @@ fn a_wobbling_press_on_a_column_title_moves_the_window(cx: &mut TestAppContext) 
     cx.run_until_parked();
     let items = cx.debug_bounds("column-shell-items-0").expect("the items");
     wobble(items.center(), cx);
+}
+
+/// A bare title bar, its window guarded by `guard_close`.
+struct Guarded(Platform);
+
+impl Render for Guarded {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        div()
+            .w(px(600.0))
+            .child(TitleBar::new("bar").platform(self.0))
+    }
+}
+
+/// The drawn Close asks the window's close check, as the system does.
+#[gpui::test]
+fn the_drawn_close_asks_the_close_check(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    for platform in [Platform::Windows, Platform::Linux] {
+        let lets_go = Rc::new(Cell::new(false));
+        let asked = Rc::new(Cell::new(0));
+        let (go, count) = (lets_go.clone(), asked.clone());
+        let (_, cx) = cx.add_window_view(move |window, cx| {
+            guard_close(window, cx, move |_, _| {
+                count.set(count.get() + 1);
+                go.get()
+            });
+            Guarded(platform)
+        });
+        cx.run_until_parked();
+        let before = cx.windows().len();
+        let controls = cx
+            .debug_bounds("titlebar-controls")
+            .expect("drawn controls");
+        let close = point(controls.right() - px(8.0), controls.center().y);
+        cx.simulate_click(close, Modifiers::none());
+        cx.run_until_parked();
+        assert_eq!(
+            (asked.get(), cx.windows().len()),
+            (1, before),
+            "{platform:?}"
+        );
+        lets_go.set(true);
+        cx.simulate_click(close, Modifiers::none());
+        cx.run_until_parked();
+        assert_eq!(
+            (asked.get(), cx.windows().len()),
+            (2, before - 1),
+            "{platform:?}"
+        );
+    }
 }
