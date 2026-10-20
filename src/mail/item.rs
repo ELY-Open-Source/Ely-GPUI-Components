@@ -22,7 +22,8 @@ pub struct Mail {
     pub from: SharedString,
     pub subject: SharedString,
     pub snippet: Option<SharedString>,
-    pub at: Timestamp,
+    /// None when the message names no date.
+    pub at: Option<Timestamp>,
     pub unread: bool,
     pub starred: bool,
     pub attachments: usize,
@@ -40,7 +41,25 @@ impl Mail {
             from: from.into(),
             subject: subject.into(),
             snippet: None,
-            at,
+            at: Some(at),
+            unread: false,
+            starred: false,
+            attachments: 0,
+        }
+    }
+
+    /// A message that names no date; its row shows none.
+    pub fn undated(
+        key: impl Into<SharedString>,
+        from: impl Into<SharedString>,
+        subject: impl Into<SharedString>,
+    ) -> Self {
+        Self {
+            key: key.into(),
+            from: from.into(),
+            subject: subject.into(),
+            snippet: None,
+            at: None,
             unread: false,
             starred: false,
             attachments: 0,
@@ -158,7 +177,7 @@ impl MailItem {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("mail item"));
-        let date = say(when(mail.at, Timestamp::now(), &zone), cx);
+        let date = mail.at.map(|at| say(when(at, Timestamp::now(), &zone), cx));
         let dot = div()
             .size(theme.icon_size(IconSize::Xs))
             .flex()
@@ -227,7 +246,13 @@ impl MailItem {
             .flex_col()
             .items_end()
             .gap_1()
-            .child(div().text_size(theme.text_size(TextSize::Xs)).child(date))
+            .children(date.map(|date| {
+                let named = mail.key.clone();
+                div()
+                    .debug_selector(move || format!("date {named}"))
+                    .text_size(theme.text_size(TextSize::Xs))
+                    .child(date)
+            }))
             .child(
                 div()
                     .flex()

@@ -216,6 +216,25 @@ fn no_mail_says_so_and_takes_no_tab_stop(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn a_message_without_a_date_shows_none(cx: &mut TestAppContext) {
+    let (_, cx) = mailing(
+        |_| {
+            let mails = vec![
+                Mail::new("m1", "Ana", "Hi", at(5)),
+                Mail::undated("m2", "Ben", "No date"),
+            ];
+            div()
+                .h(px(480.0))
+                .child(MailList::new("mails", Rc::new(mails)).zone(TimeZone::UTC))
+                .into_any_element()
+        },
+        cx,
+    );
+    assert!(cx.debug_bounds("date m1").is_some());
+    assert!(cx.debug_bounds("date m2").is_none());
+}
+
+#[gpui::test]
 #[should_panic(expected = "mail m1 twice")]
 fn a_mail_is_listed_once(cx: &mut TestAppContext) {
     let _ = mailing(
