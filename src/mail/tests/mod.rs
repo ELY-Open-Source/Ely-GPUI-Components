@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 use gpui::{
     Context, Entity, IntoElement, KeyBinding, KeyUpEvent, Keystroke, Modifiers, ParentElement,
     Render, Styled, TestAppContext, VisualTestContext, Window, div, px,
@@ -10,6 +12,7 @@ use crate::{
     theme::Theme,
 };
 
+mod many;
 mod read;
 mod sort;
 mod write;
@@ -156,13 +159,13 @@ fn at(minute: i8) -> Timestamp {
 
 fn mails(owner: Entity<Mailing>) -> gpui::AnyElement {
     let (select, star) = (owner.clone(), owner);
-    MailList::new(
+    let list = MailList::new(
         "mails",
-        [
+        Rc::new(vec![
             Mail::new("m1", "Ana Lima", "Friday's review", at(40)).unread(true),
             Mail::new("m2", "Ben Ito", "Samples", at(20)).attachments(2),
             Mail::new("m3", "Chloé Martin", "The brief", at(5)).starred(true),
-        ],
+        ]),
     )
     .selected(["m1"])
     .zone(TimeZone::UTC)
@@ -170,8 +173,8 @@ fn mails(owner: Entity<Mailing>) -> gpui::AnyElement {
         let keys: Vec<&str> = keys.iter().map(|key| key.as_ref()).collect();
         note(&select, format!("select {}", keys.join(" ")), cx)
     })
-    .on_star(move |key, on, _, cx| note(&star, format!("star {key} {on}"), cx))
-    .into_any_element()
+    .on_star(move |key, on, _, cx| note(&star, format!("star {key} {on}"), cx));
+    div().h(px(480.0)).child(list).into_any_element()
 }
 
 #[gpui::test]
@@ -204,7 +207,7 @@ fn space_on_a_star_stars_and_leaves_the_selection(cx: &mut TestAppContext) {
 #[gpui::test]
 fn no_mail_says_so_and_takes_no_tab_stop(cx: &mut TestAppContext) {
     let (_, cx) = mailing(
-        |_| MailList::new("mails", Vec::new()).into_any_element(),
+        |_| MailList::new("mails", Rc::new(Vec::new())).into_any_element(),
         cx,
     );
     assert!(cx.debug_bounds("mail-none").is_some());
@@ -212,9 +215,14 @@ fn no_mail_says_so_and_takes_no_tab_stop(cx: &mut TestAppContext) {
     assert!(cx.update(|window, cx| window.focused(cx).is_none()));
 }
 
-#[test]
+#[gpui::test]
 #[should_panic(expected = "mail m1 twice")]
-fn a_mail_is_listed_once() {
-    let mail = Mail::new("m1", "Ana", "Hi", Timestamp::UNIX_EPOCH);
-    let _ = MailList::new("mails", [mail.clone(), mail]);
+fn a_mail_is_listed_once(cx: &mut TestAppContext) {
+    let _ = mailing(
+        |_| {
+            let mail = Mail::new("m1", "Ana", "Hi", Timestamp::UNIX_EPOCH);
+            MailList::new("mails", Rc::new(vec![mail.clone(), mail])).into_any_element()
+        },
+        cx,
+    );
 }

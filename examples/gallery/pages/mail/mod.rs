@@ -214,8 +214,8 @@ fn list(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     )
     .child(probe(
         "mail-list",
-        div().w(px(440.)).child(
-            MailList::new("mail-list", mails)
+        div().w(px(440.)).h(px(320.)).child(
+            MailList::new("mail-list", std::rc::Rc::new(mails))
                 .selected(chosen)
                 .on_select(move |keys, _, cx| change(&selected, cx, |selected| *selected = keys.to_vec()))
                 .on_star(move |key, on, _, cx| {

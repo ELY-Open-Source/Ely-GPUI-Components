@@ -137,7 +137,10 @@ fn a_label_mail_or_box_that_left_draws_unmarked(cx: &mut TestAppContext) {
             div()
                 .w(px(480.0))
                 .child(LabelPicker::new("labels", [Label::new("a", "A", 0)]).selected(["ghost"]))
-                .child(crate::mail::MailList::new("mails", [mail]).selected(["gone"]))
+                .child(
+                    crate::mail::MailList::new("mails", std::rc::Rc::new(vec![mail]))
+                        .selected(["gone"]),
+                )
                 .child(
                     crate::mail::MailboxList::new("boxes")
                         .section("Mail", [inbox])

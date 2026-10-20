@@ -1,5 +1,6 @@
 mod boxes;
 mod compose;
+mod item;
 mod labels;
 mod list;
 mod quoted;
@@ -15,8 +16,9 @@ mod tests;
 
 pub use boxes::{Mailbox, MailboxList};
 pub use compose::{Draft, MailComposer};
+pub use item::{Mail, MailItem};
 pub use labels::{Label, LabelPicker};
-pub use list::{Mail, MailItem, MailList};
+pub use list::MailList;
 pub use quoted::QuotedText;
 pub use reader::{Contact, MailReader, Message};
 pub use send::ScheduleSend;

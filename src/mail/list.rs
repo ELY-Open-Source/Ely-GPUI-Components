@@ -1,231 +1,78 @@
-use std::rc::Rc;
+use std::{collections::HashSet, rc::Rc};
 
 use gpui::{
-    AnyElement, App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
+    ScrollStrategy, SharedString, StatefulInteractiveElement, Styled, UniformListScrollHandle,
+    Window, div, uniform_list,
 };
-use jiff::{Timestamp, tz::TimeZone};
+use jiff::tz::TimeZone;
 
+use super::item::{Mail, MailItem};
 use crate::{
-    forms::{OnFlag, OnValues},
-    lists::{ListItem, SelectableList},
-    primitives::{FocusRing, Icon, IconName, Tooltip},
-    theme::{ActiveTheme, IconSize, Radius, TextSize},
+    forms::OnValues,
+    i18n,
+    lists::Pick,
+    primitives::tab_stop,
+    theme::{ActiveTheme, TextSize},
     typography::format,
 };
 
 type OnStar = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
+type Picker = Rc<dyn Fn(usize, Pick, &mut Window, &mut App)>;
 
-/// A message as a list shows it: who sent it, its subject and first words, when it came, and its flags.
-#[derive(Clone, Debug, PartialEq)]
-pub struct Mail {
-    pub key: SharedString,
-    pub from: SharedString,
-    pub subject: SharedString,
-    pub snippet: Option<SharedString>,
-    pub at: Timestamp,
-    pub unread: bool,
-    pub starred: bool,
-    pub attachments: usize,
+/// The row the keyboard is on and where a Shift range starts, by index and by key so they follow their rows; the scroll; the owner's last selection and the one the list last sent; the list last checked and its keys.
+#[derive(Default)]
+struct Cursor {
+    at: usize,
+    anchor: usize,
+    keys: Option<(SharedString, SharedString)>,
+    scroll: UniformListScrollHandle,
+    seen: Option<Vec<SharedString>>,
+    sent: Option<Vec<SharedString>>,
+    checked: usize,
+    listed: HashSet<SharedString>,
 }
 
-impl Mail {
-    pub fn new(
-        key: impl Into<SharedString>,
-        from: impl Into<SharedString>,
-        subject: impl Into<SharedString>,
-        at: Timestamp,
-    ) -> Self {
-        Self {
-            key: key.into(),
-            from: from.into(),
-            subject: subject.into(),
-            snippet: None,
-            at,
-            unread: false,
-            starred: false,
-            attachments: 0,
-        }
-    }
+/// The selection after picking row `at`, a range reaching back to `anchor`; in list order.
+fn picked(
+    mails: &[Mail],
+    selected: &HashSet<SharedString>,
+    anchor: usize,
+    at: usize,
+    pick: Pick,
+) -> Vec<SharedString> {
+    let (low, high) = (anchor.min(at), anchor.max(at));
+    mails
+        .iter()
+        .enumerate()
+        .filter(|(ix, mail)| match pick {
+            Pick::One => *ix == at,
+            Pick::Toggle => selected.contains(&mail.key) != (*ix == at),
+            Pick::Range => (low..=high).contains(ix),
+            Pick::All => true,
+        })
+        .map(|(_, mail)| mail.key.clone())
+        .collect()
+}
 
-    /// Its first words.
-    pub fn snippet(mut self, text: impl Into<SharedString>) -> Self {
-        self.snippet = Some(text.into());
-        self
-    }
-
-    pub fn unread(mut self, unread: bool) -> Self {
-        self.unread = unread;
-        self
-    }
-
-    pub fn starred(mut self, starred: bool) -> Self {
-        self.starred = starred;
-        self
-    }
-
-    /// How many files it carries.
-    pub fn attachments(mut self, count: usize) -> Self {
-        self.attachments = count;
-        self
+/// Where `key` is now; `hint` first, since rows rarely move.
+fn place(mails: &[Mail], key: Option<&SharedString>, hint: usize) -> usize {
+    let last = mails.len().saturating_sub(1);
+    match key {
+        Some(key) if mails.get(hint).is_some_and(|mail| mail.key == *key) => hint,
+        Some(key) => mails
+            .iter()
+            .position(|mail| mail.key == *key)
+            .unwrap_or(hint.min(last)),
+        None => hint.min(last),
     }
 }
 
-/// When a message came, as a list says it: the time today, the weekday within the week, the date within the year, and the year past that.
-fn when(at: Timestamp, now: Timestamp, zone: &TimeZone) -> String {
-    let (at, now) = (at.to_zoned(zone.clone()), now.to_zoned(zone.clone()));
-    let days = at
-        .date()
-        .until(now.date())
-        .expect("two dates have a span")
-        .get_days();
-    let pattern = match days {
-        0 => "%H:%M",
-        1..=6 => "%a",
-        _ if at.year() == now.year() => "%b %-d",
-        _ => "%b %-d, %Y",
-    };
-    at.strftime(pattern).to_string()
-}
-
-/// A message as a row: its sender, strong beside a dot while unread, the subject and first words under it, when it came, a paperclip when it carries files, and its star. With a handler the star toggles, its press kept off the row.
-#[derive(IntoElement)]
-pub struct MailItem {
-    id: ElementId,
-    mail: Mail,
-    zone: Option<TimeZone>,
-    on_star: Option<OnFlag>,
-}
-
-impl MailItem {
-    pub fn new(id: impl Into<ElementId>, mail: Mail) -> Self {
-        Self {
-            id: id.into(),
-            mail,
-            zone: None,
-            on_star: None,
-        }
-    }
-
-    /// The zone its date reads in; the system's otherwise.
-    pub fn zone(mut self, zone: TimeZone) -> Self {
-        self.zone = Some(zone);
-        self
-    }
-
-    /// Gets the star's new state.
-    pub fn on_star(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
-        self.on_star = Some(Rc::new(handler));
-        self
-    }
-
-    fn item(self, cx: &App) -> ListItem {
-        let theme = cx.theme();
-        let colors = &theme.colors;
-        let mail = self.mail;
-        let zone = self
-            .zone
-            .unwrap_or_else(|| format::system_zone("mail item"));
-        let date = when(mail.at, Timestamp::now(), &zone);
-        let dot = div()
-            .size(theme.icon_size(IconSize::Xs))
-            .flex()
-            .items_center()
-            .justify_center()
-            .child(
-                div()
-                    .size(theme.status_dot())
-                    .rounded_full()
-                    .when(mail.unread, |dot| dot.bg(colors.accent)),
-            );
-        let starred = mail.starred;
-        let tint = if starred {
-            colors.warning
-        } else {
-            colors.fg_subtle
-        };
-        let mark = |icon| Icon::new(icon).size(IconSize::Sm).color(tint);
-        let star: Option<AnyElement> = match self.on_star {
-            Some(set) => {
-                let key = mail.key.clone();
-                let named = key.clone();
-                Some(
-                    div()
-                        .id((self.id.clone(), "star"))
-                        .debug_selector(move || format!("star {named}"))
-                        .p_0p5()
-                        .rounded(theme.radius(Radius::Sm))
-                        .border_1()
-                        .border_color(gpui::transparent_black())
-                        .tab_index(0)
-                        .focus_ring(cx)
-                        .cursor_pointer()
-                        .hover(|style| style.bg(colors.hover))
-                        .tooltip(Tooltip::text(if starred { "Unstar" } else { "Star" }))
-                        .on_mouse_down(MouseButton::Left, |_, window, cx| {
-                            window.prevent_default();
-                            cx.stop_propagation();
-                        })
-                        .on_key_down(|event, _, cx| {
-                            let key = event.keystroke.key.as_str();
-                            if matches!(key, "space" | "enter")
-                                && !event.keystroke.modifiers.modified()
-                            {
-                                cx.stop_propagation();
-                            }
-                        })
-                        .on_click(move |_, window, cx| {
-                            log::info!("mail {key}: star {}", !starred);
-                            set(!starred, window, cx)
-                        })
-                        .child(mark(IconName::Star))
-                        .into_any_element(),
-                )
-            }
-            None => starred.then(|| mark(IconName::Star).into_any_element()),
-        };
-        let clip = (mail.attachments > 0).then(|| {
-            Icon::new(IconName::Paperclip)
-                .size(IconSize::Sm)
-                .color(colors.fg_subtle)
-        });
-        let trail = div()
-            .flex()
-            .flex_col()
-            .items_end()
-            .gap_1()
-            .child(div().text_size(theme.text_size(TextSize::Xs)).child(date))
-            .child(
-                div()
-                    .flex()
-                    .items_center()
-                    .gap_1()
-                    .children(clip)
-                    .children(star),
-            );
-        let row = ListItem::new(self.id, mail.from)
-            .leading(dot)
-            .strong(mail.unread)
-            .description(mail.subject)
-            .trailing(trail);
-        match mail.snippet {
-            Some(snippet) => row.detail(snippet),
-            None => row,
-        }
-    }
-}
-
-impl RenderOnce for MailItem {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        self.item(cx)
-    }
-}
-
-/// Messages in a list, in the order given: a press or an arrow selects one, and Command or Shift with a press takes several; Space toggles. Unread ones stand out.
+/// Messages in a list, in the order given, drawing only the rows in view; it fills its box. A press or an arrow selects one, and Command or Shift with a press takes several; Shift with an arrow extends, Space toggles, Command-A takes all. Unread ones stand out.
 #[derive(IntoElement)]
 pub struct MailList {
     id: ElementId,
-    mails: Vec<Mail>,
+    mails: Rc<Vec<Mail>>,
     selected: Vec<SharedString>,
     zone: Option<TimeZone>,
     on_select: Option<OnValues>,
@@ -233,12 +80,8 @@ pub struct MailList {
 }
 
 impl MailList {
-    pub fn new(id: impl Into<ElementId>, mails: impl IntoIterator<Item = Mail>) -> Self {
-        let mails: Vec<Mail> = mails.into_iter().collect();
-        for (ix, mail) in mails.iter().enumerate() {
-            let twice = mails[..ix].iter().any(|other| other.key == mail.key);
-            assert!(!twice, "mail {} twice", mail.key);
-        }
+    /// Each key once; a list is checked when it first draws.
+    pub fn new(id: impl Into<ElementId>, mails: Rc<Vec<Mail>>) -> Self {
         Self {
             id: id.into(),
             mails,
@@ -281,80 +124,209 @@ impl MailList {
 }
 
 impl RenderOnce for MailList {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        for key in &self.selected {
-            let listed = self.mails.iter().any(|mail| mail.key == *key);
-            if !listed {
-                log::error!("mail list: no mail {key}; it is not selected");
-            }
-        }
-        let theme = cx.theme();
-        if self.mails.is_empty() {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let mails = self.mails;
+        let count = mails.len();
+        if count == 0 {
+            let theme = cx.theme();
             return div()
                 .debug_selector(|| "mail-none".into())
                 .px_3()
                 .py_4()
                 .text_size(theme.text_size(TextSize::Sm))
                 .text_color(theme.colors.fg_muted)
-                .child("No mail here.")
+                .child(i18n::text(cx, "mail.none", &[]))
                 .into_any_element();
         }
+        let cursor =
+            window.use_keyed_state((self.id.clone(), "cursor"), cx, |_, _| Cursor::default());
+        let list = Rc::as_ptr(&mails) as usize;
+        if cursor.read(cx).checked != list {
+            let mut listed = HashSet::with_capacity(count);
+            for mail in mails.iter() {
+                assert!(listed.insert(mail.key.clone()), "mail {} twice", mail.key);
+            }
+            cursor.update(cx, |cursor, _| {
+                (cursor.checked, cursor.listed) = (list, listed)
+            });
+        }
+        if cursor.read(cx).seen.as_ref() != Some(&self.selected) {
+            cursor.update(cx, |cursor, _| {
+                for key in self
+                    .selected
+                    .iter()
+                    .filter(|key| !cursor.listed.contains(*key))
+                {
+                    log::error!("mail list: no mail {key}; it is not selected");
+                }
+                let echo = cursor.sent.take().as_ref() == Some(&self.selected);
+                if let Some(first) = self.selected.first().filter(|_| !echo) {
+                    cursor.keys = Some((first.clone(), first.clone()));
+                }
+                cursor.seen = Some(self.selected.clone());
+            });
+        }
+        let (at, anchor, scroll) = {
+            let cursor = cursor.read(cx);
+            let held = cursor.keys.as_ref();
+            (
+                place(&mails, held.map(|keys| &keys.0), cursor.at),
+                place(&mails, held.map(|keys| &keys.1), cursor.anchor),
+                cursor.scroll.clone(),
+            )
+        };
+        if (at, anchor) != (cursor.read(cx).at, cursor.read(cx).anchor) {
+            cursor.update(cx, |cursor, _| (cursor.at, cursor.anchor) = (at, anchor));
+        }
+        let focus = tab_stop((self.id.clone(), "focus").into(), true, window, cx);
+        let focused = focus.is_focused(window);
+        let selected: Rc<HashSet<SharedString>> = Rc::new(self.selected.into_iter().collect());
+        let pick: Picker = {
+            let (id, mails, selected, cursor, on_select) = (
+                self.id.clone(),
+                mails.clone(),
+                selected.clone(),
+                cursor.clone(),
+                self.on_select,
+            );
+            Rc::new(move |ix, pick, window, cx| {
+                let next = picked(&mails, &selected, cursor.read(cx).anchor, ix, pick);
+                cursor.update(cx, |cursor, cx| {
+                    cursor.at = ix;
+                    if pick != Pick::Range {
+                        cursor.anchor = ix;
+                    }
+                    cursor.keys = Some((mails[ix].key.clone(), mails[cursor.anchor].key.clone()));
+                    cursor.scroll.scroll_to_item(ix, ScrollStrategy::Nearest);
+                    cursor.sent = Some(next.clone());
+                    cx.notify();
+                });
+                log::info!("mail list {id:?}: {} selected", next.len());
+                if let Some(on_select) = &on_select {
+                    on_select(&next, window, cx);
+                }
+            })
+        };
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("mail list"));
-        let list = self.mails.into_iter().fold(
-            SelectableList::new((self.id.clone(), "mails")).multiple(),
-            |list, mail| {
-                let key = mail.key.clone();
-                let item = MailItem::new((self.id.clone(), format!("mail-{key}")), mail)
-                    .zone(zone.clone());
-                let item = match self.on_star.clone() {
-                    Some(star) => {
-                        let starred = key.clone();
-                        item.on_star(move |on, window, cx| star(&starred, on, window, cx))
-                    }
-                    None => item,
-                };
-                list.row(key, item.item(cx))
-            },
-        );
-        let (id, on_select) = (self.id.clone(), self.on_select);
+        let rows = {
+            let (id, mails, pick, focus, on_star) = (
+                self.id.clone(),
+                mails.clone(),
+                pick.clone(),
+                focus.clone(),
+                self.on_star,
+            );
+            uniform_list((self.id.clone(), "rows"), count, move |range, _, cx| {
+                range
+                    .map(|ix| {
+                        let mail = mails[ix].clone();
+                        let key = mail.key.clone();
+                        let item = MailItem::new((id.clone(), format!("mail-{key}")), mail)
+                            .zone(zone.clone());
+                        let item = match on_star.clone() {
+                            Some(star) => {
+                                let starred = key.clone();
+                                item.on_star(move |on, window, cx| star(&starred, on, window, cx))
+                            }
+                            None => item,
+                        };
+                        let (pick, focus) = (pick.clone(), focus.clone());
+                        item.item(cx)
+                            .selected(selected.contains(&key))
+                            .place(ix + 1, count)
+                            .current(focused && ix == at)
+                            .on_click(move |event, window, cx| {
+                                let held = event.modifiers();
+                                let how = match (held.shift, held.platform) {
+                                    (true, _) => Pick::Range,
+                                    (false, true) => Pick::Toggle,
+                                    _ => Pick::One,
+                                };
+                                window.focus(&focus, cx);
+                                pick(ix, how, window, cx);
+                            })
+                    })
+                    .collect()
+            })
+            .track_scroll(&scroll)
+            .size_full()
+        };
         div()
+            .id(self.id)
             .debug_selector(|| "mail-list".into())
-            .child(
-                list.selected(self.selected)
-                    .on_change(move |keys, window, cx| {
-                        log::info!("mail list {id}: select {keys:?}");
-                        if let Some(on_select) = &on_select {
-                            on_select(keys, window, cx);
-                        }
-                    }),
-            )
+            .role(Role::List)
+            .aria_label(i18n::text(cx, "mail.list", &[]))
+            .track_focus(&focus)
+            .size_full()
+            .on_key_down(move |event, window, cx| {
+                let held = &event.keystroke.modifiers;
+                let at = cursor.read(cx).at.min(count - 1);
+                let extend = if held.shift { Pick::Range } else { Pick::One };
+                let (to, how) = match event.keystroke.key.as_str() {
+                    "down" => (Some((at + 1).min(count - 1)), extend),
+                    "up" => (Some(at.saturating_sub(1)), extend),
+                    "home" => (Some(0), extend),
+                    "end" => (Some(count - 1), extend),
+                    "space" if !held.modified() => (Some(at), Pick::Toggle),
+                    "a" if held.platform => (Some(at), Pick::All),
+                    _ => return,
+                };
+                cx.stop_propagation();
+                if let Some(to) = to {
+                    pick(to, how, window, cx);
+                }
+            })
+            .child(rows)
             .into_any_element()
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use jiff::civil::date;
+    use jiff::Timestamp;
 
     use super::*;
 
+    fn mails(keys: &[&'static str]) -> Vec<Mail> {
+        keys.iter()
+            .map(|key| Mail::new(*key, "Ana", "Hi", Timestamp::UNIX_EPOCH))
+            .collect()
+    }
+
+    fn set(keys: &[&'static str]) -> HashSet<SharedString> {
+        keys.iter().map(|key| SharedString::from(*key)).collect()
+    }
+
     #[test]
-    fn a_date_reads_as_the_time_the_weekday_the_date_or_the_year() {
-        let zone = TimeZone::UTC;
-        let at = |y, m, d, h| {
-            date(y, m, d)
-                .at(h, 5, 0, 0)
-                .to_zoned(zone.clone())
-                .expect("a UTC time")
-                .timestamp()
+    fn picks_one_toggle_a_range_or_all_in_list_order() {
+        let rows = mails(&["a", "b", "c", "d"]);
+        let keys = |list: &[&'static str]| -> Vec<SharedString> {
+            list.iter().map(|key| SharedString::from(*key)).collect()
         };
-        let now = at(2026, 9, 26, 12);
-        assert_eq!(when(at(2026, 9, 26, 9), now, &zone), "09:05");
-        assert_eq!(when(at(2026, 9, 25, 23), now, &zone), "Fri");
-        assert_eq!(when(at(2026, 9, 20, 9), now, &zone), "Sun");
-        assert_eq!(when(at(2026, 9, 19, 9), now, &zone), "Sep 19");
-        assert_eq!(when(at(2025, 12, 31, 9), now, &zone), "Dec 31, 2025");
+        assert_eq!(picked(&rows, &set(&["a"]), 0, 2, Pick::One), keys(&["c"]));
+        assert_eq!(
+            picked(&rows, &set(&["c", "a"]), 0, 1, Pick::Toggle),
+            keys(&["a", "b", "c"])
+        );
+        assert_eq!(
+            picked(&rows, &set(&["a", "c"]), 0, 0, Pick::Toggle),
+            keys(&["c"])
+        );
+        assert_eq!(
+            picked(&rows, &set(&[]), 3, 1, Pick::Range),
+            keys(&["b", "c", "d"])
+        );
+        assert_eq!(picked(&rows, &set(&["b"]), 0, 0, Pick::All).len(), 4);
+    }
+
+    #[test]
+    fn a_key_is_found_where_it_moved() {
+        let rows = mails(&["a", "b", "c"]);
+        assert_eq!(place(&rows, Some(&"b".into()), 1), 1);
+        assert_eq!(place(&rows, Some(&"c".into()), 0), 2);
+        assert_eq!(place(&rows, Some(&"gone".into()), 9), 2);
+        assert_eq!(place(&rows, None, 1), 1);
     }
 }
