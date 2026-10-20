@@ -349,3 +349,24 @@ fn edits_reach_the_owner_as_drafts(cx: &mut TestAppContext) {
         Some("ana@atrium.studio,bo |  | Re: Samples!")
     );
 }
+
+#[gpui::test]
+fn a_quoted_comma_typed_key_by_key_still_sends(cx: &mut TestAppContext) {
+    let (host, cx) = replying(&[], false, cx);
+    host.update(cx, |host, cx| {
+        host.check = |text| text.ends_with("@atrium.studio");
+        cx.notify();
+    });
+    settle(cx);
+    tab_to(1, cx);
+    for ch in "\"last, first\"@atrium.studio".chars() {
+        cx.simulate_input(&ch.to_string());
+        settle(cx);
+    }
+    tab_to(4, cx);
+    press("space", cx);
+    assert_eq!(
+        sent(&host, cx),
+        ["ana@atrium.studio,\"last, first\"@atrium.studio |  | Re: Samples"]
+    );
+}

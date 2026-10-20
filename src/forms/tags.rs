@@ -58,7 +58,21 @@ impl Tags {
     }
 }
 
-/// A chip per tag, then a field. Enter or a comma adds; Backspace on empty drops the last. With suggestions, the rows that hold the typed words float under it: Up and Down move, Enter or a press adds one, Escape sets them aside.
+/// Whether `text` ends inside a quoted string, as an address's local part.
+fn in_quotes(text: &str) -> bool {
+    let (mut inside, mut escaped) = (false, false);
+    for ch in text.chars() {
+        match ch {
+            _ if escaped => escaped = false,
+            '\\' if inside => escaped = true,
+            '"' => inside = !inside,
+            _ => {}
+        }
+    }
+    inside
+}
+
+/// A chip per tag, then a field. Enter or a comma outside quotes adds; Backspace on empty drops the last. With suggestions, the rows that hold the typed words float under it: Up and Down move, Enter or a press adds one, Escape sets them aside.
 #[derive(IntoElement)]
 pub struct TagInput {
     id: ElementId,
@@ -135,8 +149,9 @@ impl RenderOnce for TagInput {
                             on_typing(typed, window, cx);
                         }
                     }
+                    let text = input.read(cx).text();
                     let comma =
-                        *event == InputEvent::Changed && input.read(cx).text().ends_with(',');
+                        *event == InputEvent::Changed && text.ends_with(',') && !in_quotes(text);
                     if comma || *event == InputEvent::Submit {
                         tags.take(window, cx);
                     }

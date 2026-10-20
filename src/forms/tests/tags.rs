@@ -135,3 +135,36 @@ fn a_long_chip_ends_inside_its_field(cx: &mut TestAppContext) {
     let field = cx.debug_bounds("tag-input to").expect("the field draws");
     assert!(chip.right() <= field.right(), "{chip:?} inside {field:?}");
 }
+
+/// Types `words` one character at a time.
+fn keyed<'a>(
+    words: &str,
+    cx: &'a mut TestAppContext,
+) -> (Entity<Recipients>, &'a mut VisualTestContext) {
+    let (host, cx) = typing("", cx);
+    for ch in words.chars() {
+        cx.simulate_input(&ch.to_string());
+        settle(cx);
+    }
+    (host, cx)
+}
+
+#[gpui::test]
+fn a_comma_in_quotes_is_part_of_the_address(cx: &mut TestAppContext) {
+    let (host, cx) = keyed("\"last, first\"@x.io", cx);
+    assert!(asked(&host, cx).is_empty(), "nothing taken mid-address");
+    press("enter", cx);
+    assert_eq!(
+        asked(&host, cx),
+        [vec![SharedString::from("\"last, first\"@x.io")]]
+    );
+}
+
+#[gpui::test]
+fn a_comma_after_the_quotes_ends_the_address(cx: &mut TestAppContext) {
+    let (host, cx) = keyed("\"a\\\"b\"@x.io,", cx);
+    assert_eq!(
+        asked(&host, cx),
+        [vec![SharedString::from("\"a\\\"b\"@x.io")]]
+    );
+}
