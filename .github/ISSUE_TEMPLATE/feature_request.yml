@@ -1,6 +1,6 @@
-name: Component Request
+name: Feature Request
 description: A component Ely lacks, or one that should do more.
-title: "[Component Request] "
+title: "[FEATURE REQUEST] "
 labels: [enhancement]
 body:
   - type: input

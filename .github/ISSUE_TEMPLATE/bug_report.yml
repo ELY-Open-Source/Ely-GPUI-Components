@@ -1,6 +1,6 @@
 name: Bug Report
 description: Something draws, behaves or builds wrong.
-title: "[Bug Report] "
+title: "[BUG REPORT] "
 labels: [bug]
 body:
   - type: input
