@@ -72,8 +72,19 @@ impl RenderOnce for Alert {
         let theme = cx.theme();
         let colors = &theme.colors;
         let close = (self.id.clone(), "dismiss");
+        // Assistive tech reads it as a banner does.
+        let role = match self.severity {
+            Severity::Danger | Severity::Warning => Role::Alert,
+            Severity::Info | Severity::Success => Role::Status,
+        };
+        let label = match &self.body {
+            Some(body) => format!("{}. {body}", self.title),
+            None => self.title.to_string(),
+        };
         div()
             .id(self.id)
+            .role(role)
+            .aria_label(label)
             .flex()
             .items_start()
             .gap_3()

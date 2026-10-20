@@ -10,6 +10,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     documents::source,
     forms::{Pick, Run},
+    i18n,
     primitives::{Icon, IconName, Image, file_icon},
     theme::{ActiveTheme, AvatarSize, ContainerSize, IconSize, Radius, TextSize},
     typography::{Ellipsis, format::file_size},
@@ -213,6 +214,8 @@ pub struct FileMessage {
     id: ElementId,
     name: SharedString,
     bytes: u64,
+    /// Said instead of the size.
+    detail: Option<SharedString>,
     on_download: Option<Run>,
 }
 
@@ -222,8 +225,15 @@ impl FileMessage {
             id: id.into(),
             name: name.into(),
             bytes,
+            detail: None,
             on_download: None,
         }
+    }
+
+    /// Words in place of the size, such as a file's state.
+    pub fn detail(mut self, words: impl Into<SharedString>) -> Self {
+        self.detail = Some(words.into());
+        self
     }
 
     pub fn on_download(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
@@ -277,13 +287,16 @@ impl RenderOnce for FileMessage {
                         div()
                             .text_size(theme.text_size(TextSize::Xs))
                             .text_color(colors.fg_subtle)
-                            .child(file_size(self.bytes, false)),
+                            .child(
+                                self.detail
+                                    .unwrap_or_else(|| file_size(self.bytes, false).into()),
+                            ),
                     ),
             )
             .children(self.on_download.map(|download| {
                 IconButton::new((self.id.clone(), "download"), IconName::Download)
                     .variant(ButtonVariant::Ghost)
-                    .tooltip("Download")
+                    .tooltip(i18n::text(cx, "file.download", &[]))
                     .on_click(move |_, window, cx| download(window, cx))
             }))
     }

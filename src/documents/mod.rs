@@ -50,6 +50,7 @@ pub use markdown::file_tree as markdown_tree;
 pub use markdown::markdown_highlights;
 pub use modes::{MarkdownEditor, MarkdownMode};
 pub use pages::{PageCover, PageIcon};
+pub use picture::{HeldPicture, Pictures};
 pub use print::{Margins, Paper, PrintPreview, PrintSettings, sheet};
 pub use reading::{Footnote, Glossary, ReadingProgress, TooltipTerm, ZenMode};
 pub use render::MarkdownRenderer;

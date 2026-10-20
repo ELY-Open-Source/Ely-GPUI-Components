@@ -397,3 +397,42 @@ fn a_formula_that_fails_shows_why_and_its_source(cx: &mut TestAppContext) {
     settle(cx);
     assert!(cx.debug_bounds("latex-error").is_some(), "the failure drew");
 }
+
+/// Blocks made elsewhere, their picture held by the owner.
+struct Held(std::rc::Rc<super::Pictures>);
+
+impl Render for Held {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let blocks: std::rc::Rc<[super::MarkdownBlock]> = vec![super::MarkdownBlock::Image {
+            alt: "logo".into(),
+            url: "cid:logo@atrium".into(),
+            link: None,
+            at: 0,
+        }]
+        .into();
+        div()
+            .w(px(400.0))
+            .child(super::MarkdownRenderer::blocks("held", blocks).pictures(self.0.clone()))
+    }
+}
+
+#[gpui::test]
+fn a_held_picture_draws_from_its_bytes(cx: &mut TestAppContext) {
+    let mut png = Vec::new();
+    image::RgbaImage::new(200, 100)
+        .write_to(&mut std::io::Cursor::new(&mut png), image::ImageFormat::Png)
+        .expect("a png");
+    let held = super::HeldPicture::new(gpui::ImageFormat::Png, png);
+    let pictures = [("cid:logo@atrium".to_string(), Ok(held))].into();
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| Held(std::rc::Rc::new(pictures)));
+    let mut drawn = None;
+    for _ in 0..50 {
+        settle(cx);
+        drawn = cx.debug_bounds("markdown-picture");
+        if drawn.is_some() {
+            break;
+        }
+    }
+    assert_eq!(drawn.expect("drew").size, size(px(200.0), px(100.0)));
+}

@@ -8,7 +8,7 @@ use gpui::{
 use jiff::{Timestamp, tz::TimeZone};
 use smallvec::SmallVec;
 
-use super::reader::{Asks, Message, open_letter};
+use super::reader::{Asks, Message, dated, open_letter};
 use crate::{
     data_display::Avatar,
     primitives::{FocusRing, tab_stop},
@@ -125,7 +125,10 @@ impl RenderOnce for MailThreadView {
                         .into_any_element()
                 } else {
                     let (key, opening, id) = (message.key.clone(), opened.clone(), self.id.clone());
-                    let date = format::relative(message.at, now);
+                    let date = match message.at {
+                        Some(at) => format::relative(at, now),
+                        None => dated(None, &zone, cx).to_string(),
+                    };
                     div()
                         .id((self.id.clone(), format!("fold-{}", message.key)))
                         .debug_selector({

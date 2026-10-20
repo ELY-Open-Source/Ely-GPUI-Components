@@ -1,4 +1,6 @@
 use std::{
+    collections::HashMap,
+    hash::{DefaultHasher, Hash, Hasher},
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -15,6 +17,46 @@ use crate::{
     primitives::{Icon, IconName, hold},
     theme::{ActiveTheme, IconSize, Radius},
 };
+
+/// A picture's bytes, hashed once: frames compare it.
+#[derive(Clone, Debug)]
+pub struct HeldPicture {
+    format: ImageFormat,
+    bytes: Arc<[u8]>,
+    digest: u64,
+}
+
+impl HeldPicture {
+    pub fn new(format: ImageFormat, bytes: impl Into<Arc<[u8]>>) -> Self {
+        let bytes = bytes.into();
+        let mut hasher = DefaultHasher::new();
+        bytes.hash(&mut hasher);
+        Self {
+            format,
+            bytes,
+            digest: hasher.finish(),
+        }
+    }
+}
+
+impl PartialEq for HeldPicture {
+    fn eq(&self, other: &Self) -> bool {
+        self.format == other.format
+            && self.bytes.len() == other.bytes.len()
+            && self.digest == other.digest
+    }
+}
+
+impl Eq for HeldPicture {}
+
+impl Hash for HeldPicture {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        (self.format, self.bytes.len(), self.digest).hash(state);
+    }
+}
+
+/// Held pictures by the address their blocks name, or why not.
+pub type Pictures = HashMap<String, Result<HeldPicture, SharedString>>;
 
 /// Where a picture's bytes come from.
 #[derive(Clone, Debug, PartialEq)]
@@ -117,6 +159,21 @@ fn inline(url: &str) -> Origin {
     }
 }
 
+/// Held bytes decoded as gpui decodes files.
+enum Holder {}
+
+impl Asset for Holder {
+    type Source = HeldPicture;
+    type Output = Result<Arc<RenderImage>, SharedString>;
+
+    fn load(
+        held: Self::Source,
+        cx: &mut App,
+    ) -> impl Future<Output = Self::Output> + Send + 'static {
+        Unpacker::load((held.format, held.bytes), cx)
+    }
+}
+
 /// Inline bytes decoded as gpui decodes files.
 enum Unpacker {}
 
@@ -145,6 +202,7 @@ pub(crate) struct Picture {
     pub url: String,
     /// The folder relative addresses start from.
     pub base: Option<Arc<Path>>,
+    pub held: Option<Result<HeldPicture, SharedString>>,
 }
 
 impl RenderOnce for Picture {
@@ -154,10 +212,26 @@ impl RenderOnce for Picture {
 }
 
 fn picture(shown: Picture, window: &mut Window, cx: &mut App) -> AnyElement {
-    let Picture { id, alt, url, base } = shown;
+    let Picture {
+        id,
+        alt,
+        url,
+        base,
+        held,
+    } = shown;
     let (alt, url) = (alt.as_str(), url.as_str());
     let colors = cx.theme().colors.clone();
-    let (loaded, svg) = match origin(url, base.as_deref()) {
+    let origin = match held {
+        Some(Ok(held)) => {
+            let svg = held.format == ImageFormat::Svg;
+            let image = |loaded: &Result<Arc<RenderImage>, _>| loaded.as_ref().ok().cloned();
+            let loaded = hold::<Holder>(id, &held, image, window, cx);
+            return drawn(loaded, svg, alt, url, cx);
+        }
+        Some(Err(why)) => Origin::Bad(why),
+        None => origin(url, base.as_deref()),
+    };
+    let (loaded, svg) = match origin {
         Origin::File(path) => {
             let svg = path
                 .extension()
@@ -186,6 +260,18 @@ fn picture(shown: Picture, window: &mut Window, cx: &mut App) -> AnyElement {
         }
         Origin::Bad(why) => return note(alt, why, colors.danger, cx),
     };
+    drawn(loaded, svg, alt, url, cx)
+}
+
+/// A loaded picture at its own width, or why not.
+fn drawn(
+    loaded: Option<Result<Arc<RenderImage>, SharedString>>,
+    svg: bool,
+    alt: &str,
+    url: &str,
+    cx: &App,
+) -> AnyElement {
+    let colors = cx.theme().colors.clone();
     match loaded {
         Some(Ok(image)) => {
             let natural = image.size(0);

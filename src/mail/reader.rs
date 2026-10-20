@@ -12,10 +12,13 @@ use crate::{
     chat::FileMessage,
     data_display::Avatar,
     forms::OnValue,
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, AvatarSize, ControlSize, TextSize},
     typography::{Ellipsis, format},
 };
+
+use super::item::{When, say};
 
 pub(super) type OnFile = Rc<dyn Fn(&SharedString, &SharedString, &mut Window, &mut App)>;
 
@@ -42,19 +45,29 @@ pub struct Message {
     pub from: Contact,
     pub to: Vec<Contact>,
     pub cc: Vec<Contact>,
-    pub at: Timestamp,
+    /// None when the message names no date.
+    pub at: Option<Timestamp>,
     pub snippet: SharedString,
-    pub files: Vec<(SharedString, u64)>,
+    /// A size, or none while the file is not here.
+    pub files: Vec<(SharedString, Option<u64>)>,
 }
 
 impl Message {
     pub fn new(key: impl Into<SharedString>, from: Contact, at: Timestamp) -> Self {
         Self {
+            at: Some(at),
+            ..Self::undated(key, from)
+        }
+    }
+
+    /// A message that names no date; it reads as dateless.
+    pub fn undated(key: impl Into<SharedString>, from: Contact) -> Self {
+        Self {
             key: key.into(),
             from,
             to: Vec::new(),
             cc: Vec::new(),
-            at,
+            at: None,
             snippet: SharedString::default(),
             files: Vec::new(),
         }
@@ -78,26 +91,43 @@ impl Message {
 
     /// A file it carries, by name and size in bytes.
     pub fn file(mut self, name: impl Into<SharedString>, bytes: u64) -> Self {
-        self.files.push((name.into(), bytes));
+        self.files.push((name.into(), Some(bytes)));
+        self
+    }
+
+    /// A file it carries that is not downloaded yet.
+    pub fn file_waiting(mut self, name: impl Into<SharedString>) -> Self {
+        self.files.push((name.into(), None));
         self
     }
 }
 
 /// Who a message went to, as a line: "to Ana Lima, Ben Ito · cc Dev Rao"; none when it names nobody.
-pub(super) fn recipients(to: &[Contact], cc: &[Contact]) -> Option<String> {
-    let names = |contacts: &[Contact]| {
-        contacts
+pub(super) fn recipients(to: &[Contact], cc: &[Contact], cx: &App) -> Option<String> {
+    let comma = i18n::text(cx, "mail.comma", &[]);
+    let line = |key: &str, contacts: &[Contact]| {
+        let names: Vec<&str> = contacts
             .iter()
             .map(|contact| contact.name.as_ref())
-            .collect::<Vec<_>>()
-            .join(", ")
+            .collect();
+        (!names.is_empty()).then(|| i18n::text(cx, key, &[("names", &names.join(&comma))]))
     };
-    match (to.is_empty(), cc.is_empty()) {
-        (true, true) => None,
-        (false, true) => Some(format!("to {}", names(to))),
-        (true, false) => Some(format!("cc {}", names(cc))),
-        (false, false) => Some(format!("to {} · cc {}", names(to), names(cc))),
-    }
+    let lines: Vec<SharedString> = [line("mail.to", to), line("mail.cc", cc)]
+        .into_iter()
+        .flatten()
+        .collect();
+    (!lines.is_empty()).then(|| lines.join(" · "))
+}
+
+/// When a message came, as the reader's language writes it.
+pub(super) fn dated(at: Option<Timestamp>, zone: &TimeZone, cx: &App) -> SharedString {
+    let Some(at) = at else {
+        return i18n::text(cx, "mail.undated", &[]);
+    };
+    let day = at.to_zoned(zone.clone());
+    let date = say(When::Date(day.year(), day.month(), day.day()), cx);
+    let time = format::datetime(at, zone, "%H:%M").expect("a fixed pattern formats");
+    i18n::text(cx, "mail.when", &[("date", &date), ("time", &time)])
 }
 
 /// What an open message can ask: a reply, a reply to all, a forward, and a file.
@@ -127,7 +157,7 @@ pub(super) fn open_letter(
             IconButton::new((id.clone(), format!("{name}-{key}")), icon)
                 .variant(ButtonVariant::Ghost)
                 .size(ControlSize::Sm)
-                .tooltip(tip)
+                .tooltip(i18n::text(cx, tip, &[]))
                 .on_click(move |_, window, cx| {
                     log::info!("mail {key}: {name}");
                     ask(&key, window, cx)
@@ -135,14 +165,17 @@ pub(super) fn open_letter(
         })
     };
     let many = message.to.len() + message.cc.len() > 1;
-    let date =
-        format::datetime(message.at, zone, "%b %-d, %Y · %H:%M").expect("a fixed pattern formats");
+    let date = dated(message.at, zone, cx);
     let files = message.files.iter().enumerate().map(|(ix, (name, bytes))| {
-        let file = FileMessage::new(
-            (id.clone(), format!("file-{key}-{ix}")),
-            name.clone(),
-            *bytes,
-        );
+        let file_id = (id.clone(), format!("file-{key}-{ix}"));
+        let file = match bytes {
+            Some(bytes) => FileMessage::new(file_id, name.clone(), *bytes),
+            None => FileMessage::new(file_id, name.clone(), 0).detail(i18n::text(
+                cx,
+                "mail.file.waiting",
+                &[],
+            )),
+        };
         match asks.download.clone() {
             Some(download) => {
                 let (key, name) = (key.clone(), name.clone());
@@ -209,7 +242,7 @@ pub(super) fn open_letter(
                                                 .child(Ellipsis::new(message.from.address.clone())),
                                         ),
                                 )
-                                .children(recipients(&message.to, &message.cc).map(|line| {
+                                .children(recipients(&message.to, &message.cc, cx).map(|line| {
                                     div()
                                         .min_w_0()
                                         .text_color(colors.fg_muted)
@@ -230,17 +263,22 @@ pub(super) fn open_letter(
                                 .text_color(colors.fg_subtle)
                                 .child(date),
                         )
-                        .children(act("reply", IconName::Reply, "Reply", asks.reply.clone()))
+                        .children(act(
+                            "reply",
+                            IconName::Reply,
+                            "mail.reply",
+                            asks.reply.clone(),
+                        ))
                         .children(act(
                             "reply-all",
                             IconName::ReplyAll,
-                            "Reply all",
+                            "mail.reply_all",
                             asks.reply_all.clone().filter(|_| many),
                         ))
                         .children(act(
                             "forward",
                             IconName::Forward,
-                            "Forward",
+                            "mail.forward",
                             asks.forward.clone(),
                         )),
                 ),
@@ -362,24 +400,5 @@ impl RenderOnce for MailReader {
                 &self.asks,
                 cx,
             ))
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn recipients_read_as_one_line() {
-        let ana = Contact::new("Ana Lima", "ana@atrium.studio");
-        let ben = Contact::new("Ben Ito", "ben@atrium.studio");
-        let dev = Contact::new("Dev Rao", "dev@atrium.studio");
-        assert_eq!(
-            recipients(&[ana.clone(), ben], std::slice::from_ref(&dev)).as_deref(),
-            Some("to Ana Lima, Ben Ito · cc Dev Rao")
-        );
-        assert_eq!(recipients(&[ana], &[]).as_deref(), Some("to Ana Lima"));
-        assert_eq!(recipients(&[], &[dev]).as_deref(), Some("cc Dev Rao"));
-        assert_eq!(recipients(&[], &[]), None);
     }
 }

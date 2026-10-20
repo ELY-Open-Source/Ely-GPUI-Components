@@ -4,7 +4,11 @@ use jiff::{SignedDuration, Timestamp, tz::TimeZone};
 use super::{Mailing, heard, mailing, note, press, settle, tab_to};
 use crate::{
     buttons::Button,
-    mail::{Contact, MailReader, MailThreadView, Message, QuotedText},
+    i18n::I18n,
+    mail::{
+        Contact, MailReader, MailThreadView, Message, QuotedText,
+        reader::{dated, recipients},
+    },
 };
 
 fn ana() -> Contact {
@@ -198,4 +202,43 @@ fn a_fold_keeps_its_parts_inside_at_280(cx: &mut TestAppContext) {
     let fold = cx.debug_bounds("fold m1").expect("the fold draws");
     let date = cx.debug_bounds("fold-date m1").expect("its date draws");
     assert!(date.right() <= fold.right(), "{date:?} inside {fold:?}");
+}
+
+#[gpui::test]
+fn a_letter_names_its_people_and_date_in_the_readers_language(cx: &mut TestAppContext) {
+    let dev = Contact::new("Dev Rao", "dev@atrium.studio");
+    let at = Timestamp::from_second(1_772_719_620).expect("a time");
+    let utc = TimeZone::UTC;
+    cx.update(|cx| {
+        cx.set_global(I18n::new("en-US"));
+        let people = recipients(&[ana(), ben()], std::slice::from_ref(&dev), cx);
+        assert_eq!(people.as_deref(), Some("to Ana Lima, Ben Ito · cc Dev Rao"));
+        assert_eq!(recipients(&[], &[], cx), None);
+        assert_eq!(dated(Some(at), &utc, cx), "Mar 5, 2026 · 14:07");
+        assert_eq!(dated(None, &utc, cx), "No date");
+        cx.set_global(I18n::new("zh-CN"));
+        let people = recipients(&[ana(), ben()], std::slice::from_ref(&dev), cx);
+        assert_eq!(
+            people.as_deref(),
+            Some("发给 Ana Lima、Ben Ito · 抄送 Dev Rao")
+        );
+        assert_eq!(
+            recipients(&[], std::slice::from_ref(&dev), cx).as_deref(),
+            Some("抄送 Dev Rao")
+        );
+        assert_eq!(dated(Some(at), &utc, cx), "2026年3月5日 14:07");
+        assert_eq!(dated(None, &utc, cx), "无日期");
+    });
+}
+
+#[test]
+fn a_file_not_here_has_no_size() {
+    let message = Message::undated("m1", ana())
+        .file("plan.pdf", 2_400)
+        .file_waiting("site.zip");
+    assert_eq!(message.at, None);
+    assert_eq!(
+        message.files,
+        [("plan.pdf".into(), Some(2_400)), ("site.zip".into(), None)]
+    );
 }

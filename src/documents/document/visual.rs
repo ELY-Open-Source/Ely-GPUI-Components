@@ -151,6 +151,7 @@ impl MarkdownDocument {
                     nodes,
                     Hooks {
                         base: &self.base,
+                        pictures: &None,
                         on_link: &self.on_link,
                         on_heading: &self.on_heading,
                         on_point: &on_point,
