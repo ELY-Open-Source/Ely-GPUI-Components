@@ -6,6 +6,14 @@ const SHIPPED: &[(&str, &str)] = &[
     ("editor/hints.rs", include_str!("../../editor/hints.rs")),
     ("forms/input.rs", include_str!("../../forms/input.rs")),
     ("forms/select.rs", include_str!("../../forms/select.rs")),
+    (
+        "forms/date/calendar.rs",
+        include_str!("../../forms/date/calendar.rs"),
+    ),
+    (
+        "forms/date/picker.rs",
+        include_str!("../../forms/date/picker.rs"),
+    ),
     ("mail/compose.rs", include_str!("../../mail/compose.rs")),
     ("mail/signature.rs", include_str!("../../mail/signature.rs")),
     ("chat/attach.rs", include_str!("../../chat/attach.rs")),

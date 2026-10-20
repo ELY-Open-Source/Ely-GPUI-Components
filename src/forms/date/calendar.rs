@@ -7,16 +7,15 @@ use gpui::{
 };
 use jiff::{ToSpan, civil::Date};
 
-use super::{super::options::Run, zoned_now};
+use super::{super::options::Run, show_month, zoned_now};
 use crate::{
     buttons::{ButtonVariant, IconButton},
+    i18n::text,
     layout::seeded::use_seeded,
     motion,
     primitives::{IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
 };
-
-const WEEKDAYS: [&str; 7] = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
 /// Monday of `date`'s week.
 pub(crate) fn week_start(date: Date) -> Date {
@@ -210,7 +209,7 @@ impl RenderOnce for Calendar {
                     .text_size(theme.text_size(TextSize::Base))
                     .font_weight(FontWeight::SEMIBOLD)
                     .text_color(colors.fg)
-                    .child(shown.strftime("%B %Y").to_string()),
+                    .child(show_month(shown, cx)),
             )
             .child(
                 div()
@@ -221,7 +220,7 @@ impl RenderOnce for Calendar {
                         IconButton::new((self.id.clone(), "prev"), IconName::ChevronLeft)
                             .variant(ButtonVariant::Ghost)
                             .size(ControlSize::Sm)
-                            .tooltip("Previous month")
+                            .tooltip(text(cx, "date.previous_month", &[]))
                             .on_click(move |_, _, cx| {
                                 let next = at.saturating_sub(1.month());
                                 cursor.update(cx, |cursor, _| cursor.value = next);
@@ -233,7 +232,7 @@ impl RenderOnce for Calendar {
                         IconButton::new((self.id.clone(), "next"), IconName::ChevronRight)
                             .variant(ButtonVariant::Ghost)
                             .size(ControlSize::Sm)
-                            .tooltip("Next month")
+                            .tooltip(text(cx, "date.next_month", &[]))
                             .on_click(move |_, _, cx| {
                                 let next = at.saturating_add(1.month());
                                 cursor.update(cx, |cursor, _| cursor.value = next);
@@ -241,13 +240,13 @@ impl RenderOnce for Calendar {
                             })
                     }),
             );
-        let weekdays = div().grid().grid_cols(7).children(WEEKDAYS.map(|day| {
+        let weekdays = div().grid().grid_cols(7).children((1..=7).map(|day| {
             div()
                 .flex()
                 .justify_center()
                 .text_size(theme.text_size(TextSize::Xs))
                 .text_color(colors.fg_subtle)
-                .child(day)
+                .child(text(cx, &format!("date.weekday.{day}"), &[]))
         }));
         let days: Vec<_> = month_grid(shown)
             .into_iter()

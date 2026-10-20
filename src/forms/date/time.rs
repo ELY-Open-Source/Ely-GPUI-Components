@@ -342,8 +342,9 @@ impl RenderOnce for DateTimePicker {
             self.id,
             Face {
                 icon: IconName::CalendarDays,
-                shown: value
-                    .map(|at| format!("{} {}", show_date(at.date()), show_time(at.time())).into()),
+                shown: value.map(|at| {
+                    format!("{} {}", show_date(at.date(), cx), show_time(at.time())).into()
+                }),
                 placeholder: self.placeholder,
                 size: self.size,
                 disabled: false,

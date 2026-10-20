@@ -239,7 +239,7 @@ impl<const DAYS: usize> RenderOnce for CalendarDays<DAYS> {
         };
         let (title, back, on) = match DAYS {
             7 => (
-                show_span(days[0], days[DAYS - 1]),
+                show_span(days[0], days[DAYS - 1], cx),
                 "Previous week",
                 "Next week",
             ),

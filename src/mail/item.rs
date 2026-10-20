@@ -121,7 +121,7 @@ pub(super) fn when(at: Timestamp, now: Timestamp, zone: &TimeZone) -> When {
 /// The date as the reader's language writes it.
 pub(super) fn say(when: When, cx: &App) -> SharedString {
     let date = |key: &str, year: i16, month: i8, day: i8| {
-        let name = i18n::text(cx, &format!("mail.month.{month}"), &[]);
+        let name = i18n::text(cx, &format!("date.month.{month}"), &[]);
         let args = [
             ("year", year.to_string()),
             ("month", name.to_string()),
@@ -135,7 +135,7 @@ pub(super) fn say(when: When, cx: &App) -> SharedString {
         When::Time(time) => time.into(),
         When::Weekday(day) => i18n::text(cx, &format!("mail.weekday.{day}"), &[]),
         When::Day(month, day) => date("mail.date.this_year", 0, month, day),
-        When::Date(year, month, day) => date("mail.date.past", year, month, day),
+        When::Date(year, month, day) => date("date.day", year, month, day),
     }
 }
 

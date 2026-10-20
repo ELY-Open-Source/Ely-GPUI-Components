@@ -117,11 +117,11 @@ impl RelativeDatePicker {
 }
 
 impl RenderOnce for RelativeDatePicker {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let today = self.today.unwrap_or_else(|| zoned_now().date());
         let choices = RelativeRange::ALL.map(|range| {
             let (start, end) = range.span(today);
-            Choice::new(range.label(), range.label()).note(show_span(start, end))
+            Choice::new(range.label(), range.label()).note(show_span(start, end, cx))
         });
         let on_change = self.on_change;
         let mut select = Select::new(self.id, choices)

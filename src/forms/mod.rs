@@ -66,7 +66,7 @@ pub use date::{
     WeekPicker, YearPicker,
 };
 pub(crate) use date::{
-    Face, dropdown, month_grid, picker_field, show_date, show_span, week_start, weekday_words,
+    Face, dropdown, month_grid, picker_field, show_span, week_start, weekday_words,
 };
 pub use expression::{ExpressionInput, evaluate, expression_highlights};
 pub use files::{DropZone, FileInput, PICTURES};

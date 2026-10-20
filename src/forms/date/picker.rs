@@ -17,6 +17,7 @@ use super::{
     show_date, show_span,
 };
 use crate::{
+    i18n::text,
     primitives::{Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize},
 };
@@ -147,7 +148,7 @@ pub(crate) fn picker_field(
 pub struct DatePicker {
     id: ElementId,
     value: Option<Date>,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     bounds: (Option<Date>, Option<Date>),
     today: Option<Date>,
     size: ControlSize,
@@ -160,7 +161,7 @@ impl DatePicker {
         Self {
             id: id.into(),
             value,
-            placeholder: SharedString::from("Pick a date"),
+            placeholder: None,
             bounds: (None, None),
             today: None,
             size: ControlSize::default(),
@@ -170,7 +171,7 @@ impl DatePicker {
     }
 
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
-        self.placeholder = text.into();
+        self.placeholder = Some(text.into());
         self
     }
 
@@ -234,8 +235,8 @@ impl RenderOnce for DatePicker {
             self.id,
             Face {
                 icon: IconName::Calendar,
-                shown: value.map(|date| show_date(date).into()),
-                placeholder: self.placeholder,
+                shown: value.map(|date| show_date(date, cx).into()),
+                placeholder: (self.placeholder).unwrap_or_else(|| text(cx, "date.pick_date", &[])),
                 size: self.size,
                 disabled: self.disabled,
             },
@@ -272,7 +273,7 @@ impl RenderOnce for DatePicker {
 pub struct DateRangePicker {
     id: ElementId,
     value: Option<(Date, Date)>,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     today: Option<Date>,
     size: ControlSize,
     on_change: Option<OnSpan>,
@@ -283,7 +284,7 @@ impl DateRangePicker {
         Self {
             id: id.into(),
             value,
-            placeholder: SharedString::from("Pick dates"),
+            placeholder: None,
             today: None,
             size: ControlSize::default(),
             on_change: None,
@@ -291,7 +292,7 @@ impl DateRangePicker {
     }
 
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
-        self.placeholder = text.into();
+        self.placeholder = Some(text.into());
         self
     }
 
@@ -328,8 +329,8 @@ impl RenderOnce for DateRangePicker {
             self.id,
             Face {
                 icon: IconName::CalendarRange,
-                shown: value.map(|(start, end)| show_span(start, end).into()),
-                placeholder: self.placeholder,
+                shown: value.map(|(start, end)| show_span(start, end, cx).into()),
+                placeholder: (self.placeholder).unwrap_or_else(|| text(cx, "date.pick_dates", &[])),
                 size: self.size,
                 disabled: false,
             },

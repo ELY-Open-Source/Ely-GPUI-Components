@@ -3,7 +3,7 @@ use jiff::{
     civil::{Date, Weekday},
 };
 
-use crate::forms::{show_date, week_start, weekday_words};
+use crate::forms::{week_start, weekday_words};
 
 /// How often an event comes back.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -96,7 +96,7 @@ impl Recurrence {
         };
         match self.ends {
             Ends::Never => what,
-            Ends::On(last) => format!("{what}, until {}", show_date(last)),
+            Ends::On(last) => format!("{what}, until {}", last.strftime("%b %-d, %Y")),
             Ends::After(1) => format!("{what}, once"),
             Ends::After(count) => format!("{what}, {count} times"),
         }
