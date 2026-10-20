@@ -23,6 +23,7 @@ pub struct MailThreadView {
     subject: SharedString,
     messages: Vec<(Message, SmallVec<[AnyElement; 2]>)>,
     zone: Option<TimeZone>,
+    picked: Option<SharedString>,
     asks: Asks,
 }
 
@@ -33,6 +34,7 @@ impl MailThreadView {
             subject: subject.into(),
             messages: Vec::new(),
             zone: None,
+            picked: None,
             asks: Asks::default(),
         }
     }
@@ -52,6 +54,12 @@ impl MailThreadView {
     /// The zone dates read in; the system's otherwise.
     pub fn zone(mut self, zone: TimeZone) -> Self {
         self.zone = Some(zone);
+        self
+    }
+
+    /// Stands open besides the newest: the one the reader picked.
+    pub fn picked(mut self, key: impl Into<SharedString>) -> Self {
+        self.picked = Some(key.into());
         self
     }
 
@@ -103,7 +111,8 @@ impl RenderOnce for MailThreadView {
             .unwrap_or_else(|| format::system_zone("mail thread"));
         let now = Timestamp::now();
         let newest = self.messages.len() - 1;
-        let open_now = opened.read(cx).clone();
+        let mut open_now = opened.read(cx).clone();
+        open_now.extend(self.picked.clone());
         let focuses: Vec<FocusHandle> = self
             .messages
             .iter()

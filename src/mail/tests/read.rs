@@ -100,6 +100,24 @@ fn the_newest_stands_open_and_space_opens_a_fold(cx: &mut TestAppContext) {
     );
 }
 
+#[gpui::test]
+fn a_picked_message_stands_open_with_the_newest(cx: &mut TestAppContext) {
+    let picked = |_: Entity<Mailing>| {
+        let message = |key: &'static str| Message::new(key, ana(), Timestamp::UNIX_EPOCH);
+        MailThreadView::new("thread", "Friday's review")
+            .zone(TimeZone::UTC)
+            .picked("m1")
+            .message(message("m1"), div().child("First"))
+            .message(message("m2"), div().child("Second"))
+            .message(message("m3"), div().child("Newest"))
+            .into_any_element()
+    };
+    let (_, cx) = mailing(picked, cx);
+    assert!(cx.debug_bounds("letter m1").is_some(), "the picked one");
+    assert!(cx.debug_bounds("letter m2").is_none(), "folded");
+    assert!(cx.debug_bounds("letter m3").is_some(), "the newest");
+}
+
 #[test]
 #[should_panic(expected = "message m1 twice")]
 fn a_message_sits_once_in_a_thread() {
