@@ -1,4 +1,4 @@
-use gpui::{BoxShadow, Hsla, Pixels, Point, Rems, Size, point, px, rems, size};
+use gpui::{BoxShadow, Hsla, Pixels, Point, Rems, Size, px, rems, size};
 
 use super::{Mode, Theme};
 
@@ -169,9 +169,9 @@ impl Theme {
         px_to_rems(78.0)
     }
 
-    /// Where the system traffic lights sit in a window this crate opens.
+    /// Where the system traffic lights sit in a window this crate opens: centered in the title bar.
     pub fn traffic_light_origin(&self) -> Point<Pixels> {
-        point(px(14.0), px(13.0))
+        super::platform::traffic_light_origin(self)
     }
 
     /// Underline under composing text.
