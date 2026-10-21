@@ -401,3 +401,4 @@
 | O6 | 1 | PASS | the CRLF checkout reproduced locally; a fresh autocrlf clone keeps LF with the rule |
 | O7 | 1 | FAIL | the install guide still named macOS alone |
 | O7 | 2 | PASS | a WSLg window repainted from Tokyo Night to Catppuccin Latte |
+| O7 | 3 | PASS | after ef5736e CI's Linux leg failed on fontconfig; CI installs libfontconfig-dev too |

@@ -32,9 +32,9 @@ jobs:
         with:
           toolchain: "1.95"
       - uses: Swatinem/rust-cache@v2
-      # gpui's Wayland and X11 backends link libxkbcommon.
+      # gpui's Wayland and X11 backends link xkbcommon and fontconfig.
       - if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       # Hosted runners test as a plain user, so the file permissions the tests check hold.
       - run: cargo test --lib --features test-support --quiet
       - run: cargo build --example gallery

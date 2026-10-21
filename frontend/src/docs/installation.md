@@ -21,7 +21,7 @@ gpui_platform = { package = "gpui-pre-platform", version = "=0.3.9", features = 
 | --- | --- |
 | `ely-gpui-component` | The library. `Cargo.lock` records the commit; add `rev = "<commit>"` to hold it in `Cargo.toml` as well. |
 | `gpui` | The same snapshot as Ely's, under the name `gpui`. Another builds a second GPUI, and its types do not match the ones Ely takes. |
-| `gpui_platform` | Opens windows on each platform. Without `font-kit`, macOS falls back to GPUI's no-op text system and draws no text. Without `wayland` and `x11`, Linux runs headless and opens no window; building them needs `libxkbcommon-x11-dev`. |
+| `gpui_platform` | Opens windows on each platform. Without `font-kit`, macOS falls back to GPUI's no-op text system and draws no text. Without `wayland` and `x11`, Linux runs headless and opens no window; building them needs `libxkbcommon-x11-dev` and `libfontconfig-dev`. |
 
 ## Shaders
 
