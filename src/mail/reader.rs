@@ -20,7 +20,7 @@ use crate::{
 
 use super::item::{When, say};
 
-pub(super) type OnFile = Rc<dyn Fn(&SharedString, &SharedString, &mut Window, &mut App)>;
+pub(super) type OnFile = Rc<dyn Fn(&SharedString, usize, &mut Window, &mut App)>;
 
 /// Someone a message is from or to: a name and an address.
 #[derive(Clone, Debug, PartialEq)]
@@ -136,6 +136,7 @@ pub(super) struct Asks {
     pub reply: Option<OnValue>,
     pub reply_all: Option<OnValue>,
     pub forward: Option<OnValue>,
+    pub open_file: Option<OnFile>,
     pub download: Option<OnFile>,
 }
 
@@ -168,25 +169,30 @@ pub(super) fn open_letter(
     let date = dated(message.at, zone, cx);
     let files = message.files.iter().enumerate().map(|(ix, (name, bytes))| {
         let file_id = (id.clone(), format!("file-{key}-{ix}"));
-        let file = match bytes {
-            Some(bytes) => FileMessage::new(file_id, name.clone(), *bytes),
+        let mut file = match bytes {
+            Some(bytes) => FileMessage::new(file_id, name.clone(), *bytes)
+                .download_tip(i18n::text(cx, "mail.file.save", &[])),
             None => FileMessage::new(file_id, name.clone(), 0).detail(i18n::text(
                 cx,
                 "mail.file.waiting",
                 &[],
             )),
         };
-        match asks.download.clone() {
-            Some(download) => {
-                let (key, name) = (key.clone(), name.clone());
-                file.on_download(move |window, cx| {
-                    log::info!("mail {key}: download {name}");
-                    download(&key, &name, window, cx)
-                })
-                .into_any_element()
-            }
-            None => file.into_any_element(),
+        if let Some(open) = asks.open_file.clone() {
+            let key = key.clone();
+            file = file.on_open(move |window, cx| {
+                log::info!("mail {key}: open file {ix}");
+                open(&key, ix, window, cx)
+            });
         }
+        if let Some(download) = asks.download.clone() {
+            let key = key.clone();
+            file = file.on_download(move |window, cx| {
+                log::info!("mail {key}: download file {ix}");
+                download(&key, ix, window, cx)
+            });
+        }
+        file
     });
     let avatar = Avatar::new(
         (id.clone(), format!("from-{key}")),
@@ -358,10 +364,19 @@ impl MailReader {
         self
     }
 
-    /// Gets the message's key and the file's name.
+    /// A press on a file: the message's key and the file's place.
+    pub fn on_open_file(
+        mut self,
+        handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.asks.open_file = Some(Rc::new(handler));
+        self
+    }
+
+    /// A file's button: download it, or save it once here.
     pub fn on_download(
         mut self,
-        handler: impl Fn(&SharedString, &SharedString, &mut Window, &mut App) + 'static,
+        handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.asks.download = Some(Rc::new(handler));
         self

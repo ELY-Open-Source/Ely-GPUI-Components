@@ -26,12 +26,19 @@ fn review(to: Vec<Contact>) -> Message {
 }
 
 fn reader(owner: Entity<Mailing>, to: Vec<Contact>) -> gpui::AnyElement {
-    let (reply, all, forward, download) = (owner.clone(), owner.clone(), owner.clone(), owner);
+    let (reply, all, forward, open, download) = (
+        owner.clone(),
+        owner.clone(),
+        owner.clone(),
+        owner.clone(),
+        owner,
+    );
     MailReader::new("reader", "Friday's review", review(to))
         .zone(TimeZone::UTC)
         .on_reply(move |key, _, cx| note(&reply, format!("reply {key}"), cx))
         .on_reply_all(move |key, _, cx| note(&all, format!("reply all {key}"), cx))
         .on_forward(move |key, _, cx| note(&forward, format!("forward {key}"), cx))
+        .on_open_file(move |key, file, _, cx| note(&open, format!("open {key} {file}"), cx))
         .on_download(move |key, file, _, cx| note(&download, format!("download {key} {file}"), cx))
         .child("Moved to 10:00.")
         .into_any_element()
@@ -43,7 +50,7 @@ fn a_readers_asks_each_reach_their_own(cx: &mut TestAppContext) {
         |owner| reader(owner, vec![Contact::new("Me", "me@atrium.studio"), ben()]),
         cx,
     );
-    for nth in 1..=4 {
+    for nth in 1..=5 {
         tab_to(nth, cx);
         press("space", cx);
     }
@@ -53,7 +60,8 @@ fn a_readers_asks_each_reach_their_own(cx: &mut TestAppContext) {
             "reply m1",
             "reply all m1",
             "forward m1",
-            "download m1 plan.pdf"
+            "open m1 0",
+            "download m1 0"
         ]
     );
 }

@@ -90,10 +90,19 @@ impl MailThreadView {
         self
     }
 
-    /// Gets a message's key and the file's name.
+    /// A press on a file: its message's key and its place.
+    pub fn on_open_file(
+        mut self,
+        handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.asks.open_file = Some(Rc::new(handler));
+        self
+    }
+
+    /// A file's button: download it, or save it once here.
     pub fn on_download(
         mut self,
-        handler: impl Fn(&SharedString, &SharedString, &mut Window, &mut App) + 'static,
+        handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.asks.download = Some(Rc::new(handler));
         self

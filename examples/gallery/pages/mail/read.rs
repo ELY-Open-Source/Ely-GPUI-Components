@@ -43,6 +43,7 @@ pub fn reader(cx: &mut App) -> impl IntoElement + use<> {
                 .on_reply_all(|key, _, _| log::info!("gallery: reply all {key}"))
                 .on_forward(|key, _, _| log::info!("gallery: forward {key}"))
                 .on_download(|key, file, _, _| log::info!("gallery: download {key} {file}"))
+                .on_open_file(|key, file, _, _| log::info!("gallery: open {key} {file}"))
                 .child(paragraph("Morning both,"))
                 .child(paragraph(
                     "Friday's review moves to 10:00, in the model room. The client wants to see the stair at the scale we'll build it, so please bring the plaster samples if they've dried.",

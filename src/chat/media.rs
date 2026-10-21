@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, Div, ElementId, FontWeight, InteractiveElement, IntoElement, ObjectFit,
-    ParentElement, Pixels, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window,
-    div, prelude::*,
+    ParentElement, Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled,
+    Window, div, prelude::*,
 };
 
 use crate::{
@@ -11,7 +11,7 @@ use crate::{
     documents::source,
     forms::{Pick, Run},
     i18n,
-    primitives::{Icon, IconName, Image, file_icon},
+    primitives::{FocusRing as _, Icon, IconName, Image, file_icon},
     theme::{ActiveTheme, AvatarSize, ContainerSize, IconSize, Radius, TextSize},
     typography::{Ellipsis, format::file_size},
 };
@@ -208,7 +208,7 @@ impl RenderOnce for ImageGrid {
     }
 }
 
-/// A file in a message: its kind's icon, its name and size, and a way to download it.
+/// A file in a message: its kind's icon, its name and size, a press to open it and a way to download it.
 #[derive(IntoElement)]
 pub struct FileMessage {
     id: ElementId,
@@ -216,7 +216,10 @@ pub struct FileMessage {
     bytes: u64,
     /// Said instead of the size.
     detail: Option<SharedString>,
+    on_open: Option<Run>,
     on_download: Option<Run>,
+    /// The download button's tip, "Download" unless given.
+    download_tip: Option<SharedString>,
 }
 
 impl FileMessage {
@@ -226,8 +229,22 @@ impl FileMessage {
             name: name.into(),
             bytes,
             detail: None,
+            on_open: None,
             on_download: None,
+            download_tip: None,
         }
+    }
+
+    /// A press on the file, not its button, opens it.
+    pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
+        self.on_open = Some(Rc::new(handler));
+        self
+    }
+
+    /// Names what the download button does, as "Save As…".
+    pub fn download_tip(mut self, words: impl Into<SharedString>) -> Self {
+        self.download_tip = Some(words.into());
+        self
     }
 
     /// Words in place of the size, such as a file's state.
@@ -246,7 +263,11 @@ impl RenderOnce for FileMessage {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let colors = theme.colors.clone();
+        let tip = self
+            .download_tip
+            .unwrap_or_else(|| i18n::text(cx, "file.download", &[]));
         div()
+            .id(self.id.clone())
             .max_w(theme.prose_width())
             .flex()
             .items_center()
@@ -256,6 +277,15 @@ impl RenderOnce for FileMessage {
             .border_1()
             .border_color(colors.border)
             .bg(colors.surface)
+            .when_some(self.on_open, |file, open| {
+                file.role(Role::Button)
+                    .aria_label(self.name.clone())
+                    .tab_index(0)
+                    .focus_ring(cx)
+                    .cursor_pointer()
+                    .hover(|file| file.bg(colors.hover))
+                    .on_click(move |_, window, cx| open(window, cx))
+            })
             .child(
                 div()
                     .flex_none()
@@ -296,8 +326,11 @@ impl RenderOnce for FileMessage {
             .children(self.on_download.map(|download| {
                 IconButton::new((self.id.clone(), "download"), IconName::Download)
                     .variant(ButtonVariant::Ghost)
-                    .tooltip(i18n::text(cx, "file.download", &[]))
-                    .on_click(move |_, window, cx| download(window, cx))
+                    .tooltip(tip)
+                    .on_click(move |_, window, cx| {
+                        cx.stop_propagation();
+                        download(window, cx)
+                    })
             }))
     }
 }
