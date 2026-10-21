@@ -310,7 +310,12 @@ impl RenderOnce for MailComposer {
         let choices: Vec<Choice> = self
             .contacts
             .iter()
-            .map(|contact| Choice::new(contact.address.clone(), contact.name.clone()))
+            .map(|contact| match contact.name.is_empty() {
+                true => Choice::new(contact.address.clone(), contact.address.clone()),
+                // The note keeps the address findable.
+                false => Choice::new(contact.address.clone(), contact.name.clone())
+                    .note(contact.address.clone()),
+            })
             .collect();
         let theme = cx.theme();
         let colors = &theme.colors;

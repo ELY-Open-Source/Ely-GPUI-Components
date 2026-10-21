@@ -70,6 +70,21 @@ fn a_suggested_person_and_a_subject_go_out_as_one_draft(cx: &mut TestAppContext)
 }
 
 #[gpui::test]
+fn an_address_typed_in_part_finds_its_person(cx: &mut TestAppContext) {
+    let (host, cx) = writing(composer, cx);
+    tab_to(1, cx);
+    cx.simulate_input("ben@atr");
+    settle(cx);
+    press("enter", cx);
+    next(cx);
+    next(cx);
+    cx.simulate_input("Samples");
+    next(cx);
+    press("space", cx);
+    assert_eq!(heard(&host, cx), ["send ben@atrium.studio | Samples"]);
+}
+
+#[gpui::test]
 fn cc_and_bcc_show_once_asked(cx: &mut TestAppContext) {
     let (_, cx) = writing(composer, cx);
     assert!(cx.debug_bounds("composer-cc").is_none());
