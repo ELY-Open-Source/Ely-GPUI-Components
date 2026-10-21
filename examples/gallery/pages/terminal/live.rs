@@ -55,18 +55,31 @@ fn launch(shell: usize) -> Launch {
     }
 }
 
+/// A shell with no profile or AutoRun, its prompt the folder's name, in this repository.
 #[cfg(windows)]
 fn launch(shell: usize) -> Launch {
     let (_, program) = SHELLS[shell];
+    let cwd = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let folder = cwd
+        .file_name()
+        .expect("the manifest's folder has a name")
+        .to_string_lossy()
+        .into_owned();
     let args = if program == "powershell.exe" {
-        vec!["-NoLogo".into(), "-NoProfile".into()]
+        vec![
+            "-NoLogo".into(),
+            "-NoProfile".into(),
+            "-NoExit".into(),
+            "-Command".into(),
+            "function prompt { (Split-Path -Leaf $PWD) + ' › ' }".into(),
+        ]
     } else {
-        Vec::new()
+        vec!["/D".into()]
     };
     Launch {
         program: Some((program.into(), args)),
-        cwd: Some(PathBuf::from(env!("CARGO_MANIFEST_DIR"))),
-        ..Launch::default()
+        cwd: Some(cwd),
+        env: vec![("PROMPT".into(), format!("{folder} › "))],
     }
 }
 
