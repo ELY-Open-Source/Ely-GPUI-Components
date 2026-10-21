@@ -1,3 +1,6 @@
+#[cfg(all(not(target_family = "wasm"), feature = "test-support"))]
+mod follow;
+
 use std::{fs, path::PathBuf};
 
 use gpui::Hsla;
@@ -9,8 +12,8 @@ use crate::{
 };
 
 const THEMES: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/src/settings/omarchy/themes");
-const TOKYO_NIGHT: &str = include_str!("themes/tokyo-night.toml");
-const LATTE: &str = include_str!("themes/catppuccin-latte.toml");
+const TOKYO_NIGHT: &str = include_str!("../themes/tokyo-night.toml");
+const LATTE: &str = include_str!("../themes/catppuccin-latte.toml");
 /// Tokyo Night as `omarchy-theme-colors-from-alacritty` writes it: ANSI names alone.
 const GENERATED: &str = "accent = \"#7aa2f7\"\nselection = \"#292e42\"\nbackground = \"#1a1b26\"\nforeground = \"#a9b1d6\"\ncolor0 = \"#1a1b26\"\ncolor1 = \"#f7768e\"\ncolor2 = \"#9ece6a\"\ncolor3 = \"#e0af68\"\ncolor4 = \"#7aa2f7\"\ncolor5 = \"#ad8ee6\"\ncolor6 = \"#449dab\"\ncolor7 = \"#a9b1d6\"\ncolor8 = \"#414868\"\ncolor9 = \"#ff7a93\"\ncolor10 = \"#b9f27c\"\ncolor11 = \"#ff9e64\"\ncolor12 = \"#7da6ff\"\ncolor13 = \"#bb9af7\"\ncolor14 = \"#0db9d7\"\ncolor15 = \"#c0caf5\"\n";
 

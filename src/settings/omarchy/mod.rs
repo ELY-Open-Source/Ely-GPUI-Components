@@ -1,4 +1,6 @@
 mod colors;
+#[cfg(not(target_family = "wasm"))]
+mod follow;
 mod palette;
 #[cfg(test)]
 mod tests;
@@ -11,6 +13,8 @@ use std::{
 use anyhow::{Context, Result};
 
 use crate::theme::{Mode, Palette};
+#[cfg(not(target_family = "wasm"))]
+pub use follow::{follow_omarchy, stop_omarchy};
 
 /// Omarchy's current theme, read: its name and mode, the palette it gives, and the hues it lacks, which Ely's colors fill.
 #[derive(Clone, Debug, PartialEq)]

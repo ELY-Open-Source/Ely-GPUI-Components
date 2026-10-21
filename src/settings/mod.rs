@@ -23,6 +23,8 @@ pub use editor::{ThemeDraft, ThemeEditor};
 pub use importer::ThemeImporter;
 pub use network::{Proxy, ProxySettings, manual};
 pub use omarchy::{OmarchyTheme, omarchy_current_dir, read_omarchy_theme};
+#[cfg(not(target_family = "wasm"))]
+pub use omarchy::{follow_omarchy, stop_omarchy};
 pub use preferences::{
     Notices, NotificationSettings, Privacy, PrivacySettings, Startup, StartupSettings,
 };

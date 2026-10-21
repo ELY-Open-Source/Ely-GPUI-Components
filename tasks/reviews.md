@@ -392,3 +392,5 @@
 | O1 | 1 | PASS | |
 | O2 | 1 | FAIL | one extreme for the whole palette refused a repairable hue; an unended last line read; a light.mode folder read as light |
 | O2 | 2 | PASS | |
+| O3 | 1 | FAIL | the settle ran from the first event, so a slow swap showed Ely's palette between; an owner's palette outlived follow and stop |
+| O3 | 2 | PASS | 22 tests on Windows and Linux (WSL) |
