@@ -19,6 +19,7 @@ Rules: items run in PRD chapter order. Each passes `scripts/check.sh` and a code
 - [x] O4 Theme (ch. 39): the Theme guide, README, AGENTS.md; `tasks/ch31-43.md` stays, as Omarchy is no PRD entry and T55 carries it
 - [x] O5 Acceptance: the checklist, item by item
 - [x] O6 CI: Windows' CRLF checkout changed the fixtures' bytes, and a test's replace missed; `.gitattributes` holds `src/settings/omarchy/themes` to LF
+- [x] O7 Linux windows: `gpui_platform` lacked `wayland` and `x11`, so on Linux the gallery and every example ran headless and opened no window (found by a WSLg probe); the manifest, CI's Linux job, README, the install guide and AGENTS.md take both
 
 ## Acceptance
 
@@ -38,7 +39,7 @@ Rules: items run in PRD chapter order. Each passes `scripts/check.sh` and a code
 | 9 | Ordered list, one item at a time, review in a herdr split | this file, `tasks/reviews.md` | codex `gpt-6.1-sol` xhigh fast; O0 2 rounds, O1 1, O2 2, O3 2, O4 2 | Done |
 | 10 | check.sh, files under 500 lines, one-line comments, no dead code | `scripts/check.sh` | passes on Windows at each item; the crate's tests on Linux (WSL) | Done |
 | 11 | AGENTS.md follows the stack | Stack, Rules, Decisions | O0, O4 | Done |
-| 12 | A live Omarchy desktop | — | Not run: no Omarchy machine here; tests use Omarchy's own files and swap order in temporary folders | Open |
+| 12 | A live Linux window | O7 | Under WSLg's X11, a window followed a folder from Tokyo Night to Catppuccin Latte in `omarchy-theme-set`'s order and repainted, shot by `import`; Omarchy's Hyprland itself not run | Done, Hyprland open |
 | 13 | ElyOffice and ELYTerminal on the library's reader | — | Not needed: both build on this library (the owner, 2026-10-21) | Closed |
 
 Notes: the terminal draws on `surface`, Ely's own choice, so its ground sits 4% from Omarchy's background. CI's Mac job sat queued all day and its Linux leg fails a font test older than this work. Three O2 fixes were proven red only by the reviewer's probes.
