@@ -200,8 +200,11 @@ fn main() -> Result<()> {
         page,
         capture,
     } = parse_args()?;
-    // A script aims across its page; stories hold part.
-    let scripted = start.narrow.is_none() && start.story.is_none();
+    // A script aims across its page; stories hold part. Its input is posted through AppKit, so only macOS plays one.
+    let scripted = start.narrow.is_none() && start.story.is_none() && cfg!(target_os = "macos");
+    if capture.is_some() && cfg!(not(target_os = "macos")) {
+        log::warn!("capture: scripted states need macOS, so only the pages are shot");
+    }
     gpui_platform::application()
         .with_assets(GalleryAssets)
         .run(move |cx: &mut App| {

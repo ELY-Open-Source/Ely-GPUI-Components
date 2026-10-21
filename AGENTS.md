@@ -9,6 +9,7 @@ Ely GPUI Component. A component library for GPUI, in light and dark.
 - Assets, embedded with `rust-embed`: Lucide 1.48.0 icons (ISC), Inter 4.1 (regular, medium, semibold, italic), JetBrains Mono 2.304 and IBM Plex Sans Regular (OFL). Plex sits unmodified, its name reserved, where gpui's svg renderer loads it: gpui_web answers `.SystemUIFont` with it, and svg text falls back to it on the web.
 - Catalog data: `emojis` (Unicode emoji), `isolang` (ISO 639, native names), `isocountry` (ISO 3166), `iso_currency` (ISO 4217, also minor units for money).
 - Codes: `qrcode` (QR) and `barcoders` (Code 128, EAN-13), both MIT OR Apache-2.0, default features off. `rqrr` 0.11 ((MIT OR Apache-2.0) AND ISC, default features off) reads QR codes from the host's frames.
+- Windows capture: `windows-sys` 0.59 (MIT OR Apache-2.0, a dev-dependency, Windows only) has the window draw itself through `PrintWindow`, which holds what DirectX presents; `raw-window-handle` 0.6 finds the window.
 - macOS extras (tray icon, Dock badge) call AppKit through `cocoa` 0.26 and `objc` 0.2, the crates gpui already links.
 - Web views: `wry` 0.57 (Apache-2.0 OR MIT, default features off, macOS only) lays a child WKWebView over the window.
 - Terminal: `alacritty_terminal` 0.26 (Apache-2.0, default features off, native only) for the grid, its parser and the pseudo-terminal; `futures` carries its events. `vte` 0.15 (Apache-2.0 OR MIT), the parser it re-exports, reads `AnsiText`'s codes alone, so colored output builds for wasm32.
@@ -23,7 +24,7 @@ Ely GPUI Component. A component library for GPUI, in light and dark.
 ## Commands
 
 - `cargo run --example gallery` opens the gallery. `-- --page <slug>` starts on a page; `--story <title or slug>` with it draws that section alone, and `--capture` then shoots it without the page's script.
-- `cargo run --example gallery -- --capture <dir>` writes PNGs of every page, light and dark, top to bottom, then each page's scripted states, including windows the demos open. macOS only.
+- `cargo run --example gallery -- --capture <dir>` writes PNGs of every page, light and dark, top to bottom, then each page's scripted states, including windows the demos open. macOS plays the scripts; Windows shoots the pages alone, as a script's input is posted through AppKit.
 - `cargo run --example gallery -- --narrow 280 --capture <dir>` lays each page, header and body, at that width in a padded card and shoots it without its script, whose aims are measured at full width. Demos that set their own width run past the card.
 - `RUSTC_BOOTSTRAP=1 cargo check --lib --target wasm32-unknown-unknown` checks the web build; gpui_web's `wasm_thread` needs the bootstrap, as Zed's web examples do.
 - `ELY_GALLERY_ASSETS=<address of out/assets/> scripts/web.sh <out>` builds the gallery for the browser, profile `web`, and fails past Cloudflare's 25 MiB. It opens at `?page=<slug>&story=<title or slug>&theme=light|dark`; the host page calls `gallery.setTheme(mode)` or posts `{ ely: "theme", theme }`, before the wasm runs or after, and the page posts `{ ely: "ready" }` to its parent once it runs.
