@@ -1,0 +1,2 @@
+# Omarchy writes LF; the fixtures are its bytes.
+src/settings/omarchy/themes/** eol=lf

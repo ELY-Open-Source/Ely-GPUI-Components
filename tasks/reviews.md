@@ -398,3 +398,4 @@
 | O4 | 2 | PASS | |
 | O5 | 1 | FAIL | the scan claim missed the lift ends and the light export; the table left out the gate, the shared audit and the missing hues |
 | O5 | 2 | PASS | |
+| O6 | 1 | PASS | the CRLF checkout reproduced locally; a fresh autocrlf clone keeps LF with the rule |

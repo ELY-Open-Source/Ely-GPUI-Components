@@ -18,6 +18,7 @@ Rules: items run in PRD chapter order. Each passes `scripts/check.sh` and a code
 - [x] O3 Settings (ch. 35): `settings::follow_omarchy` and `stop_omarchy`: the theme worn on its mode now and after each switch, watched through `notify`; a bad theme logs and the colors stay; tested on Windows and on Linux (WSL)
 - [x] O4 Theme (ch. 39): the Theme guide, README, AGENTS.md; `tasks/ch31-43.md` stays, as Omarchy is no PRD entry and T55 carries it
 - [x] O5 Acceptance: the checklist, item by item
+- [x] O6 CI: Windows' CRLF checkout changed the fixtures' bytes, and a test's replace missed; `.gitattributes` holds `src/settings/omarchy/themes` to LF
 
 ## Acceptance
 
@@ -38,6 +39,6 @@ Rules: items run in PRD chapter order. Each passes `scripts/check.sh` and a code
 | 10 | check.sh, files under 500 lines, one-line comments, no dead code | `scripts/check.sh` | passes on Windows at each item; the crate's tests on Linux (WSL) | Done |
 | 11 | AGENTS.md follows the stack | Stack, Rules, Decisions | O0, O4 | Done |
 | 12 | A live Omarchy desktop | — | Not run: no Omarchy machine here; tests use Omarchy's own files and swap order in temporary folders | Open |
-| 13 | ElyOffice and ELYTerminal on the library's reader | — | Later, at the owner's word | Open |
+| 13 | ElyOffice and ELYTerminal on the library's reader | — | Not needed: both build on this library (the owner, 2026-10-21) | Closed |
 
 Notes: the terminal draws on `surface`, Ely's own choice, so its ground sits 4% from Omarchy's background. CI's Mac job sat queued all day and its Linux leg fails a font test older than this work. Three O2 fixes were proven red only by the reviewer's probes.
