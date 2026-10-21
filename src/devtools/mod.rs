@@ -1,3 +1,4 @@
+mod audit;
 mod collection;
 mod connection_form;
 mod connections;
@@ -23,6 +24,7 @@ mod xml;
 #[cfg(all(test, feature = "test-support"))]
 mod tests;
 
+pub use audit::{Check, MARK_CONTRAST, TEXT_CONTRAST, audit};
 pub use collection::{CollectionTree, Saved, moved};
 pub use connection_form::{ConnectionForm, TestState};
 pub use connections::{Connection, ConnectionManager, ConnectionState, Engine};

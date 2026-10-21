@@ -389,3 +389,4 @@
 | G8 | 1 | PASS | the story ran live from the wasm build under Playwright; desktop e2e 43 passed |
 | O0 | 1 | FAIL | the Kit guide still installed gpui-kit "0.7" |
 | O0 | 2 | PASS | codex gpt-6.1-sol xhigh fast |
+| O1 | 1 | PASS | |
