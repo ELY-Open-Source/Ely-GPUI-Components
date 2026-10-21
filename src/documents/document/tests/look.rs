@@ -341,3 +341,26 @@ fn a_small_resize_centers_the_source_line(cx: &mut TestAppContext) {
     let off = source_off(&document, cx);
     assert!(off < px(4.0), "{off:?} from the middle");
 }
+
+#[gpui::test]
+fn source_numbers_its_lines_when_asked(cx: &mut TestAppContext) {
+    let (document, cx) = open("One\nTwo\n", MarkdownMode::Source, cx);
+    let numbers = |cx: &mut gpui::VisualTestContext| {
+        document.read_with(cx, |document, cx| document.editor.read(cx).options.numbers)
+    };
+    assert_eq!(
+        numbers(cx),
+        crate::editor::LineNumbers::Hidden,
+        "off at first"
+    );
+    let look = DocumentLook {
+        line_numbers: true,
+        ..DocumentLook::default()
+    };
+    document.update(cx, |document, cx| document.set_look(look, cx));
+    assert_eq!(numbers(cx), crate::editor::LineNumbers::Absolute);
+    document.update(cx, |document, cx| {
+        document.set_look(DocumentLook::default(), cx)
+    });
+    assert_eq!(numbers(cx), crate::editor::LineNumbers::Hidden);
+}

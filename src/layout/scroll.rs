@@ -2,9 +2,9 @@ use std::{cell::Cell, rc::Rc, time::Duration};
 
 use gpui::{
     AnyElement, App, Axis, Bounds, Canvas, Div, ElementId, EmptyView, Entity, EntityId,
-    FocusHandle, HoverListenerMode, InteractiveElement, IntoElement, ParentElement, Pixels, Point,
-    RenderOnce, ScrollHandle, StatefulInteractiveElement, StyleRefinement, Styled, Window, canvas,
-    div, point, prelude::*,
+    FocusHandle, HoverListenerMode, InteractiveElement, IntoElement, ListOffset, ListState,
+    ParentElement, Pixels, Point, RenderOnce, ScrollHandle, StatefulInteractiveElement,
+    StyleRefinement, Styled, Window, canvas, div, point, prelude::*, px,
 };
 use smallvec::SmallVec;
 use web_time::Instant;
@@ -101,28 +101,163 @@ struct ThumbDrag {
     anchor: Rc<Cell<Option<Pixels>>>,
 }
 
-/// Overlay thumb for a `ScrollHandle`; drag it to scroll.
+/// What a scrollbar moves: a scroll box or a list.
+#[derive(Clone)]
+pub enum ScrollSource {
+    Handle(ScrollHandle),
+    List(ListState),
+}
+
+impl From<&ScrollHandle> for ScrollSource {
+    fn from(handle: &ScrollHandle) -> Self {
+        Self::Handle(handle.clone())
+    }
+}
+
+impl From<&ListState> for ScrollSource {
+    fn from(list: &ListState) -> Self {
+        Self::List(list.clone())
+    }
+}
+
+/// Where the view sits: the track, and shares shown and passed.
+struct Place {
+    span: Pixels,
+    shown: f32,
+    passed: f32,
+}
+
+impl ScrollSource {
+    /// A list: its top item and the offset into it.
+    fn offset(&self) -> Point<Pixels> {
+        match self {
+            Self::Handle(handle) => handle.offset(),
+            Self::List(list) => {
+                let top = list.logical_scroll_top();
+                point(px(top.item_ix as f32), top.offset_in_item)
+            }
+        }
+    }
+
+    /// None when everything shows.
+    fn place(&self, axis: Axis) -> Option<Place> {
+        match self {
+            Self::Handle(handle) => {
+                let (view, max, offset) =
+                    (handle.bounds().size, handle.max_offset(), handle.offset());
+                let (span, reach, scrolled) = match axis {
+                    Axis::Vertical => (view.height, max.y, -offset.y),
+                    Axis::Horizontal => (view.width, max.x, -offset.x),
+                };
+                (reach > Pixels::ZERO).then(|| Place {
+                    span,
+                    shown: span / (span + reach),
+                    passed: (scrolled / reach).clamp(0.0, 1.0),
+                })
+            }
+            // Lists measure lazily: their place counts items.
+            Self::List(list) => {
+                let (first, shown, count) = list_items(list)?;
+                let rest = count - shown;
+                Some(Place {
+                    span: list.viewport_bounds().size.height,
+                    shown: shown / count,
+                    passed: (first / rest).clamp(0.0, 1.0),
+                })
+            }
+        }
+    }
+
+    /// Scrolls so `ratio` of what is hidden lies above.
+    fn set(&self, axis: Axis, ratio: f32) {
+        match self {
+            Self::Handle(handle) => {
+                let (max, current) = (handle.max_offset(), handle.offset());
+                handle.set_offset(match axis {
+                    Axis::Vertical => point(current.x, -(max.y * ratio)),
+                    Axis::Horizontal => point(-(max.x * ratio), current.y),
+                });
+            }
+            Self::List(list) => {
+                let Some((_, shown, count)) = list_items(list) else {
+                    return;
+                };
+                let at = (count - shown) * ratio;
+                let item_ix = at.floor() as usize;
+                let height = list
+                    .bounds_for_item(item_ix)
+                    .map_or(Pixels::ZERO, |b| b.size.height);
+                list.scroll_to(ListOffset {
+                    item_ix,
+                    offset_in_item: height * at.fract(),
+                });
+            }
+        }
+    }
+}
+
+/// Top item as a fraction, items shown, item count.
+fn list_items(list: &ListState) -> Option<(f32, f32, f32)> {
+    let (count, view) = (list.item_count(), list.viewport_bounds());
+    let top = list.logical_scroll_top();
+    let height = |ix| list.bounds_for_item(ix).map(|bounds| bounds.size.height);
+    let into = match height(top.item_ix) {
+        Some(height) if height > Pixels::ZERO => (top.offset_in_item / height).clamp(0.0, 1.0),
+        _ => 0.0,
+    };
+    let mut shown = 0.0;
+    for ix in top.item_ix..count {
+        let Some(bounds) = list.bounds_for_item(ix) else {
+            break;
+        };
+        if bounds.top() >= view.bottom() {
+            break;
+        }
+        let seen = bounds.bottom().min(view.bottom()) - bounds.top().max(view.top());
+        if bounds.size.height > Pixels::ZERO {
+            shown += (seen / bounds.size.height).max(0.0);
+        }
+    }
+    let count = count as f32;
+    (shown > 0.0 && shown < count - 0.01).then_some((top.item_ix as f32 + into, shown, count))
+}
+
+/// How visible a scrollbar is.
+#[derive(Clone, Copy)]
+enum Shown {
+    Given(f32),
+    /// While scrolling or hovered, then fading.
+    Auto,
+}
+
+/// Overlay thumb for a scroll box or list; drag it to scroll.
 #[derive(IntoElement)]
 pub struct Scrollbar {
     id: ElementId,
-    handle: ScrollHandle,
+    handle: ScrollSource,
     axis: Axis,
-    presence: f32,
+    shown: Shown,
 }
 
 impl Scrollbar {
-    pub fn new(id: impl Into<ElementId>, handle: &ScrollHandle, axis: Axis) -> Self {
+    pub fn new(id: impl Into<ElementId>, source: impl Into<ScrollSource>, axis: Axis) -> Self {
         Self {
             id: id.into(),
-            handle: handle.clone(),
+            handle: source.into(),
             axis,
-            presence: 1.0,
+            shown: Shown::Given(1.0),
         }
     }
 
     /// Fades the thumb; 0 hides it.
     pub fn presence(mut self, presence: f32) -> Self {
-        self.presence = presence.clamp(0.0, 1.0);
+        self.shown = Shown::Given(presence.clamp(0.0, 1.0));
+        self
+    }
+
+    /// Shows while scrolling or under the pointer, then fades.
+    pub fn auto(mut self) -> Self {
+        self.shown = Shown::Auto;
         self
     }
 }
@@ -136,26 +271,39 @@ impl RenderOnce for Scrollbar {
         let rem = window.rem_size();
         let thickness = theme.scrollbar_thickness().to_pixels(rem);
         let min_thumb = theme.scrollbar_min_thumb().to_pixels(rem);
-        let (view, max, offset) = (
-            self.handle.bounds().size,
-            self.handle.max_offset(),
-            self.handle.offset(),
-        );
-        let (span, reach, scrolled) = match self.axis {
-            Axis::Vertical => (view.height, max.y, -offset.y),
-            Axis::Horizontal => (view.width, max.x, -offset.x),
+        let activity = matches!(self.shown, Shown::Auto).then(|| {
+            window.use_keyed_state((self.id.clone(), "activity"), cx, |_, _| Activity {
+                handle: ScrollHandle::new(),
+                last: Point::default(),
+                active_at: None,
+                hovered: false,
+            })
+        });
+        let given = match self.shown {
+            Shown::Given(presence) => presence,
+            Shown::Auto => 0.0,
         };
-        let length = (span * (span / (span + reach))).max(min_thumb).min(span);
+        let presence = activity.as_ref().map_or(given, |state| {
+            track_activity(state, self.handle.offset(), window, cx)
+        });
+        let hidden = activity.is_none() && presence <= 0.0;
+        let Some(place) = self.handle.place(self.axis).filter(|_| !hidden) else {
+            return div().into_any_element();
+        };
+        let span = place.span;
+        let length = (span * place.shown).max(min_thumb).min(span);
         let travel = span - length;
-        if reach <= Pixels::ZERO || travel <= Pixels::ZERO || self.presence <= 0.0 {
+        if travel <= Pixels::ZERO {
             return div().into_any_element();
         }
-        let start = travel * (scrolled / reach).clamp(0.0, 1.0);
+        let theme = cx.theme();
+        let start = travel * place.passed;
         let axis = self.axis;
         let handle = self.handle.clone();
         let (idle, busy) = (theme.colors.fg.opacity(0.22), theme.colors.fg.opacity(0.42));
         let thumb = div()
             .id("thumb")
+            .debug_selector(|| "scrollbar-thumb".into())
             .absolute()
             .rounded_full()
             .bg(idle)
@@ -175,7 +323,7 @@ impl RenderOnce for Scrollbar {
         let track = div()
             .id(self.id)
             .absolute()
-            .opacity(self.presence)
+            .opacity(presence)
             .on_drag_move(move |event: &gpui::DragMoveEvent<ThumbDrag>, window, cx| {
                 let drag = event.drag(cx);
                 if drag.owner != owner {
@@ -194,13 +342,16 @@ impl RenderOnce for Scrollbar {
                     }
                 };
                 let ratio = ((drag.start + along - anchor) / travel).clamp(0.0, 1.0);
-                let target = -(reach * ratio);
-                let current = handle.offset();
-                handle.set_offset(match axis {
-                    Axis::Vertical => point(current.x, target),
-                    Axis::Horizontal => point(target, current.y),
-                });
+                handle.set(axis, ratio);
                 window.refresh();
+            })
+            .when_some(activity, |track, state| {
+                track.on_hover(move |hovered, _, cx| {
+                    state.update(cx, |activity, cx| {
+                        activity.hovered = *hovered;
+                        cx.notify();
+                    })
+                })
             });
         match axis {
             Axis::Vertical => track
@@ -277,11 +428,10 @@ impl ParentElement for ScrollArea {
 
 fn track_activity(
     state: &Entity<Activity>,
-    handle: &ScrollHandle,
+    offset: Point<Pixels>,
     window: &mut Window,
     cx: &mut App,
 ) -> f32 {
-    let offset = handle.offset();
     if state.read(cx).last != offset {
         state.update(cx, |activity, _| {
             activity.last = offset;
@@ -308,7 +458,7 @@ impl RenderOnce for ScrollArea {
             Some(handle) => handle,
             None => state.read(cx).handle.clone(),
         };
-        let presence = track_activity(&state, &handle, window, cx);
+        let presence = track_activity(&state, handle.offset(), window, cx);
         self.base
             .id(self.id)
             .relative()

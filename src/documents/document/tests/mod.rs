@@ -381,6 +381,7 @@ mod place;
 mod point;
 mod presses;
 mod reading;
+mod scroll;
 mod secondary;
 mod toc;
 mod tools;

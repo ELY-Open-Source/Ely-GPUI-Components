@@ -1,5 +1,5 @@
 use gpui::{
-    AnyElement, App, ClickEvent, Context, Div, ExternalPaths, FontWeight, InteractiveElement,
+    AnyElement, App, Axis, ClickEvent, Context, Div, ExternalPaths, FontWeight, InteractiveElement,
     IntoElement, KeyBinding, MouseButton, MouseDownEvent, ParentElement, Render,
     StatefulInteractiveElement, Styled, StyledText, Window, actions, div, list,
     prelude::FluentBuilder as _, relative,
@@ -12,6 +12,7 @@ use crate::{
         render::{HEAVY, Hooks, OpenCell, Pointed, draw_nodes, heading_step, point_lines},
     },
     forms::{self, Down, Up},
+    layout::{ScrollSource, Scrollbar},
     primitives::FocusRing as _,
     theme::{ActiveTheme, Radius, TextSize, Theme},
 };
@@ -304,7 +305,21 @@ impl Render for MarkdownDocument {
         };
         let blocks = column(blocks.into_any_element(), &self.look);
         let source = column(self.editor.clone().into_any_element(), &self.look);
-        match self.mode {
+        // One bar at the right edge, whichever view scrolls.
+        let scrolled = match self.mode {
+            MarkdownMode::Source => {
+                let scroll = self.editor.read(cx).scroll.0.borrow().base_handle.clone();
+                ScrollSource::Handle(scroll)
+            }
+            _ => ScrollSource::List(self.list.clone()),
+        };
+        let bar = Scrollbar::new(
+            ("markdown-scrollbar", cx.entity_id().as_u64()),
+            scrolled,
+            Axis::Vertical,
+        )
+        .auto();
+        let body = match self.mode {
             MarkdownMode::Source => root
                 .capture_action(cx.listener(|document, _: &crate::editor::Paste, _, cx| {
                     if document.paste_picture(cx) {
@@ -395,6 +410,7 @@ impl Render for MarkdownDocument {
                 .py_3()
                 .child(blocks)
                 .into_any_element(),
-        }
+        };
+        div().relative().size_full().child(body).child(bar)
     }
 }

@@ -4,6 +4,7 @@ use gpui::{Context, Rems, SharedString};
 
 use super::MarkdownDocument;
 use crate::documents::MarkdownMode;
+use crate::editor::LineNumbers;
 
 /// How the document shows its text (MARK-09).
 #[derive(Clone, Debug, PartialEq)]
@@ -18,6 +19,8 @@ pub struct DocumentLook {
     pub font: Option<SharedString>,
     /// Text size against the theme's.
     pub scale: f32,
+    /// Source mode numbers its lines.
+    pub line_numbers: bool,
 }
 
 impl Default for DocumentLook {
@@ -28,6 +31,7 @@ impl Default for DocumentLook {
             measure: None,
             font: None,
             scale: 1.0,
+            line_numbers: false,
         }
     }
 }
@@ -43,6 +47,11 @@ impl MarkdownDocument {
             editor.set_scale(look.scale, cx);
             editor.set_focus_line(look.focus, cx);
             editor.set_typewriter(look.typewriter, cx);
+            let numbers = match look.line_numbers {
+                true => LineNumbers::Absolute,
+                false => LineNumbers::Hidden,
+            };
+            editor.set_line_numbers(numbers, cx);
         });
         self.look = look;
         self.centered = None;
