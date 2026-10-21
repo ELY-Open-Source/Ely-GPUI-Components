@@ -396,3 +396,5 @@
 | O3 | 2 | PASS | 22 tests on Windows and Linux (WSL) |
 | O4 | 1 | FAIL | the guide promised status colors 4.5:1 on every surface; the audit checks the page and their tint |
 | O4 | 2 | PASS | |
+| O5 | 1 | FAIL | the scan claim missed the lift ends and the light export; the table left out the gate, the shared audit and the missing hues |
+| O5 | 2 | PASS | |
