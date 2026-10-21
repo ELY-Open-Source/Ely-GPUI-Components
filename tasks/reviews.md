@@ -390,3 +390,5 @@
 | O0 | 1 | FAIL | the Kit guide still installed gpui-kit "0.7" |
 | O0 | 2 | PASS | codex gpt-6.1-sol xhigh fast |
 | O1 | 1 | PASS | |
+| O2 | 1 | FAIL | one extreme for the whole palette refused a repairable hue; an unended last line read; a light.mode folder read as light |
+| O2 | 2 | PASS | |

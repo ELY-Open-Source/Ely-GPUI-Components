@@ -3,6 +3,7 @@ mod appearance;
 mod editor;
 mod importer;
 mod network;
+mod omarchy;
 mod preferences;
 mod search;
 mod section;
@@ -21,6 +22,7 @@ pub use appearance::{
 pub use editor::{ThemeDraft, ThemeEditor};
 pub use importer::ThemeImporter;
 pub use network::{Proxy, ProxySettings, manual};
+pub use omarchy::{OmarchyTheme, omarchy_current_dir, read_omarchy_theme};
 pub use preferences::{
     Notices, NotificationSettings, Privacy, PrivacySettings, Startup, StartupSettings,
 };

@@ -68,6 +68,9 @@ impl Hsva {
 /// Reads `#rgb`, `#rgba`, `#rrggbb` or `#rrggbbaa`, with or without the hash.
 pub(crate) fn parse_hex(text: &str) -> Result<Rgba, String> {
     let digits = text.trim().trim_start_matches('#');
+    if !digits.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err(format!("{text:?} is not a hex color"));
+    }
     let doubled = || digits.chars().flat_map(|ch| [ch, ch]);
     let long: String = match digits.len() {
         3 => doubled().chain("ff".chars()).collect(),
@@ -154,5 +157,6 @@ mod tests {
         assert_eq!(hex(parse_hex("#0008").unwrap()), "#00000088");
         assert!(parse_hex("#12345").is_err());
         assert!(parse_hex("#zzzzzz").is_err());
+        assert!(parse_hex("#+12345").is_err(), "a sign is no digit");
     }
 }
