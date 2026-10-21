@@ -60,8 +60,16 @@ impl ScrollSource {
         }
     }
 
+    /// A list's end in items, to hold through one drag.
+    pub(super) fn end(&self) -> Option<f32> {
+        match self {
+            Self::Handle(_) => None,
+            Self::List(list) => ends(list).map(|ends| ends.end),
+        }
+    }
+
     /// Scrolls so `ratio` of what is hidden lies above.
-    pub(super) fn set(&self, axis: Axis, ratio: f32) {
+    pub(super) fn set(&self, axis: Axis, ratio: f32, end: Option<f32>) {
         match self {
             Self::Handle(handle) => {
                 let (max, current) = (handle.max_offset(), handle.offset());
@@ -70,9 +78,12 @@ impl ScrollSource {
                     Axis::Horizontal => point(-(max.x * ratio), current.y),
                 });
             }
-            // Past the last item, gpui keeps to the end.
+            Self::List(list) if ratio >= 1.0 => list.scroll_to_end(),
             Self::List(list) => {
-                let at = list.item_count() as f32 * ratio;
+                let Some(end) = end.or_else(|| ends(list).map(|ends| ends.end)) else {
+                    return;
+                };
+                let at = end * ratio;
                 let item_ix = at.floor() as usize;
                 let height = list
                     .bounds_for_item(item_ix)
@@ -86,23 +97,29 @@ impl ScrollSource {
     }
 }
 
-/// Lists measure lazily, so their place counts items.
-fn list_place(list: &ListState) -> Option<Place> {
+/// Top, items in view and attainable top, in items.
+struct Ends {
+    first: f32,
+    shown: f32,
+    end: f32,
+    at_end: bool,
+}
+
+/// None when everything shows; lists measure lazily.
+fn ends(list: &ListState) -> Option<Ends> {
     let (count, view) = (list.item_count(), list.viewport_bounds());
-    let last = count.checked_sub(1)?;
+    let last = list.bounds_for_item(count.checked_sub(1)?);
     let top = list.logical_scroll_top();
-    let at_end = list
-        .bounds_for_item(last)
-        .is_some_and(|bounds| bounds.bottom() <= view.bottom());
+    let at_end = last.is_some_and(|bounds| bounds.bottom() <= view.bottom());
     if top.item_ix == 0 && top.offset_in_item <= Pixels::ZERO && at_end {
         return None;
     }
-    let into = match list.bounds_for_item(top.item_ix) {
-        Some(b) if b.size.height > Pixels::ZERO => {
-            (top.offset_in_item / b.size.height).clamp(0.0, 1.0)
-        }
+    let height = |ix| list.bounds_for_item(ix).map(|b| b.size.height);
+    let into = match height(top.item_ix) {
+        Some(height) if height > Pixels::ZERO => (top.offset_in_item / height).clamp(0.0, 1.0),
         _ => 0.0,
     };
+    let first = top.item_ix as f32 + into;
     let mut shown = 0.0;
     for ix in top.item_ix..count {
         let Some(bounds) = list.bounds_for_item(ix) else {
@@ -116,14 +133,52 @@ fn list_place(list: &ListState) -> Option<Place> {
             shown += (seen / bounds.size.height).max(0.0);
         }
     }
-    let count = count as f32;
+    let end = match last {
+        // The last in view: the rest scrolls exactly.
+        Some(last) => first + rest(list, first, last.bottom() - view.bottom()),
+        None => (count as f32 - shown).max(first),
+    };
+    Some(Ends {
+        first,
+        shown,
+        end,
+        at_end,
+    })
+}
+
+/// Items the top passes scrolling `left` more, from `first`.
+fn rest(list: &ListState, first: f32, mut left: Pixels) -> f32 {
+    let (mut ix, mut into, mut moved) = (first.floor() as usize, first.fract(), 0.0);
+    while left > Pixels::ZERO {
+        let Some(bounds) = list.bounds_for_item(ix) else {
+            break;
+        };
+        let height = bounds.size.height;
+        let room = height * (1.0 - into);
+        if height > Pixels::ZERO && left <= room {
+            return moved + left / height;
+        }
+        moved += 1.0 - into;
+        left -= room;
+        (ix, into) = (ix + 1, 0.0);
+    }
+    moved
+}
+
+fn list_place(list: &ListState) -> Option<Place> {
+    let Ends {
+        first,
+        shown,
+        end,
+        at_end,
+    } = ends(list)?;
     let passed = match at_end {
         true => 1.0,
-        false => ((top.item_ix as f32 + into) / count).clamp(0.0, 1.0),
+        false => (first / end.max(f32::EPSILON)).clamp(0.0, 1.0),
     };
     Some(Place {
-        span: view.size.height,
-        shown: (shown / count).clamp(0.0, 1.0),
+        span: list.viewport_bounds().size.height,
+        shown: (shown / (end + shown).max(f32::EPSILON)).clamp(0.0, 1.0),
         passed,
     })
 }

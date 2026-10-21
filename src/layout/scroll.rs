@@ -98,10 +98,11 @@ fn presence(activity: &Activity, fade: Duration) -> f32 {
     1.0 - (quiet.as_secs_f32() / fade.as_secs_f32()).min(1.0)
 }
 
-/// Thumb start at press, and the pointer's first position.
+/// Thumb start at press, the pointer's first position, the end.
 struct ThumbDrag {
     owner: EntityId,
     start: Pixels,
+    end: Option<f32>,
     anchor: Rc<Cell<Option<Pixels>>>,
 }
 
@@ -191,12 +192,11 @@ impl RenderOnce for Scrollbar {
             .rounded_full()
             .bg(idle)
             .hover(|style| style.bg(busy))
-            // Nothing beneath sees the press.
-            .block_mouse_except_scroll()
             .on_drag(
                 ThumbDrag {
                     owner,
                     start,
+                    end: self.handle.end(),
                     anchor: Rc::new(Cell::new(None)),
                 },
                 |_, _, _, cx| cx.new(|_| EmptyView),
@@ -209,6 +209,8 @@ impl RenderOnce for Scrollbar {
             .id(self.id)
             .absolute()
             .opacity(presence)
+            // Nothing beneath sees its presses.
+            .block_mouse_except_scroll()
             .on_drag_move(move |event: &gpui::DragMoveEvent<ThumbDrag>, window, cx| {
                 let drag = event.drag(cx);
                 if drag.owner != owner {
@@ -227,7 +229,7 @@ impl RenderOnce for Scrollbar {
                     }
                 };
                 let ratio = ((drag.start + along - anchor) / travel).clamp(0.0, 1.0);
-                handle.set(axis, ratio);
+                handle.set(axis, ratio, drag.end);
                 window.refresh();
             })
             .when_some(activity, |track, state| {

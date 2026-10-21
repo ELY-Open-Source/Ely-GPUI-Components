@@ -137,3 +137,41 @@ fn pressing_the_thumb_opens_no_block(cx: &mut TestAppContext) {
     drag_thumb(&[], cx);
     document.read_with(cx, |document, _| assert!(document.open.is_none()));
 }
+
+/// How strongly the thumb under the pointer is painted.
+fn hovered_alpha(cx: &mut gpui::VisualTestContext) -> f32 {
+    let thumb = cx.debug_bounds("scrollbar-thumb").expect("a thumb");
+    cx.simulate_mouse_move(thumb.center(), None, Modifiers::none());
+    frames(cx);
+    cx.update(|window, _| {
+        let bounds = thumb.scale(window.scale_factor());
+        let quads = window.painted_quads().into_iter();
+        let ours = quads.filter(|quad| quad.bounds == bounds);
+        let colors = ours.filter_map(|quad| quad.background.as_solid());
+        colors.map(|color| color.a).fold(0.0, f32::max)
+    })
+}
+
+#[gpui::test]
+fn the_thumb_shows_under_the_pointer(cx: &mut TestAppContext) {
+    let (_, cx) = open(&long(), MarkdownMode::Source, cx);
+    frames(cx);
+    let alpha = hovered_alpha(cx);
+    assert!(alpha > 0.1, "alpha {alpha}");
+}
+
+#[gpui::test]
+fn a_drag_up_from_a_tall_blocks_end_moves(cx: &mut TestAppContext) {
+    let lines: String = (0..300).map(|n| format!("Line {n}\n")).collect();
+    let (document, cx) = open(&format!("```text\n{lines}```\n"), MarkdownMode::Preview, cx);
+    frames(cx);
+    drag_thumb(&[10., 20., 60., 240., 900., 1600.], cx);
+    let top = |cx: &mut gpui::VisualTestContext| {
+        document.read_with(cx, |document, _| {
+            document.list.scroll_px_offset_for_scrollbar().y
+        })
+    };
+    let bottom = top(cx);
+    drag_thumb(&[-10., -20., -120.], cx);
+    assert!(top(cx) > bottom + px(200.), "{:?} from {bottom:?}", top(cx));
+}
