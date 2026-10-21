@@ -1,6 +1,6 @@
 use ely_gpui_component::{
     buttons::{Button, ButtonVariant},
-    shell::{TrayIcon, TrayItem, dock_badge, set_dock_badge},
+    shell::{TrayIcon, TrayItem, TrayLook, dock_badge, set_dock_badge},
     typography::Caption,
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Window};
@@ -20,7 +20,7 @@ pub fn tray(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let (toggle, pick) = (tray.clone(), tray);
     section(
         "TrayIcon / TrayMenu",
-        "An SF Symbol in the menu bar with a menu. macOS only.",
+        "An icon in the menu bar or tray, with a menu.",
         cx,
     )
     .child(
@@ -47,8 +47,13 @@ pub fn tray(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                                 TrayItem::Separator,
                                 TrayItem::Action(ITEMS[2].into()),
                             ];
+                            let look = TrayLook {
+                                symbol: "circle.hexagongrid",
+                                png: include_bytes!("../../assets/stickers/olive.png"),
+                                name: "Gallery".into(),
+                            };
                             let made = TrayIcon::new(
-                                "circle.hexagongrid",
+                                look,
                                 items,
                                 move |index, cx| {
                                     let label = match index {

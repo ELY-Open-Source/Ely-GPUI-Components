@@ -1691,8 +1691,10 @@ dependencies = [
  "wasm-bindgen",
  "web-sys",
  "web-time",
+ "windows 0.62.2",
  "windows-sys 0.59.0",
  "wry",
+ "zbus",
 ]
 
 [[package]]
