@@ -26,7 +26,7 @@ pub(crate) use grid::{columns_for, fit};
 pub(crate) use narrow::{measure_width, text_width};
 pub use page::{AppShell, MasterDetail, Page};
 pub use panes::{PaneGroup, PaneId, PaneLayout};
-pub use scroll::{ScrollArea, ScrollSource, Scrollbar, on_axis};
+pub use scroll::{ScrollArea, ScrollModel, ScrollPlace, ScrollSource, Scrollbar, on_axis};
 pub(crate) use scroll::{bring_into_view, reveal_when_focused};
 pub use scroll_aids::{ScrollShadow, ScrollToTop, StickyHeader};
 pub use sheet::{Drawer, Sheet};

@@ -10,8 +10,10 @@ use smallvec::SmallVec;
 use web_time::Instant;
 
 mod source;
+#[cfg(test)]
+mod tests;
 
-pub use source::ScrollSource;
+pub use source::{ScrollModel, ScrollPlace, ScrollSource};
 
 use super::ScrollShadow;
 use crate::{motion, theme::ActiveTheme};
@@ -168,10 +170,10 @@ impl RenderOnce for Scrollbar {
             Shown::Auto => 0.0,
         };
         let presence = activity.as_ref().map_or(given, |state| {
-            track_activity(state, self.handle.offset(), window, cx)
+            track_activity(state, self.handle.offset(cx), window, cx)
         });
         let hidden = activity.is_none() && presence <= 0.0;
-        let Some(place) = self.handle.place(self.axis).filter(|_| !hidden) else {
+        let Some(place) = self.handle.place(self.axis, cx).filter(|_| !hidden) else {
             return div().into_any_element();
         };
         let span = place.span;
@@ -229,7 +231,7 @@ impl RenderOnce for Scrollbar {
                     }
                 };
                 let ratio = ((drag.start + along - anchor) / travel).clamp(0.0, 1.0);
-                handle.set(axis, ratio, drag.end);
+                handle.set(axis, ratio, drag.end, cx);
                 window.refresh();
             })
             .when_some(activity, |track, state| {

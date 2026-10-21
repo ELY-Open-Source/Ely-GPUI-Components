@@ -1,12 +1,25 @@
 //! What a scrollbar reads and moves.
 
-use gpui::{Axis, ListOffset, ListState, Pixels, Point, ScrollHandle, point};
+use std::rc::Rc;
 
-/// What a scrollbar moves: a scroll box or a list.
+use gpui::{App, Axis, ListOffset, ListState, Pixels, Point, ScrollHandle, point};
+
+/// What a scrollbar moves: a box, list or kept scroll.
 #[derive(Clone)]
 pub enum ScrollSource {
     Handle(ScrollHandle),
     List(ListState),
+    Model(Rc<dyn ScrollModel>),
+}
+
+/// A scroll its owner keeps, such as a canvas.
+pub trait ScrollModel {
+    /// None when everything shows.
+    fn place(&self, axis: Axis, cx: &App) -> Option<ScrollPlace>;
+    /// Scrolls so `ratio` of what is hidden lies before.
+    fn set(&self, axis: Axis, ratio: f32, cx: &mut App);
+    /// Changes whenever the scroll moves.
+    fn offset(&self, cx: &App) -> Point<Pixels>;
 }
 
 impl From<&ScrollHandle> for ScrollSource {
@@ -22,7 +35,7 @@ impl From<&ListState> for ScrollSource {
 }
 
 /// The track, and the shares shown and passed.
-pub(super) struct Place {
+pub struct ScrollPlace {
     pub span: Pixels,
     pub shown: f32,
     pub passed: f32,
@@ -30,18 +43,19 @@ pub(super) struct Place {
 
 impl ScrollSource {
     /// A list: its top item and the offset into it.
-    pub(super) fn offset(&self) -> Point<Pixels> {
+    pub(super) fn offset(&self, cx: &App) -> Point<Pixels> {
         match self {
             Self::Handle(handle) => handle.offset(),
             Self::List(list) => {
                 let top = list.logical_scroll_top();
                 point(Pixels::from(top.item_ix), top.offset_in_item)
             }
+            Self::Model(model) => model.offset(cx),
         }
     }
 
     /// None when everything shows.
-    pub(super) fn place(&self, axis: Axis) -> Option<Place> {
+    pub(super) fn place(&self, axis: Axis, cx: &App) -> Option<ScrollPlace> {
         match self {
             Self::Handle(handle) => {
                 let (view, max, offset) =
@@ -50,26 +64,27 @@ impl ScrollSource {
                     Axis::Vertical => (view.height, max.y, -offset.y),
                     Axis::Horizontal => (view.width, max.x, -offset.x),
                 };
-                (reach > Pixels::ZERO).then(|| Place {
+                (reach > Pixels::ZERO).then(|| ScrollPlace {
                     span,
                     shown: span / (span + reach),
                     passed: (scrolled / reach).clamp(0.0, 1.0),
                 })
             }
             Self::List(list) => list_place(list),
+            Self::Model(model) => model.place(axis, cx),
         }
     }
 
     /// A list's end in items, to hold through one drag.
     pub(super) fn end(&self) -> Option<f32> {
         match self {
-            Self::Handle(_) => None,
+            Self::Handle(_) | Self::Model(_) => None,
             Self::List(list) => ends(list).map(|ends| ends.end),
         }
     }
 
     /// Scrolls so `ratio` of what is hidden lies above.
-    pub(super) fn set(&self, axis: Axis, ratio: f32, end: Option<f32>) {
+    pub(super) fn set(&self, axis: Axis, ratio: f32, end: Option<f32>, cx: &mut App) {
         match self {
             Self::Handle(handle) => {
                 let (max, current) = (handle.max_offset(), handle.offset());
@@ -78,6 +93,7 @@ impl ScrollSource {
                     Axis::Horizontal => point(-(max.x * ratio), current.y),
                 });
             }
+            Self::Model(model) => model.set(axis, ratio, cx),
             Self::List(list) if ratio >= 1.0 => list.scroll_to_end(),
             Self::List(list) => {
                 let Some(end) = end.or_else(|| ends(list).map(|ends| ends.end)) else {
@@ -165,7 +181,7 @@ fn rest(list: &ListState, first: f32, mut left: Pixels) -> f32 {
     moved
 }
 
-fn list_place(list: &ListState) -> Option<Place> {
+fn list_place(list: &ListState) -> Option<ScrollPlace> {
     let Ends {
         first,
         shown,
@@ -176,7 +192,7 @@ fn list_place(list: &ListState) -> Option<Place> {
         true => 1.0,
         false => (first / end.max(f32::EPSILON)).clamp(0.0, 1.0),
     };
-    Some(Place {
+    Some(ScrollPlace {
         span: list.viewport_bounds().size.height,
         shown: (shown / (end + shown).max(f32::EPSILON)).clamp(0.0, 1.0),
         passed,
