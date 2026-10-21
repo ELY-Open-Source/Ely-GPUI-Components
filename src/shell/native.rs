@@ -65,6 +65,10 @@ struct Route {
 }
 
 impl Route {
+    #[cfg_attr(
+        not(any(target_os = "linux", target_os = "macos", target_os = "windows")),
+        expect(dead_code, reason = "no tray takes it")
+    )]
     fn pick(&self, index: usize) {
         log::info!("tray: picked item {index}");
         let on_pick = self.on_pick.clone();

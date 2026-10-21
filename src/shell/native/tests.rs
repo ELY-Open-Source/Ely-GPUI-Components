@@ -42,8 +42,8 @@ fn tray(cx: &mut TestAppContext) -> (TrayIcon, Rc<RefCell<Vec<usize>>>) {
 /// Runs until `picked` holds `want`, or fails after two seconds.
 fn wait_for(cx: &mut TestAppContext, picked: &RefCell<Vec<usize>>, want: &[usize]) {
     cx.executor().allow_parking();
-    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(2);
-    while picked.borrow().as_slice() != want && std::time::Instant::now() < deadline {
+    let deadline = web_time::Instant::now() + std::time::Duration::from_secs(2);
+    while picked.borrow().as_slice() != want && web_time::Instant::now() < deadline {
         cx.run_until_parked();
         std::thread::sleep(std::time::Duration::from_millis(10));
     }

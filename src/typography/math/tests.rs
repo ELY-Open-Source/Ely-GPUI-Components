@@ -1,4 +1,4 @@
-use gpui::AppContext as _;
+use gpui::{AppContext as _, px};
 
 use super::*;
 

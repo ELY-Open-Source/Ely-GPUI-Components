@@ -1,12 +1,12 @@
 # GPUI Kit
 
-Ely runs beside Longbridge's [GPUI Kit](https://gpui-kit.com) in one app and one window. Both build on one GPUI: Ely pins `gpui-pre =0.3.8`, the snapshot Kit 0.7.1 pins.
+Ely runs beside Longbridge's [GPUI Kit](https://gpui-kit.com) in one app and one window. Both build on one GPUI: Ely pins `gpui-pre =0.3.9`, the snapshot Kit 0.8.0 pins.
 
 ## Add the dependencies
 
 ```toml
 [dependencies]
-gpui-kit = "0.7"
+gpui-kit = "0.8"
 ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components" }
 ```
 

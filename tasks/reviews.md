@@ -387,3 +387,5 @@
 | G7 | 2 | FAIL | Edit and Share beside the Windows buttons still pushed the close button to 322px |
 | G7 | 3 | FAIL | the host's items shrank to 0px, out of reach; fixed after the cap (one control's width at least, a wheel test), not reviewed again |
 | G8 | 1 | PASS | the story ran live from the wasm build under Playwright; desktop e2e 43 passed |
+| O0 | 1 | FAIL | the Kit guide still installed gpui-kit "0.7" |
+| O0 | 2 | PASS | codex gpt-6.1-sol xhigh fast |

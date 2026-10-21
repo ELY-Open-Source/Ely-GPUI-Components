@@ -1,4 +1,4 @@
-use gpui::{App, Context, Focusable as _, ListOffset, ScrollStrategy, Window, px};
+use gpui::{App, Context, Focusable as _, ListOffset, Pixels, ScrollStrategy, Window};
 
 use super::{MarkdownDocument, Placement, cells};
 use crate::documents::{MarkdownMode, modes::joint};
@@ -150,7 +150,7 @@ impl MarkdownDocument {
         let into = line.saturating_sub(first) as f32 / lines as f32;
         self.list.scroll_to(ListOffset {
             item_ix,
-            offset_in_item: px(0.),
+            offset_in_item: Pixels::ZERO,
         });
         self.placing(ask);
         cx.notify();

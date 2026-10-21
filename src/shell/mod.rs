@@ -12,8 +12,6 @@ mod switcher;
 mod tabs;
 #[cfg(all(test, feature = "test-support"))]
 mod tests;
-#[cfg(all(test, feature = "test-support"))]
-mod title_tests;
 mod update;
 mod vibrancy;
 mod windows;

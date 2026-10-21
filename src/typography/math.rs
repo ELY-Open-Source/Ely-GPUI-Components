@@ -6,7 +6,7 @@ use std::{
 
 use gpui::{
     AnyElement, App, Asset, ElementId, InteractiveElement, IntoElement, ParentElement, Pixels,
-    RenderImage, RenderOnce, SharedString, Size, Styled, Window, div, img, px, size,
+    RenderImage, RenderOnce, SharedString, Size, Styled, Window, div, img, size,
 };
 use ratex_layout::{LayoutOptions, layout, to_display_list};
 use ratex_svg::{SvgOptions, render_to_svg};
@@ -190,7 +190,10 @@ fn framed(svg: &str, width: f32, height: f32) -> Result<(String, Size<Pixels>), 
     let right = ink.right().max(width);
     let bottom = ink.bottom().max(height);
     let (w, h) = (right - left, bottom - top);
-    Ok((wrapped(svg, [left, top, w, h])?, size(px(w), px(h))))
+    Ok((
+        wrapped(svg, [left, top, w, h])?,
+        size(Pixels::from(w), Pixels::from(h)),
+    ))
 }
 
 /// `svg` in a px root viewing `[left, top, w, h]`.

@@ -8,8 +8,8 @@ use std::{
 use base64::Engine as _;
 use gpui::{
     AnyElement, App, Asset, ElementId, Hsla, Image, ImageAssetLoader, ImageFormat,
-    InteractiveElement, IntoElement, ParentElement, RenderImage, RenderOnce, Resource,
-    SMOOTH_SVG_SCALE_FACTOR, SharedString, Styled, Window, div, img, px,
+    InteractiveElement, IntoElement, ParentElement, Pixels, RenderImage, RenderOnce, Resource,
+    SMOOTH_SVG_SCALE_FACTOR, SharedString, Styled, Window, div, img,
 };
 
 use crate::{
@@ -280,7 +280,7 @@ fn drawn(
             let width = i32::from(natural.width) as f32 / smooth;
             div()
                 .debug_selector(|| "markdown-picture".into())
-                .w(px(width))
+                .w(Pixels::from(width))
                 .max_w_full()
                 .child(img(image).size_full())
                 .into_any_element()

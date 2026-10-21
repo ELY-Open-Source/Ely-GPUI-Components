@@ -5,7 +5,7 @@ use gpui::{
     ParentElement, Point, Render, TestAppContext, Window, div, point, prelude::*, px,
 };
 
-use super::{ColumnShell, ShellColumn, TitleBar, WindowControls, guard_close};
+use crate::shell::{ColumnShell, ShellColumn, TitleBar, WindowControls, guard_close};
 use crate::theme::{Platform, Theme};
 
 struct Bar {
