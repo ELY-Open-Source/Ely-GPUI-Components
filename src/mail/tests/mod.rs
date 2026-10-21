@@ -14,6 +14,7 @@ use crate::{
 
 mod many;
 mod read;
+mod rows;
 mod sort;
 mod write;
 

@@ -173,6 +173,8 @@ impl RenderOnce for ListItem {
             .px_3()
             .py_1p5()
             .min_h(theme.control_height(ControlSize::Lg))
+            // Rows in a uniform list fill it.
+            .w_full()
             .rounded(theme.radius(Radius::Md))
             .border_1()
             .border_color(if self.current {

@@ -2,7 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    prelude::*, rems,
 };
 
 use super::{
@@ -11,6 +12,7 @@ use super::{
 };
 use crate::{
     i18n,
+    layout::{measure_width, text_width},
     primitives::{FocusRing, Icon, IconName, Tooltip},
     theme::{ActiveTheme, ControlSize, Radius},
 };
@@ -89,11 +91,13 @@ impl ToggleItem {
 
 type OnPress = Rc<dyn Fn(&mut Window, &mut App)>;
 
+/// `compact` shows the icon alone, its word a tooltip.
 fn toggle_face(
     id: ElementId,
     item: &ToggleItem,
     on: bool,
     size: ControlSize,
+    compact: bool,
     press: Option<OnPress>,
     cx: &App,
 ) -> impl IntoElement + use<> {
@@ -107,6 +111,10 @@ fn toggle_face(
     let (text, icon_size) = label_size(size);
     let fg = if on { colors.fg } else { colors.fg_muted };
     let (hover, value) = (colors.hover, item.value.clone());
+    let tip = match compact {
+        true => item.tooltip.clone().or_else(|| item.label.clone()),
+        false => item.tooltip.clone(),
+    };
     let name = item
         .label
         .clone()
@@ -125,7 +133,7 @@ fn toggle_face(
         .gap_1p5()
         .h(theme.control_height(size))
         .min_w(theme.control_height(size))
-        .when(item.label.is_some(), |face| {
+        .when(item.label.is_some() && !compact, |face| {
             face.px(theme.control_padding(size))
         })
         .rounded(theme.radius(Radius::Md))
@@ -151,10 +159,10 @@ fn toggle_face(
         .when_some(item.icon, |face, icon| {
             face.child(Icon::new(icon).size(icon_size).color(fg))
         })
-        .when_some(item.label.clone(), |face, label| face.child(label))
-        .when_some(item.tooltip.clone(), |face, text| {
-            face.tooltip(Tooltip::text(text))
+        .when_some(item.label.clone().filter(|_| !compact), |face, label| {
+            face.child(label)
         })
+        .when_some(tip, |face, text| face.tooltip(Tooltip::text(text)))
 }
 
 type OnToggle = Rc<dyn Fn(bool, &mut Window, &mut App)>;
@@ -209,7 +217,7 @@ impl RenderOnce for ToggleButton {
             }
         });
         let press = (!self.disabled).then_some(press);
-        toggle_face(self.id, &self.item, on, self.size, press, cx)
+        toggle_face(self.id, &self.item, on, self.size, false, press, cx)
     }
 }
 
@@ -279,7 +287,13 @@ fn pressed(selected: &[SharedString], value: &SharedString, multiple: bool) -> V
 }
 
 impl RenderOnce for ToggleGroup {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        // Last frame's width decides icons only.
+        let width = window.use_keyed_state((self.id.clone(), "width"), cx, |_, _| Pixels::ZERO);
+        let shown = *width.read(cx);
+        let compact = self.items.iter().all(|item| item.icon.is_some())
+            && shown > Pixels::ZERO
+            && shown < natural(&self.items, self.size, window, cx);
         let theme = cx.theme();
         let faces: Vec<_> = self
             .items
@@ -300,6 +314,7 @@ impl RenderOnce for ToggleGroup {
                     item,
                     on,
                     self.size,
+                    compact,
                     Some(press),
                     cx,
                 )
@@ -307,6 +322,7 @@ impl RenderOnce for ToggleGroup {
             .collect();
         div()
             .id(self.id)
+            .relative()
             .flex()
             .flex_wrap()
             .items_center()
@@ -315,8 +331,28 @@ impl RenderOnce for ToggleGroup {
             .rounded(theme.radius(Radius::Lg))
             .border_1()
             .border_color(theme.colors.border)
+            .child(measure_width(width))
             .children(faces)
     }
+}
+
+/// Every face with its word, edge to edge.
+fn natural(items: &[ToggleItem], size: ControlSize, window: &Window, cx: &App) -> Pixels {
+    let theme = cx.theme();
+    let rem = window.rem_size();
+    let (text, icon) = label_size(size);
+    let border = theme.hairline() * 2.0;
+    let pad = theme.control_padding(size).to_pixels(rem) * 2.0 + border;
+    let glyph = theme.icon_size(icon).to_pixels(rem) + rems(0.375).to_pixels(rem);
+    let gap = rems(0.125).to_pixels(rem);
+    let frame = gap * 2.0 + border + gap * items.len().saturating_sub(1) as f32;
+    items.iter().fold(frame, |sum, item| {
+        let word = item.label.as_ref().map_or(Pixels::ZERO, |label| {
+            pad + text_width(label, text, FontWeight::MEDIUM, window, cx)
+        });
+        let least = theme.control_height(size).to_pixels(rem);
+        sum + (word + item.icon.map_or(Pixels::ZERO, |_| glyph)).max(least)
+    })
 }
 
 #[cfg(test)]

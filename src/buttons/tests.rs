@@ -3,9 +3,9 @@ use gpui::{
     Render, Styled, TestAppContext, VisualTestContext, Window, div, point, px,
 };
 
-use super::{Button, SegmentedControl, ToggleButton, ToggleItem};
+use super::{Button, SegmentedControl, ToggleButton, ToggleGroup, ToggleItem};
 use crate::{
-    primitives::{FocusNext, FocusScope},
+    primitives::{FocusNext, FocusScope, IconName},
     theme::Theme,
 };
 
@@ -125,4 +125,50 @@ fn a_choice_missing_from_its_segments_marks_none(cx: &mut TestAppContext) {
         cx.debug_bounds("segment-thumb").is_none(),
         "no thumb marks a choice"
     );
+}
+
+/// Three icon-and-word toggles in a column `width` wide.
+struct Filters {
+    width: f32,
+}
+
+impl Render for Filters {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let item = |value: &'static str, icon| ToggleItem::new(value).icon(icon).label(value);
+        div().w(px(self.width)).child(
+            ToggleGroup::new("filters")
+                .multiple()
+                .item(item("Unread", IconName::Mail))
+                .item(item("Flagged", IconName::Star))
+                .item(item("Attachments", IconName::Paperclip)),
+        )
+    }
+}
+
+#[gpui::test]
+fn a_narrow_toggle_group_keeps_one_row_of_icons(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Filters { width: 600.0 });
+    for _ in 0..3 {
+        cx.run_until_parked();
+        cx.update(|window, _| window.refresh());
+    }
+    let wide = cx.debug_bounds("toggle Attachments").expect("a toggle");
+    assert!(
+        wide.size.width > wide.size.height * 2.0,
+        "{wide:?} shows its word"
+    );
+    view.update(cx, |filters, cx| {
+        filters.width = 150.0;
+        cx.notify();
+    });
+    for _ in 0..3 {
+        cx.run_until_parked();
+        cx.update(|window, _| window.refresh());
+    }
+    let mut tops = Vec::new();
+    for selector in ["toggle Unread", "toggle Flagged", "toggle Attachments"] {
+        tops.push(cx.debug_bounds(selector).expect("a toggle").top());
+    }
+    assert!(tops.iter().all(|top| *top == tops[0]), "wrapped: {tops:?}");
 }
