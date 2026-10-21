@@ -80,6 +80,16 @@ core-foundation = "0.10"
 core-graphics = "0.24"
 image = { version = "0.25", default-features = false, features = ["png"] }
 
+[target.'cfg(target_os = "windows")'.dev-dependencies]
+image = { version = "0.25", default-features = false, features = ["png"] }
+raw-window-handle = "0.6"
+windows-sys = { version = "0.59", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_Storage_Xps",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("cargo-clippy"))'] }
 
