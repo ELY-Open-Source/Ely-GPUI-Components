@@ -2,12 +2,16 @@ use std::{cell::Cell, rc::Rc, time::Duration};
 
 use gpui::{
     AnyElement, App, Axis, Bounds, Canvas, Div, ElementId, EmptyView, Entity, EntityId,
-    FocusHandle, HoverListenerMode, InteractiveElement, IntoElement, ListOffset, ListState,
-    ParentElement, Pixels, Point, RenderOnce, ScrollHandle, StatefulInteractiveElement,
-    StyleRefinement, Styled, Window, canvas, div, point, prelude::*, px,
+    FocusHandle, HoverListenerMode, InteractiveElement, IntoElement, ParentElement, Pixels, Point,
+    RenderOnce, ScrollHandle, StatefulInteractiveElement, StyleRefinement, Styled, Window, canvas,
+    div, point, prelude::*,
 };
 use smallvec::SmallVec;
 use web_time::Instant;
+
+mod source;
+
+pub use source::ScrollSource;
 
 use super::ScrollShadow;
 use crate::{motion, theme::ActiveTheme};
@@ -101,127 +105,6 @@ struct ThumbDrag {
     anchor: Rc<Cell<Option<Pixels>>>,
 }
 
-/// What a scrollbar moves: a scroll box or a list.
-#[derive(Clone)]
-pub enum ScrollSource {
-    Handle(ScrollHandle),
-    List(ListState),
-}
-
-impl From<&ScrollHandle> for ScrollSource {
-    fn from(handle: &ScrollHandle) -> Self {
-        Self::Handle(handle.clone())
-    }
-}
-
-impl From<&ListState> for ScrollSource {
-    fn from(list: &ListState) -> Self {
-        Self::List(list.clone())
-    }
-}
-
-/// Where the view sits: the track, and shares shown and passed.
-struct Place {
-    span: Pixels,
-    shown: f32,
-    passed: f32,
-}
-
-impl ScrollSource {
-    /// A list: its top item and the offset into it.
-    fn offset(&self) -> Point<Pixels> {
-        match self {
-            Self::Handle(handle) => handle.offset(),
-            Self::List(list) => {
-                let top = list.logical_scroll_top();
-                point(px(top.item_ix as f32), top.offset_in_item)
-            }
-        }
-    }
-
-    /// None when everything shows.
-    fn place(&self, axis: Axis) -> Option<Place> {
-        match self {
-            Self::Handle(handle) => {
-                let (view, max, offset) =
-                    (handle.bounds().size, handle.max_offset(), handle.offset());
-                let (span, reach, scrolled) = match axis {
-                    Axis::Vertical => (view.height, max.y, -offset.y),
-                    Axis::Horizontal => (view.width, max.x, -offset.x),
-                };
-                (reach > Pixels::ZERO).then(|| Place {
-                    span,
-                    shown: span / (span + reach),
-                    passed: (scrolled / reach).clamp(0.0, 1.0),
-                })
-            }
-            // Lists measure lazily: their place counts items.
-            Self::List(list) => {
-                let (first, shown, count) = list_items(list)?;
-                let rest = count - shown;
-                Some(Place {
-                    span: list.viewport_bounds().size.height,
-                    shown: shown / count,
-                    passed: (first / rest).clamp(0.0, 1.0),
-                })
-            }
-        }
-    }
-
-    /// Scrolls so `ratio` of what is hidden lies above.
-    fn set(&self, axis: Axis, ratio: f32) {
-        match self {
-            Self::Handle(handle) => {
-                let (max, current) = (handle.max_offset(), handle.offset());
-                handle.set_offset(match axis {
-                    Axis::Vertical => point(current.x, -(max.y * ratio)),
-                    Axis::Horizontal => point(-(max.x * ratio), current.y),
-                });
-            }
-            Self::List(list) => {
-                let Some((_, shown, count)) = list_items(list) else {
-                    return;
-                };
-                let at = (count - shown) * ratio;
-                let item_ix = at.floor() as usize;
-                let height = list
-                    .bounds_for_item(item_ix)
-                    .map_or(Pixels::ZERO, |b| b.size.height);
-                list.scroll_to(ListOffset {
-                    item_ix,
-                    offset_in_item: height * at.fract(),
-                });
-            }
-        }
-    }
-}
-
-/// Top item as a fraction, items shown, item count.
-fn list_items(list: &ListState) -> Option<(f32, f32, f32)> {
-    let (count, view) = (list.item_count(), list.viewport_bounds());
-    let top = list.logical_scroll_top();
-    let height = |ix| list.bounds_for_item(ix).map(|bounds| bounds.size.height);
-    let into = match height(top.item_ix) {
-        Some(height) if height > Pixels::ZERO => (top.offset_in_item / height).clamp(0.0, 1.0),
-        _ => 0.0,
-    };
-    let mut shown = 0.0;
-    for ix in top.item_ix..count {
-        let Some(bounds) = list.bounds_for_item(ix) else {
-            break;
-        };
-        if bounds.top() >= view.bottom() {
-            break;
-        }
-        let seen = bounds.bottom().min(view.bottom()) - bounds.top().max(view.top());
-        if bounds.size.height > Pixels::ZERO {
-            shown += (seen / bounds.size.height).max(0.0);
-        }
-    }
-    let count = count as f32;
-    (shown > 0.0 && shown < count - 0.01).then_some((top.item_ix as f32 + into, shown, count))
-}
-
 /// How visible a scrollbar is.
 #[derive(Clone, Copy)]
 enum Shown {
@@ -230,7 +113,7 @@ enum Shown {
     Auto,
 }
 
-/// Overlay thumb for a scroll box or list; drag it to scroll.
+/// Overlay thumb over a box or list; drag to scroll.
 #[derive(IntoElement)]
 pub struct Scrollbar {
     id: ElementId,
@@ -308,6 +191,8 @@ impl RenderOnce for Scrollbar {
             .rounded_full()
             .bg(idle)
             .hover(|style| style.bg(busy))
+            // Nothing beneath sees the press.
+            .block_mouse_except_scroll()
             .on_drag(
                 ThumbDrag {
                     owner,
