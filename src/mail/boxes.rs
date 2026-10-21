@@ -1,15 +1,15 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, SharedString,
-    Window, div,
+    App, ElementId, InteractiveElement, IntoElement, ParentElement, Pixels, Point, RenderOnce,
+    SharedString, Window, div,
 };
 
 use super::labels::hue_dot;
 use crate::{
     data_display::CountBadge,
     forms::OnValue,
-    lists::{ListItem, Sections},
+    lists::{ListItem, OnFold, Sections},
     primitives::{Icon, IconName},
     theme::{ActiveTheme, IconSize},
 };
@@ -85,6 +85,8 @@ impl Mailbox {
     }
 }
 
+type OnMenu = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
+
 /// Mailboxes, folders and labels in sections down a column: a press, an arrow or Enter opens one, and the one open is lit. A box with mail unread stands out with its count.
 #[derive(IntoElement)]
 pub struct MailboxList {
@@ -92,6 +94,9 @@ pub struct MailboxList {
     sections: Vec<(SharedString, Vec<Mailbox>)>,
     open: Option<SharedString>,
     on_open: Option<OnValue>,
+    folded: Vec<SharedString>,
+    on_fold: Option<OnFold>,
+    on_menu: Option<OnMenu>,
 }
 
 impl MailboxList {
@@ -101,6 +106,9 @@ impl MailboxList {
             sections: Vec::new(),
             open: None,
             on_open: None,
+            folded: Vec::new(),
+            on_fold: None,
+            on_menu: None,
         }
     }
 
@@ -131,6 +139,30 @@ impl MailboxList {
     /// The box open now, by key.
     pub fn open(mut self, key: impl Into<SharedString>) -> Self {
         self.open = Some(key.into());
+        self
+    }
+
+    /// The sections folded now, by title.
+    pub fn folded(mut self, titles: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
+        self.folded = titles.into_iter().map(Into::into).collect();
+        self
+    }
+
+    /// Titles fold; a folded section sums its unread.
+    pub fn on_fold(
+        mut self,
+        handler: impl Fn(&SharedString, bool, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_fold = Some(Rc::new(handler));
+        self
+    }
+
+    /// Gets a box's key and where the right press fell.
+    pub fn on_menu(
+        mut self,
+        handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_menu = Some(Rc::new(handler));
         self
     }
 
@@ -170,11 +202,41 @@ impl RenderOnce for MailboxList {
             |sections, (title, boxes)| {
                 let rows = boxes
                     .iter()
-                    .map(|mailbox| (mailbox.key.clone(), mailbox.item(&self.id, cx)))
+                    .map(|mailbox| {
+                        let item = mailbox.item(&self.id, cx);
+                        let item = match self.on_menu.clone() {
+                            Some(menu) => {
+                                let key = mailbox.key.clone();
+                                item.on_secondary(move |at, window, cx| menu(&key, at, window, cx))
+                            }
+                            None => item,
+                        };
+                        (mailbox.key.clone(), item)
+                    })
                     .collect();
-                sections.section(title.clone(), rows)
+                let sections = sections.section(title.clone(), rows);
+                let unread: u32 = boxes.iter().map(|mailbox| mailbox.unread).sum();
+                match self.folded.contains(title) && unread > 0 {
+                    true => {
+                        let named = title.clone();
+                        let badge = CountBadge::new(
+                            (self.id.clone(), format!("folded-{title}")),
+                            unread as usize,
+                        )
+                        .max(999);
+                        let badge = div()
+                            .debug_selector(move || format!("folded-unread {named}"))
+                            .child(badge);
+                        sections.badge(badge.into_any_element())
+                    }
+                    false => sections,
+                }
             },
         );
+        let sections = match self.on_fold.clone() {
+            Some(on_fold) => sections.foldable(self.folded.clone(), on_fold),
+            None => sections,
+        };
         div().debug_selector(|| "mailbox-list".into()).child(
             sections
                 .selected(self.open)
