@@ -16,5 +16,5 @@ Rules: items run in PRD chapter order. Each passes `scripts/check.sh` and a code
 - [x] O1 Devtools (ch. 33): `devtools::audit` and its `Check` move out of `tooling::a11y`, which renders them; one table of pairs and needs
 - [x] O2 Settings (ch. 35): `settings::read_omarchy_theme` reads a current folder's `colors.toml` as `omarchy-theme-color` resolves it, lifts the palette until `devtools::audit` passes and refuses one that cannot, and names the hues Ely's colors stand in for; tested on Omarchy's 22 themes
 - [x] O3 Settings (ch. 35): `settings::follow_omarchy` and `stop_omarchy`: the theme worn on its mode now and after each switch, watched through `notify`; a bad theme logs and the colors stay; tested on Windows and on Linux (WSL)
-- [ ] O4 Theme (ch. 39): the Theme guide, AGENTS.md, `tasks/ch31-43.md`
+- [x] O4 Theme (ch. 39): the Theme guide, README, AGENTS.md; `tasks/ch31-43.md` stays, as Omarchy is no PRD entry and T55 carries it
 - [ ] O5 Acceptance: the checklist, item by item

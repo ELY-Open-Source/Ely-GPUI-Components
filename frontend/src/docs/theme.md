@@ -38,6 +38,27 @@ The color calls log at the `info` level, so a theme change shows in the app's lo
 
 `colors.chart` holds eight hues. `HUE_NAMES` names them in order: Blue, Teal, Ochre, Rose, Violet, Green, Rust, Cyan. `colors.hue(index, owner)` returns one and panics past the eighth, naming `owner`, so an event or a label can wear the same hue a chart does.
 
+## Omarchy
+
+On Omarchy, Linux, an app can wear the system's theme. Every component paints from the palette, so all of them follow.
+
+```rust
+use ely_gpui_component::settings::{follow_omarchy, omarchy_current_dir};
+
+if let Some(current) = omarchy_current_dir() {
+    follow_omarchy(current, cx)?;
+}
+```
+
+| Call | Does |
+| --- | --- |
+| `omarchy_current_dir()` | `~/.local/state/omarchy/current`, where Omarchy keeps its theme whatever `XDG_STATE_HOME` says; `None` without Omarchy. |
+| `follow_omarchy(dir, cx)` | Wears the theme now, on its own mode, then each switch once the folder is quiet for 250 ms. Ely's palette stands in for the other mode. Fails while following already, or on a folder it cannot watch. |
+| `stop_omarchy(cx)` | Gives both modes Ely's palettes back. The mode stays the app's to set. |
+| `read_omarchy_theme(dir)` | Reads the theme once, as an `OmarchyTheme`: its name, mode, palette and the hues it lacks. |
+
+The reader resolves `theme/colors.toml` as Omarchy's `omarchy-theme-color` does. Colors move toward white or black until they pass `devtools::audit`, the pairs `A11yChecker` shows: body text 4.5:1 on every surface, links on the page, surface and sunken, code on the surface, sunken and hover, a status color on the page and its own tint, the accent's text on the accent and a tooltip's on the tooltip; the focus ring 3:1 on the page and surface, chart hues on the page. A theme no move can fix is refused. The terminal's sixteen colors are the ones Omarchy gives Ghostty. Omarchy's opaque selection becomes the clearest wash that shows the same color over the page, since Ely also draws a selection over content. A theme that cannot be read logs an error and the colors stay; a theme without `colors.toml` brings Ely's palettes. `follow_omarchy` and `stop_omarchy` watch files, so they are absent on the web.
+
 ## A card made of tokens
 
 The example draws a card from tokens alone, with buttons that turn the mode, the contrast, the density and the accent.

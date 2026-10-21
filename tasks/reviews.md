@@ -394,3 +394,5 @@
 | O2 | 2 | PASS | |
 | O3 | 1 | FAIL | the settle ran from the first event, so a slow swap showed Ely's palette between; an owner's palette outlived follow and stop |
 | O3 | 2 | PASS | 22 tests on Windows and Linux (WSL) |
+| O4 | 1 | FAIL | the guide promised status colors 4.5:1 on every surface; the audit checks the page and their tint |
+| O4 | 2 | PASS | |
