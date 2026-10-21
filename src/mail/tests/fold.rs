@@ -66,3 +66,55 @@ fn a_right_press_names_the_box(cx: &mut TestAppContext) {
     cx.simulate_mouse_up(row.center(), MouseButton::Right, Modifiers::none());
     assert_eq!(heard(&host, cx), ["menu clients"]);
 }
+
+#[gpui::test]
+fn the_menu_key_or_shift_f10_opens_the_current_boxs_menu(cx: &mut TestAppContext) {
+    let (host, cx) = mailing(|owner| list(owner, &[]), cx);
+    tab_to(4, cx);
+    press("menu", cx);
+    press("shift-f10", cx);
+    press("f10", cx);
+    assert_eq!(heard(&host, cx), ["menu clients", "menu clients"]);
+}
+
+#[gpui::test]
+fn the_menu_key_opens_at_the_row(cx: &mut TestAppContext) {
+    let (host, cx) = mailing(
+        |owner| {
+            MailboxList::new("boxes")
+                .section(
+                    "Mailboxes",
+                    [Mailbox::new("inbox", "Inbox", IconName::Inbox)],
+                )
+                .open("inbox")
+                .on_menu(move |key, at, _, cx| note(&owner, format!("{key} {at:?}"), cx))
+                .into_any_element()
+        },
+        cx,
+    );
+    let row = cx
+        .debug_bounds("item-selected-Inbox")
+        .expect("the open box");
+    tab_to(1, cx);
+    press("menu", cx);
+    assert_eq!(heard(&host, cx), [format!("inbox {:?}", row.bottom_left())]);
+}
+
+#[gpui::test]
+fn a_fixed_section_shows_no_fold(cx: &mut TestAppContext) {
+    let (_, cx) = mailing(
+        |owner| {
+            MailboxList::new("boxes")
+                .fixed_section("Unified", [Mailbox::new("all", "All", IconName::Inbox)])
+                .section(
+                    "ann@example.com",
+                    [Mailbox::new("inbox", "Inbox", IconName::Inbox)],
+                )
+                .on_fold(move |title, _, _, cx| note(&owner, format!("fold {title}"), cx))
+                .into_any_element()
+        },
+        cx,
+    );
+    assert!(cx.debug_bounds("fold Unified").is_none());
+    assert!(cx.debug_bounds("fold ann@example.com").is_some());
+}

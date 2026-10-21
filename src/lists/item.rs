@@ -13,7 +13,7 @@ use crate::{
 };
 
 type OnClick = Rc<dyn Fn(&ClickEvent, &mut Window, &mut App)>;
-type OnSecondary = Rc<dyn Fn(Point<Pixels>, &mut Window, &mut App)>;
+pub(crate) type OnSecondary = Rc<dyn Fn(Point<Pixels>, &mut Window, &mut App)>;
 
 /// One row of a list: something to lead with, a title and a line under it, and something at the end. It lights on hover when it can be pressed, and stays lit when selected.
 #[derive(IntoElement)]
@@ -132,6 +132,10 @@ impl ListItem {
 
     pub(crate) fn is_disabled(&self) -> bool {
         self.disabled
+    }
+
+    pub(crate) fn secondary(&self) -> Option<OnSecondary> {
+        self.on_secondary.clone()
     }
 
     pub(crate) fn title_text(&self) -> &SharedString {

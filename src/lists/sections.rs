@@ -19,6 +19,7 @@ struct Section {
     title: SharedString,
     rows: Vec<(SharedString, ListItem)>,
     badge: Option<AnyElement>,
+    fixed: bool,
 }
 
 /// Lists under titles down a column, each a `SelectableList` keyed by its title under the id: Tab moves between them, and the chosen key is lit wherever it sits. A press or an arrow selects, Enter or a double press activates. Owners check their titles and keys.
@@ -55,6 +56,7 @@ impl Sections {
             title,
             rows,
             badge: None,
+            fixed: false,
         });
         self
     }
@@ -63,6 +65,16 @@ impl Sections {
     pub(crate) fn badge(mut self, badge: AnyElement) -> Self {
         let last = self.sections.last_mut().expect("a badge follows a section");
         last.badge = Some(badge);
+        self
+    }
+
+    /// The last section never folds.
+    pub(crate) fn fixed(mut self) -> Self {
+        let last = self
+            .sections
+            .last_mut()
+            .expect("a fixed mark follows a section");
+        last.fixed = true;
         self
     }
 
@@ -99,9 +111,15 @@ impl RenderOnce for Sections {
         let theme = cx.theme();
         let colors = &theme.colors;
         let sections = self.sections.into_iter().map(|section| {
-            let Section { title, rows, badge } = section;
+            let Section {
+                title,
+                rows,
+                badge,
+                fixed,
+            } = section;
             let count = rows.len();
-            let folded = (self.fold.as_ref()).is_some_and(|(folded, _)| folded.contains(&title));
+            let fold = self.fold.as_ref().filter(|_| !fixed);
+            let folded = fold.is_some_and(|(folded, _)| folded.contains(&title));
             let words = div()
                 .font_weight(FontWeight::SEMIBOLD)
                 .text_color(colors.fg_muted)
@@ -112,7 +130,7 @@ impl RenderOnce for Sections {
                 .items_center()
                 .gap_2()
                 .text_size(theme.text_size(TextSize::Xs));
-            let head = match &self.fold {
+            let head = match fold {
                 None => head.child(words).into_any_element(),
                 Some((_, on_fold)) => {
                     let (on_fold, named, folding) = (on_fold.clone(), title.clone(), title.clone());

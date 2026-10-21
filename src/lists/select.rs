@@ -7,7 +7,7 @@ use gpui::{
 };
 use web_time::Instant;
 
-use super::ListItem;
+use super::{ListItem, item::OnSecondary};
 use crate::primitives::tab_stop;
 
 /// How a press or a key picks rows.
@@ -196,6 +196,8 @@ impl RenderOnce for SelectableList {
             .iter()
             .map(|(_, item)| item.is_disabled())
             .collect();
+        let menus: Rc<[Option<OnSecondary>]> =
+            self.rows.iter().map(|(_, item)| item.secondary()).collect();
         let barred: Vec<SharedString> = self
             .rows
             .iter()
@@ -311,6 +313,18 @@ impl RenderOnce for SelectableList {
                 let at = cursor.read(cx).at.min(count - 1);
                 let extend = if held.shift { Pick::Range } else { Pick::One };
                 let open = |ix: &usize| !off[*ix];
+                let key = event.keystroke.key.as_str();
+                // The menu key, or Shift+F10, opens the row's menu.
+                let menu = (key == "menu" && !held.modified())
+                    || (key == "f10" && held.shift && !held.control && !held.alt && !held.platform);
+                if menu {
+                    let row = cursor.read(cx).scroll.bounds_for_item(at);
+                    if let (Some(show), Some(row)) = (menus[at].clone().filter(|_| !off[at]), row) {
+                        cx.stop_propagation();
+                        show(row.bottom_left(), window, cx);
+                    }
+                    return;
+                }
                 let letter = event
                     .keystroke
                     .key_char
@@ -336,7 +350,7 @@ impl RenderOnce for SelectableList {
                     }
                     return;
                 }
-                let (to, how) = match event.keystroke.key.as_str() {
+                let (to, how) = match key {
                     "down" => ((at + 1..count).find(open), extend),
                     "up" => ((0..at).rev().find(open), extend),
                     "home" => ((0..count).find(open), extend),

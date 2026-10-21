@@ -91,7 +91,7 @@ type OnMenu = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 #[derive(IntoElement)]
 pub struct MailboxList {
     id: ElementId,
-    sections: Vec<(SharedString, Vec<Mailbox>)>,
+    sections: Vec<(SharedString, Vec<Mailbox>, bool)>,
     open: Option<SharedString>,
     on_open: Option<OnValue>,
     folded: Vec<SharedString>,
@@ -114,25 +114,42 @@ impl MailboxList {
 
     /// A section under `title`; a title names one section, and a section holds a box.
     pub fn section(
-        mut self,
+        self,
         title: impl Into<SharedString>,
         boxes: impl IntoIterator<Item = Mailbox>,
     ) -> Self {
-        let title = title.into();
+        self.push(title.into(), boxes, false)
+    }
+
+    /// A section as `section`, but never folded.
+    pub fn fixed_section(
+        self,
+        title: impl Into<SharedString>,
+        boxes: impl IntoIterator<Item = Mailbox>,
+    ) -> Self {
+        self.push(title.into(), boxes, true)
+    }
+
+    fn push(
+        mut self,
+        title: SharedString,
+        boxes: impl IntoIterator<Item = Mailbox>,
+        fixed: bool,
+    ) -> Self {
         let boxes: Vec<Mailbox> = boxes.into_iter().collect();
         assert!(!boxes.is_empty(), "section {title} holds no mailbox");
-        let named = self.sections.iter().any(|(other, _)| *other == title);
+        let named = self.sections.iter().any(|(other, _, _)| *other == title);
         assert!(!named, "section {title} twice");
         for (ix, mailbox) in boxes.iter().enumerate() {
             let seen = self
                 .sections
                 .iter()
-                .flat_map(|(_, boxes)| boxes)
+                .flat_map(|(_, boxes, _)| boxes)
                 .chain(&boxes[..ix])
                 .any(|other| other.key == mailbox.key);
             assert!(!seen, "mailbox {} twice", mailbox.key);
         }
-        self.sections.push((title, boxes));
+        self.sections.push((title, boxes, fixed));
         self
     }
 
@@ -182,7 +199,7 @@ impl RenderOnce for MailboxList {
             let listed = self
                 .sections
                 .iter()
-                .flat_map(|(_, boxes)| boxes)
+                .flat_map(|(_, boxes, _)| boxes)
                 .any(|mailbox| mailbox.key == *open);
             if !listed {
                 log::error!("mailbox list: no mailbox {open}; none open");
@@ -199,7 +216,7 @@ impl RenderOnce for MailboxList {
         };
         let sections = self.sections.iter().fold(
             Sections::new(self.id.clone()),
-            |sections, (title, boxes)| {
+            |sections, (title, boxes, fixed)| {
                 let rows = boxes
                     .iter()
                     .map(|mailbox| {
@@ -215,6 +232,7 @@ impl RenderOnce for MailboxList {
                     })
                     .collect();
                 let sections = sections.section(title.clone(), rows);
+                let sections = if *fixed { sections.fixed() } else { sections };
                 let unread: u32 = boxes.iter().map(|mailbox| mailbox.unread).sum();
                 match self.folded.contains(title) && unread > 0 {
                     true => {
