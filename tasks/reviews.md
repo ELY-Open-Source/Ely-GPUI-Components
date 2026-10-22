@@ -402,3 +402,5 @@
 | O7 | 1 | FAIL | the install guide still named macOS alone |
 | O7 | 2 | PASS | a WSLg window repainted from Tokyo Night to Catppuccin Latte |
 | O7 | 3 | PASS | after ef5736e CI's Linux leg failed on fontconfig; CI installs libfontconfig-dev too |
+| T56 A1 | 1 | FAIL | Mermaid's text measurer still read host fonts in the diagram tests |
+| T56 A1 | 2 | PASS | codex gpt-6-astra max fast; Mermaid's reads move only geometry, which no test asserts; 2216/2216 as root in rust:1.95 |

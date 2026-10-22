@@ -30,7 +30,7 @@ fn display_style_sets_limits_larger() {
 #[test]
 fn every_glyph_lies_inside_the_picture() {
     for source in [
-        r"\text{私密} x",
+        r"\text{中文} x",
         "x",
         r"\int_0^1 f(x)\,dx",
         r"\left(\frac{a}{b}\right)",
@@ -193,7 +193,7 @@ fn an_exported_formula_is_black_outlines() {
 
 #[test]
 fn an_exported_formula_outlines_its_text_or_says_why() {
-    let svg = formula_svg(r"\text{中文} + x", false).expect("a system font sets it");
+    let svg = formula_svg(r"\text{中文} + x", false).expect("the fixture sets it");
     assert!(!svg.contains("<text"), "{svg}");
     let why = formula_svg("\\text{\u{F0000}}", false).expect_err("no font");
     assert!(why.to_string().contains("font"), "{why}");
@@ -201,11 +201,9 @@ fn an_exported_formula_outlines_its_text_or_says_why() {
 
 #[test]
 fn an_exported_formula_frames_its_outlined_text() {
-    // Wide or tall system faces, where installed.
-    for source in [r"\text{한글}", r"\text{𓀀} + x"] {
-        let Ok(svg) = formula_svg(source, false) else {
-            continue;
-        };
+    // A wide face and a tall one, both fixtures.
+    for source in [r"\text{中文}", r"\text{𓀀} + x"] {
+        let svg = formula_svg(source, false).expect("the fixture sets it");
         let tree =
             usvg::Tree::from_data(svg.as_bytes(), &usvg::Options::default()).expect("parses");
         let (ink, shape) = (tree.root().abs_stroke_bounding_box(), tree.size());
@@ -227,26 +225,24 @@ fn drawn_fallback_text_stays_inside_the_frame() {
         let pixels = image.as_bytes(0).expect("pixels");
         pixels.chunks_exact(4).filter(|pixel| pixel[3] > 16).count()
     };
-    // The last is in gpui's bundled IBM Plex Sans alone.
-    for source in [r"\text{中文}", r"\text{한글}", "\\text{\u{ECE0}}"] {
+    // Fixtures and bundled IBM Plex Sans, outlined so host fonts never draw.
+    for source in [r"\text{中文}", r"\text{𓀀}", "\\text{\u{ECE0}}"] {
         let (svg, _) = svg(&formula(source, false)).expect("typesets");
+        let svg = crate::documents::flatten(&svg).expect("the fixtures set it");
+        // usvg writes the frame as width and height from the origin.
         let tree = usvg::roxmltree::Document::parse(&svg).expect("xml");
-        let view: Vec<f32> = tree
-            .root_element()
-            .attribute("viewBox")
-            .expect("a view box")
-            .split_whitespace()
-            .map(|number| number.parse().expect("a number"))
-            .collect();
+        let side = |name: &str| -> f32 {
+            let root = tree.root_element();
+            root.attribute(name).expect(name).parse().expect("a number")
+        };
+        let (w, h) = (side("width"), side("height"));
         // The same ink in a frame wider all round.
         let wide = format!(
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{} {} {} {}\" width=\"{}\" height=\"{}\">{}",
-            view[0] - 64.0,
-            view[1] - 64.0,
-            view[2] + 128.0,
-            view[3] + 128.0,
-            view[2] + 128.0,
-            view[3] + 128.0,
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-64 -64 {} {}\" width=\"{}\" height=\"{}\">{}",
+            w + 128.0,
+            h + 128.0,
+            w + 128.0,
+            h + 128.0,
             &svg[svg.find('>').expect("a tag") + 1..]
         );
         let (framed, all) = (ink(&svg), ink(&wide));

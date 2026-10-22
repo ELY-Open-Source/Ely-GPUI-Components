@@ -190,6 +190,7 @@ Per-component lines live in `tasks/`. Tags there:
 - [x] T53 Panics · handlers move into `new`, live states log and show, asserts audited — `tasks/panics.md`
 - [x] T54 GPUI Kit · Ely and Kit share one app and one window — `tasks/kit.md`
 - [x] T55 Omarchy · every component wears Omarchy's theme when the app follows it — `tasks/omarchy.md`
+- [ ] T56 Optimization · OPTIMIZATION.md's 28 items, the workspace split first — `tasks/optimization.md`
 
 ## T00 detail
 

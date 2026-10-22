@@ -185,14 +185,22 @@ fn texts(group: &usvg::Group, kept: &mut usize, lost: &mut usize) {
     }
 }
 
-/// The system's fonts and gpui's bundled ones, read once.
+/// The system's fonts and gpui's bundled ones, read once; tests read fixtures instead.
 fn fonts() -> Arc<usvg::fontdb::Database> {
     static FONTS: OnceLock<Arc<usvg::fontdb::Database>> = OnceLock::new();
     FONTS
         .get_or_init(|| {
             use gpui::AssetSource as _;
             let mut fonts = usvg::fontdb::Database::new();
+            #[cfg(not(test))]
             fonts.load_system_fonts();
+            #[cfg(test)]
+            for fixture in [
+                &include_bytes!("fixtures/ElyFixtureCJK.ttf")[..],
+                include_bytes!("fixtures/ElyFixtureTall.ttf"),
+            ] {
+                fonts.load_font_data(fixture.to_vec());
+            }
             // The faces gpui's SVG renderer adds, from the same assets.
             for path in [
                 "fonts/ibm-plex-sans/IBMPlexSans-Regular.ttf",
@@ -298,6 +306,7 @@ impl RenderOnce for Diagram {
 mod tests {
     use super::*;
 
+    // Mermaid measures with host fonts: assert no geometry.
     fn chart(source: &str, dark: bool) -> Chart {
         Chart {
             source: source.to_string().into(),

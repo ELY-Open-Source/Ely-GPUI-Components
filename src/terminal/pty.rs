@@ -147,6 +147,12 @@ mod tests {
         std::fs::create_dir_all(&folder).expect("a temp folder");
         std::fs::set_permissions(&folder, std::fs::Permissions::from_mode(0o600))
             .expect("mode 600");
+        // Root enters any folder: the premise fails.
+        if rustix::fs::access(&folder, rustix::fs::Access::EXEC_OK).is_ok() {
+            eprintln!("skipped: this process enters a mode 600 folder, as root does");
+            std::fs::remove_dir(&folder).expect("the temp folder goes");
+            return;
+        }
         let launch = Launch {
             program: Some(("/bin/sh".into(), vec!["-c".into(), "true".into()])),
             cwd: Some(folder.clone()),
