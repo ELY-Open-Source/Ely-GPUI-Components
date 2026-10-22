@@ -15,7 +15,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 ## A. Ground
 
 - [x] A1 O-14 Tests are hermetic: the font tests carry their own fixture, the pty test skips under root; 100% pass as root in `rust:1.95` on WSL.
-- [ ] A2 O-06 Caret versions for every third-party crate but `gpui-pre*`.
+- [x] A2 O-06 Caret versions for every third-party crate but `gpui-pre*`.
 - [ ] A3 O-05 One Markdown parser; the 128 KiB one-letter case reads in ≤100 ms in release. Find the quadratic first.
 - [ ] A4 O-07 No duplicate in `cargo tree -d` starts at an Ely direct dependency.
 - [ ] A5 O-08 Platform calls live in one platform module, on objc2; every `unsafe` block has a SAFETY line; `undocumented_unsafe_blocks` clean.

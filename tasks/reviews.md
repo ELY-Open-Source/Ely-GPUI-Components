@@ -404,3 +404,4 @@
 | O7 | 3 | PASS | after ef5736e CI's Linux leg failed on fontconfig; CI installs libfontconfig-dev too |
 | T56 A1 | 1 | FAIL | Mermaid's text measurer still read host fonts in the diagram tests |
 | T56 A1 | 2 | PASS | codex gpt-6-astra max fast; Mermaid's reads move only geometry, which no test asserts; 2216/2216 as root in rust:1.95 |
+| T56 A2 | 1 | PASS | '=' left on the three gpui-pre crates; ratex resolves to 0.1.15; root 2216/2216, wasm32 clean |

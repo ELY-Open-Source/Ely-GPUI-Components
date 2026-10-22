@@ -27,14 +27,14 @@ isocountry = "0.3"
 isolang = { version = "2.4", features = ["local_names", "list_languages"] }
 jiff = "0.2"
 log = "0.4"
-markdown = "=1.0.0"
-mermaid-rs-renderer = { version = "=0.3.1", default-features = false }
+markdown = "1.0.0"
+mermaid-rs-renderer = { version = "0.3.1", default-features = false }
 pulldown-cmark = { version = "0.13", default-features = false }
 qrcode = { version = "0.14", default-features = false }
-ratex-layout = "=0.1.14"
-ratex-parser = "=0.1.14"
-ratex-svg = { version = "=0.1.14", features = ["embed-fonts"] }
-ratex-types = "=0.1.14"
+ratex-layout = "0.1.14"
+ratex-parser = "0.1.14"
+ratex-svg = { version = "0.1.14", features = ["embed-fonts"] }
+ratex-types = "0.1.14"
 regex = "1"
 rqrr = { version = "0.11", default-features = false }
 rust-embed = "8.12"
