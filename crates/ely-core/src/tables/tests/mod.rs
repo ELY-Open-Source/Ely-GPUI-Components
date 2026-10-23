@@ -5,16 +5,16 @@ use std::{
 };
 
 use gpui::{
-    Context, FocusHandle, IntoElement, KeyBinding, Modifiers, ParentElement, Render, SharedString,
-    Styled, TestAppContext, VisualTestContext, Window, div, point, px,
+    ClipboardItem, Context, FocusHandle, IntoElement, KeyBinding, Modifiers, ParentElement, Render,
+    SharedString, Styled, TestAppContext, VisualTestContext, Window, div, point, px,
 };
 
 mod chinese;
-mod clipboard;
 mod columns;
-mod stale;
 
-use super::{Column, DataTable, FilterBuilder, FilterRule, Row};
+use super::{
+    Aggregate, Column, DataTable, FilterBuilder, FilterRule, PivotTable, Row, Spreadsheet,
+};
 use crate::{
     primitives::{FocusNext, FocusPrev, FocusScope},
     theme::Theme,
@@ -485,5 +485,57 @@ fn tab_steps_past_a_merge_like_the_arrows(cx: &mut TestAppContext) {
         *heard.borrow(),
         [(0, 3, "9".to_string())],
         "tab leaves the merge by its far side"
+    );
+}
+
+/// A pivot, a grouping and a merge that name what their data no longer holds.
+struct Stale;
+
+impl Render for Stale {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let pivot = PivotTable::new(["region", "sales"], [vec!["Europe".into(), 4.0.into()]])
+            .pivot("region", "quarter", "sales", Aggregate::Sum);
+        let table = DataTable::new("table", [Column::new("name", "Name")])
+            .rows(vec![Row::new("a", ["Ann".into()])])
+            .group_by("region");
+        let sheet = Spreadsheet::new("sheet", 2, 2)
+            .merge((0, 0), (5, 1))
+            .w(px(300.0))
+            .h(px(120.0));
+        div().w(px(400.0)).child(pivot).child(table).child(sheet)
+    }
+}
+
+#[gpui::test]
+fn a_pivot_grouping_or_merge_past_its_data_draws(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| Stale);
+    cx.run_until_parked();
+}
+
+#[gpui::test]
+fn a_paste_fills_cells_from_the_cursor(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        crate::forms::bind_keys(cx);
+    });
+    let heard = Rc::new(RefCell::new(Vec::new()));
+    let seen = heard.clone();
+    let (_, cx) = cx.add_window_view(|_, _| Grid(seen));
+    settle(cx);
+    cx.simulate_click(point(px(48.0), px(42.0)), Modifiers::none());
+    settle(cx);
+    cx.update(|_, cx| cx.write_to_clipboard(ClipboardItem::new_string("x\ty\nz\tw".into())));
+    cx.simulate_keystrokes("secondary-v");
+    settle(cx);
+    let cells = |row, col, text: &str| (row, col, text.to_string());
+    assert_eq!(
+        *heard.borrow(),
+        [
+            cells(0, 0, "x"),
+            cells(0, 1, "y"),
+            cells(1, 0, "z"),
+            cells(1, 1, "w")
+        ]
     );
 }

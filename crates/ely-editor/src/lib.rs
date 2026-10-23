@@ -27,7 +27,6 @@ mod moves;
 mod preview;
 mod problems;
 mod prose;
-mod reading;
 mod refactor;
 mod row;
 mod search;
@@ -41,7 +40,6 @@ mod tasks;
 mod tests;
 mod view;
 mod welcome;
-mod writing;
 
 pub use buffer::Buffer;
 pub use chat::InlineChat;

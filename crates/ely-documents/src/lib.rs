@@ -12,7 +12,6 @@ mod counts;
 mod diagram;
 mod document;
 mod epub;
-mod find;
 mod format;
 mod history;
 mod knowledge;

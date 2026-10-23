@@ -1,4 +1,3 @@
-mod changes;
 mod curve;
 mod effects;
 mod list;
@@ -14,9 +13,8 @@ mod transition;
 #[cfg(all(test, feature = "test-support"))]
 mod tests;
 
-pub use changes::changes;
 pub use curve::*;
-pub use effects::{Blink, Flash, Glow, Marquee, Pulse, Shake, since_change};
+pub use effects::{Blink, Flash, Glow, Marquee, Pulse, Shake, changes, since_change};
 pub use list::{AnimatePresence, Flip};
 pub use overlay::{LazyLoad, LoadingOverlay, Refresh, RefreshIndicator, TypingIndicator};
 pub use particles::{AnimatedGradient, Confetti, ParticleBackground, Ripple};

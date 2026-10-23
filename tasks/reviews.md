@@ -428,3 +428,5 @@
 | T56 C2 | 1 | PASS | 59 sibling-only items hidden in the verticals; 38 unreachable items pub(crate) across native, wasm32 and Linux; unreachable_pub in the workspace lints |
 | T56 C3 | 1 | PASS | Sizable, Disableable, Selectable, Changeable in primitives; 30, 19, 5 and 80 impls by each component's own method; a generic test |
 | T56 C4 | 1 | PASS | 87 containers listed in src/containers.rs, a test holds the list to every impl and macro; seven adders gain ParentElement; MapPopup and DashboardCard take children |
+| T56 C5 | 1 | FAIL | CONTRIBUTING.md still said 500 lines |
+| T56 C5 | 2 | PASS | check.sh warns past 800 and never fails on size; 54 files under 40 lines down to 34 (theme measures, editor readers and writing view, presets, find, changes, five test files merged into their owners) |

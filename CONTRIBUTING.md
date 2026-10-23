@@ -32,7 +32,7 @@ cargo run -p ely-gallery -- --page forms
 - Colors, sizes, radii and shadows come from `cx.theme()`; no raw `px()` in components. Spacing uses gpui's rem helpers.
 - Every component works in light and dark, at 280px wide, by keyboard (Tab reaches it, a 1px focus ring shows, Enter and Space press it), and holds still under reduced motion.
 - Fail fast and log state changes; no silent fallbacks.
-- Files stay at or under 500 lines. Comments are one short line, and rare.
+- A file holds one responsibility; `scripts/check.sh` warns past 800 lines and never fails on size. A file under 40 lines is a module entry or a type of its own. Comments are one short line, and rare.
 - A new rule or dependency gets a line in `AGENTS.md`.
 
 ## Checks

@@ -1,22 +1,9 @@
-mod calendar;
-mod canvas;
-mod chart;
 mod contrast;
-mod dashboard;
-mod files;
-mod generative;
-mod interaction;
-mod maps;
-mod media;
-mod messaging;
-mod misc;
-mod onboarding;
+mod measures;
 mod palette;
 mod platform;
-mod project;
 mod syntax;
 mod tokens;
-mod tooling;
 
 #[cfg(all(test, feature = "test-support"))]
 mod tests;
@@ -27,27 +14,18 @@ use gpui::{App, Global, SharedString, WindowAppearance};
 use web_time::Instant;
 
 use crate::motion;
-pub use calendar::CalendarSizes;
-pub use canvas::CanvasSizes;
-pub use chart::ChartSizes;
 pub use contrast::{contrast, grades, luminance, over};
-pub use dashboard::DashboardSizes;
-pub use files::FileSizes;
-pub use generative::GenerativeSizes;
-pub use interaction::InteractionSizes;
-pub use maps::MapSizes;
-pub use media::MediaSizes;
-pub use messaging::MessagingSizes;
-pub use misc::MiscSizes;
-pub use onboarding::OnboardingSizes;
+pub use measures::{
+    CalendarSizes, CanvasSizes, ChartSizes, DashboardSizes, FileSizes, GenerativeSizes,
+    InteractionSizes, MapSizes, MediaSizes, MessagingSizes, MiscSizes, OnboardingSizes,
+    ProjectSizes, ToolingSizes,
+};
 pub use palette::{HUE_NAMES, Mix, Palette, Syntax};
 pub use platform::Platform;
-pub use project::ProjectSizes;
 pub use syntax::{SyntaxTheme, syntax_themes};
 pub use tokens::{
     AvatarSize, ContainerSize, ControlSize, Density, Elevation, IconSize, Radius, TextSize,
 };
-pub use tooling::ToolingSizes;
 
 const FRAME: Duration = Duration::from_millis(8);
 

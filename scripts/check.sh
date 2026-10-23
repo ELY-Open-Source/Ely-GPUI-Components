@@ -31,7 +31,7 @@ multi=$(awk 'FNR==1{prev=0} /^[[:space:]]*\/\// {if(prev) print FILENAME":"FNR; 
 [ -z "$multi" ] || { echo "multi-line comments:"; echo "$multi"; fail=1; }
 for f in $files AGENTS.md README.md TASKS.md tasks/*.md; do
   n=$(wc -l < "$f")
-  [ "$n" -le 500 ] || { echo "$f has $n lines"; fail=1; }
+  [ "$n" -le 800 ] || echo "warning: $f has $n lines; split it by responsibility"
 done
 core=crates/ely-core/src
 libs=$(ls -d crates/*/src | grep -v ely-gallery)
