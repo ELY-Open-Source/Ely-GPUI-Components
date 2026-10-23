@@ -1,0 +1,25 @@
+[package]
+name = "ely-maps"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's map components for GPUI: tiles, pins, clusters, layers and the world's countries."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-canvas.workspace = true
+anyhow.workspace = true
+gpui.workspace = true
+image.workspace = true
+isocountry.workspace = true
+log.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

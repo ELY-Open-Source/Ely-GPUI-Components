@@ -1,0 +1,22 @@
+[package]
+name = "ely-onboarding"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's onboarding components for GPUI: tours, hotspots, checklists and help."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-settings.workspace = true
+ely-documents.workspace = true
+gpui.workspace = true
+log.workspace = true
+
+[lints]
+workspace = true

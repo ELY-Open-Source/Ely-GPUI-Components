@@ -416,3 +416,4 @@
 | T56 B3 | 1 | PASS | charts, finance, editor, terminal, git, debug in their own crates; CodeEditor readers replace documents' field reads; 2231/2233 tests on Windows, Linux root, Mac |
 | T56 B4 | 1 | PASS | documents, collab, chat, agent, generative, media, files in their own crates; the root's dependencies trimmed to what src/ imports; 2233 on Linux root and Mac |
 | T56 B5 | 1 | PASS | messaging, mail, calendar, project, canvas, devtools, dashboard in their own crates; canvas reads core's typography by full path; 2233 on Linux root and Mac |
+| T56 B6 | 1 | PASS | settings, account, onboarding, interaction, maps, misc, tooling, rendering in their own crates; the root holds no chapter; the world file moves to maps; 2233 on Linux root and Mac |

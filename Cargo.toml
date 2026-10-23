@@ -9,6 +9,14 @@ license = "MIT"
 repository = "https://github.com/ELY-Open-Source/Ely-GPUI-Components"
 
 [workspace.dependencies]
+ely-rendering = { path = "crates/ely-rendering", version = "0.1.1" }
+ely-tooling = { path = "crates/ely-tooling", version = "0.1.1" }
+ely-misc = { path = "crates/ely-misc", version = "0.1.1" }
+ely-maps = { path = "crates/ely-maps", version = "0.1.1" }
+ely-interaction = { path = "crates/ely-interaction", version = "0.1.1" }
+ely-onboarding = { path = "crates/ely-onboarding", version = "0.1.1" }
+ely-account = { path = "crates/ely-account", version = "0.1.1" }
+ely-settings = { path = "crates/ely-settings", version = "0.1.1" }
 ely-dashboard = { path = "crates/ely-dashboard", version = "0.1.1" }
 ely-devtools = { path = "crates/ely-devtools", version = "0.1.1" }
 ely-canvas = { path = "crates/ely-canvas", version = "0.1.1" }
@@ -73,6 +81,7 @@ runtime_shaders = ["ely-core/runtime_shaders"]
 test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
 
 [dependencies]
+ely-account.workspace = true
 ely-agent.workspace = true
 ely-calendar.workspace = true
 ely-canvas.workspace = true
@@ -89,29 +98,20 @@ ely-files.workspace = true
 ely-finance.workspace = true
 ely-generative.workspace = true
 ely-git.workspace = true
+ely-interaction.workspace = true
 ely-mail.workspace = true
+ely-maps.workspace = true
 ely-media.workspace = true
 ely-messaging.workspace = true
+ely-misc.workspace = true
+ely-onboarding.workspace = true
 ely-project.workspace = true
+ely-rendering.workspace = true
+ely-settings.workspace = true
 ely-terminal.workspace = true
+ely-tooling.workspace = true
 anyhow.workspace = true
-futures.workspace = true
-gpui = { workspace = true, features = ["stacker"] }
-image.workspace = true
-isocountry.workspace = true
-jiff.workspace = true
-log.workspace = true
-qrcode.workspace = true
-rqrr = { version = "0.11", default-features = false }
-serde_json.workspace = true
-smallvec.workspace = true
-web-time.workspace = true
-
-[target.'cfg(not(target_family = "wasm"))'.dependencies]
-notify = "8"
-
-[target.'cfg(target_os = "macos")'.dependencies]
-wry = { version = "0.57", default-features = false }
+gpui.workspace = true
 
 [lints]
 workspace = true

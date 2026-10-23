@@ -1,15 +1,7 @@
-pub mod account;
-pub mod interaction;
-pub mod maps;
-pub mod misc;
-pub mod onboarding;
-pub mod rendering;
-pub mod settings;
-pub mod tooling;
-
 #[cfg(test)]
 mod shipped;
 
+pub use ely_account as account;
 pub use ely_agent as agent;
 pub use ely_calendar as calendar;
 pub use ely_canvas as canvas;
@@ -29,11 +21,18 @@ pub use ely_files as files;
 pub use ely_finance as finance;
 pub use ely_generative as generative;
 pub use ely_git as git;
+pub use ely_interaction as interaction;
 pub use ely_mail as mail;
+pub use ely_maps as maps;
 pub use ely_media as media;
 pub use ely_messaging as messaging;
+pub use ely_misc as misc;
+pub use ely_onboarding as onboarding;
 pub use ely_project as project;
+pub use ely_rendering as rendering;
+pub use ely_settings as settings;
 pub use ely_terminal as terminal;
+pub use ely_tooling as tooling;
 
 use gpui::App;
 

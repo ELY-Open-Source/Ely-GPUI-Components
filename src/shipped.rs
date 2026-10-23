@@ -52,7 +52,7 @@ const SHIPPED: &[(&str, &str)] = &[
     ),
     (
         "settings/appearance.rs",
-        include_str!("settings/appearance.rs"),
+        include_str!("../crates/ely-settings/src/appearance.rs"),
     ),
 ];
 

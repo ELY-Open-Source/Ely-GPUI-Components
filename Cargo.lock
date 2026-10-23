@@ -1593,6 +1593,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "252afb9ae5eaa683babdc6a068b3f5726eb19e05070c731f9b2a23a7c3e8ed34"
 
 [[package]]
+name = "ely-account"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
+ "jiff",
+ "log",
+]
+
+[[package]]
 name = "ely-agent"
 version = "0.1.1"
 dependencies = [
@@ -1858,6 +1868,7 @@ name = "ely-gpui-component"
 version = "0.1.1"
 dependencies = [
  "anyhow",
+ "ely-account",
  "ely-agent",
  "ely-calendar",
  "ely-canvas",
@@ -1874,24 +1885,29 @@ dependencies = [
  "ely-finance",
  "ely-generative",
  "ely-git",
+ "ely-interaction",
  "ely-mail",
+ "ely-maps",
  "ely-media",
  "ely-messaging",
+ "ely-misc",
+ "ely-onboarding",
  "ely-project",
+ "ely-rendering",
+ "ely-settings",
  "ely-terminal",
- "futures",
+ "ely-tooling",
  "gpui-pre",
- "image",
- "isocountry",
- "jiff",
+]
+
+[[package]]
+name = "ely-interaction"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
  "log",
- "notify",
- "qrcode",
- "rqrr",
- "serde_json",
  "smallvec",
- "web-time",
- "wry",
 ]
 
 [[package]]
@@ -1904,6 +1920,20 @@ dependencies = [
  "jiff",
  "log",
  "smallvec",
+]
+
+[[package]]
+name = "ely-maps"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "ely-canvas",
+ "ely-core",
+ "gpui-pre",
+ "image",
+ "isocountry",
+ "log",
+ "serde_json",
 ]
 
 [[package]]
@@ -1933,6 +1963,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "ely-misc"
+version = "0.1.1"
+dependencies = [
+ "ely-canvas",
+ "ely-core",
+ "ely-media",
+ "gpui-pre",
+ "image",
+ "jiff",
+ "log",
+ "qrcode",
+ "rqrr",
+ "smallvec",
+ "web-time",
+ "wry",
+]
+
+[[package]]
+name = "ely-onboarding"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "ely-documents",
+ "ely-settings",
+ "gpui-pre",
+ "log",
+]
+
+[[package]]
 name = "ely-project"
 version = "0.1.1"
 dependencies = [
@@ -1943,6 +2002,33 @@ dependencies = [
  "gpui-pre",
  "jiff",
  "log",
+ "web-time",
+]
+
+[[package]]
+name = "ely-rendering"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
+ "image",
+ "log",
+ "web-time",
+]
+
+[[package]]
+name = "ely-settings"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "ely-canvas",
+ "ely-core",
+ "ely-devtools",
+ "futures",
+ "gpui-pre",
+ "log",
+ "notify",
+ "serde_json",
  "web-time",
 ]
 
@@ -1960,6 +2046,18 @@ dependencies = [
  "regex",
  "rustix",
  "vte",
+ "web-time",
+]
+
+[[package]]
+name = "ely-tooling"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "ely-devtools",
+ "gpui-pre",
+ "log",
+ "smallvec",
  "web-time",
 ]
 

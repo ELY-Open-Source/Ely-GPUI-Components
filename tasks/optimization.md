@@ -30,8 +30,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
   - From B2, decided in B3: core's built-in catalogs (`i18n/builtin.rs`) keep the verticals' strings. Splitting them needs a lookup API core does not have, and O-01 asks only that no vertical folder sits in core. `src/shipped.rs` reads each crate's sources by path.
 - [x] B4 O-01 Verticals, chapters 21–27: documents, collab, chat, agent, generative, media, files.
 - [x] B5 O-01 Verticals, chapters 28–34: messaging, mail, calendar, project, canvas, devtools, dashboard.
-- [ ] B6 O-01 Verticals, chapters 35–44: settings, account, onboarding, interaction, maps, misc, tooling, rendering.
-  - From B2: `maps/countries.geojson` sits in core's assets; it leaves with maps.
+- [x] B6 O-01 Verticals, chapters 35–44: settings, account, onboarding, interaction, maps, misc, tooling, rendering.
+  - From B2, done in B6: `countries.geojson` leaves core's assets for `crates/ely-maps/assets`, read with `include_str!`.
 - [ ] B7 O-03 `ely-desktop`: tray, Dock badge, Omarchy; `cargo tree -p ely-core -i notify` and `-i zbus` print nothing.
 - [ ] B8 O-02 Features: heavy dependencies default off where a crate can stand without them; a Button-only program pulls none of zbus, ratex-svg, mermaid-rs-renderer, alacritty_terminal, isolang, rqrr, notify.
 - [ ] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.

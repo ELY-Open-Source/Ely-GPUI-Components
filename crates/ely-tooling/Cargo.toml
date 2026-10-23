@@ -1,0 +1,23 @@
+[package]
+name = "ely-tooling"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's tooling for GPUI: the inspector, render and frame meters, and an event logger."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-devtools.workspace = true
+gpui.workspace = true
+log.workspace = true
+smallvec.workspace = true
+web-time.workspace = true
+
+[lints]
+workspace = true
