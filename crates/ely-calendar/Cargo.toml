@@ -1,0 +1,21 @@
+[package]
+name = "ely-calendar"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's calendar components for GPUI: months, weeks, agendas, events and recurrence."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+
+[lints]
+workspace = true

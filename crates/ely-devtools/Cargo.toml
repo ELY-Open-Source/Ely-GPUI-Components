@@ -1,0 +1,26 @@
+[package]
+name = "ely-devtools"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's developer tools for GPUI: requests, data viewers, encoders and contrast."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-canvas.workspace = true
+ely-editor.workspace = true
+ely-chat.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+regex.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,23 @@
+[package]
+name = "ely-mail"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's mail components for GPUI: mailboxes, threads, the composer and scheduling."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-chat.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+smallvec.workspace = true
+
+[lints]
+workspace = true

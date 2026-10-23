@@ -9,6 +9,13 @@ license = "MIT"
 repository = "https://github.com/ELY-Open-Source/Ely-GPUI-Components"
 
 [workspace.dependencies]
+ely-dashboard = { path = "crates/ely-dashboard", version = "0.1.1" }
+ely-devtools = { path = "crates/ely-devtools", version = "0.1.1" }
+ely-canvas = { path = "crates/ely-canvas", version = "0.1.1" }
+ely-project = { path = "crates/ely-project", version = "0.1.1" }
+ely-calendar = { path = "crates/ely-calendar", version = "0.1.1" }
+ely-mail = { path = "crates/ely-mail", version = "0.1.1" }
+ely-messaging = { path = "crates/ely-messaging", version = "0.1.1" }
 ely-files = { path = "crates/ely-files", version = "0.1.1" }
 ely-media = { path = "crates/ely-media", version = "0.1.1" }
 ely-generative = { path = "crates/ely-generative", version = "0.1.1" }
@@ -67,18 +74,25 @@ test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detecti
 
 [dependencies]
 ely-agent.workspace = true
+ely-calendar.workspace = true
+ely-canvas.workspace = true
 ely-charts.workspace = true
 ely-chat.workspace = true
 ely-collab.workspace = true
 ely-core.workspace = true
+ely-dashboard.workspace = true
 ely-debug.workspace = true
+ely-devtools.workspace = true
 ely-documents.workspace = true
 ely-editor.workspace = true
 ely-files.workspace = true
 ely-finance.workspace = true
 ely-generative.workspace = true
 ely-git.workspace = true
+ely-mail.workspace = true
 ely-media.workspace = true
+ely-messaging.workspace = true
+ely-project.workspace = true
 ely-terminal.workspace = true
 anyhow.workspace = true
 futures.workspace = true
@@ -88,7 +102,6 @@ isocountry.workspace = true
 jiff.workspace = true
 log.workspace = true
 qrcode.workspace = true
-regex.workspace = true
 rqrr = { version = "0.11", default-features = false }
 serde_json.workspace = true
 smallvec.workspace = true

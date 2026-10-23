@@ -1,0 +1,24 @@
+[package]
+name = "ely-messaging"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's messaging components for GPUI: channels, threads, calls, reactions and pickers."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-media.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+smallvec.workspace = true
+web-time.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,20 @@
+[package]
+name = "ely-canvas"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's canvas components for GPUI: tools, layers, design panels and mind maps."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+gpui.workspace = true
+log.workspace = true
+
+[lints]
+workspace = true

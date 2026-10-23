@@ -1608,6 +1608,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "ely-calendar"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
+ "jiff",
+ "log",
+]
+
+[[package]]
+name = "ely-canvas"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
+ "log",
+]
+
+[[package]]
 name = "ely-charts"
 version = "0.1.1"
 dependencies = [
@@ -1680,6 +1699,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ely-dashboard"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
+ "jiff",
+ "log",
+]
+
+[[package]]
 name = "ely-debug"
 version = "0.1.1"
 dependencies = [
@@ -1688,6 +1717,21 @@ dependencies = [
  "gpui-pre",
  "log",
  "regex",
+]
+
+[[package]]
+name = "ely-devtools"
+version = "0.1.1"
+dependencies = [
+ "ely-canvas",
+ "ely-chat",
+ "ely-core",
+ "ely-editor",
+ "gpui-pre",
+ "jiff",
+ "log",
+ "regex",
+ "serde_json",
 ]
 
 [[package]]
@@ -1815,18 +1859,25 @@ version = "0.1.1"
 dependencies = [
  "anyhow",
  "ely-agent",
+ "ely-calendar",
+ "ely-canvas",
  "ely-charts",
  "ely-chat",
  "ely-collab",
  "ely-core",
+ "ely-dashboard",
  "ely-debug",
+ "ely-devtools",
  "ely-documents",
  "ely-editor",
  "ely-files",
  "ely-finance",
  "ely-generative",
  "ely-git",
+ "ely-mail",
  "ely-media",
+ "ely-messaging",
+ "ely-project",
  "ely-terminal",
  "futures",
  "gpui-pre",
@@ -1836,12 +1887,23 @@ dependencies = [
  "log",
  "notify",
  "qrcode",
- "regex",
  "rqrr",
  "serde_json",
  "smallvec",
  "web-time",
  "wry",
+]
+
+[[package]]
+name = "ely-mail"
+version = "0.1.1"
+dependencies = [
+ "ely-chat",
+ "ely-core",
+ "gpui-pre",
+ "jiff",
+ "log",
+ "smallvec",
 ]
 
 [[package]]
@@ -1853,6 +1915,33 @@ dependencies = [
  "ely-generative",
  "gpui-pre",
  "image",
+ "log",
+ "web-time",
+]
+
+[[package]]
+name = "ely-messaging"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "ely-media",
+ "gpui-pre",
+ "jiff",
+ "log",
+ "smallvec",
+ "web-time",
+]
+
+[[package]]
+name = "ely-project"
+version = "0.1.1"
+dependencies = [
+ "ely-calendar",
+ "ely-core",
+ "ely-documents",
+ "ely-mail",
+ "gpui-pre",
+ "jiff",
  "log",
  "web-time",
 ]

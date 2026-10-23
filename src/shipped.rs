@@ -26,8 +26,14 @@ const SHIPPED: &[(&str, &str)] = &[
         "forms/date/picker.rs",
         include_str!("../crates/ely-core/src/forms/date/picker.rs"),
     ),
-    ("mail/compose.rs", include_str!("mail/compose.rs")),
-    ("mail/signature.rs", include_str!("mail/signature.rs")),
+    (
+        "mail/compose.rs",
+        include_str!("../crates/ely-mail/src/compose.rs"),
+    ),
+    (
+        "mail/signature.rs",
+        include_str!("../crates/ely-mail/src/signature.rs"),
+    ),
     (
         "chat/attach.rs",
         include_str!("../crates/ely-chat/src/attach.rs"),

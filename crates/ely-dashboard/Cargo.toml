@@ -1,0 +1,21 @@
+[package]
+name = "ely-dashboard"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's dashboard components for GPUI: tiles, grids, metrics and monitors."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+
+[lints]
+workspace = true
