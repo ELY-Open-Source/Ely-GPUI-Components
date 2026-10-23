@@ -77,6 +77,18 @@ description = "A restrained component library for GPUI, in light and dark."
 repository.workspace = true
 publish = false
 
+[[test]]
+name = "form"
+required-features = ["test-support"]
+
+[[test]]
+name = "table"
+required-features = ["test-support"]
+
+[[test]]
+name = "workspace"
+required-features = ["test-support"]
+
 [features]
 default = ["runtime_shaders", "fonts"]
 fonts = ["ely-core/fonts"]

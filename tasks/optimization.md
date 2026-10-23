@@ -57,7 +57,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 ## D. Quality
 
-- [ ] D1 O-15 `tests/` apps on public API alone: a form, a list with a table, a workspace with overlays.
+- [x] D1 O-15 `tests/` apps on public API alone: a form, a list with a table, a workspace with overlays.
+  - Owner's call, 2026-10-23: the apps guard what they use; E1's public-API snapshot is what fails on the removal of any item.
 - [ ] D2 O-16 clippy `expect_used`, `panic`, `unreachable` on library code; an allow list with reasons; CI counts and fails on a rise.
   - Found in C7, for here: asserts that live data can trip. `forms::flag` on a lowercase region (`finance::EconomicCalendar`), `VersionHistory` on versions out of order, `GenerationGrid` and `ModelStatus` on a share past 0 to 1, `MicLevelMeter`, `AudioWaveform`, `AudioSpectrum` and `VoiceWaveform` on a level past 0 to 1, `CommentThread` on a thread with no comment.
   - Found in C8: `calendar::Event::timed` and `all_day` on an end before the start, `AttendeeList` on an address twice; `project::Initiative` on an end before its start, `Load` on a negative load; `canvas::Link`, `Frame` and `Viewport` on values a stored board holds; `devtools::Reading` with no readings, `QueryPlanViewer` on a plan that costs nothing; `dashboard::ServiceStatus` with no service, `UptimeBar` on a share past 0 to 1; `account::quota_line`, while drawing, on a limit not above zero.

@@ -38,6 +38,7 @@ jobs:
       # Hosted runners test as a plain user, so the file permissions the tests check hold.
       - run: cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
       - run: cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
+      - run: cargo test -p ely-gpui-component --all-features --test '*' --quiet
       # docs.rs builds on Linux with default features and `docsrs` set.
       - if: runner.os == 'Linux'
         run: cargo doc --workspace --exclude ely-gallery --no-deps --quiet

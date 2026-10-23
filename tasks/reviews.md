@@ -436,3 +436,4 @@
 | T56 C7 | 2 | PASS | 1,448 items in 13 crates (charts to files) documented, deny(missing_docs) on each; 332 examples, one per public component; CodeEditor and CodeBlock language docs name what the code does |
 | T56 C8 | 1 | FAIL | MapPopup, drawn by MapView, had no example; a render census missed it |
 | T56 C8 | 2 | PASS | 1,098 items in 17 crates documented, deny(missing_docs) on each and the root; 215 examples plus MapPopup, AccordionItem and ShellColumn; docs.rs build in check.sh and CI's Linux leg |
+| T56 D1 | 1 | PASS | three apps in tests/ on the public API and init_for_tests: a form, folders beside a table, a workspace with a dialog and toasts; check.sh and CI run them |
