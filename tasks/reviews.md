@@ -421,3 +421,4 @@
 | T56 B7 | 2 | PASS | tray, Dock badge and Omarchy in ely-desktop; notify leaves core's tree, zbus stays through gpui's Linux backend; left open, partial |
 | T56 B8 | 1 | PASS | ely-core holds none of six heavy crates, isolang behind `languages`, check.sh guards them; zbus left open with B7 |
 | T56 B9 | 1 | PASS | icons as consts over their own statics, drawn by svg().data; a five-icon release binary holds five SVGs; fonts behind `fonts`, Plex always |
+| T56 B10 | 1 | PASS | ely-core rechecks in 1.3 s after one edited line, 3.5-4.0 s non-incremental, 2 or 32 CPUs; the old crate 3.4-3.7 s and 11-13 s |

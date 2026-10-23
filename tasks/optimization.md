@@ -39,7 +39,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
   - Done: the split leaves ratex-svg, mermaid-rs-renderer, alacritty_terminal, rqrr and notify out of `ely-core`; `isolang` is optional behind `languages`; check.sh holds all six out.
   - Open, partial: zbus, as in B7. A Button-only program opens its window through `gpui_platform`, whose Linux backend links zbus; no Ely choice removes it.
 - [x] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
-- [ ] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.
+- [x] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.
+  - Measured 2026-10-23 at `e334c3c`, `rust:1.95` as root on the WSL box (32 cores), `cargo check -p ely-core --lib --features test-support` after a line appended to `buttons/button.rs`, three runs: 1.30 s incremental, 3.47 s with `CARGO_INCREMENTAL=0`; held to 2 CPUs (`docker --cpus=2`), 1.25 s and 3.81–3.99 s. The one crate at `17f936b`, same edit and box: 3.35–3.70 s incremental, 11.3–13.5 s without. A `touch` alone changes no contents, so incremental rustc skips it; the line is the edit.
 - [ ] B11 Gallery, site, check.sh, compat/kit, CI and AGENTS.md follow the new layout; the web gallery builds.
   - Found in B1: `e2e/docs.spec.ts`'s `GUIDES` lacks `gpui-kit`, added to `ORDER` in `b3985b9`; on Windows the Copy test reads CRLF from the clipboard. CI's site job runs neither.
 
