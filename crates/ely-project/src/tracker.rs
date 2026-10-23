@@ -20,12 +20,16 @@ type OnStop = Rc<dyn Fn(Instant, &mut Window, &mut App)>;
 /// Time spent on a task.
 #[derive(Clone, Debug, PartialEq)]
 pub struct TimeEntry {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// The task it was spent on.
     pub task: SharedString,
+    /// How long.
     pub spent: Duration,
 }
 
 impl TimeEntry {
+    /// An entry keyed `key`: `spent` on `task`.
     pub fn new(
         key: impl Into<SharedString>,
         task: impl Into<SharedString>,
@@ -49,6 +53,15 @@ pub(crate) fn spent(duration: Duration) -> String {
 }
 
 /// A timer against a task: a field names it, Start or Enter's release starts it and Stop ends it, the running time counting up; under it, the entries made and their total. The owner keeps what runs and what was spent.
+///
+/// ```
+/// use ely_project::{TimeEntry, TimeTracker};
+/// use std::time::Duration;
+///
+/// let tracker = TimeTracker::new("time", [TimeEntry::new("e1", "Design", Duration::from_secs(1800))])
+///     .on_start(|_task, _at, _, _| {})
+///     .on_stop(|_at, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TimeTracker {
     id: ElementId,
@@ -59,6 +72,7 @@ pub struct TimeTracker {
 }
 
 impl TimeTracker {
+    /// A tracker under `id` over `entries`, nothing running.
     pub fn new(id: impl Into<ElementId>, entries: impl IntoIterator<Item = TimeEntry>) -> Self {
         Self {
             id: id.into(),

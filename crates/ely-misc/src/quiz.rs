@@ -24,6 +24,7 @@ pub struct QuizQuestion {
 }
 
 impl QuizQuestion {
+    /// A question asking `prompt` over `options`, the one at `right` right; panics on fewer than two options or a `right` past them.
     pub fn new(
         prompt: impl Into<SharedString>,
         options: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -96,6 +97,12 @@ impl Sitting {
 }
 
 /// Questions one at a time: pick an option and Check shows the right one, then Next; the last gives the score, with Try again. Check, Next, See score and Try again are one button on one focus handle; Check with no pick asks for one.
+///
+/// ```
+/// use ely_misc::{Quiz, QuizQuestion};
+///
+/// let quiz = Quiz::new("quiz", [QuizQuestion::new("2 + 2?", ["3", "4"], 1)]).on_score(|_right, _of, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Quiz {
     id: ElementId,
@@ -104,6 +111,7 @@ pub struct Quiz {
 }
 
 impl Quiz {
+    /// A quiz under `id` of `questions`.
     pub fn new(
         id: impl Into<ElementId>,
         questions: impl IntoIterator<Item = QuizQuestion>,

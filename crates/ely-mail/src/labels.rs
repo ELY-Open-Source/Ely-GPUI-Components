@@ -20,12 +20,16 @@ use crate::{
 /// A label: its key, its name, and its hue among the theme's chart colors.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Label {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows; a search reads it.
     pub name: SharedString,
+    /// Its place among the theme's chart colors.
     pub hue: usize,
 }
 
 impl Label {
+    /// A label keyed `key`, named `name`, in the chart color at `hue`.
     pub fn new(key: impl Into<SharedString>, name: impl Into<SharedString>, hue: usize) -> Self {
         Self {
             key: key.into(),
@@ -62,6 +66,14 @@ fn step(finding: &Entity<Finding>, count: usize, by: isize, cx: &mut App) {
 }
 
 /// Labels to put on a message: the field finds them by name, arrows move between them, and a press or Enter turns one on or off. With `on_create`, a name no label has can be made into one.
+///
+/// ```
+/// use ely_mail::{Label, LabelPicker};
+///
+/// let picker = LabelPicker::new("labels", [Label::new("work", "Work", 0), Label::new("home", "Home", 1)])
+///     .selected(["work"])
+///     .on_change(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LabelPicker {
     id: ElementId,
@@ -72,6 +84,7 @@ pub struct LabelPicker {
 }
 
 impl LabelPicker {
+    /// A picker under `id` over `labels`, none on; panics on a key found twice, or a name twice in any case.
     pub fn new(id: impl Into<ElementId>, labels: impl IntoIterator<Item = Label>) -> Self {
         let labels: Vec<Label> = labels.into_iter().collect();
         for (ix, label) in labels.iter().enumerate() {

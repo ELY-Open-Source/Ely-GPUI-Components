@@ -26,6 +26,7 @@ pub struct MapMarker {
 }
 
 impl MapMarker {
+    /// A pin keyed `key` at `at`, with no label, in the accent.
     pub fn new(key: impl Into<SharedString>, at: LatLon) -> Self {
         Self {
             key: key.into(),
@@ -35,6 +36,7 @@ impl MapMarker {
         }
     }
 
+    /// Words beside it.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
@@ -113,6 +115,15 @@ impl MapMarker {
 }
 
 /// A card that points at a place, over the map. It takes focus when it shows and hands it back when it goes; its close button and Escape hand the owner `on_close`.
+///
+/// ```
+/// use ely_maps::{LatLon, MapPopup, MapView, MapViewport};
+/// use gpui::ParentElement;
+///
+/// let lisbon = LatLon::new(38.72, -9.14);
+/// let popup = MapPopup::new(lisbon, "Lisbon").child("Capital of Portugal").on_close(|_, _| {});
+/// let map = MapView::new("map", MapViewport::new(lisbon, 6.0)).popup(popup);
+/// ```
 pub struct MapPopup {
     pub(crate) at: LatLon,
     title: SharedString,
@@ -121,6 +132,7 @@ pub struct MapPopup {
 }
 
 impl MapPopup {
+    /// A card at `at` titled `title`; its body comes as children.
     pub fn new(at: LatLon, title: impl Into<SharedString>) -> Self {
         Self {
             at,
@@ -130,6 +142,7 @@ impl MapPopup {
         }
     }
 
+    /// Shows a close button, and what a press on it or Escape does.
     pub fn on_close(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_close = Some(Rc::new(handler));
         self

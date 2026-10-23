@@ -18,6 +18,12 @@ use crate::{
 };
 
 /// Someone in a call, in the call's frame shape: their camera's frame from the host, or their initials while it is off; their name in the lower corner with a mark when muted; a ring while they speak.
+///
+/// ```
+/// use ely_messaging::ParticipantTile;
+///
+/// let tile = ParticipantTile::new("ana", "Ana Silva", 16.0 / 9.0).speaking(true);
+/// ```
 #[derive(IntoElement)]
 pub struct ParticipantTile {
     id: ElementId,
@@ -55,11 +61,13 @@ impl ParticipantTile {
         self
     }
 
+    /// Whether their microphone is off.
     pub fn muted(mut self, muted: bool) -> Self {
         self.muted = muted;
         self
     }
 
+    /// Whether they are speaking now.
     pub fn speaking(mut self, speaking: bool) -> Self {
         self.speaking = speaking;
         self
@@ -137,6 +145,15 @@ fn columns(count: usize) -> usize {
 }
 
 /// Everyone in a call, as tiles in even rows: the columns grow with the count as far as tiles fit across, and a short last row centers at the same width. It holds a tile at least.
+///
+/// ```
+/// use ely_messaging::{ParticipantTile, VideoCallGrid};
+/// use gpui::ParentElement;
+///
+/// let grid = VideoCallGrid::new("grid")
+///     .child(ParticipantTile::new("ana", "Ana Silva", 16.0 / 9.0))
+///     .child(ParticipantTile::new("ben", "Ben Ito", 16.0 / 9.0).muted(true));
+/// ```
 #[derive(IntoElement)]
 pub struct VideoCallGrid {
     id: ElementId,
@@ -144,6 +161,7 @@ pub struct VideoCallGrid {
 }
 
 impl VideoCallGrid {
+    /// An empty grid under `id`; its tiles come as children.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -216,6 +234,12 @@ impl RenderOnce for VideoCallGrid {
 }
 
 /// A shared screen in its shape, from frames the host hands in, under a bar that names who presents; your own share, the one with a stop, offers Stop presenting. The call's tiles can run beside it, or below on a narrow window.
+///
+/// ```
+/// use ely_messaging::ScreenShareView;
+///
+/// let share = ScreenShareView::new("share", "Ana Silva", 16.0 / 10.0);
+/// ```
 #[derive(IntoElement)]
 pub struct ScreenShareView {
     id: ElementId,

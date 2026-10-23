@@ -13,6 +13,18 @@ use crate::{
 };
 
 /// Every shortcut in a dialog: settings::KeyboardShortcutsList with its search, which takes focus as the dialog opens. Escape closes it.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_onboarding::KeyboardShortcutCheatsheet;
+/// use ely_settings::Shortcut;
+/// use gpui::Entity;
+///
+/// fn cheatsheet(search: &Entity<TextInput>) -> KeyboardShortcutCheatsheet {
+///     let save = Shortcut { group: "File".into(), name: "Save".into(), keys: "cmd-s".into() };
+///     KeyboardShortcutCheatsheet::new("keys", [save], search, |_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct KeyboardShortcutCheatsheet {
     id: ElementId,
@@ -52,6 +64,14 @@ impl RenderOnce for KeyboardShortcutCheatsheet {
 }
 
 /// What changed, in a dialog: the releases on data_display::Changelog, newest first, then Got it.
+///
+/// ```
+/// use ely_core::data_display::{Change, Release};
+/// use ely_onboarding::WhatsNewDialog;
+///
+/// let release = Release::new("1.4", "Oct 23, 2026").change(Change::Added, "Split view");
+/// let dialog = WhatsNewDialog::new("new", |_, _| {}).release(release);
+/// ```
 #[derive(IntoElement)]
 pub struct WhatsNewDialog {
     id: ElementId,

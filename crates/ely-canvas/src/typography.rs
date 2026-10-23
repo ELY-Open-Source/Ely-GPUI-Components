@@ -16,11 +16,17 @@ use crate::{
 /// How text is set: its family and weight, its size in pixels, its line height as a share of the size, its tracking in pixels, and its alignment.
 #[derive(Clone, Debug, PartialEq)]
 pub struct TypeStyle {
+    /// The font family.
     pub family: SharedString,
+    /// Its weight.
     pub weight: FontWeight,
+    /// Its size, in pixels.
     pub size: f32,
+    /// Its line height, as a share of its size.
     pub line_height: f32,
+    /// Space between letters, in pixels.
     pub tracking: f32,
+    /// How lines align.
     pub align: TextAlign,
 }
 
@@ -43,6 +49,24 @@ const ALIGNS: [(TextAlign, &str, IconName); 3] = [
 ];
 
 /// A text style's family, weight, size, line height, tracking and alignment, over a line set in it. The line shows all but the tracking, which gpui does not set.
+///
+/// ```
+/// use ely_canvas::{TypeStyle, TypographyPanel};
+/// use ely_core::forms::TextInput;
+/// use gpui::{Entity, FontWeight, TextAlign};
+///
+/// fn panel(search: &Entity<TextInput>) -> TypographyPanel {
+///     let style = TypeStyle {
+///         family: "Inter".into(),
+///         weight: FontWeight::NORMAL,
+///         size: 16.0,
+///         line_height: 1.5,
+///         tracking: 0.0,
+///         align: TextAlign::Left,
+///     };
+///     TypographyPanel::new("type", style, search, |_style, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct TypographyPanel {
     id: ElementId,

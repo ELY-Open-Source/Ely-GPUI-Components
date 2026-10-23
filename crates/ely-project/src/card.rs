@@ -38,6 +38,13 @@ pub(super) fn label_chip(label: &Label, cx: &App) -> Div {
 }
 
 /// An issue on a card: its status, name and who has it, its title, then its priority, labels and due day, red when past and still open. With `on_open`, a press, Enter or Space opens it.
+///
+/// ```
+/// use ely_project::{IssueCard, IssueId, Priority, Task};
+///
+/// let task = Task::new("t1", "Fix the login").issue(IssueId::new("ENG", 123)).priority(Priority::High);
+/// let card = IssueCard::new("card", task).on_open(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct IssueCard {
     id: ElementId,
@@ -47,6 +54,7 @@ pub struct IssueCard {
 }
 
 impl IssueCard {
+    /// A card under `id` for `task`, its due day read against the clock.
     pub fn new(id: impl Into<ElementId>, task: Task) -> Self {
         Self {
             id: id.into(),
@@ -62,6 +70,7 @@ impl IssueCard {
         self
     }
 
+    /// Makes it pressable, and what a press, Enter or Space does.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self

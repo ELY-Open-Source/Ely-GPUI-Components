@@ -35,6 +35,15 @@ pub(crate) fn refusal(
 }
 
 /// A team's labels to tend: each wears its hue, which a press on it changes, and its name, which edits in place; a label can go, and a field at the end makes a new one. Names stay unique, whatever their case.
+///
+/// ```
+/// use ely_mail::Label;
+/// use ely_project::LabelManager;
+///
+/// let manager = LabelManager::new("labels", [Label::new("bug", "Bug", 0), Label::new("docs", "Docs", 2)])
+///     .on_rename(|_key, _name, _, _| {})
+///     .on_create(|_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LabelManager {
     id: ElementId,
@@ -46,6 +55,7 @@ pub struct LabelManager {
 }
 
 impl LabelManager {
+    /// A manager under `id` of `labels`; panics on a key found twice, or a name blank or twice in any case.
     pub fn new(id: impl Into<ElementId>, labels: impl IntoIterator<Item = Label>) -> Self {
         let labels: Vec<Label> = labels.into_iter().collect();
         for (ix, label) in labels.iter().enumerate() {

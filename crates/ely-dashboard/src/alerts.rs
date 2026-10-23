@@ -18,25 +18,51 @@ use crate::{
 /// Where an alert stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertState {
+    /// Raised and not yet seen to.
     Firing,
+    /// Seen to, not yet resolved.
     Acknowledged,
+    /// Over.
     Resolved,
 }
 
 /// An alert from a monitor: its key and title, what raised it, how grave it is, where it stands, and since when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct MonitorAlert {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it says.
     pub title: SharedString,
+    /// What raised it.
     pub source: SharedString,
+    /// How grave it is.
     pub severity: Severity,
+    /// Where it stands.
     pub state: AlertState,
+    /// Since when.
     pub since: Timestamp,
 }
 
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Alerts, each with its severity's icon, what raised it and since when, and where it stands; a firing one can be acknowledged from its row. Enter or a double press opens one.
+///
+/// ```
+/// use ely_core::primitives::Severity;
+/// use ely_dashboard::{AlertList, AlertState, MonitorAlert};
+/// use jiff::Timestamp;
+///
+/// let now = Timestamp::from_second(1_792_746_000).unwrap();
+/// let alert = MonitorAlert {
+///     key: "cpu".into(),
+///     title: "CPU above 90%".into(),
+///     source: "web-1".into(),
+///     severity: Severity::Warning,
+///     state: AlertState::Firing,
+///     since: now,
+/// };
+/// let list = AlertList::new("alerts", [alert], now).on_acknowledge(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AlertList {
     id: ElementId,
@@ -62,6 +88,7 @@ impl AlertList {
         }
     }
 
+    /// Gets the key of the alert to open.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -70,6 +97,7 @@ impl AlertList {
         self
     }
 
+    /// Offers Acknowledge on a firing alert; gets its key.
     pub fn on_acknowledge(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -147,9 +175,13 @@ impl RenderOnce for AlertList {
 /// How far an incident has come.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum IncidentPhase {
+    /// Looking for the cause.
     Investigating,
+    /// The cause is known.
     Identified,
+    /// Fixed, and watched.
     Monitoring,
+    /// Over.
     Resolved,
 }
 
@@ -185,18 +217,26 @@ fn grave(severity: Severity) -> &'static str {
 /// A word on an incident: the phase it marks, what it says, and when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct IncidentUpdate {
+    /// The phase it marks.
     pub phase: IncidentPhase,
+    /// What it says.
     pub text: SharedString,
+    /// When.
     pub at: Timestamp,
 }
 
 /// An incident: its title, how grave it is, the services it touches, when it began, and its updates oldest first.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Incident {
+    /// What it is called.
     pub title: SharedString,
+    /// How grave it is.
     pub severity: Severity,
+    /// The services it touches.
     pub services: Vec<SharedString>,
+    /// When it began.
     pub started: Timestamp,
+    /// Its updates, oldest first.
     pub updates: Vec<IncidentUpdate>,
 }
 
@@ -210,6 +250,22 @@ impl Incident {
 }
 
 /// An incident: its title under its severity and phase, when it began and what it touches, then its updates newest first.
+///
+/// ```
+/// use ely_core::primitives::Severity;
+/// use ely_dashboard::{Incident, IncidentCard, IncidentPhase, IncidentUpdate};
+/// use jiff::Timestamp;
+///
+/// let now = Timestamp::from_second(1_792_746_000).unwrap();
+/// let incident = Incident {
+///     title: "Checkout errors".into(),
+///     severity: Severity::Danger,
+///     services: vec!["checkout".into()],
+///     started: now,
+///     updates: vec![IncidentUpdate { phase: IncidentPhase::Investigating, text: "Looking into it.".into(), at: now }],
+/// };
+/// let card = IncidentCard::new(incident, now);
+/// ```
 #[derive(IntoElement)]
 pub struct IncidentCard {
     incident: Incident,

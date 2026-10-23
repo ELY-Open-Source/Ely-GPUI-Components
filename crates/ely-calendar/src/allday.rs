@@ -18,6 +18,14 @@ use crate::{
 };
 
 /// The whole days of a run of days, as bars across their columns in lanes, beside a label in the hours' column. It grows a lane at a time.
+///
+/// ```
+/// use ely_calendar::{AllDayRow, Event};
+/// use jiff::civil::date;
+///
+/// let trip = Event::all_day("trip", "Trip", date(2026, 10, 23), date(2026, 10, 24), 2);
+/// let row = AllDayRow::new("allday", [date(2026, 10, 23), date(2026, 10, 24)], [trip]);
+/// ```
 #[derive(IntoElement)]
 pub struct AllDayRow {
     id: ElementId,
@@ -29,6 +37,7 @@ pub struct AllDayRow {
 }
 
 impl AllDayRow {
+    /// A row under `id` across `days` with `events`; panics on no day, or an event key found twice.
     pub fn new(
         id: impl Into<ElementId>,
         days: impl IntoIterator<Item = Date>,

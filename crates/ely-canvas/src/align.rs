@@ -14,17 +14,26 @@ type OnAlign = Rc<dyn Fn(Align, &mut Window, &mut App)>;
 /// A way to line up selected shapes, or to spread them so the gaps between them match.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Align {
+    /// Left edges in line.
     Left,
+    /// Centers in a column.
     Center,
+    /// Right edges in line.
     Right,
+    /// Top edges in line.
     Top,
+    /// Middles in a row.
     Middle,
+    /// Bottom edges in line.
     Bottom,
+    /// Even gaps across.
     SpreadAcross,
+    /// Even gaps down.
     SpreadDown,
 }
 
 impl Align {
+    /// Every way, in the toolbar's order.
     pub const ALL: [Align; 8] = [
         Align::Left,
         Align::Center,
@@ -36,6 +45,7 @@ impl Align {
         Align::SpreadDown,
     ];
 
+    /// Its words, for a tip.
     pub fn words(self) -> &'static str {
         match self {
             Align::Left => "Align left edges",
@@ -121,6 +131,12 @@ fn spread(
 }
 
 /// Buttons that line up or spread the selection. Each asks the owner, who moves the shapes with `aligned`; a way rests disabled until enough shapes are selected for it.
+///
+/// ```
+/// use ely_canvas::AlignmentToolbar;
+///
+/// let toolbar = AlignmentToolbar::new("align", 3).on_align(|_way, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AlignmentToolbar {
     id: ElementId,
@@ -138,6 +154,7 @@ impl AlignmentToolbar {
         }
     }
 
+    /// Gets the way pressed.
     pub fn on_align(mut self, handler: impl Fn(Align, &mut Window, &mut App) + 'static) -> Self {
         self.on_align = Some(Rc::new(handler));
         self

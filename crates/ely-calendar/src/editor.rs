@@ -27,12 +27,19 @@ type OnDraft = Rc<dyn Fn(&EventDraft, &mut Window, &mut App)>;
 /// An event's parts as an editor hands them back.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EventDraft {
+    /// What it is called.
     pub title: SharedString,
+    /// When it happens.
     pub when: When,
+    /// Where, or empty.
     pub place: SharedString,
+    /// Its place among the theme's chart colors.
     pub hue: usize,
+    /// How it repeats, when it does.
     pub repeat: Option<Recurrence>,
+    /// Reminders, in minutes before it.
     pub reminders: Vec<u32>,
+    /// Notes about it.
     pub notes: SharedString,
 }
 
@@ -140,6 +147,16 @@ impl Editing {
 }
 
 /// An event's parts in a form: its title, whole days or hours from and until, where, its color, how it repeats, its reminders and notes. Save waits for a title and an end after the start; Delete shows with its handler. A new draft from the owner starts it over.
+///
+/// ```
+/// use ely_calendar::{Event, EventDraft, EventEditor};
+/// use jiff::civil::date;
+///
+/// let event = Event::all_day("trip", "Trip", date(2026, 10, 23), date(2026, 10, 24), 2);
+/// let editor = EventEditor::new("edit", EventDraft::of(&event))
+///     .on_save(|_draft, _, _| {})
+///     .on_cancel(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EventEditor {
     id: ElementId,
@@ -151,6 +168,7 @@ pub struct EventEditor {
 }
 
 impl EventEditor {
+    /// An editor under `id`, filled from `draft`.
     pub fn new(id: impl Into<ElementId>, draft: EventDraft) -> Self {
         Self {
             id: id.into(),
@@ -177,6 +195,7 @@ impl EventEditor {
         self
     }
 
+    /// Shows Cancel, and what a press on it does.
     pub fn on_cancel(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_cancel = Some(Rc::new(handler));
         self

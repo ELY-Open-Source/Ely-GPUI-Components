@@ -18,18 +18,26 @@ use crate::{
 /// A message as a list shows it: who sent it, its subject and first words, when it came, and its flags.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Mail {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Who sent it.
     pub from: SharedString,
+    /// Its subject.
     pub subject: SharedString,
+    /// Its first words.
     pub snippet: Option<SharedString>,
     /// None when the message names no date.
     pub at: Option<Timestamp>,
+    /// Whether it is unread.
     pub unread: bool,
+    /// Whether it is starred.
     pub starred: bool,
+    /// How many files it carries.
     pub attachments: usize,
 }
 
 impl Mail {
+    /// A message keyed `key` from `from` about `subject`, sent `at`: read, no star, no files.
     pub fn new(
         key: impl Into<SharedString>,
         from: impl Into<SharedString>,
@@ -72,11 +80,13 @@ impl Mail {
         self
     }
 
+    /// Whether it is unread.
     pub fn unread(mut self, unread: bool) -> Self {
         self.unread = unread;
         self
     }
 
+    /// Whether it is starred.
     pub fn starred(mut self, starred: bool) -> Self {
         self.starred = starred;
         self
@@ -140,6 +150,15 @@ pub(super) fn say(when: When, cx: &App) -> SharedString {
 }
 
 /// A message as a row: its sender, strong beside a dot while unread, the subject and first words under it, when it came, a paperclip when it carries files, and its star. Every row is three lines high. With a handler the star toggles, its press kept off the row.
+///
+/// ```
+/// use ely_mail::{Mail, MailItem};
+/// use jiff::Timestamp;
+///
+/// let at = Timestamp::from_second(1_700_000_000).unwrap();
+/// let mail = Mail::new("m1", "Ana Silva", "Friday", at).unread(true).attachments(1);
+/// let row = MailItem::new("row", mail).on_star(|_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MailItem {
     id: ElementId,
@@ -149,6 +168,7 @@ pub struct MailItem {
 }
 
 impl MailItem {
+    /// A row under `id` for `mail`.
     pub fn new(id: impl Into<ElementId>, mail: Mail) -> Self {
         Self {
             id: id.into(),

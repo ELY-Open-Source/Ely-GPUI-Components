@@ -143,6 +143,16 @@ fn document(
 }
 
 /// JSON as a tree: each key or index with its value, maps and lists with their counts. A search keeps the rows that hold its words and opens the way to them; Enter or a double press on a value copies its path. JSON that does not read shows the line where it breaks.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_devtools::JsonViewer;
+/// use gpui::Entity;
+///
+/// fn viewer(search: &Entity<TextInput>) -> JsonViewer {
+///     JsonViewer::new("json", r#"{"name": "Ely", "tags": ["ui"]}"#, search)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct JsonViewer {
     id: ElementId,
@@ -172,6 +182,16 @@ impl RenderOnce for JsonViewer {
 }
 
 /// YAML as a tree, as `JsonViewer` shows JSON: block maps and lists, with comments dropped.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_devtools::YamlViewer;
+/// use gpui::Entity;
+///
+/// fn viewer(search: &Entity<TextInput>) -> YamlViewer {
+///     YamlViewer::new("yaml", "name: Ely\ntags:\n  - ui\n", search)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct YamlViewer {
     id: ElementId,

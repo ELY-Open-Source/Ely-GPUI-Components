@@ -17,6 +17,17 @@ use crate::{
 };
 
 /// A conversation: its subject over its messages, oldest first. The newest stands open; the rest fold to a line of the sender, the first words and the date, which a press, Enter or Space opens.
+///
+/// ```
+/// use ely_mail::{Contact, MailThreadView, Message};
+/// use jiff::Timestamp;
+///
+/// let ana = Contact::new("Ana Silva", "ana@example.com");
+/// let at = Timestamp::from_second(1_700_000_000).unwrap();
+/// let thread = MailThreadView::new("thread", "Friday")
+///     .message(Message::new("m1", ana, at), "See you then.")
+///     .on_reply(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MailThreadView {
     id: ElementId,
@@ -28,6 +39,7 @@ pub struct MailThreadView {
 }
 
 impl MailThreadView {
+    /// A conversation under `id` about `subject`, with no messages yet.
     pub fn new(id: impl Into<ElementId>, subject: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

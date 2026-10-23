@@ -24,9 +24,22 @@ type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// Where a subscription stands, each with the date that matters, as words.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Standing {
-    Active { renews: SharedString },
-    Trial { ends: SharedString },
-    Canceled { ends: SharedString },
+    /// Paid up, renewing on a date.
+    Active {
+        /// When it renews.
+        renews: SharedString,
+    },
+    /// On trial, ending on a date.
+    Trial {
+        /// When the trial ends.
+        ends: SharedString,
+    },
+    /// Canceled, running until a date.
+    Canceled {
+        /// When the plan stops.
+        ends: SharedString,
+    },
+    /// A payment failed.
     PastDue,
 }
 
@@ -55,14 +68,32 @@ impl Standing {
 /// A plan paid for: its name, its price per period in a currency, and where it stands.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Subscription {
+    /// The plan's name.
     pub plan: SharedString,
+    /// Its price per period.
     pub price: f64,
+    /// The price's currency, as an ISO code.
     pub currency: SharedString,
+    /// Whether the period is a year; a month otherwise.
     pub yearly: bool,
+    /// Where it stands.
     pub standing: Standing,
 }
 
 /// A plan at a glance: its name and where it stands, its price, what happens next, and a way to change it, cancel it after a second press, or take it back.
+///
+/// ```
+/// use ely_account::{Standing, Subscription, SubscriptionCard};
+///
+/// let plan = Subscription {
+///     plan: "Pro".into(),
+///     price: 12.0,
+///     currency: "USD".into(),
+///     yearly: false,
+///     standing: Standing::Active { renews: "Nov 23, 2026".into() },
+/// };
+/// let card = SubscriptionCard::new("plan", plan).on_change(|_, _| {}).on_cancel(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SubscriptionCard {
     id: ElementId,
@@ -73,6 +104,7 @@ pub struct SubscriptionCard {
 }
 
 impl SubscriptionCard {
+    /// A card under `id` for `subscription`, with no actions.
     pub fn new(id: impl Into<ElementId>, subscription: Subscription) -> Self {
         Self {
             id: id.into(),
@@ -185,10 +217,15 @@ impl RenderOnce for SubscriptionCard {
 /// A limit on a plan: its key and name, how much is used of how much, and the unit.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Quota {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// How much is used.
     pub used: f64,
+    /// How much the plan allows; drawing a quota whose limit is not above zero panics.
     pub limit: f64,
+    /// Its unit, such as GB.
     pub unit: SharedString,
 }
 
@@ -218,6 +255,13 @@ pub fn quota_line(quota: &Quota) -> String {
 }
 
 /// How much of each limit is used, a bar for each that turns amber near it and red at it, and when they start over.
+///
+/// ```
+/// use ely_account::{Quota, UsageQuota};
+///
+/// let storage = Quota { key: "storage".into(), name: "Storage".into(), used: 8.5, limit: 10.0, unit: "GB".into() };
+/// let quotas = UsageQuota::new("usage", [storage]);
+/// ```
 #[derive(IntoElement)]
 pub struct UsageQuota {
     id: ElementId,
@@ -226,6 +270,7 @@ pub struct UsageQuota {
 }
 
 impl UsageQuota {
+    /// Quotas under `id`, with no reset date.
     pub fn new(id: impl Into<ElementId>, quotas: impl IntoIterator<Item = Quota>) -> Self {
         Self {
             id: id.into(),
@@ -270,24 +315,48 @@ impl RenderOnce for UsageQuota {
 /// Where an invoice stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum InvoiceState {
+    /// Paid.
     Paid,
+    /// Waiting to be paid.
     Due,
+    /// Payment failed.
     Failed,
+    /// Paid back.
     Refunded,
 }
 
 /// A bill: its key, date and what it was for as words, its amount in a currency, and where it stands.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Invoice {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its date, as words.
     pub date: SharedString,
+    /// What it was for.
     pub description: SharedString,
+    /// Its amount.
     pub amount: f64,
+    /// The amount's currency, as an ISO code.
     pub currency: SharedString,
+    /// Where it stands.
     pub state: InvoiceState,
 }
 
 /// Past bills, newest first as given: what each was for and its amount, its date and state below, and a way to download it.
+///
+/// ```
+/// use ely_account::{BillingHistory, Invoice, InvoiceState};
+///
+/// let invoice = Invoice {
+///     key: "inv-1".into(),
+///     date: "Oct 1, 2026".into(),
+///     description: "Pro, monthly".into(),
+///     amount: 12.0,
+///     currency: "USD".into(),
+///     state: InvoiceState::Paid,
+/// };
+/// let history = BillingHistory::new("bills", [invoice]).on_download(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BillingHistory {
     id: ElementId,
@@ -296,6 +365,7 @@ pub struct BillingHistory {
 }
 
 impl BillingHistory {
+    /// A history under `id` of `invoices`, newest first as given.
     pub fn new(id: impl Into<ElementId>, invoices: impl IntoIterator<Item = Invoice>) -> Self {
         Self {
             id: id.into(),

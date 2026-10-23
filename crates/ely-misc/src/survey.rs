@@ -38,8 +38,11 @@ impl Question {
 /// An answer, by the options' places or in words.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Answer {
+    /// The place of the option picked.
     Choice(usize),
+    /// The places of the options picked.
     Several(Vec<usize>),
+    /// The words written.
     Text(SharedString),
 }
 
@@ -52,6 +55,15 @@ struct Sheet {
 }
 
 /// Questions on one page, each answered by one option, several, or words. Submit hands the answers to the owner once every one is answered, and asks for the rest before; then the survey thanks the viewer in Submit's place and focus.
+///
+/// ```
+/// use ely_misc::{Question, Survey};
+///
+/// let survey = Survey::new("survey", [
+///     Question::Choice("How did you hear of us?".into(), vec!["A friend".into(), "Search".into()]),
+///     Question::Text("Anything else?".into()),
+/// ], |_answers, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Survey {
     id: ElementId,
@@ -60,6 +72,7 @@ pub struct Survey {
 }
 
 impl Survey {
+    /// A survey under `id` of `questions`; `on_submit` gets an answer per question, in order.
     pub fn new(
         id: impl Into<ElementId>,
         questions: impl IntoIterator<Item = Question>,

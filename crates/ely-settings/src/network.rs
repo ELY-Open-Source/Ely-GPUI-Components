@@ -13,11 +13,17 @@ use crate::{
 /// How requests reach the network: straight, through the system's proxy, or through one given here.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Proxy {
+    /// Straight to the network.
     Off,
+    /// Through the system's proxy.
     System,
+    /// Through the proxy given here.
     Manual {
+        /// Its host.
         host: SharedString,
+        /// Its port, from 1.
         port: u16,
+        /// Hosts reached straight, past the proxy.
         bypass: Vec<SharedString>,
     },
 }
@@ -50,6 +56,12 @@ struct Fields {
 type OnProxy = Rc<dyn Fn(Proxy, &mut Window, &mut App)>;
 
 /// How requests reach the network: off, the system's proxy, or a manual one with its host, port and the hosts to reach straight. Apply hands the owner the proxy and waits for a host and a good port when manual; a new proxy from the owner refills it.
+///
+/// ```
+/// use ely_settings::{Proxy, ProxySettings};
+///
+/// let settings = ProxySettings::new("proxy", Proxy::System, |_proxy, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProxySettings {
     id: ElementId,
@@ -58,6 +70,7 @@ pub struct ProxySettings {
 }
 
 impl ProxySettings {
+    /// Settings under `id` filled from `proxy`; `on_apply` gets the proxy on Apply.
     pub fn new(
         id: impl Into<ElementId>,
         proxy: Proxy,

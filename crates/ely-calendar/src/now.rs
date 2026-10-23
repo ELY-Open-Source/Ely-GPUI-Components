@@ -9,6 +9,13 @@ use crate::{
 };
 
 /// A line across a day of a time grid at the minute now, with a dot where it starts. It moves with the clock.
+///
+/// ```
+/// use ely_calendar::CurrentTimeIndicator;
+/// use jiff::Timestamp;
+///
+/// let now = CurrentTimeIndicator::new("now").now(Timestamp::from_second(1_792_746_000).unwrap());
+/// ```
 #[derive(IntoElement)]
 pub struct CurrentTimeIndicator {
     id: ElementId,
@@ -17,6 +24,7 @@ pub struct CurrentTimeIndicator {
 }
 
 impl CurrentTimeIndicator {
+    /// A line under `id`, in the system's zone at the clock's minute.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

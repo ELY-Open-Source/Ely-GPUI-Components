@@ -19,15 +19,22 @@ use crate::{
 /// When a status clears itself.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ClearAfter {
+    /// It stays until cleared.
     Never,
+    /// After 30 minutes.
     ThirtyMinutes,
+    /// After an hour.
     OneHour,
+    /// After four hours.
     FourHours,
+    /// At the end of the day.
     Today,
+    /// At the end of the week.
     ThisWeek,
 }
 
 impl ClearAfter {
+    /// Every choice, in the order the menu shows them.
     pub const ALL: [Self; 6] = [
         Self::Never,
         Self::ThirtyMinutes,
@@ -37,6 +44,7 @@ impl ClearAfter {
         Self::ThisWeek,
     ];
 
+    /// Its words.
     pub fn label(self) -> &'static str {
         match self {
             Self::Never => "Don't clear",
@@ -59,8 +67,11 @@ impl ClearAfter {
 /// A status: an emoji when chosen, a few words, and when it clears.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Status {
+    /// The emoji, when chosen.
     pub emoji: Option<SharedString>,
+    /// The words.
     pub text: SharedString,
+    /// When it clears.
     pub clear: ClearAfter,
 }
 
@@ -95,6 +106,13 @@ impl Draft {
 }
 
 /// Sets your status: an emoji, a few words, and when it clears. Suggestions fill all three; Save hands the status over, and Clear status removes the one set. A new status from the owner starts the edits over.
+///
+/// ```
+/// use ely_messaging::{ClearAfter, Status, StatusSetter};
+///
+/// let lunch = Status { emoji: Some("🥪".into()), text: "Lunch".into(), clear: ClearAfter::OneHour };
+/// let setter = StatusSetter::new("status").suggestions([lunch]).on_save(|_status, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StatusSetter {
     id: ElementId,
@@ -105,6 +123,7 @@ pub struct StatusSetter {
 }
 
 impl StatusSetter {
+    /// A setter under `id`, with no status set and no suggestions.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -121,16 +140,19 @@ impl StatusSetter {
         self
     }
 
+    /// Statuses offered to fill in at a press.
     pub fn suggestions(mut self, suggestions: impl IntoIterator<Item = Status>) -> Self {
         self.suggestions = suggestions.into_iter().collect();
         self
     }
 
+    /// Gets the status on Save.
     pub fn on_save(mut self, handler: impl Fn(&Status, &mut Window, &mut App) + 'static) -> Self {
         self.on_save = Some(Rc::new(handler));
         self
     }
 
+    /// Shows Clear status, and what a press on it does.
     pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_clear = Some(Rc::new(handler));
         self

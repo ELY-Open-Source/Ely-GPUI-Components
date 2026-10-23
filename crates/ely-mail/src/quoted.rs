@@ -12,6 +12,13 @@ use crate::{
 };
 
 /// Words quoted from an earlier message, folded behind "···" until it is pressed; open, they sit behind a rule. The fold is the text's own, logged.
+///
+/// ```
+/// use ely_mail::QuotedText;
+/// use gpui::ParentElement;
+///
+/// let quoted = QuotedText::new("quoted").child("On Monday, Ana wrote: see you then.");
+/// ```
 #[derive(IntoElement)]
 pub struct QuotedText {
     id: ElementId,
@@ -19,6 +26,7 @@ pub struct QuotedText {
 }
 
 impl QuotedText {
+    /// Quoted words under `id`, folded; the words come as children.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

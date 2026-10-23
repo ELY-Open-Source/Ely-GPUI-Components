@@ -51,6 +51,12 @@ impl RenderOnce for Dot {
 }
 
 /// A dot that calls out something new, with rings that widen from it; a press or Enter opens a tip beside it with a title, a line and Got it. Under reduced motion no ring shows.
+///
+/// ```
+/// use ely_onboarding::Hotspot;
+///
+/// let hotspot = Hotspot::new("tip", "Search everything", "Press Command-K from anywhere.", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Hotspot {
     id: ElementId,
@@ -60,6 +66,7 @@ pub struct Hotspot {
 }
 
 impl Hotspot {
+    /// A dot under `id` whose tip reads `title` and `body`; `on_dismiss` gets Got it.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

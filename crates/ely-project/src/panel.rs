@@ -23,6 +23,14 @@ type OnStep = Rc<dyn Fn(usize, bool, &mut Window, &mut App)>;
 type Edit = Rc<dyn Fn(&dyn Fn(&mut Task), &mut Window, &mut App)>;
 
 /// A task laid out in full: its status and issue with a way to close, its title to edit in place, its status, priority, assignee, due day and labels, its notes, and its steps. Each edit hands the whole task on.
+///
+/// ```
+/// use ely_project::{Person, Task, TaskDetailPanel};
+///
+/// let panel = TaskDetailPanel::new("task", Task::new("t1", "Fix the login"), [Person::new("ana", "Ana Silva")])
+///     .steps([("Reproduce", true), ("Patch", false)])
+///     .on_change(|_task, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TaskDetailPanel {
     id: ElementId,
@@ -56,6 +64,7 @@ impl TaskDetailPanel {
         }
     }
 
+    /// Its notes.
     pub fn notes(mut self, notes: impl Into<SharedString>) -> Self {
         self.notes = Some(notes.into());
         self
@@ -79,6 +88,7 @@ impl TaskDetailPanel {
         self
     }
 
+    /// Shows the close, and what a press on it does.
     pub fn on_close(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_close = Some(Rc::new(handler));
         self

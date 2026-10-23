@@ -24,6 +24,12 @@ pub(crate) fn stepped(zoom: f32, inward: bool) -> Option<f32> {
 }
 
 /// A zoom in percent; a press sets it back to 100%.
+///
+/// ```
+/// use ely_canvas::ZoomIndicator;
+///
+/// let zoom = ZoomIndicator::new("zoom", 1.5).on_zoom(|_zoom, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ZoomIndicator {
     id: ElementId,
@@ -32,6 +38,7 @@ pub struct ZoomIndicator {
 }
 
 impl ZoomIndicator {
+    /// A zoom under `id` at `zoom`; panics on one outside `Viewport::ZOOMS`.
     pub fn new(id: impl Into<ElementId>, zoom: f32) -> Self {
         let (least, most) = Viewport::ZOOMS;
         assert!((least..=most).contains(&zoom), "zoom {zoom}");
@@ -66,6 +73,12 @@ impl RenderOnce for ZoomIndicator {
 }
 
 /// Out, the zoom in percent, and in, through fixed steps; with `on_fit`, a button that fits what lies on the canvas.
+///
+/// ```
+/// use ely_canvas::ZoomControls;
+///
+/// let controls = ZoomControls::new("zoom", 1.0).on_zoom(|_zoom, _, _| {}).on_fit(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ZoomControls {
     id: ElementId,
@@ -75,6 +88,7 @@ pub struct ZoomControls {
 }
 
 impl ZoomControls {
+    /// Controls under `id` at `zoom`.
     pub fn new(id: impl Into<ElementId>, zoom: f32) -> Self {
         Self {
             id: id.into(),
@@ -90,6 +104,7 @@ impl ZoomControls {
         self
     }
 
+    /// Shows a button that fits the canvas, and what a press on it does.
     pub fn on_fit(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_fit = Some(Rc::new(handler));
         self

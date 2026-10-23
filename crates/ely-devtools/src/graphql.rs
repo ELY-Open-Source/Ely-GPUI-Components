@@ -19,9 +19,13 @@ use crate::{
 /// What kind of type a GraphQL schema declares.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TypeKind {
+    /// A type with fields.
     Object,
+    /// An input with fields.
     Input,
+    /// A set of values.
     Enum,
+    /// A single value.
     Scalar,
 }
 
@@ -39,8 +43,11 @@ impl TypeKind {
 /// A type in a schema: its name, its kind, and its fields with their types, or an enum's values.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SchemaType {
+    /// Its name.
     pub name: SharedString,
+    /// What kind it is.
     pub kind: TypeKind,
+    /// Its fields with their types, or an enum's values with no type.
     pub fields: Vec<(SharedString, SharedString)>,
 }
 
@@ -48,6 +55,22 @@ type OnRun = Rc<dyn Fn(String, String, &mut Window, &mut App)>;
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A GraphQL schema to browse beside a query and its variables to write, over the answer to read. The schema lists each type's fields with their types; Enter or a double press on a field hands the owner its path, `Type.field`. Run hands the owner the query and the variables; it rests while it runs and while the variables do not read as JSON, which says where. The answer shows as a tree.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_devtools::{GraphQLExplorer, SchemaType, TypeKind};
+/// use ely_editor::CodeEditor;
+/// use gpui::Entity;
+///
+/// fn explorer(query: &Entity<CodeEditor>, variables: &Entity<CodeEditor>, search: &Entity<TextInput>) -> GraphQLExplorer {
+///     let query_type = SchemaType {
+///         name: "Query".into(),
+///         kind: TypeKind::Object,
+///         fields: vec![("user".into(), "User".into())],
+///     };
+///     GraphQLExplorer::new("graphql", [query_type], query, variables, search, |_query, _variables, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct GraphQLExplorer {
     id: ElementId,
@@ -90,11 +113,13 @@ impl GraphQLExplorer {
         self
     }
 
+    /// Whether the query runs now; Run rests.
     pub fn running(mut self, running: bool) -> Self {
         self.running = running;
         self
     }
 
+    /// Gets a field's path, as `Type.field`.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

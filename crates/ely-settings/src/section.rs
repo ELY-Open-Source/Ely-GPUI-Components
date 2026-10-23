@@ -15,6 +15,14 @@ use crate::{
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A settings page: its sections listed down the side with the one open beside them, the list going above the page in a narrow box. Up and Down walk the list and Enter opens a section.
+///
+/// ```
+/// use ely_core::primitives::IconName;
+/// use ely_settings::SettingsLayout;
+///
+/// let layout = SettingsLayout::new("settings", [("appearance", "Appearance", IconName::Sun)], "appearance", |_key, _, _| {})
+///     .page("The open section");
+/// ```
 #[derive(IntoElement)]
 pub struct SettingsLayout {
     id: ElementId,
@@ -104,6 +112,12 @@ impl RenderOnce for SettingsLayout {
 }
 
 /// A titled group of settings rows, with a line of context under the title.
+///
+/// ```
+/// use ely_settings::{SettingsRow, SettingsSection};
+///
+/// let section = SettingsSection::new("Editor").description("How code looks.").row(SettingsRow::new("Line numbers"));
+/// ```
 #[derive(IntoElement)]
 pub struct SettingsSection {
     title: SharedString,
@@ -112,6 +126,7 @@ pub struct SettingsSection {
 }
 
 impl SettingsSection {
+    /// A section titled `title`, with no description; its rows come as children.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -120,11 +135,13 @@ impl SettingsSection {
         }
     }
 
+    /// The line of context under the title.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
     }
 
+    /// A row after the others.
     pub fn row(mut self, row: impl IntoElement) -> Self {
         self.rows.push(row.into_any_element());
         self
@@ -150,6 +167,12 @@ impl RenderOnce for SettingsSection {
 }
 
 /// One setting: its name and a line on what it does, and its control at the end of the line, or below them where the line is too narrow.
+///
+/// ```
+/// use ely_settings::SettingsRow;
+///
+/// let row = SettingsRow::new("Line numbers").description("Show a number beside each line.").control("On");
+/// ```
 #[derive(IntoElement)]
 pub struct SettingsRow {
     title: SharedString,
@@ -158,6 +181,7 @@ pub struct SettingsRow {
 }
 
 impl SettingsRow {
+    /// A row named `title`, with no description or control.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -166,11 +190,13 @@ impl SettingsRow {
         }
     }
 
+    /// The line on what it does.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
     }
 
+    /// Its control, at the end of the line.
     pub fn control(mut self, control: impl IntoElement) -> Self {
         self.control = Some(control.into_any_element());
         self

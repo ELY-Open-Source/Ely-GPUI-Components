@@ -1,3 +1,6 @@
+//! Calendar, chapter 30: events, month, week, day and year views, agendas, editors, attendees and availability.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, forms, layout, lists, overlays, primitives, theme, typography,
 };

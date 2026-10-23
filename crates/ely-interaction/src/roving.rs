@@ -29,6 +29,15 @@ fn roved(key: &str, axis: Axis, at: usize, count: usize) -> Option<usize> {
 }
 
 /// Items in a row or a column behind one Tab stop: the arrows along the axis move focus among them, Home and End go to the ends, and Enter or Space presses the one focused. The stop stays on the item last focused or pressed; a press, as a button's, leaves focus where it was. The owner lays them out through the box's style.
+///
+/// ```
+/// use ely_interaction::RovingFocus;
+/// use gpui::Axis;
+///
+/// let tools = RovingFocus::new("tools", Axis::Horizontal, |_key, _, _| {})
+///     .item("bold", "B")
+///     .item("italic", "I");
+/// ```
 #[derive(IntoElement)]
 pub struct RovingFocus {
     id: ElementId,
@@ -39,6 +48,7 @@ pub struct RovingFocus {
 }
 
 impl RovingFocus {
+    /// Items under `id` along `axis`; `on_press` gets the key of the item pressed.
     pub fn new(
         id: impl Into<ElementId>,
         axis: Axis,
@@ -53,6 +63,7 @@ impl RovingFocus {
         }
     }
 
+    /// An item keyed `key` showing `content`, after the others.
     pub fn item(mut self, key: impl Into<SharedString>, content: impl IntoElement) -> Self {
         self.items.push((key.into(), content.into_any_element()));
         self

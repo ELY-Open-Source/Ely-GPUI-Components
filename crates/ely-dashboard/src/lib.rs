@@ -1,3 +1,6 @@
+//! Dashboard, chapter 34: cards on a grid, filters, refresh, alerts, incidents, events, service status and health checks.
+#![deny(missing_docs)]
+
 use ely_core::{buttons, data_display, forms, lists, primitives, theme, typography};
 
 mod alerts;

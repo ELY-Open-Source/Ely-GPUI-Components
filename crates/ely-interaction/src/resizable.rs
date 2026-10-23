@@ -56,6 +56,14 @@ fn resized(
 type OnResize = Rc<dyn Fn(Size<Pixels>, &mut Window, &mut App)>;
 
 /// A box the owner sizes, with handles on its right and bottom edges and a grip at its lower right corner. A drag resizes it within its least and greatest size, and the owner hears each new size; a new size from the owner replaces it. The grip is a Tab stop, and the arrows resize a step at a time.
+///
+/// ```
+/// use ely_interaction::Resizable;
+/// use gpui::{ParentElement, px, size};
+///
+/// let panel = Resizable::new("panel", size(px(320.), px(200.)), size(px(160.), px(120.)), size(px(640.), px(480.)), |_size, _, _| {})
+///     .child("Drag my edges");
+/// ```
 #[derive(IntoElement)]
 pub struct Resizable {
     id: ElementId,

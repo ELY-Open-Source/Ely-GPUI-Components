@@ -25,6 +25,7 @@ pub struct KanbanCard {
 }
 
 impl KanbanCard {
+    /// A card keyed `key` that shows `content`.
     pub fn new(key: impl Into<SharedString>, content: impl IntoElement) -> Self {
         Self {
             key: key.into(),
@@ -41,6 +42,7 @@ pub struct KanbanColumn {
 }
 
 impl KanbanColumn {
+    /// An empty column keyed `key` under `title`.
     pub fn new(key: impl Into<SharedString>, title: impl Into<SharedString>) -> Self {
         Self {
             key: key.into(),
@@ -49,11 +51,13 @@ impl KanbanColumn {
         }
     }
 
+    /// A card at its end.
     pub fn card(mut self, card: KanbanCard) -> Self {
         self.cards.push(card);
         self
     }
 
+    /// Cards at its end, in order.
     pub fn cards(mut self, cards: impl IntoIterator<Item = KanbanCard>) -> Self {
         self.cards.extend(cards);
         self
@@ -107,6 +111,15 @@ fn measure(
 }
 
 /// Columns of cards: a card drags to a place in any column, the others gliding aside, and Option with an arrow moves the focused one. Each move asks the owner through `on_move(card, column, index)`, the index counted without the card.
+///
+/// ```
+/// use ely_project::{KanbanBoard, KanbanCard, KanbanColumn};
+///
+/// let board = KanbanBoard::new("board")
+///     .column(KanbanColumn::new("todo", "Todo").card(KanbanCard::new("t1", "Write the brief")))
+///     .column(KanbanColumn::new("done", "Done"))
+///     .on_move(|_card, _column, _index, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct KanbanBoard {
     id: ElementId,
@@ -116,6 +129,7 @@ pub struct KanbanBoard {
 }
 
 impl KanbanBoard {
+    /// An empty board under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -125,6 +139,7 @@ impl KanbanBoard {
         }
     }
 
+    /// A column at its end.
     pub fn column(mut self, column: KanbanColumn) -> Self {
         self.columns.push(column);
         self

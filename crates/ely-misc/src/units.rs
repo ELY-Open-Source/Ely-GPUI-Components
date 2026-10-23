@@ -166,12 +166,19 @@ fn place(units: &[Unit], name: &str) -> usize {
 }
 
 /// An amount in one unit read in another: length, area, volume, mass, temperature, speed or data, with a swap of the two units. It shows six significant digits, wrapped in its box when long.
+///
+/// ```
+/// use ely_misc::UnitConverter;
+///
+/// let converter = UnitConverter::new("units");
+/// ```
 #[derive(IntoElement)]
 pub struct UnitConverter {
     id: ElementId,
 }
 
 impl UnitConverter {
+    /// A converter under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }

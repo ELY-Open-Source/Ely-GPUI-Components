@@ -1,3 +1,6 @@
+//! Tooling, chapter 43: a playground, an inspector, render and frame meters, an event logger, a contrast checker and the design tokens.
+#![deny(missing_docs)]
+
 use ely_core::{buttons, data_display, forms, layout, primitives, theme, typography};
 use ely_devtools as devtools;
 

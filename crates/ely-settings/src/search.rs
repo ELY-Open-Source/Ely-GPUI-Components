@@ -15,9 +15,13 @@ use crate::{
 /// A setting a search can find: its key, the section it lives in, its name, and other words it answers to.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SettingEntry {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// The section it lives in.
     pub section: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// Other words it answers to.
     pub words: Vec<SharedString>,
 }
 
@@ -41,6 +45,22 @@ pub fn matching<'a>(entries: &'a [SettingEntry], query: &str) -> Vec<&'a Setting
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A search across every setting: while it holds words, the settings that answer to them, each under its section; Enter or a double press goes to one.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_settings::{SettingEntry, SettingsSearch};
+/// use gpui::Entity;
+///
+/// fn search(field: &Entity<TextInput>) -> SettingsSearch {
+///     let entry = SettingEntry {
+///         key: "font".into(),
+///         section: "Appearance".into(),
+///         name: "Font size".into(),
+///         words: vec!["text".into(), "zoom".into()],
+///     };
+///     SettingsSearch::new("search", [entry], field, |_key, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SettingsSearch {
     id: ElementId,

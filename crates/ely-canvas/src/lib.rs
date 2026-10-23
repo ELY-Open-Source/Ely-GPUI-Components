@@ -1,3 +1,6 @@
+//! Canvas, chapter 32: an endless plane, its shapes and tools, design panels, whiteboards, flows, node graphs and mind maps.
+#![deny(missing_docs)]
+
 use ely_core::{buttons, feedback, forms, layout, lists, overlays, primitives, shell, theme};
 
 mod align;

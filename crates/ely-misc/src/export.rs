@@ -16,9 +16,13 @@ type OnExport = Rc<dyn Fn(ExportFormat, &mut Window, &mut App)>;
 /// A way to save data out.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExportFormat {
+    /// PDF.
     Pdf,
+    /// PNG.
     Png,
+    /// CSV.
     Csv,
+    /// JSON.
     Json,
 }
 
@@ -62,6 +66,12 @@ impl ExportFormat {
 }
 
 /// Saves data out: the owner's formats as cards, the first chosen, then Export or Cancel. Each way out answers once: Export hands the chosen format to the owner, who writes the file; Cancel, Escape and a press on the scrim cancel. Render it while open.
+///
+/// ```
+/// use ely_misc::{ExportDialog, ExportFormat};
+///
+/// let dialog = ExportDialog::new("export", "Export report", [ExportFormat::Pdf, ExportFormat::Csv], |_format, _, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ExportDialog {
     id: ElementId,
@@ -72,6 +82,7 @@ pub struct ExportDialog {
 }
 
 impl ExportDialog {
+    /// A dialog under `id` titled `title` over `formats`; `on_export` gets the format chosen, `on_cancel` the way out.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

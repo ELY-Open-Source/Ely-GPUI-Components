@@ -24,6 +24,7 @@ pub struct ImportField {
 }
 
 impl ImportField {
+    /// A field named `name` that an import may leave empty.
     pub fn new(name: impl Into<SharedString>) -> Self {
         Self {
             name: name.into(),
@@ -31,6 +32,7 @@ impl ImportField {
         }
     }
 
+    /// Makes an import fill it.
     pub fn required(mut self) -> Self {
         self.required = true;
         self
@@ -64,6 +66,19 @@ struct Mapping {
 }
 
 /// Columns from a file mapped to the fields the app keeps: a Select of the columns for each field, matched by name to start, over the first rows as they would come in. Import asks for a column for every required field, then hands the mapping over; each way out answers once, import or cancel. Render it while open.
+///
+/// ```
+/// use ely_misc::{ImportDialog, ImportField};
+///
+/// let dialog = ImportDialog::new(
+///     "import",
+///     "Import contacts",
+///     ["Full name", "E-mail"],
+///     [ImportField::new("Name").required(), ImportField::new("Email")],
+///     |_columns, _, _| {},
+///     |_, _| {},
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct ImportDialog {
     id: ElementId,

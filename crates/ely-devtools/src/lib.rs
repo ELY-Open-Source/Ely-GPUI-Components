@@ -1,3 +1,6 @@
+//! Developer tools, chapter 33: databases, requests, sockets, containers, data viewers, encoders and a contrast audit.
+#![deny(missing_docs)]
+
 use ely_canvas as canvas;
 use ely_chat as chat;
 use ely_core::{

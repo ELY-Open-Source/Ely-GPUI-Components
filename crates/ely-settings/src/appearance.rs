@@ -17,8 +17,11 @@ use crate::{
 /// How an app picks light or dark: always one, or as the system does.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Appearance {
+    /// Always light.
     Light,
+    /// Always dark.
     Dark,
+    /// As the system is.
     System,
 }
 
@@ -43,6 +46,12 @@ impl Appearance {
 type OnAppearance = Rc<dyn Fn(Appearance, &mut Window, &mut App)>;
 
 /// Light, dark, or as the system does, as three segments with their icons. The owner applies the choice, as through `Theme::set_mode`.
+///
+/// ```
+/// use ely_settings::{Appearance, ThemeSelector};
+///
+/// let selector = ThemeSelector::new("theme", Appearance::System, |_appearance, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ThemeSelector {
     id: ElementId,
@@ -51,6 +60,7 @@ pub struct ThemeSelector {
 }
 
 impl ThemeSelector {
+    /// A selector under `id` showing `appearance`; `on_change` gets the one picked.
     pub fn new(
         id: impl Into<ElementId>,
         appearance: Appearance,
@@ -93,6 +103,13 @@ impl RenderOnce for ThemeSelector {
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
 /// An accent picked from named presets, or any color from the well beside them.
+///
+/// ```
+/// use ely_settings::AccentColorPicker;
+/// use gpui::rgb;
+///
+/// let picker = AccentColorPicker::new("accent", rgb(0x3b82f6), [("Blue", rgb(0x3b82f6)), ("Green", rgb(0x16a34a))], |_color, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AccentColorPicker {
     id: ElementId,
@@ -102,6 +119,7 @@ pub struct AccentColorPicker {
 }
 
 impl AccentColorPicker {
+    /// A picker under `id` showing `color`, offering `presets` by name; `on_change` gets each color picked.
     pub fn new(
         id: impl Into<ElementId>,
         color: impl Into<Hsla>,
@@ -155,6 +173,12 @@ impl RenderOnce for AccentColorPicker {
 type OnSize = Rc<dyn Fn(f32, &mut Window, &mut App)>;
 
 /// A text size on a slider, in pixels, over a line set at it, with a way back to the default size.
+///
+/// ```
+/// use ely_settings::FontSizeControl;
+///
+/// let control = FontSizeControl::new("font", 15.0, 14.0, (11.0, 22.0), |_size, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FontSizeControl {
     id: ElementId,
@@ -246,6 +270,13 @@ impl RenderOnce for FontSizeControl {
 type OnDensity = Rc<dyn Fn(Density, &mut Window, &mut App)>;
 
 /// How close things sit: compact, standard or comfortable, as three segments.
+///
+/// ```
+/// use ely_core::theme::Density;
+/// use ely_settings::DensitySelector;
+///
+/// let selector = DensitySelector::new("density", Density::Standard, |_density, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DensitySelector {
     id: ElementId,
@@ -260,6 +291,7 @@ const DENSITIES: [(Density, &str); 3] = [
 ];
 
 impl DensitySelector {
+    /// A selector under `id` showing `density`; `on_change` gets the one picked.
     pub fn new(
         id: impl Into<ElementId>,
         density: Density,

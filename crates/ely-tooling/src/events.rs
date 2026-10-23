@@ -111,6 +111,13 @@ impl Log {
 type Record = Rc<dyn Fn(Seen, &mut App)>;
 
 /// The input events that reach what it holds, newest first below it: presses, releases, moves run together while the pointer travels, wheels, keys and modifiers, each timed from the first. Pointer events count inside its box, even where a child stops them; keys count while focus is inside, a key a binding takes too. It keeps the last fifty.
+///
+/// ```
+/// use ely_tooling::EventLogger;
+/// use gpui::ParentElement;
+///
+/// let logger = EventLogger::new("events").child("Press or type here");
+/// ```
 #[derive(IntoElement)]
 pub struct EventLogger {
     id: ElementId,
@@ -118,6 +125,7 @@ pub struct EventLogger {
 }
 
 impl EventLogger {
+    /// A logger under `id`; what it holds comes as children.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

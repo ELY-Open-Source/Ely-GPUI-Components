@@ -22,6 +22,15 @@ pub(crate) fn tint(event: &Event, cx: &App) -> Hsla {
 }
 
 /// An event in a line: a dot, the hour it starts and its title; or, for whole days, its title on a wash of its color. Pressable with `on_click`.
+///
+/// ```
+/// use ely_calendar::{Event, EventChip};
+/// use jiff::Timestamp;
+///
+/// let start = Timestamp::from_second(1_792_746_000).unwrap();
+/// let end = Timestamp::from_second(1_792_749_600).unwrap();
+/// let chip = EventChip::new("chip", Event::timed("lunch", "Lunch", start, end, 3)).on_click(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EventChip {
     id: ElementId,
@@ -33,6 +42,7 @@ pub struct EventChip {
 }
 
 impl EventChip {
+    /// A chip under `id` for `event`.
     pub fn new(id: impl Into<ElementId>, event: Event) -> Self {
         Self {
             id: id.into(),
@@ -57,6 +67,7 @@ impl EventChip {
         self
     }
 
+    /// Makes it pressable, and what a press does.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self

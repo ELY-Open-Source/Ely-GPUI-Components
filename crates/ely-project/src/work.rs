@@ -8,15 +8,22 @@ use crate::{mail::Label, primitives::IconName};
 /// Where a task stands in its workflow.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
+    /// Not yet planned.
     Backlog,
+    /// Planned, not begun.
     Todo,
+    /// Being worked on.
     InProgress,
+    /// Waiting on review.
     InReview,
+    /// Finished.
     Done,
+    /// Dropped.
     Canceled,
 }
 
 impl Status {
+    /// Every status, in workflow order.
     pub const ALL: [Status; 6] = [
         Status::Backlog,
         Status::Todo,
@@ -26,6 +33,7 @@ impl Status {
         Status::Canceled,
     ];
 
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             Status::Backlog => "Backlog",
@@ -37,6 +45,7 @@ impl Status {
         }
     }
 
+    /// Its mark.
     pub fn icon(self) -> IconName {
         match self {
             Status::Backlog => IconName::CircleDashed,
@@ -75,10 +84,15 @@ impl Status {
 /// How urgent a task is, from none to urgent.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Priority {
+    /// No priority set.
     None,
+    /// Low.
     Low,
+    /// Medium.
     Medium,
+    /// High.
     High,
+    /// Urgent.
     Urgent,
 }
 
@@ -92,6 +106,7 @@ impl Priority {
         Priority::None,
     ];
 
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             Priority::None => "No priority",
@@ -157,11 +172,14 @@ impl fmt::Display for IssueId {
 /// Someone work can go to.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Person {
+    /// Tells them apart; never empty.
     pub key: SharedString,
+    /// What shows.
     pub name: SharedString,
 }
 
 impl Person {
+    /// Someone keyed `key`, named `name`; panics on an empty key.
     pub fn new(key: impl Into<SharedString>, name: impl Into<SharedString>) -> Self {
         let key = key.into();
         assert!(!key.is_empty(), "a person needs a key");
@@ -175,18 +193,28 @@ impl Person {
 /// A piece of work: its key, its issue's name if it has one, what it is, where it stands, how urgent, when it starts and is due, who has it, and its labels.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Task {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its issue's name, if it has one.
     pub issue: Option<IssueId>,
+    /// What it is.
     pub title: SharedString,
+    /// Where it stands.
     pub status: Status,
+    /// How urgent it is.
     pub priority: Priority,
+    /// The day work begins.
     pub start: Option<Date>,
+    /// The day it is due.
     pub due: Option<Date>,
+    /// Who has it.
     pub assignee: Option<Person>,
+    /// Its labels.
     pub labels: Vec<Label>,
 }
 
 impl Task {
+    /// A task keyed `key` titled `title`: to do, no priority, no dates, no one, no labels.
     pub fn new(key: impl Into<SharedString>, title: impl Into<SharedString>) -> Self {
         Self {
             key: key.into(),
@@ -201,16 +229,19 @@ impl Task {
         }
     }
 
+    /// Its issue's name.
     pub fn issue(mut self, id: IssueId) -> Self {
         self.issue = Some(id);
         self
     }
 
+    /// Where it stands.
     pub fn status(mut self, status: Status) -> Self {
         self.status = status;
         self
     }
 
+    /// How urgent it is.
     pub fn priority(mut self, priority: Priority) -> Self {
         self.priority = priority;
         self
@@ -222,16 +253,19 @@ impl Task {
         self
     }
 
+    /// The day it is due.
     pub fn due(mut self, day: Date) -> Self {
         self.due = Some(day);
         self
     }
 
+    /// Who has it.
     pub fn assignee(mut self, person: Person) -> Self {
         self.assignee = Some(person);
         self
     }
 
+    /// A label more.
     pub fn label(mut self, label: Label) -> Self {
         self.labels.push(label);
         self

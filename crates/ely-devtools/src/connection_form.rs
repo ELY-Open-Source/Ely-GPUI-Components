@@ -18,9 +18,11 @@ type OnConnection = Rc<dyn Fn(Connection, &mut Window, &mut App)>;
 /// What trying a connection came to.
 #[derive(Clone, Debug, PartialEq)]
 pub enum TestState {
+    /// Trying it now.
     Testing,
     /// It answered, in so many milliseconds.
     Passed(u32),
+    /// It failed, and why.
     Failed(SharedString),
 }
 
@@ -105,6 +107,14 @@ impl Fields {
 }
 
 /// A connection to fill in: its name and engine, then host and port, database, user, password and TLS, or only a file for SQLite. A new connection from the owner refills it. Test asks the owner to try it and shows what the owner reports; Save hands the owner the connection. Both wait for a name, and for a host or a file.
+///
+/// ```
+/// use ely_devtools::{Connection, ConnectionForm, Engine};
+///
+/// let form = ConnectionForm::new("form", Connection::new("main", "Main", Engine::Postgres))
+///     .on_test(|_connection, _, _| {})
+///     .on_save(|_connection, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConnectionForm {
     id: ElementId,
@@ -115,6 +125,7 @@ pub struct ConnectionForm {
 }
 
 impl ConnectionForm {
+    /// A form under `id` filled from `connection`, untested.
     pub fn new(id: impl Into<ElementId>, connection: Connection) -> Self {
         Self {
             id: id.into(),
@@ -131,6 +142,7 @@ impl ConnectionForm {
         self
     }
 
+    /// Shows Test, and gets the connection to try.
     pub fn on_test(
         mut self,
         handler: impl Fn(Connection, &mut Window, &mut App) + 'static,
@@ -139,6 +151,7 @@ impl ConnectionForm {
         self
     }
 
+    /// Shows Save, and gets the connection to keep.
     pub fn on_save(
         mut self,
         handler: impl Fn(Connection, &mut Window, &mut App) + 'static,

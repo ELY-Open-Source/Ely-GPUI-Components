@@ -1,26 +1,34 @@
 /// A box on the canvas, in canvas units.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Frame {
+    /// Its left edge.
     pub x: f32,
+    /// Its top edge.
     pub y: f32,
+    /// Its width.
     pub w: f32,
+    /// Its height.
     pub h: f32,
 }
 
 impl Frame {
+    /// A frame at `x`, `y`, `w` wide and `h` high; panics on a negative width or height.
     pub fn new(x: f32, y: f32, w: f32, h: f32) -> Self {
         assert!(w >= 0.0 && h >= 0.0, "a frame of {w} by {h}");
         Self { x, y, w, h }
     }
 
+    /// Its right edge.
     pub fn right(&self) -> f32 {
         self.x + self.w
     }
 
+    /// Its bottom edge.
     pub fn bottom(&self) -> f32 {
         self.y + self.h
     }
 
+    /// Its middle.
     pub fn center(&self) -> (f32, f32) {
         (self.x + self.w / 2.0, self.y + self.h / 2.0)
     }
@@ -49,6 +57,7 @@ impl Frame {
             && self.bottom() <= other.bottom()
     }
 
+    /// Whether the point lies in it, edges included.
     pub fn contains(&self, (x, y): (f32, f32)) -> bool {
         x >= self.x && x <= self.right() && y >= self.y && y <= self.bottom()
     }
@@ -57,8 +66,11 @@ impl Frame {
 /// Where a canvas looks: the canvas point at the view's top left, and its zoom.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Viewport {
+    /// The canvas x at the view's left edge.
     pub x: f32,
+    /// The canvas y at the view's top edge.
     pub y: f32,
+    /// View pixels per canvas unit.
     pub zoom: f32,
 }
 
@@ -66,6 +78,7 @@ impl Viewport {
     /// The farthest out and the nearest in a canvas zooms.
     pub const ZOOMS: (f32, f32) = (0.1, 8.0);
 
+    /// A view from `x`, `y` at `zoom`; panics on a zoom outside `ZOOMS`.
     pub fn new(x: f32, y: f32, zoom: f32) -> Self {
         let (least, most) = Self::ZOOMS;
         assert!(

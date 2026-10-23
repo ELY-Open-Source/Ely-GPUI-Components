@@ -26,6 +26,14 @@ fn presets(now: Timestamp, zone: &TimeZone) -> Vec<(String, Timestamp)> {
 }
 
 /// Send, and beside it the times to send later: tomorrow morning, tomorrow afternoon and Monday morning in the zone given, or a time picked in a dialog. Each only with its handler; disabled, only Send shows, dimmed.
+///
+/// ```
+/// use ely_mail::ScheduleSend;
+///
+/// let send = ScheduleSend::new("send")
+///     .on_send(|_, _| {})
+///     .on_schedule(|_at, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ScheduleSend {
     id: ElementId,
@@ -36,6 +44,7 @@ pub struct ScheduleSend {
 }
 
 impl ScheduleSend {
+    /// Send under `id`, with no times to send later until `on_schedule` is set.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -58,6 +67,7 @@ impl ScheduleSend {
         self
     }
 
+    /// Gets the press on Send.
     pub fn on_send(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_send = Some(Rc::new(handler));
         self

@@ -71,12 +71,19 @@ pub(crate) fn tenths(elapsed: Duration) -> String {
 }
 
 /// Time that runs while started and holds while paused, in tenths, with Start or Pause under it beside Lap, which reads Reset once paused, and the laps below, newest first: each lap's own time and the total at its end. It reads the executor's clock.
+///
+/// ```
+/// use ely_misc::Stopwatch;
+///
+/// let stopwatch = Stopwatch::new("watch");
+/// ```
 #[derive(IntoElement)]
 pub struct Stopwatch {
     id: ElementId,
 }
 
 impl Stopwatch {
+    /// A stopwatch under `id`, at zero.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }

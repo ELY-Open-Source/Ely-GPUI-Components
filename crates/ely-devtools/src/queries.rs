@@ -19,23 +19,49 @@ use crate::{
 /// How a query run ended: with so many rows, or failing.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Outcome {
+    /// It gave so many rows.
     Rows(u64),
+    /// It failed, and why.
     Failed(SharedString),
 }
 
 /// A query that ran: its key, its text, when it ran, how long it took in milliseconds, and how it ended.
 #[derive(Clone, Debug, PartialEq)]
 pub struct QueryRun {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its text.
     pub sql: SharedString,
+    /// When it ran.
     pub at: Timestamp,
+    /// How long it took, in milliseconds.
     pub took_ms: u32,
+    /// How it ended.
     pub outcome: Outcome,
 }
 
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Queries that ran, newest first as given, found by their text. Each shows its first line, how it ended, how long it took and when; Enter or a double press asks to run one again.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_devtools::{Outcome, QueryHistory, QueryRun};
+/// use gpui::Entity;
+/// use jiff::Timestamp;
+///
+/// fn history(search: &Entity<TextInput>) -> QueryHistory {
+///     let now = Timestamp::from_second(1_792_746_000).unwrap();
+///     let run = QueryRun {
+///         key: "q1".into(),
+///         sql: "select * from users".into(),
+///         at: now,
+///         took_ms: 12,
+///         outcome: Outcome::Rows(42),
+///     };
+///     QueryHistory::new("history", [run], search, now).on_run(|_key, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct QueryHistory {
     id: ElementId,
@@ -62,6 +88,7 @@ impl QueryHistory {
         }
     }
 
+    /// Gets the key of the query to run again.
     pub fn on_run(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -125,16 +152,24 @@ impl RenderOnce for QueryHistory {
 /// A step of a query plan: what it does and on what, its cost, the rows it yields, its time in milliseconds, and the steps it reads from.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PlanStep {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it does, such as Seq Scan.
     pub op: SharedString,
+    /// What it works on, such as a table.
     pub on: Option<SharedString>,
+    /// Its cost; the root's is the whole plan's, which each bar divides.
     pub cost: f64,
+    /// The rows it yields.
     pub rows: u64,
+    /// Its time, in milliseconds.
     pub ms: f64,
+    /// The steps it reads from.
     pub children: Vec<PlanStep>,
 }
 
 impl PlanStep {
+    /// A step keyed `key` doing `op`, with its `cost`, `rows` and `ms`, reading from none.
     pub fn new(
         key: impl Into<SharedString>,
         op: impl Into<SharedString>,
@@ -153,11 +188,13 @@ impl PlanStep {
         }
     }
 
+    /// What it works on.
     pub fn on(mut self, target: impl Into<SharedString>) -> Self {
         self.on = Some(target.into());
         self
     }
 
+    /// A step it reads from, after the others.
     pub fn child(mut self, step: PlanStep) -> Self {
         self.children.push(step);
         self
@@ -182,6 +219,14 @@ fn row(step: &PlanStep, whole: f64) -> TreeRow {
 }
 
 /// A query's plan as a tree of steps, each with its share of the whole cost drawn as a bar, the rows it yields and its time. Every step starts open; a box narrower than its columns scrolls sideways.
+///
+/// ```
+/// use ely_devtools::{PlanStep, QueryPlanViewer};
+///
+/// let scan = PlanStep::new("scan", "Seq Scan", 120.0, 500, 3.2).on("users");
+/// let plan = PlanStep::new("sort", "Sort", 150.0, 500, 4.0).child(scan);
+/// let viewer = QueryPlanViewer::new("plan", plan);
+/// ```
 #[derive(IntoElement)]
 pub struct QueryPlanViewer {
     id: ElementId,
@@ -189,6 +234,7 @@ pub struct QueryPlanViewer {
 }
 
 impl QueryPlanViewer {
+    /// A viewer under `id` of `plan`; panics on a plan that costs nothing.
     pub fn new(id: impl Into<ElementId>, plan: PlanStep) -> Self {
         assert!(plan.cost > 0.0, "a plan costs something, not {}", plan.cost);
         Self {

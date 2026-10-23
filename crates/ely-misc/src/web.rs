@@ -13,7 +13,9 @@ use crate::{
 /// What a web view shows: a page at an address, or the owner's HTML.
 #[derive(Clone, Debug, PartialEq)]
 pub enum WebSource {
+    /// The page at this address.
     Url(SharedString),
+    /// This HTML.
     Html(SharedString),
 }
 
@@ -27,6 +29,12 @@ pub(crate) fn in_view(
 }
 
 /// A web page in a native web view laid over this box: an address, or the owner's HTML. The page draws above everything gpui paints, dialogs too, and gpui's clipping does not reach it; it follows the box each frame and hides while the box is out of view. A press on the page gives it the keys; a press anywhere gpui draws, or the view leaving, gives them back. macOS only; elsewhere the box says so.
+///
+/// ```
+/// use ely_misc::{WebSource, WebView};
+///
+/// let view = WebView::new("docs", WebSource::Url("https://example.com".into()));
+/// ```
 #[derive(IntoElement)]
 pub struct WebView {
     id: ElementId,
@@ -34,6 +42,7 @@ pub struct WebView {
 }
 
 impl WebView {
+    /// A view under `id` showing `source`.
     pub fn new(id: impl Into<ElementId>, source: WebSource) -> Self {
         Self {
             id: id.into(),
@@ -215,6 +224,12 @@ mod mac {
 }
 
 /// A page from another address in a frame of its own: the address over the page, with Open in browser. The page is a `WebView` in the frame's shape.
+///
+/// ```
+/// use ely_misc::IframeEmbed;
+///
+/// let embed = IframeEmbed::new("embed", "https://example.com", 16.0 / 9.0);
+/// ```
 #[derive(IntoElement)]
 pub struct IframeEmbed {
     id: ElementId,

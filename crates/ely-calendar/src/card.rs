@@ -18,6 +18,15 @@ use crate::{
 };
 
 /// An event as a block: a rule in its hue, its title, and under it its hours and place. It fills the box it is given, as a time grid sizes it by the hour. Pressable with `on_click`.
+///
+/// ```
+/// use ely_calendar::{Event, EventCard};
+/// use jiff::Timestamp;
+///
+/// let start = Timestamp::from_second(1_792_746_000).unwrap();
+/// let end = Timestamp::from_second(1_792_749_600).unwrap();
+/// let card = EventCard::new("card", Event::timed("review", "Review", start, end, 1).place("Room 4"));
+/// ```
 #[derive(IntoElement)]
 pub struct EventCard {
     id: ElementId,
@@ -27,6 +36,7 @@ pub struct EventCard {
 }
 
 impl EventCard {
+    /// A card under `id` for `event`.
     pub fn new(id: impl Into<ElementId>, event: Event) -> Self {
         Self {
             id: id.into(),
@@ -42,6 +52,7 @@ impl EventCard {
         self
     }
 
+    /// Makes it pressable, and what a press does.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self

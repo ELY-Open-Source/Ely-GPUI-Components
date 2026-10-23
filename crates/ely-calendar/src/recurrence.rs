@@ -52,6 +52,14 @@ fn weekday_key(day: Weekday) -> &'static str {
 }
 
 /// Sets how an event repeats: not at all, or daily, weekly on its days, monthly or yearly, every so many, until a day or a count. A line under it reads the rule back with the next days it falls on.
+///
+/// ```
+/// use ely_calendar::{Frequency, Recurrence, RecurrenceEditor};
+/// use jiff::civil::date;
+///
+/// let editor = RecurrenceEditor::new("repeat", date(2026, 10, 23), Some(Recurrence::new(Frequency::Weekly)))
+///     .on_change(|_rule, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RecurrenceEditor {
     id: ElementId,

@@ -30,6 +30,15 @@ fn leave(id: &ElementId, owner: &'static str, run: Run) -> Button {
 }
 
 /// A call's controls in one pill: the microphone, the camera and a shared screen as toggles, then Leave, each only with its handler.
+///
+/// ```
+/// use ely_messaging::CallControls;
+///
+/// let controls = CallControls::new("call")
+///     .mic(true, |_on, _, _| {})
+///     .camera(false, |_on, _, _| {})
+///     .on_leave(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CallControls {
     id: ElementId,
@@ -40,6 +49,7 @@ pub struct CallControls {
 }
 
 impl CallControls {
+    /// Call controls under `id`, with no toggle until one is given.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -80,6 +90,7 @@ impl CallControls {
         self
     }
 
+    /// Shows Leave, and what a press on it does.
     pub fn on_leave(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_leave = Some(Rc::new(handler));
         self
@@ -140,6 +151,16 @@ impl RenderOnce for CallControls {
 }
 
 /// A call under way in one bar: a live dot, where it is, how long it has run, who is in it, the microphone and Leave. The bar wraps by the header rule.
+///
+/// ```
+/// use ely_core::data_display::Avatar;
+/// use ely_messaging::VoiceCallBar;
+/// use web_time::Instant;
+///
+/// let bar = VoiceCallBar::new("voice", "#design", Instant::now())
+///     .people([Avatar::new("ana", "Ana Silva")])
+///     .on_leave(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VoiceCallBar {
     id: ElementId,
@@ -151,6 +172,7 @@ pub struct VoiceCallBar {
 }
 
 impl VoiceCallBar {
+    /// A bar under `id` for a call in `place` that began at `since`.
     pub fn new(id: impl Into<ElementId>, place: impl Into<SharedString>, since: Instant) -> Self {
         Self {
             id: id.into(),
@@ -178,6 +200,7 @@ impl VoiceCallBar {
         self
     }
 
+    /// Shows Leave, and what a press on it does.
     pub fn on_leave(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_leave = Some(Rc::new(handler));
         self
@@ -259,6 +282,13 @@ impl RenderOnce for VoiceCallBar {
 }
 
 /// A huddle going on in a chat: headphones, how many are in, and their faces. With a handler a press joins it; its mark rings while live.
+///
+/// ```
+/// use ely_core::data_display::Avatar;
+/// use ely_messaging::HuddleIndicator;
+///
+/// let huddle = HuddleIndicator::new("huddle", [Avatar::new("ben", "Ben Ito")]).on_join(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct HuddleIndicator {
     id: ElementId,
@@ -267,6 +297,7 @@ pub struct HuddleIndicator {
 }
 
 impl HuddleIndicator {
+    /// A huddle under `id` with `people` in it; panics when nobody is.
     pub fn new(id: impl Into<ElementId>, people: impl IntoIterator<Item = Avatar>) -> Self {
         let people: Vec<Avatar> = people.into_iter().collect();
         assert!(!people.is_empty(), "a huddle holds someone");
@@ -277,6 +308,7 @@ impl HuddleIndicator {
         }
     }
 
+    /// What a press does: join the huddle.
     pub fn on_join(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_join = Some(Rc::new(handler));
         self

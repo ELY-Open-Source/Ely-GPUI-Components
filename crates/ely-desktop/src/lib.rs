@@ -1,3 +1,6 @@
+//! Desktop: the tray icon, the Dock badge and Omarchy's theme.
+#![deny(missing_docs)]
+
 use ely_core::{forms, theme};
 use ely_devtools as devtools;
 

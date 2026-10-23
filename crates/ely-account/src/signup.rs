@@ -17,8 +17,11 @@ use crate::{
 /// What a sign-up hands its owner.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Signup {
+    /// The name typed.
     pub name: SharedString,
+    /// The address typed.
     pub email: SharedString,
+    /// The password typed.
     pub password: SharedString,
 }
 
@@ -34,6 +37,12 @@ pub fn password_rules(password: &str) -> [(&'static str, bool); 3] {
 type OnSignup = Rc<dyn Fn(&Signup, &mut Window, &mut App)>;
 
 /// A name, an email and a new password with the rules it keeps, ticked as they hold, and terms to accept when given. Create account rests until all of it holds; Enter in a field sends it.
+///
+/// ```
+/// use ely_account::SignupForm;
+///
+/// let form = SignupForm::new("signup", |_signup, _, _| {}).on_sign_in(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SignupForm {
     id: ElementId,
@@ -45,6 +54,7 @@ pub struct SignupForm {
 }
 
 impl SignupForm {
+    /// A form under `id`; `on_submit` gets the sign-up.
     pub fn new(
         id: impl Into<ElementId>,
         on_submit: impl Fn(&Signup, &mut Window, &mut App) + 'static,

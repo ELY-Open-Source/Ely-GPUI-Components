@@ -116,10 +116,17 @@ fn measure(name: String, size: Pixels, sample: impl IntoElement, cx: &App) -> An
 }
 
 /// The theme's shared colors and scales in the mode shown, each named as code reads it: every palette, syntax, chart and terminal color with its hex, and the type, radius, control, icon, avatar and container sizes, the elevations and gpui's spacing steps. A chapter's own measures stay with the chapter.
+///
+/// ```
+/// use ely_tooling::DesignTokenViewer;
+///
+/// let viewer = DesignTokenViewer::new();
+/// ```
 #[derive(IntoElement, Default)]
 pub struct DesignTokenViewer;
 
 impl DesignTokenViewer {
+    /// The viewer.
     pub fn new() -> Self {
         Self
     }

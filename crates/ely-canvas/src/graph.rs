@@ -5,12 +5,16 @@ use super::view::Frame;
 /// A socket on a node that carries one kind of value in or out.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Port {
+    /// Tells it apart on its node.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// The kind of value it carries; a wire joins two of one kind.
     pub kind: SharedString,
 }
 
 impl Port {
+    /// A socket keyed `key`, named `name`, carrying `kind`.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -27,14 +31,20 @@ impl Port {
 /// A box of work at a point on the canvas, its inputs down its left side and its outputs down its right.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Node {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What its title says.
     pub title: SharedString,
+    /// Its top left, in canvas units.
     pub at: (f32, f32),
+    /// Its sockets in, top first.
     pub inputs: Vec<Port>,
+    /// Its sockets out, top first.
     pub outputs: Vec<Port>,
 }
 
 impl Node {
+    /// A node keyed `key` titled `title` at `at`, with no sockets.
     pub fn new(
         key: impl Into<SharedString>,
         title: impl Into<SharedString>,
@@ -49,11 +59,13 @@ impl Node {
         }
     }
 
+    /// A socket in, under the others.
     pub fn input(mut self, port: Port) -> Self {
         self.inputs.push(port);
         self
     }
 
+    /// A socket out, under the others.
     pub fn output(mut self, port: Port) -> Self {
         self.outputs.push(port);
         self
@@ -79,11 +91,14 @@ impl Node {
 /// A wire from one node's output to another's input.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Edge {
+    /// The node and output it leaves.
     pub from: (SharedString, SharedString),
+    /// The node and input it reaches.
     pub to: (SharedString, SharedString),
 }
 
 impl Edge {
+    /// A wire from `from`'s output to `to`'s input, each a node key and a socket key.
     pub fn new(
         from: (impl Into<SharedString>, impl Into<SharedString>),
         to: (impl Into<SharedString>, impl Into<SharedString>),

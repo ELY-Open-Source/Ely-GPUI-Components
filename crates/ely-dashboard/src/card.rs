@@ -9,6 +9,13 @@ use crate::{
 };
 
 /// A widget's frame: its title with a line under it, actions at the end of the title's line, its body, and an optional footer. It fills the box it sits in, as a dashboard tile.
+///
+/// ```
+/// use ely_dashboard::DashboardCard;
+/// use gpui::ParentElement;
+///
+/// let card = DashboardCard::new("Revenue").subtitle("This month").child("$12,400");
+/// ```
 #[derive(IntoElement)]
 pub struct DashboardCard {
     title: SharedString,
@@ -19,6 +26,7 @@ pub struct DashboardCard {
 }
 
 impl DashboardCard {
+    /// A card titled `title`, with no subtitle, actions or footer; its body comes as children.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -29,16 +37,19 @@ impl DashboardCard {
         }
     }
 
+    /// A line under the title.
     pub fn subtitle(mut self, text: impl Into<SharedString>) -> Self {
         self.subtitle = Some(text.into());
         self
     }
 
+    /// An action at the end of the title's line, after the others.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
     }
 
+    /// What goes under the body.
     pub fn footer(mut self, footer: impl IntoElement) -> Self {
         self.footer = Some(footer.into_any_element());
         self

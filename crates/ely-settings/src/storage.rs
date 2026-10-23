@@ -16,15 +16,26 @@ use crate::{
 /// A store on disk: its key and name, its size in bytes, and whether it may be cleared.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Store {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// Its size, in bytes.
     pub bytes: u64,
+    /// Whether it may be cleared.
     pub clearable: bool,
 }
 
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// What an app keeps on disk: a bar of each store's share, then each store with its size and, where it may go, a Clear that asks twice.
+///
+/// ```
+/// use ely_settings::{StorageSettings, Store};
+///
+/// let cache = Store { key: "cache".into(), name: "Cache".into(), bytes: 48 << 20, clearable: true };
+/// let settings = StorageSettings::new("storage", [cache], |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StorageSettings {
     id: ElementId,
@@ -33,6 +44,7 @@ pub struct StorageSettings {
 }
 
 impl StorageSettings {
+    /// Settings under `id` of `stores`; `on_clear` gets the key of the store to clear.
     pub fn new(
         id: impl Into<ElementId>,
         stores: impl IntoIterator<Item = Store>,
@@ -115,15 +127,26 @@ impl RenderOnce for StorageSettings {
 /// A setting changed from its default: its key and name, and both values as words.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Changed {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// Its value now, as words.
     pub now: SharedString,
+    /// Its default, as words.
     pub default: SharedString,
 }
 
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// The settings changed from their defaults, each with what it is and what it was, and a way back for each; Reset all asks twice. With none changed it says so.
+///
+/// ```
+/// use ely_settings::{Changed, ResetToDefault};
+///
+/// let font = Changed { key: "font".into(), name: "Font size".into(), now: "16 px".into(), default: "14 px".into() };
+/// let reset = ResetToDefault::new("reset", [font], |_key, _, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ResetToDefault {
     id: ElementId,
@@ -133,6 +156,7 @@ pub struct ResetToDefault {
 }
 
 impl ResetToDefault {
+    /// A list under `id` of `changed`; `on_reset` gets the key to reset, `on_reset_all` the press on Reset all.
     pub fn new(
         id: impl Into<ElementId>,
         changed: impl IntoIterator<Item = Changed>,
@@ -228,6 +252,12 @@ impl RenderOnce for ResetToDefault {
 type OnFile = Rc<dyn Fn(PathBuf, &mut Window, &mut App)>;
 
 /// Settings out to a file and back: Export asks the owner to write them, and a JSON file dropped or picked asks it to read one.
+///
+/// ```
+/// use ely_settings::ImportExportSettings;
+///
+/// let settings = ImportExportSettings::new("files", |_, _| {}, |_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ImportExportSettings {
     id: ElementId,
@@ -236,6 +266,7 @@ pub struct ImportExportSettings {
 }
 
 impl ImportExportSettings {
+    /// Import and export under `id`; `on_export` gets the press on Export, `on_import` the file to read.
     pub fn new(
         id: impl Into<ElementId>,
         on_export: impl Fn(&mut Window, &mut App) + 'static,

@@ -31,6 +31,16 @@ pub(crate) fn tally(datum: &Datum) -> (usize, usize) {
 }
 
 /// JSON to write in the code editor, with Format to indent it, Minify to fold it onto one line, and a line that says whether it reads: how many keys and items it holds, or the line where it breaks. Both buttons wait for JSON that reads.
+///
+/// ```
+/// use ely_devtools::JsonEditor;
+/// use ely_editor::CodeEditor;
+/// use gpui::Entity;
+///
+/// fn editor(text: &Entity<CodeEditor>) -> JsonEditor {
+///     JsonEditor::new("json", text)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct JsonEditor {
     id: ElementId,

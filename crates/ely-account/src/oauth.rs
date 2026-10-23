@@ -9,6 +9,12 @@ use crate::buttons::{Button, ButtonVariant};
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A button for each sign-in provider, stacked full width: "Continue with GitHub". While one is on its way it spins and the others rest.
+///
+/// ```
+/// use ely_account::OAuthButtons;
+///
+/// let buttons = OAuthButtons::new("oauth", [("github", "GitHub"), ("google", "Google")], |_provider, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct OAuthButtons {
     id: ElementId,

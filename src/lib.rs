@@ -1,3 +1,6 @@
+//! Ely GPUI Component: every Ely crate under its chapter's name, and `init`, which binds every crate's keys.
+#![deny(missing_docs)]
+
 #[cfg(test)]
 mod containers;
 #[cfg(test)]

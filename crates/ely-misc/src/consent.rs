@@ -13,6 +13,12 @@ use crate::{
 };
 
 /// Terms to read and agree to, over the page: a box says the viewer agrees, and Accept asks for the box until it is ticked. Each way out answers once: Accept accepts, and Decline, Escape or a press on the scrim declines. Render it while open.
+///
+/// ```
+/// use ely_misc::ConsentDialog;
+///
+/// let dialog = ConsentDialog::new("terms", "Terms of use", "Be kind. Back up your work.", |_, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConsentDialog {
     id: ElementId,
@@ -24,6 +30,7 @@ pub struct ConsentDialog {
 }
 
 impl ConsentDialog {
+    /// Terms under `id` titled `title`; `on_accept` and `on_decline` get the answer.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

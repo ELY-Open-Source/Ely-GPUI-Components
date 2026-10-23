@@ -16,6 +16,12 @@ use crate::{
 };
 
 /// A call coming in: the caller's picture ringing, their name and the kind of call, with Decline and Accept; one of the two answers each ring. Escape declines, a press on the scrim does not. Render it while the call rings.
+///
+/// ```
+/// use ely_messaging::IncomingCallDialog;
+///
+/// let call = IncomingCallDialog::new("ring", "Ana Silva", |_, _| {}, |_, _| {}).video();
+/// ```
 #[derive(IntoElement)]
 pub struct IncomingCallDialog {
     id: ElementId,
@@ -27,6 +33,7 @@ pub struct IncomingCallDialog {
 }
 
 impl IncomingCallDialog {
+    /// A call from `caller` under `id`; `on_accept` and `on_decline` get the answer.
     pub fn new(
         id: impl Into<ElementId>,
         caller: impl Into<SharedString>,
@@ -43,6 +50,7 @@ impl IncomingCallDialog {
         }
     }
 
+    /// The caller's picture, in place of their initials.
     pub fn picture(mut self, source: impl Into<ImageSource>) -> Self {
         self.picture = Some(source.into());
         self

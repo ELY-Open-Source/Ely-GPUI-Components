@@ -18,12 +18,25 @@ type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 /// A step on the way in: its key, its title and a line on what it is for.
 #[derive(Clone, Debug, PartialEq)]
 pub struct OnboardingStep {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its title.
     pub title: SharedString,
+    /// A line on what it is for.
     pub body: SharedString,
 }
 
 /// A first-run flow on `navigation::Wizard`: "Step 2 of 4" over a bar in as many parts, the step's title, line and content, then Back and Next; Next is Finish on the last step. With `on_skip`, Skip for now leaves early.
+///
+/// ```
+/// use ely_onboarding::{OnboardingStep, OnboardingWizard};
+///
+/// let steps = [
+///     OnboardingStep { key: "name".into(), title: "Name your workspace".into(), body: "You can change it later.".into() },
+///     OnboardingStep { key: "invite".into(), title: "Invite your team".into(), body: "Or do it later.".into() },
+/// ];
+/// let wizard = OnboardingWizard::new("welcome", steps, 0, |_step, _, _| {}, |_, _| {}).on_skip(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct OnboardingWizard {
     id: ElementId,
@@ -37,6 +50,7 @@ pub struct OnboardingWizard {
 }
 
 impl OnboardingWizard {
+    /// A wizard under `id` over `steps` at step `current`; `on_step` gets the step to show, `on_finish` the press on Finish; panics on fewer than two steps.
     pub fn new(
         id: impl Into<ElementId>,
         steps: impl IntoIterator<Item = OnboardingStep>,

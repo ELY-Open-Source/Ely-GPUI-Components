@@ -21,6 +21,13 @@ use ely_core::typography::Ellipsis;
 const REACH: f64 = 100_000.0;
 
 /// The selected layer's name and kind, its frame, its fill among the chart hues, and whether it shows and is locked. Each edit hands the owner the changed shape; with none or several selected it says so.
+///
+/// ```
+/// use ely_canvas::{Frame, InspectorPanel, Shape, ShapeKind};
+///
+/// let shape = Shape::new("box", "Box", ShapeKind::Rect, Frame::new(10.0, 10.0, 80.0, 60.0));
+/// let inspector = InspectorPanel::new("inspect", [shape], |_shape, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InspectorPanel {
     id: ElementId,
@@ -29,6 +36,7 @@ pub struct InspectorPanel {
 }
 
 impl InspectorPanel {
+    /// An inspector under `id` for `selection`; `on_change` gets each edited shape.
     pub fn new(
         id: impl Into<ElementId>,
         selection: impl IntoIterator<Item = Shape>,

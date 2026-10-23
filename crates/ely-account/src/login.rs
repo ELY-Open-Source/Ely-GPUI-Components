@@ -54,14 +54,23 @@ pub(super) fn aside(
 /// What a sign-in hands its owner.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Login {
+    /// The address typed.
     pub email: SharedString,
+    /// The password typed.
     pub password: SharedString,
+    /// Whether to stay signed in.
     pub remember: bool,
 }
 
 type OnLogin = Rc<dyn Fn(&Login, &mut Window, &mut App)>;
 
 /// An email and a password, a box to stay signed in, and ways to a forgotten password or a new account. Sign in rests until the address reads and a password is typed; Enter in a field signs in.
+///
+/// ```
+/// use ely_account::LoginForm;
+///
+/// let form = LoginForm::new("login", |_login, _, _| {}).on_forgot(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LoginForm {
     id: ElementId,
@@ -73,6 +82,7 @@ pub struct LoginForm {
 }
 
 impl LoginForm {
+    /// A form under `id`; `on_submit` gets the sign-in.
     pub fn new(
         id: impl Into<ElementId>,
         on_submit: impl Fn(&Login, &mut Window, &mut App) + 'static,

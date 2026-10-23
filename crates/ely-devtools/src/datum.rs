@@ -3,11 +3,17 @@ use gpui::SharedString;
 /// A value in a document: nothing, a flag, a number, a text, or a list or a map of values in their order.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Datum {
+    /// Nothing.
     Null,
+    /// A flag.
     Bool(bool),
+    /// A number, as written.
     Number(SharedString),
+    /// A text.
     Text(SharedString),
+    /// Values in order.
     List(Vec<Datum>),
+    /// Keys with their values, in order.
     Map(Vec<(SharedString, Datum)>),
 }
 
@@ -31,7 +37,9 @@ impl From<&serde_json::Value> for Datum {
 /// A line that failed to read, and why.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Unread {
+    /// The line, counted from one.
     pub line: usize,
+    /// Why it failed.
     pub why: String,
 }
 

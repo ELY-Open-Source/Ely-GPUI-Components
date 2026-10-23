@@ -14,6 +14,12 @@ use crate::{
 };
 
 /// A way past a limit: why, what the next plan brings, and Upgrade. With benefits it stands as a paywall; without, as one line.
+///
+/// ```
+/// use ely_account::UpgradePrompt;
+///
+/// let prompt = UpgradePrompt::new("upgrade", "Out of seats", |_, _| {}).body("Pro adds 20 seats.").on_dismiss(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct UpgradePrompt {
     id: ElementId,
@@ -25,6 +31,7 @@ pub struct UpgradePrompt {
 }
 
 impl UpgradePrompt {
+    /// A prompt under `id` titled `title`; `on_upgrade` gets the press on Upgrade.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,
@@ -40,6 +47,7 @@ impl UpgradePrompt {
         }
     }
 
+    /// Words under the title.
     pub fn body(mut self, body: impl Into<SharedString>) -> Self {
         self.body = Some(body.into());
         self

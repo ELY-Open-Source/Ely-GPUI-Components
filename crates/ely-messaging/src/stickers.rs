@@ -18,12 +18,16 @@ const COLUMNS: usize = 4;
 /// A sticker: its key, its name, and its square picture.
 #[derive(Clone)]
 pub struct Sticker {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it is called; a search reads it.
     pub name: SharedString,
+    /// The sticker itself.
     pub picture: ImageSource,
 }
 
 impl Sticker {
+    /// A sticker keyed `key`, named `name`.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -40,11 +44,14 @@ impl Sticker {
 /// Stickers under their pack's name.
 #[derive(Clone)]
 pub struct StickerPack {
+    /// The pack's name.
     pub name: SharedString,
+    /// Its stickers.
     pub stickers: Vec<Sticker>,
 }
 
 impl StickerPack {
+    /// A pack named `name` holding `stickers`.
     pub fn new(name: impl Into<SharedString>, stickers: impl IntoIterator<Item = Sticker>) -> Self {
         Self {
             name: name.into(),
@@ -54,6 +61,13 @@ impl StickerPack {
 }
 
 /// Stickers in a grid, a pack at a time, chosen above; a search spans every pack and keeps the stickers whose names hold it. Arrows move, and Enter or a press picks.
+///
+/// ```
+/// use ely_messaging::{Sticker, StickerPack, StickerPicker};
+///
+/// let pack = StickerPack::new("Cats", [Sticker::new("wave", "Waving cat", "stickers/wave.png")]);
+/// let picker = StickerPicker::new("stickers", [pack]).on_pick(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StickerPicker {
     id: ElementId,
@@ -62,6 +76,7 @@ pub struct StickerPicker {
 }
 
 impl StickerPicker {
+    /// A picker under `id` over `packs`; panics on none, or on a pack name found twice.
     pub fn new(id: impl Into<ElementId>, packs: impl IntoIterator<Item = StickerPack>) -> Self {
         let packs: Vec<StickerPack> = packs.into_iter().collect();
         assert!(!packs.is_empty(), "a sticker picker holds a pack");

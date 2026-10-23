@@ -25,11 +25,14 @@ pub(super) type OnFile = Rc<dyn Fn(&SharedString, usize, &mut Window, &mut App)>
 /// Someone a message is from or to: a name and an address.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Contact {
+    /// What it shows.
     pub name: SharedString,
+    /// Where mail reaches them.
     pub address: SharedString,
 }
 
 impl Contact {
+    /// Someone named `name` at `address`.
     pub fn new(name: impl Into<SharedString>, address: impl Into<SharedString>) -> Self {
         Self {
             name: name.into(),
@@ -41,18 +44,24 @@ impl Contact {
 /// A message as a reader shows it: who sent it and to whom, when, its first words for when it folds, and its files by name and size.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Message {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Who sent it.
     pub from: Contact,
+    /// Who it went to.
     pub to: Vec<Contact>,
+    /// Who got a copy.
     pub cc: Vec<Contact>,
     /// None when the message names no date.
     pub at: Option<Timestamp>,
+    /// Its first words, for when it folds.
     pub snippet: SharedString,
     /// A size, or none while the file is not here.
     pub files: Vec<(SharedString, Option<u64>)>,
 }
 
 impl Message {
+    /// A message keyed `key` from `from`, sent `at`, to nobody yet.
     pub fn new(key: impl Into<SharedString>, from: Contact, at: Timestamp) -> Self {
         Self {
             at: Some(at),
@@ -73,11 +82,13 @@ impl Message {
         }
     }
 
+    /// Who it went to.
     pub fn to(mut self, contacts: impl IntoIterator<Item = Contact>) -> Self {
         self.to = contacts.into_iter().collect();
         self
     }
 
+    /// Who got a copy.
     pub fn cc(mut self, contacts: impl IntoIterator<Item = Contact>) -> Self {
         self.cc = contacts.into_iter().collect();
         self
@@ -305,6 +316,19 @@ pub(super) fn open_letter(
 }
 
 /// A message open for reading: its subject over the sender's picture, name and address, who it went to, when it came, and replies, each only with its handler; then its words and its files.
+///
+/// ```
+/// use ely_mail::{Contact, MailReader, Message};
+/// use gpui::ParentElement;
+/// use jiff::Timestamp;
+///
+/// let ana = Contact::new("Ana Silva", "ana@example.com");
+/// let at = Timestamp::from_second(1_700_000_000).unwrap();
+/// let message = Message::new("m1", ana, at).to([Contact::new("Ben Ito", "ben@example.com")]);
+/// let reader = MailReader::new("reader", "Friday", message)
+///     .child("See you then.")
+///     .on_reply(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MailReader {
     id: ElementId,
@@ -316,6 +340,7 @@ pub struct MailReader {
 }
 
 impl MailReader {
+    /// A reader under `id` for `message` about `subject`; the words come as children.
     pub fn new(
         id: impl Into<ElementId>,
         subject: impl Into<SharedString>,

@@ -35,6 +35,13 @@ pub(crate) fn restacked(
 }
 
 /// The canvas's layers, topmost first. A box shows or hides each, a press selects and Shift or Command adds, F2 renames, and a drag restacks; a locked layer says so. It fills its box, which the host sizes.
+///
+/// ```
+/// use ely_canvas::{Frame, LayerPanel, Shape, ShapeKind};
+///
+/// let shape = Shape::new("box", "Box", ShapeKind::Rect, Frame::new(10.0, 10.0, 80.0, 60.0));
+/// let layers = LayerPanel::new("layers", [shape]).selected(["box"]).on_select(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LayerPanel {
     id: ElementId,
@@ -60,11 +67,13 @@ impl LayerPanel {
         }
     }
 
+    /// The layers selected now, by key.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Gets the keys selected after each press.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,
@@ -82,6 +91,7 @@ impl LayerPanel {
         self
     }
 
+    /// Gets a layer's key and its new name.
     pub fn on_rename(
         mut self,
         handler: impl Fn(&SharedString, &SharedString, &mut Window, &mut App) + 'static,

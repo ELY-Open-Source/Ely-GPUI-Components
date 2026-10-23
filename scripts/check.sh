@@ -5,6 +5,8 @@ cargo fmt --all --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
 cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
+# The docs as docs.rs builds them: default features, `docsrs` set.
+RUSTDOCFLAGS="--cfg docsrs -D warnings" cargo doc --workspace --exclude ely-gallery --no-deps --quiet
 # Ely beside the newest GPUI Kit: a release that moves Kit's gpui pin fails to resolve here.
 kit="--manifest-path compat/kit/Cargo.toml"
 newest=$(cargo search gpui-kit --limit 1 --color never | sed -n 's/^gpui-kit = "\([^"]*\)".*/\1/p')

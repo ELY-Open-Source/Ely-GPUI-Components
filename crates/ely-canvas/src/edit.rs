@@ -8,21 +8,34 @@ use super::{
 /// What the pointer does on a canvas.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Tool {
+    /// Picks and moves shapes.
     Select,
+    /// Pans the canvas.
     Hand,
+    /// Draws a rectangle.
     Rect,
+    /// Draws an ellipse.
     Ellipse,
+    /// Draws a polygon.
     Polygon,
+    /// Draws a line.
     Line,
+    /// Draws an arrow.
     Arrow,
+    /// Draws a path, a point per press.
     Pen,
+    /// Drops a line of text.
     Text,
+    /// Strokes a path freehand.
     Brush,
+    /// Drops a note.
     Note,
+    /// Links two shapes.
     Connector,
 }
 
 impl Tool {
+    /// Every tool, in the palette's order.
     pub const ALL: [Tool; 12] = [
         Tool::Select,
         Tool::Hand,
@@ -38,6 +51,7 @@ impl Tool {
         Tool::Connector,
     ];
 
+    /// Its name.
     pub fn words(self) -> &'static str {
         match self {
             Tool::Select => "Select",
@@ -89,17 +103,26 @@ impl Tool {
 /// A handle on a selection's frame, by the side or corner it holds.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Handle {
+    /// The top side.
     North,
+    /// The top right corner.
     NorthEast,
+    /// The right side.
     East,
+    /// The bottom right corner.
     SouthEast,
+    /// The bottom side.
     South,
+    /// The bottom left corner.
     SouthWest,
+    /// The left side.
     West,
+    /// The top left corner.
     NorthWest,
 }
 
 impl Handle {
+    /// Every handle, clockwise from the top.
     pub const ALL: [Handle; 8] = [
         Handle::North,
         Handle::NorthEast,

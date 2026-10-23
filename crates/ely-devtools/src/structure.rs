@@ -96,6 +96,12 @@ fn stacked(parts: [gpui::AnyElement; 6], cx: &App) -> gpui::Div {
 struct Room(f32);
 
 /// A table's fields to edit in place, as a table where there is room for its columns and each field stacked on its own where there is not: a name and a default rewritten on a press, a type from the common ones, whether it may be empty, and the primary key. A foreign key shows where it points. Minus drops a field and Add field appends one; each edit hands the owner every field.
+///
+/// ```
+/// use ely_devtools::{Field, TableStructureEditor};
+///
+/// let editor = TableStructureEditor::new("fields", [Field::new("id", "int").primary(), Field::new("email", "text")], |_fields, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TableStructureEditor {
     id: ElementId,
@@ -104,6 +110,7 @@ pub struct TableStructureEditor {
 }
 
 impl TableStructureEditor {
+    /// An editor under `id` of `fields`; `on_change` gets every field after each edit.
     pub fn new(
         id: impl Into<ElementId>,
         fields: impl IntoIterator<Item = Field>,
@@ -272,9 +279,13 @@ impl RenderOnce for TableStructureEditor {
 /// An index on a table: its name, its fields in order, whether it keeps them unique, and its method.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Index {
+    /// Its name.
     pub name: SharedString,
+    /// Its fields, in order.
     pub fields: Vec<SharedString>,
+    /// Whether it keeps them unique.
     pub unique: bool,
+    /// Its method, such as btree.
     pub method: SharedString,
 }
 
@@ -292,6 +303,13 @@ struct Draft {
 }
 
 /// A table's indexes, each with its fields, its method and whether it is unique, and a button to drop it; under them, a new one to draw up from the table's fields. Create waits for a name and a field, and asks the owner.
+///
+/// ```
+/// use ely_devtools::{Index, IndexManager};
+///
+/// let by_email = Index { name: "users_email".into(), fields: vec!["email".into()], unique: true, method: "btree".into() };
+/// let manager = IndexManager::new("indexes", [by_email], ["id", "email"], |_index, _, _| {}, |_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct IndexManager {
     id: ElementId,

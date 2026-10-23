@@ -14,6 +14,15 @@ use crate::{
 };
 
 /// A channel's head: its mark and name with its topic under them, and beside them its members, its pinned messages and a call, each only with its handler. The actions drop below on a narrow window.
+///
+/// ```
+/// use ely_messaging::ChannelHeader;
+///
+/// let header = ChannelHeader::new("head", "design")
+///     .topic("Shapes and colors")
+///     .members(12, |_, _| {})
+///     .on_call(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ChannelHeader {
     id: ElementId,
@@ -26,6 +35,7 @@ pub struct ChannelHeader {
 }
 
 impl ChannelHeader {
+    /// A head under `id` for the public channel `name`, with no topic.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -38,11 +48,13 @@ impl ChannelHeader {
         }
     }
 
+    /// Marks it private: a lock in place of the hash.
     pub fn private(mut self) -> Self {
         self.private = true;
         self
     }
 
+    /// The words under its name.
     pub fn topic(mut self, topic: impl Into<SharedString>) -> Self {
         self.topic = Some(topic.into());
         self
@@ -64,6 +76,7 @@ impl ChannelHeader {
         self
     }
 
+    /// Shows the call button, and what a press on it does.
     pub fn on_call(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_call = Some(Rc::new(handler));
         self

@@ -30,6 +30,7 @@ pub enum Pin {
 }
 
 impl Pin {
+    /// Every pin, in the menu's order.
     pub const ALL: [Pin; 5] = [Pin::Start, Pin::End, Pin::Both, Pin::Center, Pin::Scale];
 
     fn value(self) -> &'static str {
@@ -80,7 +81,9 @@ impl Pin {
 /// How a shape keeps to its parent across and down.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Constraints {
+    /// Along the width.
     pub across: Pin,
+    /// Along the height.
     pub down: Pin,
 }
 
@@ -98,6 +101,12 @@ impl Constraints {
 }
 
 /// A shape's constraints: a picture of the pins beside a choice for each axis.
+///
+/// ```
+/// use ely_canvas::{Constraints, ConstraintsEditor, Pin};
+///
+/// let editor = ConstraintsEditor::new("pins", Constraints { across: Pin::Both, down: Pin::Start }, |_c, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConstraintsEditor {
     id: ElementId,
@@ -106,6 +115,7 @@ pub struct ConstraintsEditor {
 }
 
 impl ConstraintsEditor {
+    /// An editor under `id` showing `constraints`; `on_change` gets each edit.
     pub fn new(
         id: impl Into<ElementId>,
         constraints: Constraints,

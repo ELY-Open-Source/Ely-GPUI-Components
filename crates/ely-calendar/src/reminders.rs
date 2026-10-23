@@ -43,6 +43,12 @@ fn checked(minutes: &[u32]) -> Vec<u32> {
 }
 
 /// Reminders before an event: each picked from a list, with a way off. Add brings the nearest one not yet set.
+///
+/// ```
+/// use ely_calendar::ReminderPicker;
+///
+/// let reminders = ReminderPicker::new("remind", [10, 60]).on_change(|_minutes, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ReminderPicker {
     id: ElementId,

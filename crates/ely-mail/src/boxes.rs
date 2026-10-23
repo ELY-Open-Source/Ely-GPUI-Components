@@ -24,13 +24,17 @@ enum Mark {
 /// A mailbox, folder or label: its key, its name, its mark, and how many messages wait unread.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Mailbox {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
     mark: Mark,
+    /// Messages waiting unread.
     pub unread: u32,
 }
 
 impl Mailbox {
+    /// A box keyed `key`, named `name`, marked by `icon`, with none unread.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -54,6 +58,7 @@ impl Mailbox {
         }
     }
 
+    /// How many messages wait unread.
     pub fn unread(mut self, count: u32) -> Self {
         self.unread = count;
         self
@@ -88,6 +93,20 @@ impl Mailbox {
 type OnMenu = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
 /// Mailboxes, folders and labels in sections down a column: a press, an arrow or Enter opens one, and the one open is lit. A box with mail unread stands out with its count.
+///
+/// ```
+/// use ely_core::primitives::IconName;
+/// use ely_mail::{Mailbox, MailboxList};
+///
+/// let boxes = MailboxList::new("boxes")
+///     .fixed_section("Mail", [
+///         Mailbox::new("inbox", "Inbox", IconName::Inbox).unread(4),
+///         Mailbox::new("sent", "Sent", IconName::Send),
+///     ])
+///     .section("Labels", [Mailbox::label("work", "Work", 0)])
+///     .open("inbox")
+///     .on_open(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MailboxList {
     id: ElementId,
@@ -100,6 +119,7 @@ pub struct MailboxList {
 }
 
 impl MailboxList {
+    /// An empty list under `id`, no box open.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

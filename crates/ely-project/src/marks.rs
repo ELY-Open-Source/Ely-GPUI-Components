@@ -17,6 +17,12 @@ type OnStatus = Rc<dyn Fn(Status, &mut Window, &mut App)>;
 type OnAssignee = Rc<dyn Fn(Option<&Person>, &mut Window, &mut App)>;
 
 /// A priority at a glance: three bars, as many lit as it is high, or a red mark for urgent. Its words show in a tip, or beside it when labeled.
+///
+/// ```
+/// use ely_project::{Priority, PriorityIndicator};
+///
+/// let mark = PriorityIndicator::new("priority", Priority::High).labeled();
+/// ```
 #[derive(IntoElement)]
 pub struct PriorityIndicator {
     id: ElementId,
@@ -25,6 +31,7 @@ pub struct PriorityIndicator {
 }
 
 impl PriorityIndicator {
+    /// A mark under `id` for `priority`, its words in a tip.
     pub fn new(id: impl Into<ElementId>, priority: Priority) -> Self {
         Self {
             id: id.into(),
@@ -87,12 +94,19 @@ impl RenderOnce for PriorityIndicator {
 }
 
 /// An issue's name, as ENG-123, quiet and in even figures.
+///
+/// ```
+/// use ely_project::{IssueId, IssueIdBadge};
+///
+/// let badge = IssueIdBadge::new(IssueId::new("ENG", 123));
+/// ```
 #[derive(IntoElement)]
 pub struct IssueIdBadge {
     issue: IssueId,
 }
 
 impl IssueIdBadge {
+    /// The badge for `issue`.
     pub fn new(issue: IssueId) -> Self {
         Self { issue }
     }
@@ -110,6 +124,12 @@ impl RenderOnce for IssueIdBadge {
 }
 
 /// Where a task stands, picked from its workflow, each status with its mark.
+///
+/// ```
+/// use ely_project::{Status, StatusSelect};
+///
+/// let select = StatusSelect::new("status", Status::InProgress).on_change(|_status, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StatusSelect {
     id: ElementId,
@@ -119,6 +139,7 @@ pub struct StatusSelect {
 }
 
 impl StatusSelect {
+    /// A select under `id` showing `status`.
     pub fn new(id: impl Into<ElementId>, status: Status) -> Self {
         Self {
             id: id.into(),
@@ -128,11 +149,13 @@ impl StatusSelect {
         }
     }
 
+    /// How large the trigger is.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Gets the status picked.
     pub fn on_change(mut self, handler: impl Fn(Status, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -158,6 +181,14 @@ impl RenderOnce for StatusSelect {
 }
 
 /// Who has a task, picked from people by name, or no one.
+///
+/// ```
+/// use ely_project::{AssigneePicker, Person};
+///
+/// let picker = AssigneePicker::new("assignee", [Person::new("ana", "Ana Silva"), Person::new("ben", "Ben Ito")])
+///     .assignee("ana")
+///     .on_change(|_person, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AssigneePicker {
     id: ElementId,
@@ -168,6 +199,7 @@ pub struct AssigneePicker {
 }
 
 impl AssigneePicker {
+    /// A picker under `id` over `people`, no one picked; panics on a key found twice.
     pub fn new(id: impl Into<ElementId>, people: impl IntoIterator<Item = Person>) -> Self {
         let people: Vec<Person> = people.into_iter().collect();
         for (ix, person) in people.iter().enumerate() {
@@ -189,6 +221,7 @@ impl AssigneePicker {
         self
     }
 
+    /// How large the trigger is.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

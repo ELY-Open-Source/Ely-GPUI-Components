@@ -69,6 +69,16 @@ fn place(mails: &[Mail], key: Option<&SharedString>, hint: usize) -> usize {
 }
 
 /// Messages in a list, in the order given, drawing only the rows in view; it fills its box. A press or an arrow selects one, and Command or Shift with a press takes several; Shift with an arrow extends, Space toggles, Command-A takes all. Unread ones stand out.
+///
+/// ```
+/// use ely_mail::{Mail, MailList};
+/// use jiff::Timestamp;
+/// use std::rc::Rc;
+///
+/// let at = Timestamp::from_second(1_700_000_000).unwrap();
+/// let mails = Rc::new(vec![Mail::new("m1", "Ana Silva", "Friday", at)]);
+/// let list = MailList::new("mail", mails).on_select(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MailList {
     id: ElementId,

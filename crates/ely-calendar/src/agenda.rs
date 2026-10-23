@@ -47,6 +47,16 @@ pub(crate) fn on_day<'a>(events: &'a [Event], day: Date, zone: &TimeZone) -> Vec
 }
 
 /// The days from `from` with their events under each day's name, whole days first, then by the hour; days without events are left out. A press or an arrow selects an event, Enter or a double press opens it.
+///
+/// ```
+/// use ely_calendar::{AgendaView, Event};
+/// use jiff::{Timestamp, civil::date};
+///
+/// let start = Timestamp::from_second(1_792_746_000).unwrap();
+/// let end = Timestamp::from_second(1_792_749_600).unwrap();
+/// let standup = Event::timed("standup", "Standup", start, end, 0);
+/// let agenda = AgendaView::new("agenda", date(2026, 10, 23), 7, [standup]).on_event(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AgendaView {
     id: ElementId,
@@ -59,6 +69,7 @@ pub struct AgendaView {
 }
 
 impl AgendaView {
+    /// An agenda under `id` over `days` days from `from`, showing `events`; panics on an event key found twice.
     pub fn new(
         id: impl Into<ElementId>,
         from: Date,

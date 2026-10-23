@@ -16,12 +16,20 @@ use crate::{
 };
 
 /// Where someone stands: a dot in the presence's color and its word.
+///
+/// ```
+/// use ely_core::data_display::Presence;
+/// use ely_messaging::OnlineStatus;
+///
+/// let status = OnlineStatus::new(Presence::Busy);
+/// ```
 #[derive(IntoElement)]
 pub struct OnlineStatus {
     presence: Presence,
 }
 
 impl OnlineStatus {
+    /// A mark for `presence`.
     pub fn new(presence: Presence) -> Self {
         Self { presence }
     }
@@ -49,6 +57,15 @@ impl RenderOnce for OnlineStatus {
 }
 
 /// A person at a glance: their picture with presence, name and standing, their title and status, the time where they are, and ways to reach them, each only with its handler. The host gives the width.
+///
+/// ```
+/// use ely_core::data_display::Presence;
+/// use ely_messaging::UserProfileCard;
+///
+/// let card = UserProfileCard::new("ana", "Ana Silva", Presence::Online)
+///     .title("Designer")
+///     .on_message(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct UserProfileCard {
     id: ElementId,
@@ -63,6 +80,7 @@ pub struct UserProfileCard {
 }
 
 impl UserProfileCard {
+    /// A card under `id` for `name`, who stands at `presence`.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -81,11 +99,13 @@ impl UserProfileCard {
         }
     }
 
+    /// Their picture, in place of their initials.
     pub fn picture(mut self, source: impl Into<ImageSource>) -> Self {
         self.picture = Some(source.into());
         self
     }
 
+    /// What they do, such as Designer.
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = Some(title.into());
         self
@@ -103,11 +123,13 @@ impl UserProfileCard {
         self
     }
 
+    /// Shows Message, and what a press on it does.
     pub fn on_message(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_message = Some(Rc::new(handler));
         self
     }
 
+    /// Shows Call, and what a press on it does.
     pub fn on_call(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_call = Some(Rc::new(handler));
         self

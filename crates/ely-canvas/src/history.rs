@@ -11,6 +11,12 @@ use crate::{
 type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// What was done, oldest first, with the document at step `at`: the steps after it were undone and read quiet. Enter or a double press on a step takes the document back or forward to it.
+///
+/// ```
+/// use ely_canvas::HistoryPanel;
+///
+/// let history = HistoryPanel::new("history", ["Draw rectangle", "Move", "Rename"], 2).on_step(|_at, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct HistoryPanel {
     id: ElementId,

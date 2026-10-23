@@ -34,6 +34,12 @@ fn icon(tool: Tool) -> IconName {
 }
 
 /// The canvas's tools in a row, one picked, each named in a tip. It offers every tool unless given fewer.
+///
+/// ```
+/// use ely_canvas::{Tool, ToolPalette};
+///
+/// let palette = ToolPalette::new("tools", Tool::Select).on_change(|_tool, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ToolPalette {
     id: ElementId,
@@ -43,6 +49,7 @@ pub struct ToolPalette {
 }
 
 impl ToolPalette {
+    /// A palette under `id` with `tool` picked, offering every tool.
     pub fn new(id: impl Into<ElementId>, tool: Tool) -> Self {
         Self {
             id: id.into(),
@@ -58,6 +65,7 @@ impl ToolPalette {
         self
     }
 
+    /// Gets the tool picked.
     pub fn on_change(mut self, handler: impl Fn(Tool, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -99,6 +107,12 @@ impl RenderOnce for ToolPalette {
 }
 
 /// A brush's width on a slider and its hue from the chart's named colors.
+///
+/// ```
+/// use ely_canvas::{Brush, BrushSettings};
+///
+/// let settings = BrushSettings::new("brush", Brush { size: 4.0, hue: 2 }).on_change(|_brush, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BrushSettings {
     id: ElementId,
@@ -107,6 +121,7 @@ pub struct BrushSettings {
 }
 
 impl BrushSettings {
+    /// Settings under `id` showing `brush`.
     pub fn new(id: impl Into<ElementId>, brush: Brush) -> Self {
         Self {
             id: id.into(),
@@ -115,6 +130,7 @@ impl BrushSettings {
         }
     }
 
+    /// Gets the brush after each change.
     pub fn on_change(mut self, handler: impl Fn(Brush, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

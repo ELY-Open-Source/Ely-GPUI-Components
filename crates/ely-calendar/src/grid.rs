@@ -35,6 +35,7 @@ pub struct TimezoneOverlay {
 }
 
 impl TimezoneOverlay {
+    /// The clock of `zone`.
     pub fn new(zone: TimeZone) -> Self {
         Self { zone }
     }
@@ -47,6 +48,17 @@ struct Resize {
 }
 
 /// Days side by side under a column of hours. Each event is a card by its hours, and events that overlap share the width. A drag on empty time makes an event of a quarter hour or more; a drag on an event's lower edge moves its end. Today carries a line at the minute now. It fills its box and scrolls.
+///
+/// ```
+/// use ely_calendar::{Event, TimeGrid, TimezoneOverlay};
+/// use jiff::{Timestamp, civil::date, tz::TimeZone};
+///
+/// let start = Timestamp::from_second(1_792_746_000).unwrap();
+/// let end = Timestamp::from_second(1_792_749_600).unwrap();
+/// let grid = TimeGrid::new("grid", [date(2026, 10, 23)], [Event::timed("call", "Call", start, end, 0)])
+///     .overlay(TimezoneOverlay::new(TimeZone::UTC))
+///     .on_event(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TimeGrid {
     id: ElementId,
@@ -61,6 +73,7 @@ pub struct TimeGrid {
 }
 
 impl TimeGrid {
+    /// A grid under `id` across `days` with `events`; panics on no day, or an event key found twice.
     pub fn new(
         id: impl Into<ElementId>,
         days: impl IntoIterator<Item = Date>,

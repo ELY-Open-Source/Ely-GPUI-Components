@@ -21,6 +21,12 @@ struct Choosing {
 }
 
 /// Cookies a site in the app would set: what they are for, then Accept all, Reject all, or Choose, which lays out a switch for each kind, with Save choices in Choose's place and focus. Necessary cookies stay on.
+///
+/// ```
+/// use ely_misc::CookieBanner;
+///
+/// let banner = CookieBanner::new("cookies", "We use cookies to keep you signed in.", |_kinds, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CookieBanner {
     id: ElementId,
@@ -30,6 +36,7 @@ pub struct CookieBanner {
 }
 
 impl CookieBanner {
+    /// A banner under `id` saying `message`; `on_choose` gets the kinds allowed.
     pub fn new(
         id: impl Into<ElementId>,
         message: impl Into<SharedString>,

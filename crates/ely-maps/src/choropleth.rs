@@ -19,7 +19,9 @@ use crate::{
 /// How a feature finds its value: by its id, or by a property's text or number.
 #[derive(Clone, Debug, PartialEq)]
 pub enum ChoroplethKey {
+    /// By the feature's id.
     Id,
+    /// By this property's text or number.
     Property(SharedString),
 }
 
@@ -115,6 +117,15 @@ impl ChoroplethLayer {
 }
 
 /// A map of areas washed by value, with a legend of the scale and of no data at its top left, clear of the zoom buttons and the attribution. It takes the owner's map, with or without tiles, and lays the layer on it; values that match no area are logged once.
+///
+/// ```
+/// use ely_maps::{ChoroplethLayer, ChoroplethMap, Feature, LatLon, MapView, MapViewport};
+///
+/// let features: Vec<Feature> = Vec::new();
+/// let layer = ChoroplethLayer::new(features, [("north", 12.0), ("south", 4.0)]).hue(2);
+/// let map = MapView::new("map", MapViewport::new(LatLon::new(45.0, 10.0), 4.0));
+/// let choropleth = ChoroplethMap::new("regions", map, layer);
+/// ```
 #[derive(IntoElement)]
 pub struct ChoroplethMap {
     id: ElementId,
@@ -123,6 +134,7 @@ pub struct ChoroplethMap {
 }
 
 impl ChoroplethMap {
+    /// A map under `id`: `map` with `layer` laid on it.
     pub fn new(id: impl Into<ElementId>, map: MapView, layer: ChoroplethLayer) -> Self {
         Self {
             id: id.into(),

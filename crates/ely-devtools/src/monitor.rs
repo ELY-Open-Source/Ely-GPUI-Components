@@ -12,13 +12,18 @@ use crate::{
 /// A measure over time: its name and unit, its readings oldest first, and the most it can reach, when it has a most.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Reading {
+    /// What it measures.
     pub name: SharedString,
+    /// Its unit, such as `%`.
     pub unit: SharedString,
+    /// Its readings, oldest first.
     pub values: Vec<f32>,
+    /// The most it can reach.
     pub limit: Option<f32>,
 }
 
 impl Reading {
+    /// A measure named `name` in `unit` over `values`; panics on none.
     pub fn new(
         name: impl Into<SharedString>,
         unit: impl Into<SharedString>,
@@ -34,6 +39,7 @@ impl Reading {
         }
     }
 
+    /// The most it can reach; panics on one not above zero.
     pub fn limit(mut self, limit: f32) -> Self {
         assert!(limit > 0.0, "a limit of {limit}");
         self.limit = Some(limit);
@@ -51,6 +57,15 @@ pub(crate) fn reading_line(reading: &Reading) -> String {
 }
 
 /// A machine's readings in tiles: each its name, its latest value, a sparkline of the readings before, and, with a limit, how full it is.
+///
+/// ```
+/// use ely_devtools::{Reading, ResourceMonitor};
+///
+/// let monitor = ResourceMonitor::new("machine", [
+///     Reading::new("CPU", "%", [12.0, 18.0, 15.0]).limit(100.0),
+///     Reading::new("Memory", "GB", [3.1, 3.4]),
+/// ]);
+/// ```
 #[derive(IntoElement)]
 pub struct ResourceMonitor {
     id: ElementId,
@@ -58,6 +73,7 @@ pub struct ResourceMonitor {
 }
 
 impl ResourceMonitor {
+    /// A monitor under `id` of `readings`.
     pub fn new(id: impl Into<ElementId>, readings: impl IntoIterator<Item = Reading>) -> Self {
         Self {
             id: id.into(),

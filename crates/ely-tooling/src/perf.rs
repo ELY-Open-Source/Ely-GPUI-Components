@@ -59,12 +59,19 @@ impl Frames {
 }
 
 /// Frames per second and the worst frame over the last second, a frame that ran into it counted whole, and a bar per recent frame against the 60 Hz budget: success on time, warning a frame late, danger later. While shown it keeps its view drawing, so it counts the display's frames and holds the window awake; show it only while measuring. Its numbers are readings, so reduced motion leaves them live.
+///
+/// ```
+/// use ely_tooling::FpsMeter;
+///
+/// let meter = FpsMeter::new("fps");
+/// ```
 #[derive(IntoElement)]
 pub struct FpsMeter {
     id: ElementId,
 }
 
 impl FpsMeter {
+    /// A meter under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }

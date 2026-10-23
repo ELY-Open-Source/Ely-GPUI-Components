@@ -13,12 +13,16 @@ use crate::{
 /// Work someone has against what they can take, in one unit, as points.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Load {
+    /// Whose work it is.
     pub person: Person,
+    /// How much they carry.
     pub assigned: f32,
+    /// How much they can take.
     pub capacity: f32,
 }
 
 impl Load {
+    /// `person` carrying `assigned` of `capacity`; panics on a negative or non-finite load, or a capacity not above zero.
     pub fn new(person: Person, assigned: f32, capacity: f32) -> Self {
         assert!(
             assigned.is_finite() && assigned >= 0.0,
@@ -49,6 +53,12 @@ impl Load {
 }
 
 /// Who carries how much: each person with a bar of their work against what they can take, red past it, and the two counts.
+///
+/// ```
+/// use ely_project::{Load, Person, WorkloadView};
+///
+/// let view = WorkloadView::new("load", [Load::new(Person::new("ana", "Ana Silva"), 12.0, 10.0)], "pts");
+/// ```
 #[derive(IntoElement)]
 pub struct WorkloadView {
     id: ElementId,

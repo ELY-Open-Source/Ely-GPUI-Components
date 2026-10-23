@@ -38,6 +38,13 @@ pub fn uptime(days: &[Option<f32>]) -> Option<f32> {
 }
 
 /// A service's days as bars, oldest first, each in the tone of its uptime, a quiet bar where there is no reading, with each day's date and share in its tip; the share up across all of them heads it.
+///
+/// ```
+/// use ely_dashboard::UptimeBar;
+/// use jiff::civil::date;
+///
+/// let bar = UptimeBar::new("api", "API", date(2026, 10, 20), [Some(1.0), Some(0.98), None, Some(0.999)]);
+/// ```
 #[derive(IntoElement)]
 pub struct UptimeBar {
     id: ElementId,
@@ -125,14 +132,20 @@ impl RenderOnce for UptimeBar {
 /// Where a service stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Health {
+    /// Working.
     Operational,
+    /// Down for planned work.
     Maintenance,
+    /// Slower or worse than it should be.
     Degraded,
+    /// Down in part.
     PartialOutage,
+    /// Down.
     MajorOutage,
 }
 
 impl Health {
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             Health::Operational => "Operational",
@@ -143,6 +156,7 @@ impl Health {
         }
     }
 
+    /// Its tone.
     pub fn tone(self) -> Tone {
         match self {
             Health::Operational => Tone::Success,
@@ -156,8 +170,11 @@ impl Health {
 /// A service: its name, where it stands, and its uptime share when known.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Service {
+    /// What it is called.
     pub name: SharedString,
+    /// Where it stands.
     pub health: Health,
+    /// Its share of time up, from 0 to 1.
     pub uptime: Option<f32>,
 }
 
@@ -171,12 +188,22 @@ pub fn overall(services: &[Service]) -> Health {
 }
 
 /// Services under a line for the whole system, each with where it stands and its uptime.
+///
+/// ```
+/// use ely_dashboard::{Health, Service, ServiceStatus};
+///
+/// let status = ServiceStatus::new([
+///     Service { name: "API".into(), health: Health::Operational, uptime: Some(0.999) },
+///     Service { name: "Search".into(), health: Health::Degraded, uptime: None },
+/// ]);
+/// ```
 #[derive(IntoElement)]
 pub struct ServiceStatus {
     services: Vec<Service>,
 }
 
 impl ServiceStatus {
+    /// The status of `services`; panics on none.
     pub fn new(services: impl IntoIterator<Item = Service>) -> Self {
         let services: Vec<_> = services.into_iter().collect();
         assert!(!services.is_empty(), "service status: no service");
@@ -240,13 +267,23 @@ impl RenderOnce for ServiceStatus {
 /// What a health check found.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Check {
+    /// It passed.
     Passing,
+    /// It warned.
     Warning,
+    /// It failed.
     Failing,
+    /// Waiting on a result.
     Pending,
 }
 
 /// A health check's state as a dot and a word, with when it last ran and how long it took.
+///
+/// ```
+/// use ely_dashboard::{Check, HealthCheck};
+///
+/// let check = HealthCheck::new("Database", Check::Passing).took(12);
+/// ```
 #[derive(IntoElement)]
 pub struct HealthCheck {
     name: SharedString,
@@ -256,6 +293,7 @@ pub struct HealthCheck {
 }
 
 impl HealthCheck {
+    /// A check named `name` in `state`, its last run and time unknown.
     pub fn new(name: impl Into<SharedString>, state: Check) -> Self {
         Self {
             name: name.into(),
@@ -271,6 +309,7 @@ impl HealthCheck {
         self
     }
 
+    /// How long its last run took, in milliseconds.
     pub fn took(mut self, ms: u32) -> Self {
         self.took_ms = Some(ms);
         self

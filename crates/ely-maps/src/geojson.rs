@@ -6,21 +6,30 @@ use super::LatLon;
 /// A GeoJSON shape with its positions as places, as RFC 7946 has it.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Geometry {
+    /// One place.
     Point(LatLon),
+    /// Places.
     MultiPoint(Vec<LatLon>),
+    /// A line along places.
     LineString(Vec<LatLon>),
+    /// Lines.
     MultiLineString(Vec<Vec<LatLon>>),
     /// Rings: the outer one first, then its holes.
     Polygon(Vec<Vec<LatLon>>),
+    /// Areas, each an outer ring then its holes.
     MultiPolygon(Vec<Vec<Vec<LatLon>>>),
+    /// Shapes together.
     Collection(Vec<Geometry>),
 }
 
 /// A GeoJSON feature: its id when it has one, its shape when it is placed, and its properties.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Feature {
+    /// Its id, when it has one.
     pub id: Option<String>,
+    /// Its shape, when it is placed.
     pub geometry: Option<Geometry>,
+    /// Its properties.
     pub properties: Map<String, Value>,
 }
 

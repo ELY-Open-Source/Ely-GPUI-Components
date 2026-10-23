@@ -15,6 +15,13 @@ fn along(to: Point<Pixels>, from: Point<Pixels>, axis: Axis) -> Point<Pixels> {
 }
 
 /// Boxes that scroll together along an axis: a wheel on one takes the others to its place before they draw. Side by side for a vertical axis, stacked for a horizontal one; the owner sizes them through the frame's style, and each fills its share.
+///
+/// ```
+/// use ely_interaction::ScrollSync;
+/// use gpui::Axis;
+///
+/// let diff = ScrollSync::new("diff", Axis::Vertical).pane("Before").pane("After");
+/// ```
 #[derive(IntoElement)]
 pub struct ScrollSync {
     id: ElementId,
@@ -24,6 +31,7 @@ pub struct ScrollSync {
 }
 
 impl ScrollSync {
+    /// Boxes under `id` that scroll together along `axis`, none yet.
     pub fn new(id: impl Into<ElementId>, axis: Axis) -> Self {
         Self {
             id: id.into(),
@@ -33,6 +41,7 @@ impl ScrollSync {
         }
     }
 
+    /// A box after the others, holding `content`.
     pub fn pane(mut self, content: impl IntoElement) -> Self {
         self.panes.push(content.into_any_element());
         self

@@ -110,6 +110,13 @@ impl RenderOnce for Collapsible {
 }
 
 /// One titled, foldable row of an `Accordion`.
+///
+/// ```
+/// use ely_core::layout::{Accordion, AccordionItem};
+/// use gpui::ParentElement;
+///
+/// let faq = Accordion::new("faq").item(AccordionItem::new("Shipping").child("Two to five days."));
+/// ```
 pub struct AccordionItem {
     title: SharedString,
     body: SmallVec<[AnyElement; 2]>,

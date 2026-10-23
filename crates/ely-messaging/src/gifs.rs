@@ -21,13 +21,18 @@ const WAITING: [f32; 6] = [1.5, 1.0, 1.8, 1.25, 1.6, 1.1];
 /// A GIF: its key, its title, its picture, and its width over its height.
 #[derive(Clone)]
 pub struct Gif {
+    /// Names it among the results.
     pub key: SharedString,
+    /// What it shows.
     pub title: SharedString,
+    /// The GIF itself.
     pub picture: ImageSource,
+    /// Its width over its height.
     pub ratio: f32,
 }
 
 impl Gif {
+    /// A GIF; panics on a ratio that is not finite and above zero.
     pub fn new(
         key: impl Into<SharedString>,
         title: impl Into<SharedString>,
@@ -46,7 +51,9 @@ impl Gif {
 /// Where a GIF search stands: waiting on the host, or what it found.
 #[derive(Clone)]
 pub enum Gifs {
+    /// The host is still searching.
     Loading,
+    /// What the search found.
     Found(Vec<Gif>),
 }
 
@@ -59,6 +66,16 @@ struct Search {
 }
 
 /// GIFs from the host in two columns packed tight, under a search the host answers; while it is empty, categories fill it. Each GIF is a Tab stop, picked by a press, Enter or Space.
+///
+/// ```
+/// use ely_messaging::{Gif, GifPicker, Gifs};
+///
+/// let picker = GifPicker::new(
+///     "gifs",
+///     Gifs::Found(vec![Gif::new("wave", "Wave", "gifs/wave.gif", 1.5)]),
+/// )
+/// .categories(["Hello", "Thanks"]);
+/// ```
 #[derive(IntoElement)]
 pub struct GifPicker {
     id: ElementId,
@@ -69,6 +86,7 @@ pub struct GifPicker {
 }
 
 impl GifPicker {
+    /// A picker under `id` showing `gifs`; panics on a key found twice.
     pub fn new(id: impl Into<ElementId>, gifs: Gifs) -> Self {
         if let Gifs::Found(found) = &gifs {
             for (ix, gif) in found.iter().enumerate() {

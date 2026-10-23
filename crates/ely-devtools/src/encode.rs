@@ -121,8 +121,11 @@ pub fn unpercent(text: &str) -> Result<Vec<u8>, String> {
 /// What an encoder turns text into.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Code {
+    /// Base64.
     Base64,
+    /// Percent-encoding, as a URL takes it.
     Url,
+    /// Hexadecimal bytes.
     Hex,
 }
 
@@ -163,6 +166,12 @@ struct Desk {
 }
 
 /// Text in, encoded or decoded out, as Base64, for a URL, or as hex; what fails to decode says why, and the result copies.
+///
+/// ```
+/// use ely_devtools::Encoder;
+///
+/// let encoder = Encoder::new("encode", "Hello, Ely");
+/// ```
 #[derive(IntoElement)]
 pub struct Encoder {
     id: ElementId,

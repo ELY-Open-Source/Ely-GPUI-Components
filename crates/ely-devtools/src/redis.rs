@@ -19,10 +19,15 @@ use crate::{
 /// What a Redis key holds.
 #[derive(Clone, Debug, PartialEq)]
 pub enum RedisValue {
+    /// A string.
     Text(SharedString),
+    /// A hash's fields with their values.
     Hash(Vec<(SharedString, SharedString)>),
+    /// A list's items, in order.
     List(Vec<SharedString>),
+    /// A set's members.
     Set(Vec<SharedString>),
+    /// A sorted set's members with their scores.
     Sorted(Vec<(SharedString, f64)>),
 }
 
@@ -52,8 +57,11 @@ impl RedisValue {
 /// A key, what it holds, and the seconds it has left, or none when it keeps.
 #[derive(Clone, Debug, PartialEq)]
 pub struct RedisKey {
+    /// The key.
     pub key: SharedString,
+    /// What it holds.
     pub value: RedisValue,
+    /// The seconds it has left, or none when it keeps.
     pub ttl: Option<u64>,
 }
 
@@ -75,6 +83,17 @@ pub(crate) fn matches(pattern: &str, key: &str) -> bool {
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Keys found by a glob, each with its type and time left; the one selected shows its value laid out for its type: text, a hash's fields, a list's items by index, a set's members, a sorted set's members by score.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_devtools::{RedisKey, RedisKeyBrowser, RedisValue};
+/// use gpui::Entity;
+///
+/// fn browser(pattern: &Entity<TextInput>) -> RedisKeyBrowser {
+///     let key = RedisKey { key: "session:1".into(), value: RedisValue::Text("ok".into()), ttl: Some(3600) };
+///     RedisKeyBrowser::new("redis", [key], pattern).on_select(|_key, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RedisKeyBrowser {
     id: ElementId,
@@ -100,11 +119,13 @@ impl RedisKeyBrowser {
         }
     }
 
+    /// The key selected now.
     pub fn selected(mut self, key: Option<impl Into<SharedString>>) -> Self {
         self.selected = key.map(Into::into);
         self
     }
 
+    /// Gets the key selected.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

@@ -21,12 +21,19 @@ pub(super) fn placed(frame: &Frame) -> gpui::Div {
 }
 
 /// The marquee a drag on empty canvas draws, in view pixels: a faint wash in the accent and its edge.
+///
+/// ```
+/// use ely_canvas::{Frame, SelectionBox};
+///
+/// let marquee = SelectionBox::new(Frame::new(20.0, 20.0, 140.0, 90.0));
+/// ```
 #[derive(IntoElement)]
 pub struct SelectionBox {
     frame: Frame,
 }
 
 impl SelectionBox {
+    /// A marquee over `frame`, in view pixels.
     pub fn new(frame: Frame) -> Self {
         Self { frame }
     }
@@ -43,12 +50,19 @@ impl RenderOnce for SelectionBox {
 }
 
 /// A selection's frame in view pixels with a square handle at each corner and side.
+///
+/// ```
+/// use ely_canvas::{Frame, TransformHandles};
+///
+/// let handles = TransformHandles::new(Frame::new(20.0, 20.0, 140.0, 90.0));
+/// ```
 #[derive(IntoElement)]
 pub struct TransformHandles {
     frame: Frame,
 }
 
 impl TransformHandles {
+    /// Handles around `frame`, in view pixels.
     pub fn new(frame: Frame) -> Self {
         Self { frame }
     }
@@ -92,6 +106,12 @@ impl RenderOnce for TransformHandles {
 }
 
 /// The lines a moving shape snaps to, across the whole view.
+///
+/// ```
+/// use ely_canvas::{Guide, SnapIndicator, Viewport};
+///
+/// let snaps = SnapIndicator::new([Guide::Vertical(120.0)], Viewport::new(0.0, 0.0, 1.0));
+/// ```
 #[derive(IntoElement)]
 pub struct SnapIndicator {
     guides: Vec<Guide>,
@@ -99,6 +119,7 @@ pub struct SnapIndicator {
 }
 
 impl SnapIndicator {
+    /// The lines of `guides`, placed through `viewport`.
     pub fn new(guides: impl IntoIterator<Item = Guide>, viewport: Viewport) -> Self {
         Self {
             guides: guides.into_iter().collect(),

@@ -40,6 +40,18 @@ struct Stage {
 }
 
 /// A map of tiles the host supplies by zoom, column and row, with pins and a popup over them; a pin that holds focus keeps it off view, but takes Tab and presses only while its place is in view. A drag or the wheel pans it; Command or Control with the wheel zooms about the pointer; focused, the arrows pan and + and - zoom, as its buttons do. The owner keeps the viewport; a new one from the owner shows at once. It fills its box; the host gives it a height.
+///
+/// ```
+/// use ely_maps::{LatLon, MapMarker, MapView, MapViewport, RouteLine};
+///
+/// let lisbon = LatLon::new(38.72, -9.14);
+/// let porto = LatLon::new(41.15, -8.61);
+/// let map = MapView::new("map", MapViewport::new(lisbon, 6.0))
+///     .tiles(|tile| format!("https://tiles.example.com/{}/{}/{}.png", tile.z, tile.x, tile.y).into())
+///     .layer(RouteLine::new([lisbon, porto]))
+///     .markers([MapMarker::new("lisbon", lisbon).label("Lisbon")])
+///     .on_viewport(|_viewport, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MapView {
     id: ElementId,
@@ -56,6 +68,7 @@ pub struct MapView {
 }
 
 impl MapView {
+    /// A map under `id` seen through `viewport`, with no tiles, layers or pins.
     pub fn new(id: impl Into<ElementId>, viewport: MapViewport) -> Self {
         Self {
             id: id.into(),

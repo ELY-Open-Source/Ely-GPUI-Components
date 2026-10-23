@@ -17,6 +17,12 @@ use crate::{
 type OnVote = Rc<dyn Fn(Option<usize>, &mut Window, &mut App)>;
 
 /// A question with options to vote on, one each. Once the owner holds the vote, the options turn to results: each one's share of the votes as a bar, the vote marked, and the count. Vote and Change vote share one focus handle.
+///
+/// ```
+/// use ely_misc::Poll;
+///
+/// let poll = Poll::new("lunch", "Where to eat?", ["Pizza", "Sushi"], |_vote, _, _| {}).votes([3, 5]).voted(1);
+/// ```
 #[derive(IntoElement)]
 pub struct Poll {
     id: ElementId,
@@ -28,6 +34,7 @@ pub struct Poll {
 }
 
 impl Poll {
+    /// A poll under `id` asking `question` over `options`; `on_vote` gets the option voted for, or none to change the vote.
     pub fn new(
         id: impl Into<ElementId>,
         question: impl Into<SharedString>,

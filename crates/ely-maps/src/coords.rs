@@ -36,6 +36,12 @@ pub(crate) fn written(at: LatLon, format: CoordFormat) -> String {
 }
 
 /// A place in words, with tabular figures so it holds still as it changes, and a button that copies it.
+///
+/// ```
+/// use ely_maps::{CoordFormat, CoordinateDisplay, LatLon};
+///
+/// let place = CoordinateDisplay::new("here", LatLon::new(51.5072, -0.1276)).format(CoordFormat::Dms);
+/// ```
 #[derive(IntoElement)]
 pub struct CoordinateDisplay {
     id: ElementId,
@@ -44,6 +50,7 @@ pub struct CoordinateDisplay {
 }
 
 impl CoordinateDisplay {
+    /// `at` under `id`, in decimal degrees.
     pub fn new(id: impl Into<ElementId>, at: LatLon) -> Self {
         Self {
             id: id.into(),
@@ -52,6 +59,7 @@ impl CoordinateDisplay {
         }
     }
 
+    /// How it is written.
     pub fn format(mut self, format: CoordFormat) -> Self {
         self.format = format;
         self

@@ -29,6 +29,13 @@ fn angle_at(bounds: Bounds<Pixels>, at: Point<Pixels>, snap: bool) -> f32 {
 type OnTurn = Rc<dyn Fn(f32, &mut Window, &mut App)>;
 
 /// An svg turned clockwise by degrees, with a knob.
+///
+/// ```
+/// use ely_interaction::Rotatable;
+/// use gpui::px;
+///
+/// let dial = Rotatable::new("dial", "icons/compass.svg", px(96.), 45.0, |_angle, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Rotatable {
     id: ElementId,

@@ -35,6 +35,13 @@ struct Board {
 }
 
 /// Widgets on a grid of columns. A tile's top strip drags it and its corner resizes it, a cell at a time; the tiles in the way move down and every tile rises to fill a gap, while the drag shows where it will land. A focused tile moves a column with Left and Right, below the next tile under it with Down or into the place of the one above with Up, and grows or shrinks a cell with Shift. The owner keeps the tiles. Under the theme's `stack_below` width the tiles stand in one column in reading order, each its own height, and moving waits for room.
+///
+/// ```
+/// use ely_dashboard::{DashboardCard, DashboardGrid, Tile};
+///
+/// let grid = DashboardGrid::new("grid", 4, [Tile::new("revenue", (0, 0), (2, 1))], |_tiles, _, _| {})
+///     .card("revenue", DashboardCard::new("Revenue"));
+/// ```
 #[derive(IntoElement)]
 pub struct DashboardGrid {
     id: ElementId,
@@ -45,6 +52,7 @@ pub struct DashboardGrid {
 }
 
 impl DashboardGrid {
+    /// A grid under `id` of `columns` columns placing `tiles`; `on_change` gets every tile after a move.
     pub fn new(
         id: impl Into<ElementId>,
         columns: u32,

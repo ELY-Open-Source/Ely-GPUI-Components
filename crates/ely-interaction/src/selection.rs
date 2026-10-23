@@ -76,6 +76,15 @@ fn pressed(selected: &[SharedString], key: &SharedString, adding: bool) -> Vec<S
 }
 
 /// Items in a box, each under a key. A drag on the box's empty space draws a band that selects what it touches, Shift or Command adding to what was selected, and a press there clears; a press on an item selects it alone, and Command or Shift adds or drops it. The box is one Tab stop: the arrows walk a cursor through the items, ringed while the box has focus, Space adds or drops the one it is on, Escape clears and Command-A takes all. The owner lays the items out through the box's style and hears each new selection.
+///
+/// ```
+/// use ely_interaction::SelectionArea;
+///
+/// let area = SelectionArea::new("photos", |_keys, _, _| {})
+///     .item("a", "Photo A")
+///     .item("b", "Photo B")
+///     .selected(["a"]);
+/// ```
 #[derive(IntoElement)]
 pub struct SelectionArea {
     id: ElementId,
@@ -86,6 +95,7 @@ pub struct SelectionArea {
 }
 
 impl SelectionArea {
+    /// An empty area under `id`; `on_change` gets the keys selected after each change.
     pub fn new(
         id: impl Into<ElementId>,
         on_change: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,
@@ -99,11 +109,13 @@ impl SelectionArea {
         }
     }
 
+    /// An item keyed `key`, after the others.
     pub fn item(mut self, key: impl Into<SharedString>, item: impl IntoElement) -> Self {
         self.items.push((key.into(), item.into_any_element()));
         self
     }
 
+    /// The items selected now, by key.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self

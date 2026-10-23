@@ -16,6 +16,13 @@ use crate::{
 };
 
 /// Word of something new: its icon, a New badge over its name, a line on what it does, then Try it and Not now. It rises in when it appears.
+///
+/// ```
+/// use ely_core::primitives::IconName;
+/// use ely_onboarding::FeatureHighlight;
+///
+/// let highlight = FeatureHighlight::new("split", IconName::Columns2, "Split view", "Two documents side by side.", |_, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FeatureHighlight {
     id: ElementId,
@@ -27,6 +34,7 @@ pub struct FeatureHighlight {
 }
 
 impl FeatureHighlight {
+    /// Word under `id` of something new: `icon`, `title` and `body`; `on_try` gets Try it, `on_dismiss` Not now.
     pub fn new(
         id: impl Into<ElementId>,
         icon: IconName,

@@ -19,9 +19,13 @@ use crate::{
 /// The addresses and subject; the owner keeps the words.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Draft {
+    /// Who it goes to.
     pub to: Vec<SharedString>,
+    /// Who gets a copy.
     pub cc: Vec<SharedString>,
+    /// Who gets a copy the others do not see.
     pub bcc: Vec<SharedString>,
+    /// Its subject.
     pub subject: SharedString,
 }
 
@@ -110,6 +114,15 @@ impl Composing {
 }
 
 /// Addresses, subject, the owner's editor, files, signature, Send.
+///
+/// ```
+/// use ely_mail::MailComposer;
+///
+/// let composer = MailComposer::new("compose", "The owner's editor")
+///     .to(["ana@example.com"])
+///     .subject("Friday")
+///     .on_send(|_draft, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MailComposer {
     id: ElementId,
@@ -205,6 +218,7 @@ impl MailComposer {
         self
     }
 
+    /// The signature under the words.
     pub fn signature(mut self, text: impl Into<SharedString>) -> Self {
         self.signature = Some(text.into());
         self
@@ -222,6 +236,7 @@ impl MailComposer {
         self
     }
 
+    /// Gets the draft on Send.
     pub fn on_send(mut self, handler: impl Fn(&Draft, &mut Window, &mut App) + 'static) -> Self {
         self.on_send = Some(Rc::new(handler));
         self
@@ -236,6 +251,7 @@ impl MailComposer {
         self
     }
 
+    /// Shows Discard, and what a press on it does.
     pub fn on_discard(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_discard = Some(Rc::new(handler));
         self

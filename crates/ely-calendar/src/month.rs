@@ -24,6 +24,14 @@ use crate::{
 const WEEKDAYS: [&str; 7] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 /// A month of days in week rows, each with its events: what spans days lies across them as bars, the rest by the hour as chips, and what does not fit waits behind "N more". Arrows move a day, Page keys turn the month, and Enter or a double press opens the day.
+///
+/// ```
+/// use ely_calendar::{CalendarMonthView, Event};
+/// use jiff::civil::date;
+///
+/// let trip = Event::all_day("trip", "Trip", date(2026, 10, 23), date(2026, 10, 24), 2);
+/// let month = CalendarMonthView::new("month", date(2026, 10, 1), [trip]).on_day(|_day, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CalendarMonthView {
     id: ElementId,
@@ -37,6 +45,7 @@ pub struct CalendarMonthView {
 }
 
 impl CalendarMonthView {
+    /// The month holding `month`, under `id`, with `events`; panics on an event key found twice.
     pub fn new(
         id: impl Into<ElementId>,
         month: Date,

@@ -28,6 +28,7 @@ pub enum RegexFlag {
 }
 
 impl RegexFlag {
+    /// Every flag, in the toggles' order.
     pub const ALL: [RegexFlag; 4] = [
         RegexFlag::IgnoreCase,
         RegexFlag::MultiLine,
@@ -35,6 +36,7 @@ impl RegexFlag {
         RegexFlag::Verbose,
     ];
 
+    /// The letter that turns it on in a pattern.
     pub fn letter(self) -> &'static str {
         match self {
             RegexFlag::IgnoreCase => "i",
@@ -57,7 +59,9 @@ impl RegexFlag {
 /// A match: where it lies in the text, and each group's name or number with what it caught.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Found {
+    /// Where it lies in the text, in bytes.
     pub range: Range<usize>,
+    /// Each group's name or number, with what it caught, if anything.
     pub groups: Vec<(String, Option<String>)>,
 }
 
@@ -105,6 +109,12 @@ struct Bench {
 }
 
 /// A pattern to try against a sample: the pattern colored as it is read, its flags as toggles, the sample with each match washed, and each match with its groups; a pattern that does not compile says why.
+///
+/// ```
+/// use ely_devtools::RegexTester;
+///
+/// let tester = RegexTester::new("regex", r"(?P<year>\d{4})-(\d{2})", "Released 2026-10.");
+/// ```
 #[derive(IntoElement)]
 pub struct RegexTester {
     id: ElementId,

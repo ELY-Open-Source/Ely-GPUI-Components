@@ -123,6 +123,13 @@ fn face(time: Time, side: Pixels, cx: &App) -> impl IntoElement + use<> {
 }
 
 /// The time in a zone, the system's unless told: an analog face over its digits, with a label under them. It ticks each second, or shows the owner's moment.
+///
+/// ```
+/// use ely_misc::Clock;
+/// use jiff::tz::TimeZone;
+///
+/// let clock = Clock::new("utc").zone(TimeZone::UTC).label("UTC");
+/// ```
 #[derive(IntoElement)]
 pub struct Clock {
     id: ElementId,
@@ -132,6 +139,7 @@ pub struct Clock {
 }
 
 impl Clock {
+    /// A clock under `id` in the system's zone, ticking.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -141,6 +149,7 @@ impl Clock {
         }
     }
 
+    /// The zone it reads in.
     pub fn zone(mut self, zone: TimeZone) -> Self {
         self.zone = Some(zone);
         self
@@ -152,6 +161,7 @@ impl Clock {
         self
     }
 
+    /// Words under its digits.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
@@ -189,6 +199,13 @@ impl RenderOnce for Clock {
 }
 
 /// Places and their zones, a row each: a small face, the place, how its day and hour stand against home, and its time; fails without places. Home is the system zone unless told; it ticks each second, or shows the owner's moment.
+///
+/// ```
+/// use ely_misc::WorldClock;
+/// use jiff::tz::TimeZone;
+///
+/// let clocks = WorldClock::new("world", [("Greenwich", TimeZone::UTC)]).home(TimeZone::UTC);
+/// ```
 #[derive(IntoElement)]
 pub struct WorldClock {
     id: ElementId,
@@ -198,6 +215,7 @@ pub struct WorldClock {
 }
 
 impl WorldClock {
+    /// A clock under `id` of `places`, each a name and its zone; panics on none.
     pub fn new(
         id: impl Into<ElementId>,
         places: impl IntoIterator<Item = (impl Into<SharedString>, TimeZone)>,
@@ -216,6 +234,7 @@ impl WorldClock {
         }
     }
 
+    /// The zone the others are read against.
     pub fn home(mut self, home: TimeZone) -> Self {
         self.home = Some(home);
         self

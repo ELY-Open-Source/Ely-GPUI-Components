@@ -31,6 +31,12 @@ impl Deck {
 }
 
 /// Cards with a question on the front and its answer on the back, one at a time: a press on the card turns it, and Previous and Next go round the deck, front up. Each face fades in.
+///
+/// ```
+/// use ely_misc::Flashcards;
+///
+/// let deck = Flashcards::new("deck", [("Capital of Portugal?", "Lisbon"), ("2 + 2?", "4")]);
+/// ```
 #[derive(IntoElement)]
 pub struct Flashcards {
     id: ElementId,
@@ -38,6 +44,7 @@ pub struct Flashcards {
 }
 
 impl Flashcards {
+    /// A deck under `id` of `cards`, each a front and a back.
     pub fn new(
         id: impl Into<ElementId>,
         cards: impl IntoIterator<Item = (impl Into<SharedString>, impl Into<SharedString>)>,

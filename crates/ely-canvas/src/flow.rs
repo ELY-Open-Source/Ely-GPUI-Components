@@ -14,21 +14,29 @@ use super::{
 /// What a step of a flow is: where it starts or ends, work done, or a choice.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum StepKind {
+    /// Where the flow starts or ends.
     Terminal,
+    /// Work done.
     Process,
+    /// A choice.
     Decision,
 }
 
 /// A step of a flow: its key, what it is, its words and its frame.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Step {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it is.
     pub kind: StepKind,
+    /// Its words.
     pub text: SharedString,
+    /// Its box on the canvas.
     pub frame: Frame,
 }
 
 impl Step {
+    /// A step keyed `key`, of `kind`, saying `text`, in `frame`.
     pub fn new(
         key: impl Into<SharedString>,
         kind: StepKind,
@@ -57,6 +65,16 @@ impl Step {
 }
 
 /// Steps joined by links on an endless plane, each link following its steps with its own words. A layer edits it: a ToolLayer given the steps' shapes moves and resizes steps, links them with the connector, and rewrites one on a double press.
+///
+/// ```
+/// use ely_canvas::{FlowChart, Frame, Link, Step, StepKind, Viewport};
+///
+/// let steps = [
+///     Step::new("start", StepKind::Terminal, "Start", Frame::new(0.0, 0.0, 120.0, 48.0)),
+///     Step::new("check", StepKind::Decision, "Valid?", Frame::new(0.0, 100.0, 120.0, 80.0)),
+/// ];
+/// let chart = FlowChart::new("flow", Viewport::new(0.0, 0.0, 1.0), steps, [Link::new("l1", "start", "check")]);
+/// ```
 #[derive(IntoElement)]
 pub struct FlowChart {
     id: ElementId,
@@ -68,6 +86,7 @@ pub struct FlowChart {
 }
 
 impl FlowChart {
+    /// A chart under `id` seen through `viewport`, of `steps` joined by `links`.
     pub fn new(
         id: impl Into<ElementId>,
         viewport: Viewport,
@@ -84,11 +103,13 @@ impl FlowChart {
         }
     }
 
+    /// Lays an element over the chart, such as a `ToolLayer`.
     pub fn layer(mut self, element: impl IntoElement) -> Self {
         self.layers.push(element.into_any_element());
         self
     }
 
+    /// Gets the viewport after each pan and zoom.
     pub fn on_viewport(
         mut self,
         handler: impl Fn(Viewport, &mut Window, &mut App) + 'static,

@@ -18,6 +18,13 @@ use ely_core::typography::Ellipsis;
 const FAR: f64 = 1_000.0;
 
 /// A color to edit in full, over the document's colors to pick from.
+///
+/// ```
+/// use ely_canvas::ColorPanel;
+/// use gpui::rgb;
+///
+/// let panel = ColorPanel::new("fill", rgb(0x3b82f6), |_color, _, _| {}).swatches([("Brand", rgb(0x3b82f6))]);
+/// ```
 #[derive(IntoElement)]
 pub struct ColorPanel {
     id: ElementId,
@@ -27,6 +34,7 @@ pub struct ColorPanel {
 }
 
 impl ColorPanel {
+    /// A panel under `id` showing `color`; `on_change` gets each edit.
     pub fn new(
         id: impl Into<ElementId>,
         color: impl Into<Hsla>,
@@ -83,14 +91,27 @@ impl RenderOnce for ColorPanel {
 /// A drop shadow: its offset, blur and spread in pixels, and its color.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Shadow {
+    /// How far right, in pixels.
     pub x: f32,
+    /// How far down, in pixels.
     pub y: f32,
+    /// How soft its edge is, in pixels.
     pub blur: f32,
+    /// How far it grows past the shape, in pixels.
     pub spread: f32,
+    /// Its color.
     pub color: Hsla,
 }
 
 /// Shadows in a list. Each sets its color, offset, blur and spread, and minus drops it; plus adds the theme's floating shadow.
+///
+/// ```
+/// use ely_canvas::{Shadow, ShadowEditor};
+/// use gpui::black;
+///
+/// let shadow = Shadow { x: 0.0, y: 4.0, blur: 12.0, spread: 0.0, color: black().opacity(0.2) };
+/// let editor = ShadowEditor::new("shadows", [shadow], |_shadows, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ShadowEditor {
     id: ElementId,
@@ -99,6 +120,7 @@ pub struct ShadowEditor {
 }
 
 impl ShadowEditor {
+    /// An editor under `id` of `shadows`; `on_change` gets the whole list after each edit.
     pub fn new(
         id: impl Into<ElementId>,
         shadows: impl IntoIterator<Item = Shadow>,
@@ -207,14 +229,19 @@ impl RenderOnce for ShadowEditor {
 /// How a border's line is drawn.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Dash {
+    /// A solid line.
     Solid,
+    /// A dashed line.
     Dashed,
+    /// A dotted line.
     Dotted,
 }
 
 impl Dash {
+    /// Every line, in the menu's order.
     pub const ALL: [Dash; 3] = [Dash::Solid, Dash::Dashed, Dash::Dotted];
 
+    /// Its word.
     pub fn word(self) -> &'static str {
         match self {
             Dash::Solid => "Solid",
@@ -227,13 +254,25 @@ impl Dash {
 /// A border: its width in pixels, its line, its color, and each corner's radius from the top left around.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Border {
+    /// Its width, in pixels.
     pub width: f32,
+    /// How its line is drawn.
     pub dash: Dash,
+    /// Its color.
     pub color: Hsla,
+    /// Each corner's radius, in pixels, from the top left around.
     pub radii: [f32; 4],
 }
 
 /// A border's color, width and line, and its corners: one radius for all, or each its own once split. Uneven corners always show split; joining them gives all the first one's radius.
+///
+/// ```
+/// use ely_canvas::{Border, BorderEditor, Dash};
+/// use gpui::black;
+///
+/// let border = Border { width: 1.0, dash: Dash::Solid, color: black(), radii: [6.0; 4] };
+/// let editor = BorderEditor::new("border", border, |_border, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BorderEditor {
     id: ElementId,
@@ -242,6 +281,7 @@ pub struct BorderEditor {
 }
 
 impl BorderEditor {
+    /// An editor under `id` of `border`; `on_change` gets each edit.
     pub fn new(
         id: impl Into<ElementId>,
         border: Border,

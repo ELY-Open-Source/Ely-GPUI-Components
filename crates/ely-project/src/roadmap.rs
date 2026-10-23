@@ -14,14 +14,20 @@ use crate::{
 /// An initiative on a roadmap: its key, its name, its first and last day, and how far along it is.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Initiative {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it is called.
     pub name: SharedString,
+    /// Its first day.
     pub start: Date,
+    /// Its last day.
     pub end: Date,
+    /// How far along it is, zero to one.
     pub progress: f32,
 }
 
 impl Initiative {
+    /// An initiative keyed `key`, named `name`, from `start` through `end`, not begun; panics when it ends before it starts.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -57,6 +63,14 @@ pub(crate) fn along(first: Date, span: i32, day: Date) -> f32 {
 }
 
 /// Initiatives across months in lanes, as teams or themes: each a bar from its first day through its last, filled as far as it has come, under the months' names, with a line at today. Hover a bar to read its dates; too narrow for its months, it scrolls sideways.
+///
+/// ```
+/// use ely_project::{Initiative, Roadmap};
+/// use jiff::civil::date;
+///
+/// let launch = Initiative::new("launch", "Launch", date(2026, 10, 1), date(2026, 11, 15)).progress(0.4);
+/// let roadmap = Roadmap::new("roadmap", date(2026, 10, 1), 3).lane("Growth", [launch]);
+/// ```
 #[derive(IntoElement)]
 pub struct Roadmap {
     id: ElementId,

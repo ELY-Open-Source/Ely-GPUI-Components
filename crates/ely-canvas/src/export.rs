@@ -16,13 +16,18 @@ use ely_core::typography::Ellipsis;
 /// A kind of file to export to.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExportFormat {
+    /// PNG.
     Png,
+    /// JPEG.
     Jpg,
+    /// SVG.
     Svg,
+    /// PDF.
     Pdf,
 }
 
 impl ExportFormat {
+    /// Every format, in the menu's order.
     pub const ALL: [ExportFormat; 4] = [
         ExportFormat::Png,
         ExportFormat::Jpg,
@@ -30,6 +35,7 @@ impl ExportFormat {
         ExportFormat::Pdf,
     ];
 
+    /// Its file extension.
     pub fn extension(self) -> &'static str {
         match self {
             ExportFormat::Png => "png",
@@ -48,7 +54,9 @@ impl ExportFormat {
 /// One file to export: a scale and a format.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct ExportSetting {
+    /// How many times its size, for a picture format.
     pub scale: f32,
+    /// The kind of file.
     pub format: ExportFormat,
 }
 
@@ -94,6 +102,13 @@ fn added(settings: &[ExportSetting]) -> Option<ExportSetting> {
 }
 
 /// What a layer exports to. Each row picks a scale and a format and minus drops it; plus adds the next scale as PNG; Export hands the owner the files, each once, and rests disabled with none.
+///
+/// ```
+/// use ely_canvas::{ExportFormat, ExportPanel, ExportSetting};
+///
+/// let png = ExportSetting { scale: 2.0, format: ExportFormat::Png };
+/// let panel = ExportPanel::new("export", "Logo", [png], |_settings, _, _| {}, |_files, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ExportPanel {
     id: ElementId,

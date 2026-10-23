@@ -6,17 +6,34 @@ use crate::typography::format;
 /// When an event happens: from one moment to a later one, or whole days from the first to the last.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum When {
-    Timed { start: Timestamp, end: Timestamp },
-    AllDay { first: Date, last: Date },
+    /// From one moment to a later one.
+    Timed {
+        /// When it starts.
+        start: Timestamp,
+        /// When it ends, after the start.
+        end: Timestamp,
+    },
+    /// Whole days, the first to the last.
+    AllDay {
+        /// Its first day.
+        first: Date,
+        /// Its last day, on or after the first.
+        last: Date,
+    },
 }
 
 /// Something on a calendar: its key, its title, when it happens, its hue among the theme's chart colors, and where.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Event {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it is called.
     pub title: SharedString,
+    /// When it happens.
     pub when: When,
+    /// Its place among the theme's chart colors.
     pub hue: usize,
+    /// Where it happens.
     pub place: Option<SharedString>,
 }
 
@@ -62,6 +79,7 @@ impl Event {
         }
     }
 
+    /// Where it happens.
     pub fn place(mut self, place: impl Into<SharedString>) -> Self {
         self.place = Some(place.into());
         self

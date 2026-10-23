@@ -16,15 +16,31 @@ use crate::{
 /// A named set of variables a request fills its `{{names}}` from; a secret's value shows masked.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Environment {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// Its variables, names with their values.
     pub variables: Vec<(SharedString, SharedString)>,
+    /// The names whose values are secret.
     pub secrets: Vec<SharedString>,
 }
 
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// The environment requests use, picked from a list, over its variables; a secret shows as dots until its eye is pressed.
+///
+/// ```
+/// use ely_devtools::{Environment, EnvironmentSelector};
+///
+/// let dev = Environment {
+///     key: "dev".into(),
+///     name: "Development".into(),
+///     variables: vec![("host".into(), "localhost".into()), ("token".into(), "abc".into())],
+///     secrets: vec!["token".into()],
+/// };
+/// let selector = EnvironmentSelector::new("env", [dev], "dev", |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EnvironmentSelector {
     id: ElementId,
@@ -34,6 +50,7 @@ pub struct EnvironmentSelector {
 }
 
 impl EnvironmentSelector {
+    /// A selector under `id` over `environments`, with `selected` picked; `on_change` gets the key picked.
     pub fn new(
         id: impl Into<ElementId>,
         environments: impl IntoIterator<Item = Environment>,

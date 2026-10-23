@@ -5,14 +5,20 @@ use super::view::Frame;
 /// A line from one shape to another that follows them as they move: straight or turning at right angles, with an arrow at its end and words at its middle.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Link {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// The key of the shape it leaves.
     pub from: SharedString,
+    /// The key of the shape it reaches.
     pub to: SharedString,
+    /// Its words at its middle.
     pub label: Option<SharedString>,
+    /// Whether it turns at right angles.
     pub elbow: bool,
 }
 
 impl Link {
+    /// A straight link keyed `key` from `from` to `to`; panics when both are one shape.
     pub fn new(
         key: impl Into<SharedString>,
         from: impl Into<SharedString>,
@@ -29,6 +35,7 @@ impl Link {
         }
     }
 
+    /// Its words at its middle.
     pub fn label(mut self, text: impl Into<SharedString>) -> Self {
         self.label = Some(text.into());
         self

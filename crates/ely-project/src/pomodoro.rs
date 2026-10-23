@@ -18,12 +18,16 @@ type OnPhase = Rc<dyn Fn(Phase, &mut Window, &mut App)>;
 /// What a pomodoro is doing.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Phase {
+    /// Working.
     Focus,
+    /// A short rest between rounds.
     ShortBreak,
+    /// A long rest after the last round.
     LongBreak,
 }
 
 impl Phase {
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             Phase::Focus => "Focus",
@@ -92,6 +96,12 @@ impl Cycle {
 }
 
 /// A focus timer in pomodoros: focus for a spell, a short break, and after the last round a long one. A ring counts each phase down around the time left, dots count the rounds, and a phase that ends waits for Start.
+///
+/// ```
+/// use ely_project::PomodoroTimer;
+///
+/// let timer = PomodoroTimer::new("focus").minutes(50, 10, 30).rounds(3);
+/// ```
 #[derive(IntoElement)]
 pub struct PomodoroTimer {
     id: ElementId,

@@ -145,6 +145,12 @@ fn email_step(step: Step, window: &mut Window, cx: &mut App) -> AnyElement {
 }
 
 /// Sign in by a link sent to an address: the address, then where the link went, with a way to send it again or to use another address.
+///
+/// ```
+/// use ely_account::MagicLinkForm;
+///
+/// let form = MagicLinkForm::new("magic", |_email, _, _| {}).on_other(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MagicLinkForm {
     id: ElementId,
@@ -155,6 +161,7 @@ pub struct MagicLinkForm {
 }
 
 impl MagicLinkForm {
+    /// A form under `id`; `on_send` gets the address to send the link to.
     pub fn new(
         id: impl Into<ElementId>,
         on_send: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -212,6 +219,12 @@ impl RenderOnce for MagicLinkForm {
 }
 
 /// A forgotten password: the account's address, then word that a reset link is on its way, with a way to send it again and a way back to sign in.
+///
+/// ```
+/// use ely_account::ForgotPassword;
+///
+/// let form = ForgotPassword::new("forgot", |_email, _, _| {}).on_back(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ForgotPassword {
     id: ElementId,
@@ -222,6 +235,7 @@ pub struct ForgotPassword {
 }
 
 impl ForgotPassword {
+    /// A form under `id`; `on_send` gets the address to send the reset link to.
     pub fn new(
         id: impl Into<ElementId>,
         on_send: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

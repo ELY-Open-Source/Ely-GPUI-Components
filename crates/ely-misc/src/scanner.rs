@@ -43,6 +43,12 @@ struct Scan {
 }
 
 /// A camera's view with a square to aim at, reading QR codes off the main thread from the frames the host hands in; frames that come while one is read are passed over. Each code goes to the owner once, when it differs from the last, and shows under the view.
+///
+/// ```
+/// use ely_misc::QrCodeScanner;
+///
+/// let scanner = QrCodeScanner::new("scan", 4.0 / 3.0, |_code, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct QrCodeScanner {
     id: ElementId,

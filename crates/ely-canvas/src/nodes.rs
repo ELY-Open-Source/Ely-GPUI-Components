@@ -19,6 +19,15 @@ use ely_core::typography::Ellipsis;
 type OnKeys = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 
 /// Nodes joined by wires on an endless plane, as in a shader or pipeline editor. A node's title drags it; a drag out of an output draws a wire that lands on an input of the same kind. An input takes one wire, so a new one replaces the old; a press on a wired input lifts its wire to land elsewhere or be dropped. Each kind of value has its hue. The owner keeps the graph and hears each change.
+///
+/// ```
+/// use ely_canvas::{Edge, Node, NodeGraph, Port, Viewport};
+///
+/// let source = Node::new("noise", "Noise", (0.0, 0.0)).output(Port::new("out", "Color", "color"));
+/// let sink = Node::new("mix", "Mix", (240.0, 0.0)).input(Port::new("in", "Color", "color"));
+/// let graph = NodeGraph::new("graph", Viewport::new(0.0, 0.0, 1.0), [source, sink], [Edge::new(("noise", "out"), ("mix", "in"))])
+///     .on_connect(|_edge, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NodeGraph {
     id: ElementId,
@@ -35,6 +44,7 @@ pub struct NodeGraph {
 }
 
 impl NodeGraph {
+    /// A graph under `id` seen through `viewport`, of `nodes` joined by `edges`.
     pub fn new(
         id: impl Into<ElementId>,
         viewport: Viewport,
@@ -62,11 +72,13 @@ impl NodeGraph {
         self
     }
 
+    /// The nodes selected now, by key.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Gets the keys selected after each press.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,
@@ -84,11 +96,13 @@ impl NodeGraph {
         self
     }
 
+    /// Gets a new wire.
     pub fn on_connect(mut self, handler: impl Fn(&Edge, &mut Window, &mut App) + 'static) -> Self {
         self.on_connect = Some(Rc::new(handler));
         self
     }
 
+    /// Gets a wire lifted off.
     pub fn on_disconnect(
         mut self,
         handler: impl Fn(&Edge, &mut Window, &mut App) + 'static,
@@ -97,6 +111,7 @@ impl NodeGraph {
         self
     }
 
+    /// Gets the viewport after each pan and zoom.
     pub fn on_viewport(
         mut self,
         handler: impl Fn(Viewport, &mut Window, &mut App) + 'static,

@@ -27,6 +27,12 @@ pub(super) fn clock_today(user: &str) -> Date {
 }
 
 /// A task in a row: its box, its priority and its issue's name, its title, then when it is due and who has it. Closed, the title goes quiet and struck through; past due and still open, the day reads in red.
+///
+/// ```
+/// use ely_project::{Status, Task, TaskItem};
+///
+/// let row = TaskItem::new("row", Task::new("t1", "Fix the login").status(Status::Done)).on_toggle(|_ticked, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TaskItem {
     id: ElementId,
@@ -36,6 +42,7 @@ pub struct TaskItem {
 }
 
 impl TaskItem {
+    /// A row under `id` for `task`, its due day read against the clock.
     pub fn new(id: impl Into<ElementId>, task: Task) -> Self {
         Self {
             id: id.into(),
@@ -152,6 +159,13 @@ impl RenderOnce for TaskItem {
 }
 
 /// Tasks in rows: arrows move between them, Enter or a double press opens one, and each box ticks its task done.
+///
+/// ```
+/// use ely_project::{Task, TaskList};
+///
+/// let list = TaskList::new("tasks", [Task::new("t1", "Fix the login"), Task::new("t2", "Ship it")])
+///     .on_open(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TaskList {
     id: ElementId,
@@ -162,6 +176,7 @@ pub struct TaskList {
 }
 
 impl TaskList {
+    /// A list under `id` of `tasks`; panics on a key found twice.
     pub fn new(id: impl Into<ElementId>, tasks: impl IntoIterator<Item = Task>) -> Self {
         let tasks: Vec<Task> = tasks.into_iter().collect();
         for (ix, task) in tasks.iter().enumerate() {

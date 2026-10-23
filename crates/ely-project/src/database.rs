@@ -30,14 +30,20 @@ type OnStatus = Rc<dyn Fn(&SharedString, Status, &mut Window, &mut App)>;
 /// How a database shows its records.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DatabaseLayout {
+    /// Rows and columns.
     Table,
+    /// Columns by status.
     Board,
+    /// Cards in a grid.
     Gallery,
+    /// A month by due day.
     Calendar,
+    /// Bars from start to due.
     Timeline,
 }
 
 impl DatabaseLayout {
+    /// Every way, in the order the switch shows them.
     pub const ALL: [DatabaseLayout; 5] = [
         DatabaseLayout::Table,
         DatabaseLayout::Board,
@@ -46,6 +52,7 @@ impl DatabaseLayout {
         DatabaseLayout::Timeline,
     ];
 
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             DatabaseLayout::Table => "Table",
@@ -85,6 +92,14 @@ fn tone(status: Status) -> Tone {
 }
 
 /// Records five ways: a table, a board by status, a gallery of cards, a month calendar by due day, and a timeline from start to due. A switch picks the way; a record opens from the board, the gallery and the calendar, and a card moved to another column takes its status.
+///
+/// ```
+/// use ely_project::{DatabaseLayout, DatabaseView, Task};
+///
+/// let view = DatabaseView::new("db", [Task::new("t1", "Fix the login")])
+///     .layout(DatabaseLayout::Board)
+///     .on_status(|_key, _status, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DatabaseView {
     id: ElementId,
@@ -96,6 +111,7 @@ pub struct DatabaseView {
 }
 
 impl DatabaseView {
+    /// A view under `id` of `tasks`, as a table first.
     pub fn new(id: impl Into<ElementId>, tasks: impl IntoIterator<Item = Task>) -> Self {
         Self {
             id: id.into(),

@@ -13,9 +13,13 @@ use crate::{
 /// What someone said to an invitation.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Answer {
+    /// Coming.
     Going,
+    /// Might come.
     Maybe,
+    /// Not coming.
     Declined,
+    /// Has not answered.
     Waiting,
 }
 
@@ -42,13 +46,18 @@ impl Answer {
 /// Someone asked to an event: their name, their address, their answer, and whether they asked the rest.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Attendee {
+    /// What it shows.
     pub name: SharedString,
+    /// Their address; no two attendees share one.
     pub email: SharedString,
+    /// Their answer.
     pub answer: Answer,
+    /// Whether they asked the rest.
     pub organizer: bool,
 }
 
 impl Attendee {
+    /// Someone named `name` at `email`, who answered `answer`.
     pub fn new(
         name: impl Into<SharedString>,
         email: impl Into<SharedString>,
@@ -93,6 +102,15 @@ pub(crate) fn tally(attendees: &[Attendee]) -> String {
 }
 
 /// Who is asked to an event: a line that counts the answers, then each person with their avatar, name, address and answer, the one who asked first.
+///
+/// ```
+/// use ely_calendar::{Answer, Attendee, AttendeeList};
+///
+/// let list = AttendeeList::new("people", [
+///     Attendee::new("Ana Silva", "ana@example.com", Answer::Going).organizer(),
+///     Attendee::new("Ben Ito", "ben@example.com", Answer::Waiting),
+/// ]);
+/// ```
 #[derive(IntoElement)]
 pub struct AttendeeList {
     id: ElementId,
@@ -100,6 +118,7 @@ pub struct AttendeeList {
 }
 
 impl AttendeeList {
+    /// A list under `id` of `attendees`; panics on an address found twice, or more than one who asked.
     pub fn new(id: impl Into<ElementId>, attendees: impl IntoIterator<Item = Attendee>) -> Self {
         let attendees: Vec<Attendee> = attendees.into_iter().collect();
         for (ix, attendee) in attendees.iter().enumerate() {

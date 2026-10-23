@@ -18,6 +18,14 @@ use crate::{
 };
 
 /// A thread's mark under its first message: who replied, how many replies, and when the last came. With a handler, a press opens the thread.
+///
+/// ```
+/// use ely_messaging::MessageThread;
+/// use jiff::Timestamp;
+///
+/// let last = Timestamp::from_second(1_700_000_000).unwrap();
+/// let thread = MessageThread::new("thread", 4, last).on_open(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MessageThread {
     id: ElementId,
@@ -28,6 +36,7 @@ pub struct MessageThread {
 }
 
 impl MessageThread {
+    /// A mark under `id` for `replies` replies, the last at `last`; panics on none.
     pub fn new(id: impl Into<ElementId>, replies: usize, last: Timestamp) -> Self {
         assert!(replies > 0, "a thread holds a reply");
         Self {
@@ -49,6 +58,7 @@ impl MessageThread {
         self
     }
 
+    /// What a press does: open the thread.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -112,6 +122,16 @@ impl RenderOnce for MessageThread {
 }
 
 /// A thread beside its chat: a head with the chat's name and a close, the first message, a rule counting the replies, the replies, and a composer held at the bottom. The body scrolls; the host gives the panel its size.
+///
+/// ```
+/// use ely_messaging::ThreadPanel;
+/// use gpui::ParentElement;
+///
+/// let panel = ThreadPanel::new("panel", "Release on Friday?")
+///     .chat("general")
+///     .child("Yes, after the review.")
+///     .on_close(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ThreadPanel {
     id: ElementId,
@@ -123,6 +143,7 @@ pub struct ThreadPanel {
 }
 
 impl ThreadPanel {
+    /// A panel under `id` over the first message, `root`.
     pub fn new(id: impl Into<ElementId>, root: impl IntoElement) -> Self {
         Self {
             id: id.into(),
@@ -140,11 +161,13 @@ impl ThreadPanel {
         self
     }
 
+    /// The field for a reply, held at the bottom.
     pub fn composer(mut self, composer: impl IntoElement) -> Self {
         self.composer = Some(composer.into_any_element());
         self
     }
 
+    /// Shows the close, and what a press on it does.
     pub fn on_close(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_close = Some(Rc::new(handler));
         self

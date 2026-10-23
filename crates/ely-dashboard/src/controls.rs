@@ -28,6 +28,14 @@ type OnInterval = Rc<dyn Fn(Option<u32>, &mut Window, &mut App)>;
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// How often a dashboard refreshes, from off to every fifteen minutes, beside a button that refreshes it now and when it last did. The owner runs the timer.
+///
+/// ```
+/// use ely_dashboard::RefreshIntervalSelector;
+/// use jiff::Timestamp;
+///
+/// let now = Timestamp::from_second(1_792_746_000).unwrap();
+/// let selector = RefreshIntervalSelector::new("refresh", Some(60), now, now, |_every, _, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RefreshIntervalSelector {
     id: ElementId,
@@ -120,15 +128,22 @@ impl RenderOnce for RefreshIntervalSelector {
 /// A window of time a dashboard shows, back from now.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TimeWindow {
+    /// The last fifteen minutes.
     Minutes15,
+    /// The last hour.
     Hour,
+    /// The last six hours.
     Hours6,
+    /// The last 24 hours.
     Day,
+    /// The last seven days.
     Week,
+    /// The last thirty days.
     Month,
 }
 
 impl TimeWindow {
+    /// Every window, shortest first.
     pub const ALL: [TimeWindow; 6] = [
         TimeWindow::Minutes15,
         TimeWindow::Hour,
@@ -138,6 +153,7 @@ impl TimeWindow {
         TimeWindow::Month,
     ];
 
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             TimeWindow::Minutes15 => "Last 15 minutes",
@@ -165,9 +181,13 @@ impl TimeWindow {
 /// A filter the bar offers: its key, its name, its choices, and the one picked, if any.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DashboardFilter {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What the select shows until one is picked.
     pub name: SharedString,
+    /// Its choices.
     pub choices: Vec<Choice>,
+    /// The choice picked, by value.
     pub picked: Option<SharedString>,
 }
 
@@ -175,6 +195,19 @@ type OnWindow = Rc<dyn Fn(TimeWindow, &mut Window, &mut App)>;
 type OnFilter = Rc<dyn Fn(&SharedString, Option<SharedString>, &mut Window, &mut App)>;
 
 /// A dashboard's filters in a row that wraps: a window of time, a select for each filter showing its name until one is picked, and Clear while any is picked.
+///
+/// ```
+/// use ely_core::forms::Choice;
+/// use ely_dashboard::{DashboardFilter, DashboardFilterBar, TimeWindow};
+///
+/// let region = DashboardFilter {
+///     key: "region".into(),
+///     name: "Region".into(),
+///     choices: vec![Choice::new("eu", "Europe"), Choice::new("us", "United States")],
+///     picked: None,
+/// };
+/// let bar = DashboardFilterBar::new("filters", TimeWindow::Day, [region], |_window, _, _| {}, |_key, _pick, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DashboardFilterBar {
     id: ElementId,
@@ -185,6 +218,7 @@ pub struct DashboardFilterBar {
 }
 
 impl DashboardFilterBar {
+    /// A bar under `id` showing `window` and `filters`; `on_window` gets the window picked, `on_filter` a filter's key and its pick, none once cleared.
     pub fn new(
         id: impl Into<ElementId>,
         window: TimeWindow,

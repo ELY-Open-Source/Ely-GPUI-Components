@@ -43,6 +43,12 @@ fn read(path: &Path) -> Read {
 pub(super) type OnTheme = Rc<dyn Fn(&VsCodeTheme, &mut Window, &mut App)>;
 
 /// A VS Code color theme taken in, dropped or browsed for: its name and mode, how many colors it names, and Apply, the rest kept from Ely's palette of that mode. A file that does not read says why.
+///
+/// ```
+/// use ely_settings::ThemeImporter;
+///
+/// let importer = ThemeImporter::new("import", |_theme, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ThemeImporter {
     id: ElementId,
@@ -50,6 +56,7 @@ pub struct ThemeImporter {
 }
 
 impl ThemeImporter {
+    /// An importer under `id`, holding no theme; `on_apply` gets the theme read.
     pub fn new(
         id: impl Into<ElementId>,
         on_apply: impl Fn(&VsCodeTheme, &mut Window, &mut App) + 'static,

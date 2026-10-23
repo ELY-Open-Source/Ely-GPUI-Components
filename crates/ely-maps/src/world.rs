@@ -18,6 +18,13 @@ fn iso(country: &Feature) -> Option<&str> {
 }
 
 /// The world's countries, washed each by its value keyed by ISO 3166 alpha-2 code, with a legend; Natural Earth is named in the corner unless the map names a source. Fails on a key that is neither an ISO code nor one of the bundle's; a code with no country at this scale draws nowhere and is logged once.
+///
+/// ```
+/// use ely_maps::{LatLon, MapView, MapViewport, WorldMap};
+///
+/// let map = MapView::new("map", MapViewport::new(LatLon::new(20.0, 0.0), 1.0));
+/// let world = WorldMap::new("world", map, [("PT", 10.6), ("ES", 48.3)]);
+/// ```
 #[derive(IntoElement)]
 pub struct WorldMap {
     id: ElementId,
@@ -27,6 +34,7 @@ pub struct WorldMap {
 }
 
 impl WorldMap {
+    /// A world under `id` on `map`, each country washed by its value in `values`, keyed by ISO 3166 alpha-2 code.
     pub fn new(
         id: impl Into<ElementId>,
         map: MapView,

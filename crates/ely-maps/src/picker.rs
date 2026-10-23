@@ -12,6 +12,13 @@ use crate::{
 type OnPick = Rc<dyn Fn(LatLon, &mut Window, &mut App)>;
 
 /// A map whose center is the pick: a crosshair marks it, the place shows below with a copy button, and the owner hears each move, by pointer or keys. It fills its box; the host gives it a height.
+///
+/// ```
+/// use ely_maps::{LatLon, LocationPicker, MapView, MapViewport};
+///
+/// let map = MapView::new("map", MapViewport::new(LatLon::new(38.72, -9.14), 12.0));
+/// let picker = LocationPicker::new("pick", map).on_pick(|_place, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LocationPicker {
     id: ElementId,
@@ -31,11 +38,13 @@ impl LocationPicker {
         }
     }
 
+    /// How the place is written.
     pub fn format(mut self, format: CoordFormat) -> Self {
         self.format = format;
         self
     }
 
+    /// Gets the center after each move.
     pub fn on_pick(mut self, handler: impl Fn(LatLon, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

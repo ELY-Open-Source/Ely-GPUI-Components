@@ -3,7 +3,9 @@ use std::f64::consts::PI;
 /// A place on the globe in degrees: latitude north, longitude east.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct LatLon {
+    /// Degrees north; south is negative.
     pub lat: f64,
+    /// Degrees east; west is negative.
     pub lon: f64,
 }
 
@@ -37,8 +39,11 @@ pub(crate) fn unproject((x, y): (f64, f64)) -> LatLon {
 /// A tile of the world at zoom `z`: `x` east and `y` south, each from 0 to 2^z − 1.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Tile {
+    /// Its zoom.
     pub z: u8,
+    /// Its column, from the west.
     pub x: u32,
+    /// Its row, from the north.
     pub y: u32,
 }
 
@@ -56,7 +61,9 @@ pub(crate) struct Laid {
 /// Where a map looks: the place at its center, and its zoom, 0 for the world in one tile.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct MapViewport {
+    /// The place at its center.
     pub center: LatLon,
+    /// Its zoom, 0 for the world in one tile.
     pub zoom: f64,
 }
 
@@ -64,6 +71,7 @@ impl MapViewport {
     /// The farthest out and the nearest in a map zooms.
     pub const ZOOMS: (f64, f64) = (0.0, 19.0);
 
+    /// A view centered on `center` at `zoom`; panics on a zoom outside `ZOOMS`.
     pub fn new(center: LatLon, zoom: f64) -> Self {
         let (least, most) = Self::ZOOMS;
         assert!(

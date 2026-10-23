@@ -1,3 +1,6 @@
+//! Account, chapter 36: sign-in and sign-up, profiles, sessions, keys, teams, switchers, plans and payment.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, feedback, forms, layout, menus, primitives, theme, typography,
 };

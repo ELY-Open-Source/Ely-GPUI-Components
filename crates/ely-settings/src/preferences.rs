@@ -15,13 +15,24 @@ use crate::{
 /// What an app may share and keep.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Privacy {
+    /// Whether counts of features used are shared, without content.
     pub telemetry: bool,
+    /// Whether crash reports are sent.
     pub crash_reports: bool,
+    /// Whether suggestions draw from what you do here.
     pub personalization: bool,
+    /// Whether recent files and searches are kept, on this device only.
     pub history: bool,
 }
 
 /// What an app may share and keep, a switch for each with what it means.
+///
+/// ```
+/// use ely_settings::{Privacy, PrivacySettings};
+///
+/// let privacy = Privacy { telemetry: false, crash_reports: true, personalization: false, history: true };
+/// let settings = PrivacySettings::new("privacy", privacy, |_privacy, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PrivacySettings {
     id: ElementId,
@@ -30,6 +41,7 @@ pub struct PrivacySettings {
 }
 
 impl PrivacySettings {
+    /// Settings under `id` showing `privacy`; `on_change` gets each change.
     pub fn new(
         id: impl Into<ElementId>,
         privacy: Privacy,
@@ -93,14 +105,29 @@ impl RenderOnce for PrivacySettings {
 /// Which channels each kind of notice arrives by, and whether notices wait.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Notices {
+    /// The channels a notice may arrive by, by name.
     pub channels: Vec<SharedString>,
+    /// The kinds of notice, each a key with its name.
     pub kinds: Vec<(SharedString, SharedString)>,
     /// The (kind, channel) pairs that are on.
     pub on: Vec<(SharedString, SharedString)>,
+    /// Whether every notice is held back.
     pub quiet: bool,
 }
 
 /// Notices by kind: a row for each, a named box for each channel it may arrive by that folds under the name when narrow, and a switch that holds every notice back.
+///
+/// ```
+/// use ely_settings::{Notices, NotificationSettings};
+///
+/// let notices = Notices {
+///     channels: vec!["Email".into(), "Push".into()],
+///     kinds: vec![("mentions".into(), "Mentions".into())],
+///     on: vec![("mentions".into(), "Push".into())],
+///     quiet: false,
+/// };
+/// let settings = NotificationSettings::new("notices", notices, |_notices, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NotificationSettings {
     id: ElementId,
@@ -109,6 +136,7 @@ pub struct NotificationSettings {
 }
 
 impl NotificationSettings {
+    /// Settings under `id` showing `notices`; `on_change` gets each change.
     pub fn new(
         id: impl Into<ElementId>,
         notices: Notices,
@@ -191,13 +219,25 @@ impl RenderOnce for NotificationSettings {
 /// What an app does when it starts.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Startup {
+    /// Whether it opens at login.
     pub at_login: bool,
+    /// Whether it restores its windows.
     pub restore: bool,
+    /// The page it opens to, by value.
     pub opens: SharedString,
+    /// Whether it looks for updates.
     pub updates: bool,
 }
 
 /// What an app does when it starts: whether it opens at login, restores its windows and looks for updates, and what it opens to, from `pages`.
+///
+/// ```
+/// use ely_core::forms::Choice;
+/// use ely_settings::{Startup, StartupSettings};
+///
+/// let startup = Startup { at_login: false, restore: true, opens: "home".into(), updates: true };
+/// let settings = StartupSettings::new("startup", startup, [Choice::new("home", "Home")], |_startup, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StartupSettings {
     id: ElementId,
@@ -207,6 +247,7 @@ pub struct StartupSettings {
 }
 
 impl StartupSettings {
+    /// Settings under `id` showing `startup`, offering `pages`; `on_change` gets each change.
     pub fn new(
         id: impl Into<ElementId>,
         startup: Startup,

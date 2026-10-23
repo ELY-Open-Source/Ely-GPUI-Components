@@ -13,12 +13,26 @@ use crate::{
 /// A shortcut: the group it sits in, what it does, and its keys as written, such as "cmd-shift-p".
 #[derive(Clone, Debug, PartialEq)]
 pub struct Shortcut {
+    /// The group it sits in.
     pub group: SharedString,
+    /// What it does.
     pub name: SharedString,
+    /// Its keys as written, such as `cmd-shift-p`.
     pub keys: SharedString,
 }
 
 /// Shortcuts in their groups, each with what it does and its keys drawn as caps; a search keeps those whose name or keys hold its words. Editing them is `editor::KeybindingsEditor`.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_settings::{KeyboardShortcutsList, Shortcut};
+/// use gpui::Entity;
+///
+/// fn list(search: &Entity<TextInput>) -> KeyboardShortcutsList {
+///     let save = Shortcut { group: "File".into(), name: "Save".into(), keys: "cmd-s".into() };
+///     KeyboardShortcutsList::new([save], search)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct KeyboardShortcutsList {
     shortcuts: Vec<Shortcut>,

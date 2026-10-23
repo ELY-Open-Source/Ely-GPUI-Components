@@ -20,24 +20,33 @@ use crate::{
 /// Which way a message went: out, in, or a note about the connection itself.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Direction {
+    /// Sent out.
     Sent,
+    /// Received.
     Received,
+    /// A note about the connection.
     Note,
 }
 
 /// A message on a socket: which way it went, its text, and when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SocketMessage {
+    /// Which way it went.
     pub direction: Direction,
+    /// Its text.
     pub text: SharedString,
+    /// When.
     pub at: Timestamp,
 }
 
 /// Where a socket stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SocketState {
+    /// Not connected.
     Closed,
+    /// Connecting.
     Opening,
+    /// Connected.
     Open,
 }
 
@@ -45,6 +54,19 @@ type OnText = Rc<dyn Fn(SharedString, &mut Window, &mut App)>;
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A WebSocket's conversation: where it stands with Connect or Disconnect beside it, its messages each marked sent or received with its time, JSON indented, newest last, and a field that sends on Enter while open.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_devtools::{Direction, SocketMessage, SocketState, WebSocketConsole};
+/// use gpui::Entity;
+/// use jiff::Timestamp;
+///
+/// fn console(draft: &Entity<TextInput>) -> WebSocketConsole {
+///     let now = Timestamp::from_second(1_792_746_000).unwrap();
+///     let hello = SocketMessage { direction: Direction::Received, text: "hello".into(), at: now };
+///     WebSocketConsole::new("socket", "wss://example.com", SocketState::Open, [hello], draft, now, |_text, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct WebSocketConsole {
     id: ElementId,

@@ -45,6 +45,15 @@ struct Press {
 }
 
 /// One column of a `ColumnShell`: a header that drags the window, then its body.
+///
+/// ```
+/// use ely_core::shell::{ColumnShell, ShellColumn};
+/// use gpui::{ParentElement, px};
+///
+/// let shell = ColumnShell::new("app")
+///     .column(ShellColumn::new("side").width(px(240.)).child("Folders"))
+///     .column(ShellColumn::new("main").child("Messages"));
+/// ```
 pub struct ShellColumn {
     id: ElementId,
     width: Option<DefiniteLength>,

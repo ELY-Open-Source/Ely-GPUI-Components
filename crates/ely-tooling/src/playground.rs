@@ -17,8 +17,11 @@ type Preview = Rc<dyn Fn(&Settings, &mut Window, &mut App) -> AnyElement>;
 /// A property a playground edits: a switch, a choice among names, or a number in a range, each by its name.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Knob {
+    /// A switch by name, and whether it starts on.
     Toggle(SharedString, bool),
+    /// A choice by name, its options, and the place of the one it starts on.
     Choice(SharedString, Vec<SharedString>, usize),
+    /// A number by name, its start, its range and its step.
     Number(SharedString, f64, (f64, f64), f64),
 }
 
@@ -47,8 +50,11 @@ impl Knob {
 /// Where a knob stands.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Setting {
+    /// A switch's state.
     On(bool),
+    /// The option picked.
     Picked(SharedString),
+    /// The number set.
     Number(f64),
 }
 
@@ -65,6 +71,7 @@ impl Settings {
             .unwrap_or_else(|| panic!("playground: no knob named {name}"))
     }
 
+    /// Whether the switch `name` is on; panics on a name the knobs lack or a knob of another kind.
     pub fn on(&self, name: &str) -> bool {
         match self.get(name) {
             Setting::On(on) => *on,
@@ -72,6 +79,7 @@ impl Settings {
         }
     }
 
+    /// The option picked for `name`; panics on a name the knobs lack or a knob of another kind.
     pub fn picked(&self, name: &str) -> &SharedString {
         match self.get(name) {
             Setting::Picked(option) => option,
@@ -79,6 +87,7 @@ impl Settings {
         }
     }
 
+    /// The number set for `name`; panics on a name the knobs lack or a knob of another kind.
     pub fn number(&self, name: &str) -> f64 {
         match self.get(name) {
             Setting::Number(value) => *value,
@@ -98,6 +107,18 @@ impl Settings {
 }
 
 /// A component beside the knobs that shape it: each knob edits one property as the preview redraws with the settings. The knobs are the owner's: when any changes, every setting starts over from them. Narrow, the knobs drop below.
+///
+/// ```
+/// use ely_core::buttons::Button;
+/// use ely_tooling::{Knob, Playground};
+/// use gpui::IntoElement;
+///
+/// let playground = Playground::new(
+///     "button",
+///     [Knob::Toggle("disabled".into(), false), Knob::Choice("label".into(), vec!["Save".into(), "Send".into()], 0)],
+///     |settings, _, _| Button::new("demo", settings.picked("label").clone()).disabled(settings.on("disabled")).into_any_element(),
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct Playground {
     id: ElementId,

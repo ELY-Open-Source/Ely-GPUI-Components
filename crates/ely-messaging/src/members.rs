@@ -15,15 +15,22 @@ use crate::{
 /// Someone in a chat: a key, a name, a picture, where they stand, a role, their own words.
 #[derive(Clone)]
 pub struct Member {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// Their picture, in place of their initials.
     pub picture: Option<ImageSource>,
+    /// Where they stand.
     pub presence: Presence,
+    /// What they do in the chat.
     pub role: Option<SharedString>,
+    /// Their own words.
     pub status: Option<SharedString>,
 }
 
 impl Member {
+    /// A member keyed `key`, named `name`, at `presence`.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -39,16 +46,19 @@ impl Member {
         }
     }
 
+    /// Their picture, in place of their initials.
     pub fn picture(mut self, source: impl Into<ImageSource>) -> Self {
         self.picture = Some(source.into());
         self
     }
 
+    /// What they do in the chat, such as Admin.
     pub fn role(mut self, role: impl Into<SharedString>) -> Self {
         self.role = Some(role.into());
         self
     }
 
+    /// Their own words.
     pub fn status(mut self, status: impl Into<SharedString>) -> Self {
         self.status = Some(status.into());
         self
@@ -56,6 +66,17 @@ impl Member {
 }
 
 /// Members online and offline by name, each group a list under its count. A press or an arrow chooses one, Enter or a double press acts on them; offline members go quiet.
+///
+/// ```
+/// use ely_core::data_display::Presence;
+/// use ely_messaging::{Member, MemberList};
+///
+/// let list = MemberList::new("members", [
+///     Member::new("ana", "Ana Silva", Presence::Online).role("Admin"),
+///     Member::new("ben", "Ben Ito", Presence::Offline),
+/// ])
+/// .on_select(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MemberList {
     id: ElementId,
@@ -66,6 +87,7 @@ pub struct MemberList {
 }
 
 impl MemberList {
+    /// A list under `id` of `members`; panics on a key found twice.
     pub fn new(id: impl Into<ElementId>, members: impl IntoIterator<Item = Member>) -> Self {
         let members: Vec<Member> = members.into_iter().collect();
         for (ix, member) in members.iter().enumerate() {
@@ -87,6 +109,7 @@ impl MemberList {
         self
     }
 
+    /// Gets the key of the member chosen.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -95,6 +118,7 @@ impl MemberList {
         self
     }
 
+    /// Gets the key of the member acted on.
     pub fn on_activate(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

@@ -1,3 +1,6 @@
+//! Mail, chapter 29: mailboxes, lists, threads, the reader, the composer, labels, and times to send or snooze.
+#![deny(missing_docs)]
+
 use ely_chat as chat;
 use ely_core::{
     buttons, data_display, forms, i18n, layout, lists, menus, overlays, primitives, theme,

@@ -41,6 +41,12 @@ struct Signed {
 }
 
 /// Writes a signature: its lines in a field, and under it how it will sit below a message. The owner gets the words as they change; a new signature from the owner starts the field over.
+///
+/// ```
+/// use ely_mail::SignatureEditor;
+///
+/// let editor = SignatureEditor::new("signature", "Ana Silva\nDesign").on_change(|_text, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SignatureEditor {
     id: ElementId,
@@ -49,6 +55,7 @@ pub struct SignatureEditor {
 }
 
 impl SignatureEditor {
+    /// A signature under `id`, starting with `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

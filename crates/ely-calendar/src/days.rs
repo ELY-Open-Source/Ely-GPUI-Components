@@ -25,6 +25,16 @@ pub type CalendarWeekView = CalendarDays<7>;
 pub type CalendarDayView = CalendarDays<1>;
 
 /// `DAYS` days under their names: their whole days above, their hours below, where a drag makes an event and a drag on an event's lower edge moves its end. The arrows step by the view's days; Today comes back. It fills its box.
+///
+/// ```
+/// use ely_calendar::{CalendarWeekView, Event};
+/// use jiff::{Timestamp, civil::date};
+///
+/// let start = Timestamp::from_second(1_792_746_000).unwrap();
+/// let end = Timestamp::from_second(1_792_749_600).unwrap();
+/// let week = CalendarWeekView::new("week", date(2026, 10, 23), [Event::timed("call", "Call", start, end, 0)])
+///     .on_create(|_start, _end, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CalendarDays<const DAYS: usize> {
     id: ElementId,

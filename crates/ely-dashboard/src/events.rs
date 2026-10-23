@@ -15,10 +15,15 @@ use crate::{
 /// Something that happened: its key, its kind, what it says, its tone, and when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct StreamEvent {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its kind, such as deploy; the chips filter by it.
     pub kind: SharedString,
+    /// What it says.
     pub text: SharedString,
+    /// Its tone.
     pub tone: Tone,
+    /// When it happened.
     pub at: Timestamp,
 }
 
@@ -30,6 +35,16 @@ struct Hold {
 }
 
 /// Events as they come, newest first, each with its kind, its words and its time. Chips keep the kinds shown; Pause holds the list still while new events count up on a button that shows them.
+///
+/// ```
+/// use ely_core::data_display::Tone;
+/// use ely_dashboard::{EventStream, StreamEvent};
+/// use jiff::Timestamp;
+///
+/// let now = Timestamp::from_second(1_792_746_000).unwrap();
+/// let deploy = StreamEvent { key: "e1".into(), kind: "deploy".into(), text: "web 1.4 out".into(), tone: Tone::Success, at: now };
+/// let stream = EventStream::new("events", [deploy], now);
+/// ```
 #[derive(IntoElement)]
 pub struct EventStream {
     id: ElementId,

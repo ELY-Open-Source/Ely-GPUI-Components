@@ -24,6 +24,13 @@ type OnTopic = Rc<dyn Fn(Option<&SharedString>, &mut Window, &mut App)>;
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Topics branching from a root on an endless plane, half to each side. A press selects a topic; arrows walk, Tab asks for a child, Enter for a sibling, Delete or Backspace to remove one, and F2 or a double press rewrites it; Escape lets the selection go, so Tab moves on. While a topic is being rewritten its field takes every key; Tab keeps the words and hands focus back to the map. The owner keeps the map and answers each ask with `Topic::adding`, `removing` and `renaming`.
+///
+/// ```
+/// use ely_canvas::{MindMap, Topic, Viewport};
+///
+/// let root = Topic::new("plan", "Plan").child(Topic::new("design", "Design")).child(Topic::new("build", "Build"));
+/// let map = MindMap::new("map", root, Viewport::new(-200.0, -150.0, 1.0)).on_add(|_parent, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MindMap {
     id: ElementId,
@@ -38,6 +45,7 @@ pub struct MindMap {
 }
 
 impl MindMap {
+    /// A map under `id` from `root`, seen through `viewport`, nothing selected.
     pub fn new(id: impl Into<ElementId>, root: Topic, viewport: Viewport) -> Self {
         Self {
             id: id.into(),
@@ -52,11 +60,13 @@ impl MindMap {
         }
     }
 
+    /// The topic selected now, by key.
     pub fn selected(mut self, key: Option<impl Into<SharedString>>) -> Self {
         self.selected = key.map(Into::into);
         self
     }
 
+    /// Gets the topic selected, or none once it is let go.
     pub fn on_select(
         mut self,
         handler: impl Fn(Option<&SharedString>, &mut Window, &mut App) + 'static,
@@ -74,6 +84,7 @@ impl MindMap {
         self
     }
 
+    /// Gets the key of the topic to remove.
     pub fn on_remove(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -82,6 +93,7 @@ impl MindMap {
         self
     }
 
+    /// Gets a topic's key and its new words.
     pub fn on_rename(
         mut self,
         handler: impl Fn(&SharedString, &SharedString, &mut Window, &mut App) + 'static,
@@ -90,6 +102,7 @@ impl MindMap {
         self
     }
 
+    /// Gets the viewport after each pan and zoom.
     pub fn on_viewport(
         mut self,
         handler: impl Fn(Viewport, &mut Window, &mut App) + 'static,

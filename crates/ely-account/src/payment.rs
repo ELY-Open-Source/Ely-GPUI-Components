@@ -19,14 +19,20 @@ use crate::{
 /// A card network, told by a number's first digits.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CardBrand {
+    /// Visa.
     Visa,
+    /// Mastercard.
     Mastercard,
+    /// American Express.
     Amex,
+    /// Discover.
     Discover,
+    /// Not told.
     Other,
 }
 
 impl CardBrand {
+    /// The network `digits` begin with.
     pub fn of(digits: &str) -> Self {
         let lead = |n: usize| digits.get(..n).and_then(|lead| lead.parse::<u32>().ok());
         if digits.starts_with('4') {
@@ -44,6 +50,7 @@ impl CardBrand {
         }
     }
 
+    /// Its name.
     pub fn name(self) -> &'static str {
         match self {
             CardBrand::Visa => "Visa",
@@ -86,7 +93,9 @@ pub fn luhn(digits: &str) -> bool {
 pub enum ExpiryError {
     /// Not written "MM/YY".
     Unread,
+    /// A month outside 1 to 12.
     NoMonth(i8),
+    /// A month already gone.
     Passed,
 }
 
@@ -127,11 +136,17 @@ fn expiry_fault(text: &str, now: (i32, i8)) -> Option<String> {
 /// A card as its form hands it over.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CardDetails {
+    /// Its network.
     pub brand: CardBrand,
+    /// Its number, digits alone.
     pub number: SharedString,
+    /// The month it runs out.
     pub month: i8,
+    /// The year it runs out.
     pub year: i32,
+    /// Its security code.
     pub cvc: SharedString,
+    /// The name on it.
     pub name: SharedString,
 }
 
@@ -142,6 +157,12 @@ fn digits(text: &str) -> String {
 }
 
 /// A card to pay with: its number, spaced as its network writes it and named once told, the month and year it runs out, its security code and the name on it. Save waits for a number that checks out, a month ahead, a full code and a name.
+///
+/// ```
+/// use ely_account::PaymentMethodForm;
+///
+/// let form = PaymentMethodForm::new("card", |_card, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PaymentMethodForm {
     id: ElementId,
@@ -151,6 +172,7 @@ pub struct PaymentMethodForm {
 }
 
 impl PaymentMethodForm {
+    /// A form under `id`; `on_submit` gets the card on Save.
     pub fn new(
         id: impl Into<ElementId>,
         on_submit: impl Fn(&CardDetails, &mut Window, &mut App) + 'static,

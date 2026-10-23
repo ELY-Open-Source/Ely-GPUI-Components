@@ -42,7 +42,9 @@ mod none {
 /// One entry in a tray menu.
 #[derive(Clone, Debug)]
 pub enum TrayItem {
+    /// A row; a pick hands `on_pick` its place among all the items.
     Action(SharedString),
+    /// A line between rows.
     Separator,
 }
 
@@ -52,6 +54,7 @@ type OnPick = Rc<dyn Fn(usize, &mut App)>;
 pub struct TrayLook {
     /// An SF Symbol, for the macOS menu bar.
     pub symbol: &'static str,
+    /// A PNG, for the Windows tray and Linux's StatusNotifierItem.
     pub png: &'static [u8],
     /// The app's name, shown on hover.
     pub name: SharedString,

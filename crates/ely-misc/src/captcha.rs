@@ -19,6 +19,7 @@ type OnRefresh = Rc<dyn Fn(&mut Window, &mut App)>;
 /// Where a captcha stands, as its owner says.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum CaptchaState {
+    /// Waiting for an answer.
     #[default]
     Asking,
     /// The owner checks the answer: Verify spins and takes no press, and Enter hands nothing over.
@@ -30,6 +31,14 @@ pub enum CaptchaState {
 }
 
 /// A picture of characters to copy, from the owner, over a field to type them. Verify or Enter hands the answer to the owner, who checks it and says how it stood; the field empties with each answer and keeps focus, and Verify with nothing typed sends focus to it. With `on_refresh`, a button asks the owner for a new picture.
+///
+/// ```
+/// use ely_misc::{Captcha, CaptchaState};
+///
+/// let captcha = Captcha::new("captcha", "captcha/abc.png", 3.0, |_answer, _, _| {})
+///     .state(CaptchaState::Asking)
+///     .on_refresh(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Captcha {
     id: ElementId,
@@ -58,6 +67,7 @@ impl Captcha {
         }
     }
 
+    /// Where it stands, as the owner says.
     pub fn state(mut self, state: CaptchaState) -> Self {
         self.state = state;
         self

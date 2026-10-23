@@ -22,6 +22,15 @@ fn continues(before: (&str, Timestamp), next: (&str, Timestamp), zone: &TimeZone
 }
 
 /// A message in a chat: the author's picture, name and time over the words. After a message by the same author within five minutes, only the words, with the time in the gutter on hover. Reactions and a thread go in the footer.
+///
+/// ```
+/// use ely_messaging::ChatMessage;
+/// use gpui::ParentElement;
+/// use jiff::Timestamp;
+///
+/// let at = Timestamp::from_second(1_700_000_000).unwrap();
+/// let message = ChatMessage::new("m1", "Ana Silva", at).child("The draft is up.");
+/// ```
 #[derive(IntoElement)]
 pub struct ChatMessage {
     id: ElementId,
@@ -35,6 +44,7 @@ pub struct ChatMessage {
 }
 
 impl ChatMessage {
+    /// A message under `id` by `author`, sent `at`.
     pub fn new(id: impl Into<ElementId>, author: impl Into<SharedString>, at: Timestamp) -> Self {
         Self {
             id: id.into(),
@@ -48,6 +58,7 @@ impl ChatMessage {
         }
     }
 
+    /// The author's picture, in place of their initials.
     pub fn picture(mut self, source: impl Into<ImageSource>) -> Self {
         self.picture = Some(source.into());
         self
@@ -65,6 +76,7 @@ impl ChatMessage {
         self
     }
 
+    /// What goes under the words, such as reactions or a thread.
     pub fn footer(mut self, footer: impl IntoElement) -> Self {
         self.footer = Some(footer.into_any_element());
         self
@@ -177,10 +189,17 @@ impl RenderOnce for ChatMessage {
 }
 
 /// Where unread messages start: a rule and "New" in the danger tone.
+///
+/// ```
+/// use ely_messaging::UnreadDivider;
+///
+/// let divider = UnreadDivider::new();
+/// ```
 #[derive(IntoElement, Default)]
 pub struct UnreadDivider;
 
 impl UnreadDivider {
+    /// The divider.
     pub fn new() -> Self {
         Self
     }

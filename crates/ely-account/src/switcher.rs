@@ -20,17 +20,24 @@ type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// Someone signed in: a key, a name and an email, and a picture when there is one.
 #[derive(Clone)]
 pub struct Account {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Their name.
     pub name: SharedString,
+    /// Their email.
     pub email: SharedString,
+    /// Their picture.
     pub image: Option<ImageSource>,
 }
 
 /// A workspace or an organization: a key, a name, and a line such as its plan.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Workspace {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// A line under it, such as its plan.
     pub detail: SharedString,
 }
 
@@ -104,6 +111,13 @@ fn opening(
 }
 
 /// The accounts signed in, the current one showing; its menu picks another or adds one.
+///
+/// ```
+/// use ely_account::{Account, AccountSwitcher};
+///
+/// let ana = Account { key: "ana".into(), name: "Ana Silva".into(), email: "ana@example.com".into(), image: None };
+/// let switcher = AccountSwitcher::new("accounts", [ana], "ana", |_key, _, _| {}).on_add(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AccountSwitcher {
     id: ElementId,
@@ -114,6 +128,7 @@ pub struct AccountSwitcher {
 }
 
 impl AccountSwitcher {
+    /// A switcher under `id` over `accounts`, `current` showing; `on_select` gets the key picked.
     pub fn new(
         id: impl Into<ElementId>,
         accounts: impl IntoIterator<Item = Account>,
@@ -183,6 +198,13 @@ impl RenderOnce for AccountSwitcher {
 }
 
 /// The workspaces one belongs to, the current one showing; its menu picks another or makes one.
+///
+/// ```
+/// use ely_account::{Workspace, WorkspaceSwitcher};
+///
+/// let acme = Workspace { key: "acme".into(), name: "Acme".into(), detail: "Pro plan".into() };
+/// let switcher = WorkspaceSwitcher::new("workspaces", [acme], "acme", |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct WorkspaceSwitcher {
     id: ElementId,
@@ -193,6 +215,7 @@ pub struct WorkspaceSwitcher {
 }
 
 impl WorkspaceSwitcher {
+    /// A switcher under `id` over `workspaces`, `current` showing; `on_select` gets the key picked.
     pub fn new(
         id: impl Into<ElementId>,
         workspaces: impl IntoIterator<Item = Workspace>,
@@ -266,6 +289,12 @@ impl RenderOnce for WorkspaceSwitcher {
 }
 
 /// Someone's avatar that opens their menu: who is signed in over the owner's rows, and Sign out last.
+///
+/// ```
+/// use ely_account::UserMenu;
+///
+/// let menu = UserMenu::new("me", "Ana Silva", "ana@example.com", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct UserMenu {
     id: ElementId,
@@ -278,6 +307,7 @@ pub struct UserMenu {
 }
 
 impl UserMenu {
+    /// A menu under `id` for `name` at `email`; `on_sign_out` gets the press on Sign out.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -295,11 +325,13 @@ impl UserMenu {
         }
     }
 
+    /// Their picture, in place of their initials.
     pub fn image(mut self, source: impl Into<ImageSource>) -> Self {
         self.image = Some(source.into());
         self
     }
 
+    /// Where they stand, as a dot on the avatar.
     pub fn presence(mut self, presence: Presence) -> Self {
         self.presence = Some(presence);
         self

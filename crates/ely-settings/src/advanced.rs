@@ -17,24 +17,49 @@ use crate::{
 /// How far along a feature is.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Stage {
+    /// Ready.
     Stable,
+    /// Ready to try, still changing.
     Beta,
+    /// Early, and may break.
     Experimental,
 }
 
 /// A feature flag: its key and name, what it does, how far along it is, and whether it is on.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Flag {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// What it does.
     pub description: SharedString,
+    /// How far along it is.
     pub stage: Stage,
+    /// Whether it is on.
     pub on: bool,
 }
 
 type OnFlag = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 
 /// Features to turn on or off, each with what it does and how far along it is, found by a search over their names and words.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_settings::{FeatureFlags, Flag, Stage};
+/// use gpui::Entity;
+///
+/// fn flags(search: &Entity<TextInput>) -> FeatureFlags {
+///     let flag = Flag {
+///         key: "split".into(),
+///         name: "Split view".into(),
+///         description: "Two documents side by side.".into(),
+///         stage: Stage::Beta,
+///         on: false,
+///     };
+///     FeatureFlags::new("flags", [flag], search, |_key, _on, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FeatureFlags {
     id: ElementId,
@@ -121,6 +146,12 @@ impl RenderOnce for FeatureFlags {
 type OnBool = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// Developer mode's switch, with a warning of what it shows while on.
+///
+/// ```
+/// use ely_settings::DeveloperModeToggle;
+///
+/// let toggle = DeveloperModeToggle::new("dev", false, |_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DeveloperModeToggle {
     id: ElementId,
@@ -129,6 +160,7 @@ pub struct DeveloperModeToggle {
 }
 
 impl DeveloperModeToggle {
+    /// The switch under `id`, on or off; `on_change` gets each turn.
     pub fn new(
         id: impl Into<ElementId>,
         on: bool,

@@ -52,6 +52,13 @@ fn sample(syntax: &Syntax, cx: &App) -> impl IntoElement + use<> {
 type OnName = Rc<dyn Fn(&'static str, &mut Window, &mut App)>;
 
 /// Code palettes to choose from, each a card with a line of code in its colors for the mode shown.
+///
+/// ```
+/// use ely_core::theme::syntax_themes;
+/// use ely_settings::SyntaxThemePicker;
+///
+/// let picker = SyntaxThemePicker::new("code", syntax_themes(), "Ely", |_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SyntaxThemePicker {
     id: ElementId,

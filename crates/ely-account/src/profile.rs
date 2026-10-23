@@ -16,6 +16,12 @@ use crate::{
 };
 
 /// Someone at a glance: their picture or initials, name and title, a line about them, details each with an icon, and the owner's actions.
+///
+/// ```
+/// use ely_account::ProfileCard;
+///
+/// let card = ProfileCard::new("ana", "Ana Silva").title("Designer").bio("Shapes and colors.");
+/// ```
 #[derive(IntoElement)]
 pub struct ProfileCard {
     id: ElementId,
@@ -29,6 +35,7 @@ pub struct ProfileCard {
 }
 
 impl ProfileCard {
+    /// A card under `id` for `name`, with nothing more.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -42,21 +49,25 @@ impl ProfileCard {
         }
     }
 
+    /// What they do.
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = Some(title.into());
         self
     }
 
+    /// Their picture, in place of their initials.
     pub fn image(mut self, source: impl Into<ImageSource>) -> Self {
         self.image = Some(source.into());
         self
     }
 
+    /// Where they stand, as a dot on the picture.
     pub fn presence(mut self, presence: Presence) -> Self {
         self.presence = Some(presence);
         self
     }
 
+    /// A line about them.
     pub fn bio(mut self, bio: impl Into<SharedString>) -> Self {
         self.bio = Some(bio.into());
         self
@@ -68,6 +79,7 @@ impl ProfileCard {
         self
     }
 
+    /// An action after the others.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
@@ -144,11 +156,17 @@ impl RenderOnce for ProfileCard {
 /// What a profile holds.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Profile {
+    /// Their name.
     pub name: SharedString,
+    /// Their username.
     pub username: SharedString,
+    /// Their email.
     pub email: SharedString,
+    /// A line about them.
     pub bio: SharedString,
+    /// Where they are.
     pub location: SharedString,
+    /// Their picture's file.
     pub picture: Option<PathBuf>,
 }
 
@@ -208,6 +226,20 @@ fn savable(edited: &Profile, seed: &Profile) -> bool {
 }
 
 /// A profile to edit: the picture, name, username, email, a line about oneself and a place. A new profile from the owner refills it. Save hands the owner the changes and rests while nothing changed, a name is missing or the email does not read; Discard puts the owner's profile back.
+///
+/// ```
+/// use ely_account::{Profile, ProfileEditor};
+///
+/// let profile = Profile {
+///     name: "Ana Silva".into(),
+///     username: "ana".into(),
+///     email: "ana@example.com".into(),
+///     bio: "Shapes and colors.".into(),
+///     location: "Lisbon".into(),
+///     picture: None,
+/// };
+/// let editor = ProfileEditor::new("profile", profile, |_profile, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProfileEditor {
     id: ElementId,
@@ -216,6 +248,7 @@ pub struct ProfileEditor {
 }
 
 impl ProfileEditor {
+    /// An editor under `id` filled from `profile`; `on_save` gets the changes.
     pub fn new(
         id: impl Into<ElementId>,
         profile: Profile,

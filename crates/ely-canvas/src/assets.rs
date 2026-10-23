@@ -20,6 +20,13 @@ type OnShape = Rc<dyn Fn(&Shape, &mut Window, &mut App)>;
 const COLUMNS: usize = 4;
 
 /// Shapes to place, in titled groups, each drawn to fit its tile and found by name. A press or Enter hands the owner the shape.
+///
+/// ```
+/// use ely_canvas::{AssetPanel, Frame, Shape, ShapeKind};
+///
+/// let square = Shape::new("square", "Square", ShapeKind::Rect, Frame::new(0.0, 0.0, 80.0, 80.0));
+/// let panel = AssetPanel::new("assets").group("Basic", [square]).on_pick(|_shape, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AssetPanel {
     id: ElementId,
@@ -28,6 +35,7 @@ pub struct AssetPanel {
 }
 
 impl AssetPanel {
+    /// An empty panel under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -36,6 +44,7 @@ impl AssetPanel {
         }
     }
 
+    /// A group of `shapes` under `title`.
     pub fn group(
         mut self,
         title: impl Into<SharedString>,
@@ -46,6 +55,7 @@ impl AssetPanel {
         self
     }
 
+    /// Gets the shape picked.
     pub fn on_pick(mut self, handler: impl Fn(&Shape, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

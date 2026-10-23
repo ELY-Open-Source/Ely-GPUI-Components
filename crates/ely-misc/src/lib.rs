@@ -1,3 +1,6 @@
+//! Miscellany, chapter 40: clocks, a calculator and converters, quizzes, polls and surveys, import and export, consent, captcha, a QR scanner and web views.
+#![deny(missing_docs)]
+
 use ely_canvas as canvas;
 use ely_core::{
     buttons, feedback, forms, layout, lists, motion, overlays, primitives, tables, theme,

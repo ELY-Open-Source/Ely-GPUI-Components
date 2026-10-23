@@ -43,6 +43,12 @@ fn marks(events: &[Event], year: i16, zone: &TimeZone) -> BTreeMap<Date, usize> 
 }
 
 /// A year in twelve small months; a day with something on it wears a dot in its first event's hue. Arrows move a day, Page keys a month, and Enter or a double press opens the day.
+///
+/// ```
+/// use ely_calendar::YearView;
+///
+/// let year = YearView::new("year", 2026, []).on_day(|_day, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct YearView {
     id: ElementId,
@@ -55,6 +61,7 @@ pub struct YearView {
 }
 
 impl YearView {
+    /// The year `year` under `id`, with `events`; panics on an event key found twice.
     pub fn new(
         id: impl Into<ElementId>,
         year: i16,

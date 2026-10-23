@@ -1,3 +1,6 @@
+//! Settings, chapter 35: pages, sections and rows, appearance, themes, privacy, notices, startup, network, storage and shortcuts.
+#![deny(missing_docs)]
+
 use ely_canvas as canvas;
 use ely_core::{
     buttons, data_display, feedback, forms, i18n, lists, primitives, theme, typography,

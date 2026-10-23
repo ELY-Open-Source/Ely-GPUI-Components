@@ -9,6 +9,12 @@ use crate::{
 };
 
 /// How many times the view that draws it has rendered, beside a label: place it in a view's render to see how often that view redraws. It shows the count and nothing moves, since any motion would redraw the view it counts.
+///
+/// ```
+/// use ely_tooling::RenderCounter;
+///
+/// let counter = RenderCounter::new("renders", "Sidebar");
+/// ```
 #[derive(IntoElement)]
 pub struct RenderCounter {
     id: ElementId,
@@ -16,6 +22,7 @@ pub struct RenderCounter {
 }
 
 impl RenderCounter {
+    /// A counter under `id` beside `label`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

@@ -43,6 +43,16 @@ pub(crate) fn open_slots(
 }
 
 /// Open times to meet over some days: each day with its count of open slots, then the slots of the one chosen. Busy stretches, the working hours and the past close the rest. A pick hands on the slot's start; new days from the owner start the choice over.
+///
+/// ```
+/// use ely_calendar::AvailabilityPicker;
+/// use jiff::civil::date;
+///
+/// let picker = AvailabilityPicker::new("slots", [date(2026, 10, 26), date(2026, 10, 27)])
+///     .hours(9, 17)
+///     .length(30)
+///     .on_pick(|_start, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AvailabilityPicker {
     id: ElementId,
@@ -57,6 +67,7 @@ pub struct AvailabilityPicker {
 }
 
 impl AvailabilityPicker {
+    /// A picker under `id` over `days`, nothing busy; panics on no day.
     pub fn new(id: impl Into<ElementId>, days: impl IntoIterator<Item = Date>) -> Self {
         let id = id.into();
         let days: Vec<Date> = days.into_iter().collect();

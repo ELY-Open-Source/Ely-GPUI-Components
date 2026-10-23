@@ -25,7 +25,9 @@ use crate::{
 /// What lies on a whiteboard: its shapes, in paint order, and the links between them.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Board {
+    /// Its shapes, in paint order.
     pub shapes: Vec<Shape>,
+    /// The links between them.
     pub links: Vec<Link>,
 }
 
@@ -55,6 +57,13 @@ struct Desk {
 type Apply = Rc<dyn Fn(&dyn Fn(&mut Board, &mut Desk), &mut Window, &mut App)>;
 
 /// A board to think on: notes, shapes, text, pen and brush strokes, and links on an endless plane, with its tools floating over the top left and its zoom at the bottom right. It keeps its own tool, view and selection, applies each edit, and hands the owner the whole board after it; a new board from the owner replaces its own. Delete or Backspace removes the selection and its links. It fills its box, which the host sizes.
+///
+/// ```
+/// use ely_canvas::{Board, Frame, Shape, ShapeKind, Whiteboard};
+///
+/// let note = Shape::new("n1", "Note", ShapeKind::Note("Ship it".into()), Frame::new(0.0, 0.0, 160.0, 160.0));
+/// let board = Whiteboard::new("board", Board { shapes: vec![note], links: Vec::new() }).on_change(|_board, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Whiteboard {
     id: ElementId,
@@ -63,6 +72,7 @@ pub struct Whiteboard {
 }
 
 impl Whiteboard {
+    /// A whiteboard under `id` holding `board`.
     pub fn new(id: impl Into<ElementId>, board: Board) -> Self {
         Self {
             id: id.into(),
@@ -71,6 +81,7 @@ impl Whiteboard {
         }
     }
 
+    /// Gets the whole board after each edit.
     pub fn on_change(mut self, handler: impl Fn(Board, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

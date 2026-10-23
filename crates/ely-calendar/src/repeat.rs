@@ -8,26 +8,37 @@ use crate::forms::{week_start, weekday_words};
 /// How often an event comes back.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Frequency {
+    /// Every day.
     Daily,
+    /// Every week.
     Weekly,
+    /// Every month.
     Monthly,
+    /// Every year.
     Yearly,
 }
 
 /// When a run of repeats stops: never, after a day, or after a count of them, the first among them.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Ends {
+    /// It goes on.
     Never,
+    /// The last repeat falls on or before this day.
     On(Date),
+    /// After this many, the first among them.
     After(u16),
 }
 
 /// An event's repeats: how often, every how many, on which weekdays for a weekly one, and when they stop.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Recurrence {
+    /// How often it comes back.
     pub frequency: Frequency,
+    /// Every how many of them.
     pub interval: u16,
+    /// The weekdays of a weekly one; the first day's when empty.
     pub weekdays: Vec<Weekday>,
+    /// When it stops.
     pub ends: Ends,
 }
 

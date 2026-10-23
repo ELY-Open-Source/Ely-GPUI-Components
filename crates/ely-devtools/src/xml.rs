@@ -14,15 +14,20 @@ use crate::{
 /// A piece of an XML document: an element, or the text between tags.
 #[derive(Clone, Debug, PartialEq)]
 pub enum XmlNode {
+    /// An element.
     Element(XmlElement),
+    /// Text between tags.
     Text(SharedString),
 }
 
 /// An element: its name, its attributes in order, and what it holds.
 #[derive(Clone, Debug, PartialEq)]
 pub struct XmlElement {
+    /// Its name.
     pub name: SharedString,
+    /// Its attributes, names with their values, in order.
     pub attributes: Vec<(SharedString, SharedString)>,
+    /// What it holds, in order.
     pub children: Vec<XmlNode>,
 }
 
@@ -265,6 +270,12 @@ fn nodes(element: &XmlElement, path: &str, open: &mut Vec<SharedString>) -> Vec<
 struct Copied(Option<SharedString>);
 
 /// XML as a tree of elements, each with its attributes, and the text between tags; comments are dropped. Enter or a double press on a text copies its path. XML that does not read shows the line where it breaks.
+///
+/// ```
+/// use ely_devtools::XmlViewer;
+///
+/// let viewer = XmlViewer::new("xml", r#"<feed><entry id="1">Hello</entry></feed>"#);
+/// ```
 #[derive(IntoElement)]
 pub struct XmlViewer {
     id: ElementId,
@@ -272,6 +283,7 @@ pub struct XmlViewer {
 }
 
 impl XmlViewer {
+    /// A viewer under `id` of `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

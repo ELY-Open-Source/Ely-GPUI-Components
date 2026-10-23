@@ -27,6 +27,15 @@ struct Tracing {
 }
 
 /// A layer over an InfiniteCanvas where its tools work. Select presses a shape, Shift adds to the selection, a drag moves it and snaps its edges to others, a handle resizes it, and a drag on empty space draws a SelectionBox. The shape tools draw by a drag, Shift keeping them square; the pen adds a point per press and a double press ends the path; text drops a line where pressed; the brush strokes a path; a note drops where pressed; the connector links the shape pressed to the one released on. A double press with Select writes on a shape: a text's or a note's words, or any other's label. A press focuses the layer, where Delete or Backspace asks to delete the selection and Escape lets it go. A drag may end anywhere, in the layer or out of it. Everything asks the owner; the hand leaves the canvas to pan.
+///
+/// ```
+/// use ely_canvas::{Frame, Shape, ShapeKind, Tool, ToolLayer, Viewport};
+///
+/// let shape = Shape::new("box", "Box", ShapeKind::Rect, Frame::new(10.0, 10.0, 80.0, 60.0));
+/// let layer = ToolLayer::new("tools", Tool::Select, Viewport::new(0.0, 0.0, 1.0), [shape])
+///     .on_draw(|_kind, _frame, _, _| {})
+///     .on_move(|_keys, _by, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ToolLayer {
     id: ElementId,
@@ -45,6 +54,7 @@ pub struct ToolLayer {
 }
 
 impl ToolLayer {
+    /// A layer under `id` for `tool`, seen through `viewport`, over `shapes`, nothing selected.
     pub fn new(
         id: impl Into<ElementId>,
         tool: Tool,
@@ -68,11 +78,13 @@ impl ToolLayer {
         }
     }
 
+    /// The shapes selected now, by key.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
     }
 
+    /// The brush the brush tool strokes with.
     pub fn brush(mut self, brush: Brush) -> Self {
         self.brush = brush;
         self

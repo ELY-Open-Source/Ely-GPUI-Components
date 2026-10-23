@@ -13,11 +13,17 @@ use crate::{
 /// What a theme editor changes: the look's measures and switches, and the colors of the mode shown.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ThemeDraft {
+    /// How close things sit.
     pub density: Density,
+    /// How round corners are, as a share of the default.
     pub radius_scale: f32,
+    /// How large text is, as a share of the default.
     pub font_scale: f32,
+    /// Whether high contrast is on.
     pub high_contrast: bool,
+    /// Whether motion is reduced.
     pub reduced_motion: bool,
+    /// The colors of the mode shown.
     pub colors: Palette,
 }
 
@@ -54,6 +60,15 @@ const COLORS: [(&str, &str); 12] = [
 type OnDraft = Rc<dyn Fn(&ThemeDraft, &mut Window, &mut App)>;
 
 /// A theme laid open: density, corner rounding, text size, high contrast and reduced motion, then the main colors of the mode shown, each a swatch that opens a picker beside its hex. Each change hands the owner a changed draft, which it applies through `Theme::update`, `Theme::set_high_contrast` and `Theme::set_palette`.
+///
+/// ```
+/// use ely_core::theme::Theme;
+/// use ely_settings::{ThemeDraft, ThemeEditor};
+///
+/// fn editor(theme: &Theme) -> ThemeEditor {
+///     ThemeEditor::new("theme", ThemeDraft::of(theme), |_draft, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct ThemeEditor {
     id: ElementId,
@@ -62,6 +77,7 @@ pub struct ThemeEditor {
 }
 
 impl ThemeEditor {
+    /// An editor under `id` filled from `draft`; `on_change` gets each changed draft.
     pub fn new(
         id: impl Into<ElementId>,
         draft: ThemeDraft,

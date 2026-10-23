@@ -92,6 +92,19 @@ fn read(id: &ElementId, text: SharedString) -> Reading {
 }
 
 /// CSV text into records: read as RFC 4180, its first row naming the columns unless the box says otherwise, then mapped to the owner's fields through an `ImportDialog`. Text that does not read as CSV, or holds no rows, says why, with only Cancel. Each way out answers once. Render it while open.
+///
+/// ```
+/// use ely_misc::{CsvImporter, ImportField};
+///
+/// let importer = CsvImporter::new(
+///     "csv",
+///     "Import contacts",
+///     "name,email\nAna,ana@example.com\n",
+///     [ImportField::new("Name").required(), ImportField::new("Email")],
+///     |_records, _, _| {},
+///     |_, _| {},
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct CsvImporter {
     id: ElementId,

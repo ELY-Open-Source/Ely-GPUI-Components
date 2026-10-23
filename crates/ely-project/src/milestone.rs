@@ -15,13 +15,18 @@ use crate::{
 /// Whether a milestone keeps pace.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Standing {
+    /// Its share done no more than a tenth behind the time gone.
     OnTrack,
+    /// Its share done more than a tenth behind the time gone.
     AtRisk,
+    /// Past its target and still open.
     Late,
+    /// Every issue done.
     Done,
 }
 
 impl Standing {
+    /// Its words.
     pub fn words(self) -> &'static str {
         match self {
             Standing::OnTrack => "On track",
@@ -79,6 +84,14 @@ fn due(target: Date, today: Date) -> String {
 }
 
 /// A milestone on its way: its name, whether it keeps pace, how many of its issues are done as a bar and a count, and when it is due.
+///
+/// ```
+/// use ely_project::MilestoneProgress;
+/// use jiff::civil::date;
+///
+/// let milestone = MilestoneProgress::new("beta", "Beta", (date(2026, 10, 1), date(2026, 11, 30)), (12, 40))
+///     .today(date(2026, 10, 23));
+/// ```
 #[derive(IntoElement)]
 pub struct MilestoneProgress {
     id: ElementId,

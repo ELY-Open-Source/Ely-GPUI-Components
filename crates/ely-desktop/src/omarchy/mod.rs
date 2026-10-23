@@ -19,9 +19,13 @@ pub use follow::{follow_omarchy, stop_omarchy};
 /// Omarchy's current theme, read: its name and mode, the palette it gives, and the hues it lacks, which Ely's colors fill.
 #[derive(Clone, Debug, PartialEq)]
 pub struct OmarchyTheme {
+    /// Its name, when the folder gives one.
     pub name: Option<String>,
+    /// Light or dark.
     pub mode: Mode,
+    /// The palette it gives.
     pub colors: Palette,
+    /// The hues it lacks, which Ely's colors fill.
     pub missing: Vec<&'static str>,
 }
 

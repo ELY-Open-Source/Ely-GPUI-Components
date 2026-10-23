@@ -6,7 +6,9 @@ use crate::primitives::IconName;
 /// What a shape is.
 #[derive(Clone, Debug, PartialEq)]
 pub enum ShapeKind {
+    /// A rectangle.
     Rect,
+    /// An ellipse.
     Ellipse,
     /// A regular polygon of so many sides, three or more.
     Polygon(u8),
@@ -14,10 +16,13 @@ pub enum ShapeKind {
     Line(Corner),
     /// A line with a head at the corner it ends at.
     Arrow(Corner),
+    /// A line of text.
     Text(SharedString),
     /// Points in canvas units from the frame's top left, a line so wide.
     Path {
+        /// The points, in canvas units from the frame's top left.
         points: Vec<(f32, f32)>,
+        /// The line's width, in canvas units.
         width: f32,
     },
     /// A square of paper with words on it.
@@ -57,9 +62,13 @@ impl ShapeKind {
 /// A frame's corner, where a line or an arrow ends.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Corner {
+    /// The top left.
     TopLeft,
+    /// The top right.
     TopRight,
+    /// The bottom right.
     BottomRight,
+    /// The bottom left.
     BottomLeft,
 }
 
@@ -87,18 +96,26 @@ impl Corner {
 /// Something on a canvas: its key, its name, what it is, its frame, its hue among the chart colors, and whether it hides or is locked.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Shape {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its name in the layers.
     pub name: SharedString,
+    /// What it is.
     pub kind: ShapeKind,
+    /// Its box on the canvas.
     pub frame: Frame,
+    /// Its place among the chart colors.
     pub hue: usize,
+    /// Whether it is hidden.
     pub hidden: bool,
+    /// Whether it is locked.
     pub locked: bool,
     /// Words shown in its middle.
     pub label: Option<SharedString>,
 }
 
 impl Shape {
+    /// A shape keyed `key`, named `name`, of `kind` in `frame`: the first hue, shown, unlocked, unlabeled; panics on a polygon of fewer than three sides.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -120,21 +137,25 @@ impl Shape {
         }
     }
 
+    /// Its place among the chart colors.
     pub fn hue(mut self, hue: usize) -> Self {
         self.hue = hue;
         self
     }
 
+    /// Whether it is hidden.
     pub fn hidden(mut self, hidden: bool) -> Self {
         self.hidden = hidden;
         self
     }
 
+    /// Whether it is locked.
     pub fn locked(mut self, locked: bool) -> Self {
         self.locked = locked;
         self
     }
 
+    /// Words on it.
     pub fn label(mut self, text: impl Into<SharedString>) -> Self {
         self.label = Some(text.into());
         self
@@ -163,12 +184,16 @@ impl Shape {
 /// A named board on the canvas that designs sit on.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Artboard {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its name, shown above it.
     pub name: SharedString,
+    /// Its box on the canvas.
     pub frame: Frame,
 }
 
 impl Artboard {
+    /// A board keyed `key`, named `name`, in `frame`.
     pub fn new(key: impl Into<SharedString>, name: impl Into<SharedString>, frame: Frame) -> Self {
         Self {
             key: key.into(),

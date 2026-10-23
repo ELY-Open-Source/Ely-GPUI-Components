@@ -152,9 +152,13 @@ struct Inks {
 /// Something the map draws over its tiles and under its pins.
 #[derive(Clone)]
 pub enum MapLayer {
+    /// A route.
     Route(RouteLine),
+    /// GeoJSON features.
     Features(GeoJsonLayer),
+    /// Heat.
     Heat(GeoHeatmap),
+    /// Areas washed by value.
     Choropleth(ChoroplethLayer),
 }
 
@@ -259,6 +263,7 @@ pub struct GeoJsonLayer {
 }
 
 impl GeoJsonLayer {
+    /// Features drawn in the accent.
     pub fn new(features: impl Into<Arc<[Feature]>>) -> Self {
         Self {
             features: features.into(),
@@ -266,6 +271,7 @@ impl GeoJsonLayer {
         }
     }
 
+    /// The chart hue it wears; the accent without one.
     pub fn hue(mut self, hue: usize) -> Self {
         self.hue = Some(hue);
         self
@@ -280,6 +286,7 @@ pub struct GeoHeatmap {
 }
 
 impl GeoHeatmap {
+    /// Heat from `points`, each a place and its weight, in the accent.
     pub fn new(points: impl Into<Rc<[(LatLon, f32)]>>) -> Self {
         Self {
             points: points.into(),
@@ -287,6 +294,7 @@ impl GeoHeatmap {
         }
     }
 
+    /// The chart hue it wears; the accent without one.
     pub fn hue(mut self, hue: usize) -> Self {
         self.hue = Some(hue);
         self

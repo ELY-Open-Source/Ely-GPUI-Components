@@ -1,3 +1,6 @@
+//! Onboarding, chapter 37: first-run wizards, checklists, hotspots, highlights, help, feedback and support.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, forms, layout, lists, motion, navigation, overlays, primitives, theme,
     typography,

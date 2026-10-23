@@ -11,10 +11,17 @@ use crate::{
 };
 
 /// Audits the theme's contrast in the mode shown: each text color over the surfaces it sits on and each code color over the editor's surfaces at 4.5:1, the focus ring and the chart hues beside the page at 3:1, failures first under a count. It reads the theme as it stands, an owner's palette and high contrast included.
+///
+/// ```
+/// use ely_tooling::A11yChecker;
+///
+/// let checker = A11yChecker::new();
+/// ```
 #[derive(IntoElement, Default)]
 pub struct A11yChecker;
 
 impl A11yChecker {
+    /// The checker.
     pub fn new() -> Self {
         Self
     }

@@ -25,6 +25,13 @@ pub(crate) fn fitted(whole: Frame, (w, h): (f32, f32)) -> (f32, (f32, f32)) {
 }
 
 /// A small map of what lies on a canvas and the part in view; a press or a drag on it centers the view there.
+///
+/// ```
+/// use ely_canvas::{Frame, MiniMap, Viewport};
+///
+/// let map = MiniMap::new("mini", [Frame::new(0.0, 0.0, 400.0, 300.0)], Viewport::new(0.0, 0.0, 1.0), (800.0, 600.0))
+///     .on_viewport(|_viewport, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MiniMap {
     id: ElementId,
@@ -51,6 +58,7 @@ impl MiniMap {
         }
     }
 
+    /// Gets the viewport a press or a drag asks for.
     pub fn on_viewport(
         mut self,
         handler: impl Fn(Viewport, &mut Window, &mut App) + 'static,

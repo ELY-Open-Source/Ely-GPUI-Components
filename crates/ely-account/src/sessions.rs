@@ -19,16 +19,39 @@ type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// A place an account is signed in: its key, an icon for the device, the device and the app on it, where it is, when it was last seen, and whether it is this one.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Session {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// The device's icon.
     pub icon: IconName,
+    /// The device.
     pub device: SharedString,
+    /// The app on it.
     pub client: SharedString,
+    /// Where it is.
     pub place: SharedString,
+    /// When it was last seen, as words.
     pub seen: SharedString,
+    /// Whether it is this device.
     pub current: bool,
 }
 
 /// Where an account is signed in, this device first. Each other one signs out on its own, or all of them at once after a second press.
+///
+/// ```
+/// use ely_account::{Session, SessionList};
+/// use ely_core::primitives::IconName;
+///
+/// let laptop = Session {
+///     key: "s1".into(),
+///     icon: IconName::Monitor,
+///     device: "MacBook Pro".into(),
+///     client: "Safari".into(),
+///     place: "Lisbon".into(),
+///     seen: "Now".into(),
+///     current: true,
+/// };
+/// let list = SessionList::new("sessions", [laptop], |_key, _, _| {}).on_sign_out_others(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SessionList {
     id: ElementId,
@@ -38,6 +61,7 @@ pub struct SessionList {
 }
 
 impl SessionList {
+    /// A list under `id` of `sessions`, this device first; `on_sign_out` gets the key to sign out; panics when two are this device.
     pub fn new(
         id: impl Into<ElementId>,
         sessions: impl IntoIterator<Item = Session>,

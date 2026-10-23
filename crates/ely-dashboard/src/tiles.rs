@@ -3,14 +3,20 @@ use gpui::SharedString;
 /// A tile's place on a dashboard grid: its key, and its column, row, width and height in cells.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Tile {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its column, from zero.
     pub x: u32,
+    /// Its row, from zero.
     pub y: u32,
+    /// Its width, in columns.
     pub w: u32,
+    /// Its height, in rows.
     pub h: u32,
 }
 
 impl Tile {
+    /// A tile keyed `key` at column `x`, row `y`, `w` by `h` cells; panics on an empty one.
     pub fn new(key: impl Into<SharedString>, (x, y): (u32, u32), (w, h): (u32, u32)) -> Self {
         assert!(w > 0 && h > 0, "a tile of {w} by {h} cells");
         Self {

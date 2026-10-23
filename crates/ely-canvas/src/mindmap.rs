@@ -5,12 +5,16 @@ use super::view::Frame;
 /// A topic of a mind map, with the topics under it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Topic {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its words.
     pub text: SharedString,
+    /// The topics under it, in order.
     pub children: Vec<Topic>,
 }
 
 impl Topic {
+    /// A topic keyed `key` reading `text`, with none under it.
     pub fn new(key: impl Into<SharedString>, text: impl Into<SharedString>) -> Self {
         Self {
             key: key.into(),
@@ -19,6 +23,7 @@ impl Topic {
         }
     }
 
+    /// A topic under it, after the others.
     pub fn child(mut self, topic: Topic) -> Self {
         self.children.push(topic);
         self

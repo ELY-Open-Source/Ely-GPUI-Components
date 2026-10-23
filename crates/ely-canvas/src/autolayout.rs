@@ -19,15 +19,20 @@ use crate::{
 /// Which way auto layout runs its children.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Flow {
+    /// Side by side.
     Row,
+    /// One under another.
     Column,
 }
 
 /// Where children sit along a side of their frame.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Place {
+    /// At the start.
     Start,
+    /// In the middle.
     Center,
+    /// At the end.
     End,
 }
 
@@ -56,7 +61,9 @@ impl Place {
 /// Children in a row or a column, a gap apart inside padding, placed across and down.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct AutoLayout {
+    /// Which way children run.
     pub flow: Flow,
+    /// The space between children, in pixels.
     pub gap: f32,
     /// Across and down, in pixels.
     pub padding: (f32, f32),
@@ -100,6 +107,13 @@ impl AutoLayout {
 }
 
 /// Auto layout's flow, gap and padding, and where children sit: nine places in a grid, one Tab stop that the arrows move through.
+///
+/// ```
+/// use ely_canvas::{AutoLayout, AutoLayoutControls, Flow, Place};
+///
+/// let layout = AutoLayout { flow: Flow::Row, gap: 8.0, padding: (16.0, 12.0), place: (Place::Start, Place::Center) };
+/// let controls = AutoLayoutControls::new("layout", layout, |_layout, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AutoLayoutControls {
     id: ElementId,
@@ -108,6 +122,7 @@ pub struct AutoLayoutControls {
 }
 
 impl AutoLayoutControls {
+    /// Controls under `id` showing `layout`; `on_change` gets each edit.
     pub fn new(
         id: impl Into<ElementId>,
         layout: AutoLayout,

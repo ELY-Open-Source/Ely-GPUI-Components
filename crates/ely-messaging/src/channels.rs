@@ -33,6 +33,12 @@ fn trail(id: &ElementId, unread: u32, pinned: bool, cx: &App) -> gpui::Div {
 }
 
 /// A channel as a row: a hash, or a lock when it is private, its name, and how many messages wait unread. Unread, its name stands out; muted, it goes quiet and counts nothing; pinned, it keeps a pin. As a `ListItem` it goes into a `ChannelList`.
+///
+/// ```
+/// use ely_messaging::ChannelItem;
+///
+/// let row = ChannelItem::new("general", "general").unread(3).pinned(true);
+/// ```
 #[derive(IntoElement)]
 pub struct ChannelItem {
     id: ElementId,
@@ -44,6 +50,7 @@ pub struct ChannelItem {
 }
 
 impl ChannelItem {
+    /// A channel row under `id` named `name`: public, read, not muted or pinned.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -55,6 +62,7 @@ impl ChannelItem {
         }
     }
 
+    /// Marks it private: a lock in place of the hash.
     pub fn private(mut self) -> Self {
         self.private = true;
         self
@@ -66,11 +74,13 @@ impl ChannelItem {
         self
     }
 
+    /// Whether it is muted.
     pub fn muted(mut self, muted: bool) -> Self {
         self.muted = muted;
         self
     }
 
+    /// Whether it is pinned.
     pub fn pinned(mut self, pinned: bool) -> Self {
         self.pinned = pinned;
         self
@@ -100,6 +110,13 @@ impl RenderOnce for ChannelItem {
 }
 
 /// A chat with one person as a row: their picture or initials with their presence, their name, and how many messages wait unread; unread, the name stands out. As a `ListItem` it goes into a `ChannelList`.
+///
+/// ```
+/// use ely_core::data_display::Presence;
+/// use ely_messaging::DirectMessageItem;
+///
+/// let row = DirectMessageItem::new("ana", "Ana Silva", Presence::Online).unread(1);
+/// ```
 #[derive(IntoElement)]
 pub struct DirectMessageItem {
     id: ElementId,
@@ -110,6 +127,7 @@ pub struct DirectMessageItem {
 }
 
 impl DirectMessageItem {
+    /// A direct chat under `id` with `name`, who stands at `presence`.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -124,6 +142,7 @@ impl DirectMessageItem {
         }
     }
 
+    /// Their picture, in place of their initials.
     pub fn picture(mut self, source: impl Into<ImageSource>) -> Self {
         self.picture = Some(source.into());
         self
@@ -160,7 +179,9 @@ impl RenderOnce for DirectMessageItem {
 
 /// Rows a channel list takes: a channel or a direct message.
 pub enum ChatRow {
+    /// A channel.
     Channel(ChannelItem),
+    /// A chat with one person.
     Direct(DirectMessageItem),
 }
 
@@ -177,6 +198,20 @@ impl From<DirectMessageItem> for ChatRow {
 }
 
 /// Channels and chats in sections down a column, such as Starred, Channels and Direct messages, each section a list: a press, an arrow or Enter opens a chat, and the one open is lit. Tab moves between sections.
+///
+/// ```
+/// use ely_core::data_display::Presence;
+/// use ely_messaging::{ChannelItem, ChannelList, DirectMessageItem};
+///
+/// let list = ChannelList::new("chats")
+///     .section("Channels", [("general", ChannelItem::new("general", "general"))])
+///     .section("Direct messages", [(
+///         "ana",
+///         DirectMessageItem::new("ana", "Ana Silva", Presence::Away),
+///     )])
+///     .open("general")
+///     .on_open(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ChannelList {
     id: ElementId,
@@ -186,6 +221,7 @@ pub struct ChannelList {
 }
 
 impl ChannelList {
+    /// An empty channel list under `id`, no chat open.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

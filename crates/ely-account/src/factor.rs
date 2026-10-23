@@ -19,6 +19,12 @@ type OnText = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 const DIGITS: usize = 6;
 
 /// The code from an authenticator app, in six boxes. A full code goes to the owner at once; after one fails the boxes clear for the next, and a recovery code can stand in.
+///
+/// ```
+/// use ely_account::TwoFactorInput;
+///
+/// let input = TwoFactorInput::new("code", |_code, _, _| {}).on_recovery(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TwoFactorInput {
     id: ElementId,
@@ -29,6 +35,7 @@ pub struct TwoFactorInput {
 }
 
 impl TwoFactorInput {
+    /// Six boxes under `id`; `on_code` gets each full code.
     pub fn new(
         id: impl Into<ElementId>,
         on_code: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

@@ -37,6 +37,12 @@ pub(super) fn snoozes(now: Timestamp, zone: &TimeZone) -> Vec<(String, Timestamp
 }
 
 /// A menu of times to put a message off until: later today, tomorrow, this weekend, next week, or a day and hour picked in a dialog, in the zone given.
+///
+/// ```
+/// use ely_mail::SnoozePicker;
+///
+/// let snooze = SnoozePicker::new("snooze").on_snooze(|_until, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SnoozePicker {
     id: ElementId,
@@ -45,6 +51,7 @@ pub struct SnoozePicker {
 }
 
 impl SnoozePicker {
+    /// A menu under `id`, in the system's zone.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

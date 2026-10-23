@@ -15,14 +15,20 @@ use crate::{
 /// A database a connection reaches.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Engine {
+    /// PostgreSQL.
     Postgres,
+    /// MySQL.
     MySql,
+    /// SQLite.
     Sqlite,
+    /// Redis.
     Redis,
+    /// MongoDB.
     MongoDb,
 }
 
 impl Engine {
+    /// Every engine, in the menu's order.
     pub const ALL: [Engine; 5] = [
         Engine::Postgres,
         Engine::MySql,
@@ -31,6 +37,7 @@ impl Engine {
         Engine::MongoDb,
     ];
 
+    /// Its name.
     pub fn name(self) -> &'static str {
         match self {
             Engine::Postgres => "PostgreSQL",
@@ -63,27 +70,41 @@ impl Engine {
 /// Where a connection stands.
 #[derive(Clone, Debug, PartialEq)]
 pub enum ConnectionState {
+    /// Signed in and open.
     Connected,
+    /// Saved, not open.
     Idle,
+    /// It failed, and why.
     Failed(SharedString),
 }
 
 /// A saved connection: its key and name, the engine, where it reaches, the database, who signs in, and where it stands. For SQLite the database is the file.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Connection {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// The database it reaches.
     pub engine: Engine,
+    /// The host it reaches.
     pub host: SharedString,
+    /// The port, none for SQLite.
     pub port: Option<u16>,
+    /// The database, or SQLite's file.
     pub database: SharedString,
+    /// Who signs in.
     pub user: SharedString,
+    /// Their password.
     pub password: SharedString,
+    /// Whether it goes over TLS.
     pub tls: bool,
+    /// Where it stands.
     pub state: ConnectionState,
 }
 
 impl Connection {
+    /// A connection keyed `key`, named `name`, to `engine` on localhost at its usual port, idle, without TLS.
     pub fn new(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -117,6 +138,14 @@ type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Saved connections, each with its engine and address, or why it failed, and a badge for where it stands. Enter or a double press connects; the pencil edits and the bin removes; New asks for a blank one.
+///
+/// ```
+/// use ely_devtools::{Connection, ConnectionManager, Engine};
+///
+/// let manager = ConnectionManager::new("connections", [Connection::new("main", "Main", Engine::Postgres)])
+///     .on_select(|_key, _, _| {})
+///     .on_new(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConnectionManager {
     id: ElementId,
@@ -130,6 +159,7 @@ pub struct ConnectionManager {
 }
 
 impl ConnectionManager {
+    /// A manager under `id` of `connections`, none selected.
     pub fn new(
         id: impl Into<ElementId>,
         connections: impl IntoIterator<Item = Connection>,
@@ -146,11 +176,13 @@ impl ConnectionManager {
         }
     }
 
+    /// The connection selected now, by key.
     pub fn selected(mut self, key: Option<impl Into<SharedString>>) -> Self {
         self.selected = key.map(Into::into);
         self
     }
 
+    /// Gets the key of the connection selected.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -168,6 +200,7 @@ impl ConnectionManager {
         self
     }
 
+    /// Shows the pencil, and gets the key of the connection to edit.
     pub fn on_edit(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -176,6 +209,7 @@ impl ConnectionManager {
         self
     }
 
+    /// Shows the bin, and gets the key of the connection to remove.
     pub fn on_remove(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -184,6 +218,7 @@ impl ConnectionManager {
         self
     }
 
+    /// Shows New, and what a press on it does.
     pub fn on_new(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_new = Some(Rc::new(handler));
         self

@@ -14,6 +14,13 @@ type OnColors = Rc<dyn Fn(Hsla, Hsla, &mut Window, &mut App)>;
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
 /// Text on a background, each color opening a picker, with the contrast between them and the WCAG levels it meets, over a sample of body and large text. Translucent text counts as it blends in; the background counts as opaque.
+///
+/// ```
+/// use ely_devtools::ColorContrastChecker;
+/// use gpui::rgb;
+///
+/// let checker = ColorContrastChecker::new("contrast", rgb(0x333333), rgb(0xffffff), |_text, _back, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ColorContrastChecker {
     id: ElementId,
@@ -23,6 +30,7 @@ pub struct ColorContrastChecker {
 }
 
 impl ColorContrastChecker {
+    /// A checker under `id` for `text` on `background`; `on_change` gets both after each pick.
     pub fn new(
         id: impl Into<ElementId>,
         text: impl Into<Hsla>,

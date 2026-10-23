@@ -18,9 +18,13 @@ use crate::{
 /// A help article: its key, its title, a line on it, and its body in Markdown. A link to `help:<key>` in a body opens that article.
 #[derive(Clone, Debug, PartialEq)]
 pub struct HelpArticle {
+    /// Tells it apart from the others; `help:<key>` links to it.
     pub key: SharedString,
+    /// Its title.
     pub title: SharedString,
+    /// A line on it, under the title in the list.
     pub summary: SharedString,
+    /// Its body, in Markdown.
     pub body: SharedString,
 }
 
@@ -54,6 +58,22 @@ fn link(url: &str) -> Link<'_> {
 type OnOpen = Rc<dyn Fn(Option<&SharedString>, &mut Window, &mut App)>;
 
 /// Help beside the work: a search over the articles and their list, where Enter or a double press opens one, or one article with the way back to all. Focus follows: an article opened takes it to All articles, and the way back takes it to the search. Contact support and Keyboard shortcuts wait at its foot when the owner handles them. It fills its box, which the host sizes.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_onboarding::{HelpArticle, HelpPanel};
+/// use gpui::Entity;
+///
+/// fn panel(search: &Entity<TextInput>) -> HelpPanel {
+///     let article = HelpArticle {
+///         key: "start".into(),
+///         title: "Getting started".into(),
+///         summary: "Your first project.".into(),
+///         body: "Make a project, then invite your team.".into(),
+///     };
+///     HelpPanel::new("help", [article], search, None, |_key, _, _| {}).on_close(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct HelpPanel {
     id: ElementId,

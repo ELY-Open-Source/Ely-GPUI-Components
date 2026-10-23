@@ -20,6 +20,7 @@ pub struct Package {
 }
 
 impl Package {
+    /// A package `name` at `version` under `license`, with the license's `text`.
     pub fn new(
         name: impl Into<SharedString>,
         version: impl Into<SharedString>,
@@ -36,6 +37,12 @@ impl Package {
 }
 
 /// The packages a product ships, a row each with its version and license, beside the chosen one's text, which scrolls; narrow, the text drops below the list. The first package shows until one is chosen.
+///
+/// ```
+/// use ely_misc::{LicenseViewer, Package};
+///
+/// let viewer = LicenseViewer::new("licenses", [Package::new("gpui", "0.3.9", "Apache-2.0", "Apache License 2.0 …")]);
+/// ```
 #[derive(IntoElement)]
 pub struct LicenseViewer {
     id: ElementId,
@@ -43,6 +50,7 @@ pub struct LicenseViewer {
 }
 
 impl LicenseViewer {
+    /// A viewer under `id` of `packages`.
     pub fn new(id: impl Into<ElementId>, packages: impl IntoIterator<Item = Package>) -> Self {
         Self {
             id: id.into(),

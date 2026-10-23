@@ -18,7 +18,9 @@ pub(crate) type OnPair = Rc<dyn Fn(&SharedString, &SharedString, &mut Window, &m
 /// A brush's width in canvas units and its hue among the chart colors.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Brush {
+    /// Its width, in canvas units.
     pub size: f32,
+    /// Its place among the chart colors.
     pub hue: usize,
 }
 

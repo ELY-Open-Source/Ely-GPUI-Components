@@ -16,15 +16,20 @@ use crate::{
 /// How it is going, from bad to great.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Sentiment {
+    /// It is going badly.
     Bad,
+    /// It is going all right.
     Okay,
+    /// It is going well.
     Good,
+    /// It is going very well.
     Great,
 }
 
 impl Sentiment {
     const ALL: [Sentiment; 4] = [Self::Bad, Self::Okay, Self::Good, Self::Great];
 
+    /// Its key, such as `good`.
     pub fn key(self) -> &'static str {
         match self {
             Self::Bad => "bad",
@@ -70,6 +75,12 @@ struct Draft {
 }
 
 /// A Feedback button that opens a short form: how it is going, as four faces, and a note. Send waits for a face, hands both on, then says thanks. Each opening starts fresh.
+///
+/// ```
+/// use ely_onboarding::FeedbackWidget;
+///
+/// let widget = FeedbackWidget::new("feedback", |_sentiment, _note, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FeedbackWidget {
     id: ElementId,
@@ -77,6 +88,7 @@ pub struct FeedbackWidget {
 }
 
 impl FeedbackWidget {
+    /// A widget under `id`; `on_send` gets the face picked and the note.
     pub fn new(
         id: impl Into<ElementId>,
         on_send: impl Fn(Sentiment, &str, &mut Window, &mut App) + 'static,

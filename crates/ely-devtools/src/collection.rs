@@ -11,19 +11,28 @@ use crate::{
 /// A folder of saved requests, or a request with its method.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Saved {
+    /// A folder of saved items.
     Folder {
+        /// Tells it apart from the others.
         key: SharedString,
+        /// What it shows.
         name: SharedString,
+        /// What it holds, in order.
         items: Vec<Saved>,
     },
+    /// A saved request.
     Request {
+        /// Tells it apart from the others.
         key: SharedString,
+        /// What it shows.
         name: SharedString,
+        /// Its HTTP method.
         method: Method,
     },
 }
 
 impl Saved {
+    /// A folder keyed `key`, named `name`, holding `items`.
     pub fn folder(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -36,6 +45,7 @@ impl Saved {
         }
     }
 
+    /// A request keyed `key`, named `name`, sent with `method`.
     pub fn request(
         key: impl Into<SharedString>,
         name: impl Into<SharedString>,
@@ -123,6 +133,13 @@ type OnKeys = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 type OnMove = Rc<dyn Fn(&SharedString, &SharedString, DropAt, &mut Window, &mut App)>;
 
 /// Saved requests in folders, each with its method. Enter or a double press opens a request; with `on_move`, a drag moves one into another folder or among its own, and `moved` applies it. It fills its box, which the host sizes.
+///
+/// ```
+/// use ely_devtools::{CollectionTree, Method, Saved};
+///
+/// let users = Saved::folder("users", "Users", [Saved::request("list", "List users", Method::Get)]);
+/// let tree = CollectionTree::new("saved", [users]).on_select(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CollectionTree {
     id: ElementId,
@@ -135,6 +152,7 @@ pub struct CollectionTree {
 }
 
 impl CollectionTree {
+    /// A tree under `id` of `items`, every folder shut, nothing selected.
     pub fn new(id: impl Into<ElementId>, items: impl IntoIterator<Item = Saved>) -> Self {
         Self {
             id: id.into(),
@@ -153,6 +171,7 @@ impl CollectionTree {
         self
     }
 
+    /// The items selected now, by key.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
@@ -176,6 +195,7 @@ impl CollectionTree {
         self
     }
 
+    /// Gets the keys selected after each press.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

@@ -20,14 +20,32 @@ type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// An API key as a list shows it: its key, its name, its ends only, and when it was made and last used.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ApiKey {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// Its secret's ends, such as `sk_…a1b2`.
     pub hint: SharedString,
+    /// When it was made, as words.
     pub created: SharedString,
+    /// When it was last used, as words.
     pub used: SharedString,
 }
 
 /// API keys by name, each with its ends, when it was made and last used, and a Revoke that asks twice. A name makes a new key; its secret, handed back by the owner, shows once with a way to copy it.
+///
+/// ```
+/// use ely_account::{ApiKey, ApiKeyManager};
+///
+/// let key = ApiKey {
+///     key: "k1".into(),
+///     name: "CI".into(),
+///     hint: "sk_…a1b2".into(),
+///     created: "Oct 1, 2026".into(),
+///     used: "Today".into(),
+/// };
+/// let manager = ApiKeyManager::new("keys", [key], |_name, _, _| {}, |_key, _, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ApiKeyManager {
     id: ElementId,
@@ -39,6 +57,7 @@ pub struct ApiKeyManager {
 }
 
 impl ApiKeyManager {
+    /// A manager under `id` of `keys`; `on_create` gets a new key's name, `on_revoke` the key to revoke, `on_dismiss` the press that hides a shown secret.
     pub fn new(
         id: impl Into<ElementId>,
         keys: impl IntoIterator<Item = ApiKey>,

@@ -19,13 +19,30 @@ use crate::{
 /// A pinned message: its key, who wrote it and when, and its words.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PinnedMessage {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Who wrote it.
     pub author: SharedString,
+    /// When it was sent.
     pub at: Timestamp,
+    /// Its words.
     pub text: SharedString,
 }
 
 /// Messages pinned in a chat, newest first: the words over who wrote them and when. A press, an arrow or Enter opens one where it stands; Unpin lets one go.
+///
+/// ```
+/// use ely_messaging::{PinnedMessage, PinnedMessages};
+/// use jiff::Timestamp;
+///
+/// let pin = PinnedMessage {
+///     key: "m1".into(),
+///     author: "Ana Silva".into(),
+///     at: Timestamp::from_second(1_700_000_000).unwrap(),
+///     text: "Release on Friday.".into(),
+/// };
+/// let pins = PinnedMessages::new("pins", [pin]).on_open(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PinnedMessages {
     id: ElementId,
@@ -35,6 +52,7 @@ pub struct PinnedMessages {
 }
 
 impl PinnedMessages {
+    /// A list under `id` of `messages`, newest first; panics on a key found twice.
     pub fn new(
         id: impl Into<ElementId>,
         messages: impl IntoIterator<Item = PinnedMessage>,

@@ -19,16 +19,24 @@ use crate::{
 /// An HTTP method.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Method {
+    /// GET.
     Get,
+    /// POST.
     Post,
+    /// PUT.
     Put,
+    /// PATCH.
     Patch,
+    /// DELETE.
     Delete,
+    /// HEAD.
     Head,
+    /// OPTIONS.
     Options,
 }
 
 impl Method {
+    /// Every method, in the menu's order.
     pub const ALL: [Method; 7] = [
         Method::Get,
         Method::Post,
@@ -39,6 +47,7 @@ impl Method {
         Method::Options,
     ];
 
+    /// Its name, as HTTP writes it.
     pub fn name(self) -> &'static str {
         match self {
             Method::Get => "GET",
@@ -62,10 +71,15 @@ impl Method {
 /// How a request signs in.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Auth {
+    /// No sign-in.
     None,
+    /// A bearer token.
     Bearer(SharedString),
+    /// A user and password.
     Basic {
+        /// Who signs in.
         user: SharedString,
+        /// Their password.
         password: SharedString,
     },
 }
@@ -73,16 +87,24 @@ pub enum Auth {
 /// A request to send: its method and address, its query's pairs, its headers, its body and how it signs in.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ApiRequest {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its method.
     pub method: Method,
+    /// Its address, `{{names}}` and all.
     pub url: SharedString,
+    /// Its query's pairs, in order.
     pub params: Vec<(String, String)>,
+    /// Its headers, in order.
     pub headers: Vec<(String, String)>,
+    /// Its body.
     pub body: SharedString,
+    /// How it signs in.
     pub auth: Auth,
 }
 
 impl ApiRequest {
+    /// A request keyed `key` sending `method` to `url`, with no pairs, headers, body or sign-in.
     pub fn new(key: impl Into<SharedString>, method: Method, url: impl Into<SharedString>) -> Self {
         Self {
             key: key.into(),
@@ -223,6 +245,13 @@ impl Draft {
 }
 
 /// A request to build: its method and address, then tabs for the query's pairs, headers, body and sign-in. Under the address, the one that goes out, with the environment's `{{variables}}` filled in, or the ones it lacks. Send hands the owner the request, waiting for an address; a new request from the owner refills it.
+///
+/// ```
+/// use ely_devtools::{ApiRequest, ApiRequestBuilder, Method};
+///
+/// let request = ApiRequest::new("users", Method::Get, "{{host}}/users");
+/// let builder = ApiRequestBuilder::new("request", request).on_send(|_request, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ApiRequestBuilder {
     id: ElementId,
@@ -233,6 +262,7 @@ pub struct ApiRequestBuilder {
 }
 
 impl ApiRequestBuilder {
+    /// A builder under `id` filled from `request`.
     pub fn new(id: impl Into<ElementId>, request: ApiRequest) -> Self {
         Self {
             id: id.into(),

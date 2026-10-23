@@ -9,13 +9,18 @@ use crate::{
 /// Where a sent message stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Delivery {
+    /// On its way.
     Sending,
+    /// Sent.
     Sent,
+    /// Delivered.
     Delivered,
+    /// Read.
     Read,
 }
 
 impl Delivery {
+    /// Its word.
     pub fn label(self) -> &'static str {
         match self {
             Self::Sending => "Sending",
@@ -35,6 +40,13 @@ impl Delivery {
 }
 
 /// A sent message's receipt: a clock while it goes, one tick once sent, two once delivered, two in the info tone once read, each with its word. Read in a group, it shows who saw it.
+///
+/// ```
+/// use ely_core::data_display::Avatar;
+/// use ely_messaging::{Delivery, ReadReceipt};
+///
+/// let receipt = ReadReceipt::new(Delivery::Read).readers([Avatar::new("ben", "Ben Ito")]);
+/// ```
 #[derive(IntoElement)]
 pub struct ReadReceipt {
     delivery: Delivery,
@@ -42,6 +54,7 @@ pub struct ReadReceipt {
 }
 
 impl ReadReceipt {
+    /// A receipt for a message at `delivery`, with no readers.
     pub fn new(delivery: Delivery) -> Self {
         Self {
             delivery,

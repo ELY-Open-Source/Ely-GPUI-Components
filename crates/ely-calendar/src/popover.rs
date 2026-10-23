@@ -31,6 +31,14 @@ pub(crate) fn when(event: &Event, zone: &TimeZone) -> String {
 }
 
 /// An event's chip that opens its details: its title in its hue, when and where, who comes, and what can be done with it. A press outside or Escape closes them.
+///
+/// ```
+/// use ely_calendar::{Event, EventPopover};
+/// use jiff::civil::date;
+///
+/// let trip = Event::all_day("trip", "Trip", date(2026, 10, 23), date(2026, 10, 24), 2);
+/// let popover = EventPopover::new("trip", trip).on_edit(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EventPopover {
     id: ElementId,
@@ -42,6 +50,7 @@ pub struct EventPopover {
 }
 
 impl EventPopover {
+    /// A chip under `id` for `event` that opens its details.
     pub fn new(id: impl Into<ElementId>, event: Event) -> Self {
         Self {
             id: id.into(),

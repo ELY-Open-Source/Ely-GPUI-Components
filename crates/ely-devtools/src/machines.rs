@@ -19,8 +19,11 @@ use crate::{
 /// Where a container stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ContainerState {
+    /// Running.
     Running,
+    /// Paused.
     Paused,
+    /// Restarting.
     Restarting,
     /// Stopped, with the code it ended with.
     Exited(i32),
@@ -41,12 +44,19 @@ impl ContainerState {
 /// A container: its key and name, its image, where it stands, its published ports, its share of a CPU and its memory in bytes.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Container {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// The image it runs.
     pub image: SharedString,
+    /// Where it stands.
     pub state: ContainerState,
+    /// Its published ports.
     pub ports: Vec<SharedString>,
+    /// Its share of a CPU.
     pub cpu: f32,
+    /// Its memory, in bytes.
     pub memory: u64,
 }
 
@@ -70,6 +80,21 @@ fn described(container: &Container) -> String {
 }
 
 /// Containers on a host, each with its image and ports, its load while it runs, and where it stands. Its buttons, each shown when the owner handles it, start or stop it, restart it and open its logs; Enter or a double press opens it.
+///
+/// ```
+/// use ely_devtools::{Container, ContainerList, ContainerState};
+///
+/// let web = Container {
+///     key: "web".into(),
+///     name: "web".into(),
+///     image: "nginx:1.27".into(),
+///     state: ContainerState::Running,
+///     ports: vec!["8080:80".into()],
+///     cpu: 0.12,
+///     memory: 48 << 20,
+/// };
+/// let list = ContainerList::new("containers", [web]).on_toggle(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ContainerList {
     id: ElementId,
@@ -81,6 +106,7 @@ pub struct ContainerList {
 }
 
 impl ContainerList {
+    /// A list under `id` of `containers`.
     pub fn new(id: impl Into<ElementId>, containers: impl IntoIterator<Item = Container>) -> Self {
         Self {
             id: id.into(),
@@ -92,6 +118,7 @@ impl ContainerList {
         }
     }
 
+    /// Gets the key of the container to open.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -109,6 +136,7 @@ impl ContainerList {
         self
     }
 
+    /// Shows Restart, and gets the key of the container to restart.
     pub fn on_restart(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -117,6 +145,7 @@ impl ContainerList {
         self
     }
 
+    /// Shows Logs, and gets the key of the container whose logs to open.
     pub fn on_logs(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -189,10 +218,15 @@ impl RenderOnce for ContainerList {
 /// A pod's phase, as Kubernetes names it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PodPhase {
+    /// Accepted, not yet running.
     Pending,
+    /// Running.
     Running,
+    /// Ended well.
     Succeeded,
+    /// Ended in failure.
     Failed,
+    /// Not known.
     Unknown,
 }
 
@@ -212,19 +246,45 @@ impl PodPhase {
 /// A pod: its key and name, its namespace, its phase, its containers ready of all, its restarts, when it started, and its node.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Pod {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it shows.
     pub name: SharedString,
+    /// Its namespace.
     pub namespace: SharedString,
+    /// Its phase.
     pub phase: PodPhase,
+    /// Containers ready, of all.
     pub ready: (u32, u32),
+    /// How often it restarted.
     pub restarts: u32,
+    /// When it started.
     pub started: Timestamp,
+    /// The node it runs on.
     pub node: SharedString,
 }
 
 type OnKeys = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 
 /// Pods in a table, sortable by any column: name, namespace, phase, containers ready, restarts, age and node; a namespace narrows them.
+///
+/// ```
+/// use ely_devtools::{Pod, PodList, PodPhase};
+/// use jiff::Timestamp;
+///
+/// let started = Timestamp::from_second(1_792_700_000).unwrap();
+/// let pod = Pod {
+///     key: "api-1".into(),
+///     name: "api-1".into(),
+///     namespace: "default".into(),
+///     phase: PodPhase::Running,
+///     ready: (1, 1),
+///     restarts: 0,
+///     started,
+///     node: "node-a".into(),
+/// };
+/// let pods = PodList::new("pods", [pod], Timestamp::from_second(1_792_746_000).unwrap());
+/// ```
 #[derive(IntoElement)]
 pub struct PodList {
     id: ElementId,
@@ -250,11 +310,13 @@ impl PodList {
         }
     }
 
+    /// The pods selected now, by key.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Gets the keys selected after each press.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

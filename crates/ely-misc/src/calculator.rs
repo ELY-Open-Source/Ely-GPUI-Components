@@ -206,12 +206,19 @@ fn typed(event: &KeyDownEvent, own: bool) -> Option<Key> {
 }
 
 /// A calculator: the sum as you type it over its result, and a pad of digits, the four operations, sign, delete and clear. Keys type too: digits, `.`, `+ - * /`, `=` or Enter, Backspace and Escape; Equals waits while the sum ends in an operator. It works in precedence, × and ÷ before + and −, and shows twelve significant digits.
+///
+/// ```
+/// use ely_misc::Calculator;
+///
+/// let calculator = Calculator::new("calc");
+/// ```
 #[derive(IntoElement)]
 pub struct Calculator {
     id: ElementId,
 }
 
 impl Calculator {
+    /// A calculator under `id`, empty.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }

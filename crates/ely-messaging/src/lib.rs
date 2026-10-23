@@ -1,3 +1,6 @@
+//! Messaging, chapter 28: channels, messages, threads, members, statuses, pickers and calls.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, feedback, forms, layout, lists, motion, overlays, primitives, theme,
     typography,

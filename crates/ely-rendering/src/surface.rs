@@ -18,6 +18,15 @@ struct Drawn {
 }
 
 /// Pixels the host draws, one frame at the box's size in device pixels, in the shape `ratio` gives it. It draws again when that size or the host's revision changes, and frees the old frame from the atlas. A frame is BGRA, as gpui's `RenderImage` holds it.
+///
+/// ```
+/// use ely_rendering::RenderSurface;
+/// use gpui::{App, DevicePixels, RenderImage, Size};
+///
+/// fn surface(draw: impl Fn(Size<DevicePixels>, &mut App) -> RenderImage + 'static) -> RenderSurface {
+///     RenderSurface::new("plot", 16.0 / 9.0, draw)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RenderSurface {
     id: ElementId,

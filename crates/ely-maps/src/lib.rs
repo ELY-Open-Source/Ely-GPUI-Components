@@ -1,3 +1,6 @@
+//! Maps, chapter 39: tiled maps with pins, popups, routes, GeoJSON, heat and choropleths, a world map and a place picker.
+#![deny(missing_docs)]
+
 use ely_canvas as canvas;
 use ely_core::{buttons, layout, primitives, theme, typography};
 

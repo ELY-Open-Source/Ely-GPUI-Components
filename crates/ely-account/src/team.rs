@@ -20,8 +20,11 @@ type OnPair = Rc<dyn Fn(&SharedString, &SharedString, &mut Window, &mut App)>;
 /// A role: its key, its name and what it may do.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Role {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// What it may do.
     pub description: SharedString,
 }
 
@@ -35,6 +38,16 @@ fn role_named<'a>(roles: &'a [Role], key: &SharedString, owner: &str) -> Option<
 }
 
 /// A role to pick, each with what it may do beneath its name.
+///
+/// ```
+/// use ely_account::{Role, RoleSelector};
+///
+/// let roles = [
+///     Role { key: "admin".into(), name: "Admin".into(), description: "Everything.".into() },
+///     Role { key: "member".into(), name: "Member".into(), description: "Work in projects.".into() },
+/// ];
+/// let selector = RoleSelector::new("role", roles, "member", |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RoleSelector {
     id: ElementId,
@@ -45,6 +58,7 @@ pub struct RoleSelector {
 }
 
 impl RoleSelector {
+    /// A selector under `id` over `roles`, `selected` picked; `on_change` gets the key picked.
     pub fn new(
         id: impl Into<ElementId>,
         roles: impl IntoIterator<Item = Role>,
@@ -63,6 +77,7 @@ impl RoleSelector {
         }
     }
 
+    /// Whether it takes no pick.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
@@ -91,16 +106,39 @@ impl RenderOnce for RoleSelector {
 /// Someone on a team: their key, name and email, their role's key, when they were last seen as words, a picture when there is one, and whether they own the team.
 #[derive(Clone)]
 pub struct Member {
+    /// Tells them apart from the others.
     pub key: SharedString,
+    /// Their name.
     pub name: SharedString,
+    /// Their email.
     pub email: SharedString,
+    /// Their role's key.
     pub role: SharedString,
+    /// When they were last seen, as words.
     pub seen: SharedString,
+    /// Their picture.
     pub image: Option<ImageSource>,
+    /// Whether they own the team.
     pub owner: bool,
 }
 
 /// A team's members: each with their picture, name and email and when last seen, a role to change and a Remove that asks twice. The owner's role stays, and the owner stays.
+///
+/// ```
+/// use ely_account::{Member, Role, TeamMemberTable};
+///
+/// let role = Role { key: "member".into(), name: "Member".into(), description: "Work in projects.".into() };
+/// let ana = Member {
+///     key: "ana".into(),
+///     name: "Ana Silva".into(),
+///     email: "ana@example.com".into(),
+///     role: "member".into(),
+///     seen: "Today".into(),
+///     image: None,
+///     owner: false,
+/// };
+/// let table = TeamMemberTable::new("team", [ana], [role], |_key, _role, _, _| {}, |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TeamMemberTable {
     id: ElementId,
@@ -111,6 +149,7 @@ pub struct TeamMemberTable {
 }
 
 impl TeamMemberTable {
+    /// A table under `id` of `members` with `roles`; `on_role` gets a member's key and new role, `on_remove` the member to remove.
     pub fn new(
         id: impl Into<ElementId>,
         members: impl IntoIterator<Item = Member>,
@@ -230,14 +269,33 @@ impl RenderOnce for TeamMemberTable {
 /// An invitation on its way: its key, the address, the role's key, when it went as words, and whether it has lapsed.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Invitation {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// The address it went to.
     pub email: SharedString,
+    /// The role's key.
     pub role: SharedString,
+    /// When it went, as words.
     pub sent: SharedString,
+    /// Whether it has lapsed.
     pub expired: bool,
 }
 
 /// Invitations out, each with its role and when it went, and a Resend and a Revoke; above them, an address and a role to invite someone new. Invite waits for an address that reads.
+///
+/// ```
+/// use ely_account::{Invitation, InvitationList, Role};
+///
+/// let role = Role { key: "member".into(), name: "Member".into(), description: "Work in projects.".into() };
+/// let invite = Invitation {
+///     key: "i1".into(),
+///     email: "ben@example.com".into(),
+///     role: "member".into(),
+///     sent: "Yesterday".into(),
+///     expired: false,
+/// };
+/// let list = InvitationList::new("invites", [invite], [role], |_email, _role, _, _| {}, |_key, _, _| {}, |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InvitationList {
     id: ElementId,
@@ -249,6 +307,7 @@ pub struct InvitationList {
 }
 
 impl InvitationList {
+    /// A list under `id` of `invitations` with `roles`; `on_invite` gets an address and a role, `on_resend` and `on_revoke` an invitation's key.
     pub fn new(
         id: impl Into<ElementId>,
         invitations: impl IntoIterator<Item = Invitation>,

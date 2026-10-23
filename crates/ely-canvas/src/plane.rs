@@ -35,6 +35,16 @@ struct Plane {
 }
 
 /// An endless plane: a dot grid that thins as it zooms out, rulers along the top and left, guides, artboards with their names, and shapes. A drag on empty space pans it from where it was pressed, a wheel scrolls it, and Command or Control with the wheel zooms about the pointer. The owner keeps the viewport; a new one from the owner shows at once.
+///
+/// ```
+/// use ely_canvas::{Artboard, Frame, InfiniteCanvas, Shape, ShapeKind, Viewport};
+///
+/// let canvas = InfiniteCanvas::new("canvas", Viewport::new(0.0, 0.0, 1.0))
+///     .artboards([Artboard::new("home", "Home", Frame::new(0.0, 0.0, 390.0, 844.0))])
+///     .shapes([Shape::new("logo", "Logo", ShapeKind::Ellipse, Frame::new(20.0, 20.0, 64.0, 64.0))])
+///     .rulers()
+///     .on_viewport(|_viewport, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InfiniteCanvas {
     id: ElementId,
@@ -49,6 +59,7 @@ pub struct InfiniteCanvas {
 }
 
 impl InfiniteCanvas {
+    /// An empty plane under `id` seen through `viewport`.
     pub fn new(id: impl Into<ElementId>, viewport: Viewport) -> Self {
         Self {
             id: id.into(),
@@ -63,6 +74,7 @@ impl InfiniteCanvas {
         }
     }
 
+    /// What lies on it, in paint order.
     pub fn shapes(mut self, shapes: impl IntoIterator<Item = Shape>) -> Self {
         self.shapes = shapes.into_iter().collect();
         self
@@ -74,11 +86,13 @@ impl InfiniteCanvas {
         self
     }
 
+    /// Boards drawn under the shapes.
     pub fn artboards(mut self, artboards: impl IntoIterator<Item = Artboard>) -> Self {
         self.artboards = artboards.into_iter().collect();
         self
     }
 
+    /// Lines across it to line things up with.
     pub fn guides(mut self, guides: impl IntoIterator<Item = Guide>) -> Self {
         self.guides = guides.into_iter().collect();
         self

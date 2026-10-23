@@ -10,10 +10,15 @@ use crate::{
 /// A VS Code color theme, read: its name and mode, the palette it gives, and the tokens it named and those kept from Ely's palette of that mode.
 #[derive(Clone, Debug)]
 pub struct VsCodeTheme {
+    /// Its name, when the file gives one.
     pub name: Option<String>,
+    /// Light or dark.
     pub mode: Mode,
+    /// The palette it gives.
     pub colors: Palette,
+    /// Ely's tokens it set.
     pub named: Vec<&'static str>,
+    /// Ely's tokens kept from Ely's own palette.
     pub kept: Vec<&'static str>,
 }
 

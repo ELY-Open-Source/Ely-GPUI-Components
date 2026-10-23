@@ -11,9 +11,13 @@ use crate::{
 /// The key a field takes part in: its table's own, or one that points at another table's field.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum FieldKey {
+    /// Its table's own key.
     Primary,
+    /// A key that points at another table's field.
     Foreign {
+        /// The table it points at.
         table: SharedString,
+        /// The field it points at.
         field: SharedString,
     },
 }
@@ -21,14 +25,20 @@ pub enum FieldKey {
 /// A field of a table: its name and type, whether it may be empty, the key it takes part in, and its default.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Field {
+    /// Its name.
     pub name: SharedString,
+    /// Its type, as the database writes it.
     pub ty: SharedString,
+    /// Whether it may be empty.
     pub nullable: bool,
+    /// The key it takes part in.
     pub key: Option<FieldKey>,
+    /// Its default.
     pub default: Option<SharedString>,
 }
 
 impl Field {
+    /// A field named `name` of type `ty`: not empty, no key, no default.
     pub fn new(name: impl Into<SharedString>, ty: impl Into<SharedString>) -> Self {
         Self {
             name: name.into(),
@@ -39,11 +49,13 @@ impl Field {
         }
     }
 
+    /// Marks it as one that may be empty.
     pub fn nullable(mut self) -> Self {
         self.nullable = true;
         self
     }
 
+    /// Makes it its table's own key.
     pub fn primary(mut self) -> Self {
         self.key = Some(FieldKey::Primary);
         self
@@ -62,6 +74,7 @@ impl Field {
         self
     }
 
+    /// Its default.
     pub fn default_value(mut self, value: impl Into<SharedString>) -> Self {
         self.default = Some(value.into());
         self
@@ -80,12 +93,16 @@ impl Field {
 /// A table, or a view, and its fields.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DbTable {
+    /// Its name.
     pub name: SharedString,
+    /// Whether it is a view.
     pub view: bool,
+    /// Its fields, in order.
     pub fields: Vec<Field>,
 }
 
 impl DbTable {
+    /// A table named `name` of `fields`.
     pub fn new(name: impl Into<SharedString>, fields: impl IntoIterator<Item = Field>) -> Self {
         Self {
             name: name.into(),
@@ -94,6 +111,7 @@ impl DbTable {
         }
     }
 
+    /// Marks it as a view.
     pub fn view(mut self) -> Self {
         self.view = true;
         self
@@ -103,13 +121,23 @@ impl DbTable {
 /// A schema of a database, and its tables and views.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Schema {
+    /// Its name.
     pub name: SharedString,
+    /// Its tables and views.
     pub tables: Vec<DbTable>,
 }
 
 type OnKeys = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 
 /// Schemas, their tables and views, and each one's fields with its type; keys are marked. A row's key is its path: `schema`, `schema.table` or `schema.table.field`. It fills its box, which the host sizes.
+///
+/// ```
+/// use ely_devtools::{DbTable, Field, Schema, SchemaTree};
+///
+/// let users = DbTable::new("users", [Field::new("id", "int").primary(), Field::new("email", "text")]);
+/// let tree = SchemaTree::new("schema", [Schema { name: "public".into(), tables: vec![users] }])
+///     .on_select(|_paths, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SchemaTree {
     id: ElementId,
@@ -120,6 +148,7 @@ pub struct SchemaTree {
 }
 
 impl SchemaTree {
+    /// A tree under `id` of `schemas`, every one shut, nothing selected.
     pub fn new(id: impl Into<ElementId>, schemas: impl IntoIterator<Item = Schema>) -> Self {
         Self {
             id: id.into(),
@@ -136,11 +165,13 @@ impl SchemaTree {
         self
     }
 
+    /// The rows selected now, by path.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Gets the paths selected after each press.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,
@@ -190,6 +221,15 @@ type OnNudge = Rc<dyn Fn(&SharedString, (f32, f32), &mut Window, &mut App)>;
 type OnViewport = Rc<dyn Fn(Viewport, &mut Window, &mut App)>;
 
 /// Tables as boxes of their fields, names down the left and types down the right, with a line from each foreign key to the field it points at. A table's title drags it; the owner keeps where each one sits. A key that points at no field fails loud.
+///
+/// ```
+/// use ely_canvas::Viewport;
+/// use ely_devtools::{DbTable, ERDiagram, Field};
+///
+/// let users = DbTable::new("users", [Field::new("id", "int").primary()]);
+/// let posts = DbTable::new("posts", [Field::new("id", "int").primary(), Field::new("author", "int").refers("users", "id")]);
+/// let diagram = ERDiagram::new("er", Viewport::new(0.0, 0.0, 1.0), [users, posts], [("users", (0.0, 0.0)), ("posts", (260.0, 0.0))]);
+/// ```
 #[derive(IntoElement)]
 pub struct ERDiagram {
     id: ElementId,
@@ -221,6 +261,7 @@ impl ERDiagram {
         }
     }
 
+    /// Gets a table's name and how far it was dragged, in canvas units.
     pub fn on_move(
         mut self,
         handler: impl Fn(&SharedString, (f32, f32), &mut Window, &mut App) + 'static,
@@ -229,6 +270,7 @@ impl ERDiagram {
         self
     }
 
+    /// Gets the viewport after each pan and zoom.
     pub fn on_viewport(
         mut self,
         handler: impl Fn(Viewport, &mut Window, &mut App) + 'static,

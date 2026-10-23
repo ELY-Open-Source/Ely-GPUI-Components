@@ -16,6 +16,13 @@ use crate::{
 type OnMessage = Rc<dyn Fn(&SharedString, &str, &mut Window, &mut App)>;
 
 /// A way to reach people: a topic and a message, and Send once both are given. It rests while the owner sends, and empties the message once sent, with focus back in it. With `address`, the address to write to instead shows under it, cut in the middle when narrow, with a Copy.
+///
+/// ```
+/// use ely_core::forms::Choice;
+/// use ely_onboarding::ContactSupport;
+///
+/// let form = ContactSupport::new("support", [Choice::new("billing", "Billing")], |_topic, _message, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ContactSupport {
     id: ElementId,
@@ -26,6 +33,7 @@ pub struct ContactSupport {
 }
 
 impl ContactSupport {
+    /// A form under `id` over `topics`; `on_send` gets the topic's value and the message; panics on no topic.
     pub fn new(
         id: impl Into<ElementId>,
         topics: impl IntoIterator<Item = Choice>,
@@ -137,6 +145,12 @@ impl RenderOnce for ContactSupport {
 }
 
 /// A quiet line of help beside what it explains; with `on_more`, Learn more follows it.
+///
+/// ```
+/// use ely_onboarding::InlineHelp;
+///
+/// let help = InlineHelp::new("help", "Members can see every project.").on_more(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InlineHelp {
     id: ElementId,
@@ -145,6 +159,7 @@ pub struct InlineHelp {
 }
 
 impl InlineHelp {
+    /// A line under `id` reading `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

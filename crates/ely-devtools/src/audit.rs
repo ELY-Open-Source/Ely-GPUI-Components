@@ -36,19 +36,27 @@ const CODE: [&str; 3] = ["surface", "sunken", "hover"];
 /// A color, what it stands on, the contrast between them, and the contrast it needs.
 #[derive(Clone, Debug)]
 pub struct Check {
+    /// The color's token, such as `fg_muted` or `syntax.keyword`.
     pub front: String,
+    /// The token it stands on.
     pub back: &'static str,
+    /// The color.
     pub fg: Hsla,
+    /// What it stands on.
     pub bg: Hsla,
+    /// The contrast between them.
     pub ratio: f32,
+    /// The contrast it needs.
     pub need: f32,
 }
 
 impl Check {
+    /// Whether it meets what it needs.
     pub fn passes(&self) -> bool {
         self.ratio >= self.need
     }
 
+    /// Its WCAG grade: Fails, AA, or AAA for text at 7:1 or more.
     pub fn grade(&self) -> &'static str {
         match self.passes() {
             false => "Fails",

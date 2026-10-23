@@ -1,3 +1,6 @@
+//! Project, chapter 31: tasks, issues, boards, databases, roadmaps, milestones, workloads and timers.
+#![deny(missing_docs)]
+
 use ely_calendar as calendar;
 use ely_core::{
     buttons, data_display, forms, layout, lists, motion, overlays, primitives, tables, theme,

@@ -19,13 +19,27 @@ type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// A first thing to do: its key, its title, a line on it, and whether it is done.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SetupTask {
+    /// Tells it apart from the others.
     pub key: SharedString,
+    /// What it asks.
     pub title: SharedString,
+    /// A line on it.
     pub body: SharedString,
+    /// Whether it is done.
     pub done: bool,
 }
 
 /// First things to do in a new app: how many are done, in words and a bar in as many parts; each task with its line and Start while not done, done ones struck through. The check eases in as a task gets done. Once all are, it says so and, with `on_dismiss`, offers Hide.
+///
+/// ```
+/// use ely_onboarding::{SetupChecklist, SetupTask};
+///
+/// let tasks = [
+///     SetupTask { key: "profile".into(), title: "Add a picture".into(), body: "So your team knows you.".into(), done: true },
+///     SetupTask { key: "invite".into(), title: "Invite your team".into(), body: "Work goes better together.".into(), done: false },
+/// ];
+/// let checklist = SetupChecklist::new("setup", "Get started", tasks, |_key, _, _| {}).on_dismiss(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SetupChecklist {
     id: ElementId,
@@ -36,6 +50,7 @@ pub struct SetupChecklist {
 }
 
 impl SetupChecklist {
+    /// A checklist under `id` titled `title` of `tasks`; `on_start` gets the key of a task to start; panics on fewer than two tasks.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

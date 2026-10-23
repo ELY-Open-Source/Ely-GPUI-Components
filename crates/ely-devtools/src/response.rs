@@ -16,10 +16,15 @@ use crate::{
 /// What came back: its status, how long it took in milliseconds, its size in bytes, its headers and its body.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ApiResponse {
+    /// Its HTTP status.
     pub status: u16,
+    /// How long it took, in milliseconds.
     pub took_ms: u32,
+    /// Its size, in bytes.
     pub size: u64,
+    /// Its headers, in order.
     pub headers: Vec<(SharedString, SharedString)>,
+    /// Its body.
     pub body: SharedString,
 }
 
@@ -57,12 +62,19 @@ pub fn status_tone(status: u16) -> Tone {
 }
 
 /// Headers in a table, names down the left and values beside them.
+///
+/// ```
+/// use ely_devtools::HeadersTable;
+///
+/// let table = HeadersTable::new([("Content-Type", "application/json"), ("Cache-Control", "no-store")]);
+/// ```
 #[derive(IntoElement)]
 pub struct HeadersTable {
     headers: Vec<(SharedString, SharedString)>,
 }
 
 impl HeadersTable {
+    /// A table of `headers`, names with their values.
     pub fn new(
         headers: impl IntoIterator<Item = (impl Into<SharedString>, impl Into<SharedString>)>,
     ) -> Self {
@@ -91,6 +103,19 @@ fn shown_body(body: &str) -> String {
 }
 
 /// An answer to a request: its status in its tone with the standard words, how long it took and how big it is; then its body, JSON indented, or its headers.
+///
+/// ```
+/// use ely_devtools::{ApiResponse, ResponseViewer};
+///
+/// let response = ApiResponse {
+///     status: 200,
+///     took_ms: 42,
+///     size: 18,
+///     headers: vec![("Content-Type".into(), "application/json".into())],
+///     body: r#"{"ok": true}"#.into(),
+/// };
+/// let viewer = ResponseViewer::new("response", response);
+/// ```
 #[derive(IntoElement)]
 pub struct ResponseViewer {
     id: ElementId,
@@ -98,6 +123,7 @@ pub struct ResponseViewer {
 }
 
 impl ResponseViewer {
+    /// A viewer under `id` of `response`.
     pub fn new(id: impl Into<ElementId>, response: ApiResponse) -> Self {
         Self {
             id: id.into(),
