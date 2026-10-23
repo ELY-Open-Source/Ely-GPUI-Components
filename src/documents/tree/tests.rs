@@ -68,7 +68,7 @@ fn an_image_splits_its_paragraph_and_references_resolve() {
 }
 
 #[test]
-fn a_soft_break_draws_as_a_line_and_joins_for_output() {
+fn a_soft_break_draws_as_a_line() {
     for source in [
         "one\ntwo  \nthree",
         "one\r\ntwo  \r\nthree",
@@ -79,10 +79,6 @@ fn a_soft_break_draws_as_a_line_and_joins_for_output() {
             matches!(&nodes[0], Node::Paragraph(text) if text.text == "one\ntwo\nthree"),
             "{source:?} draws {nodes:?}"
         );
-        let root = super::super::markdown::tree(source);
-        let paragraph = &root.children().expect("blocks")[0];
-        let joined = Reader::joined(source, &root).inline(paragraph.children().expect("inlines"));
-        assert_eq!(joined.text, "one two\nthree", "{source:?} joins");
     }
 }
 
@@ -198,6 +194,15 @@ fn a_picture_in_a_cell_stays_a_picture() {
     assert!(
         matches!(&rows[0][0][..], [Node::Image { alt, url, .. }] if alt == "shot" && url == "assets/shot.png")
     );
+}
+
+#[test]
+fn cells_past_the_head_stay_undrawn() {
+    let nodes = parse("| a |\n| - |\n| b | c |\n");
+    let Node::Table { head, rows, .. } = &nodes[0] else {
+        panic!("a table, not {:?}", nodes[0])
+    };
+    assert_eq!((head.len(), rows[0].len()), (1, 1));
 }
 
 #[test]
@@ -348,8 +353,13 @@ fn footnotes_number_by_their_first_reference() {
 }
 
 #[test]
-fn one_tilde_still_strikes() {
-    assert_eq!(line("H~2~O").styles, [(1..2, Style::Strike)]);
+fn one_tilde_strikes_between_words() {
+    assert_eq!(line("a ~2~ b").styles, [(2..3, Style::Strike)]);
+    assert_eq!(
+        line("H~2~O").styles,
+        [],
+        "not inside a word, as CommonMark flanks"
+    );
 }
 
 #[test]

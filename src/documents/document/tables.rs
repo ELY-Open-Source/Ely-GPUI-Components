@@ -1,7 +1,7 @@
 //! Tables change by rows and columns (MARK-06).
 
+use crate::documents::markdown::mdast::{self, AlignKind};
 use gpui::Context;
-use markdown::mdast::{self, AlignKind};
 use unicode_width::UnicodeWidthStr;
 
 use super::{

@@ -1,6 +1,6 @@
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
-use crate::documents::markdown::{options, span, tree, walk};
+use crate::documents::markdown::{build, span, tree, walk};
 
 /// Each formula's TeX and span, and the text left.
 fn read(source: &str) -> (Vec<(String, std::ops::Range<usize>)>, String) {
@@ -24,7 +24,7 @@ fn tex(source: &str) -> Vec<String> {
 }
 
 fn untouched(source: &str) {
-    let plain = markdown::to_mdast(source, &options()).unwrap();
+    let plain = build::tree(source, false);
     assert_eq!(tree(source), plain, "{source:?}");
 }
 

@@ -1,4 +1,4 @@
-use markdown::mdast;
+use crate::documents::markdown::mdast;
 
 use super::{Node, Reader};
 use crate::documents::markdown::span;
@@ -77,7 +77,7 @@ impl Reader<'_> {
 }
 
 /// A quote's alert kind and its blocks after the marker.
-pub fn alert(quote: &mdast::Blockquote) -> Option<(AlertKind, Vec<mdast::Node>)> {
+pub(crate) fn alert(quote: &mdast::Parent) -> Option<(AlertKind, Vec<mdast::Node>)> {
     let [mdast::Node::Paragraph(paragraph), rest @ ..] = &quote.children[..] else {
         return None;
     };
@@ -86,7 +86,7 @@ pub fn alert(quote: &mdast::Blockquote) -> Option<(AlertKind, Vec<mdast::Node>)>
         return None;
     }
     let head = (!after.is_empty()).then(|| {
-        mdast::Node::Paragraph(mdast::Paragraph {
+        mdast::Node::Paragraph(mdast::Parent {
             children: after,
             position: paragraph.position.clone(),
         })
@@ -95,7 +95,7 @@ pub fn alert(quote: &mdast::Blockquote) -> Option<(AlertKind, Vec<mdast::Node>)>
 }
 
 /// A paragraph that is `[toc]` alone, as Typora reads it.
-pub fn is_toc(node: &mdast::Node, source: &str) -> bool {
+pub(crate) fn is_toc(node: &mdast::Node, source: &str) -> bool {
     matches!(node, mdast::Node::Paragraph(_))
         && source[span(node)].trim().eq_ignore_ascii_case("[toc]")
 }

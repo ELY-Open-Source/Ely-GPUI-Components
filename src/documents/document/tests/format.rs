@@ -2,8 +2,8 @@
 
 use std::{cell::RefCell, rc::Rc};
 
+use crate::documents::markdown::mdast::Node;
 use gpui::{Entity, Modifiers, TestAppContext, VisualTestContext};
-use markdown::mdast::Node;
 use web_time::Instant;
 
 use super::{open, opened, press, text};

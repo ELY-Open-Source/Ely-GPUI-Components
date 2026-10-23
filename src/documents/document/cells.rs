@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use crate::documents::{
     markdown::{file_tree, span, walk},
@@ -37,25 +37,25 @@ pub(super) enum Move {
     Down,
 }
 
-/// The rows of each table in `root`, in drawing order.
-fn tables(root: &Node) -> Vec<Vec<&Node>> {
+/// Each table's rows in drawing order, with their drawn cells: the head's columns.
+fn tables(root: &Node) -> Vec<Vec<(&Node, &[Node])>> {
     let mut nodes = Vec::new();
     walk(root, &mut nodes);
-    nodes
-        .into_iter()
-        .filter(|node| matches!(node, Node::Table(_)))
+    (nodes.into_iter())
+        .filter_map(|node| match node {
+            Node::Table(table) => Some(table),
+            _ => None,
+        })
         .map(|table| {
-            table
-                .children()
-                .expect("a table holds rows")
-                .iter()
+            let width = table.align.len();
+            (table.children.iter())
+                .map(|row| {
+                    let cells = row.children().expect("a row holds cells");
+                    (row, &cells[..cells.len().min(width)])
+                })
                 .collect()
         })
         .collect()
-}
-
-fn cells(row: &Node) -> &[Node] {
-    row.children().expect("a row holds cells")
 }
 
 /// The cell `aim` names in `block` of `text`.
@@ -72,7 +72,7 @@ pub(super) fn find(text: &str, block: Range<usize>, aim: Aim) -> Option<Cell> {
         Aim::Last => {
             let table = tables.len().checked_sub(1)?;
             let row = tables[table].len() - 1;
-            let column = cells(tables[table][row]).len().checked_sub(1)?;
+            let column = tables[table][row].1.len().checked_sub(1)?;
             CellAt { table, row, column }
         }
         Aim::First => return None,
@@ -80,15 +80,15 @@ pub(super) fn find(text: &str, block: Range<usize>, aim: Aim) -> Option<Cell> {
             let byte = byte.checked_sub(block.start)?;
             let table = (tables.iter()).position(|rows| {
                 let (first, last) = (rows[0], rows[rows.len() - 1]);
-                (span(first).start..=span(last).end).contains(&byte)
+                (span(first.0).start..=span(last.0).end).contains(&byte)
             })?;
             let rows = &tables[table];
-            let row = rows.iter().rposition(|row| span(row).start <= byte)?;
-            let column = (cells(rows[row]).iter()).rposition(|cell| span(cell).start <= byte)?;
+            let row = rows.iter().rposition(|row| span(row.0).start <= byte)?;
+            let column = (rows[row].1.iter()).rposition(|cell| span(cell).start <= byte)?;
             CellAt { table, row, column }
         }
     };
-    let cell = cells(tables.get(at.table)?.get(at.row)?).get(at.column)?;
+    let cell = tables.get(at.table)?.get(at.row)?.1.get(at.column)?;
     let range = written(&text[block.clone()], cell);
     let caret = match aim {
         Aim::Byte(byte) => (byte - block.start).clamp(range.start, range.end) - range.start,
@@ -106,7 +106,7 @@ pub(super) fn beside(text: &str, block: Range<usize>, at: CellAt, by: Move) -> O
     let root = file_tree(&text[block]);
     let tables = tables(&root);
     let rows = tables.get(at.table)?;
-    let width = |row: usize| rows.get(row).map_or(0, |row| cells(row).len());
+    let width = |row: usize| rows.get(row).map_or(0, |row| row.1.len());
     let (row, column) = match by {
         Move::Next if at.column + 1 < width(at.row) => (at.row, at.column + 1),
         Move::Next => (at.row + 1, 0),
@@ -143,15 +143,13 @@ fn written(text: &str, cell: &Node) -> Range<usize> {
     at..at
 }
 
-/// `typed` with each bare `|` escaped.
+/// `typed` with each bare `|` escaped; pulldown-cmark reads any `\|` as escaped.
 fn guarded(typed: &str) -> String {
     let mut out = String::with_capacity(typed.len());
-    let mut slashes = 0;
     for ch in typed.chars() {
-        if ch == '|' && slashes % 2 == 0 {
+        if ch == '|' && !out.ends_with('\\') {
             out.push('\\');
         }
-        slashes = if ch == '\\' { slashes + 1 } else { 0 };
         out.push(ch);
     }
     out
@@ -183,9 +181,9 @@ pub(super) fn edges(text: &str, range: Range<usize>) -> Edges {
 /// `typed` as a cell keeps it, its row's pipes intact.
 pub(super) fn kept(typed: &str, edges: Edges) -> String {
     let mut out = guarded(typed);
-    let slashes = out.len() - out.trim_end_matches('\\').len();
-    if edges.closed && slashes % 2 == 1 {
-        out.push('\\');
+    // pulldown-cmark reads any `\|` as an escaped pipe.
+    if edges.closed && out.ends_with('\\') {
+        out.push(' ');
     }
     // An emptied bare edge cell keeps its column.
     if out.is_empty() && (edges.first || edges.last) {
@@ -198,8 +196,8 @@ pub(super) fn kept(typed: &str, edges: Edges) -> String {
 pub(super) fn kept_at(typed: &str, at: usize, edges: Edges) -> usize {
     match at == typed.len() {
         true if typed.is_empty() && !edges.first => 0,
-        true => kept(typed, edges).len(),
-        false => guarded(&typed[..at]).len(),
+        true if typed.is_empty() => kept(typed, edges).len(),
+        _ => guarded(&typed[..at]).len(),
     }
 }
 
@@ -262,7 +260,11 @@ mod tests {
     fn bare_pipes_escape_and_escaped_stay() {
         assert_eq!(guarded("a|b"), "a\\|b");
         assert_eq!(guarded("a\\|b"), "a\\|b");
-        assert_eq!(guarded("a\\\\|b"), "a\\\\\\|b");
+        assert_eq!(
+            guarded("a\\\\|b"),
+            "a\\\\|b",
+            "pulldown-cmark escapes any \\|"
+        );
     }
 
     /// Cell `(row, column)` of `text`'s one table, written as `typed`.
@@ -296,12 +298,12 @@ mod tests {
             first: false,
             last: false,
         };
-        assert_eq!(kept("a\\", shut), "a\\\\");
-        assert_eq!(kept("a\\\\", shut), "a\\\\");
-        assert_eq!(kept_at("a\\", 2, shut), 3);
+        assert_eq!(kept("a\\", shut), "a\\ ");
+        assert_eq!(kept("a\\\\", shut), "a\\\\ ");
+        assert_eq!(kept_at("a\\", 2, shut), 2);
         assert_eq!(kept_at("a\\b", 2, shut), 2);
         let written = write("|a|b|\n|---|---|\n|c|d|\n", 0, 0, "a\\");
-        assert_eq!(grid(&written)[0], ["a\\\\", "b"]);
+        assert_eq!(grid(&written)[0], ["a\\", "b"]);
     }
 
     #[test]

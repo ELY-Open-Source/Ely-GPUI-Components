@@ -1,36 +1,25 @@
 use std::ops::Range;
 
+mod autolink;
+mod build;
+mod flow;
+mod front;
+pub(crate) mod mdast;
+mod shape;
 mod tex;
 
 use gpui::App;
-use markdown::{Constructs, ParseOptions, mdast};
 use unicode_segmentation::UnicodeSegmentation;
 
 use crate::{documents::render::HEAVY, forms::Highlight, theme::ActiveTheme};
 
-/// GitHub's flavor, and math between dollars.
-pub(crate) fn options() -> ParseOptions {
-    ParseOptions {
-        constructs: Constructs {
-            math_flow: true,
-            math_text: true,
-            ..Constructs::gfm()
-        },
-        ..ParseOptions::gfm()
-    }
-}
-
 /// `text` as a syntax tree.
 pub(crate) fn tree(text: &str) -> mdast::Node {
-    parsed(text, &options())
+    parsed(text, false)
 }
 
-fn parsed(text: &str, options: &ParseOptions) -> mdast::Node {
-    let swapped = tex::swapped(text, options);
-    let mut root =
-        markdown::to_mdast(&swapped.text, options).expect("markdown without MDX always parses");
-    tex::mend(&mut root, &swapped);
-    root
+fn parsed(text: &str, frontmatter: bool) -> mdast::Node {
+    tex::parse(text, frontmatter)
 }
 
 /// An inline formula's TeX: inside `$` runs or `\(` pairs.
@@ -41,22 +30,14 @@ pub(crate) fn math_inside(source: &str, whole: Range<usize>) -> Range<usize> {
     }
 }
 
-/// How a whole file parses: front matter too.
-pub(crate) fn file_options() -> ParseOptions {
-    let mut options = options();
-    options.constructs.frontmatter = true;
-    options
-}
-
-/// A whole file as a syntax tree.
-pub fn file_tree(text: &str) -> mdast::Node {
-    parsed(text, &file_options())
+/// A whole file as a syntax tree: front matter too.
+pub(crate) fn file_tree(text: &str) -> mdast::Node {
+    parsed(text, true)
 }
 
 /// The bytes of the source a parsed node spans.
 pub(crate) fn span(node: &mdast::Node) -> Range<usize> {
-    let at = node.position().expect("a parsed node has its position");
-    at.start.offset..at.end.offset
+    node.position().clone()
 }
 
 /// How a stretch of markdown prints while it is edited.

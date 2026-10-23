@@ -1,6 +1,6 @@
 use std::{collections::HashMap, ops::Range};
 
-use markdown::mdast::{self, AlignKind};
+use crate::documents::markdown::mdast::{self, AlignKind};
 
 use super::markdown::{span, tree, walk};
 
@@ -11,7 +11,8 @@ mod html_block;
 mod sources;
 mod stack;
 
-pub use blocks::{AlertKind, DocumentHeading, alert, is_toc};
+pub use blocks::{AlertKind, DocumentHeading};
+pub(crate) use blocks::{alert, is_toc};
 use html_block::html_block_text;
 pub use sources::Escapes;
 pub(crate) use sources::{inside, lines_at};
@@ -94,7 +95,7 @@ pub enum Node {
 }
 
 /// A tree read against its source and its link definitions.
-pub struct Reader<'a> {
+pub(crate) struct Reader<'a> {
     source: &'a str,
     urls: HashMap<String, String>,
     /// Footnotes numbered by their first reference.
@@ -181,16 +182,7 @@ pub fn parse(markdown: &str) -> Vec<Node> {
 
 impl<'a> Reader<'a> {
     /// Reads `root`, parsed from `source`, as drawn on screen.
-    pub fn new(source: &'a str, root: &mdast::Node) -> Self {
-        Self::reading(source, root, true)
-    }
-
-    /// The same, soft breaks joined as GFM output joins them.
-    pub fn joined(source: &'a str, root: &mdast::Node) -> Self {
-        Self::reading(source, root, false)
-    }
-
-    fn reading(source: &'a str, root: &mdast::Node, lines: bool) -> Self {
+    pub(crate) fn new(source: &'a str, root: &mdast::Node) -> Self {
         let mut nodes = Vec::new();
         walk(root, &mut nodes);
         let (mut urls, mut notes, mut headings) = (HashMap::new(), HashMap::new(), Vec::new());
@@ -223,8 +215,8 @@ impl<'a> Reader<'a> {
                 at,
             })
             .collect();
-        // Titles read on one line; the body as asked.
-        reader.lines = lines;
+        // Titles read on one line; the body keeps its lines.
+        reader.lines = true;
         reader
     }
 
@@ -249,7 +241,7 @@ impl<'a> Reader<'a> {
     }
 
     /// `node`'s blocks, as the drawing reads them.
-    pub fn block(&self, node: &mdast::Node, out: &mut Vec<Node>) {
+    pub(crate) fn block(&self, node: &mdast::Node, out: &mut Vec<Node>) {
         match node {
             mdast::Node::Paragraph(paragraph) => self.paragraph(node, &paragraph.children, out),
             mdast::Node::Heading(heading) => {
@@ -281,9 +273,9 @@ impl<'a> Reader<'a> {
             }
             mdast::Node::Table(table) => {
                 let mut rows = table.children.iter().map(|row| match row {
-                    mdast::Node::TableRow(row) => row
-                        .children
-                        .iter()
+                    // Cells past the head's columns stay undrawn, as GitHub reads them.
+                    mdast::Node::TableRow(row) => (row.children.iter())
+                        .take(table.align.len())
                         .map(|cell| {
                             let mut blocks = Vec::new();
                             let inlines = cell.children().expect("a cell holds inlines");
@@ -308,8 +300,8 @@ impl<'a> Reader<'a> {
             mdast::Node::Html(html) => {
                 text_block(html_block_text(&html.value, self.source, span(node)), out)
             }
-            mdast::Node::Yaml(mdast::Yaml { value, .. })
-            | mdast::Node::Toml(mdast::Toml { value, .. }) => out.push(Node::FrontMatter {
+            mdast::Node::Yaml(mdast::Literal { value, .. })
+            | mdast::Node::Toml(mdast::Literal { value, .. }) => out.push(Node::FrontMatter {
                 text: value.clone(),
                 from: sources::body(self.source, node),
             }),
@@ -350,18 +342,15 @@ impl<'a> Reader<'a> {
     }
 
     /// A note's label: its number, once referenced.
-    pub fn label(&self, note: &mdast::FootnoteDefinition) -> String {
+    pub(crate) fn label(&self, note: &mdast::FootnoteDefinition) -> String {
         match self.note(&note.identifier) {
             Some(number) => number.to_string(),
-            None => note
-                .label
-                .clone()
-                .unwrap_or_else(|| note.identifier.clone()),
+            None => note.label.clone(),
         }
     }
 
     /// Inline text where images draw as their alt text.
-    pub fn inline(&self, nodes: &[mdast::Node]) -> Inline {
+    pub(crate) fn inline(&self, nodes: &[mdast::Node]) -> Inline {
         let mut run = self.run();
         for node in nodes {
             self.inline_into(node, &mut run, &mut Images::Alt);

@@ -9,7 +9,7 @@ mod split;
 
 use std::ops::Range;
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use super::format::{Change, EditRefusal};
 use crate::documents::markdown::{file_tree, span, walk};

@@ -1,6 +1,6 @@
 //! Block commands whose results reread as written.
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use super::block::{kinds, ok, ran};
 use crate::documents::{BlockCommand, EditRefusal, markdown::file_tree};

@@ -4,7 +4,7 @@ mod clear;
 
 use std::ops::Range;
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use super::TableRefusal;
 

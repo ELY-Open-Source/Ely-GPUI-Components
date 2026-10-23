@@ -2,7 +2,7 @@
 
 use std::collections::HashSet;
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use super::{
     BlockCommand, Here, container, eol, inside, line_end, line_start, next_line, placed, prefix,

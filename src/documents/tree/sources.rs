@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use markdown::{decode_named, mdast::Node};
+use crate::documents::markdown::mdast::Node;
 
 use super::{Inline, Node as Drawn, html, span};
 
@@ -287,16 +287,16 @@ fn reference(text: &str) -> Option<(String, usize)> {
         let fits =
             (1..=most).contains(&digits.len()) && digits.chars().all(|ch| ch.is_digit(radix));
         let code = u32::from_str_radix(digits, radix).ok().filter(|_| fits)?;
-        // Controls become U+FFFD, as markdown-rs reads them.
-        let ch = char::from_u32(code).filter(|ch| {
-            !matches!(ch, '\0'..='\u{08}' | '\u{0B}' | '\u{0E}'..='\u{1F}' | '\u{7F}'..='\u{9F}')
-        });
+        // NUL and non-characters become U+FFFD, as pulldown-cmark reads them.
+        let ch = char::from_u32(code).filter(|ch| *ch != '\0');
         Some(ch.unwrap_or(char::REPLACEMENT_CHARACTER).to_string())
     };
     let value = match name.strip_prefix('#') {
         Some(hex) if hex.starts_with(['x', 'X']) => code(&hex[1..], 16, 6)?,
         Some(digits) => code(digits, 10, 7)?,
-        None if name.chars().all(|ch| ch.is_ascii_alphanumeric()) => decode_named(name, true)?,
+        None if name.chars().all(|ch| ch.is_ascii_alphanumeric()) => {
+            html::named(name, true)?.to_string()
+        }
         None => return None,
     };
     Some((value, end + 2))

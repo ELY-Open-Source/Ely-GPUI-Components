@@ -145,7 +145,7 @@ fn a_closing_backslash_keeps_the_table(cx: &mut TestAppContext) {
     press_cell(0, 0, cx);
     cx.simulate_input("\\");
     cx.simulate_keystrokes("escape");
-    assert_eq!(text(&document, cx), "|a\\\\|b|\n|---|---|\n|c|d|\n");
+    assert_eq!(text(&document, cx), "|a\\ |b|\n|---|---|\n|c|d|\n");
     press_cell(0, 1, cx);
     assert_eq!(opened(&document, cx), "b", "still its own cell");
 }

@@ -1,7 +1,7 @@
 use std::{ops::Range, rc::Rc};
 
+use crate::documents::markdown::mdast;
 use gpui::{AppContext as _, Context, Focusable as _, MouseButton, Pixels, Point, Window};
-use markdown::mdast;
 
 use super::{
     DocumentEvent, MarkdownDocument,

@@ -46,8 +46,8 @@ pub(crate) use history::Change;
 pub use history::{PageHistoryDiff, Version, VersionHistory};
 pub use knowledge::{Backlink, Backlinks, Favorite, Favorites, TrashBin, Trashed};
 pub use link::LinkEditor;
-pub use markdown::file_tree as markdown_tree;
 pub use markdown::markdown_highlights;
+pub use markdown::mdast::AlignKind;
 pub use modes::{MarkdownEditor, MarkdownMode};
 pub use pages::{PageCover, PageIcon};
 pub use picture::{HeldPicture, Pictures};
@@ -59,9 +59,8 @@ pub use templates::{Template, TemplatePicker};
 pub use thumbs::PageThumbnailList;
 pub use todo::{Checklist, TodoItem};
 pub use toolbar::FixedFormatToolbar;
-pub use tree::{
-    AlertKind, Inline, Node as MarkdownBlock, Reader as MarkdownReader, Style, alert, is_toc,
-};
+pub use tree::{AlertKind, Inline, Node as MarkdownBlock, Style};
+pub(crate) use tree::{Reader as MarkdownReader, alert};
 pub(crate) use viewer::step as zoom_step;
 pub use viewer::{DocPage, DocumentViewer, PageHit, PageNote};
 

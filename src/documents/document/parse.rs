@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use markdown::mdast;
+use crate::documents::markdown::mdast;
 
 use crate::documents::{
     markdown::{file_tree, span},

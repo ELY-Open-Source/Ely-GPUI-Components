@@ -1,7 +1,7 @@
 //! Block commands as Typora's Paragraph menu (R4.7).
 
+use crate::documents::markdown::mdast::Node;
 use gpui::{Modifiers, TestAppContext};
-use markdown::mdast::Node;
 
 use super::{open, opened, press, text};
 use crate::documents::{

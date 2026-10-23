@@ -1,9 +1,9 @@
 use std::cell::RefCell;
 
+use crate::documents::markdown::mdast::AlignKind;
 use gpui::{
     AnyElement, App, FontWeight, IntoElement, MouseButton, ParentElement, Styled, div, prelude::*,
 };
-use markdown::mdast::AlignKind;
 
 use super::Draw;
 use crate::{

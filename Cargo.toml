@@ -27,7 +27,7 @@ isocountry = "0.3"
 isolang = { version = "2.4", features = ["local_names", "list_languages"] }
 jiff = "0.2"
 log = "0.4"
-markdown = "1.0.0"
+entities = "1"
 mermaid-rs-renderer = { version = "0.3.1", default-features = false }
 pulldown-cmark = { version = "0.13", default-features = false }
 qrcode = { version = "0.14", default-features = false }

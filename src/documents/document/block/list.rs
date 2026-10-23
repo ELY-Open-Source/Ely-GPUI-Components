@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use markdown::mdast::{Code, List, Node};
+use crate::documents::markdown::mdast::{Code, List, Node};
 
 use super::{
     BlockCommand, Here, change, column, eol, indent, inside, line_end, line_start, next_line,

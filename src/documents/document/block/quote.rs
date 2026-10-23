@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use super::{
     Here, change, check, eol, inside, line_end, line_start, next_line, prefix, split::content,

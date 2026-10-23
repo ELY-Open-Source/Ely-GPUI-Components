@@ -2,8 +2,8 @@
 
 use std::ops::Range;
 
+use crate::documents::markdown::mdast;
 use gpui::{Context, Window};
-use markdown::mdast;
 
 use super::{
     MarkdownDocument,

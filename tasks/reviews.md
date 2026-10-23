@@ -405,3 +405,7 @@
 | T56 A1 | 1 | FAIL | Mermaid's text measurer still read host fonts in the diagram tests |
 | T56 A1 | 2 | PASS | codex gpt-6-astra max fast; Mermaid's reads move only geometry, which no test asserts; 2216/2216 as root in rust:1.95 |
 | T56 A2 | 1 | PASS | '=' left on the three gpui-pre crates; ratex resolves to 0.1.15; root 2216/2216, wasm32 clean |
+| T56 A3 | 1 | FAIL | panic on unclosed math before CJK; fence rewrite reparsed per rejected fence; quadratic paren trim and link offsets; list spans dropped item definitions; extra cells out of context; BOM front matter |
+| T56 A3 | 2 | FAIL | stacked BOMs overflowed the stack; extra cells reparsed every definition, lost table inline rules and split pipes by parity; refused www. domains rescanned |
+| T56 A3 | 3 | FAIL | an unchanged cell holding a\|b gained a backslash on commit |
+| T56 A3 | 4 | PASS | 1222 of 1324 spec examples match markdown-rs; 128 KiB one-letter case 20 ms; root 2232/2232 |

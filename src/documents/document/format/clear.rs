@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use markdown::mdast::Node;
+use crate::documents::markdown::mdast::Node;
 
 use super::{Change, EditRefusal, after, block, cut, holder, marks, room};
 use crate::documents::markdown::{math_inside, span};

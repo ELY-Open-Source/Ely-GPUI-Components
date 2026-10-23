@@ -1,4 +1,4 @@
-use markdown::decode_named;
+use std::{collections::HashMap, sync::OnceLock};
 
 use super::Style;
 
@@ -326,9 +326,9 @@ pub(super) fn reference(text: &str, attribute: bool) -> Option<(String, usize)> 
     let name = &body[..len];
     if (1..=LONGEST).contains(&len)
         && body[len..].starts_with(';')
-        && let Some(value) = decode_named(name, true)
+        && let Some(value) = named(name, true)
     {
-        return Some((value, len + 2));
+        return Some((value.to_string(), len + 2));
     }
     // Text takes a legacy prefix; a value, the whole name.
     let shortest = match attribute {
@@ -340,20 +340,27 @@ pub(super) fn reference(text: &str, attribute: bool) -> Option<(String, usize)> 
         .rev()
         .map(|end| &name[..end])
         .find(|name| legacy(name))?;
-    let value = decode_named(name, true).expect("a legacy name");
-    Some((value, name.len() + 1))
+    let value = named(name, false).expect("a legacy name");
+    Some((value.to_string(), name.len() + 1))
 }
 
 /// A name HTML decodes without its semicolon.
 fn legacy(name: &str) -> bool {
-    if matches!(name, "AMP" | "LT" | "GT" | "QUOT" | "COPY" | "REG") {
-        return true;
+    named(name, false).is_some()
+}
+
+/// The text a named reference stands for, written with or without its `;`.
+pub(super) fn named(name: &str, semicolon: bool) -> Option<&'static str> {
+    static NAMES: OnceLock<HashMap<&'static str, &'static str>> = OnceLock::new();
+    let names = NAMES.get_or_init(|| {
+        (entities::ENTITIES.iter())
+            .map(|entity| (&entity.entity[1..], entity.characters))
+            .collect()
+    });
+    match semicolon {
+        true => names.get(format!("{name};").as_str()).copied(),
+        false => names.get(name).copied(),
     }
-    decode_named(name, false).is_some_and(|value| {
-        let mut chars = value.chars();
-        let one = chars.next().filter(|_| chars.next().is_none());
-        one.is_some_and(|ch| matches!(ch, '&' | '<' | '>' | '"' | '\u{A0}'..='\u{FF}'))
-    })
 }
 
 /// The character a numeric reference names, as HTML maps it.
