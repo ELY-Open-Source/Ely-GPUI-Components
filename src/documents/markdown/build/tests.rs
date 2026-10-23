@@ -6,19 +6,18 @@ fn blocks(root: &Node) -> &[Node] {
     root.children().expect("the root holds blocks")
 }
 
-/// Four times the input in at most eight times the time, the best of three.
+/// Four times the input in at most eight times the time, the best of five rounds.
 fn linear(source: impl Fn(usize) -> String) {
-    let time = |n| {
-        let text = source(n);
-        let mut best = std::time::Duration::MAX;
-        for _ in 0..3 {
+    let texts = [source(1 << 9), source(1 << 11)];
+    let mut best = [std::time::Duration::MAX; 2];
+    for _ in 0..5 {
+        for (text, best) in texts.iter().zip(&mut best) {
             let started = Instant::now();
-            tree(&text, false);
-            best = best.min(started.elapsed());
+            tree(text, false);
+            *best = (*best).min(started.elapsed());
         }
-        best
-    };
-    let (small, large) = (time(1 << 9), time(1 << 11));
+    }
+    let [small, large] = best;
     assert!(large < small * 8, "{small:?} then {large:?}");
 }
 

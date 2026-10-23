@@ -58,9 +58,39 @@ rust-embed = { version = "8.12", features = ["debug-embed"] }
 similar = { version = "3.2", default-features = false, features = ["wasm32_web_time"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
-block = "0.1"
-cocoa = "0.26"
-objc = "0.2"
+block2 = "0.6"
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3", default-features = false, features = [
+    "std",
+    "block2",
+    "objc2-core-foundation",
+    "NSApplication",
+    "NSButton",
+    "NSColor",
+    "NSColorSampler",
+    "NSColorSpace",
+    "NSControl",
+    "NSDockTile",
+    "NSImage",
+    "NSMenu",
+    "NSMenuItem",
+    "NSResponder",
+    "NSSharingService",
+    "NSStatusBar",
+    "NSStatusBarButton",
+    "NSStatusItem",
+    "NSView",
+    "NSWindow",
+] }
+objc2-foundation = { version = "0.3", default-features = false, features = [
+    "std",
+    "objc2-core-foundation",
+    "NSArray",
+    "NSGeometry",
+    "NSObject",
+    "NSString",
+    "NSURL",
+] }
 raw-window-handle = "0.6"
 wry = { version = "0.57", default-features = false }
 
@@ -84,9 +114,11 @@ wasm-bindgen = "0.2"
 web-sys = { version = "0.3", features = ["Location", "UrlSearchParams", "Window"] }
 
 [target.'cfg(target_os = "macos")'.dev-dependencies]
+cocoa = "0.26"
 core-foundation = "0.10"
 core-graphics = "0.24"
 image = { version = "0.25", default-features = false, features = ["png"] }
+objc = "0.2"
 
 [target.'cfg(target_os = "windows")'.dev-dependencies]
 image = { version = "0.25", default-features = false, features = ["png"] }
@@ -103,6 +135,7 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("cargo-cli
 
 [lints.clippy]
 all = { level = "warn", priority = -1 }
+undocumented_unsafe_blocks = "warn"
 
 # The web gallery: small over fast, one unit so LTO sees everything.
 [profile.web]

@@ -326,16 +326,19 @@ fn clear_keeps_an_autolink_backslash() {
     );
 }
 
-/// The walk past the parse, on `n` then `4n` repeats.
+/// The walk past the parse, on `n` then `4n` repeats, the best of five rounds.
 fn linear(unit: &str, run: impl Fn(&str, &Node)) {
-    let time = |n: usize| {
-        let text = unit.repeat(n);
-        let root = file_tree(&text);
-        let start = Instant::now();
-        run(&text, &root);
-        start.elapsed()
-    };
-    let (small, large) = (time(4000), time(16000));
+    let texts = [unit.repeat(4000), unit.repeat(16000)];
+    let roots = texts.each_ref().map(|text| file_tree(text));
+    let mut best = [std::time::Duration::MAX; 2];
+    for _ in 0..5 {
+        for ((text, root), best) in texts.iter().zip(&roots).zip(&mut best) {
+            let start = Instant::now();
+            run(text, root);
+            *best = (*best).min(start.elapsed());
+        }
+    }
+    let [small, large] = best;
     assert!(large < small * 8, "{small:?} then {large:?}");
 }
 

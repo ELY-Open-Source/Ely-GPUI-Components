@@ -58,6 +58,7 @@ fn post_scroll(x: f64, y: f64, across: f32, phase: i64, number: u32) -> Result<(
     const PIXELS: u32 = 0;
     const CONTINUOUS: u32 = 88;
     const PHASE: u32 = 99;
+    // SAFETY: main thread; window and events are checked for nil, the CGEvent freed once.
     unsafe {
         let window: id = msg_send![NSApp(), windowWithWindowNumber: i64::from(number)];
         anyhow::ensure!(window != nil, "no window numbered {number}");

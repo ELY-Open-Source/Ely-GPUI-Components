@@ -17,7 +17,8 @@ fn titlebar(title: SharedString, cx: &App) -> TitlebarOptions {
     TitlebarOptions {
         title: Some(title),
         appears_transparent: true,
-        traffic_light_position: Some(cx.theme().traffic_light_origin()),
+        // AppKit answers on the main thread; tests run off it.
+        traffic_light_position: (!cx.is_test()).then(|| cx.theme().traffic_light_origin()),
     }
 }
 

@@ -36,22 +36,7 @@ pub(crate) fn traffic_light_origin(theme: &Theme) -> Point<Pixels> {
 /// AppKit sizes its window buttons per release: 16 tall on macOS 15, 14 on 26.
 #[cfg(target_os = "macos")]
 fn light_height(_drawn: Pixels) -> Pixels {
-    use cocoa::{
-        base::{id, nil},
-        foundation::NSRect,
-    };
-    use objc::{class, msg_send, sel, sel_impl};
-    // Titled, closable, miniaturizable, resizable, full-size content: the mask gpui opens windows with.
-    let mask: u64 = 1 | 2 | 4 | 8 | 1 << 15;
-    let frame: NSRect = unsafe {
-        let close: id = msg_send![class!(NSWindow), standardWindowButton: 0u64 forStyleMask: mask];
-        assert!(
-            close != nil,
-            "theme: AppKit gave no close button to size the traffic lights by"
-        );
-        msg_send![close, frame]
-    };
-    px(frame.size.height as f32)
+    px(crate::platform::mac::window_button_height() as f32)
 }
 
 #[cfg(not(target_os = "macos"))]

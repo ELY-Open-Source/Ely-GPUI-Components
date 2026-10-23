@@ -105,6 +105,7 @@ fn native(window: &Window) -> Result<cocoa::base::id> {
     let RawWindowHandle::AppKit(appkit) = handle.as_raw() else {
         bail!("window is not an AppKit window");
     };
+    // SAFETY: gpui hands its live NSView; `window` takes no arguments.
     Ok(unsafe { msg_send![appkit.ns_view.as_ptr() as id, window] })
 }
 
@@ -113,6 +114,7 @@ fn native(window: &Window) -> Result<cocoa::base::id> {
 pub fn number(window: &Window) -> Result<u32> {
     use objc::{msg_send, sel, sel_impl};
 
+    // SAFETY: `native` gives gpui's live NSWindow; `windowNumber` returns an NSInteger.
     let number: i64 = unsafe { msg_send![native(window)?, windowNumber] };
     u32::try_from(number).context("window number out of range")
 }
@@ -122,6 +124,7 @@ pub fn number(window: &Window) -> Result<u32> {
 fn take_posted_moves(window: &Window) -> Result<()> {
     use cocoa::{appkit::NSWindow, base::YES};
 
+    // SAFETY: gpui's live NSWindow, set on the main thread gpui runs this on.
     unsafe { native(window)?.setAcceptsMouseMovedEvents_(YES) };
     log::info!("capture: the window takes posted mouse moves");
     Ok(())
@@ -162,6 +165,7 @@ pub fn popup_number() -> Result<u32> {
     .context("window list unavailable")?;
     let id = list
         .iter()
+        // SAFETY: each item is a CFDictionary that the retained list keeps alive.
         .map(|item| unsafe { CFDictionary::<CFString, CFType>::wrap_under_get_rule(*item as _) })
         .find(|dict| {
             read(dict, "kCGWindowOwnerPID") == Some(pid)
@@ -263,6 +267,7 @@ pub fn snapshot(hwnd: u32, path: &Path) -> Result<()> {
 
     impl Drop for Surface {
         fn drop(&mut self) {
+            // SAFETY: the surface made these handles and nothing else frees them.
             unsafe {
                 DeleteObject(self.bitmap);
                 DeleteDC(self.memory_dc);
@@ -278,6 +283,7 @@ pub fn snapshot(hwnd: u32, path: &Path) -> Result<()> {
         right: 0,
         bottom: 0,
     };
+    // SAFETY: `rect` is a valid RECT to write; the handle came from the window itself.
     if unsafe { GetClientRect(window, &mut rect) } == 0 {
         bail!("window {hwnd} has no client area");
     }
@@ -286,6 +292,7 @@ pub fn snapshot(hwnd: u32, path: &Path) -> Result<()> {
         bail!("window {hwnd} is {width}x{height}");
     }
     let mut pixels = vec![0u8; width as usize * height as usize * 4];
+    // SAFETY: each handle is checked before use and the surface frees them; `pixels` holds the whole bitmap.
     unsafe {
         let window_dc = GetDC(window);
         let memory_dc = CreateCompatibleDC(window_dc);

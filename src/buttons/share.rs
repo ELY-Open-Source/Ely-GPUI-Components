@@ -16,7 +16,7 @@ struct Items {
 struct Anchor {
     bounds: Bounds<Pixels>,
     #[cfg(target_os = "macos")]
-    picker: Option<mac::Picker>,
+    picker: Option<crate::platform::mac::Picker>,
 }
 
 /// Opens the system share picker beside itself. macOS only.
@@ -63,7 +63,7 @@ impl RenderOnce for ShareButton {
         #[cfg(target_os = "macos")]
         let button = button.on_click(move |_, window, cx| {
             let bounds = open.read(cx).bounds;
-            match mac::Picker::show(&items, bounds, window) {
+            match show(&items, bounds, window) {
                 Ok(picker) => open.update(cx, |anchor, _| anchor.picker = Some(picker)),
                 Err(error) => log::error!("share button: {error:#}"),
             }
@@ -92,75 +92,32 @@ impl RenderOnce for ShareButton {
     }
 }
 
+/// Shows the picker under `bounds`, in the window's AppKit view.
 #[cfg(target_os = "macos")]
-mod mac {
-    use anyhow::{Context as _, bail};
-    use cocoa::{
-        base::{id, nil},
-        foundation::{NSArray, NSAutoreleasePool, NSPoint, NSRect, NSSize, NSString},
-    };
-    use gpui::{Bounds, Pixels, Window};
-    use objc::{class, msg_send, sel, sel_impl};
+fn show(
+    items: &Items,
+    bounds: Bounds<Pixels>,
+    window: &Window,
+) -> anyhow::Result<crate::platform::mac::Picker> {
     use raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
-    use super::Items;
-
-    /// A shown picker; kept alive until the next share.
-    pub struct Picker(id);
-
-    impl Drop for Picker {
-        fn drop(&mut self) {
-            unsafe {
-                let _: () = msg_send![self.0, release];
-            }
-        }
-    }
-
-    fn string(text: &str) -> id {
-        unsafe { NSString::alloc(nil).init_str(text).autorelease() }
-    }
-
-    impl Picker {
-        pub fn show(
-            items: &Items,
-            bounds: Bounds<Pixels>,
-            window: &Window,
-        ) -> anyhow::Result<Self> {
-            let handle = HasWindowHandle::window_handle(window)
-                .map_err(|error| anyhow::anyhow!("window has no native handle: {error:?}"))?;
-            let RawWindowHandle::AppKit(appkit) = handle.as_raw() else {
-                bail!("share needs an AppKit window");
-            };
-            let height = f64::from(window.viewport_size().height);
-            unsafe {
-                let view = appkit.ns_view.as_ptr() as id;
-                let mut list: Vec<id> = Vec::new();
-                if let Some(text) = &items.text {
-                    list.push(string(text));
-                }
-                if let Some(url) = &items.url {
-                    let link: id = msg_send![class!(NSURL), URLWithString: string(url)];
-                    anyhow::ensure!(link != nil, "share url {url} does not parse");
-                    list.push(link);
-                }
-                let array = NSArray::arrayWithObjects(nil, &list);
-                let picker: id = msg_send![class!(NSSharingServicePicker), alloc];
-                let picker: id = msg_send![picker, initWithItems: array];
-                let picker = (picker != nil)
-                    .then_some(picker)
-                    .context("AppKit refused a share picker")?;
-                let rect = NSRect::new(
-                    NSPoint::new(
-                        f64::from(bounds.left()),
-                        height - f64::from(bounds.bottom()),
-                    ),
-                    NSSize::new(f64::from(bounds.size.width), f64::from(bounds.size.height)),
-                );
-                let _: () =
-                    msg_send![picker, showRelativeToRect: rect ofView: view preferredEdge: 1u64];
-                log::info!("share button: picker shown for {} items", list.len());
-                Ok(Self(picker))
-            }
-        }
-    }
+    let handle = HasWindowHandle::window_handle(window)
+        .map_err(|error| anyhow::anyhow!("window has no native handle: {error:?}"))?;
+    let RawWindowHandle::AppKit(appkit) = handle.as_raw() else {
+        anyhow::bail!("share needs an AppKit window");
+    };
+    // AppKit's view counts y from its bottom.
+    let height = f64::from(window.viewport_size().height);
+    let rect = [
+        f64::from(bounds.left()),
+        height - f64::from(bounds.bottom()),
+        f64::from(bounds.size.width),
+        f64::from(bounds.size.height),
+    ];
+    crate::platform::mac::share(
+        items.text.as_deref(),
+        items.url.as_deref(),
+        appkit.ns_view.as_ptr(),
+        rect,
+    )
 }

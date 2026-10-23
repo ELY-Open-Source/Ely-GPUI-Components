@@ -53,30 +53,16 @@ fn wait_for(cx: &mut TestAppContext, picked: &RefCell<Vec<usize>>, want: &[usize
 #[cfg(target_os = "windows")]
 #[gpui::test]
 fn the_tray_picks_by_click_and_by_call(cx: &mut TestAppContext) {
-    use windows::Win32::{
-        Foundation::{LPARAM, WPARAM},
-        UI::WindowsAndMessaging::{IsWindow, SendMessageW, WM_LBUTTONUP},
-    };
+    use crate::platform::windows::{click, window_lives};
 
     let (tray, picked) = tray(cx);
     tray.pick(2);
     wait_for(cx, &picked, &[2]);
-    let window = tray.inner.window();
-    let click = |button: u32| unsafe {
-        SendMessageW(
-            window,
-            super::win::CALLBACK,
-            Some(WPARAM(0)),
-            Some(LPARAM(button as isize)),
-        )
-    };
-    click(WM_LBUTTONUP);
+    click(&tray.inner);
     wait_for(cx, &picked, &[2, 0]);
+    let window = tray.inner.window();
     drop(tray);
-    assert!(
-        !unsafe { IsWindow(Some(window)) }.as_bool(),
-        "the window goes with the tray"
-    );
+    assert!(!window_lives(window), "the window goes with the tray");
     let refused = cx.update(|cx| TrayIcon::new(look(b"not a png"), items(), |_, _| {}, cx));
     assert!(refused.is_err(), "a bad PNG shows no tray");
 }
@@ -106,8 +92,7 @@ fn the_tray_serves_its_menu_on_the_bus(cx: &mut TestAppContext) {
     std::io::BufReader::new(bus.0.stdout.take().expect("its address"))
         .read_line(&mut address)
         .expect("reads the address");
-    // This test alone touches the session bus.
-    unsafe { std::env::set_var("DBUS_SESSION_BUS_ADDRESS", address.trim()) };
+    crate::platform::use_session_bus(address.trim());
     let refused = cx.update(|cx| TrayIcon::new(look(PNG), items(), |_, _| {}, cx));
     let error = format!("{:#}", refused.err().expect("no host, no tray"));
     assert!(error.contains("no tray host"), "{error}");

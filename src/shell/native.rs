@@ -4,20 +4,21 @@ use gpui::{App, AsyncApp, SharedString};
 
 #[cfg(target_os = "linux")]
 mod linux;
-#[cfg(target_os = "macos")]
-mod mac;
-#[cfg(all(test, feature = "test-support"))]
+#[cfg(all(
+    test,
+    feature = "test-support",
+    any(target_os = "windows", target_os = "linux")
+))]
 mod tests;
-#[cfg(target_os = "windows")]
-mod win;
-#[cfg(target_os = "linux")]
-use linux as platform;
+
 #[cfg(target_os = "macos")]
-use mac as platform;
-#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
-use none as platform;
+type Inner = crate::platform::mac::StatusItem;
 #[cfg(target_os = "windows")]
-use win as platform;
+type Inner = crate::platform::windows::Tray;
+#[cfg(target_os = "linux")]
+type Inner = linux::Tray;
+#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
+type Inner = none::Tray;
 
 /// Elsewhere (the web): no tray.
 #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
@@ -81,7 +82,7 @@ impl Route {
 
 /// An icon in the menu bar or tray with a menu. Dropping it removes it.
 pub struct TrayIcon {
-    inner: platform::Tray,
+    inner: Inner,
 }
 
 impl TrayIcon {
@@ -97,7 +98,7 @@ impl TrayIcon {
             on_pick: Rc::new(on_pick),
         };
         Ok(Self {
-            inner: platform::Tray::new(&look, items, route, cx)?,
+            inner: open(&look, items, route, cx)?,
         })
     }
 
@@ -107,11 +108,32 @@ impl TrayIcon {
     }
 }
 
+/// The OS's tray: macOS and Windows take labels and a pick callback.
+#[cfg(any(target_os = "macos", target_os = "windows"))]
+fn open(look: &Look, items: Vec<TrayItem>, route: Route, _: &mut App) -> anyhow::Result<Inner> {
+    let entries: Vec<Option<&str>> = (items.iter())
+        .map(|item| match item {
+            TrayItem::Action(label) => Some(label.as_ref()),
+            TrayItem::Separator => None,
+        })
+        .collect();
+    let on_pick = Box::new(move |index| route.pick(index));
+    #[cfg(target_os = "macos")]
+    return Inner::new(look.symbol, &look.name, &entries, on_pick);
+    #[cfg(target_os = "windows")]
+    return Inner::new(look.png, &look.name, &entries, on_pick);
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+fn open(look: &Look, items: Vec<TrayItem>, route: Route, cx: &mut App) -> anyhow::Result<Inner> {
+    Inner::new(look, items, route, cx)
+}
+
 /// Sets or clears the badge on the app's Dock icon.
 pub fn set_dock_badge(label: Option<&str>) -> anyhow::Result<()> {
     #[cfg(target_os = "macos")]
     {
-        platform::set_badge(label);
+        crate::platform::mac::set_dock_badge(label);
         log::info!("dock badge: {label:?}");
         Ok(())
     }
@@ -125,7 +147,7 @@ pub fn set_dock_badge(label: Option<&str>) -> anyhow::Result<()> {
 /// The badge the Dock shows now.
 pub fn dock_badge() -> anyhow::Result<Option<String>> {
     #[cfg(target_os = "macos")]
-    return Ok(platform::badge());
+    return Ok(crate::platform::mac::dock_badge());
     #[cfg(not(target_os = "macos"))]
     anyhow::bail!("dock badges need macOS in this build")
 }

@@ -278,6 +278,7 @@ fn post(kind: Mouse, x: f64, y: f64, number: u32) -> Result<()> {
         Mouse::RightDown => NSEventType::NSRightMouseDown,
         Mouse::RightUp => NSEventType::NSRightMouseUp,
     };
+    // SAFETY: main thread; each event is checked for nil before it is posted.
     unsafe {
         let event = <id as NSEvent>::mouseEventWithType_location_modifierFlags_timestamp_windowNumber_context_eventNumber_clickCount_pressure_(
             nil,
@@ -311,6 +312,7 @@ unsafe fn right_button(event: cocoa::base::id) -> cocoa::base::id {
         fn CGEventSetIntegerValueField(event: *mut std::ffi::c_void, field: u32, value: i64);
     }
     const BUTTON_NUMBER: u32 = 3;
+    // SAFETY: `event` is a live mouse event, so its CGEvent is valid to edit and wrap.
     unsafe {
         let cg: *mut std::ffi::c_void = msg_send![event, CGEvent];
         CGEventSetIntegerValueField(cg, BUTTON_NUMBER, 1);
@@ -331,6 +333,7 @@ fn post_key(number: u32, down: bool, text: &str, code: u16) -> Result<()> {
     } else {
         NSEventType::NSKeyUp
     };
+    // SAFETY: main thread; the event is checked for nil before it is posted.
     unsafe {
         let text = NSString::alloc(nil).init_str(text);
         let event = <id as NSEvent>::keyEventWithType_location_modifierFlags_timestamp_windowNumber_context_characters_charactersIgnoringModifiers_isARepeat_keyCode_(
@@ -365,6 +368,7 @@ fn cancel_panel() -> Result<bool> {
         base::{BOOL, NO, id, nil},
     };
     use objc::{class, msg_send, sel, sel_impl};
+    // SAFETY: main thread; `cancel:` goes only to a key window that is a save panel.
     unsafe {
         let key: id = msg_send![NSApp(), keyWindow];
         if key == nil {
@@ -392,6 +396,7 @@ fn perform_close(number: u32) -> Result<()> {
         base::{id, nil},
     };
     use objc::{msg_send, sel, sel_impl};
+    // SAFETY: main thread; `performClose:` goes only to a window AppKit found.
     unsafe {
         let window: id = msg_send![NSApp(), windowWithWindowNumber: i64::from(number)];
         anyhow::ensure!(window != nil, "no AppKit window numbered {number}");
