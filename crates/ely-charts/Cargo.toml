@@ -1,0 +1,22 @@
+[package]
+name = "ely-charts"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's charts for GPUI: lines, bars, areas, pies, scatter and the axes under them."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+web-time.workspace = true
+
+[lints]
+workspace = true

@@ -85,14 +85,14 @@ fn the_scale_sizes_source_lines(cx: &mut TestAppContext) {
     let (document, cx) = open("a\n", MarkdownMode::Source, cx);
     let editor = document.read_with(cx, |document, _| document.editor().clone());
     frames(cx);
-    let plain = editor.read_with(cx, |editor, _| editor.metrics.line);
+    let plain = editor.read_with(cx, |editor, _| editor.metrics().line);
     let look = DocumentLook {
         scale: 2.0,
         ..DocumentLook::default()
     };
     document.update(cx, |document, cx| document.set_look(look, cx));
     frames(cx);
-    let large = editor.read_with(cx, |editor, _| editor.metrics.line);
+    let large = editor.read_with(cx, |editor, _| editor.metrics().line);
     assert!(large > plain * 1.8, "{plain:?} to {large:?}");
 }
 
@@ -208,8 +208,9 @@ fn the_last_source_line_centers_and_a_resize_follows(cx: &mut TestAppContext) {
     frames(cx);
     let resized = document.read_with(cx, |document, cx| document.top_line(cx));
     let editor = document.read_with(cx, |document, _| document.editor().clone());
-    let (line, height) =
-        editor.read_with(cx, |editor, _| (editor.metrics.line, editor.metrics.height));
+    let (line, height) = editor.read_with(cx, |editor, _| {
+        (editor.metrics().line, editor.metrics().height)
+    });
     let half = (height / line / 2.0).floor() as usize;
     let middle = 119 - half;
     assert!(
@@ -254,9 +255,9 @@ fn platform_text_queries_meet_the_drawn_line(cx: &mut TestAppContext) {
             .encode_utf16()
             .count();
         let anchor = editor.bounds_for_range(at..at, gpui::Bounds::default(), window, cx);
-        let point = gpui::point(editor.metrics.left, drawn.center().y);
+        let point = gpui::point(editor.metrics().left, drawn.center().y);
         let index = editor.character_index_for_point(point, window, cx);
-        let line = index.map(|at| editor.buffer.line_of(editor.byte_range(&(at..at)).start));
+        let line = index.map(|at| editor.buffer().line_of(editor.byte_range(&(at..at)).start));
         (anchor.expect("anchor"), line)
     });
     assert!(
@@ -290,7 +291,7 @@ fn source_off(
     let drawn = cx.debug_bounds("editor-line-100").expect("line drawn");
     let editor = document.read_with(cx, |document, _| document.editor().clone());
     let middle = editor.read_with(cx, |editor, _| {
-        editor.metrics.top + editor.metrics.height / 2.0
+        editor.metrics().top + editor.metrics().height / 2.0
     });
     (drawn.center().y - middle).abs()
 }
@@ -346,7 +347,7 @@ fn a_small_resize_centers_the_source_line(cx: &mut TestAppContext) {
 fn source_numbers_its_lines_when_asked(cx: &mut TestAppContext) {
     let (document, cx) = open("One\nTwo\n", MarkdownMode::Source, cx);
     let numbers = |cx: &mut gpui::VisualTestContext| {
-        document.read_with(cx, |document, cx| document.editor.read(cx).options.numbers)
+        document.read_with(cx, |document, cx| document.editor.read(cx).numbers())
     };
     assert_eq!(
         numbers(cx),

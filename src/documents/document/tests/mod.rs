@@ -113,9 +113,7 @@ fn a_mode_switch_writes_the_open_block_and_changes_nothing_else(cx: &mut TestApp
         TEXT,
         "an unchanged block writes nothing"
     );
-    let undone = document.read_with(cx, |document, cx| {
-        document.editor().read(cx).history.can_undo()
-    });
+    let undone = document.read_with(cx, |document, cx| document.editor().read(cx).can_undo());
     assert!(!undone, "no step was recorded");
 }
 

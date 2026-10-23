@@ -2,8 +2,14 @@
 
 /// Sources of components the Ely apps draw.
 const SHIPPED: &[(&str, &str)] = &[
-    ("editor/find.rs", include_str!("editor/find.rs")),
-    ("editor/hints.rs", include_str!("editor/hints.rs")),
+    (
+        "editor/find.rs",
+        include_str!("../crates/ely-editor/src/find.rs"),
+    ),
+    (
+        "editor/hints.rs",
+        include_str!("../crates/ely-editor/src/hints.rs"),
+    ),
     (
         "forms/input.rs",
         include_str!("../crates/ely-core/src/forms/input.rs"),

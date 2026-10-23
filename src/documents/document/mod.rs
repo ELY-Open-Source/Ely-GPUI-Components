@@ -287,7 +287,7 @@ impl MarkdownDocument {
             .headings
             .iter()
             .filter(|heading| heading.at <= editor.text().len())
-            .map(|heading| (heading.clone(), editor.buffer.line_of(heading.at)))
+            .map(|heading| (heading.clone(), editor.buffer().line_of(heading.at)))
             .collect()
     }
 

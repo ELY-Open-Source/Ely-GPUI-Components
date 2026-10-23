@@ -1593,6 +1593,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "252afb9ae5eaa683babdc6a068b3f5726eb19e05070c731f9b2a23a7c3e8ed34"
 
 [[package]]
+name = "ely-charts"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "gpui-pre",
+ "jiff",
+ "log",
+ "web-time",
+]
+
+[[package]]
 name = "ely-core"
 version = "0.1.1"
 dependencies = [
@@ -1626,6 +1637,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "ely-debug"
+version = "0.1.1"
+dependencies = [
+ "ely-charts",
+ "ely-core",
+ "gpui-pre",
+ "log",
+ "regex",
+]
+
+[[package]]
+name = "ely-editor"
+version = "0.1.1"
+dependencies = [
+ "ely-charts",
+ "ely-core",
+ "gpui-pre",
+ "log",
+ "regex",
+ "serde_json",
+]
+
+[[package]]
+name = "ely-finance"
+version = "0.1.1"
+dependencies = [
+ "ely-charts",
+ "ely-core",
+ "gpui-pre",
+ "iso_currency",
+ "jiff",
+ "log",
+]
+
+[[package]]
 name = "ely-gallery"
 version = "0.0.0"
 dependencies = [
@@ -1655,13 +1701,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "ely-git"
+version = "0.1.1"
+dependencies = [
+ "ely-core",
+ "ely-editor",
+ "gpui-pre",
+ "log",
+ "similar",
+]
+
+[[package]]
 name = "ely-gpui-component"
 version = "0.1.1"
 dependencies = [
  "alacritty_terminal",
  "anyhow",
  "base64",
+ "ely-charts",
  "ely-core",
+ "ely-debug",
+ "ely-editor",
+ "ely-finance",
+ "ely-git",
+ "ely-terminal",
  "emojis",
  "entities",
  "futures",
@@ -1691,6 +1754,23 @@ dependencies = [
  "vte",
  "web-time",
  "wry",
+]
+
+[[package]]
+name = "ely-terminal"
+version = "0.1.1"
+dependencies = [
+ "alacritty_terminal",
+ "anyhow",
+ "ely-core",
+ "ely-editor",
+ "futures",
+ "gpui-pre",
+ "log",
+ "regex",
+ "rustix",
+ "vte",
+ "web-time",
 ]
 
 [[package]]

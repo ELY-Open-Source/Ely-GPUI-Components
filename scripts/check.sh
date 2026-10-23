@@ -2,8 +2,8 @@
 # Pre-review gate: build rules plus house rules.
 set -eu
 cargo fmt --all --check
-cargo clippy --workspace --all-targets --features ely-gpui-component/test-support -- -D warnings
-cargo test -p ely-core -p ely-gpui-component --lib --features ely-core/test-support,ely-gpui-component/test-support --quiet
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
 # Ely beside the newest GPUI Kit: a release that moves Kit's gpui pin fails to resolve here.
 kit="--manifest-path compat/kit/Cargo.toml"
 newest=$(cargo search gpui-kit --limit 1 --color never | sed -n 's/^gpui-kit = "\([^"]*\)".*/\1/p')
@@ -30,10 +30,11 @@ for f in $files AGENTS.md README.md TASKS.md tasks/*.md; do
   [ "$n" -le 500 ] || { echo "$f has $n lines"; fail=1; }
 done
 core=crates/ely-core/src
-components=$(find src $core -name '*.rs' ! -path "$core/theme/*" ! -path "$core/motion/*" ! -path '*/tests/*' ! -name 'tests.rs' ! -name 'testing.rs')
+libs=$(ls -d crates/*/src | grep -v ely-gallery)
+components=$(find src $libs -name '*.rs' ! -path "$core/theme/*" ! -path "$core/motion/*" ! -path '*/tests/*' ! -name 'tests.rs' ! -name 'testing.rs')
 raw=$(awk '/#\[cfg\(test\)\]/{nextfile} /(^|[^.[:alnum:]_])px\(/{print FILENAME":"FNR": "$0}' $components)
 [ -z "$raw" ] || { echo "raw px in components:"; echo "$raw"; fail=1; }
-deferred=$(grep -rn 'deferred(' src $core --include='*.rs' | grep -v "^$core/primitives/layer.rs" || true)
+deferred=$(grep -rn 'deferred(' src $libs --include='*.rs' | grep -v "^$core/primitives/layer.rs" || true)
 [ -z "$deferred" ] || { echo "gpui deferred outside primitives::raise:"; echo "$deferred"; fail=1; }
 instant=$(grep -rnE '(^|[^_[:alnum:]])time::(Instant|\{[^}]*Instant)' src crates || true)
 [ -z "$instant" ] || { echo "std Instant panics in the browser, use web_time::Instant:"; echo "$instant"; fail=1; }

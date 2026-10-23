@@ -9,6 +9,13 @@ license = "MIT"
 repository = "https://github.com/ELY-Open-Source/Ely-GPUI-Components"
 
 [workspace.dependencies]
+ely-debug = { path = "crates/ely-debug", version = "0.1.1" }
+ely-git = { path = "crates/ely-git", version = "0.1.1" }
+ely-terminal = { path = "crates/ely-terminal", version = "0.1.1" }
+ely-editor = { path = "crates/ely-editor", version = "0.1.1" }
+ely-finance = { path = "crates/ely-finance", version = "0.1.1" }
+ely-charts = { path = "crates/ely-charts", version = "0.1.1" }
+ely-core = { path = "crates/ely-core", version = "0.1.1", default-features = false }
 anyhow = "1"
 emojis = "0.9"
 futures = "0.3"
@@ -53,8 +60,14 @@ test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detecti
 
 [dependencies]
 anyhow.workspace = true
+ely-debug.workspace = true
+ely-git.workspace = true
+ely-terminal.workspace = true
+ely-editor.workspace = true
+ely-finance.workspace = true
+ely-charts.workspace = true
 base64 = "0.22"
-ely-core = { path = "crates/ely-core", default-features = false }
+ely-core.workspace = true
 emojis.workspace = true
 entities = "1"
 futures.workspace = true

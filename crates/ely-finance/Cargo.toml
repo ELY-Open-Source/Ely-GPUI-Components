@@ -1,0 +1,23 @@
+[package]
+name = "ely-finance"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's market components for GPUI: quotes, order books, depth, candles and trades."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-charts.workspace = true
+gpui.workspace = true
+iso_currency.workspace = true
+jiff.workspace = true
+log.workspace = true
+
+[lints]
+workspace = true

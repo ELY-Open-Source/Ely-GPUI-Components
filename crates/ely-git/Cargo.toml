@@ -1,0 +1,25 @@
+[package]
+name = "ely-git"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's git components for GPUI: diffs, merges, history and the working tree."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-editor.workspace = true
+gpui.workspace = true
+log.workspace = true
+similar = { version = "3.2", default-features = false, features = ["std", "text", "inline", "unicode"] }
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+similar = { version = "3.2", default-features = false, features = ["wasm32_web_time"] }
+
+[lints]
+workspace = true

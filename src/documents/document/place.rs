@@ -1,4 +1,4 @@
-use gpui::{App, Context, Focusable as _, ListOffset, Pixels, ScrollStrategy, Window};
+use gpui::{App, Context, Focusable as _, ListOffset, Pixels, Window};
 
 use super::{MarkdownDocument, Placement, cells};
 use crate::documents::{MarkdownMode, modes::joint};
@@ -55,8 +55,8 @@ impl MarkdownDocument {
         self.commit(cx);
         let editor = self.editor.read(cx);
         let range = editor
-            .buffer
-            .line_range(line.min(editor.buffer.lines() - 1));
+            .buffer()
+            .line_range(line.min(editor.buffer().lines() - 1));
         let text = &editor.text()[range.clone()];
         let within = text
             .char_indices()
@@ -72,7 +72,7 @@ impl MarkdownDocument {
     pub fn top_line(&self, cx: &App) -> usize {
         let editor = self.editor.read(cx);
         if let Some(top) = self.top {
-            return top.line.min(editor.buffer.lines() - 1);
+            return top.line.min(editor.buffer().lines() - 1);
         }
         match self.mode {
             MarkdownMode::Source | MarkdownMode::Split => editor.top_line().unwrap_or(0),
@@ -82,10 +82,10 @@ impl MarkdownDocument {
                     offset_in_item,
                 } = self.list.logical_scroll_top();
                 let Some(block) = self.parsed.blocks.get(item_ix) else {
-                    return editor.buffer.lines() - 1;
+                    return editor.buffer().lines() - 1;
                 };
-                let first = editor.buffer.line_of(block.range.start);
-                let lines = editor.buffer.line_of(block.range.end) + 1 - first;
+                let first = editor.buffer().line_of(block.range.start);
+                let lines = editor.buffer().line_of(block.range.end) + 1 - first;
                 let into = self.list.bounds_for_item(item_ix).map_or(0.0, |bounds| {
                     offset_in_item.as_f32() / bounds.size.height.as_f32().max(1.0)
                 });
@@ -124,11 +124,9 @@ impl MarkdownDocument {
             return;
         };
         let editor = self.editor.read(cx);
-        let line = line.min(editor.buffer.lines() - 1);
+        let line = line.min(editor.buffer().lines() - 1);
         if matches!(self.mode, MarkdownMode::Source | MarkdownMode::Split) {
-            editor
-                .scroll
-                .scroll_to_item_strict(line + editor.pad, ScrollStrategy::Top);
+            editor.scroll_line_to_top(line);
             self.placing(ask);
             // The editor's offset holds it from the next frame.
             return cx.on_next_frame(window, move |document, _, cx| {
@@ -139,14 +137,14 @@ impl MarkdownDocument {
             return;
         }
         let editor = self.editor.read(cx);
-        let at = editor.buffer.line_range(line).start;
+        let at = editor.buffer().line_range(line).start;
         let item_ix = self.block_at(at);
         let Some(block) = self.parsed.blocks.get(item_ix) else {
             self.top = None;
             return;
         };
-        let first = editor.buffer.line_of(block.range.start);
-        let lines = editor.buffer.line_of(block.range.end) + 1 - first;
+        let first = editor.buffer().line_of(block.range.start);
+        let lines = editor.buffer().line_of(block.range.end) + 1 - first;
         let into = line.saturating_sub(first) as f32 / lines as f32;
         self.list.scroll_to(ListOffset {
             item_ix,
@@ -183,7 +181,7 @@ impl MarkdownDocument {
         // The view moved: center again.
         self.centered = None;
         self.editor.update(cx, |editor, cx| {
-            editor.centered = None;
+            editor.center_again();
             cx.notify();
         });
         cx.notify();
@@ -222,7 +220,7 @@ impl MarkdownDocument {
         {
             return log::warn!("markdown document: the pressed heading reads as no heading now");
         }
-        let line = self.editor.read(cx).buffer.line_of(found);
+        let line = self.editor.read(cx).buffer().line_of(found);
         self.reveal(line, window, cx);
     }
 

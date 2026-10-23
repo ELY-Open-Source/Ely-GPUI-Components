@@ -413,3 +413,4 @@
 | T56 A5 | 1 | PASS | unsafe in src/platform alone, on objc2; HEAD hung on macOS 27 (AppKit off the main thread in tests) and failed Mac clippy; Mac, Linux root and Windows clean |
 | T56 B1 | 1 | PASS | workspace root keeps the library; gallery and docs examples in crates/ely-gallery; Windows check, Linux root, Mac capture and the web build pass |
 | T56 B2 | 1 | PASS | ely-core holds chapters 1-14, theme, motion, i18n; Latex to documents, WCAG math to theme; privacy opened by the compiler's errors; timing tests read thread CPU time |
+| T56 B3 | 1 | PASS | charts, finance, editor, terminal, git, debug in their own crates; CodeEditor readers replace documents' field reads; 2231/2233 tests on Windows, Linux root, Mac |

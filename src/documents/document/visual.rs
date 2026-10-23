@@ -308,7 +308,7 @@ impl Render for MarkdownDocument {
         // One bar at the right edge, whichever view scrolls.
         let scrolled = match self.mode {
             MarkdownMode::Source => {
-                let scroll = self.editor.read(cx).scroll.0.borrow().base_handle.clone();
+                let scroll = self.editor.read(cx).scroll_handle();
                 ScrollSource::Handle(scroll)
             }
             _ => ScrollSource::List(self.list.clone()),

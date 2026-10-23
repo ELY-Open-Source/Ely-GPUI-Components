@@ -27,17 +27,7 @@ fn the_thumb_follows_and_drags(mode: MarkdownMode, cx: &mut TestAppContext) {
     assert!(wheeled.top() > before.top(), "{wheeled:?} after {before:?}");
     let top = |cx: &mut gpui::VisualTestContext| {
         document.read_with(cx, |document, cx| match mode {
-            MarkdownMode::Source => {
-                document
-                    .editor
-                    .read(cx)
-                    .scroll
-                    .0
-                    .borrow()
-                    .base_handle
-                    .offset()
-                    .y
-            }
+            MarkdownMode::Source => document.editor.read(cx).scroll_handle().offset().y,
             _ => document.list.scroll_px_offset_for_scrollbar().y,
         })
     };

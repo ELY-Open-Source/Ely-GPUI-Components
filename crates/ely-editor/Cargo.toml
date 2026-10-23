@@ -1,0 +1,23 @@
+[package]
+name = "ely-editor"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's code editor for GPUI: text, highlighting, find, folds and the panels around them."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-charts.workspace = true
+gpui.workspace = true
+log.workspace = true
+regex.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

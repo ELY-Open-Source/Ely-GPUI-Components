@@ -2,18 +2,13 @@ pub mod account;
 pub mod agent;
 pub mod calendar;
 pub mod canvas;
-pub mod charts;
 pub mod chat;
 pub mod collab;
 pub mod dashboard;
-pub mod debug;
 pub mod devtools;
 pub mod documents;
-pub mod editor;
 pub mod files;
-pub mod finance;
 pub mod generative;
-pub mod git;
 pub mod interaction;
 pub mod mail;
 pub mod maps;
@@ -24,16 +19,21 @@ pub mod onboarding;
 pub mod project;
 pub mod rendering;
 pub mod settings;
-pub mod terminal;
 pub mod tooling;
 
 #[cfg(test)]
 mod shipped;
 
+pub use ely_charts as charts;
 pub use ely_core::{
     Assets, Before, buttons, data_display, feedback, forms, i18n, layout, lists, menus, motion,
     navigation, overlays, primitives, shell, tables, theme, typography,
 };
+pub use ely_debug as debug;
+pub use ely_editor as editor;
+pub use ely_finance as finance;
+pub use ely_git as git;
+pub use ely_terminal as terminal;
 
 use gpui::App;
 

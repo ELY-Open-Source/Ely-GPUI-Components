@@ -1,0 +1,32 @@
+[package]
+name = "ely-terminal"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's terminal for GPUI: a grid, a pseudo-terminal, colored text and its search."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+anyhow.workspace = true
+futures.workspace = true
+gpui.workspace = true
+log.workspace = true
+regex.workspace = true
+vte = { version = "0.15", default-features = false, features = ["std", "ansi"] }
+web-time.workspace = true
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+ely-editor.workspace = true
+alacritty_terminal = { version = "0.26", default-features = false }
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "1", default-features = false, features = ["std", "fs"] }
+
+[lints]
+workspace = true
