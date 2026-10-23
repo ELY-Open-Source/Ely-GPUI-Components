@@ -435,3 +435,9 @@ impl RenderOnce for InfiniteCanvas {
             .child(measured)
     }
 }
+
+impl ParentElement for InfiniteCanvas {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.layers.extend(elements);
+    }
+}

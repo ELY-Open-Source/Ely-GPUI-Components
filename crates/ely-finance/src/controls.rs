@@ -347,3 +347,9 @@ impl RenderOnce for MultiChartLayout {
 ely_core::capable!(TimeRangeSelector: change(&SharedString));
 ely_core::capable!(IntervalSelector: change(&SharedString));
 ely_core::capable!(ChartTypeSwitcher: change(ChartKind));
+
+impl ParentElement for MultiChartLayout {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.cells.extend(elements);
+    }
+}

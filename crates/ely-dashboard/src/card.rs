@@ -14,7 +14,7 @@ pub struct DashboardCard {
     title: SharedString,
     subtitle: Option<SharedString>,
     actions: Vec<AnyElement>,
-    body: Option<AnyElement>,
+    children: Vec<AnyElement>,
     footer: Option<AnyElement>,
 }
 
@@ -24,7 +24,7 @@ impl DashboardCard {
             title: title.into(),
             subtitle: None,
             actions: Vec::new(),
-            body: None,
+            children: Vec::new(),
             footer: None,
         }
     }
@@ -36,11 +36,6 @@ impl DashboardCard {
 
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
-        self
-    }
-
-    pub fn body(mut self, body: impl IntoElement) -> Self {
-        self.body = Some(body.into_any_element());
         self
     }
 
@@ -97,12 +92,18 @@ impl RenderOnce for DashboardCard {
                             .children(self.actions),
                     ),
             )
-            .child(div().flex_1().min_h_0().children(self.body))
+            .child(div().flex_1().min_h_0().children(self.children))
             .children(self.footer.map(|footer| {
                 div()
                     .text_size(theme.text_size(TextSize::Xs))
                     .text_color(theme.colors.fg_subtle)
                     .child(footer)
             }))
+    }
+}
+
+impl ParentElement for DashboardCard {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.children.extend(elements);
     }
 }

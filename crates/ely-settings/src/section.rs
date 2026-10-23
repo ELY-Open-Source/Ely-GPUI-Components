@@ -222,3 +222,9 @@ impl RenderOnce for SettingsRow {
             )
     }
 }
+
+impl ParentElement for SettingsSection {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.rows.extend(elements);
+    }
+}

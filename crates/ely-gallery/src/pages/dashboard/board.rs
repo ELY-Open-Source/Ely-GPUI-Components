@@ -87,14 +87,14 @@ pub fn grid(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     })
     .card(
         "requests",
-        DashboardCard::new("Requests").subtitle("per minute").body(
+        DashboardCard::new("Requests").subtitle("per minute").child(
             Statistic::new("dashboard-requests", "This hour", 12_400.0)
                 .trend(TrendIndicator::new(0.082)),
         ),
     )
     .card(
         "errors",
-        DashboardCard::new("Errors").subtitle("5xx share").body(
+        DashboardCard::new("Errors").subtitle("5xx share").child(
             Statistic::new("dashboard-errors", "This hour", 0.42)
                 .decimals(2)
                 .suffix("%")
@@ -103,7 +103,7 @@ pub fn grid(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     )
     .card(
         "cpu",
-        DashboardCard::new("CPU").body(Gauge::new(
+        DashboardCard::new("CPU").child(Gauge::new(
             "dashboard-cpu",
             "percent busy",
             62.0,
@@ -115,11 +115,11 @@ pub fn grid(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         "latency",
         DashboardCard::new("Latency")
             .subtitle("p95, milliseconds")
-            .body(LineChart::new("dashboard-latency", hours).series(latency)),
+            .child(LineChart::new("dashboard-latency", hours).series(latency)),
     )
     .card(
         "saturation",
-        DashboardCard::new("Saturation").body(Gauge::new(
+        DashboardCard::new("Saturation").child(Gauge::new(
             "dashboard-memory",
             "memory in use",
             81.0,

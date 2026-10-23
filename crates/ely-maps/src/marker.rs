@@ -116,7 +116,7 @@ impl MapMarker {
 pub struct MapPopup {
     pub(crate) at: LatLon,
     title: SharedString,
-    content: Option<AnyElement>,
+    children: Vec<AnyElement>,
     on_close: Option<OnClose>,
 }
 
@@ -125,14 +125,9 @@ impl MapPopup {
         Self {
             at,
             title: title.into(),
-            content: None,
+            children: Vec::new(),
             on_close: None,
         }
-    }
-
-    pub fn child(mut self, content: impl IntoElement) -> Self {
-        self.content = Some(content.into_any_element());
-        self
     }
 
     pub fn on_close(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
@@ -206,14 +201,16 @@ impl MapPopup {
             .focus_ring(cx)
             .shadow(theme.elevation(Elevation::Floating))
             .child(head)
-            .children(self.content.map(|content| {
-                div()
-                    .id((owner.clone(), "popup-body"))
-                    .flex_1()
-                    .min_h_0()
-                    .overflow_y_scroll()
-                    .child(content)
-            }));
+            .when(!self.children.is_empty(), |card| {
+                card.child(
+                    div()
+                        .id((owner.clone(), "popup-body"))
+                        .flex_1()
+                        .min_h_0()
+                        .overflow_y_scroll()
+                        .children(self.children),
+                )
+            });
         Some(
             match spot.edge {
                 Edge::Bottom(bottom) => card.bottom(Pixels::from(bottom)),
@@ -264,6 +261,12 @@ pub(crate) fn spot(
         height: height.max(0.0),
         edge,
     })
+}
+
+impl ParentElement for MapPopup {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.children.extend(elements);
+    }
 }
 
 #[cfg(test)]

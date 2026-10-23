@@ -115,6 +115,12 @@ impl RenderOnce for ScrollSync {
     }
 }
 
+impl ParentElement for ScrollSync {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.panes.extend(elements);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use gpui::{Axis, point, px};

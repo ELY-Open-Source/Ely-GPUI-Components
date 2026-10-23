@@ -427,3 +427,4 @@
 | T56 C1 | 1 | PASS | core's sibling-only items (135 and the text actions) hidden from the API; four unreachable methods pub(crate); unreachable_pub on core |
 | T56 C2 | 1 | PASS | 59 sibling-only items hidden in the verticals; 38 unreachable items pub(crate) across native, wasm32 and Linux; unreachable_pub in the workspace lints |
 | T56 C3 | 1 | PASS | Sizable, Disableable, Selectable, Changeable in primitives; 30, 19, 5 and 80 impls by each component's own method; a generic test |
+| T56 C4 | 1 | PASS | 87 containers listed in src/containers.rs, a test holds the list to every impl and macro; seven adders gain ParentElement; MapPopup and DashboardCard take children |

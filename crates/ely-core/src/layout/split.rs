@@ -232,6 +232,12 @@ impl RenderOnce for SplitPane {
     }
 }
 
+impl ParentElement for SplitPane {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.panes.extend(elements);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{check_weights, shift};

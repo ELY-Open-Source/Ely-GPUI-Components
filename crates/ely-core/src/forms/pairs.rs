@@ -310,3 +310,9 @@ impl RenderOnce for ListInput {
 
 crate::capable!(KeyValueInput: change(Vec<(String, String)>));
 crate::capable!(ListInput: change(Vec<String>));
+
+impl ParentElement for FieldArray {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.rows.extend(elements);
+    }
+}

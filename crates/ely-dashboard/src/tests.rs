@@ -37,7 +37,7 @@ impl Render for Wall {
             |grid, tile| {
                 let card = DashboardCard::new(tile.key.clone());
                 let card = match tile.key.as_ref() {
-                    "b" => card.body(Button::new("inside", "Inside").focus_handle(&self.inside)),
+                    "b" => card.child(Button::new("inside", "Inside").focus_handle(&self.inside)),
                     _ => card,
                 };
                 grid.card(tile.key.clone(), card)

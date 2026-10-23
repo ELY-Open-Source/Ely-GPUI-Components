@@ -1,6 +1,8 @@
 use std::rc::Rc;
 
-use gpui::{AnyElement, App, ElementId, IntoElement, RenderOnce, SharedString, Window};
+use gpui::{
+    AnyElement, App, ElementId, IntoElement, ParentElement, RenderOnce, SharedString, Window,
+};
 
 use super::{
     links::Link,
@@ -110,5 +112,11 @@ impl RenderOnce for FlowChart {
         self.layers
             .into_iter()
             .fold(canvas, |canvas, layer| canvas.layer(layer))
+    }
+}
+
+impl ParentElement for FlowChart {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.layers.extend(elements);
     }
 }
