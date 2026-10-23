@@ -18,6 +18,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] A2 O-06 Caret versions for every third-party crate but `gpui-pre*`.
 - [x] A3 O-05 One Markdown parser; the 128 KiB one-letter case reads in ≤100 ms in release. Find the quadratic first.
 - [ ] A4 O-07 No duplicate in `cargo tree -d` starts at an Ely direct dependency.
+  - Done: `iso_currency` drops its `iterator` feature, so `strum` 0.27 leaves; currencies list by ISO 4217 number.
+  - Open, partial: only third-party crates at their newest releases still bring a second version, and Ely can align none without capping a version (O-06). `bit-set`/`bit-vec` 0.8 (RaTeX 0.1.15), the `digest` 0.11 line (`ratex-svg` 0.1.15, `rust-embed` 8.13), `phf` 0.11 (`isolang` 2.4, RaTeX). B9 may drop `rust-embed`; the rest needs upstream releases.
 - [ ] A5 O-08 Platform calls live in one platform module, on objc2; every `unsafe` block has a SAFETY line; `undocumented_unsafe_blocks` clean.
 
 ## B. Split

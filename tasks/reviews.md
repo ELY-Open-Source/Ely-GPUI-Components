@@ -409,3 +409,4 @@
 | T56 A3 | 2 | FAIL | stacked BOMs overflowed the stack; extra cells reparsed every definition, lost table inline rules and split pipes by parity; refused www. domains rescanned |
 | T56 A3 | 3 | FAIL | an unchanged cell holding a\|b gained a backslash on commit |
 | T56 A3 | 4 | PASS | 1222 of 1324 spec examples match markdown-rs; 128 KiB one-letter case 20 ms; root 2232/2232 |
+| T56 A4 | 1 | PASS | strum 0.27 gone; bit-set, digest and phf seconds come from RaTeX, isolang and rust-embed at their newest; left open, partial |

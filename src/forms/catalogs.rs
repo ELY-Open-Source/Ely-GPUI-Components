@@ -4,7 +4,7 @@ use gpui::{
     App, ElementId, Entity, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Window,
     div, prelude::*,
 };
-use iso_currency::{Currency, IntoEnumIterator};
+use iso_currency::Currency;
 use isocountry::CountryCode;
 
 use super::{Choice, Combobox, TextInput, options::OnValue};
@@ -48,6 +48,21 @@ fn languages() -> Vec<Choice> {
     by_label(choices)
 }
 
+/// ISO 4217 currencies in use, without funds, metals or retired codes.
+fn currencies() -> Vec<Choice> {
+    // ISO 4217 numbers have three digits; strum's iterator would add a crate.
+    let choices = (0..1000)
+        .filter_map(Currency::from_numeric)
+        .filter(|currency| {
+            !currency.is_fund() && !currency.is_special() && currency.is_superseded().is_none()
+        })
+        .map(|currency| {
+            Choice::new(currency.code(), currency.name().to_string()).note(currency.code())
+        })
+        .collect();
+    by_label(choices)
+}
+
 impl Combobox {
     /// ISO 639-1 languages under their own names; a name in either tongue or the code finds one.
     pub fn languages(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
@@ -68,15 +83,7 @@ impl Combobox {
 
     /// ISO 4217 currencies in use, without funds, metals or retired codes.
     pub fn currencies(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
-        let choices = Currency::iter()
-            .filter(|currency| {
-                !currency.is_fund() && !currency.is_special() && currency.is_superseded().is_none()
-            })
-            .map(|currency| {
-                Choice::new(currency.code(), currency.name().to_string()).note(currency.code())
-            })
-            .collect();
-        Self::new(id, state, by_label(choices))
+        Self::new(id, state, currencies())
     }
 }
 
@@ -155,7 +162,9 @@ impl RenderOnce for FontPicker {
 
 #[cfg(test)]
 mod tests {
-    use super::{flag, languages, titled};
+    use super::{currencies, flag, languages, titled};
+    use gpui::SharedString;
+
     use crate::forms::combobox::matching;
 
     #[test]
@@ -170,6 +179,20 @@ mod tests {
         assert!(found("chinese").iter().any(|code| code == "zh"));
         assert!(found("中文").iter().any(|code| code == "zh"));
         assert!(found("aymara").iter().any(|code| code == "ay"));
+    }
+
+    #[test]
+    fn currencies_in_use_are_listed_once() {
+        let codes: Vec<SharedString> = currencies()
+            .into_iter()
+            .map(|choice| choice.value)
+            .collect();
+        assert_eq!(codes.len(), 154);
+        assert!(codes.iter().any(|code| code == "USD") && codes.iter().any(|code| code == "EUR"));
+        assert!(
+            !codes.iter().any(|code| code == "XAU" || code == "USN"),
+            "no metals or funds"
+        );
     }
 
     #[test]
