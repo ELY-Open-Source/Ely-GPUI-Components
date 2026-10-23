@@ -36,6 +36,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
   - Done: the tray, the Dock badge and Omarchy live in `crates/ely-desktop`; `cargo tree -p ely-core -i notify` prints nothing.
   - Open, partial: `-i zbus` still prints, through gpui's Linux backend (`gpui-pre-platform` → `gpui-pre-linux` → accesskit, ashpd, oo7, notify-rust). Core takes `gpui_platform` only to turn on `font-kit`, `wayland` and `x11`, as GPUI Kit 0.8.0 does; dropping it would leave an app that relied on core without macOS text or a Linux window, in silence. Owner's call.
 - [ ] B8 O-02 Features: heavy dependencies default off where a crate can stand without them; a Button-only program pulls none of zbus, ratex-svg, mermaid-rs-renderer, alacritty_terminal, isolang, rqrr, notify.
+  - Done: the split leaves ratex-svg, mermaid-rs-renderer, alacritty_terminal, rqrr and notify out of `ely-core`; `isolang` is optional behind `languages`; check.sh holds all six out.
+  - Open, partial: zbus, as in B7. A Button-only program opens its window through `gpui_platform`, whose Linux backend links zbus; no Ely choice removes it.
 - [ ] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
 - [ ] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.
 - [ ] B11 Gallery, site, check.sh, compat/kit, CI and AGENTS.md follow the new layout; the web gallery builds.

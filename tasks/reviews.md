@@ -419,3 +419,4 @@
 | T56 B6 | 1 | PASS | settings, account, onboarding, interaction, maps, misc, tooling, rendering in their own crates; the root holds no chapter; the world file moves to maps; 2233 on Linux root and Mac |
 | T56 B7 | 1 | FAIL | the staged Cargo.lock lacked serde under ely-desktop; --locked failed |
 | T56 B7 | 2 | PASS | tray, Dock badge and Omarchy in ely-desktop; notify leaves core's tree, zbus stays through gpui's Linux backend; left open, partial |
+| T56 B8 | 1 | PASS | ely-core holds none of six heavy crates, isolang behind `languages`, check.sh guards them; zbus left open with B7 |

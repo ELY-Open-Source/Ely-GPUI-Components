@@ -89,7 +89,7 @@ ely-canvas.workspace = true
 ely-charts.workspace = true
 ely-chat.workspace = true
 ely-collab.workspace = true
-ely-core.workspace = true
+ely-core = { workspace = true, features = ["languages"] }
 ely-dashboard.workspace = true
 ely-debug.workspace = true
 ely-desktop.workspace = true

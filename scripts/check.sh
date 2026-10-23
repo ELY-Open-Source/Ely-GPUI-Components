@@ -22,6 +22,10 @@ RUSTC_BOOTSTRAP=1 ELY_GALLERY_ASSETS=https://example.invalid/ \
   cargo clippy -p ely-gallery --target wasm32-unknown-unknown -- -D warnings
 python3 scripts/stories.py --check
 fail=0
+# A Button-only app needs ely-core alone; zbus comes with gpui's Linux backend.
+for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify; do
+  [ -z "$(cargo tree -p ely-core -e normal --target all -i $c 2>/dev/null || true)" ] || { echo "ely-core pulls $c"; fail=1; }
+done
 files=$(git ls-files -co --exclude-standard '*.rs')
 multi=$(awk 'FNR==1{prev=0} /^[[:space:]]*\/\// {if(prev) print FILENAME":"FNR; prev=1; next} {prev=0}' $files)
 [ -z "$multi" ] || { echo "multi-line comments:"; echo "$multi"; fail=1; }

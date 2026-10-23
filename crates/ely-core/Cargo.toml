@@ -11,6 +11,7 @@ publish = false
 [features]
 default = ["runtime_shaders"]
 runtime_shaders = ["gpui_platform/runtime_shaders"]
+languages = ["dep:isolang"]
 test-support = ["gpui/test-support", "gpui/leak-detection"]
 
 [dependencies]
@@ -23,7 +24,7 @@ gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"] }
 image.workspace = true
 iso_currency.workspace = true
 isocountry.workspace = true
-isolang = { version = "2.4", features = ["local_names", "list_languages"] }
+isolang = { version = "2.4", features = ["local_names", "list_languages"], optional = true }
 jiff.workspace = true
 log.workspace = true
 qrcode.workspace = true
