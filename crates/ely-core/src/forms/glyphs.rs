@@ -17,6 +17,12 @@ type OnIcon = Rc<dyn Fn(IconName, &mut Window, &mut App)>;
 type OnEmoji = Rc<dyn Fn(&str, &mut Window, &mut App)>;
 
 /// A searchable grid of the library's icons.
+///
+/// ```
+/// use ely_core::{forms::IconPicker, primitives::IconName};
+///
+/// let icon = IconPicker::new("icon").selected(IconName::Star).on_change(|_icon, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct IconPicker {
     id: ElementId,
@@ -25,6 +31,7 @@ pub struct IconPicker {
 }
 
 impl IconPicker {
+    /// A grid of the bundled icons under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -33,11 +40,13 @@ impl IconPicker {
         }
     }
 
+    /// The icon chosen.
     pub fn selected(mut self, icon: IconName) -> Self {
         self.selected = Some(icon);
         self
     }
 
+    /// Runs with the icon picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(IconName, &mut Window, &mut App) + 'static,
@@ -121,6 +130,12 @@ fn title(group: Group) -> &'static str {
 }
 
 /// A searchable grid of emoji, grouped as Unicode groups them.
+///
+/// ```
+/// use ely_core::forms::EmojiPicker;
+///
+/// let reaction = EmojiPicker::new("reaction").on_change(|_emoji, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EmojiPicker {
     id: ElementId,
@@ -129,6 +144,7 @@ pub struct EmojiPicker {
 }
 
 impl EmojiPicker {
+    /// A grid of emoji under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -137,11 +153,13 @@ impl EmojiPicker {
         }
     }
 
+    /// The emoji chosen.
     pub fn selected(mut self, emoji: impl Into<SharedString>) -> Self {
         self.selected = Some(emoji.into());
         self
     }
 
+    /// Runs with the emoji picked.
     pub fn on_change(mut self, handler: impl Fn(&str, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

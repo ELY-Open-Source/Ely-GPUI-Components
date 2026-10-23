@@ -232,6 +232,16 @@ impl Suggestions {
 }
 
 /// A field where `@` or `#` opens suggestions at the caret. Arrows choose; Enter picks.
+///
+/// ```
+/// use ely_core::forms::{MentionInput, TextInput, mention_highlights};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn reply(window: &mut Window, cx: &mut App) -> MentionInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx).highlighter(mention_highlights));
+///     MentionInput::new("reply", &state).trigger('@', ["ana", "bo"])
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct MentionInput {
     id: ElementId,

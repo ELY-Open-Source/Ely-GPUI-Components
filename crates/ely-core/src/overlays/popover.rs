@@ -51,6 +51,12 @@ fn close(state: &Entity<Pop>, window: &mut Window, cx: &mut App) {
 }
 
 /// A button that opens a panel of any content under it, or over it when only above has room. A press outside or Escape closes it; Tab stays inside.
+///
+/// ```
+/// use ely_core::overlays::Popover;
+///
+/// let filters = Popover::new("filters", "Filters", |_, _| "Status: open");
+/// ```
 #[derive(IntoElement)]
 pub struct Popover {
     id: ElementId,
@@ -100,6 +106,7 @@ impl Popover {
         }
     }
 
+    /// An icon before the button's label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.face("an icon").icon = Some(icon);
         self
@@ -111,6 +118,7 @@ impl Popover {
         self
     }
 
+    /// The button's height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.face("a size").size = size;
         self

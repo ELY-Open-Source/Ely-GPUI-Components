@@ -81,6 +81,16 @@ type OnActivate = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type Picker = Rc<dyn Fn(usize, Pick, &mut Window, &mut App)>;
 
 /// Rows you select. A press picks one; with `multiple`, Cmd-press adds or drops one and Shift-press takes the range from the last pick. Up and Down move, Shift with them extends, Space toggles, Cmd-A takes all, typing a row's first letters moves to it, and Enter activates the row on its release, so an activation that moves focus leaves the release nothing to press. Keys pass over disabled rows, and no pick adds one.
+///
+/// ```
+/// use ely_core::lists::{ListItem, SelectableList};
+///
+/// let mailboxes = SelectableList::new("mailboxes")
+///     .row("inbox", ListItem::new("inbox", "Inbox"))
+///     .row("sent", ListItem::new("sent", "Sent"))
+///     .selected(["inbox"])
+///     .on_change(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SelectableList {
     id: ElementId,
@@ -94,6 +104,7 @@ pub struct SelectableList {
 }
 
 impl SelectableList {
+    /// An empty list under `id`; one row chosen at a time unless `multiple`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -113,6 +124,7 @@ impl SelectableList {
         self
     }
 
+    /// The keys of the rows chosen.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
@@ -124,6 +136,7 @@ impl SelectableList {
         self
     }
 
+    /// Lets more than one row be chosen.
     pub fn multiple(mut self) -> Self {
         self.multiple = true;
         self

@@ -12,6 +12,12 @@ use crate::{
 type ClickHandler = Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>;
 
 /// Inline link that runs `on_click`; `ExternalLink` opens an address.
+///
+/// ```
+/// use ely_core::typography::Link;
+///
+/// let terms = Link::new("terms", "Terms", |_, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Link {
     id: ElementId,
@@ -21,6 +27,7 @@ pub struct Link {
 }
 
 impl Link {
+    /// A link that reads `label` and runs `on_click`.
     pub fn new(
         id: impl Into<ElementId>,
         label: impl Into<SharedString>,
@@ -67,10 +74,17 @@ impl RenderOnce for Link {
 }
 
 /// Link that leaves the app, marked with an arrow.
+///
+/// ```
+/// use ely_core::typography::ExternalLink;
+///
+/// let docs = ExternalLink::new("docs", "Docs", "https://example.com/docs");
+/// ```
 #[derive(IntoElement)]
 pub struct ExternalLink(Link);
 
 impl ExternalLink {
+    /// A link that reads `label` and opens `url`.
     pub fn new(
         id: impl Into<ElementId>,
         label: impl Into<SharedString>,

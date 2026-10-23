@@ -27,6 +27,7 @@ pub struct EditorTab {
 }
 
 impl EditorTab {
+    /// A tab named `id` that reads `title`.
     pub fn new(id: impl Into<SharedString>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -38,6 +39,7 @@ impl EditorTab {
         }
     }
 
+    /// An icon before the title.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
@@ -71,6 +73,17 @@ type OnTab = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnReorder = Rc<dyn Fn(usize, usize, &mut Window, &mut App)>;
 
 /// Document tabs: close, pin, drag to reorder, keep a preview. Every tab is listed at the end.
+///
+/// ```
+/// use ely_core::navigation::{EditorTab, EditorTabs};
+///
+/// let tabs = EditorTabs::new(
+///     "editor-tabs",
+///     [EditorTab::new("main", "main.rs").dirty(true), EditorTab::new("lib", "lib.rs")],
+/// )
+/// .selected("main")
+/// .on_select(|_id, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EditorTabs {
     id: ElementId,
@@ -84,6 +97,7 @@ pub struct EditorTabs {
 }
 
 impl EditorTabs {
+    /// A strip under `id` of `tabs`.
     pub fn new(id: impl Into<ElementId>, tabs: impl IntoIterator<Item = EditorTab>) -> Self {
         Self {
             id: id.into(),
@@ -97,11 +111,13 @@ impl EditorTabs {
         }
     }
 
+    /// Marks the tab `id` selected.
     pub fn selected(mut self, id: impl Into<SharedString>) -> Self {
         self.selected = Some(id.into());
         self
     }
 
+    /// Runs with a tab's id when it is pressed.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

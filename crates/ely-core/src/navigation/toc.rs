@@ -41,6 +41,16 @@ pub(crate) fn in_view(tops: &[Option<Pixels>], line: Pixels) -> usize {
 }
 
 /// Marks where a section starts, so a table of contents can follow it and bring it into view.
+///
+/// ```
+/// use ely_core::navigation::{Anchor, Sections};
+/// use gpui::{App, AppContext, ParentElement, ScrollHandle};
+///
+/// fn intro(scroll: ScrollHandle, cx: &mut App) -> Anchor {
+///     let sections = cx.new(|_| Sections::new(scroll));
+///     Anchor::new(&sections, "intro").child("Introduction")
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct Anchor {
     sections: Entity<Sections>,
@@ -49,6 +59,7 @@ pub struct Anchor {
 }
 
 impl Anchor {
+    /// Marks where the section `value` starts.
     pub fn new(sections: &Entity<Sections>, value: impl Into<SharedString>) -> Self {
         Self {
             sections: sections.clone(),
@@ -93,6 +104,18 @@ impl RenderOnce for Anchor {
 }
 
 /// A document's headings. A line marks the section in view; a click brings a section to the top.
+///
+/// ```
+/// use ely_core::navigation::{Sections, TableOfContents};
+/// use gpui::{App, AppContext, ScrollHandle};
+///
+/// fn contents(scroll: ScrollHandle, cx: &mut App) -> TableOfContents {
+///     let sections = cx.new(|_| Sections::new(scroll));
+///     TableOfContents::new("contents", &sections)
+///         .entry("intro", "Introduction", 0)
+///         .entry("setup", "Setup", 1)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct TableOfContents {
     id: ElementId,
@@ -101,6 +124,7 @@ pub struct TableOfContents {
 }
 
 impl TableOfContents {
+    /// An empty table under `id` over `sections`.
     pub fn new(id: impl Into<ElementId>, sections: &Entity<Sections>) -> Self {
         Self {
             id: id.into(),

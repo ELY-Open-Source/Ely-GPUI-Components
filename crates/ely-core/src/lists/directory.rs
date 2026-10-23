@@ -25,6 +25,7 @@ pub struct DirEntry {
 }
 
 impl DirEntry {
+    /// A folder named `name`, last changed at `modified`.
     pub fn folder(name: impl Into<SharedString>, modified: Timestamp) -> Self {
         Self {
             name: name.into(),
@@ -33,6 +34,7 @@ impl DirEntry {
         }
     }
 
+    /// A file named `name`, `size` bytes, last changed at `modified`.
     pub fn file(name: impl Into<SharedString>, size: u64, modified: Timestamp) -> Self {
         Self {
             name: name.into(),
@@ -41,10 +43,12 @@ impl DirEntry {
         }
     }
 
+    /// Its name.
     pub fn name(&self) -> &SharedString {
         &self.name
     }
 
+    /// Whether it is a folder.
     pub fn is_folder(&self) -> bool {
         self.size.is_none()
     }
@@ -54,6 +58,7 @@ impl DirEntry {
         self.size
     }
 
+    /// When it last changed.
     pub fn modified(&self) -> Timestamp {
         self.modified
     }
@@ -121,6 +126,18 @@ type OnEntry = Rc<dyn Fn(&DirEntry, &mut Window, &mut App)>;
 pub type OnClimb = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// A directory's entries in columns: name, size, and when each changed. A header sorts by its column and a second press reverses it; folders stay first. Enter or a double press opens an entry; the path above climbs to an earlier level.
+///
+/// ```
+/// use ely_core::lists::{DirEntry, DirectoryListing};
+/// use jiff::Timestamp;
+///
+/// let docs = DirectoryListing::new(
+///     "docs",
+///     ["home", "docs"],
+///     [DirEntry::folder("drafts", Timestamp::now()), DirEntry::file("notes.md", 2_048, Timestamp::now())],
+/// )
+/// .on_open(|_entry, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DirectoryListing {
     id: ElementId,
@@ -174,6 +191,7 @@ impl DirectoryListing {
         self
     }
 
+    /// Runs with the entry opened by Enter or a double press.
     pub fn on_open(mut self, handler: impl Fn(&DirEntry, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self

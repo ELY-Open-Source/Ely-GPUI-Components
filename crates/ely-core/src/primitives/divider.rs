@@ -3,6 +3,12 @@ use gpui::{App, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Wi
 use crate::theme::{ActiveTheme, TextSize};
 
 /// Hairline rule, across or down.
+///
+/// ```
+/// use ely_core::primitives::Divider;
+///
+/// let rule = Divider::horizontal().label("or");
+/// ```
 #[derive(IntoElement)]
 pub struct Divider {
     vertical: bool,
@@ -10,6 +16,7 @@ pub struct Divider {
 }
 
 impl Divider {
+    /// A rule across its container.
     pub fn horizontal() -> Self {
         Self {
             vertical: false,
@@ -17,6 +24,7 @@ impl Divider {
         }
     }
 
+    /// A rule down its container.
     pub fn vertical() -> Self {
         Self {
             vertical: true,

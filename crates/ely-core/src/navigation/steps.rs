@@ -17,6 +17,17 @@ use crate::{
 type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Numbered steps joined by lines. Finished steps carry a check and can be revisited.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::Steps};
+///
+/// let checkout = Steps::new(
+///     "checkout",
+///     [Choice::new("cart", "Cart"), Choice::new("pay", "Payment"), Choice::new("done", "Done")],
+///     1,
+/// )
+/// .on_select(|_step, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Steps {
     id: ElementId,
@@ -42,6 +53,7 @@ impl Steps {
         }
     }
 
+    /// Stacks the steps down instead of across.
     pub fn vertical(mut self) -> Self {
         self.vertical = true;
         self
@@ -207,6 +219,20 @@ impl RenderOnce for Steps {
 }
 
 /// Steps, the current step's content, then Back and Next. Next becomes Finish on the last step, keeping its focus; focus moves to it when Back reaches the first step or a finished step is picked.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::Wizard};
+///
+/// let setup = Wizard::new(
+///     "setup",
+///     [Choice::new("account", "Account"), Choice::new("team", "Team")],
+///     0,
+///     |_step, _, _| {},
+///     |_, _| {},
+/// )
+/// .content("Name your account.")
+/// .ready(true);
+/// ```
 #[derive(IntoElement)]
 pub struct Wizard {
     id: ElementId,

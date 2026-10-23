@@ -21,6 +21,16 @@ enum Source {
     },
 }
 
+/// A Lucide icon, or an app's own SVG, in the theme's sizes and colors.
+///
+/// ```
+/// use ely_core::{
+///     primitives::{Icon, IconName},
+///     theme::IconSize,
+/// };
+///
+/// let check = Icon::new(IconName::Check).size(IconSize::Sm);
+/// ```
 #[derive(IntoElement)]
 pub struct Icon {
     source: Source,
@@ -32,6 +42,7 @@ pub struct Icon {
 }
 
 impl Icon {
+    /// A bundled icon at the medium size.
     pub fn new(name: IconName) -> Self {
         Self::drawing(Source::Bundled(name))
     }
@@ -55,6 +66,7 @@ impl Icon {
         }
     }
 
+    /// Its box size.
     pub fn size(mut self, size: IconSize) -> Self {
         self.size = size;
         self
@@ -76,6 +88,7 @@ impl Icon {
         self
     }
 
+    /// Turns it by `angle` about its center.
     pub fn rotate(mut self, angle: impl Into<Radians>) -> Self {
         self.rotation = Some(angle.into());
         self

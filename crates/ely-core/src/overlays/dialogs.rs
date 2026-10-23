@@ -57,6 +57,12 @@ fn said(
 }
 
 /// A message to acknowledge: its severity's icon, the text and one button. The scrim does not close it.
+///
+/// ```
+/// use ely_core::{overlays::AlertDialog, primitives::Severity};
+///
+/// let saved = AlertDialog::new("saved", Severity::Success, "Saved", "Your changes are safe.", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AlertDialog {
     id: ElementId,
@@ -68,6 +74,7 @@ pub struct AlertDialog {
 }
 
 impl AlertDialog {
+    /// A message under `id` with `severity`'s icon; `on_close` runs on its button and on Escape.
     pub fn new(
         id: impl Into<ElementId>,
         severity: Severity,
@@ -109,6 +116,15 @@ impl RenderOnce for AlertDialog {
 }
 
 /// Asks before an action: Cancel, and a button that confirms, red when the action destroys.
+///
+/// ```
+/// use ely_core::overlays::ConfirmDialog;
+///
+/// let delete = ConfirmDialog::new("delete", "Delete project?", "This cannot be undone.", |_, _| {})
+///     .confirm("Delete")
+///     .destructive()
+///     .on_confirm(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConfirmDialog {
     id: ElementId,
@@ -145,11 +161,13 @@ impl ConfirmDialog {
         self
     }
 
+    /// Sets the confirming button in the danger tone.
     pub fn destructive(mut self) -> Self {
         self.destructive = true;
         self
     }
 
+    /// Runs on the confirming button, before `on_close`.
     pub fn on_confirm(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_confirm = Some(Rc::new(handler));
         self
@@ -193,6 +211,19 @@ type Submit = Rc<dyn Fn(&str, &mut Window, &mut App)>;
 type Send = Rc<dyn Fn(&Close, &mut Window, &mut App)>;
 
 /// Asks for one line, its text selected so typing replaces it. Enter or the submit button sends it once the check passes; the check's reason shows under the field.
+///
+/// ```
+/// use ely_core::{forms::TextInput, overlays::PromptDialog};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn rename(window: &mut Window, cx: &mut App) -> PromptDialog {
+///     let field = cx.new(|cx| TextInput::new(window, cx));
+///     PromptDialog::new("rename", "Rename", &field, |_, _| {})
+///         .label("New name")
+///         .check(|text| if text.is_empty() { Err("Type a name.".into()) } else { Ok(()) })
+///         .on_submit(|_text, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PromptDialog {
     id: ElementId,
@@ -206,6 +237,7 @@ pub struct PromptDialog {
 }
 
 impl PromptDialog {
+    /// A dialog under `id` titled `title` that asks for one line in `field`.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,
@@ -224,6 +256,7 @@ impl PromptDialog {
         }
     }
 
+    /// A label over the field.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
@@ -241,6 +274,7 @@ impl PromptDialog {
         self
     }
 
+    /// Runs with the text sent.
     pub fn on_submit(mut self, handler: impl Fn(&str, &mut Window, &mut App) + 'static) -> Self {
         self.on_submit = Some(Rc::new(handler));
         self

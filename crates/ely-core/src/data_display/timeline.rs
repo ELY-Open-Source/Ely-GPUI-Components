@@ -17,6 +17,15 @@ enum Marker {
 }
 
 /// One event on a `Timeline`: its title, when it happened, and any detail below.
+///
+/// ```
+/// use ely_core::{
+///     data_display::{TimelineItem, Tone},
+///     primitives::IconName,
+/// };
+///
+/// let shipped = TimelineItem::new("Shipped").time("Oct 21").tone(Tone::Success).icon(IconName::Package);
+/// ```
 #[derive(IntoElement)]
 pub struct TimelineItem {
     title: AnyElement,
@@ -28,6 +37,7 @@ pub struct TimelineItem {
 }
 
 impl TimelineItem {
+    /// An event titled `title`, marked by a neutral dot.
     pub fn new(title: impl IntoElement) -> Self {
         Self {
             title: title.into_any_element(),
@@ -173,16 +183,26 @@ impl RenderOnce for TimelineItem {
 }
 
 /// Events down a rail in the order given, each marked by a dot, an icon or an avatar.
+///
+/// ```
+/// use ely_core::data_display::{Timeline, TimelineItem};
+///
+/// let order = Timeline::new()
+///     .item(TimelineItem::new("Ordered").time("Oct 19"))
+///     .item(TimelineItem::new("Shipped").time("Oct 21"));
+/// ```
 #[derive(IntoElement, Default)]
 pub struct Timeline {
     items: Vec<TimelineItem>,
 }
 
 impl Timeline {
+    /// An empty timeline.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Adds an event at the end.
     pub fn item(mut self, item: TimelineItem) -> Self {
         self.items.push(item);
         self

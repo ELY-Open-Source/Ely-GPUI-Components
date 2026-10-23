@@ -18,16 +18,26 @@ use crate::{
 };
 
 /// Buttons joined edge to edge.
+///
+/// ```
+/// use ely_core::buttons::{Button, ButtonGroup};
+///
+/// let pager = ButtonGroup::new()
+///     .button(Button::new("prev", "Previous"))
+///     .button(Button::new("next", "Next"));
+/// ```
 #[derive(IntoElement, Default)]
 pub struct ButtonGroup {
     buttons: Vec<Button>,
 }
 
 impl ButtonGroup {
+    /// An empty group.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Adds a button at the end.
     pub fn button(mut self, button: Button) -> Self {
         self.buttons.push(button);
         self
@@ -64,6 +74,7 @@ pub struct ToggleItem {
 }
 
 impl ToggleItem {
+    /// An item whose value is `value`.
     pub fn new(value: impl Into<SharedString>) -> Self {
         Self {
             value: value.into(),
@@ -73,16 +84,19 @@ impl ToggleItem {
         }
     }
 
+    /// Its text.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
     }
 
+    /// Its icon.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// The tip it shows on hover.
     pub fn tooltip(mut self, text: impl Into<SharedString>) -> Self {
         self.tooltip = Some(text.into());
         self
@@ -168,6 +182,16 @@ fn toggle_face(
 type OnToggle = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// A button that stays pressed until pressed again.
+///
+/// ```
+/// use ely_core::{
+///     buttons::{ToggleButton, ToggleItem},
+///     primitives::IconName,
+/// };
+///
+/// let bold = ToggleButton::new("bold", ToggleItem::new("bold").icon(IconName::Bold), true)
+///     .on_toggle(|_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ToggleButton {
     id: ElementId,
@@ -179,6 +203,7 @@ pub struct ToggleButton {
 }
 
 impl ToggleButton {
+    /// A toggle under `id` that shows `item`, on or off.
     pub fn new(id: impl Into<ElementId>, item: ToggleItem, on: bool) -> Self {
         Self {
             id: id.into(),
@@ -190,6 +215,7 @@ impl ToggleButton {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
@@ -201,6 +227,7 @@ impl ToggleButton {
         self
     }
 
+    /// Runs with the new state on each press.
     pub fn on_toggle(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_toggle = Some(Rc::new(handler));
         self
@@ -224,6 +251,18 @@ impl RenderOnce for ToggleButton {
 type OnChange = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 
 /// Wrapping toggles; one chosen, or several with `multiple`.
+///
+/// ```
+/// use ely_core::{
+///     buttons::{ToggleGroup, ToggleItem},
+///     primitives::IconName,
+/// };
+///
+/// let align = ToggleGroup::new("align")
+///     .item(ToggleItem::new("left").icon(IconName::AlignLeft))
+///     .item(ToggleItem::new("center").icon(IconName::AlignCenter))
+///     .selected(["left"]);
+/// ```
 #[derive(IntoElement)]
 pub struct ToggleGroup {
     id: ElementId,
@@ -235,6 +274,7 @@ pub struct ToggleGroup {
 }
 
 impl ToggleGroup {
+    /// An empty group under `id`; one item on at a time unless `multiple`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -246,21 +286,25 @@ impl ToggleGroup {
         }
     }
 
+    /// Adds an item.
     pub fn item(mut self, item: ToggleItem) -> Self {
         self.items.push(item);
         self
     }
 
+    /// The values of the items that are on.
     pub fn selected(mut self, values: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = values.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Lets more than one item be on.
     pub fn multiple(mut self) -> Self {
         self.multiple = true;
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

@@ -18,16 +18,24 @@ use crate::{
 /// One option: a value, the label shown for it, and an optional icon and note.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Choice {
+    /// What a pick reports.
     pub value: SharedString,
+    /// What the row shows.
     pub label: SharedString,
+    /// An icon before the label.
     pub icon: Option<IconName>,
+    /// A name whose initials lead the row.
     pub avatar: Option<SharedString>,
+    /// Quiet text at the row's end.
     pub note: Option<SharedString>,
+    /// Shown but not pickable.
     pub disabled: bool,
+    /// How far it sits under a parent.
     pub depth: usize,
 }
 
 impl Choice {
+    /// A choice whose value is `value` and whose text is `label`.
     pub fn new(value: impl Into<SharedString>, label: impl Into<SharedString>) -> Self {
         Self {
             value: value.into(),
@@ -46,6 +54,7 @@ impl Choice {
         self
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
@@ -63,6 +72,7 @@ impl Choice {
         self
     }
 
+    /// Shows it but takes no pick.
     pub fn disabled(mut self) -> Self {
         self.disabled = true;
         self

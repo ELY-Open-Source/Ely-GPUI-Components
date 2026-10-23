@@ -41,6 +41,12 @@ fn share(score: f32, ix: usize) -> f32 {
 }
 
 /// A score in stars, read only. A score of 4.6 fills four stars and three fifths of the fifth.
+///
+/// ```
+/// use ely_core::data_display::Stars;
+///
+/// let rating = Stars::new(4.5);
+/// ```
 #[derive(IntoElement)]
 pub struct Stars {
     score: f32,
@@ -49,6 +55,7 @@ pub struct Stars {
 }
 
 impl Stars {
+    /// `score` stars filled out of five, a fraction filling part of one. Panics on a negative score or one that is not finite.
     pub fn new(score: f32) -> Self {
         assert!(
             score.is_finite() && score >= 0.0,
@@ -61,12 +68,14 @@ impl Stars {
         }
     }
 
+    /// How many stars. Panics on zero.
     pub fn max(mut self, max: u8) -> Self {
         assert!(max > 0, "stars need at least one");
         self.max = max;
         self
     }
 
+    /// Each star's size.
     pub fn size(mut self, size: IconSize) -> Self {
         self.size = size;
         self

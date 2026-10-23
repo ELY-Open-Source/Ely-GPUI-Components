@@ -23,7 +23,18 @@ fn titlebar(title: SharedString, cx: &App) -> TitlebarOptions {
 }
 
 /// A window whose content is one component. Escape closes it.
+///
+/// ```
+/// use ely_core::shell::{AboutDialog, open_hosted};
+/// use gpui::{App, px, size};
+///
+/// fn about(cx: &mut App) -> anyhow::Result<()> {
+///     let window = open_hosted("About", size(px(420.0), px(360.0)), AboutDialog::new("Ely", "0.1.1"), cx)?;
+///     Ok(())
+/// }
+/// ```
 pub struct Hosted<T> {
+    /// The component it shows.
     pub content: T,
     focus: FocusHandle,
 }
@@ -141,6 +152,7 @@ impl WindowManager {
             .collect()
     }
 
+    /// Brings `handle`'s window to the front.
     pub fn focus(handle: AnyWindowHandle, cx: &mut App) -> anyhow::Result<()> {
         log::info!("window manager: focus {:?}", handle.window_id());
         handle.update(cx, |_, window, _| window.activate_window())
@@ -150,13 +162,27 @@ impl WindowManager {
 /// Screen corner for a mini window.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Corner {
+    /// The top-left corner.
     TopLeft,
+    /// The top-right corner.
     TopRight,
+    /// The bottom-left corner.
     BottomLeft,
+    /// The bottom-right corner.
     BottomRight,
 }
 
 /// A small window above all others, around a host view.
+///
+/// ```
+/// use ely_core::shell::{Corner, MiniWindow};
+/// use gpui::{AnyView, App, px, size};
+///
+/// fn timer(view: AnyView, cx: &mut App) -> anyhow::Result<()> {
+///     MiniWindow::open("Timer", size(px(240.0), px(120.0)), Some(Corner::BottomRight), view, cx)?;
+///     Ok(())
+/// }
+/// ```
 pub struct MiniWindow {
     title: SharedString,
     view: AnyView,

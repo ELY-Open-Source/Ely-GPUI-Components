@@ -4,9 +4,13 @@ use gpui::{App, Pixels, px};
 
 use crate::theme::ActiveTheme;
 
+/// A short move, 120 ms.
 pub const FAST: Duration = Duration::from_millis(120);
+/// The common move, 200 ms.
 pub const BASE: Duration = Duration::from_millis(200);
+/// A long move, 320 ms.
 pub const SLOW: Duration = Duration::from_millis(320);
+/// The fade between light and dark, 280 ms.
 pub const THEME: Duration = Duration::from_millis(280);
 
 /// Travel of small entrances.
@@ -24,14 +28,17 @@ pub fn duration(base: Duration, cx: &App) -> Duration {
     }
 }
 
+/// The point a share `t` of the way from `from` to `to`.
 pub fn lerp(from: f32, to: f32, t: f32) -> f32 {
     from + (to - from) * t
 }
 
+/// Fast at first, gentle at the end.
 pub fn ease_out_cubic(t: f32) -> f32 {
     1.0 - (1.0 - t).powi(3)
 }
 
+/// Gentle at both ends, fast between.
 pub fn ease_in_out_cubic(t: f32) -> f32 {
     if t < 0.5 {
         4.0 * t * t * t

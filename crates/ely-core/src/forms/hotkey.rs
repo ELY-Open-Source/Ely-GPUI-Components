@@ -14,6 +14,13 @@ use crate::{
 type OnChange = Rc<dyn Fn(Option<Keystroke>, &mut Window, &mut App)>;
 
 /// Records one shortcut, then lets go. Backspace clears; Escape leaves.
+///
+/// ```
+/// use ely_core::forms::HotkeyInput;
+/// use gpui::Keystroke;
+///
+/// let save = HotkeyInput::new("save", Keystroke::parse("cmd-s").ok()).on_change(|_keystroke, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct HotkeyInput {
     id: ElementId,
@@ -22,6 +29,7 @@ pub struct HotkeyInput {
 }
 
 impl HotkeyInput {
+    /// A recorder under `id` holding `value`.
     pub fn new(id: impl Into<ElementId>, value: Option<Keystroke>) -> Self {
         Self {
             id: id.into(),
@@ -30,6 +38,7 @@ impl HotkeyInput {
         }
     }
 
+    /// Runs with the keystroke recorded, or `None` once Backspace or Delete clears it.
     pub fn on_change(
         mut self,
         handler: impl Fn(Option<Keystroke>, &mut Window, &mut App) + 'static,

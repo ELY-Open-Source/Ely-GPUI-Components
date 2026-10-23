@@ -15,6 +15,15 @@ use crate::{
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A short list of choices rising from the bottom, with its own cancel.
+///
+/// ```
+/// use ely_core::buttons::ActionSheet;
+///
+/// let photo = ActionSheet::new("photo", |_, _| {})
+///     .title("Change photo")
+///     .action("Take photo", |_, _| {})
+///     .destructive("Remove photo", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ActionSheet {
     id: ElementId,
@@ -25,6 +34,7 @@ pub struct ActionSheet {
 }
 
 impl ActionSheet {
+    /// A sheet under `id`; `on_close` runs when it closes.
     pub fn new(
         id: impl Into<ElementId>,
         on_close: impl Fn(&mut Window, &mut App) + 'static,
@@ -38,11 +48,13 @@ impl ActionSheet {
         }
     }
 
+    /// A title over the choices.
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = Some(title.into());
         self
     }
 
+    /// A line under the title.
     pub fn message(mut self, message: impl Into<SharedString>) -> Self {
         self.message = Some(message.into());
         self

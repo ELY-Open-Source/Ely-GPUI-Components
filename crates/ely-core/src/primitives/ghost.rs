@@ -7,12 +7,22 @@ use super::{Icon, IconName};
 use crate::theme::{ActiveTheme, Elevation, IconSize, Radius, TextSize};
 
 /// What follows the pointer while a tab or panel drags.
+///
+/// ```
+/// use ely_core::primitives::{DragGhost, IconName};
+/// use gpui::App;
+///
+/// fn ghost(cx: &mut App) {
+///     let _ghost = DragGhost::new("main.rs".into(), Some(IconName::File), cx);
+/// }
+/// ```
 pub struct DragGhost {
     title: SharedString,
     icon: Option<IconName>,
 }
 
 impl DragGhost {
+    /// A ghost that shows `title` and `icon`.
     pub fn new(title: SharedString, icon: Option<IconName>, cx: &mut App) -> Entity<Self> {
         cx.new(|_| Self { title, icon })
     }

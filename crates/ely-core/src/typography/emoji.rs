@@ -3,6 +3,13 @@ use gpui::{App, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Wi
 use crate::theme::{ActiveTheme, TextSize};
 
 /// One emoji in the system color font.
+///
+/// ```
+/// use ely_core::{theme::TextSize, typography::Emoji};
+///
+/// let party = Emoji::new("🎉").size(TextSize::Xl);
+/// let tada = Emoji::shortcode("tada").expect("a GitHub shortcode");
+/// ```
 #[derive(IntoElement)]
 pub struct Emoji {
     glyph: SharedString,
@@ -10,6 +17,7 @@ pub struct Emoji {
 }
 
 impl Emoji {
+    /// One emoji, large.
     pub fn new(glyph: impl Into<SharedString>) -> Self {
         Self {
             glyph: glyph.into(),
@@ -22,6 +30,7 @@ impl Emoji {
         emojis::get_by_shortcode(code).map(|emoji| Self::new(emoji.as_str()))
     }
 
+    /// Its text size.
     pub fn size(mut self, size: TextSize) -> Self {
         self.size = size;
         self

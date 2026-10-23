@@ -12,12 +12,17 @@ use crate::{
 /// What a cell holds; its column says how numbers read.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Cell {
+    /// Nothing.
     Empty,
+    /// Text.
     Text(SharedString),
+    /// A number, read as its column says.
     Number(f64),
+    /// A tag in a tint.
     Tag(SharedString, Tone),
     /// A share from 0 to 1, drawn as a bar with its percent.
     Progress(f32),
+    /// A small line through the values.
     Spark(Vec<f32>),
     /// A person's name beside their initials.
     Person(SharedString),
@@ -72,20 +77,28 @@ impl From<f64> for Cell {
     }
 }
 
+/// Where a column sets its cells.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Align {
+    /// At the start.
     #[default]
     Start,
+    /// At the end, as numbers sit.
     End,
 }
 
 /// A figure the footer shows for a column.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Aggregate {
+    /// The total.
     Sum,
+    /// The mean.
     Average,
+    /// How many cells hold a number.
     Count,
+    /// The least.
     Min,
+    /// The greatest.
     Max,
 }
 
@@ -102,6 +115,12 @@ impl Aggregate {
 }
 
 /// A column: its key and title, its width, and how its cells read.
+///
+/// ```
+/// use ely_core::tables::{Aggregate, Column};
+///
+/// let price = Column::new("price", "Price").prefix("$").decimals(2).aggregate(Aggregate::Sum);
+/// ```
 #[derive(Clone, Debug)]
 pub struct Column {
     pub(crate) key: SharedString,
@@ -119,6 +138,7 @@ pub struct Column {
 }
 
 impl Column {
+    /// A column keyed `key` titled `title`, its cells at the start.
     pub fn new(key: impl Into<SharedString>, title: impl Into<SharedString>) -> Self {
         Self {
             key: key.into(),
@@ -154,16 +174,19 @@ impl Column {
         self
     }
 
+    /// Places after the point for numbers.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
     }
 
+    /// Text before each number, such as `$`.
     pub fn prefix(mut self, text: impl Into<SharedString>) -> Self {
         self.prefix = Some(text.into());
         self
     }
 
+    /// Text after each number, such as `%`.
     pub fn suffix(mut self, text: impl Into<SharedString>) -> Self {
         self.suffix = Some(text.into());
         self
@@ -193,10 +216,12 @@ impl Column {
         self
     }
 
+    /// Its key.
     pub fn key(&self) -> &SharedString {
         &self.key
     }
 
+    /// Its title.
     pub fn title(&self) -> &SharedString {
         &self.title
     }

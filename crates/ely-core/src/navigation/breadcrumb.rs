@@ -21,6 +21,7 @@ pub struct Crumb {
 }
 
 impl Crumb {
+    /// A level whose value is `value` and whose text is `label`.
     pub fn new(value: impl Into<SharedString>, label: impl Into<SharedString>) -> Self {
         Self {
             value: value.into(),
@@ -30,6 +31,7 @@ impl Crumb {
         }
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
@@ -55,6 +57,13 @@ impl Crumb {
 type OnLevel = Rc<dyn Fn(usize, &SharedString, &mut Window, &mut App)>;
 
 /// A path of levels. A level with siblings lists them on click; an earlier level goes to itself.
+///
+/// ```
+/// use ely_core::navigation::{Breadcrumb, Crumb};
+///
+/// let path = Breadcrumb::new("path", [Crumb::new("home", "Home"), Crumb::new("docs", "Docs")])
+///     .on_select(|_level, _value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Breadcrumb {
     id: ElementId,
@@ -63,6 +72,7 @@ pub struct Breadcrumb {
 }
 
 impl Breadcrumb {
+    /// A path under `id` through `crumbs`, the last one current.
     pub fn new(id: impl Into<ElementId>, crumbs: impl IntoIterator<Item = Crumb>) -> Self {
         Self {
             id: id.into(),

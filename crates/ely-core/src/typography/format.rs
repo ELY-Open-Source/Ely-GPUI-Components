@@ -5,13 +5,17 @@ use jiff::{Timestamp, fmt::strtime, tz::TimeZone};
 /// Typographic minus; aligns with plus in tabular figures.
 pub const MINUS: char = '\u{2212}';
 
+/// The digit group and decimal marks a locale writes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Separators {
+    /// Between groups of three digits.
     pub group: char,
+    /// Before the fraction.
     pub decimal: char,
 }
 
 impl Separators {
+    /// English: `1,234.5`.
     pub const EN: Self = Self {
         group: ',',
         decimal: '.',
@@ -147,6 +151,7 @@ pub fn file_size(bytes: u64, binary: bool) -> String {
     format!("{shown} {}", units[unit])
 }
 
+/// How a span of seconds reads.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DurationStyle {
     /// `01:23:45`, or `23:45` under an hour.
@@ -155,6 +160,7 @@ pub enum DurationStyle {
     Compact,
 }
 
+/// `seconds` written in `style`.
 pub fn duration(seconds: u64, style: DurationStyle) -> String {
     let (days, hours, minutes, secs) = (
         seconds / 86_400,

@@ -124,14 +124,17 @@ impl<S> History<S> {
         self.redo.clear();
     }
 
+    /// Whether a step is left to undo.
     pub fn can_undo(&self) -> bool {
         !self.undo.is_empty()
     }
 
+    /// Whether a step is left to redo.
     pub fn can_redo(&self) -> bool {
         !self.redo.is_empty()
     }
 
+    /// Trades `current` for the state before the last step; `None` with nothing to undo.
     pub fn undo(&mut self, current: S) -> Option<S> {
         let previous = self.undo.pop()?;
         self.redo.push(current);
@@ -139,6 +142,7 @@ impl<S> History<S> {
         Some(previous)
     }
 
+    /// Trades `current` for the state after the last undone step; `None` with nothing to redo.
     pub fn redo(&mut self, current: S) -> Option<S> {
         let next = self.redo.pop()?;
         self.undo.push(current);

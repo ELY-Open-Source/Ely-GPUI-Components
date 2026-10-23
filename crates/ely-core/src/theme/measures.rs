@@ -17,6 +17,7 @@ pub struct ChartSizes {
     pub inset: Rems,
     /// The least room a category label takes along its axis; closer labels thin out.
     pub label: Rems,
+    /// A line series' width.
     pub stroke: Rems,
     /// Widest a bubble's radius grows.
     pub bubble: Rems,
@@ -29,6 +30,7 @@ pub struct ChartSizes {
 }
 
 impl Theme {
+    /// A chart's measures.
     pub fn chart(&self) -> ChartSizes {
         ChartSizes {
             height: px_to_rems(280.0),
@@ -59,6 +61,7 @@ pub struct GenerativeSizes {
 }
 
 impl Theme {
+    /// Generative tools' measures.
     pub fn generative(&self) -> GenerativeSizes {
         GenerativeSizes {
             preset: px_to_rems(88.0),
@@ -95,6 +98,7 @@ pub struct MediaSizes {
 }
 
 impl Theme {
+    /// Media tools' measures.
     pub fn media(&self) -> MediaSizes {
         MediaSizes {
             crop_handle: px_to_rems(10.0),
@@ -123,6 +127,7 @@ pub struct FileSizes {
 }
 
 impl Theme {
+    /// File views' measures.
     pub fn files(&self) -> FileSizes {
         FileSizes {
             tile: px_to_rems(96.0),
@@ -144,6 +149,7 @@ pub struct MessagingSizes {
 }
 
 impl Theme {
+    /// Messaging's measures.
     pub fn messaging(&self) -> MessagingSizes {
         MessagingSizes {
             tiles: px_to_rems(200.0),
@@ -171,6 +177,7 @@ pub struct CalendarSizes {
 }
 
 impl Theme {
+    /// Calendar's measures.
     pub fn calendar(&self) -> CalendarSizes {
         CalendarSizes {
             chip: px_to_rems(20.0),
@@ -195,6 +202,7 @@ pub struct ProjectSizes {
 }
 
 impl Theme {
+    /// Project's measures.
     pub fn project(&self) -> ProjectSizes {
         ProjectSizes {
             column: px_to_rems(272.0),
@@ -223,6 +231,7 @@ pub struct CanvasSizes {
     pub hairline: Pixels,
     /// A note's inset and corner at a zoom of one.
     pub note_inset: Rems,
+    /// Its folded corner.
     pub note_corner: Rems,
     /// A minimap, wide and tall.
     pub map: (Rems, Rems),
@@ -230,16 +239,20 @@ pub struct CanvasSizes {
     pub handle: Rems,
     /// An asset's tile, square, and the room around its drawing.
     pub asset: Rems,
+    /// The room around an asset's drawing.
     pub asset_inset: Rems,
     /// The constraints picture, square.
     pub pins: Rems,
     /// A place in the auto layout grid, square; the chosen one's mark and the rest's pips.
     pub place: Rems,
+    /// The chosen place's mark.
     pub place_mark: Rems,
+    /// The other places' pips.
     pub place_pip: Rems,
 }
 
 impl Theme {
+    /// Canvas measures.
     pub fn canvas(&self) -> CanvasSizes {
         CanvasSizes {
             ruler: px_to_rems(20.0),
@@ -277,6 +290,7 @@ pub struct DashboardSizes {
 }
 
 impl Theme {
+    /// Dashboard measures.
     pub fn dashboard(&self) -> DashboardSizes {
         DashboardSizes {
             row: px_to_rems(88.0),
@@ -295,6 +309,7 @@ pub struct OnboardingSizes {
 }
 
 impl Theme {
+    /// Onboarding's measures.
     pub fn onboarding(&self) -> OnboardingSizes {
         OnboardingSizes {
             hotspot: px_to_rems(10.0),
@@ -312,6 +327,7 @@ pub struct InteractionSizes {
 }
 
 impl Theme {
+    /// Interaction's measures.
     pub fn interaction(&self) -> InteractionSizes {
         InteractionSizes {
             step: px_to_rems(8.0),
@@ -348,6 +364,7 @@ pub struct MapSizes {
 }
 
 impl Theme {
+    /// A map's measures.
     pub fn maps(&self) -> MapSizes {
         MapSizes {
             tile: px(256.0),
@@ -381,6 +398,7 @@ pub struct MiscSizes {
 }
 
 impl Theme {
+    /// The misc chapter's measures.
     pub fn misc(&self) -> MiscSizes {
         MiscSizes {
             face: px_to_rems(112.0),
@@ -406,6 +424,7 @@ pub struct ToolingSizes {
 }
 
 impl Theme {
+    /// The tooling chapter's measures.
     pub fn tooling(&self) -> ToolingSizes {
         ToolingSizes {
             graph: (px_to_rems(160.0), px_to_rems(40.0)),

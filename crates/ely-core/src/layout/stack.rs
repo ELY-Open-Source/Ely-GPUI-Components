@@ -17,6 +17,13 @@ pub fn v_stack() -> Div {
 }
 
 /// Layers: the first child sets the size, the rest cover it.
+///
+/// ```
+/// use ely_core::layout::ZStack;
+/// use gpui::{ParentElement, div};
+///
+/// let badge = ZStack::new().child(div()).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct ZStack {
     base: Div,
@@ -24,6 +31,7 @@ pub struct ZStack {
 }
 
 impl ZStack {
+    /// An empty stack.
     pub fn new() -> Self {
         Self {
             base: div(),
@@ -62,6 +70,13 @@ impl RenderOnce for ZStack {
 }
 
 /// Keeps width to height at `ratio`; width fills the parent.
+///
+/// ```
+/// use ely_core::layout::AspectRatio;
+/// use gpui::{ParentElement, div};
+///
+/// let video = AspectRatio::new(16.0 / 9.0).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct AspectRatio {
     base: Div,
@@ -100,6 +115,13 @@ impl RenderOnce for AspectRatio {
 }
 
 /// Centered column with a readable maximum width.
+///
+/// ```
+/// use ely_core::{layout::Container, theme::ContainerSize};
+/// use gpui::{ParentElement, div};
+///
+/// let article = Container::new(ContainerSize::Md).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Container {
     base: Div,
@@ -107,6 +129,7 @@ pub struct Container {
 }
 
 impl Container {
+    /// A column capped at `size`.
     pub fn new(size: ContainerSize) -> Self {
         Self { base: div(), size }
     }

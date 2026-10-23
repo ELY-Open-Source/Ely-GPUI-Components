@@ -12,6 +12,20 @@ use crate::{
 };
 
 /// A row of tools, grouped and divided.
+///
+/// ```
+/// use ely_core::{
+///     buttons::IconButton,
+///     primitives::IconName,
+///     shell::{Toolbar, ToolbarGroup, ToolbarSeparator},
+/// };
+/// use gpui::ParentElement;
+///
+/// let tools = Toolbar::new()
+///     .child(ToolbarGroup::new().child(IconButton::new("bold", IconName::Bold)))
+///     .child(ToolbarSeparator)
+///     .child(ToolbarGroup::new().child(IconButton::new("link", IconName::Link)));
+/// ```
 #[derive(IntoElement)]
 pub struct Toolbar {
     base: Div,
@@ -19,6 +33,7 @@ pub struct Toolbar {
 }
 
 impl Toolbar {
+    /// An empty toolbar.
     pub fn new() -> Self {
         Self {
             base: div(),
@@ -59,12 +74,22 @@ impl RenderOnce for Toolbar {
 }
 
 /// Tools that belong together.
+///
+/// ```
+/// use ely_core::{buttons::IconButton, primitives::IconName, shell::ToolbarGroup};
+/// use gpui::ParentElement;
+///
+/// let marks = ToolbarGroup::new()
+///     .child(IconButton::new("bold", IconName::Bold))
+///     .child(IconButton::new("italic", IconName::Italic));
+/// ```
 #[derive(IntoElement, Default)]
 pub struct ToolbarGroup {
     children: SmallVec<[AnyElement; 4]>,
 }
 
 impl ToolbarGroup {
+    /// An empty group.
     pub fn new() -> Self {
         Self::default()
     }
@@ -87,6 +112,12 @@ impl RenderOnce for ToolbarGroup {
 }
 
 /// Hairline between toolbar groups.
+///
+/// ```
+/// use ely_core::shell::ToolbarSeparator;
+///
+/// let rule = ToolbarSeparator;
+/// ```
 #[derive(IntoElement)]
 pub struct ToolbarSeparator;
 
@@ -102,6 +133,14 @@ impl RenderOnce for ToolbarSeparator {
 }
 
 /// Thin bar along a window's foot: items left and right.
+///
+/// ```
+/// use ely_core::shell::{StatusBar, StatusBarItem};
+///
+/// let status = StatusBar::new()
+///     .left(StatusBarItem::new("branch").label("main"))
+///     .right(StatusBarItem::new("cursor").label("Ln 12, Col 4"));
+/// ```
 #[derive(IntoElement)]
 pub struct StatusBar {
     base: Div,
@@ -110,6 +149,7 @@ pub struct StatusBar {
 }
 
 impl StatusBar {
+    /// An empty status bar.
     pub fn new() -> Self {
         Self {
             base: div(),
@@ -118,11 +158,13 @@ impl StatusBar {
         }
     }
 
+    /// Adds an item at the left.
     pub fn left(mut self, item: impl IntoElement) -> Self {
         self.left.push(item.into_any_element());
         self
     }
 
+    /// Adds an item at the right.
     pub fn right(mut self, item: impl IntoElement) -> Self {
         self.right.push(item.into_any_element());
         self
@@ -175,6 +217,16 @@ impl RenderOnce for StatusBar {
 type ClickHandler = Box<dyn Fn(&ClickEvent, &mut Window, &mut App)>;
 
 /// One status: an icon, a label, or both. Clickable when given a handler.
+///
+/// ```
+/// use ely_core::{primitives::IconName, shell::StatusBarItem};
+///
+/// let problems = StatusBarItem::new("problems")
+///     .icon(IconName::CircleAlert)
+///     .label("2")
+///     .tooltip("Problems")
+///     .on_click(|_, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StatusBarItem {
     id: ElementId,
@@ -186,6 +238,7 @@ pub struct StatusBarItem {
 }
 
 impl StatusBarItem {
+    /// An empty item under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -203,21 +256,25 @@ impl StatusBarItem {
         self
     }
 
+    /// An icon before its label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// Its text.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
     }
 
+    /// The tip it shows on hover.
     pub fn tooltip(mut self, tooltip: impl Into<SharedString>) -> Self {
         self.tooltip = Some(tooltip.into());
         self
     }
 
+    /// Makes it a button that runs `handler`.
     pub fn on_click(
         mut self,
         handler: impl Fn(&ClickEvent, &mut Window, &mut App) + 'static,

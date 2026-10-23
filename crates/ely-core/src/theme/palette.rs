@@ -2,7 +2,9 @@ use gpui::{Hsla, Rgba, rgb, rgba};
 
 use super::Mode;
 
+/// Blends one value into another.
 pub trait Mix {
+    /// The blend a share `t` of the way to `to`: 0 is `self`, 1 is `to`.
     fn mix(&self, to: &Self, t: f32) -> Self;
 }
 
@@ -33,12 +35,12 @@ impl<const N: usize> Mix for [Hsla; N] {
 }
 
 macro_rules! mixable {
-    ($(#[$meta:meta])* $name:ident { $($color:ident),* $(,)? ; $($field:ident: $ty:ty),* $(,)? }) => {
+    ($(#[$meta:meta])* $name:ident { $($(#[$doc:meta])* $color:ident),* $(,)? ; $($(#[$note:meta])* $field:ident: $ty:ty),* $(,)? }) => {
         $(#[$meta])*
         #[derive(Clone, Debug, PartialEq)]
         pub struct $name {
-            $(pub $color: Hsla,)*
-            $(pub $field: $ty,)*
+            $($(#[$doc])* pub $color: Hsla,)*
+            $($(#[$note])* pub $field: $ty,)*
         }
 
         impl Mix for $name {
@@ -76,18 +78,31 @@ macro_rules! mixable {
 mixable!(
     /// Code token colors.
     Syntax {
+        /// Keywords: `fn`, `let`, `if`.
         keyword,
+        /// String literals.
         string,
+        /// Number literals.
         number,
+        /// Comments.
         comment,
+        /// Function names.
         function,
+        /// Type names.
         type_name,
+        /// Constants.
         constant,
+        /// Fields and properties.
         property,
+        /// Markup tags.
         tag,
+        /// Markup attributes and annotations.
         attribute,
+        /// Operators.
         operator,
+        /// Brackets, commas and the rest of the punctuation.
         punctuation,
+        /// Variables.
         variable,
         ;
     }
@@ -96,45 +111,84 @@ mixable!(
 mixable!(
     /// Semantic colors. Components read these, never literals.
     Palette {
+        /// The window's ground.
         bg,
+        /// Cards, fields and raised boxes.
         surface,
+        /// Wells and tracks set below the surface.
         sunken,
+        /// Menus, popovers and dialogs.
         overlay,
+        /// A fill under the pointer.
         hover,
+        /// A fill while pressed.
         active,
+        /// Hairlines between parts.
         border,
+        /// Lines that must read: outlines and rules.
         border_strong,
+        /// Body text.
         fg,
+        /// Secondary text.
         fg_muted,
+        /// Hints and placeholders, still 4.5:1 on the ground.
         fg_subtle,
+        /// Text that takes no input.
         fg_disabled,
+        /// The one accent: primary buttons and chosen items.
         accent,
+        /// The accent under the pointer.
         accent_hover,
+        /// Text and icons on the accent.
         on_accent,
+        /// Text and icons on a dark layer over pictures.
         on_media,
+        /// The focus ring.
         focus,
+        /// Links.
         link,
+        /// The wash behind selected text.
         selection,
+        /// Something worked.
         success,
+        /// Something may go wrong.
         warning,
+        /// Something failed or destroys.
         danger,
+        /// News that needs no action.
         info,
+        /// A soft fill behind success.
         success_subtle,
+        /// A soft fill behind a warning.
         warning_subtle,
+        /// A soft fill behind danger.
         danger_subtle,
+        /// A soft fill behind news.
         info_subtle,
+        /// The scrim under a dialog.
         backdrop,
+        /// The dark layer under pictures in a lightbox.
         media_backdrop,
+        /// The band that sweeps a skeleton.
         shimmer,
+        /// A pane the window's blur shows through.
         glass,
+        /// Shadows.
         shadow,
+        /// A tooltip's fill.
         tooltip_bg,
+        /// A tooltip's text.
         tooltip_fg,
+        /// The light ground of QR codes and barcodes, in both modes.
         paper,
+        /// The dark marks of QR codes and barcodes, in both modes.
         ink,
         ;
+        /// The chart's eight hues, named by `HUE_NAMES`.
         chart: [Hsla; 8],
+        /// The terminal's sixteen colors.
         ansi: [Hsla; 16],
+        /// Code token colors.
         syntax: Syntax,
     }
 );
@@ -173,6 +227,7 @@ impl Palette {
             .unwrap_or_else(|| panic!("{owner}: no chart hue {hue}"))
     }
 
+    /// Ely's light palette, stronger with `high_contrast`.
     pub fn light(high_contrast: bool) -> Self {
         let mut palette = Self {
             bg: c(0xfcfaf7),
@@ -244,6 +299,7 @@ impl Palette {
         palette
     }
 
+    /// Ely's dark palette, stronger with `high_contrast`.
     pub fn dark(high_contrast: bool) -> Self {
         // Soft greys, never black: the base is #252525.
         let mut palette = Self {

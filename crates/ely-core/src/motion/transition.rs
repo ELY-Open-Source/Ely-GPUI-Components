@@ -13,6 +13,7 @@ use crate::theme::ActiveTheme;
 /// How content comes and goes.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Entrance {
+    /// Fades in and out in place.
     #[default]
     Fade,
     /// Fades while rising from a little below.
@@ -29,6 +30,13 @@ struct Turns {
 }
 
 /// Shows or hides its content with a fade, a rise or a slide. It keeps drawing the content while it leaves, so pass the content either way.
+///
+/// ```
+/// use ely_core::motion::{Entrance, Transition};
+/// use gpui::ParentElement;
+///
+/// let details = Transition::new("details", true).entrance(Entrance::Rise).child("Shipped Monday.");
+/// ```
 #[derive(IntoElement)]
 pub struct Transition {
     id: ElementId,
@@ -38,6 +46,7 @@ pub struct Transition {
 }
 
 impl Transition {
+    /// Shows its children under `id` while `shown`, with a fade.
     pub fn new(id: impl Into<ElementId>, shown: bool) -> Self {
         Self {
             id: id.into(),
@@ -47,6 +56,7 @@ impl Transition {
         }
     }
 
+    /// How it comes and goes.
     pub fn entrance(mut self, entrance: Entrance) -> Self {
         self.entrance = entrance;
         self
@@ -110,6 +120,18 @@ impl RenderOnce for Transition {
 }
 
 /// Children that enter one after another, `step` apart, each arriving once.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use ely_core::motion::Stagger;
+/// use gpui::ParentElement;
+///
+/// let cards = Stagger::new("cards")
+///     .step(Duration::from_millis(40))
+///     .child("First")
+///     .child("Second");
+/// ```
 #[derive(IntoElement)]
 pub struct Stagger {
     id: ElementId,
@@ -119,6 +141,7 @@ pub struct Stagger {
 }
 
 impl Stagger {
+    /// An empty stagger under `id`; children rise 60 ms apart.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -134,6 +157,7 @@ impl Stagger {
         self
     }
 
+    /// How each child arrives.
     pub fn entrance(mut self, entrance: Entrance) -> Self {
         self.entrance = entrance;
         self

@@ -10,6 +10,12 @@ use crate::{
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
 /// A button that picks a color from anywhere on screen. macOS only.
+///
+/// ```
+/// use ely_core::forms::EyeDropper;
+///
+/// let sample = EyeDropper::new("sample").on_pick(|_color, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct EyeDropper {
     id: ElementId,
@@ -17,6 +23,7 @@ pub struct EyeDropper {
 }
 
 impl EyeDropper {
+    /// A dropper button under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -24,6 +31,7 @@ impl EyeDropper {
         }
     }
 
+    /// Runs with the color picked from the screen.
     pub fn on_pick(mut self, handler: impl Fn(Hsla, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

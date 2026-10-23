@@ -25,6 +25,15 @@ fn dismiss(id: ElementId, run: Run) -> impl IntoElement {
 }
 
 /// A message in a page's flow: the severity's icon on its tint, a title, a line, actions and a close button.
+///
+/// ```
+/// use ely_core::{buttons::Button, feedback::Alert, primitives::Severity};
+///
+/// let quota = Alert::new("quota", Severity::Warning, "Storage almost full")
+///     .body("You have used 92% of your space.")
+///     .action(Button::new("upgrade", "Upgrade"))
+///     .on_dismiss(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Alert {
     id: ElementId,
@@ -36,6 +45,7 @@ pub struct Alert {
 }
 
 impl Alert {
+    /// An alert under `id` with `severity`'s color and icon, titled `title`.
     pub fn new(
         id: impl Into<ElementId>,
         severity: Severity,
@@ -51,16 +61,19 @@ impl Alert {
         }
     }
 
+    /// A line under the title.
     pub fn body(mut self, text: impl Into<SharedString>) -> Self {
         self.body = Some(text.into());
         self
     }
 
+    /// Adds an action at its end.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
     }
 
+    /// Shows a close button that runs `handler`.
     pub fn on_dismiss(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_dismiss = Some(Rc::new(handler));
         self
@@ -126,6 +139,14 @@ impl RenderOnce for Alert {
 }
 
 /// A strip across the top of a window or page: an icon, one line, a link and a close button.
+///
+/// ```
+/// use ely_core::{feedback::Banner, primitives::Severity};
+///
+/// let outage = Banner::new("outage", Severity::Danger, "Payments are delayed.")
+///     .action("Status page", |_, _| {})
+///     .on_dismiss(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Banner {
     id: ElementId,
@@ -136,6 +157,7 @@ pub struct Banner {
 }
 
 impl Banner {
+    /// A bar under `id` with `severity`'s color that reads `message`.
     pub fn new(
         id: impl Into<ElementId>,
         severity: Severity,
@@ -150,6 +172,7 @@ impl Banner {
         }
     }
 
+    /// A button at its end that reads `label` and runs `handler`.
     pub fn action(
         mut self,
         label: impl Into<SharedString>,
@@ -159,6 +182,7 @@ impl Banner {
         self
     }
 
+    /// Shows a close button that runs `handler`.
     pub fn on_dismiss(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_dismiss = Some(Rc::new(handler));
         self
@@ -233,6 +257,13 @@ impl RenderOnce for Banner {
 }
 
 /// A note set apart in reading: a rule in the severity's color, a labeled icon, then the text.
+///
+/// ```
+/// use ely_core::{feedback::Callout, primitives::Severity};
+/// use gpui::ParentElement;
+///
+/// let tip = Callout::new(Severity::Info).title("Tip").child("Hold Shift to select a range.");
+/// ```
 #[derive(IntoElement)]
 pub struct Callout {
     severity: Severity,
@@ -256,6 +287,7 @@ impl Callout {
         }
     }
 
+    /// Its title.
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = title.into();
         self
@@ -301,6 +333,12 @@ impl RenderOnce for Callout {
 }
 
 /// A line beside what it is about, in the severity's color; a long one wraps.
+///
+/// ```
+/// use ely_core::{feedback::InlineMessage, primitives::Severity};
+///
+/// let taken = InlineMessage::new(Severity::Danger, "That name is taken.");
+/// ```
 #[derive(IntoElement)]
 pub struct InlineMessage {
     severity: Severity,
@@ -308,6 +346,7 @@ pub struct InlineMessage {
 }
 
 impl InlineMessage {
+    /// One line in `severity`'s color and icon that reads `text`.
     pub fn new(severity: Severity, text: impl Into<SharedString>) -> Self {
         Self {
             severity,
@@ -342,6 +381,12 @@ impl RenderOnce for InlineMessage {
 }
 
 /// A line that says what just happened. Each new message rises in; the first stays still.
+///
+/// ```
+/// use ely_core::{feedback::StatusMessage, primitives::IconName};
+///
+/// let copied = StatusMessage::new("copied", "Copied to the clipboard").icon(IconName::Check);
+/// ```
 #[derive(IntoElement)]
 pub struct StatusMessage {
     id: ElementId,
@@ -350,6 +395,7 @@ pub struct StatusMessage {
 }
 
 impl StatusMessage {
+    /// A line under `id` that reads `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -358,6 +404,7 @@ impl StatusMessage {
         }
     }
 
+    /// An icon before the text.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self

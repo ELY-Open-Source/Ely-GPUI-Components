@@ -250,6 +250,12 @@ fn today(fixed: Option<Date>) -> Date {
 type OnPeriod = Rc<dyn Fn((i16, i8), &mut Window, &mut App)>;
 
 /// A year's months as a grid. The value is a year and a month, 1 to 12.
+///
+/// ```
+/// use ely_core::forms::MonthPicker;
+///
+/// let month = MonthPicker::new("month", Some((2026, 10))).on_change(|(_year, _month), _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MonthPicker {
     id: ElementId,
@@ -259,6 +265,7 @@ pub struct MonthPicker {
 }
 
 impl MonthPicker {
+    /// A grid under `id` with the month `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<(i16, i8)>) -> Self {
         Self {
             id: id.into(),
@@ -274,6 +281,7 @@ impl MonthPicker {
         self
     }
 
+    /// Runs with the year and month pressed.
     pub fn on_change(
         mut self,
         handler: impl Fn((i16, i8), &mut Window, &mut App) + 'static,
@@ -329,6 +337,12 @@ const MONTH_NAMES: [&str; 12] = [
 ];
 
 /// A year's quarters. The value is a year and a quarter, 1 to 4.
+///
+/// ```
+/// use ely_core::forms::QuarterPicker;
+///
+/// let quarter = QuarterPicker::new("quarter", Some((2026, 4))).on_change(|(_year, _quarter), _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct QuarterPicker {
     id: ElementId,
@@ -338,6 +352,7 @@ pub struct QuarterPicker {
 }
 
 impl QuarterPicker {
+    /// Quarters under `id` with `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<(i16, i8)>) -> Self {
         Self {
             id: id.into(),
@@ -353,6 +368,7 @@ impl QuarterPicker {
         self
     }
 
+    /// Runs with the year and quarter pressed.
     pub fn on_change(
         mut self,
         handler: impl Fn((i16, i8), &mut Window, &mut App) + 'static,
@@ -393,6 +409,12 @@ impl RenderOnce for QuarterPicker {
 }
 
 /// Twelve years to a page. The value is a year.
+///
+/// ```
+/// use ely_core::forms::YearPicker;
+///
+/// let year = YearPicker::new("year", Some(2026)).on_change(|_year, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct YearPicker {
     id: ElementId,
@@ -402,6 +424,7 @@ pub struct YearPicker {
 }
 
 impl YearPicker {
+    /// Years under `id` with `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<i16>) -> Self {
         Self {
             id: id.into(),
@@ -411,11 +434,13 @@ impl YearPicker {
         }
     }
 
+    /// The year ringed as this one. Defaults to the system's date.
     pub fn today(mut self, date: Date) -> Self {
         self.today = Some(date);
         self
     }
 
+    /// Runs with the year pressed.
     pub fn on_change(mut self, handler: impl Fn(i16, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

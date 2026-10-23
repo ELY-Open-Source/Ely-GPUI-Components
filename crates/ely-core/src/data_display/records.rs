@@ -10,6 +10,12 @@ use crate::{
 };
 
 /// Labels and their values, side by side or stacked.
+///
+/// ```
+/// use ely_core::data_display::DescriptionList;
+///
+/// let details = DescriptionList::new().text("Plan", "Pro").text("Renews", "Nov 1");
+/// ```
 #[derive(IntoElement, Default)]
 pub struct DescriptionList {
     /// Label, value, and the value as words when text.
@@ -19,6 +25,7 @@ pub struct DescriptionList {
 }
 
 impl DescriptionList {
+    /// An empty list, labels beside values.
     pub fn new() -> Self {
         Self::default()
     }
@@ -110,6 +117,7 @@ pub struct PropertyGroup {
 }
 
 impl PropertyGroup {
+    /// A group titled `title`, open.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -132,6 +140,12 @@ impl PropertyGroup {
 }
 
 /// An inspector's table of folding groups of named editors.
+///
+/// ```
+/// use ely_core::data_display::{PropertyGrid, PropertyGroup};
+///
+/// let inspector = PropertyGrid::new("inspector").group(PropertyGroup::new("Layout").row("Width", "240"));
+/// ```
 #[derive(IntoElement)]
 pub struct PropertyGrid {
     id: ElementId,
@@ -139,6 +153,7 @@ pub struct PropertyGrid {
 }
 
 impl PropertyGrid {
+    /// An empty grid under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -146,6 +161,7 @@ impl PropertyGrid {
         }
     }
 
+    /// Adds a group.
     pub fn group(mut self, group: PropertyGroup) -> Self {
         self.groups.push(group);
         self

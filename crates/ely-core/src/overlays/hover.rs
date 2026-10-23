@@ -50,6 +50,12 @@ fn settle_after(state: &Entity<Hover>, after: Duration, window: &mut Window, cx:
 }
 
 /// A card that opens once the pointer rests on its trigger, and stays while the pointer is on either. It never takes focus.
+///
+/// ```
+/// use ely_core::overlays::HoverCard;
+///
+/// let author = HoverCard::new("author", "@ana", |_, _| "Ana Lima, maintainer");
+/// ```
 #[derive(IntoElement)]
 pub struct HoverCard {
     id: ElementId,
@@ -58,6 +64,7 @@ pub struct HoverCard {
 }
 
 impl HoverCard {
+    /// A card under `id` over `trigger`; `content` builds it each time it opens.
     pub fn new<E: IntoElement>(
         id: impl Into<ElementId>,
         trigger: impl IntoElement,

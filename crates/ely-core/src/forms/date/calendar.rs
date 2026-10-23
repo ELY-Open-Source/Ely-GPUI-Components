@@ -37,6 +37,16 @@ type OnHover = Rc<dyn Fn(Option<Date>, &mut Window, &mut App)>;
 type Turn = Rc<dyn Fn(Date, &mut App)>;
 
 /// A month of days. Arrows move a cursor, Page keys turn the month, Enter picks.
+///
+/// ```
+/// use ely_core::forms::Calendar;
+/// use jiff::civil::date;
+///
+/// let due = Calendar::new("due")
+///     .selected(date(2026, 10, 23))
+///     .min(date(2026, 10, 1))
+///     .on_pick(|_day, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Calendar {
     id: ElementId,
@@ -54,6 +64,7 @@ pub struct Calendar {
 }
 
 impl Calendar {
+    /// A month under `id`; it opens on the chosen day, or today.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -71,6 +82,7 @@ impl Calendar {
         }
     }
 
+    /// The day chosen.
     pub fn selected(mut self, date: Date) -> Self {
         self.selected = Some(date);
         self
@@ -89,11 +101,13 @@ impl Calendar {
         self
     }
 
+    /// The first day it lets you pick.
     pub fn min(mut self, date: Date) -> Self {
         self.min = Some(date);
         self
     }
 
+    /// The last day it lets you pick.
     pub fn max(mut self, date: Date) -> Self {
         self.max = Some(date);
         self
@@ -105,6 +119,7 @@ impl Calendar {
         self
     }
 
+    /// Runs with the day pressed.
     pub fn on_pick(mut self, handler: impl Fn(Date, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

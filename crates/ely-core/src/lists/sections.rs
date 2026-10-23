@@ -24,6 +24,15 @@ struct Section {
 }
 
 /// Lists under titles down a column, each a `SelectableList` keyed by its title under the id: Tab moves between them, and the chosen key is lit wherever it sits. A press or an arrow selects, Enter or a double press activates. Owners check their titles and keys.
+///
+/// ```
+/// use ely_core::lists::{ListItem, Sections};
+///
+/// let channels = Sections::new("channels").section(
+///     "Channels".into(),
+///     vec![("general".into(), ListItem::new("general", "general"))],
+/// );
+/// ```
 #[derive(IntoElement)]
 #[doc(hidden)]
 pub struct Sections {

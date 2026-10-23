@@ -31,13 +31,18 @@ fn ranked<T>(
 /// A command a palette runs.
 #[derive(Clone, Debug)]
 pub struct Command {
+    /// What a run reports.
     pub value: SharedString,
+    /// What the row shows.
     pub label: SharedString,
+    /// An icon before the label.
     pub icon: Option<IconName>,
+    /// A keystroke shown at the row's end, in gpui key syntax.
     pub keys: Option<SharedString>,
 }
 
 impl Command {
+    /// A command whose value is `value` and whose text is `label`.
     pub fn new(value: impl Into<SharedString>, label: impl Into<SharedString>) -> Self {
         Self {
             value: value.into(),
@@ -47,6 +52,7 @@ impl Command {
         }
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
@@ -74,6 +80,14 @@ impl Command {
 }
 
 /// Commands in groups. Recent ones lead while the query is empty; a query ranks fuzzy matches and marks the letters that matched.
+///
+/// ```
+/// use ely_core::navigation::{Command, CommandPalette};
+///
+/// let palette = CommandPalette::new("commands", |_, _| {})
+///     .group("File", [Command::new("save", "Save").keys("secondary-s")])
+///     .on_run(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CommandPalette {
     id: ElementId,
@@ -98,6 +112,7 @@ impl CommandPalette {
         }
     }
 
+    /// Adds a group titled `title`.
     pub fn group(
         mut self,
         title: impl Into<SharedString>,
@@ -114,6 +129,7 @@ impl CommandPalette {
         self
     }
 
+    /// Runs with the value of the command run.
     pub fn on_run(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -201,6 +217,14 @@ impl RenderOnce for CommandPalette {
 const SHOWN: usize = 50;
 
 /// Files by path. A query ranks fuzzy matches over the whole path; recent files lead while it is empty.
+///
+/// ```
+/// use ely_core::navigation::QuickOpen;
+///
+/// let open = QuickOpen::new("open", ["src/main.rs", "src/lib.rs"], |_, _| {})
+///     .recent(["src/lib.rs"])
+///     .on_open(|_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct QuickOpen {
     id: ElementId,
@@ -211,6 +235,7 @@ pub struct QuickOpen {
 }
 
 impl QuickOpen {
+    /// A palette under `id` over `paths`; `on_close` runs on Escape, a click outside, or an open.
     pub fn new(
         id: impl Into<ElementId>,
         paths: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -231,6 +256,7 @@ impl QuickOpen {
         self
     }
 
+    /// Runs with the path opened.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -309,6 +335,17 @@ impl RenderOnce for QuickOpen {
 }
 
 /// Documents, sessions and projects, most recent first. It opens on the one before the current, so Enter goes back.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::QuickSwitcher};
+///
+/// let switcher = QuickSwitcher::new(
+///     "switcher",
+///     [Choice::new("notes", "Notes").note("Document")],
+///     |_, _| {},
+/// )
+/// .on_switch(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct QuickSwitcher {
     id: ElementId,
@@ -337,6 +374,7 @@ impl QuickSwitcher {
         }
     }
 
+    /// Runs with the value of the item switched to.
     pub fn on_switch(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -392,6 +430,18 @@ impl RenderOnce for QuickSwitcher {
 pub(crate) type Search = Rc<dyn Fn(&str) -> Vec<(SharedString, Vec<Choice>)>>;
 
 /// Searches through the owner's function, which answers a query with results grouped by where they were found. Matches are marked.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::SearchPalette};
+/// use gpui::SharedString;
+///
+/// let search = SearchPalette::new(
+///     "search",
+///     |query| vec![(SharedString::from("Files"), vec![Choice::new(query.to_string(), query.to_string())])],
+///     |_, _| {},
+/// )
+/// .on_open(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SearchPalette {
     id: ElementId,
@@ -415,6 +465,7 @@ impl SearchPalette {
         }
     }
 
+    /// Runs with the value of the result opened.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

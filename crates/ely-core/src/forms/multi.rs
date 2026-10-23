@@ -18,6 +18,14 @@ use crate::{
 };
 
 /// A select for several values. Chosen ones sit in the field as chips.
+///
+/// ```
+/// use ely_core::forms::{Choice, MultiSelect};
+///
+/// let labels = MultiSelect::new("labels", [Choice::new("bug", "Bug"), Choice::new("docs", "Docs")])
+///     .selected(["bug"])
+///     .on_change(|_values, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MultiSelect {
     id: ElementId,
@@ -29,6 +37,7 @@ pub struct MultiSelect {
 }
 
 impl MultiSelect {
+    /// A select under `id` that picks any number of `choices`.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -40,21 +49,25 @@ impl MultiSelect {
         }
     }
 
+    /// The values chosen.
     pub fn selected(mut self, values: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = values.into_iter().map(Into::into).collect();
         self
     }
 
+    /// What it shows with nothing chosen; `Choose…` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with the values chosen after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

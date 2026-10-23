@@ -246,6 +246,15 @@ pub(crate) fn listing(
 }
 
 /// A button that opens a list and shows the one chosen.
+///
+/// ```
+/// use ely_core::forms::{Choice, Select};
+///
+/// let plan = Select::new("plan", [Choice::new("free", "Free"), Choice::new("pro", "Pro")])
+///     .placeholder("Choose a plan")
+///     .selected("free")
+///     .on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Select {
     id: ElementId,
@@ -259,6 +268,7 @@ pub struct Select {
 }
 
 impl Select {
+    /// A select under `id` over `choices`, nothing chosen.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -278,26 +288,31 @@ impl Select {
         self
     }
 
+    /// The value chosen.
     pub fn selected(mut self, value: impl Into<SharedString>) -> Self {
         self.selected = Some(value.into());
         self
     }
 
+    /// What it shows with nothing chosen.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = Some(text.into());
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with the value picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

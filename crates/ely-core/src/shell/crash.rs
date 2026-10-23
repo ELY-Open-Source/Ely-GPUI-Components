@@ -17,6 +17,18 @@ use crate::{
 type Action = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// After a crash: what happened, the report, and a choice to send it.
+///
+/// ```
+/// use ely_core::shell::CrashReporter;
+/// use gpui::App;
+///
+/// fn report(cx: &mut App) -> anyhow::Result<()> {
+///     CrashReporter::new("Ely", "The renderer stopped.", "thread 'main' panicked at …")
+///         .on_send(|_, _| {})
+///         .open(cx)?;
+///     Ok(())
+/// }
+/// ```
 #[derive(IntoElement, Clone)]
 pub struct CrashReporter {
     name: SharedString,
@@ -28,6 +40,7 @@ pub struct CrashReporter {
 }
 
 impl CrashReporter {
+    /// A report for the app `name`: a one-line `summary` and the full `report`.
     pub fn new(
         name: impl Into<SharedString>,
         summary: impl Into<SharedString>,
@@ -49,16 +62,19 @@ impl CrashReporter {
         self
     }
 
+    /// Runs on Send.
     pub fn on_send(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_send = Some(Rc::new(handler));
         self
     }
 
+    /// Runs when it closes without sending.
     pub fn on_dismiss(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_dismiss = Some(Rc::new(handler));
         self
     }
 
+    /// Opens it in a window of its own.
     pub fn open(self, cx: &mut App) -> anyhow::Result<WindowHandle<Hosted<CrashReporter>>> {
         let size = cx.theme().dialog_window();
         open_hosted(format!("{} crashed", self.name), size, self, cx)

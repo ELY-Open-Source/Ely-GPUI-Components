@@ -20,6 +20,13 @@ struct Fold {
 }
 
 /// Region that opens and closes by animating its measured height.
+///
+/// ```
+/// use ely_core::layout::Collapsible;
+/// use gpui::ParentElement;
+///
+/// let details = Collapsible::new("details", true).child("Shipped on Monday.");
+/// ```
 #[derive(IntoElement)]
 pub struct Collapsible {
     id: ElementId,
@@ -28,6 +35,7 @@ pub struct Collapsible {
 }
 
 impl Collapsible {
+    /// A region under `id`, open or shut.
     pub fn new(id: impl Into<ElementId>, open: bool) -> Self {
         Self {
             id: id.into(),
@@ -108,6 +116,7 @@ pub struct AccordionItem {
 }
 
 impl AccordionItem {
+    /// A row titled `title`; its children are its body.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -128,6 +137,16 @@ struct Folds {
 }
 
 /// Stacked items that fold; one open at a time unless `multiple`.
+///
+/// ```
+/// use ely_core::layout::{Accordion, AccordionItem};
+/// use gpui::ParentElement;
+///
+/// let faq = Accordion::new("faq")
+///     .item(AccordionItem::new("Can I export?").child("Yes, as CSV."))
+///     .item(AccordionItem::new("Is there a free plan?").child("Up to three seats."))
+///     .first_open();
+/// ```
 #[derive(IntoElement)]
 pub struct Accordion {
     id: ElementId,
@@ -137,6 +156,7 @@ pub struct Accordion {
 }
 
 impl Accordion {
+    /// An empty accordion under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -146,11 +166,13 @@ impl Accordion {
         }
     }
 
+    /// Adds an item.
     pub fn item(mut self, item: AccordionItem) -> Self {
         self.items.push(item);
         self
     }
 
+    /// Lets more than one item stay open.
     pub fn multiple(mut self) -> Self {
         self.multiple = true;
         self

@@ -64,6 +64,16 @@ fn checked(
 }
 
 /// An email field, checked when focus leaves it.
+///
+/// ```
+/// use ely_core::forms::{EmailInput, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn email(window: &mut Window, cx: &mut App) -> EmailInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     EmailInput::new(&state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct EmailInput {
     state: Entity<TextInput>,
@@ -71,6 +81,7 @@ pub struct EmailInput {
 }
 
 impl EmailInput {
+    /// A field over `state` that checks for an email address.
     pub fn new(state: &Entity<TextInput>) -> Self {
         Self {
             state: state.clone(),
@@ -78,6 +89,7 @@ impl EmailInput {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
@@ -99,6 +111,16 @@ impl RenderOnce for EmailInput {
 }
 
 /// A link field, checked when focus leaves it.
+///
+/// ```
+/// use ely_core::forms::{TextInput, UrlInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn site(window: &mut Window, cx: &mut App) -> UrlInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     UrlInput::new(&state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct UrlInput {
     state: Entity<TextInput>,
@@ -106,6 +128,7 @@ pub struct UrlInput {
 }
 
 impl UrlInput {
+    /// A field over `state` that checks for a web address.
     pub fn new(state: &Entity<TextInput>) -> Self {
         Self {
             state: state.clone(),
@@ -113,6 +136,7 @@ impl UrlInput {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

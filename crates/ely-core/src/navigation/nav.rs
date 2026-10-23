@@ -15,6 +15,15 @@ use crate::{
 };
 
 /// One place in a side navigation. A folded sidebar shows the icon alone and names it on hover.
+///
+/// ```
+/// use ely_core::{navigation::NavItem, primitives::IconName};
+///
+/// let inbox = NavItem::new("inbox", IconName::Inbox, "Inbox")
+///     .count("12")
+///     .active(true)
+///     .on_click(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NavItem {
     id: ElementId,
@@ -27,6 +36,7 @@ pub struct NavItem {
 }
 
 impl NavItem {
+    /// A place under `id` that shows `icon` and `label`.
     pub fn new(id: impl Into<ElementId>, icon: IconName, label: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -57,6 +67,7 @@ impl NavItem {
         self
     }
 
+    /// Runs on a press.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self
@@ -135,6 +146,18 @@ impl RenderOnce for NavItem {
 }
 
 /// A titled run of nav items. The title folds it; a folded sidebar drops the title.
+///
+/// ```
+/// use ely_core::{
+///     navigation::{NavGroup, NavItem},
+///     primitives::IconName,
+/// };
+/// use gpui::ParentElement;
+///
+/// let mail = NavGroup::new("mail", "Mail", true)
+///     .child(NavItem::new("inbox", IconName::Inbox, "Inbox"))
+///     .on_toggle(|_open, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NavGroup {
     id: ElementId,
@@ -146,6 +169,7 @@ pub struct NavGroup {
 }
 
 impl NavGroup {
+    /// A group under `id` titled `title`, open or folded.
     pub fn new(id: impl Into<ElementId>, title: impl Into<SharedString>, open: bool) -> Self {
         Self {
             id: id.into(),

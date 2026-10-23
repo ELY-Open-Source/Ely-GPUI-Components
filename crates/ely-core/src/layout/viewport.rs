@@ -8,11 +8,14 @@ use gpui::{
 /// Maps content space to the viewport: `local = content * scale + offset`.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Transform {
+    /// Where content's origin lands.
     pub offset: Point<Pixels>,
+    /// Viewport pixels per content pixel.
     pub scale: f32,
 }
 
 impl Transform {
+    /// A content point in viewport space.
     pub fn apply(&self, content: Point<Pixels>) -> Point<Pixels> {
         point(
             content.x * self.scale + self.offset.x,
@@ -20,6 +23,7 @@ impl Transform {
         )
     }
 
+    /// A viewport point in content space.
     pub fn invert(&self, local: Point<Pixels>) -> Point<Pixels> {
         point(
             (local.x - self.offset.x) / self.scale,
@@ -50,6 +54,14 @@ struct View {
 type Content = Rc<dyn Fn(Transform, &mut Window, &mut App) -> AnyElement>;
 
 /// Pan with a drag or the wheel; zoom with ⌘/Ctrl and the wheel.
+///
+/// ```
+/// use ely_core::layout::Viewport;
+/// use gpui::{IntoElement, div};
+///
+/// let canvas = Viewport::new("canvas", |_transform, _, _| div().into_any_element())
+///     .zoom_range(0.25, 4.0);
+/// ```
 #[derive(IntoElement)]
 pub struct Viewport {
     id: ElementId,
@@ -70,6 +82,7 @@ impl Viewport {
         }
     }
 
+    /// The least and the most zoom, 0.1 and 8 unless set. Panics on an empty range.
     pub fn zoom_range(mut self, min: f32, max: f32) -> Self {
         assert!(0.0 < min && min <= max, "zoom range {min}..{max} is empty");
         self.range = (min, max);

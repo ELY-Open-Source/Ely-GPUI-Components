@@ -16,7 +16,9 @@ use crate::{
 /// A color at a place along a gradient, from 0 to 1.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct GradientStop {
+    /// Where along the gradient, 0 to 1.
     pub at: f32,
+    /// The color there.
     pub color: Hsla,
 }
 
@@ -75,6 +77,20 @@ fn now(live: &Live, chosen: &Entity<usize>, cx: &App) -> (Vec<GradientStop>, usi
 }
 
 /// A gradient bar with stops beneath. Drag a stop, click the bar to add one, Delete removes it.
+///
+/// ```
+/// use ely_core::forms::{GradientEditor, GradientStop};
+/// use gpui::{black, white};
+///
+/// let ramp = GradientEditor::new(
+///     "ramp",
+///     [
+///         GradientStop { at: 0.0, color: black() },
+///         GradientStop { at: 1.0, color: white() },
+///     ],
+/// )
+/// .on_change(|_stops, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct GradientEditor {
     id: ElementId,
@@ -83,6 +99,7 @@ pub struct GradientEditor {
 }
 
 impl GradientEditor {
+    /// An editor under `id` over `stops`. Panics on fewer than two stops, or stops out of order or past 0 to 1.
     pub fn new(id: impl Into<ElementId>, stops: impl IntoIterator<Item = GradientStop>) -> Self {
         let stops: Vec<GradientStop> = stops.into_iter().collect();
         assert!(stops.len() >= 2, "a gradient needs two stops");
@@ -98,6 +115,7 @@ impl GradientEditor {
         }
     }
 
+    /// Runs with the stops after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[GradientStop], &mut Window, &mut App) + 'static,

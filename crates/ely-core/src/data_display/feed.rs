@@ -88,6 +88,15 @@ fn sentence(
 }
 
 /// A stream of what people did, in the order given. An entry with a new key folds in; the times stay fresh.
+///
+/// ```
+/// use ely_core::data_display::{Activity, ActivityFeed};
+/// use jiff::Timestamp;
+///
+/// let feed = ActivityFeed::new("feed").entry(
+///     Activity::new("c1", "Grace Hopper", "commented on", Timestamp::now()).object("Design review"),
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct ActivityFeed {
     id: ElementId,
@@ -95,6 +104,7 @@ pub struct ActivityFeed {
 }
 
 impl ActivityFeed {
+    /// An empty feed under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -102,6 +112,7 @@ impl ActivityFeed {
         }
     }
 
+    /// Adds an entry.
     pub fn entry(mut self, activity: Activity) -> Self {
         self.entries.push(activity);
         self

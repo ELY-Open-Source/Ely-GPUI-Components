@@ -12,17 +12,26 @@ use crate::theme::ControlSize;
 /// A span named from today, such as the last seven days.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RelativeRange {
+    /// Today alone.
     Today,
+    /// Yesterday alone.
     Yesterday,
+    /// The last seven days, today included.
     Last7Days,
+    /// The last thirty days, today included.
     Last30Days,
+    /// This month, first day to last.
     ThisMonth,
+    /// All of last month.
     LastMonth,
+    /// This quarter, all three months.
     ThisQuarter,
+    /// This year, January to December.
     ThisYear,
 }
 
 impl RelativeRange {
+    /// Every span, in menu order.
     pub const ALL: [Self; 8] = [
         Self::Today,
         Self::Yesterday,
@@ -34,6 +43,7 @@ impl RelativeRange {
         Self::ThisYear,
     ];
 
+    /// Its English name.
     pub fn label(self) -> &'static str {
         match self {
             Self::Today => "Today",
@@ -76,6 +86,13 @@ impl RelativeRange {
 type OnRange = Rc<dyn Fn(RelativeRange, (Date, Date), &mut Window, &mut App)>;
 
 /// A select of spans named from today; each row shows the days it covers.
+///
+/// ```
+/// use ely_core::forms::{RelativeDatePicker, RelativeRange};
+///
+/// let window = RelativeDatePicker::new("window", Some(RelativeRange::Last7Days))
+///     .on_change(|_range, (_first, _last), _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RelativeDatePicker {
     id: ElementId,
@@ -86,6 +103,7 @@ pub struct RelativeDatePicker {
 }
 
 impl RelativeDatePicker {
+    /// A select under `id` with `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<RelativeRange>) -> Self {
         Self {
             id: id.into(),
@@ -102,11 +120,13 @@ impl RelativeDatePicker {
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with the span chosen and its first and last day.
     pub fn on_change(
         mut self,
         handler: impl Fn(RelativeRange, (Date, Date), &mut Window, &mut App) + 'static,

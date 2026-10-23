@@ -14,6 +14,12 @@ use crate::{
 };
 
 /// An on-off switch. The thumb slides over with a small overshoot.
+///
+/// ```
+/// use ely_core::forms::Switch;
+///
+/// let wifi = Switch::new("wifi", true).label("Wi-Fi").on_change(|_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Switch {
     id: ElementId,
@@ -25,6 +31,7 @@ pub struct Switch {
 }
 
 impl Switch {
+    /// A switch under `id`, on or off.
     pub fn new(id: impl Into<ElementId>, on: bool) -> Self {
         Self {
             id: id.into(),
@@ -36,6 +43,7 @@ impl Switch {
         }
     }
 
+    /// Text beside it.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
@@ -47,11 +55,13 @@ impl Switch {
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with the new state on each press.
     pub fn on_change(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

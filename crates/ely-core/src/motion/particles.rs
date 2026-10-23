@@ -39,6 +39,13 @@ impl Seed {
 }
 
 /// A burst of paper pieces thrown up from the middle each time `bursts` grows; they tumble and fall in the chart's quiet colors. Under reduced motion nothing is thrown.
+///
+/// ```
+/// use ely_core::motion::Confetti;
+///
+/// let wins = 1;
+/// let party = Confetti::new("party", wins);
+/// ```
 #[derive(IntoElement)]
 pub struct Confetti {
     id: ElementId,
@@ -147,6 +154,7 @@ macro_rules! backdrop {
         }
 
         impl $name {
+            /// An empty effect under `id`; its children are what it holds.
             pub fn new(id: impl Into<ElementId>) -> Self {
                 Self {
                     id: id.into(),
@@ -172,7 +180,7 @@ macro_rules! backdrop {
 
 backdrop!(
     ParticleBackground,
-    "Faint motes that drift slowly behind what it holds. Under reduced motion they rest."
+    "Faint motes that drift slowly behind what it holds. Under reduced motion they rest.\n\n```\nuse ely_core::motion::ParticleBackground;\nuse gpui::{ParentElement, div};\n\nlet held = ParticleBackground::new(\"motes\").child(div());\n```"
 );
 
 /// Whether a dot of `radius` at `at` lies wholly inside the rounded box.
@@ -254,7 +262,7 @@ impl RenderOnce for ParticleBackground {
 
 backdrop!(
     AnimatedGradient,
-    "A background whose tone drifts, slowly, between the surface and a breath of the accent. Under reduced motion it rests."
+    "A background whose tone drifts, slowly, between the surface and a breath of the accent. Under reduced motion it rests.\n\n```\nuse ely_core::motion::AnimatedGradient;\nuse gpui::{ParentElement, div};\n\nlet held = AnimatedGradient::new(\"hero\").child(div());\n```"
 );
 
 impl RenderOnce for AnimatedGradient {
@@ -289,7 +297,7 @@ struct Press {
 
 backdrop!(
     Ripple,
-    "A circle of light that spreads from each press and fades, cut to the box's rounded corners. Under reduced motion none shows."
+    "A circle of light that spreads from each press and fades, cut to the box's rounded corners. Under reduced motion none shows.\n\n```\nuse ely_core::motion::Ripple;\nuse gpui::{ParentElement, div};\n\nlet held = Ripple::new(\"ripple\").child(div());\n```"
 );
 
 impl RenderOnce for Ripple {

@@ -52,6 +52,16 @@ pub fn choose(
 }
 
 /// A path field with Browse, which opens the system's file dialog.
+///
+/// ```
+/// use ely_core::forms::{PathInput, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn folder(window: &mut Window, cx: &mut App) -> PathInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     PathInput::new("folder", &state).directories()
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PathInput {
     id: ElementId,
@@ -60,6 +70,7 @@ pub struct PathInput {
 }
 
 impl PathInput {
+    /// A field under `id` over `state`, with Browse for files.
     pub fn new(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),

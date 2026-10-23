@@ -12,6 +12,14 @@ use crate::{
 };
 
 /// Pills for a short set of choices. One is chosen, or several with `multiple`.
+///
+/// ```
+/// use ely_core::forms::{ChoiceChips, Choice};
+///
+/// let size = ChoiceChips::new("size", [Choice::new("s", "S"), Choice::new("m", "M"), Choice::new("l", "L")])
+///     .selected(["m"])
+///     .on_change(|_values, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ChoiceChips {
     id: ElementId,
@@ -22,6 +30,7 @@ pub struct ChoiceChips {
 }
 
 impl ChoiceChips {
+    /// Chips under `id`, one per choice; one on at a time unless `multiple`.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -32,6 +41,7 @@ impl ChoiceChips {
         }
     }
 
+    /// The values of the chips that are on.
     pub fn selected(mut self, values: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = values.into_iter().map(Into::into).collect();
         self
@@ -43,6 +53,7 @@ impl ChoiceChips {
         self
     }
 
+    /// Runs with the values on after each press.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

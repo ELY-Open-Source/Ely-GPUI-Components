@@ -6,6 +6,7 @@ use super::{Column, FilterRule, Row, SortKey, table::DataTable};
 use crate::theme::Density;
 
 impl DataTable {
+    /// A table under `id` with `columns` and no rows yet.
     pub fn new(id: impl Into<ElementId>, columns: impl IntoIterator<Item = Column>) -> Self {
         Self {
             id: id.into(),
@@ -81,6 +82,7 @@ impl DataTable {
         self
     }
 
+    /// Runs with the keys of the rows selected after each change.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,
@@ -113,6 +115,7 @@ impl DataTable {
         self
     }
 
+    /// How much room each row takes.
     pub fn density(mut self, density: Density) -> Self {
         self.density = density;
         self

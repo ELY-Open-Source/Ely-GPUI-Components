@@ -15,6 +15,16 @@ use crate::{
 };
 
 /// Actions in a row at a region's foot: docked, or floating as a pill.
+///
+/// ```
+/// use ely_core::buttons::{ActionBar, Button};
+/// use gpui::ParentElement;
+///
+/// let actions = ActionBar::new()
+///     .floating()
+///     .child(Button::new("cancel", "Cancel"))
+///     .child(Button::new("save", "Save").primary());
+/// ```
 #[derive(IntoElement)]
 pub struct ActionBar {
     base: Div,
@@ -23,6 +33,7 @@ pub struct ActionBar {
 }
 
 impl ActionBar {
+    /// An empty bar, docked.
     pub fn new() -> Self {
         Self {
             base: div(),
@@ -87,6 +98,14 @@ impl RenderOnce for ActionBar {
 type OnClear = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Rises when items are selected: the count, bulk actions, and a clear button.
+///
+/// ```
+/// use ely_core::buttons::{BulkActionBar, Button};
+///
+/// let bulk = BulkActionBar::new("bulk", 3)
+///     .action(Button::new("archive", "Archive"))
+///     .on_clear(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BulkActionBar {
     id: ElementId,
@@ -96,6 +115,7 @@ pub struct BulkActionBar {
 }
 
 impl BulkActionBar {
+    /// A bar under `id` for `count` selected items.
     pub fn new(id: impl Into<ElementId>, count: usize) -> Self {
         Self {
             id: id.into(),
@@ -105,11 +125,13 @@ impl BulkActionBar {
         }
     }
 
+    /// Adds an action.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
     }
 
+    /// Runs on the clear button, which shows only with a handler.
     pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_clear = Some(Rc::new(handler));
         self

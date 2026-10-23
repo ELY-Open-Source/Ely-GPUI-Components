@@ -7,11 +7,16 @@ use serde::{Deserialize, Serialize};
 
 use crate::{primitives::IconName, theme::ActiveTheme};
 
+/// A window edge a dock sits on.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum DockSide {
+    /// The left edge.
     Left,
+    /// The right edge.
     Right,
+    /// The top edge.
     Top,
+    /// The bottom edge.
     Bottom,
 }
 
@@ -31,22 +36,36 @@ impl DockSide {
 /// Where a panel lives: a dock, or floating at a window position.
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Spot {
+    /// In the dock on that side.
     Docked(DockSide),
-    Floating { x: f32, y: f32 },
+    /// Floating, its top-left corner in window pixels.
+    Floating {
+        /// From the window's left edge.
+        x: f32,
+        /// From the window's top edge.
+        y: f32,
+    },
 }
 
+/// A panel a dock holds.
 #[derive(Clone, Debug)]
 pub struct DockPanel {
+    /// Names it in the layout, and to `activate` and `move_panel`.
     pub id: SharedString,
+    /// Shown on its tab.
     pub title: SharedString,
+    /// Shown beside its title.
     pub icon: IconName,
 }
 
 /// Saved dock arrangement, per side in `DockSide` order. Sizes are in rems.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DockLayout {
+    /// Each panel's id and where it sits.
     pub spots: Vec<(String, Spot)>,
+    /// Each side's shown panel, by id.
     pub active: [Option<String>; 4],
+    /// Each side's size.
     pub sizes: [f32; 4],
 }
 
@@ -54,6 +73,31 @@ type Center = Rc<dyn Fn(&mut Window, &mut App) -> AnyElement>;
 type Content = Rc<dyn Fn(&SharedString, &mut Window, &mut App) -> AnyElement>;
 
 /// Side docks around a center; panels move between docks and float.
+///
+/// ```
+/// use ely_core::{
+///     layout::{Dock, DockPanel, DockSide},
+///     primitives::IconName,
+/// };
+/// use gpui::{App, AppContext, Entity, IntoElement};
+///
+/// fn dock(cx: &mut App) -> Entity<Dock> {
+///     cx.new(|cx| {
+///         let mut dock = Dock::new(
+///             |_, _| "Editor".into_any_element(),
+///             |id, _, _| id.clone().into_any_element(),
+///             cx,
+///         );
+///         let files = DockPanel {
+///             id: "files".into(),
+///             title: "Files".into(),
+///             icon: IconName::Folder,
+///         };
+///         dock.add(files, DockSide::Left);
+///         dock
+///     })
+/// }
+/// ```
 pub struct Dock {
     panels: Vec<DockPanel>,
     spots: Vec<Spot>,
@@ -65,6 +109,7 @@ pub struct Dock {
 }
 
 impl Dock {
+    /// A dock around `center`; `content` draws a panel by its id.
     pub fn new(
         center: impl Fn(&mut Window, &mut App) -> AnyElement + 'static,
         content: impl Fn(&SharedString, &mut Window, &mut App) -> AnyElement + 'static,
@@ -108,6 +153,7 @@ impl Dock {
             .collect()
     }
 
+    /// Shows the panel `id` in its dock. Panics on an unknown id.
     pub fn activate(&mut self, id: &str, cx: &mut Context<Self>) {
         let ix = self
             .find(id)
@@ -118,6 +164,7 @@ impl Dock {
         }
     }
 
+    /// Moves the panel `id` to `spot`. Panics on an unknown id.
     pub fn move_panel(&mut self, id: &str, spot: Spot, cx: &mut Context<Self>) {
         let ix = self
             .find(id)
@@ -136,6 +183,7 @@ impl Dock {
         cx.notify();
     }
 
+    /// The arrangement to save.
     pub fn layout(&self) -> DockLayout {
         let name = |ix: Option<usize>| ix.map(|ix| self.panels[ix].id.to_string());
         DockLayout {

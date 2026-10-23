@@ -177,6 +177,16 @@ pub fn json_highlights(source: &str, cx: &App) -> Vec<(Range<usize>, Highlight)>
 }
 
 /// A one-line code field in the mono face. Give its state `code_highlights`.
+///
+/// ```
+/// use ely_core::forms::{CodeInput, TextInput, code_highlights};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn query(window: &mut Window, cx: &mut App) -> CodeInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx).highlighter(code_highlights));
+///     CodeInput::new(&state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct CodeInput {
     state: Entity<TextInput>,
@@ -184,6 +194,7 @@ pub struct CodeInput {
 }
 
 impl CodeInput {
+    /// A one-line code field over `state`; a multi-line state panics.
     pub fn new(state: &Entity<TextInput>) -> Self {
         Self {
             state: state.clone(),
@@ -191,6 +202,7 @@ impl CodeInput {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
@@ -210,12 +222,23 @@ impl RenderOnce for CodeInput {
 }
 
 /// A JSON field, checked as you type. Give its state `json_highlights`.
+///
+/// ```
+/// use ely_core::forms::{JsonInput, TextInput, json_highlights};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn config(window: &mut Window, cx: &mut App) -> JsonInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx).multi_line(4, 12).highlighter(json_highlights));
+///     JsonInput::new(&state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct JsonInput {
     state: Entity<TextInput>,
 }
 
 impl JsonInput {
+    /// A JSON field over `state`; it shows the first parse error.
     pub fn new(state: &Entity<TextInput>) -> Self {
         Self {
             state: state.clone(),

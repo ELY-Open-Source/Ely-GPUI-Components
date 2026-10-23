@@ -9,6 +9,16 @@ use crate::{
 };
 
 /// A link that shows only while focused and hands focus to `target`. Put it before what a keyboard would otherwise tab through, such as a long nav; it takes no room at rest and lies over the page while shown.
+///
+/// ```
+/// use ely_core::i18n::SkipLink;
+/// use gpui::App;
+///
+/// fn skip(cx: &mut App) -> SkipLink {
+///     let content = cx.focus_handle();
+///     SkipLink::new("skip", "Skip to content", &content)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SkipLink {
     id: ElementId,
@@ -17,6 +27,7 @@ pub struct SkipLink {
 }
 
 impl SkipLink {
+    /// A link under `id` that reads `label` and sends focus to `target`.
     pub fn new(
         id: impl Into<ElementId>,
         label: impl Into<SharedString>,

@@ -22,6 +22,7 @@ pub struct ActivityItem {
 }
 
 impl ActivityItem {
+    /// An item named `id`: its `icon`, and `label` for tips and screen readers.
     pub fn new(
         id: impl Into<SharedString>,
         icon: IconName,
@@ -45,6 +46,20 @@ impl ActivityItem {
 type OnSelect = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Icon rail at a window's edge. Main items top, footer items bottom.
+///
+/// ```
+/// use ely_core::{
+///     primitives::IconName,
+///     shell::{ActivityBar, ActivityItem},
+/// };
+///
+/// let rail = ActivityBar::new("rail")
+///     .item(ActivityItem::new("files", IconName::Folder, "Files"))
+///     .item(ActivityItem::new("search", IconName::Search, "Search"))
+///     .footer(ActivityItem::new("settings", IconName::Settings, "Settings"))
+///     .selected("files")
+///     .on_select(|_id, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ActivityBar {
     id: ElementId,
@@ -55,6 +70,7 @@ pub struct ActivityBar {
 }
 
 impl ActivityBar {
+    /// An empty rail under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -65,21 +81,25 @@ impl ActivityBar {
         }
     }
 
+    /// Adds an item at the top.
     pub fn item(mut self, item: ActivityItem) -> Self {
         self.items.push(item);
         self
     }
 
+    /// Adds an item at the bottom.
     pub fn footer(mut self, item: ActivityItem) -> Self {
         self.footer.push(item);
         self
     }
 
+    /// Marks the item `id` selected.
     pub fn selected(mut self, id: impl Into<SharedString>) -> Self {
         self.selected = Some(id.into());
         self
     }
 
+    /// Runs with an item's id when it is pressed.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

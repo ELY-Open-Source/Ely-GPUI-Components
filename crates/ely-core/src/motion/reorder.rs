@@ -26,6 +26,15 @@ struct Hold {
 type OnReorder = Rc<dyn Fn(usize, usize, &mut Window, &mut App)>;
 
 /// Rows reordered by dragging: the held row follows the pointer, the others glide aside, and on drop `on_reorder(from, to)` asks the owner to move row `from` to place `to`.
+///
+/// ```
+/// use ely_core::motion::Reorder;
+///
+/// let layers = Reorder::new("layers")
+///     .row("title", "Title")
+///     .row("photo", "Photo")
+///     .on_reorder(|_from, _to, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Reorder {
     id: ElementId,
@@ -34,6 +43,7 @@ pub struct Reorder {
 }
 
 impl Reorder {
+    /// An empty column under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -42,11 +52,13 @@ impl Reorder {
         }
     }
 
+    /// Adds a row keyed `key`.
     pub fn row(mut self, key: impl Into<SharedString>, row: impl IntoElement) -> Self {
         self.rows.push((key.into(), row.into_any_element()));
         self
     }
 
+    /// Asks the owner to move row `from` to place `to`.
     pub fn on_reorder(
         mut self,
         handler: impl Fn(usize, usize, &mut Window, &mut App) + 'static,

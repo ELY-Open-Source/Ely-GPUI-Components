@@ -10,12 +10,16 @@ pub const WORKSPACE_VERSION: u32 = 1;
 /// Saved window layout: docks and editor panes, as JSON.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Workspace {
+    /// The format's version.
     pub version: u32,
+    /// The docks.
     pub dock: DockLayout,
+    /// The editor panes.
     pub panes: PaneLayout,
 }
 
 impl Workspace {
+    /// The layout `dock` and `panes` hold now.
     pub fn capture(dock: &Dock, panes: &PaneGroup) -> Self {
         Self {
             version: WORKSPACE_VERSION,
@@ -24,6 +28,7 @@ impl Workspace {
         }
     }
 
+    /// Pretty JSON.
     pub fn to_json(&self) -> String {
         serde_json::to_string_pretty(self).expect("workspace layout always serializes")
     }

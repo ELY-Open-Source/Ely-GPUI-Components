@@ -69,6 +69,18 @@ pub fn menu_under(
 }
 
 /// A button that opens a menu under it.
+///
+/// ```
+/// use ely_core::menus::{DropdownMenu, Menu, MenuItem};
+///
+/// let sort = DropdownMenu::new(
+///     "sort",
+///     "Sort",
+///     Menu::new()
+///         .item(MenuItem::new("Name").on_click(|_, _| {}))
+///         .item(MenuItem::new("Date").on_click(|_, _| {})),
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct DropdownMenu {
     id: ElementId,
@@ -79,6 +91,7 @@ pub struct DropdownMenu {
 }
 
 impl DropdownMenu {
+    /// A button under `id` that reads `label` and opens `menu` under it.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, menu: Menu) -> Self {
         Self {
             id: id.into(),
@@ -89,11 +102,13 @@ impl DropdownMenu {
         }
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// The button's look.
     pub fn variant(mut self, variant: ButtonVariant) -> Self {
         self.variant = variant;
         self
@@ -114,6 +129,15 @@ impl RenderOnce for DropdownMenu {
 }
 
 /// An icon button that opens a menu of what did not fit.
+///
+/// ```
+/// use ely_core::menus::{Menu, MenuItem, OverflowMenu};
+///
+/// let actions = OverflowMenu::new(
+///     "row-actions",
+///     Menu::new().item(MenuItem::new("Rename")).separator().item(MenuItem::new("Delete")),
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct OverflowMenu {
     id: ElementId,
@@ -123,6 +147,7 @@ pub struct OverflowMenu {
 }
 
 impl OverflowMenu {
+    /// A ⋯ button under `id` that opens `menu`.
     pub fn new(id: impl Into<ElementId>, menu: Menu) -> Self {
         Self {
             id: id.into(),
@@ -132,11 +157,13 @@ impl OverflowMenu {
         }
     }
 
+    /// Its icon; ⋯ unless set.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = icon;
         self
     }
 
+    /// The tip it shows on hover; More unless set.
     pub fn tooltip(mut self, tooltip: impl Into<SharedString>) -> Self {
         self.tooltip = tooltip.into();
         self
@@ -156,6 +183,13 @@ impl RenderOnce for OverflowMenu {
 }
 
 /// A button's main action, and related ones in a menu under its arrow.
+///
+/// ```
+/// use ely_core::menus::{Menu, MenuItem, SplitButton};
+///
+/// let save = SplitButton::new("save", "Save", Menu::new().item(MenuItem::new("Save as…")))
+///     .on_click(|_, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SplitButton {
     id: ElementId,
@@ -166,6 +200,7 @@ pub struct SplitButton {
 }
 
 impl SplitButton {
+    /// A button under `id` that reads `label`, beside a chevron that opens `menu`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, menu: Menu) -> Self {
         Self {
             id: id.into(),
@@ -176,6 +211,7 @@ impl SplitButton {
         }
     }
 
+    /// Its look.
     pub fn variant(mut self, variant: ButtonVariant) -> Self {
         self.variant = variant;
         self
@@ -223,6 +259,13 @@ impl RenderOnce for SplitButton {
 }
 
 /// Its children, and a menu that opens at the pointer on a right click. Styles size the host, so a list inside can fill it.
+///
+/// ```
+/// use ely_core::menus::{ContextMenu, Menu, MenuItem};
+/// use gpui::{ParentElement, div};
+///
+/// let file = ContextMenu::new("file", Menu::new().item(MenuItem::new("Copy path"))).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct ContextMenu {
     id: ElementId,
@@ -233,6 +276,7 @@ pub struct ContextMenu {
 }
 
 impl ContextMenu {
+    /// Children under `id` that open `menu` at the pointer on a right click.
     pub fn new(id: impl Into<ElementId>, menu: Menu) -> Self {
         Self {
             id: id.into(),
@@ -297,6 +341,17 @@ impl RenderOnce for ContextMenu {
 }
 
 /// A button that opens a menu headed by a filter field. Typing narrows the rows, best first, and marks the letters that matched.
+///
+/// ```
+/// use ely_core::menus::{Menu, MenuItem, SearchableMenu};
+///
+/// let assignee = SearchableMenu::new(
+///     "assignee",
+///     "Assignee",
+///     Menu::new().item(MenuItem::new("Ana")).item(MenuItem::new("Bo")),
+/// )
+/// .placeholder("Find a person");
+/// ```
 #[derive(IntoElement)]
 pub struct SearchableMenu {
     id: ElementId,
@@ -307,6 +362,7 @@ pub struct SearchableMenu {
 }
 
 impl SearchableMenu {
+    /// A button under `id` that reads `label` and opens `menu` under a filter field.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, menu: Menu) -> Self {
         Self {
             id: id.into(),
@@ -317,11 +373,13 @@ impl SearchableMenu {
         }
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// What the empty filter shows; Filter unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self

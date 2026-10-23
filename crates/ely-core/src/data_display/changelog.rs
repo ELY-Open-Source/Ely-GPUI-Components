@@ -9,11 +9,17 @@ use crate::theme::ActiveTheme;
 /// A kind of change, as Keep a Changelog names them.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Change {
+    /// New features.
     Added,
+    /// Changes to what was there.
     Changed,
+    /// Features on their way out.
     Deprecated,
+    /// Features gone.
     Removed,
+    /// Bugs fixed.
     Fixed,
+    /// Fixes to vulnerabilities.
     Security,
 }
 
@@ -49,6 +55,7 @@ pub struct Release {
 }
 
 impl Release {
+    /// A release of `version` on `date`.
     pub fn new(version: impl Into<SharedString>, date: impl Into<SharedString>) -> Self {
         Self {
             version: version.into(),
@@ -58,11 +65,13 @@ impl Release {
         }
     }
 
+    /// A line under the version.
     pub fn summary(mut self, summary: impl Into<SharedString>) -> Self {
         self.summary = Some(summary.into());
         self
     }
 
+    /// Adds a change of `kind`.
     pub fn change(mut self, kind: Change, text: impl Into<SharedString>) -> Self {
         self.changes.push((kind, text.into()));
         self
@@ -83,16 +92,28 @@ fn grouped(changes: Vec<(Change, SharedString)>) -> Vec<(Change, Vec<SharedStrin
 }
 
 /// Releases down a rail in the order given; the first reads Latest.
+///
+/// ```
+/// use ely_core::data_display::{Change, Changelog, Release};
+///
+/// let notes = Changelog::new().release(
+///     Release::new("0.2.0", "2026-10-23")
+///         .summary("Workspace split.")
+///         .change(Change::Added, "One crate per chapter."),
+/// );
+/// ```
 #[derive(IntoElement, Default)]
 pub struct Changelog {
     releases: Vec<Release>,
 }
 
 impl Changelog {
+    /// An empty changelog.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Adds a release.
     pub fn release(mut self, release: Release) -> Self {
         self.releases.push(release);
         self

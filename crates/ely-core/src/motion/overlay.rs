@@ -15,6 +15,13 @@ use crate::{
 };
 
 /// Veils what it holds with a spinner while `loading`; presses stop at the veil. It fades in and out.
+///
+/// ```
+/// use ely_core::motion::LoadingOverlay;
+/// use gpui::{ParentElement, div};
+///
+/// let report = LoadingOverlay::new("report", true).label("Loading the report…").child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct LoadingOverlay {
     id: ElementId,
@@ -25,6 +32,7 @@ pub struct LoadingOverlay {
 }
 
 impl LoadingOverlay {
+    /// Veils its children under `id` while `loading`.
     pub fn new(id: impl Into<ElementId>, loading: bool) -> Self {
         Self {
             id: id.into(),
@@ -35,6 +43,7 @@ impl LoadingOverlay {
         }
     }
 
+    /// A line under the spinner.
     pub fn label(mut self, text: impl Into<SharedString>) -> Self {
         self.label = Some(text.into());
         self
@@ -106,6 +115,13 @@ impl RenderOnce for LoadingOverlay {
 type Build = Box<dyn FnOnce(&mut Window, &mut App) -> AnyElement>;
 
 /// Builds its content once it first scrolls into view; until then a skeleton holds its place.
+///
+/// ```
+/// use ely_core::motion::LazyLoad;
+/// use gpui::px;
+///
+/// let chart = LazyLoad::new("chart", px(240.0), |_, _| "Chart");
+/// ```
 #[derive(IntoElement)]
 pub struct LazyLoad {
     id: ElementId,
@@ -156,14 +172,23 @@ impl RenderOnce for LazyLoad {
 /// Where a pull to refresh stands.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Refresh {
+    /// At rest.
     Idle,
     /// Pulled this far toward the point where it lets go, 0 to 1.
     Pulling(f32),
+    /// Working.
     Refreshing,
+    /// Finished.
     Done,
 }
 
 /// The mark at the top of a list that refreshes: an arrow that turns with the pull, a spinner while it works, a check when done.
+///
+/// ```
+/// use ely_core::motion::{Refresh, RefreshIndicator};
+///
+/// let pull = RefreshIndicator::new("pull", Refresh::Pulling(0.6));
+/// ```
 #[derive(IntoElement)]
 pub struct RefreshIndicator {
     id: ElementId,
@@ -171,6 +196,7 @@ pub struct RefreshIndicator {
 }
 
 impl RefreshIndicator {
+    /// Shows `state` under `id`. Panics on a pull outside 0 to 1.
     pub fn new(id: impl Into<ElementId>, state: Refresh) -> Self {
         if let Refresh::Pulling(pull) = state {
             assert!((0.0..=1.0).contains(&pull), "pull {pull} is not 0..=1");
@@ -228,6 +254,12 @@ impl RenderOnce for RefreshIndicator {
 }
 
 /// Someone is typing: three dots bob in a small bubble, beside who it is when named.
+///
+/// ```
+/// use ely_core::motion::TypingIndicator;
+///
+/// let typing = TypingIndicator::new("typing").who("Ana");
+/// ```
 #[derive(IntoElement)]
 pub struct TypingIndicator {
     id: ElementId,
@@ -235,6 +267,7 @@ pub struct TypingIndicator {
 }
 
 impl TypingIndicator {
+    /// Three dots under `id`, unnamed.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

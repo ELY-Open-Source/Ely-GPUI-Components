@@ -18,6 +18,7 @@ use crate::{
 pub enum UploadState {
     /// Sent this share, 0 to 1.
     Uploading(f32),
+    /// Sent whole.
     Done,
     /// Why it stopped.
     Failed(SharedString),
@@ -26,14 +27,30 @@ pub enum UploadState {
 /// One file on its way up.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Upload {
+    /// The file's name.
     pub name: SharedString,
+    /// Its size in bytes.
     pub bytes: u64,
+    /// Where it stands.
     pub state: UploadState,
 }
 
 type OnRow = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Files on their way up. Each row shows its name, the percent and a progress bar while it goes, then its size and a check, or why it failed with Retry.
+///
+/// ```
+/// use ely_core::forms::{Upload, UploadList, UploadState};
+///
+/// let uploads = UploadList::new(
+///     "uploads",
+///     [Upload {
+///         name: "report.pdf".into(),
+///         bytes: 2_400_000,
+///         state: UploadState::Uploading(0.4),
+///     }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct UploadList {
     id: ElementId,
@@ -44,6 +61,7 @@ pub struct UploadList {
 }
 
 impl UploadList {
+    /// Rows under `id`, one per upload. Panics on a share outside 0 to 1.
     pub fn new(id: impl Into<ElementId>, uploads: impl IntoIterator<Item = Upload>) -> Self {
         let uploads: Vec<Upload> = uploads.into_iter().collect();
         for upload in &uploads {

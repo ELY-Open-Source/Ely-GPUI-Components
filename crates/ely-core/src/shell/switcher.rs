@@ -22,6 +22,12 @@ struct Switch {
 type Close = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Lists managed windows over a scrim. Arrows or Tab move, Enter switches.
+///
+/// ```
+/// use ely_core::shell::WindowSwitcher;
+///
+/// let switcher = WindowSwitcher::new("switcher", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct WindowSwitcher {
     id: ElementId,
@@ -29,6 +35,7 @@ pub struct WindowSwitcher {
 }
 
 impl WindowSwitcher {
+    /// A switcher under `id`; `on_close` runs when it closes.
     pub fn new(
         id: impl Into<ElementId>,
         on_close: impl Fn(&mut Window, &mut App) + 'static,

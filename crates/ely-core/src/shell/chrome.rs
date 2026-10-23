@@ -71,6 +71,14 @@ fn run(control: Control, on_close: Option<&OnClose>, window: &mut Window, cx: &m
 }
 
 /// Minimize, maximize and close, drawn in one system's manner.
+///
+/// ```
+/// use ely_core::{shell::WindowControls, theme::Platform};
+///
+/// let controls = WindowControls::new("controls")
+///     .platform(Platform::Windows)
+///     .on_close(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct WindowControls {
     id: ElementId,
@@ -79,6 +87,7 @@ pub struct WindowControls {
 }
 
 impl WindowControls {
+    /// The theme platform's controls under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -306,6 +315,12 @@ pub(super) fn route_close(
 }
 
 /// Window title bar. Its empty space drags the window.
+///
+/// ```
+/// use ely_core::shell::TitleBar;
+///
+/// let bar = TitleBar::new("title-bar").title("Untitled");
+/// ```
 #[derive(IntoElement)]
 pub struct TitleBar {
     id: ElementId,
@@ -329,6 +344,7 @@ impl TitleBar {
         }
     }
 
+    /// The title in its middle.
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = Some(title.into());
         self

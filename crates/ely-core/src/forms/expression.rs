@@ -243,6 +243,16 @@ pub fn expression_highlights(source: &str, cx: &App) -> Vec<(Range<usize>, Highl
 }
 
 /// A formula field: colored as you type, with its value or its problem below.
+///
+/// ```
+/// use ely_core::forms::{ExpressionInput, TextInput, expression_highlights};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn total(window: &mut Window, cx: &mut App) -> ExpressionInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx).highlighter(expression_highlights));
+///     ExpressionInput::new(&state).variable("price", 12.5).variable("qty", 3.0)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct ExpressionInput {
     state: Entity<TextInput>,
@@ -258,6 +268,7 @@ impl ExpressionInput {
         }
     }
 
+    /// A name the formula may use, and its value.
     pub fn variable(mut self, name: impl Into<SharedString>, value: f64) -> Self {
         self.variables.push((name.into(), value));
         self

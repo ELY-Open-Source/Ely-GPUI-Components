@@ -47,6 +47,13 @@ fn checked(value: f32, what: &str) -> f32 {
 }
 
 /// How far a task has come: a thin track that fills and glides to each new value, or sweeps when none is known. A buffer shows what has loaded ahead; segments split it into steps.
+///
+/// ```
+/// use ely_core::motion::ProgressBar;
+///
+/// let upload = ProgressBar::new("upload", 0.4).buffer(0.7);
+/// let waiting = ProgressBar::indeterminate("waiting");
+/// ```
 #[derive(IntoElement)]
 pub struct ProgressBar {
     id: ElementId,
@@ -56,6 +63,7 @@ pub struct ProgressBar {
 }
 
 impl ProgressBar {
+    /// A bar under `id` filled to `value`, 0 to 1.
     pub fn new(id: impl Into<ElementId>, value: f32) -> Self {
         Self {
             id: id.into(),
@@ -170,6 +178,12 @@ impl RenderOnce for ProgressBar {
 }
 
 /// Progress as a ring that fills clockwise from the top and glides to each new value; the percent, or any content, can sit inside.
+///
+/// ```
+/// use ely_core::motion::ProgressRing;
+///
+/// let done = ProgressRing::new("done", 0.75).percent();
+/// ```
 #[derive(IntoElement)]
 pub struct ProgressRing {
     id: ElementId,
@@ -180,6 +194,7 @@ pub struct ProgressRing {
 }
 
 impl ProgressRing {
+    /// A ring under `id` filled to `value`, 0 to 1.
     pub fn new(id: impl Into<ElementId>, value: f32) -> Self {
         Self {
             id: id.into(),

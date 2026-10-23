@@ -23,6 +23,7 @@ pub struct WindowTab {
 }
 
 impl WindowTab {
+    /// A tab named `id` that reads `title`.
     pub fn new(id: impl Into<SharedString>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -31,6 +32,7 @@ impl WindowTab {
         }
     }
 
+    /// An icon before the title.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
@@ -47,6 +49,16 @@ type OnAdd = Rc<dyn Fn(&mut Window, &mut App)>;
 type OnReorder = Rc<dyn Fn(usize, usize, &mut Window, &mut App)>;
 
 /// Browser-style tabs across the top of a window.
+///
+/// ```
+/// use ely_core::shell::{TabBar, WindowTab};
+///
+/// let tabs = TabBar::new("tabs")
+///     .tab(WindowTab::new("inbox", "Inbox"))
+///     .tab(WindowTab::new("drafts", "Drafts"))
+///     .selected("inbox")
+///     .on_select(|_id, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TabBar {
     id: ElementId,
@@ -59,6 +71,7 @@ pub struct TabBar {
 }
 
 impl TabBar {
+    /// An empty bar under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -71,16 +84,19 @@ impl TabBar {
         }
     }
 
+    /// Adds a tab.
     pub fn tab(mut self, tab: WindowTab) -> Self {
         self.tabs.push(tab);
         self
     }
 
+    /// Marks the tab `id` selected.
     pub fn selected(mut self, id: impl Into<SharedString>) -> Self {
         self.selected = Some(id.into());
         self
     }
 
+    /// Runs with a tab's id when it is pressed.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

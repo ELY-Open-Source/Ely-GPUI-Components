@@ -15,6 +15,15 @@ enum Cell {
 }
 
 /// Options side by side: a column each, a row per feature, a value or a mark in each cell. One column can stand out.
+///
+/// ```
+/// use ely_core::data_display::Comparison;
+///
+/// let plans = Comparison::new(["Free", "Pro"])
+///     .featured(1)
+///     .row("Seats", ["3", "Unlimited"])
+///     .marks("Backups", [false, true]);
+/// ```
 #[derive(IntoElement)]
 pub struct Comparison {
     columns: Vec<SharedString>,
@@ -23,6 +32,7 @@ pub struct Comparison {
 }
 
 impl Comparison {
+    /// Options side by side, one column each. Panics on no columns.
     pub fn new(columns: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         let columns: Vec<SharedString> = columns.into_iter().map(Into::into).collect();
         assert!(!columns.is_empty(), "a comparison needs an option");

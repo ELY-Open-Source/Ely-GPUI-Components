@@ -37,6 +37,17 @@ struct Typing {
 }
 
 /// A text field that filters a list as you type. Enter or a click picks a row.
+///
+/// ```
+/// use ely_core::forms::{Choice, Combobox, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn fruit(window: &mut Window, cx: &mut App) -> Combobox {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     Combobox::new("fruit", &state, [Choice::new("apple", "Apple"), Choice::new("pear", "Pear")])
+///         .selected("pear")
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct Combobox {
     id: ElementId,
@@ -49,6 +60,7 @@ pub struct Combobox {
 }
 
 impl Combobox {
+    /// A field under `id` that types into `state` and suggests `choices`.
     pub fn new(
         id: impl Into<ElementId>,
         state: &Entity<TextInput>,
@@ -65,6 +77,7 @@ impl Combobox {
         }
     }
 
+    /// The value chosen.
     pub fn selected(mut self, value: impl Into<SharedString>) -> Self {
         self.selected = Some(value.into());
         self
@@ -76,6 +89,7 @@ impl Combobox {
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

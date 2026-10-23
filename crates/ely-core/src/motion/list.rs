@@ -59,6 +59,12 @@ fn measure<T: 'static>(
 }
 
 /// A column whose rows glide to their new places when the order changes: first, last, invert, play. Rows are keyed so each is followed.
+///
+/// ```
+/// use ely_core::motion::Flip;
+///
+/// let ranking = Flip::new("ranking").row("ana", "Ana — 42").row("bo", "Bo — 37");
+/// ```
 #[derive(IntoElement)]
 pub struct Flip {
     id: ElementId,
@@ -67,6 +73,7 @@ pub struct Flip {
 }
 
 impl Flip {
+    /// An empty column under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -178,6 +185,15 @@ fn gone(presence: &Presence, length: std::time::Duration) -> bool {
 }
 
 /// Rows that fold open and fade in when they arrive, and fold away when the owner marks them gone. `on_gone` says when a row may be dropped. Rows there at first stay still.
+///
+/// ```
+/// use ely_core::motion::AnimatePresence;
+///
+/// let toasts = AnimatePresence::new("toasts")
+///     .row("saved", true, "Saved")
+///     .row("copied", false, "Copied")
+///     .on_gone(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AnimatePresence {
     id: ElementId,
@@ -186,6 +202,7 @@ pub struct AnimatePresence {
 }
 
 impl AnimatePresence {
+    /// An empty column under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -200,6 +217,7 @@ impl AnimatePresence {
         self
     }
 
+    /// Runs with a row's key once it has folded away.
     pub fn on_gone(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

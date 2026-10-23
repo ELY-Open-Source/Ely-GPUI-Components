@@ -54,6 +54,18 @@ fn offset(ix: usize, place: f32, count: usize) -> f32 {
 type Step = Rc<dyn Fn(isize, &mut App)>;
 
 /// Slides one at a time, gliding between them. Arrows show on hover, dots below say where you are, and Left and Right step when it has focus. Past the last slide comes the first. Give it a height.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use ely_core::data_display::Carousel;
+/// use gpui::{ParentElement, div};
+///
+/// let deck = Carousel::new("deck")
+///     .autoplay(Duration::from_secs(5))
+///     .child(div())
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Carousel {
     id: ElementId,
@@ -63,6 +75,7 @@ pub struct Carousel {
 }
 
 impl Carousel {
+    /// An empty deck under `id`; its children are the slides.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

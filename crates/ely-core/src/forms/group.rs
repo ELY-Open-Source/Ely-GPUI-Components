@@ -7,18 +7,26 @@ use super::{TextInput, input::text_size};
 use crate::theme::{ActiveTheme, ControlSize, Radius};
 
 /// A block joined to a field's side: text such as `https://`, or a control.
+///
+/// ```
+/// use ely_core::forms::InputAddon;
+///
+/// let scheme = InputAddon::text("https://");
+/// ```
 #[derive(IntoElement)]
 pub struct InputAddon {
     body: AnyElement,
 }
 
 impl InputAddon {
+    /// Text joined to the field, such as `https://`.
     pub fn text(text: impl Into<SharedString>) -> Self {
         Self {
             body: text.into().into_any_element(),
         }
     }
 
+    /// Any element joined to the field.
     pub fn new(body: impl IntoElement) -> Self {
         Self {
             body: body.into_any_element(),
@@ -33,6 +41,18 @@ impl RenderOnce for InputAddon {
 }
 
 /// A field with addons joined before and after it, in one frame.
+///
+/// ```
+/// use ely_core::forms::{InputAddon, InputGroup, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn site(window: &mut Window, cx: &mut App) -> InputGroup {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     InputGroup::new(&state)
+///         .before(InputAddon::text("https://"))
+///         .after(InputAddon::text(".com"))
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct InputGroup {
     state: Entity<TextInput>,
@@ -42,6 +62,7 @@ pub struct InputGroup {
 }
 
 impl InputGroup {
+    /// A field over `state` with nothing joined to it yet.
     pub fn new(state: &Entity<TextInput>) -> Self {
         Self {
             state: state.clone(),
@@ -51,16 +72,19 @@ impl InputGroup {
         }
     }
 
+    /// Joins `addon` before the field.
     pub fn before(mut self, addon: InputAddon) -> Self {
         self.before.push(addon);
         self
     }
 
+    /// Joins `addon` after the field.
     pub fn after(mut self, addon: InputAddon) -> Self {
         self.after.push(addon);
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

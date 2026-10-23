@@ -22,6 +22,12 @@ struct Copied {
 }
 
 /// Copies text, then shows a check for a moment.
+///
+/// ```
+/// use ely_core::buttons::CopyButton;
+///
+/// let copy = CopyButton::new("copy-key", "sk-live-4f2a");
+/// ```
 #[derive(IntoElement)]
 pub struct CopyButton {
     id: ElementId,
@@ -29,6 +35,7 @@ pub struct CopyButton {
 }
 
 impl CopyButton {
+    /// A button under `id` that copies `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

@@ -5,8 +5,11 @@ use super::Theme;
 /// Whose conventions the components follow: window buttons, the title bar's layout and key caps.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Platform {
+    /// macOS.
     Mac,
+    /// Windows.
     Windows,
+    /// Linux.
     Linux,
 }
 

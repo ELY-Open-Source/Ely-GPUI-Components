@@ -24,6 +24,15 @@ fn nudged(at: usize, count: usize, up: bool) -> Option<usize> {
 }
 
 /// Rows you reorder: drag one, or with the list focused press Alt with Up or Down to move the current row. `on_reorder(from, to)` asks the owner to move row `from` to place `to`.
+///
+/// ```
+/// use ely_core::lists::{ListItem, SortableList};
+///
+/// let priorities = SortableList::new("priorities")
+///     .row("speed", ListItem::new("speed", "Speed"))
+///     .row("price", ListItem::new("price", "Price"))
+///     .on_reorder(|_from, _to, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SortableList {
     id: ElementId,
@@ -32,6 +41,7 @@ pub struct SortableList {
 }
 
 impl SortableList {
+    /// An empty list under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -46,6 +56,7 @@ impl SortableList {
         self
     }
 
+    /// Asks the owner to move row `from` to place `to`.
     pub fn on_reorder(
         mut self,
         handler: impl Fn(usize, usize, &mut Window, &mut App) + 'static,

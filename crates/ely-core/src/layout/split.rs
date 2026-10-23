@@ -93,6 +93,16 @@ pub(crate) fn check_weights(weights: &[f32]) -> anyhow::Result<f32> {
 type OnResize = Rc<dyn Fn(&[f32], &mut Window, &mut App)>;
 
 /// Panes side by side or stacked, split by draggable handles.
+///
+/// ```
+/// use ely_core::layout::SplitPane;
+/// use gpui::{Axis, div, px};
+///
+/// let split = SplitPane::new("split", Axis::Horizontal, px(200.0))
+///     .pane(div())
+///     .pane(div())
+///     .sizes(&[0.3, 0.7]);
+/// ```
 #[derive(IntoElement)]
 pub struct SplitPane {
     id: ElementId,
@@ -116,6 +126,7 @@ impl SplitPane {
         }
     }
 
+    /// Adds a pane.
     pub fn pane(mut self, pane: impl IntoElement) -> Self {
         self.panes.push(pane.into_any_element());
         self

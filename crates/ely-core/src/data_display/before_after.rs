@@ -28,6 +28,16 @@ fn share_at(at: Point<Pixels>, bounds: Bounds<Pixels>, inset: Pixels) -> Option<
 }
 
 /// Two versions of a picture, one over the other: `before` shows left of the divider, `after` right of it. Drag the divider, press anywhere, or use Left and Right. Give it a size.
+///
+/// ```
+/// use ely_core::{data_display::BeforeAfter, primitives::Image};
+///
+/// let edit = BeforeAfter::new(
+///     "edit",
+///     Image::new("before", "https://example.com/before.png"),
+///     Image::new("after", "https://example.com/after.png"),
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct BeforeAfter {
     id: ElementId,
@@ -37,6 +47,7 @@ pub struct BeforeAfter {
 }
 
 impl BeforeAfter {
+    /// `before` and `after` under `id`, the divider in the middle.
     pub fn new(
         id: impl Into<ElementId>,
         before: impl IntoElement,

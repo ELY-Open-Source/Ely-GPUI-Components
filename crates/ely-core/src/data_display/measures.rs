@@ -89,6 +89,12 @@ where
 }
 
 /// How full something is, such as a disk or a quota: a label, how much, and a bar that turns amber, then red, as it fills.
+///
+/// ```
+/// use ely_core::data_display::Meter;
+///
+/// let disk = Meter::new("disk", "Disk", 0.82).detail("410 of 500 GB").thresholds(0.75, 0.9);
+/// ```
 #[derive(IntoElement)]
 pub struct Meter {
     id: ElementId,
@@ -99,6 +105,7 @@ pub struct Meter {
 }
 
 impl Meter {
+    /// A meter under `id` labeled `label`, filled to `share`, 0 to 1.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, share: f32) -> Self {
         Self {
             id: id.into(),
@@ -177,6 +184,12 @@ const START: f32 = 3.0 * FRAC_PI_4;
 const SWEEP: f32 = 0.75 * TAU;
 
 /// A value on a dial: an arc of three quarters that fills clockwise from the lower left, the number rolling at the center, the label below.
+///
+/// ```
+/// use ely_core::data_display::Gauge;
+///
+/// let cpu = Gauge::new("cpu", "percent busy", 62.0, 0.0, 100.0).suffix("%");
+/// ```
 #[derive(IntoElement)]
 pub struct Gauge {
     id: ElementId,
@@ -212,6 +225,7 @@ impl Gauge {
         }
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
@@ -302,6 +316,12 @@ impl RenderOnce for Gauge {
 type Amounts = Rc<dyn Fn(f64) -> String>;
 
 /// How a whole divides: one bar of colored parts with the free rest as track, and a legend of each part's share or amount.
+///
+/// ```
+/// use ely_core::data_display::UsageBar;
+///
+/// let storage = UsageBar::new(500.0).part("Photos", 210.0).part("Mail", 40.0);
+/// ```
 #[derive(IntoElement)]
 pub struct UsageBar {
     total: f64,
@@ -329,6 +349,7 @@ impl UsageBar {
         self
     }
 
+    /// Adds a part of `amount`. Panics on a negative amount.
     pub fn part(mut self, name: impl Into<SharedString>, amount: f64) -> Self {
         assert!(amount >= 0.0, "a part cannot be negative, got {amount}");
         self.parts.push((name.into(), amount));

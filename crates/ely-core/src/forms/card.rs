@@ -115,6 +115,14 @@ fn card(
 }
 
 /// A card that turns on and off, with a checkbox in its corner.
+///
+/// ```
+/// use ely_core::forms::CheckboxCard;
+///
+/// let backups = CheckboxCard::new("backups", true, "Daily backups")
+///     .description("Kept for 30 days")
+///     .on_change(|_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CheckboxCard {
     id: ElementId,
@@ -124,6 +132,7 @@ pub struct CheckboxCard {
 }
 
 impl CheckboxCard {
+    /// A card under `id` titled `title`, checked or not.
     pub fn new(id: impl Into<ElementId>, checked: bool, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -133,21 +142,25 @@ impl CheckboxCard {
         }
     }
 
+    /// A line under the title.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.face.description = Some(text.into());
         self
     }
 
+    /// An icon before the title.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.face.icon = Some(icon);
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.face.disabled = disabled;
         self
     }
 
+    /// Runs with the new state on each press.
     pub fn on_change(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -182,6 +195,14 @@ impl RenderOnce for CheckboxCard {
 }
 
 /// A card chosen from several, with a radio in its corner.
+///
+/// ```
+/// use ely_core::forms::RadioCard;
+///
+/// let pro = RadioCard::new("plan-pro", false, "Pro")
+///     .description("$12 a month")
+///     .on_select(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RadioCard {
     id: ElementId,
@@ -191,6 +212,7 @@ pub struct RadioCard {
 }
 
 impl RadioCard {
+    /// A card under `id` titled `title`, chosen or not.
     pub fn new(id: impl Into<ElementId>, selected: bool, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -200,6 +222,7 @@ impl RadioCard {
         }
     }
 
+    /// A line under the title.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.face.description = Some(text.into());
         self
@@ -211,11 +234,13 @@ impl RadioCard {
         self
     }
 
+    /// An icon before the title.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.face.icon = Some(icon);
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.face.disabled = disabled;
         self

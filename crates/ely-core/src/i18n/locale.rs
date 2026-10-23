@@ -6,7 +6,9 @@ use crate::typography::format::{self, Separators};
 /// Which way a line of text runs.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Direction {
+    /// Left to right.
     Ltr,
+    /// Right to left.
     Rtl,
 }
 
@@ -31,11 +33,15 @@ impl Direction {
 /// A language as it writes numbers, dates and lines.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Locale {
+    /// Its language tag, such as `en-US`.
     pub tag: &'static str,
+    /// Its name in its own language.
     pub name: &'static str,
+    /// Its digit group and decimal marks.
     pub separators: Separators,
     /// A numeric date, as `strftime` reads it.
     pub date: &'static str,
+    /// Which way its text runs.
     pub direction: Direction,
 }
 

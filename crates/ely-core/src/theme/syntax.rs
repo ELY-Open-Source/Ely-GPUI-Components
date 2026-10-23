@@ -5,12 +5,16 @@ use super::{Mode, Palette, Syntax};
 /// A code palette by name, one for each mode.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SyntaxTheme {
+    /// Its name.
     pub name: &'static str,
+    /// Its colors in light mode.
     pub light: Syntax,
+    /// Its colors in dark mode.
     pub dark: Syntax,
 }
 
 impl SyntaxTheme {
+    /// Its colors in `mode`.
     pub fn of(&self, mode: Mode) -> Syntax {
         match mode {
             Mode::Light => self.light.clone(),

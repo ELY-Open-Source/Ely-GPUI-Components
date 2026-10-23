@@ -79,6 +79,16 @@ pub(crate) fn pivot(
 }
 
 /// Records cross-tabbed: one field's values down the side, another's across the top, and a third combined where they meet, with totals for each row, each column, and all.
+///
+/// ```
+/// use ely_core::tables::{Aggregate, PivotTable};
+///
+/// let sales = PivotTable::new(
+///     ["region", "quarter", "sales"],
+///     [vec!["Europe".into(), "Q1".into(), 4.0.into()], vec!["Asia".into(), "Q1".into(), 6.0.into()]],
+/// )
+/// .pivot("region", "quarter", "sales", Aggregate::Sum);
+/// ```
 #[derive(IntoElement)]
 pub struct PivotTable {
     fields: Vec<SharedString>,
@@ -122,6 +132,7 @@ impl PivotTable {
         self
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self

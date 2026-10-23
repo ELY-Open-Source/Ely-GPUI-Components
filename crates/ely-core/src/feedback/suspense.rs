@@ -12,6 +12,13 @@ use crate::{
 };
 
 /// Shows a fallback while its content is on the way, then the content as it fades in, or an error view of the failure.
+///
+/// ```
+/// use ely_core::feedback::Suspense;
+///
+/// let profile: Option<anyhow::Result<&'static str>> = None;
+/// let view = Suspense::new("profile", profile).on_retry(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Suspense {
     id: ElementId,
@@ -40,6 +47,7 @@ impl Suspense {
         self
     }
 
+    /// Runs on Try again.
     pub fn on_retry(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_retry = Some(Rc::new(handler));
         self
@@ -79,6 +87,22 @@ type Load<T> = Rc<dyn Fn() -> Task<anyhow::Result<T>>>;
 type Show<T> = Rc<dyn Fn(&T, &mut Window, &mut App) -> AnyElement>;
 
 /// Loads a value off the main thread and shows it through a `Suspense`: a spinner while it loads, then `show`'s view of it, or the error with Try again.
+///
+/// ```
+/// use ely_core::feedback::AsyncView;
+/// use gpui::{App, AppContext, Entity, SharedString};
+///
+/// fn weather(cx: &mut App) -> Entity<AsyncView<String>> {
+///     cx.new(|cx| {
+///         AsyncView::new(
+///             "weather",
+///             || async { Ok("Sunny, 21°".to_string()) },
+///             |forecast: &String, _, _| SharedString::from(forecast.clone()),
+///             cx,
+///         )
+///     })
+/// }
+/// ```
 pub struct AsyncView<T> {
     id: ElementId,
     load: Load<T>,

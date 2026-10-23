@@ -34,6 +34,15 @@ fn clamp_to_window(
 type OnMove = Rc<dyn Fn(&Point<Pixels>, &mut Window, &mut App)>;
 
 /// Panel that floats above the page; drag its title bar to move it.
+///
+/// ```
+/// use ely_core::layout::FloatingPanel;
+/// use gpui::{ParentElement, point, px};
+///
+/// let inspector = FloatingPanel::new("inspector", "Inspector", point(px(40.0), px(80.0)))
+///     .on_move(|_corner, _, _| {})
+///     .child("Layers");
+/// ```
 #[derive(IntoElement)]
 pub struct FloatingPanel {
     id: ElementId,

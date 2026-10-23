@@ -38,11 +38,19 @@ fn surface(content: AnyElement, cx: &App) -> impl IntoElement + use<> {
 }
 
 /// Tooltip body for gpui's `.tooltip()`.
+///
+/// ```
+/// use ely_core::primitives::Tooltip;
+/// use gpui::{InteractiveElement, StatefulInteractiveElement, div};
+///
+/// let save = div().id("save").tooltip(Tooltip::with_meta("Save", "⌘S"));
+/// ```
 pub struct Tooltip {
     content: Content,
 }
 
 impl Tooltip {
+    /// A tooltip that reads `title`.
     pub fn text(title: impl Into<SharedString>) -> impl Fn(&mut Window, &mut App) -> AnyView {
         let title = title.into();
         Self::rich(move |_, _| title.clone().into_any_element())
@@ -57,6 +65,7 @@ impl Tooltip {
         Self::rich(move |_, cx| meta_row(title.clone(), meta.clone(), cx).into_any_element())
     }
 
+    /// A tooltip that draws `content`.
     pub fn rich(
         content: impl Fn(&mut Window, &mut App) -> AnyElement + 'static,
     ) -> impl Fn(&mut Window, &mut App) -> AnyView {
@@ -93,6 +102,17 @@ struct TriggerState {
 }
 
 /// Tooltip with its own delay, and optional cursor tracking.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use ely_core::primitives::TooltipTrigger;
+/// use gpui::{IntoElement, div};
+///
+/// let tip = TooltipTrigger::new("chart-tip", div(), |_, _| "42 visits".into_any_element())
+///     .delay(Duration::from_millis(200))
+///     .follow_mouse();
+/// ```
 #[derive(IntoElement)]
 pub struct TooltipTrigger {
     id: ElementId,
@@ -103,6 +123,7 @@ pub struct TooltipTrigger {
 }
 
 impl TooltipTrigger {
+    /// Shows `content` over `child` after the default delay.
     pub fn new(
         id: impl Into<ElementId>,
         child: impl IntoElement,
@@ -117,11 +138,13 @@ impl TooltipTrigger {
         }
     }
 
+    /// How long the pointer rests before the tip shows.
     pub fn delay(mut self, delay: Duration) -> Self {
         self.delay = delay;
         self
     }
 
+    /// Moves the tip with the pointer.
     pub fn follow_mouse(mut self) -> Self {
         self.follow = true;
         self
@@ -196,6 +219,12 @@ fn hide(trigger: &mut TriggerState, cx: &mut Context<TriggerState>) {
 }
 
 /// A help mark, ?, whose tip shows on hover.
+///
+/// ```
+/// use ely_core::primitives::HelpTooltip;
+///
+/// let help = HelpTooltip::new("rate-help", "Requests per minute, averaged over five minutes.");
+/// ```
 #[derive(IntoElement)]
 pub struct HelpTooltip {
     id: ElementId,
@@ -203,6 +232,7 @@ pub struct HelpTooltip {
 }
 
 impl HelpTooltip {
+    /// A ? mark under `id` whose tip reads `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

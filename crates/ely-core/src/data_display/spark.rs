@@ -32,6 +32,12 @@ fn shares(values: &[f32]) -> Vec<f32> {
 }
 
 /// A word-sized chart of a series, scaled to its own range: a line, a filled area, or bars.
+///
+/// ```
+/// use ely_core::data_display::Sparkline;
+///
+/// let trend = Sparkline::new([3.0, 5.0, 4.0, 8.0, 7.0]);
+/// ```
 #[derive(IntoElement)]
 pub struct Sparkline {
     base: Div,
@@ -41,6 +47,7 @@ pub struct Sparkline {
 }
 
 impl Sparkline {
+    /// A line through `values`. Panics on fewer than two, or a value that is not finite.
     pub fn new(values: impl IntoIterator<Item = f32>) -> Self {
         let values: Vec<f32> = values.into_iter().collect();
         assert!(values.len() >= 2, "a sparkline needs two values");
@@ -62,6 +69,7 @@ impl Sparkline {
         self
     }
 
+    /// Bars instead of a line.
     pub fn bars(mut self) -> Self {
         self.spark = Spark::Bars;
         self

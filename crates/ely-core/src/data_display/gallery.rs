@@ -15,6 +15,12 @@ fn clamp(open: Option<usize>, count: usize) -> Option<usize> {
 }
 
 /// Pictures in square tiles. A press, or Enter on a focused tile, opens the lightbox at that picture.
+///
+/// ```
+/// use ely_core::{data_display::Gallery, overlays::Slide};
+///
+/// let trip = Gallery::new("trip", [Slide::new("https://example.com/a.png", "Lisbon")]).columns(4);
+/// ```
 #[derive(IntoElement)]
 pub struct Gallery {
     id: ElementId,
@@ -23,6 +29,7 @@ pub struct Gallery {
 }
 
 impl Gallery {
+    /// Square tiles under `id`, three a row, one per picture.
     pub fn new(id: impl Into<ElementId>, slides: impl IntoIterator<Item = Slide>) -> Self {
         Self {
             id: id.into(),
@@ -31,6 +38,7 @@ impl Gallery {
         }
     }
 
+    /// How many tiles a row holds. Panics on zero.
     pub fn columns(mut self, columns: u16) -> Self {
         assert!(columns > 0, "a gallery needs a column");
         self.columns = columns;

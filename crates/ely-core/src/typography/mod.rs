@@ -2,9 +2,11 @@ mod copy;
 mod effects;
 mod emoji;
 mod fit;
+/// Numbers, sizes, durations and times as text.
 pub mod format;
 mod formatted;
 mod inline;
+/// Keystrokes and their key caps on each platform.
 pub mod keys;
 mod link;
 mod rolling;

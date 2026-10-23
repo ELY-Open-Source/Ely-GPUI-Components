@@ -76,10 +76,11 @@ macro_rules! holder {
 
 holder!(
     Blink,
-    "Blinks what it holds on and off, a caret's rhythm. Under reduced motion it stays on."
+    "Blinks what it holds on and off, a caret's rhythm. Under reduced motion it stays on.\n\n```\nuse ely_core::motion::Blink;\nuse gpui::{ParentElement, div};\n\nlet held = Blink::new(\"caret\").child(div());\n```"
 );
 
 impl Blink {
+    /// An empty blink under `id`; its children are what it holds.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -103,6 +104,14 @@ impl RenderOnce for Blink {
 }
 
 /// Tints what it holds for a moment each time `key` changes, then lets the tint fade: a cue that a value moved.
+///
+/// ```
+/// use ely_core::motion::Flash;
+/// use gpui::ParentElement;
+///
+/// let price = 104.2_f64;
+/// let tick = Flash::new("price", price.to_bits()).child("$104.20");
+/// ```
 #[derive(IntoElement)]
 pub struct Flash<K: Clone + PartialEq + 'static> {
     id: ElementId,
@@ -113,6 +122,7 @@ pub struct Flash<K: Clone + PartialEq + 'static> {
 }
 
 impl<K: Clone + PartialEq + 'static> Flash<K> {
+    /// A flash under `id` that fires each time `key` changes, never on first paint.
     pub fn new(id: impl Into<ElementId>, key: K) -> Self {
         Self {
             id: id.into(),
@@ -153,6 +163,14 @@ impl<K: Clone + PartialEq + 'static> RenderOnce for Flash<K> {
 }
 
 /// Shakes what it holds side to side each time `key` changes, as a field refusing an entry. Under reduced motion it holds still.
+///
+/// ```
+/// use ely_core::motion::Shake;
+/// use gpui::ParentElement;
+///
+/// let failures = 2_u32;
+/// let field = Shake::new("password", failures).child("Password");
+/// ```
 #[derive(IntoElement)]
 pub struct Shake<K: Clone + PartialEq + 'static> {
     id: ElementId,
@@ -162,6 +180,7 @@ pub struct Shake<K: Clone + PartialEq + 'static> {
 }
 
 impl<K: Clone + PartialEq + 'static> Shake<K> {
+    /// A shake under `id` that fires each time `key` changes, never on first paint.
     pub fn new(id: impl Into<ElementId>, key: K) -> Self {
         Self {
             id: id.into(),
@@ -199,10 +218,11 @@ impl<K: Clone + PartialEq + 'static> RenderOnce for Shake<K> {
 
 holder!(
     Glow,
-    "A soft light that breathes around what it holds. Under reduced motion it holds its middle glow."
+    "A soft light that breathes around what it holds. Under reduced motion it holds its middle glow.\n\n```\nuse ely_core::motion::Glow;\nuse gpui::{ParentElement, div};\n\nlet held = Glow::new(\"glow\").child(div());\n```"
 );
 
 impl Glow {
+    /// An empty glow under `id`; its children are what it holds.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -242,10 +262,11 @@ impl RenderOnce for Glow {
 
 holder!(
     Pulse,
-    "Rings that widen and fade from what it holds, as a live dot calls out. Under reduced motion no ring shows."
+    "Rings that widen and fade from what it holds, as a live dot calls out. Under reduced motion no ring shows.\n\n```\nuse ely_core::motion::Pulse;\nuse gpui::{ParentElement, div};\n\nlet held = Pulse::new(\"live\").child(div());\n```"
 );
 
 impl Pulse {
+    /// An empty pulse under `id`; its children are what it holds.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -305,6 +326,12 @@ fn copies(span: Pixels, room: Pixels) -> usize {
 }
 
 /// Runs its content past in a loop, right to left, at an even pace. Under reduced motion it stands still.
+///
+/// ```
+/// use ely_core::motion::Marquee;
+///
+/// let ticker = Marquee::new("ticker", || "AAPL 231.40 ▲  MSFT 418.20 ▼");
+/// ```
 #[derive(IntoElement)]
 pub struct Marquee {
     id: ElementId,

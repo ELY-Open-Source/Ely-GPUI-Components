@@ -152,6 +152,15 @@ fn face(id: &ElementId, seconds: u64, size: TextSize, cx: &App) -> impl IntoElem
 }
 
 /// Time left until a moment, its digits rolling as they change. `on_done` runs once at zero.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use ely_core::feedback::Countdown;
+/// use web_time::Instant;
+///
+/// let launch = Countdown::new("launch", Instant::now() + Duration::from_secs(90)).on_done(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Countdown {
     id: ElementId,
@@ -161,6 +170,7 @@ pub struct Countdown {
 }
 
 impl Countdown {
+    /// Counts down to `until` under `id`, extra-extra-large.
     pub fn new(id: impl Into<ElementId>, until: Instant) -> Self {
         Self {
             id: id.into(),
@@ -170,11 +180,13 @@ impl Countdown {
         }
     }
 
+    /// Its text size.
     pub fn size(mut self, size: TextSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs once it reaches zero.
     pub fn on_done(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_done = Some(Rc::new(handler));
         self
@@ -189,6 +201,13 @@ impl RenderOnce for Countdown {
 }
 
 /// Time since a moment, counting up with rolling digits; `stopped` freezes it.
+///
+/// ```
+/// use ely_core::feedback::Timer;
+/// use web_time::Instant;
+///
+/// let elapsed = Timer::new("elapsed", Instant::now());
+/// ```
 #[derive(IntoElement)]
 pub struct Timer {
     id: ElementId,
@@ -198,6 +217,7 @@ pub struct Timer {
 }
 
 impl Timer {
+    /// Counts up from `since` under `id`, extra-extra-large.
     pub fn new(id: impl Into<ElementId>, since: Instant) -> Self {
         Self {
             id: id.into(),
@@ -213,6 +233,7 @@ impl Timer {
         self
     }
 
+    /// Its text size.
     pub fn size(mut self, size: TextSize) -> Self {
         self.size = size;
         self

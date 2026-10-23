@@ -14,6 +14,13 @@ struct Width {
 }
 
 /// Side column that folds to an icon rail, width animated.
+///
+/// ```
+/// use ely_core::layout::Sidebar;
+/// use gpui::{ParentElement, div};
+///
+/// let nav = Sidebar::new("nav", false).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Sidebar {
     id: ElementId,

@@ -17,17 +17,25 @@ use crate::{
 
 pub(crate) type ClickHandler = Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>;
 
+/// A button's look, from the filled accent to a bare link.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum ButtonVariant {
+    /// Filled with the accent; the one action a view leads with.
     Primary,
+    /// On the surface with a hairline border.
     #[default]
     Secondary,
+    /// A strong border and no fill.
     Outline,
+    /// No fill and no border until hovered.
     Ghost,
+    /// A faint fill and no border.
     Subtle,
     /// Confirms a gain, such as a purchase; green.
     Success,
+    /// Destroys or removes; red.
     Danger,
+    /// Text in the link color, nothing around it.
     Link,
 }
 
@@ -129,6 +137,16 @@ pub fn shortcut_text(source: &str, platform: Platform) -> String {
     keystroke_labels(&keystroke(source, platform), platform).join(glue)
 }
 
+/// A pressable button: a label, an icon at either end, a shortcut hint.
+///
+/// ```
+/// use ely_core::buttons::{Button, ButtonVariant};
+///
+/// let save = Button::new("save", "Save")
+///     .variant(ButtonVariant::Primary)
+///     .shortcut("secondary-s")
+///     .on_click(|_, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Button {
     id: ElementId,
@@ -147,6 +165,7 @@ pub struct Button {
 }
 
 impl Button {
+    /// A secondary button under `id` that reads `label`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -165,25 +184,30 @@ impl Button {
         }
     }
 
+    /// Its look.
     pub fn variant(mut self, variant: ButtonVariant) -> Self {
         self.variant = variant;
         self
     }
 
+    /// Turns it primary.
     pub fn primary(self) -> Self {
         self.variant(ButtonVariant::Primary)
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// An icon after the label.
     pub fn trailing_icon(mut self, icon: IconName) -> Self {
         self.trailing_icon = Some(icon);
         self
@@ -202,6 +226,7 @@ impl Button {
         self
     }
 
+    /// Dims it and takes no press; a disabled button is no Tab stop.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
@@ -213,11 +238,13 @@ impl Button {
         self
     }
 
+    /// Stretches it across its container.
     pub fn full_width(mut self) -> Self {
         self.full_width = true;
         self
     }
 
+    /// Runs on a press, or on Enter or Space released while focused.
     pub fn on_click(
         mut self,
         handler: impl Fn(&ClickEvent, &mut Window, &mut App) + 'static,

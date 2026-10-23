@@ -7,16 +7,23 @@ use super::{Cell, Column, Row};
 /// How a filter rule compares a cell with its value.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Test {
+    /// The cell's text holds the value; case does not count.
     #[default]
     Contains,
+    /// The cell equals the value, as numbers when both read as one.
     Equals,
+    /// The cell differs from the value, as numbers when both read as one.
     NotEquals,
+    /// The cell's number is greater; text never passes.
     Above,
+    /// The cell's number is smaller; text never passes.
     Below,
+    /// The cell holds nothing.
     Empty,
 }
 
 impl Test {
+    /// Every test, in menu order.
     pub const ALL: [Test; 6] = [
         Test::Contains,
         Test::Equals,
@@ -47,15 +54,20 @@ impl Test {
 /// One filter rule: a column by key, a test, and the value it compares with.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct FilterRule {
+    /// The column it reads, by key.
     pub column: SharedString,
+    /// How it compares.
     pub test: Test,
+    /// What it compares with.
     pub value: SharedString,
 }
 
 /// One sort key: a column by key, and which way.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SortKey {
+    /// The column it sorts by, by key.
     pub column: SharedString,
+    /// Smallest first.
     pub rising: bool,
 }
 

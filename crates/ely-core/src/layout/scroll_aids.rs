@@ -16,12 +16,21 @@ use crate::{
 const FRAME: Duration = Duration::from_millis(8);
 
 /// Soft shade at each edge where content continues.
+///
+/// ```
+/// use ely_core::layout::ScrollShadow;
+/// use gpui::ScrollHandle;
+///
+/// let handle = ScrollHandle::new();
+/// let shade = ScrollShadow::new(&handle);
+/// ```
 #[derive(IntoElement)]
 pub struct ScrollShadow {
     handle: ScrollHandle,
 }
 
 impl ScrollShadow {
+    /// Shades the edges of `handle`'s box.
     pub fn new(handle: &ScrollHandle) -> Self {
         Self {
             handle: handle.clone(),
@@ -54,6 +63,14 @@ impl RenderOnce for ScrollShadow {
 }
 
 /// Floating button that eases back to the top once the reader has gone far.
+///
+/// ```
+/// use ely_core::layout::ScrollToTop;
+/// use gpui::ScrollHandle;
+///
+/// let handle = ScrollHandle::new();
+/// let back = ScrollToTop::new("to-top", &handle);
+/// ```
 #[derive(IntoElement)]
 pub struct ScrollToTop {
     id: ElementId,
@@ -61,6 +78,7 @@ pub struct ScrollToTop {
 }
 
 impl ScrollToTop {
+    /// A button under `id` that takes `handle` back to the top.
     pub fn new(id: impl Into<ElementId>, handle: &ScrollHandle) -> Self {
         Self {
             id: id.into(),
@@ -117,6 +135,14 @@ impl RenderOnce for ScrollToTop {
 type Header = Rc<dyn Fn(&mut Window, &mut App) -> AnyElement>;
 
 /// A section whose header pins to the top of `handle`'s viewport.
+///
+/// ```
+/// use ely_core::layout::StickyHeader;
+/// use gpui::{IntoElement, ParentElement, ScrollHandle, div};
+///
+/// let handle = ScrollHandle::new();
+/// let march = StickyHeader::new("march", &handle, |_, _| "March".into_any_element()).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct StickyHeader {
     id: ElementId,
@@ -126,6 +152,7 @@ pub struct StickyHeader {
 }
 
 impl StickyHeader {
+    /// A section whose `header` pins while the section crosses the top.
     pub fn new(
         id: impl Into<ElementId>,
         handle: &ScrollHandle,

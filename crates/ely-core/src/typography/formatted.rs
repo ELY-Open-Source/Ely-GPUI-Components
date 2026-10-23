@@ -18,6 +18,12 @@ fn figure(text: String) -> impl IntoElement {
 }
 
 /// Grouped digits at fixed precision.
+///
+/// ```
+/// use ely_core::typography::NumberText;
+///
+/// let pi = NumberText::new(3.14159).decimals(2);
+/// ```
 #[derive(IntoElement)]
 pub struct NumberText {
     value: f64,
@@ -25,10 +31,12 @@ pub struct NumberText {
 }
 
 impl NumberText {
+    /// `value` with grouped digits and no decimals.
     pub fn new(value: f64) -> Self {
         Self { value, decimals: 0 }
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
@@ -42,6 +50,12 @@ impl RenderOnce for NumberText {
 }
 
 /// Amount in an ISO 4217 currency.
+///
+/// ```
+/// use ely_core::typography::CurrencyText;
+///
+/// let price = CurrencyText::new(19.99, "USD");
+/// ```
 #[derive(IntoElement)]
 pub struct CurrencyText {
     amount: f64,
@@ -49,6 +63,7 @@ pub struct CurrencyText {
 }
 
 impl CurrencyText {
+    /// `amount` in the currency whose ISO 4217 code is `code`.
     pub fn new(amount: f64, code: &'static str) -> Self {
         Self { amount, code }
     }
@@ -61,6 +76,12 @@ impl RenderOnce for CurrencyText {
 }
 
 /// Ratio as percent. `signed` shows direction in word and color.
+///
+/// ```
+/// use ely_core::typography::PercentText;
+///
+/// let change = PercentText::new(0.082).signed();
+/// ```
 #[derive(IntoElement)]
 pub struct PercentText {
     ratio: f64,
@@ -69,6 +90,7 @@ pub struct PercentText {
 }
 
 impl PercentText {
+    /// `ratio` as a percent to one place: 0.25 reads 25.0%.
     pub fn new(ratio: f64) -> Self {
         Self {
             ratio,
@@ -77,11 +99,13 @@ impl PercentText {
         }
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
     }
 
+    /// Shows the direction in word and color.
     pub fn signed(mut self) -> Self {
         self.signed = true;
         self
@@ -105,6 +129,12 @@ impl RenderOnce for PercentText {
 }
 
 /// Bytes in KB, MB, GB; or KiB with `binary`.
+///
+/// ```
+/// use ely_core::typography::FileSizeText;
+///
+/// let size = FileSizeText::new(1_536_000).binary();
+/// ```
 #[derive(IntoElement)]
 pub struct FileSizeText {
     bytes: u64,
@@ -112,6 +142,7 @@ pub struct FileSizeText {
 }
 
 impl FileSizeText {
+    /// `bytes` in decimal units: KB, MB, GB.
     pub fn new(bytes: u64) -> Self {
         Self {
             bytes,
@@ -119,6 +150,7 @@ impl FileSizeText {
         }
     }
 
+    /// Binary units: KiB, MiB, GiB.
     pub fn binary(mut self) -> Self {
         self.binary = true;
         self
@@ -132,6 +164,12 @@ impl RenderOnce for FileSizeText {
 }
 
 /// Seconds as a clock or a compact span.
+///
+/// ```
+/// use ely_core::typography::{DurationStyle, DurationText};
+///
+/// let length = DurationText::new(3725, DurationStyle::Clock);
+/// ```
 #[derive(IntoElement)]
 pub struct DurationText {
     seconds: u64,
@@ -139,6 +177,7 @@ pub struct DurationText {
 }
 
 impl DurationText {
+    /// `seconds` written in `style`.
     pub fn new(seconds: u64, style: DurationStyle) -> Self {
         Self { seconds, style }
     }
@@ -151,6 +190,12 @@ impl RenderOnce for DurationText {
 }
 
 /// Count with the right noun.
+///
+/// ```
+/// use ely_core::typography::PluralText;
+///
+/// let files = PluralText::new(3, "file", "files");
+/// ```
 #[derive(IntoElement)]
 pub struct PluralText {
     count: u64,
@@ -159,6 +204,7 @@ pub struct PluralText {
 }
 
 impl PluralText {
+    /// `count` with `one` or `other` after it.
     pub fn new(count: u64, one: &'static str, other: &'static str) -> Self {
         Self { count, one, other }
     }
@@ -171,6 +217,13 @@ impl RenderOnce for PluralText {
 }
 
 /// "3 minutes ago", kept fresh while on screen.
+///
+/// ```
+/// use ely_core::typography::RelativeTime;
+/// use jiff::Timestamp;
+///
+/// let sent = RelativeTime::new("sent", Timestamp::now());
+/// ```
 #[derive(IntoElement)]
 pub struct RelativeTime {
     id: ElementId,
@@ -178,6 +231,7 @@ pub struct RelativeTime {
 }
 
 impl RelativeTime {
+    /// How long ago `at` was, under `id`.
     pub fn new(id: impl Into<ElementId>, at: Timestamp) -> Self {
         Self { id: id.into(), at }
     }
@@ -220,6 +274,15 @@ impl RenderOnce for RelativeTime {
 }
 
 /// A moment, strftime pattern, in the system zone unless told.
+///
+/// ```
+/// use ely_core::typography::DateTimeText;
+/// use jiff::{Timestamp, tz::TimeZone};
+///
+/// let at = DateTimeText::new(Timestamp::now())
+///     .pattern("%Y-%m-%d %H:%M")
+///     .zone(TimeZone::UTC);
+/// ```
 #[derive(IntoElement)]
 pub struct DateTimeText {
     at: Timestamp,
@@ -228,6 +291,7 @@ pub struct DateTimeText {
 }
 
 impl DateTimeText {
+    /// `at` as `Oct 23, 2026 · 14:05`, in the system zone.
     pub fn new(at: Timestamp) -> Self {
         Self {
             at,
@@ -236,11 +300,13 @@ impl DateTimeText {
         }
     }
 
+    /// A strftime pattern.
     pub fn pattern(mut self, pattern: &'static str) -> Self {
         self.pattern = pattern;
         self
     }
 
+    /// The zone it shows in.
     pub fn zone(mut self, zone: TimeZone) -> Self {
         self.zone = Some(zone);
         self

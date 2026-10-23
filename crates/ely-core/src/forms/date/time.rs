@@ -174,6 +174,15 @@ fn time_keys(
 }
 
 /// A field that opens hour and minute columns. Up and Down move by the step.
+///
+/// ```
+/// use ely_core::forms::TimePicker;
+/// use jiff::civil::time;
+///
+/// let alarm = TimePicker::new("alarm", Some(time(7, 30, 0, 0)))
+///     .step(15)
+///     .on_change(|_time, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TimePicker {
     id: ElementId,
@@ -186,6 +195,7 @@ pub struct TimePicker {
 }
 
 impl TimePicker {
+    /// A field under `id` that opens hour and minute columns, `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<Time>) -> Self {
         Self {
             id: id.into(),
@@ -208,21 +218,25 @@ impl TimePicker {
         self
     }
 
+    /// What it shows with no time chosen.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with the time picked.
     pub fn on_change(mut self, handler: impl Fn(Time, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -273,6 +287,12 @@ impl RenderOnce for TimePicker {
 }
 
 /// A day and a time: a calendar beside hour and minute columns.
+///
+/// ```
+/// use ely_core::forms::DateTimePicker;
+///
+/// let meeting = DateTimePicker::new("meeting", None).step(30).on_change(|_at, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DateTimePicker {
     id: ElementId,
@@ -285,6 +305,7 @@ pub struct DateTimePicker {
 }
 
 impl DateTimePicker {
+    /// A field under `id` that opens a calendar beside hour and minute columns.
     pub fn new(id: impl Into<ElementId>, value: Option<DateTime>) -> Self {
         Self {
             id: id.into(),
@@ -297,6 +318,7 @@ impl DateTimePicker {
         }
     }
 
+    /// Minutes between choices; divides the hour.
     pub fn step(mut self, minutes: u8) -> Self {
         assert!(
             minutes > 0 && 60 % minutes == 0,
@@ -306,16 +328,19 @@ impl DateTimePicker {
         self
     }
 
+    /// The day ringed as today. Defaults to the system's date.
     pub fn today(mut self, date: Date) -> Self {
         self.today = Some(date);
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with the moment picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(DateTime, &mut Window, &mut App) + 'static,
@@ -396,6 +421,16 @@ impl RenderOnce for DateTimePicker {
 }
 
 /// Hours, minutes, and optionally seconds, each typed or stepped.
+///
+/// ```
+/// use std::time::Duration;
+///
+/// use ely_core::forms::DurationPicker;
+///
+/// let timeout = DurationPicker::new("timeout", Duration::from_secs(90))
+///     .seconds()
+///     .on_change(|_duration, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DurationPicker {
     id: ElementId,
@@ -405,6 +440,7 @@ pub struct DurationPicker {
 }
 
 impl DurationPicker {
+    /// Fields under `id` for hours and minutes, holding `value`.
     pub fn new(id: impl Into<ElementId>, value: Duration) -> Self {
         Self {
             id: id.into(),
@@ -420,6 +456,7 @@ impl DurationPicker {
         self
     }
 
+    /// Runs with each new duration.
     pub fn on_change(
         mut self,
         handler: impl Fn(Duration, &mut Window, &mut App) + 'static,

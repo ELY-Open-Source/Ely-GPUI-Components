@@ -72,7 +72,8 @@ fn shipped_components_show_no_fixed_english() {
         let code = source.split("#[cfg(test)]").next().unwrap_or(source);
         for (no, line) in code.lines().enumerate() {
             let checks = ["assert", "panic!", "log::", ".expect(", "debug_selector"];
-            if checks.iter().any(|check| line.contains(check)) {
+            let comment = line.trim_start().starts_with("//");
+            if comment || checks.iter().any(|check| line.contains(check)) {
                 continue;
             }
             let literals = |calls: &[&str]| -> Vec<&str> {

@@ -21,12 +21,21 @@ const TURN: Duration = Duration::from_millis(1400);
 /// Where a save stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SaveState {
+    /// Writing now.
     Saving,
+    /// All saved.
     Saved,
+    /// The last save failed.
     Failed,
 }
 
 /// A quiet line for autosave: saving, saved, or failed with Retry.
+///
+/// ```
+/// use ely_core::feedback::{SaveState, SavingIndicator};
+///
+/// let saving = SavingIndicator::new("saving", SaveState::Failed).on_retry(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SavingIndicator {
     id: ElementId,
@@ -35,6 +44,7 @@ pub struct SavingIndicator {
 }
 
 impl SavingIndicator {
+    /// Shows `state` under `id`.
     pub fn new(id: impl Into<ElementId>, state: SaveState) -> Self {
         Self {
             id: id.into(),
@@ -43,6 +53,7 @@ impl SavingIndicator {
         }
     }
 
+    /// Shows Retry while failed, running `handler`.
     pub fn on_retry(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_retry = Some(Rc::new(handler));
         self
@@ -84,13 +95,23 @@ impl RenderOnce for SavingIndicator {
 /// Where a sync stands; `Syncing` counts what is left.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SyncState {
+    /// Up to date.
     Synced,
+    /// Working, with this many left.
     Syncing(usize),
+    /// Stopped on purpose.
     Paused,
+    /// Stopped by an error.
     Failed,
 }
 
 /// A line for background sync. Its arrows turn while it works.
+///
+/// ```
+/// use ely_core::feedback::{SyncState, SyncStatus};
+///
+/// let sync = SyncStatus::new("sync", SyncState::Syncing(4));
+/// ```
 #[derive(IntoElement)]
 pub struct SyncStatus {
     id: ElementId,
@@ -98,6 +119,7 @@ pub struct SyncStatus {
 }
 
 impl SyncStatus {
+    /// Shows `state` under `id`.
     pub fn new(id: impl Into<ElementId>, state: SyncState) -> Self {
         Self {
             id: id.into(),
@@ -158,6 +180,12 @@ impl RenderOnce for SyncStatus {
 }
 
 /// A dot and a word for a live connection: connected, reconnecting or offline. `shell::OfflineIndicator` is the pill that shows while offline or reconnecting, and briefly once back.
+///
+/// ```
+/// use ely_core::{feedback::ConnectionStatus, shell::Connectivity};
+///
+/// let network = ConnectionStatus::new("network", Connectivity::Offline);
+/// ```
 #[derive(IntoElement)]
 pub struct ConnectionStatus {
     id: ElementId,
@@ -165,6 +193,7 @@ pub struct ConnectionStatus {
 }
 
 impl ConnectionStatus {
+    /// Shows `state` under `id`.
     pub fn new(id: impl Into<ElementId>, state: Connectivity) -> Self {
         Self {
             id: id.into(),

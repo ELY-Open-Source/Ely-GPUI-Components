@@ -22,6 +22,7 @@ pub struct I18n {
 impl Global for I18n {}
 
 impl I18n {
+    /// Messages in `locale`, with no catalog of the app's yet.
     pub fn new(locale: &str) -> Self {
         Self {
             locale: Locale::of(locale),
@@ -56,6 +57,7 @@ impl I18n {
         self
     }
 
+    /// The locale messages read in.
     pub fn locale(&self) -> Locale {
         self.locale
     }

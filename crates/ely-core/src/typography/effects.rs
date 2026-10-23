@@ -42,6 +42,12 @@ fn tinted(text: &SharedString, color: impl Fn(usize, usize) -> Hsla) -> StyledTe
 }
 
 /// Reveals text one grapheme at a time, with a blinking caret.
+///
+/// ```
+/// use ely_core::typography::Typewriter;
+///
+/// let intro = Typewriter::new("intro", "Hello, world.").speed(24.0);
+/// ```
 #[derive(IntoElement)]
 pub struct Typewriter {
     id: ElementId,
@@ -50,6 +56,7 @@ pub struct Typewriter {
 }
 
 impl Typewriter {
+    /// Types `text` at 32 graphemes a second.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -110,6 +117,12 @@ impl RenderOnce for Typewriter {
 }
 
 /// Tonal ramp across the glyphs, ink to muted by default.
+///
+/// ```
+/// use ely_core::typography::GradientText;
+///
+/// let mark = GradientText::new("Ely");
+/// ```
 #[derive(IntoElement)]
 pub struct GradientText {
     text: SharedString,
@@ -117,6 +130,7 @@ pub struct GradientText {
 }
 
 impl GradientText {
+    /// A ramp over `text`, ink to muted.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self {
             text: text.into(),
@@ -124,6 +138,7 @@ impl GradientText {
         }
     }
 
+    /// The ramp's two ends.
     pub fn colors(mut self, from: impl Into<Hsla>, to: impl Into<Hsla>) -> Self {
         self.ends = Some((from.into(), to.into()));
         self
@@ -141,6 +156,12 @@ impl RenderOnce for GradientText {
 }
 
 /// A band of light that sweeps the text while it waits.
+///
+/// ```
+/// use ely_core::typography::ShimmerText;
+///
+/// let waiting = ShimmerText::new("thinking", "Thinking…");
+/// ```
 #[derive(IntoElement)]
 pub struct ShimmerText {
     id: ElementId,
@@ -148,6 +169,7 @@ pub struct ShimmerText {
 }
 
 impl ShimmerText {
+    /// Sweeps a band of light across `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

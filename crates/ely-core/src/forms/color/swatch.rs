@@ -64,6 +64,15 @@ pub(crate) fn checker(radius: Rems, cx: &App) -> impl IntoElement + use<> {
 }
 
 /// A patch of one color. Chosen swatches wear an ink ring with a gap.
+///
+/// ```
+/// use ely_core::forms::ColorSwatch;
+/// use gpui::rgb;
+///
+/// let blue = ColorSwatch::new("blue", rgb(0x3b82f6))
+///     .selected(true)
+///     .on_click(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ColorSwatch {
     id: ElementId,
@@ -75,6 +84,7 @@ pub struct ColorSwatch {
 }
 
 impl ColorSwatch {
+    /// A small swatch under `id` showing `color`.
     pub fn new(id: impl Into<ElementId>, color: impl Into<Hsla>) -> Self {
         Self {
             id: id.into(),
@@ -86,11 +96,13 @@ impl ColorSwatch {
         }
     }
 
+    /// Its size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Rings it as the chosen color.
     pub fn selected(mut self, selected: bool) -> Self {
         self.selected = selected;
         self
@@ -102,6 +114,7 @@ impl ColorSwatch {
         self
     }
 
+    /// Makes it a button that runs `handler`.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self
@@ -148,6 +161,15 @@ impl RenderOnce for ColorSwatch {
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
 /// A grid of named swatches; one may be chosen.
+///
+/// ```
+/// use ely_core::forms::ColorPalette;
+/// use gpui::rgb;
+///
+/// let label = ColorPalette::new("label", [("Red", rgb(0xef4444)), ("Blue", rgb(0x3b82f6))])
+///     .selected(rgb(0x3b82f6))
+///     .on_change(|_color, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ColorPalette {
     id: ElementId,
@@ -158,6 +180,7 @@ pub struct ColorPalette {
 }
 
 impl ColorPalette {
+    /// Swatches under `id`, one per named color.
     pub fn new(
         id: impl Into<ElementId>,
         colors: impl IntoIterator<Item = (impl Into<SharedString>, impl Into<Hsla>)>,
@@ -174,17 +197,20 @@ impl ColorPalette {
         }
     }
 
+    /// The color chosen.
     pub fn selected(mut self, color: impl Into<Hsla>) -> Self {
         self.selected = Some(color.into());
         self
     }
 
+    /// How many swatches a row holds. Panics on zero.
     pub fn columns(mut self, columns: u16) -> Self {
         assert!(columns > 0, "a palette needs a column");
         self.columns = columns;
         self
     }
 
+    /// Runs with the color pressed.
     pub fn on_change(mut self, handler: impl Fn(Hsla, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

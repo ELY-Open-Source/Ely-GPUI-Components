@@ -150,12 +150,19 @@ fn cut_line(text: SharedString, fit: fn(&str, Pixels, &mut Window) -> String) ->
 }
 
 /// One line in the text style around it, cut at the end with an ellipsis when its box is too narrow.
+///
+/// ```
+/// use ely_core::typography::Ellipsis;
+///
+/// let subject = Ellipsis::new("Quarterly numbers, the long version with every appendix");
+/// ```
 #[derive(IntoElement)]
 pub struct Ellipsis {
     text: SharedString,
 }
 
 impl Ellipsis {
+    /// One line of `text`.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self { text: text.into() }
     }
@@ -168,12 +175,19 @@ impl RenderOnce for Ellipsis {
 }
 
 /// One line in the text style around it, cut in the middle when its box is too narrow, so both ends stay: paths, file names, hashes.
+///
+/// ```
+/// use ely_core::typography::MiddleEllipsis;
+///
+/// let path = MiddleEllipsis::new("~/projects/ely/crates/ely-core/src/lib.rs");
+/// ```
 #[derive(IntoElement)]
 pub struct MiddleEllipsis {
     text: SharedString,
 }
 
 impl MiddleEllipsis {
+    /// One line of `text`.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self { text: text.into() }
     }
@@ -186,6 +200,12 @@ impl RenderOnce for MiddleEllipsis {
 }
 
 /// Truncates at the end; the full text shows on hover only when cut.
+///
+/// ```
+/// use ely_core::typography::EllipsisTooltip;
+///
+/// let subject = EllipsisTooltip::new("subject", "Quarterly numbers, the long version");
+/// ```
 #[derive(IntoElement)]
 pub struct EllipsisTooltip {
     id: ElementId,
@@ -193,6 +213,7 @@ pub struct EllipsisTooltip {
 }
 
 impl EllipsisTooltip {
+    /// One line of `text` under `id`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

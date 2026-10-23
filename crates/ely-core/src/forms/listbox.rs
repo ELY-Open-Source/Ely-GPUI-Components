@@ -37,6 +37,14 @@ struct Cursor {
 }
 
 /// A list to choose from in place: one row, or several with `multiple`.
+///
+/// ```
+/// use ely_core::forms::{Choice, ListBox};
+///
+/// let role = ListBox::new("role", [Choice::new("admin", "Admin"), Choice::new("member", "Member")])
+///     .selected(["member"])
+///     .on_change(|_values, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ListBox {
     id: ElementId,
@@ -47,6 +55,7 @@ pub struct ListBox {
 }
 
 impl ListBox {
+    /// A list under `id`, one row per choice; one row chosen at a time unless `multiple`.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -57,6 +66,7 @@ impl ListBox {
         }
     }
 
+    /// The values chosen.
     pub fn selected(mut self, values: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = values.into_iter().map(Into::into).collect();
         self
@@ -68,6 +78,7 @@ impl ListBox {
         self
     }
 
+    /// Runs with the values chosen after each press.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

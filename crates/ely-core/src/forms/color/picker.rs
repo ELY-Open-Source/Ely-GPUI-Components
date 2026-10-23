@@ -117,6 +117,13 @@ fn picking(id: &ElementId, value: Hsla, window: &mut Window, cx: &mut App) -> En
 }
 
 /// A color by saturation and value, hue and alpha, or typed as hex.
+///
+/// ```
+/// use ely_core::forms::ColorPicker;
+/// use gpui::rgb;
+///
+/// let accent = ColorPicker::new("accent", rgb(0x3b82f6)).on_change(|_color, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ColorPicker {
     id: ElementId,
@@ -126,6 +133,7 @@ pub struct ColorPicker {
 }
 
 impl ColorPicker {
+    /// A picker under `id` showing `value`, its alpha slider on.
     pub fn new(id: impl Into<ElementId>, value: impl Into<Hsla>) -> Self {
         Self {
             id: id.into(),
@@ -141,6 +149,7 @@ impl ColorPicker {
         self
     }
 
+    /// Runs with each new color.
     pub fn on_change(mut self, handler: impl Fn(Hsla, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

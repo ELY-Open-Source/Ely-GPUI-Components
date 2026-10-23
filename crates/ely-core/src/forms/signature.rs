@@ -152,6 +152,12 @@ fn paint(
 }
 
 /// A pad to sign with the pointer. A stroke lands when the pen lifts; Clear wipes them all.
+///
+/// ```
+/// use ely_core::forms::SignaturePad;
+///
+/// let signature = SignaturePad::new("signature", []).on_change(|_strokes, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SignaturePad {
     id: ElementId,
@@ -160,6 +166,7 @@ pub struct SignaturePad {
 }
 
 impl SignaturePad {
+    /// A pad under `id` holding `strokes`.
     pub fn new(id: impl Into<ElementId>, strokes: impl IntoIterator<Item = Stroke>) -> Self {
         Self {
             id: id.into(),
@@ -168,6 +175,7 @@ impl SignaturePad {
         }
     }
 
+    /// Runs with every stroke once the pen lifts, or Clear wipes them.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[Stroke], &mut Window, &mut App) + 'static,

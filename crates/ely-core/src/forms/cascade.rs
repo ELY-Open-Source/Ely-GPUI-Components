@@ -19,12 +19,16 @@ use crate::{
 /// A node of a cascade: a value, its label, and the nodes under it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Cascade {
+    /// What `on_change` reports for it.
     pub value: SharedString,
+    /// What it shows.
     pub label: SharedString,
+    /// The level under it.
     pub children: Vec<Cascade>,
 }
 
 impl Cascade {
+    /// A node whose value is `value` and whose text is `label`.
     pub fn new(value: impl Into<SharedString>, label: impl Into<SharedString>) -> Self {
         Self {
             value: value.into(),
@@ -33,6 +37,7 @@ impl Cascade {
         }
     }
 
+    /// Adds a node under it.
     pub fn child(mut self, node: Cascade) -> Self {
         self.children.push(node);
         self
@@ -114,6 +119,16 @@ fn show(state: &Entity<Trail>, open: bool, trail: Vec<usize>, cx: &mut App) {
 type PickTrail = Rc<dyn Fn(Vec<usize>, &mut Window, &mut App)>;
 
 /// A select over a tree: each column opens the next, and a leaf picks the path.
+///
+/// ```
+/// use ely_core::forms::{Cascade, Cascader};
+///
+/// let place = Cascader::new(
+///     "place",
+///     [Cascade::new("pt", "Portugal").child(Cascade::new("lis", "Lisbon"))],
+/// )
+/// .on_change(|_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Cascader {
     id: ElementId,
@@ -125,6 +140,7 @@ pub struct Cascader {
 }
 
 impl Cascader {
+    /// A picker under `id` over the trees `roots`.
     pub fn new(id: impl Into<ElementId>, roots: impl IntoIterator<Item = Cascade>) -> Self {
         Self {
             id: id.into(),
@@ -142,16 +158,19 @@ impl Cascader {
         self
     }
 
+    /// What it shows before anything is chosen; `Choose…` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with the values from the root to the node chosen.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

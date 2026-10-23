@@ -49,6 +49,15 @@ fn measure_width(state: gpui::Entity<Pixels>) -> impl IntoElement {
 }
 
 /// Equal columns: as many as fit at `min` width each.
+///
+/// ```
+/// use ely_core::layout::SimpleGrid;
+/// use gpui::{ParentElement, div, px};
+///
+/// let tiles = SimpleGrid::new("tiles", px(160.0), px(12.0))
+///     .child(div())
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct SimpleGrid {
     id: ElementId,
@@ -59,6 +68,7 @@ pub struct SimpleGrid {
 }
 
 impl SimpleGrid {
+    /// Columns at least `min` wide, `gap` apart. Panics unless `min` is positive.
     pub fn new(id: impl Into<ElementId>, min: Pixels, gap: Pixels) -> Self {
         assert!(min > Pixels::ZERO, "simple grid needs a positive min width");
         Self {
@@ -98,6 +108,13 @@ impl RenderOnce for SimpleGrid {
 }
 
 /// Columns fill shortest first, so uneven items pack tight.
+///
+/// ```
+/// use ely_core::layout::Masonry;
+/// use gpui::{ParentElement, div, px};
+///
+/// let photos = Masonry::new("photos", 3, px(8.0)).child(div()).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Masonry {
     id: ElementId,
@@ -107,6 +124,7 @@ pub struct Masonry {
 }
 
 impl Masonry {
+    /// `columns` columns, `gap` apart. Panics on zero columns.
     pub fn new(id: impl Into<ElementId>, columns: usize, gap: Pixels) -> Self {
         assert!(columns > 0, "masonry needs a column");
         Self {

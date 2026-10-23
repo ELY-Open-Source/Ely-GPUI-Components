@@ -14,6 +14,16 @@ use crate::{
 type OnKey = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A document's headings, each level stepping in, beside a rail whose marker glides to the section in view. A press asks the owner to go there; the owner says which is current.
+///
+/// ```
+/// use ely_core::lists::Outline;
+///
+/// let headings = Outline::new("headings")
+///     .item("intro", "Introduction", 1)
+///     .item("setup", "Setup", 2)
+///     .current("intro")
+///     .on_select(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Outline {
     id: ElementId,
@@ -23,6 +33,7 @@ pub struct Outline {
 }
 
 impl Outline {
+    /// An empty outline under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -44,11 +55,13 @@ impl Outline {
         self
     }
 
+    /// The heading in view, by key.
     pub fn current(mut self, key: impl Into<SharedString>) -> Self {
         self.current = Some(key.into());
         self
     }
 
+    /// Runs with the key of the heading pressed.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

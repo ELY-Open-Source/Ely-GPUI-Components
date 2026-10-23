@@ -182,6 +182,14 @@ fn scrub_handle(
 }
 
 /// A number field: arrows or the stepper move it, dragging the grip scrubs it.
+///
+/// ```
+/// use ely_core::forms::NumberInput;
+///
+/// let quantity = NumberInput::new("quantity", 1.0)
+///     .range(1.0, 99.0)
+///     .on_commit(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NumberInput {
     pub(super) id: ElementId,
@@ -201,6 +209,7 @@ pub struct NumberInput {
 }
 
 impl NumberInput {
+    /// A field under `id` holding `value`, unbounded, in steps of 1, with no decimals.
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
@@ -232,6 +241,7 @@ impl NumberInput {
         self
     }
 
+    /// Its least and greatest value. Panics on an empty range.
     pub fn range(mut self, min: f64, max: f64) -> Self {
         assert!(min <= max, "number range {min}..{max} is empty");
         self.min = min;
@@ -239,6 +249,7 @@ impl NumberInput {
         self
     }
 
+    /// How far a step or an arrow key moves it. Panics unless positive.
     pub fn step(mut self, step: f64) -> Self {
         assert!(step > 0.0, "number step {step} must be positive");
         self.step = step;
@@ -276,11 +287,13 @@ impl NumberInput {
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with each new value, typed ones included.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

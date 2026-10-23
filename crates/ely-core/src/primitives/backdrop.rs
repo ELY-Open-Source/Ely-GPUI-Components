@@ -14,15 +14,30 @@ type Dismiss = Rc<dyn Fn(&mut Window, &mut App)>;
 /// Where a `Backdrop` holds its children.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Place {
+    /// In the middle.
     #[default]
     Center,
+    /// Along the left edge, full height.
     Left,
+    /// Along the right edge, full height.
     Right,
+    /// Along the top edge, full width.
     Top,
+    /// Along the bottom edge, full width.
     Bottom,
 }
 
 /// Full-window scrim. Children sit above it, centered or on an edge.
+///
+/// ```
+/// use ely_core::primitives::{Backdrop, Place};
+/// use gpui::{ParentElement, div};
+///
+/// let scrim = Backdrop::new("scrim")
+///     .place(Place::Right)
+///     .on_dismiss(|_, _| {})
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Backdrop {
     id: ElementId,
@@ -32,6 +47,7 @@ pub struct Backdrop {
 }
 
 impl Backdrop {
+    /// A centered scrim under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

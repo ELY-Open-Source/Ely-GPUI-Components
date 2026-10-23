@@ -11,6 +11,16 @@ use super::{
 };
 
 /// Cells to edit as a spreadsheet's are, under column titles. Arrows walk and Shift stretches a range; typing or a double press edits; Delete clears; Cmd-C and Cmd-V copy and paste. `on_change` gets the edits and the owner keeps the text. Give it a height.
+///
+/// ```
+/// use ely_core::tables::DataGrid;
+///
+/// let grid = DataGrid::new(
+///     "grid",
+///     ["Name", "Email"],
+///     vec![vec!["Ana".into(), "ana@example.com".into()]],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct DataGrid {
     id: ElementId,
@@ -21,6 +31,7 @@ pub struct DataGrid {
 }
 
 impl DataGrid {
+    /// A grid under `id` with `titles` over `rows` of text.
     pub fn new(
         id: impl Into<ElementId>,
         titles: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -77,6 +88,15 @@ impl RenderOnce for DataGrid {
 }
 
 /// A spreadsheet: lettered columns, numbered rows, formulas such as =SUM(A1:A5) or =B2*1.2, merged cells, frozen rows and columns, and a fill handle that carries a run on. `on_change` gets the edits and the owner keeps the cells. Give it a height.
+///
+/// ```
+/// use ely_core::tables::Spreadsheet;
+/// use gpui::{Styled, px};
+///
+/// let sheet = Spreadsheet::new("sheet", 20, 8)
+///     .on_change(|_cells, _, _| {})
+///     .h(px(320.0));
+/// ```
 #[derive(IntoElement)]
 pub struct Spreadsheet {
     id: ElementId,
@@ -89,6 +109,7 @@ pub struct Spreadsheet {
 }
 
 impl Spreadsheet {
+    /// A sheet under `id` of `rows` by `cols` empty cells.
     pub fn new(id: impl Into<ElementId>, rows: usize, cols: usize) -> Self {
         Self {
             id: id.into(),
@@ -127,6 +148,7 @@ impl Spreadsheet {
         self
     }
 
+    /// Runs with each cell changed, by row and column, and its new text.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[(usize, usize, SharedString)], &mut Window, &mut App) + 'static,

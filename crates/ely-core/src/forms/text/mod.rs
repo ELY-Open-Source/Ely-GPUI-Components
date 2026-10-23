@@ -27,10 +27,13 @@ use crate::theme::ActiveTheme;
 /// What a text input tells its owner.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum InputEvent {
+    /// The text changed.
     Changed,
     /// Enter in one line, or the submit key in several.
     Submit,
+    /// The field took focus.
     Focus,
+    /// The field lost focus.
     Blur,
 }
 
@@ -51,6 +54,22 @@ const BULLET: char = '•';
 const BLINK: Duration = Duration::from_millis(530);
 
 /// Editable text: one line or many, with selection, undo, IME and clipboard.
+///
+/// ```
+/// use ely_core::forms::{InputEvent, TextInput};
+/// use gpui::{App, AppContext, Entity, Window};
+///
+/// fn name(window: &mut Window, cx: &mut App) -> Entity<TextInput> {
+///     let state = cx.new(|cx| TextInput::new(window, cx).placeholder("Your name"));
+///     cx.subscribe(&state, |state, event: &InputEvent, cx| {
+///         if *event == InputEvent::Submit {
+///             let _name = state.read(cx).text().to_string();
+///         }
+///     })
+///     .detach();
+///     state
+/// }
+/// ```
 pub struct TextInput {
     focus: FocusHandle,
     text: String,
@@ -92,6 +111,7 @@ impl Focusable for TextInput {
 }
 
 impl TextInput {
+    /// An empty one-line field; a Tab stop.
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
         let focus = cx.focus_handle().tab_stop(true);
         let subscriptions = vec![
@@ -145,6 +165,7 @@ impl TextInput {
         self
     }
 
+    /// What it shows while empty.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
@@ -183,6 +204,7 @@ impl TextInput {
         self
     }
 
+    /// Its text.
     pub fn text(&self) -> &str {
         &self.text
     }
@@ -195,38 +217,47 @@ impl TextInput {
             .map_or(&self.text, |start| &start.text)
     }
 
+    /// Whether it holds no text.
     pub fn is_empty(&self) -> bool {
         self.text.is_empty()
     }
 
+    /// Whether it hides its text, as a password does.
     pub fn is_masked(&self) -> bool {
         self.masked
     }
 
+    /// Whether it takes several lines.
     pub fn is_multi_line(&self) -> bool {
         self.rows.is_some()
     }
 
+    /// Whether it takes no input.
     pub fn is_disabled(&self) -> bool {
         self.disabled
     }
 
+    /// Its least and most rows, when it takes several lines.
     pub fn rows(&self) -> Option<(usize, usize)> {
         self.rows
     }
 
+    /// What it shows while empty.
     pub fn placeholder_text(&self) -> &SharedString {
         &self.placeholder
     }
 
+    /// The name assistive technology reads.
     pub fn label_text(&self) -> &SharedString {
         &self.label
     }
 
+    /// The selected byte range; empty at the caret.
     pub fn selection(&self) -> Range<usize> {
         self.selection.clone()
     }
 
+    /// The caret's byte offset, at the selection's moving end.
     pub fn cursor(&self) -> usize {
         if self.reversed {
             self.selection.start
@@ -235,21 +266,25 @@ impl TextInput {
         }
     }
 
+    /// Sets what it shows while empty.
     pub fn set_placeholder(&mut self, text: impl Into<SharedString>, cx: &mut Context<Self>) {
         self.placeholder = text.into();
         cx.notify();
     }
 
+    /// Sets the name assistive technology reads, drawn nowhere.
     pub fn set_label(&mut self, text: impl Into<SharedString>, cx: &mut Context<Self>) {
         self.label = text.into();
         cx.notify();
     }
 
+    /// Hides or shows its text.
     pub fn set_masked(&mut self, masked: bool, cx: &mut Context<Self>) {
         self.masked = masked;
         cx.notify();
     }
 
+    /// Stops or restores input; a disabled field is no Tab stop.
     pub fn set_disabled(&mut self, disabled: bool, cx: &mut Context<Self>) {
         self.disabled = disabled;
         self.focus = self.focus.clone().tab_stop(!disabled);

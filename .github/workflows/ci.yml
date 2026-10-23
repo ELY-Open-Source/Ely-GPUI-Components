@@ -37,6 +37,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       # Hosted runners test as a plain user, so the file permissions the tests check hold.
       - run: cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
+      - run: cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
       - run: cargo build -p ely-gallery
 
   site:

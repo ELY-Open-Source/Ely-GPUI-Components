@@ -52,6 +52,14 @@ fn heading(
 }
 
 /// Title row for a `Card`: title, note, one trailing action.
+///
+/// ```
+/// use ely_core::{buttons::Button, layout::CardHeader};
+///
+/// let header = CardHeader::new("Members")
+///     .description("People with access")
+///     .action(Button::new("invite", "Invite"));
+/// ```
 #[derive(IntoElement)]
 pub struct CardHeader {
     title: SharedString,
@@ -60,6 +68,7 @@ pub struct CardHeader {
 }
 
 impl CardHeader {
+    /// A header titled `title`.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -68,11 +77,13 @@ impl CardHeader {
         }
     }
 
+    /// A line under the title.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
     }
 
+    /// An action at the end.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.action = Some(action.into_any_element());
         self
@@ -92,6 +103,16 @@ impl RenderOnce for CardHeader {
 }
 
 /// Flat surface: header, body, footer. Hairline, no shadow.
+///
+/// ```
+/// use ely_core::layout::{Card, CardHeader};
+/// use gpui::{ParentElement, div};
+///
+/// let members = Card::new()
+///     .header(CardHeader::new("Members"))
+///     .child("Ana, Bo and 3 more")
+///     .footer(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Card {
     base: Div,
@@ -101,6 +122,7 @@ pub struct Card {
 }
 
 impl Card {
+    /// An empty card.
     pub fn new() -> Self {
         Self {
             base: div(),
@@ -110,11 +132,13 @@ impl Card {
         }
     }
 
+    /// A header over the body.
     pub fn header(mut self, header: CardHeader) -> Self {
         self.header = Some(header);
         self
     }
 
+    /// A footer under the body.
     pub fn footer(mut self, footer: impl IntoElement) -> Self {
         self.footer = Some(footer.into_any_element());
         self
@@ -160,6 +184,15 @@ impl RenderOnce for Card {
 }
 
 /// App region with a header bar: title and actions.
+///
+/// ```
+/// use ely_core::{buttons::IconButton, layout::Panel, primitives::IconName};
+/// use gpui::{ParentElement, div};
+///
+/// let properties = Panel::new("Properties")
+///     .action(IconButton::new("add", IconName::Plus))
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Panel {
     base: Div,
@@ -169,6 +202,7 @@ pub struct Panel {
 }
 
 impl Panel {
+    /// A panel titled `title`.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             base: div(),
@@ -178,6 +212,7 @@ impl Panel {
         }
     }
 
+    /// Adds an action to the title row.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
@@ -221,6 +256,15 @@ impl RenderOnce for Panel {
 }
 
 /// Titled block of a page, with an optional note and action.
+///
+/// ```
+/// use ely_core::layout::Section;
+/// use gpui::{ParentElement, div};
+///
+/// let notifications = Section::new("Notifications")
+///     .description("Choose what reaches you")
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Section {
     base: Div,
@@ -231,6 +275,7 @@ pub struct Section {
 }
 
 impl Section {
+    /// A section titled `title`.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             base: div(),
@@ -241,11 +286,13 @@ impl Section {
         }
     }
 
+    /// A line under the title.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
     }
 
+    /// An action beside the title.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.action = Some(action.into_any_element());
         self
@@ -274,6 +321,13 @@ impl RenderOnce for Section {
 }
 
 /// Named group of fields inside a hairline.
+///
+/// ```
+/// use ely_core::layout::Fieldset;
+/// use gpui::{ParentElement, div};
+///
+/// let address = Fieldset::new("Shipping address").child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Fieldset {
     base: Div,
@@ -282,6 +336,7 @@ pub struct Fieldset {
 }
 
 impl Fieldset {
+    /// A group of fields under `legend`.
     pub fn new(legend: impl Into<SharedString>) -> Self {
         Self {
             base: div(),
@@ -322,6 +377,13 @@ impl RenderOnce for Fieldset {
 }
 
 /// Bordered region, no fill.
+///
+/// ```
+/// use ely_core::layout::Frame;
+/// use gpui::{ParentElement, div};
+///
+/// let frame = Frame::new().child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Frame {
     base: Div,
@@ -329,6 +391,7 @@ pub struct Frame {
 }
 
 impl Frame {
+    /// An empty frame.
     pub fn new() -> Self {
         Self {
             base: div(),
@@ -358,6 +421,13 @@ impl RenderOnce for Frame {
 }
 
 /// Recessed region on the sunken tone.
+///
+/// ```
+/// use ely_core::layout::Well;
+/// use gpui::{ParentElement, div};
+///
+/// let well = Well::new().child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Well {
     base: Div,
@@ -365,6 +435,7 @@ pub struct Well {
 }
 
 impl Well {
+    /// An empty well.
     pub fn new() -> Self {
         Self {
             base: div(),

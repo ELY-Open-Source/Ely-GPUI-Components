@@ -6,6 +6,13 @@ use gpui::{
 use crate::theme::{ActiveTheme, TextSize};
 
 /// Faint text over its content, repeated in level rows, every other row shifted half a tile. gpui draws text upright, so the tiles do not tilt. Presses pass through to the content.
+///
+/// ```
+/// use ely_core::data_display::Watermark;
+/// use gpui::{ParentElement, div};
+///
+/// let draft = Watermark::new("draft", "DRAFT").child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Watermark {
     id: ElementId,
@@ -14,6 +21,7 @@ pub struct Watermark {
 }
 
 impl Watermark {
+    /// Repeats `text` faintly over its children, under `id`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

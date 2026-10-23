@@ -19,9 +19,11 @@ use crate::{
 /// Where an update stands.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum UpdateState {
+    /// A new version can download.
     Available,
     /// 0 to 1.
     Downloading(f32),
+    /// Downloaded; a restart installs it.
     Ready,
 }
 
@@ -84,6 +86,7 @@ macro_rules! update_actions {
             self
         }
 
+        /// Puts the update off.
         pub fn on_later(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
             self.actions.later = Some(Rc::new(handler));
             self
@@ -92,6 +95,14 @@ macro_rules! update_actions {
 }
 
 /// A slim bar that offers a new version, shows the download, then asks to restart.
+///
+/// ```
+/// use ely_core::shell::{UpdateBanner, UpdateState};
+///
+/// let banner = UpdateBanner::new("update", "2.4.0", UpdateState::Downloading(0.4))
+///     .on_restart(|_, _| {})
+///     .on_later(|_, _| {});
+/// ```
 #[derive(IntoElement, Clone)]
 pub struct UpdateBanner {
     id: ElementId,
@@ -101,6 +112,7 @@ pub struct UpdateBanner {
 }
 
 impl UpdateBanner {
+    /// Offers `version` in `state`.
     pub fn new(
         id: impl Into<ElementId>,
         version: impl Into<SharedString>,
@@ -176,6 +188,19 @@ impl RenderOnce for UpdateBanner {
 }
 
 /// The update window: what changed, and what to do.
+///
+/// ```
+/// use ely_core::shell::{UpdateDialog, UpdateState};
+/// use gpui::App;
+///
+/// fn update(cx: &mut App) -> anyhow::Result<()> {
+///     UpdateDialog::new("Ely", "2.3.1", "2.4.0", UpdateState::Available)
+///         .note("Faster startup.")
+///         .on_download(|_, _| {})
+///         .open(cx)?;
+///     Ok(())
+/// }
+/// ```
 #[derive(IntoElement, Clone)]
 pub struct UpdateDialog {
     name: SharedString,
@@ -187,6 +212,7 @@ pub struct UpdateDialog {
 }
 
 impl UpdateDialog {
+    /// The update of the app `name` from `current` to `version`, in `state`.
     pub fn new(
         name: impl Into<SharedString>,
         current: impl Into<SharedString>,
@@ -209,6 +235,7 @@ impl UpdateDialog {
         self
     }
 
+    /// Where it stands.
     pub fn state(mut self, state: UpdateState) -> Self {
         self.state = state;
         self
@@ -216,6 +243,7 @@ impl UpdateDialog {
 
     update_actions!();
 
+    /// Opens it in a window of its own.
     pub fn open(self, cx: &mut App) -> anyhow::Result<WindowHandle<Hosted<UpdateDialog>>> {
         let size = cx.theme().dialog_window();
         open_hosted(text(cx, "update.title", &[]), size, self, cx)

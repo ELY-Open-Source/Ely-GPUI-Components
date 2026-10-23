@@ -72,6 +72,15 @@ fn open_title(
 }
 
 /// The app's menus drawn in the window, for platforms and layouts without a native bar.
+///
+/// ```
+/// use ely_core::menus::MenuBar;
+/// use gpui::App;
+///
+/// fn bar(cx: &App) -> MenuBar {
+///     MenuBar::new("menu-bar", cx.get_menus().unwrap_or_default())
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct MenuBar {
     id: ElementId,

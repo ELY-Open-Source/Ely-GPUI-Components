@@ -11,6 +11,12 @@ use crate::{
 };
 
 /// A chevron that points right when shut and down when open, turning on each change and still on first paint.
+///
+/// ```
+/// use ely_core::primitives::Disclosure;
+///
+/// let chevron = Disclosure::new("details-chevron", true);
+/// ```
 #[derive(IntoElement)]
 pub struct Disclosure {
     id: ElementId,
@@ -20,6 +26,7 @@ pub struct Disclosure {
 }
 
 impl Disclosure {
+    /// A chevron under `id`, open or shut.
     pub fn new(id: impl Into<ElementId>, open: bool) -> Self {
         Self {
             id: id.into(),
@@ -29,6 +36,7 @@ impl Disclosure {
         }
     }
 
+    /// Its icon size.
     pub fn size(mut self, size: IconSize) -> Self {
         self.size = size;
         self

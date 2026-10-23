@@ -6,13 +6,18 @@ use crate::theme::Palette;
 /// How much a message matters, with the color and icon that say so.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Severity {
+    /// News that needs no action.
     Info,
+    /// Something worked.
     Success,
+    /// Something may go wrong.
     Warning,
+    /// Something failed or cannot be undone.
     Danger,
 }
 
 impl Severity {
+    /// Its color in `colors`.
     pub fn color(self, colors: &Palette) -> Hsla {
         match self {
             Self::Info => colors.info,
@@ -32,6 +37,7 @@ impl Severity {
         }
     }
 
+    /// Its icon.
     pub fn icon(self) -> IconName {
         match self {
             Self::Info => IconName::Info,

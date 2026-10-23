@@ -19,6 +19,13 @@ const RAMP: usize = 12;
 const CELLS: [f32; 4] = [0.72, 0.48, 0.6, 0.36];
 
 /// A placeholder in the shape of what is loading; it breathes until the content arrives. Size it as the content.
+///
+/// ```
+/// use ely_core::motion::Skeleton;
+/// use gpui::{Styled, px};
+///
+/// let block = Skeleton::new("cover").w(px(240.0)).h(px(120.0));
+/// ```
 #[derive(IntoElement)]
 pub struct Skeleton {
     id: ElementId,
@@ -26,6 +33,7 @@ pub struct Skeleton {
 }
 
 impl Skeleton {
+    /// A block under `id`; give it a size.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -65,6 +73,12 @@ impl RenderOnce for Skeleton {
 }
 
 /// Lines of text to come; the last runs short.
+///
+/// ```
+/// use ely_core::motion::SkeletonText;
+///
+/// let lines = SkeletonText::new("body", 3);
+/// ```
 #[derive(IntoElement)]
 pub struct SkeletonText {
     id: ElementId,
@@ -72,6 +86,7 @@ pub struct SkeletonText {
 }
 
 impl SkeletonText {
+    /// `lines` lines of text under `id`. Panics on zero.
     pub fn new(id: impl Into<ElementId>, lines: usize) -> Self {
         assert!(lines > 0, "a skeleton text needs a line");
         Self {
@@ -102,12 +117,19 @@ impl RenderOnce for SkeletonText {
 }
 
 /// A round avatar to come.
+///
+/// ```
+/// use ely_core::motion::SkeletonAvatar;
+///
+/// let avatar = SkeletonAvatar::new("avatar");
+/// ```
 #[derive(IntoElement)]
 pub struct SkeletonAvatar {
     id: ElementId,
 }
 
 impl SkeletonAvatar {
+    /// A round block under `id`, where an avatar will be.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }
@@ -123,12 +145,19 @@ impl RenderOnce for SkeletonAvatar {
 }
 
 /// A card to come: who, a picture and a few lines.
+///
+/// ```
+/// use ely_core::motion::SkeletonCard;
+///
+/// let card = SkeletonCard::new("card");
+/// ```
 #[derive(IntoElement)]
 pub struct SkeletonCard {
     id: ElementId,
 }
 
 impl SkeletonCard {
+    /// A card's placeholder under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }
@@ -175,6 +204,12 @@ impl RenderOnce for SkeletonCard {
 }
 
 /// A table to come: a header and rows of cells.
+///
+/// ```
+/// use ely_core::motion::SkeletonTable;
+///
+/// let table = SkeletonTable::new("table", 5, 4);
+/// ```
 #[derive(IntoElement)]
 pub struct SkeletonTable {
     id: ElementId,
@@ -183,6 +218,7 @@ pub struct SkeletonTable {
 }
 
 impl SkeletonTable {
+    /// A table of `rows` by `columns` under `id`. Panics on an empty table.
     pub fn new(id: impl Into<ElementId>, rows: usize, columns: usize) -> Self {
         assert!(rows > 0 && columns > 0, "a skeleton table needs a cell");
         Self {
@@ -222,6 +258,13 @@ impl RenderOnce for SkeletonTable {
 }
 
 /// Sweeps a soft band of light across what it holds while that loads. It holds still under reduced motion.
+///
+/// ```
+/// use ely_core::motion::{Shimmer, SkeletonText};
+/// use gpui::ParentElement;
+///
+/// let waiting = Shimmer::new("waiting").child(SkeletonText::new("lines", 2));
+/// ```
 #[derive(IntoElement)]
 pub struct Shimmer {
     id: ElementId,
@@ -230,6 +273,7 @@ pub struct Shimmer {
 }
 
 impl Shimmer {
+    /// An empty shimmer under `id`; its children are what it holds.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

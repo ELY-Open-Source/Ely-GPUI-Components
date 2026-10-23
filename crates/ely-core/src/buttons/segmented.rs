@@ -18,6 +18,15 @@ use crate::{
 type OnChange = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Mutually exclusive segments. A thumb slides to the chosen one. Too narrow for every label in full, segments that all have icons show only their icons, each label a tooltip; otherwise labels end in an ellipsis, down to twice a control's height each. Narrower still, the strip scrolls sideways and a focused segment comes into view.
+///
+/// ```
+/// use ely_core::buttons::SegmentedControl;
+///
+/// let view = SegmentedControl::new("view", "list")
+///     .segment("list", "List", None)
+///     .segment("board", "Board", None)
+///     .on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SegmentedControl {
     id: ElementId,
@@ -28,6 +37,7 @@ pub struct SegmentedControl {
 }
 
 impl SegmentedControl {
+    /// A control under `id` with `selected` chosen.
     pub fn new(id: impl Into<ElementId>, selected: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -38,6 +48,7 @@ impl SegmentedControl {
         }
     }
 
+    /// Adds a segment: its `value`, `label` and an optional icon.
     pub fn segment(
         mut self,
         value: impl Into<SharedString>,
@@ -48,11 +59,13 @@ impl SegmentedControl {
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with the value of the segment pressed.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

@@ -11,6 +11,16 @@ use crate::{motion::Spinner, primitives::IntersectionObserver, theme::ActiveThem
 type Row = Rc<dyn Fn(usize, &mut Window, &mut App) -> AnyElement>;
 
 /// A long list that builds only the rows in view, each as tall as it needs. `row(ix)` builds row `ix`. Rows added or dropped at the end keep the scroll. Give it a height.
+///
+/// ```
+/// use ely_core::lists::{ListItem, VirtualList};
+/// use gpui::{IntoElement, Styled, px};
+///
+/// let log = VirtualList::new("log", 100_000, |ix, _, _| {
+///     ListItem::new(("line", ix), format!("Line {ix}")).into_any_element()
+/// })
+/// .h(px(400.0));
+/// ```
 #[derive(IntoElement)]
 pub struct VirtualList {
     id: ElementId,
@@ -20,6 +30,7 @@ pub struct VirtualList {
 }
 
 impl VirtualList {
+    /// `count` rows under `id`, each built by `row` only while in view.
     pub fn new(
         id: impl Into<ElementId>,
         count: usize,
@@ -70,6 +81,16 @@ impl RenderOnce for VirtualList {
 type OnMore = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Rows that ask for more when their end comes into view: `on_more` runs once each time it arrives, a spinner shows while `loading`, and `done` ends the list quietly. Put it in a scrolling box.
+///
+/// ```
+/// use ely_core::lists::{InfiniteList, ListItem};
+/// use gpui::ParentElement;
+///
+/// let feed = InfiniteList::new("feed")
+///     .child(ListItem::new("first", "First post"))
+///     .loading(false)
+///     .on_more(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InfiniteList {
     id: ElementId,
@@ -80,6 +101,7 @@ pub struct InfiniteList {
 }
 
 impl InfiniteList {
+    /// An empty list under `id`; its children are the rows.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -90,6 +112,7 @@ impl InfiniteList {
         }
     }
 
+    /// Shows a spinner at the end while more rows load.
     pub fn loading(mut self, loading: bool) -> Self {
         self.loading = loading;
         self
@@ -101,6 +124,7 @@ impl InfiniteList {
         self
     }
 
+    /// Runs once the end comes into view and more may come.
     pub fn on_more(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_more = Some(Rc::new(handler));
         self

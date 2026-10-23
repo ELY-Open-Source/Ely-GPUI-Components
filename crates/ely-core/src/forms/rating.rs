@@ -22,6 +22,12 @@ fn paint_star(bounds: Bounds<Pixels>, filled: bool, color: Hsla, window: &mut Wi
 type OnRate = Rc<dyn Fn(u8, &mut Window, &mut App)>;
 
 /// Stars from one to `max`. Hover previews; clicking the current value clears it.
+///
+/// ```
+/// use ely_core::forms::Rating;
+///
+/// let review = Rating::new("review", 4).on_change(|_stars, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Rating {
     id: ElementId,
@@ -32,6 +38,7 @@ pub struct Rating {
 }
 
 impl Rating {
+    /// `value` stars filled out of five, under `id`.
     pub fn new(id: impl Into<ElementId>, value: u8) -> Self {
         Self {
             id: id.into(),
@@ -42,17 +49,20 @@ impl Rating {
         }
     }
 
+    /// How many stars. Panics on zero.
     pub fn max(mut self, max: u8) -> Self {
         assert!(max > 0, "a rating needs at least one star");
         self.max = max;
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with the stars pressed.
     pub fn on_change(mut self, handler: impl Fn(u8, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

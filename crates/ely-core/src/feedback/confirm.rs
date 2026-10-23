@@ -13,6 +13,15 @@ use crate::{
 };
 
 /// Asks before an action runs, in place: what will happen, any detail, then Cancel and a confirming button.
+///
+/// ```
+/// use ely_core::feedback::ConfirmationCard;
+///
+/// let transfer = ConfirmationCard::new("transfer", "Send $120 to Ana?")
+///     .body("It arrives within a day.")
+///     .on_confirm(|_, _| {})
+///     .on_cancel(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConfirmationCard {
     id: ElementId,
@@ -26,6 +35,7 @@ pub struct ConfirmationCard {
 }
 
 impl ConfirmationCard {
+    /// A card under `id` titled `title` that asks before an action.
     pub fn new(id: impl Into<ElementId>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -39,6 +49,7 @@ impl ConfirmationCard {
         }
     }
 
+    /// A line under the title.
     pub fn body(mut self, text: impl Into<SharedString>) -> Self {
         self.body = Some(text.into());
         self
@@ -56,11 +67,13 @@ impl ConfirmationCard {
         self
     }
 
+    /// Runs on the confirming button.
     pub fn on_confirm(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_confirm = Some(Rc::new(handler));
         self
     }
 
+    /// Runs on Cancel.
     pub fn on_cancel(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_cancel = Some(Rc::new(handler));
         self

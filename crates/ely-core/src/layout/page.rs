@@ -8,6 +8,16 @@ use super::SplitPane;
 use crate::theme::{ActiveTheme, TextSize};
 
 /// Page header and content: title, note, actions, then the body.
+///
+/// ```
+/// use ely_core::{buttons::Button, layout::Page};
+/// use gpui::ParentElement;
+///
+/// let billing = Page::new("Billing")
+///     .subtitle("Plan and invoices")
+///     .action(Button::new("upgrade", "Upgrade"))
+///     .child("No invoices yet.");
+/// ```
 #[derive(IntoElement)]
 pub struct Page {
     title: SharedString,
@@ -17,6 +27,7 @@ pub struct Page {
 }
 
 impl Page {
+    /// A page titled `title`.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -26,11 +37,13 @@ impl Page {
         }
     }
 
+    /// A note under the title.
     pub fn subtitle(mut self, text: impl Into<SharedString>) -> Self {
         self.subtitle = Some(text.into());
         self
     }
 
+    /// Adds an action at the header's end.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
@@ -88,6 +101,17 @@ impl RenderOnce for Page {
 }
 
 /// Window frame: title bar, sidebar, content, status bar.
+///
+/// ```
+/// use ely_core::layout::AppShell;
+/// use gpui::{ParentElement, div};
+///
+/// let shell = AppShell::new()
+///     .title_bar(div())
+///     .sidebar(div())
+///     .status_bar(div())
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct AppShell {
     title_bar: Option<AnyElement>,
@@ -97,6 +121,7 @@ pub struct AppShell {
 }
 
 impl AppShell {
+    /// An empty frame.
     pub fn new() -> Self {
         Self {
             title_bar: None,
@@ -106,16 +131,19 @@ impl AppShell {
         }
     }
 
+    /// The bar across the top.
     pub fn title_bar(mut self, bar: impl IntoElement) -> Self {
         self.title_bar = Some(bar.into_any_element());
         self
     }
 
+    /// The column at the left.
     pub fn sidebar(mut self, sidebar: impl IntoElement) -> Self {
         self.sidebar = Some(sidebar.into_any_element());
         self
     }
 
+    /// The bar across the bottom.
     pub fn status_bar(mut self, bar: impl IntoElement) -> Self {
         self.status_bar = Some(bar.into_any_element());
         self
@@ -164,6 +192,13 @@ impl RenderOnce for AppShell {
 }
 
 /// List on the left, the selected item on the right.
+///
+/// ```
+/// use ely_core::layout::MasterDetail;
+/// use gpui::{div, px};
+///
+/// let mail = MasterDetail::new("mail", div(), div(), px(240.0));
+/// ```
 #[derive(IntoElement)]
 pub struct MasterDetail {
     id: ElementId,
@@ -173,6 +208,7 @@ pub struct MasterDetail {
 }
 
 impl MasterDetail {
+    /// `master` and `detail` side by side at 36% and 64%; neither pane narrower than `min`.
     pub fn new(
         id: impl Into<ElementId>,
         master: impl IntoElement,

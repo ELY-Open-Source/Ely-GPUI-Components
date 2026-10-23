@@ -23,7 +23,9 @@ const DONE: Duration = Duration::from_millis(1400);
 /// Hold the button down, or click it twice. Keys always press twice.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ConfirmMode {
+    /// Holding the button down confirms.
     Hold,
+    /// A second click confirms.
     Twice,
 }
 
@@ -39,6 +41,13 @@ struct Confirm {
 type OnConfirm = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A destructive button that asks twice: by holding, or by a second click.
+///
+/// ```
+/// use ely_core::buttons::{ConfirmButton, ConfirmMode};
+///
+/// let delete = ConfirmButton::new("delete", "Delete project", ConfirmMode::Twice)
+///     .on_confirm(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConfirmButton {
     id: ElementId,
@@ -50,6 +59,7 @@ pub struct ConfirmButton {
 }
 
 impl ConfirmButton {
+    /// A button under `id` that reads `label` and confirms by `mode`.
     pub fn new(
         id: impl Into<ElementId>,
         label: impl Into<SharedString>,
@@ -75,11 +85,13 @@ impl ConfirmButton {
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs once confirmed.
     pub fn on_confirm(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_confirm = Some(Rc::new(handler));
         self

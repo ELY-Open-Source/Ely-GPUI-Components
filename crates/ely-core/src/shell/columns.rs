@@ -104,6 +104,7 @@ impl ShellColumn {
         self
     }
 
+    /// The header's title.
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = Some(title.into());
         self
@@ -123,6 +124,15 @@ impl ParentElement for ShellColumn {
 }
 
 /// Columns to the window's top, each under a header; controls lead the first or end the last.
+///
+/// ```
+/// use ely_core::shell::{ColumnShell, ShellColumn};
+/// use gpui::{ParentElement, div, px};
+///
+/// let shell = ColumnShell::new("shell")
+///     .column(ShellColumn::new("sidebar").width(px(240.0)).child(div()))
+///     .column(ShellColumn::new("content").title("Inbox").child(div()));
+/// ```
 #[derive(IntoElement)]
 pub struct ColumnShell {
     id: ElementId,
@@ -144,6 +154,7 @@ impl ColumnShell {
         }
     }
 
+    /// Adds a column, left to right.
     pub fn column(mut self, column: ShellColumn) -> Self {
         self.columns.push(column);
         self

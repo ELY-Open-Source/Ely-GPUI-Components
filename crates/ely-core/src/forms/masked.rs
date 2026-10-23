@@ -118,6 +118,16 @@ fn masking(
 }
 
 /// A field that fits typing into a pattern such as `(999) 999-9999`.
+///
+/// ```
+/// use ely_core::forms::{MaskedInput, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn zip(window: &mut Window, cx: &mut App) -> MaskedInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     MaskedInput::new("zip", &state, "99999")
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct MaskedInput {
     id: ElementId,
@@ -128,6 +138,7 @@ pub struct MaskedInput {
 }
 
 impl MaskedInput {
+    /// A field under `id` over `state` that fits typing into `mask`, such as `(999) 999-9999`.
     pub fn new(
         id: impl Into<ElementId>,
         state: &Entity<TextInput>,
@@ -142,11 +153,13 @@ impl MaskedInput {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// An element inside the field, before the text.
     pub fn prefix(mut self, prefix: impl IntoElement) -> Self {
         self.prefix = Some(prefix.into_any_element());
         self
@@ -177,6 +190,16 @@ pub const COUNTRIES: [(&str, &str, &str, &str); 6] = [
 type OnCountry = Rc<dyn Fn(&'static str, &mut Window, &mut App)>;
 
 /// A phone number: a country picker for the code, then its number pattern.
+///
+/// ```
+/// use ely_core::forms::{PhoneInput, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn phone(window: &mut Window, cx: &mut App) -> PhoneInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     PhoneInput::new("phone", &state, "US").on_country(|_code, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PhoneInput {
     id: ElementId,
@@ -200,6 +223,7 @@ impl PhoneInput {
         }
     }
 
+    /// Runs with the country code chosen.
     pub fn on_country(
         mut self,
         handler: impl Fn(&'static str, &mut Window, &mut App) + 'static,

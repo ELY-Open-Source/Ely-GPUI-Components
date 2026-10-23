@@ -73,6 +73,14 @@ fn in_quotes(text: &str) -> bool {
 }
 
 /// Tag chips and a field; Enter or unquoted comma adds.
+///
+/// ```
+/// use ely_core::forms::TagInput;
+///
+/// let topics = TagInput::new("topics", ["rust", "gpui"])
+///     .placeholder("Add a topic")
+///     .on_change(|_tags, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TagInput {
     id: ElementId,
@@ -85,6 +93,7 @@ pub struct TagInput {
 }
 
 impl TagInput {
+    /// A field under `id` holding `tags`.
     pub fn new(
         id: impl Into<ElementId>,
         tags: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -100,6 +109,7 @@ impl TagInput {
         }
     }
 
+    /// What the empty field shows.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
@@ -117,6 +127,7 @@ impl TagInput {
         self
     }
 
+    /// Runs with every tag after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(Vec<SharedString>, &mut Window, &mut App) + 'static,

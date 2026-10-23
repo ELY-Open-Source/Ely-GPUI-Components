@@ -17,6 +17,20 @@ type OnHidden = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 type OnDensity = Rc<dyn Fn(Density, &mut Window, &mut App)>;
 
 /// A table's tools in one row: a search and a filter button that counts its rules, then at the end a menu that shows and hides columns, the density, and an export. Each tool appears once it is given.
+///
+/// ```
+/// use ely_core::{forms::TextInput, tables::TableToolbar, theme::Density};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn toolbar(window: &mut Window, cx: &mut App) -> TableToolbar {
+///     let search = cx.new(|cx| TextInput::new(window, cx));
+///     TableToolbar::new("toolbar")
+///         .search(&search)
+///         .filter(2, |_, _| {})
+///         .density(Density::Comfortable, |_density, _, _| {})
+///         .export(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct TableToolbar {
     id: ElementId,
@@ -30,6 +44,7 @@ pub struct TableToolbar {
 }
 
 impl TableToolbar {
+    /// An empty toolbar under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -75,6 +90,7 @@ impl TableToolbar {
         self
     }
 
+    /// A density switch at `density`; `on_change` runs with the one picked.
     pub fn density(
         mut self,
         density: Density,
@@ -84,6 +100,7 @@ impl TableToolbar {
         self
     }
 
+    /// An export button that runs `on_press`.
     pub fn export(mut self, on_press: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_export = Some(Rc::new(on_press));
         self

@@ -14,6 +14,7 @@ mod sidebar;
 mod split;
 mod stack;
 mod surface;
+/// Test helpers for components that fill their container; with `test-support` only.
 #[cfg(feature = "test-support")]
 pub mod testing;
 #[cfg(all(test, feature = "test-support"))]

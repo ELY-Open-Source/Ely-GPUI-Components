@@ -9,6 +9,13 @@ type BoundsHandler = Rc<dyn Fn(Bounds<Pixels>, &mut Window, &mut App)>;
 type VisibilityHandler = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// A div that reports its bounds whenever they change, then draws once more so what the report changed shows.
+///
+/// ```
+/// use ely_core::primitives::Measure;
+/// use gpui::{ParentElement, div};
+///
+/// let probe = Measure::new("probe", |_bounds, _, _| {}).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Measure {
     id: ElementId,
@@ -17,6 +24,7 @@ pub struct Measure {
 }
 
 impl Measure {
+    /// Reports this box's bounds to `on_measure` each time they change.
     pub fn new(
         id: impl Into<ElementId>,
         on_measure: impl Fn(Bounds<Pixels>, &mut Window, &mut App) + 'static,
@@ -65,6 +73,13 @@ impl RenderOnce for Measure {
 }
 
 /// A div that reports when it enters or leaves the visible area, then draws once more so what the report changed shows.
+///
+/// ```
+/// use ely_core::primitives::IntersectionObserver;
+/// use gpui::{ParentElement, div};
+///
+/// let tail = IntersectionObserver::new("tail", |_visible, _, _| {}).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct IntersectionObserver {
     id: ElementId,
@@ -73,6 +88,7 @@ pub struct IntersectionObserver {
 }
 
 impl IntersectionObserver {
+    /// Reports `true` to `on_change` when it comes into view and `false` when it leaves.
     pub fn new(
         id: impl Into<ElementId>,
         on_change: impl Fn(bool, &mut Window, &mut App) + 'static,

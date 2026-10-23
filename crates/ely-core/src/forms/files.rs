@@ -131,6 +131,12 @@ fn file_name(path: &Path) -> String {
 }
 
 /// Chosen files in a field. A click opens the dialog; files dropped on it count too.
+///
+/// ```
+/// use ely_core::forms::FileInput;
+///
+/// let attachment = FileInput::new("attachment", []).on_change(|_paths, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileInput {
     id: ElementId,
@@ -140,6 +146,7 @@ pub struct FileInput {
 }
 
 impl FileInput {
+    /// A file field under `id` holding `paths`.
     pub fn new(id: impl Into<ElementId>, paths: impl IntoIterator<Item = PathBuf>) -> Self {
         Self {
             id: id.into(),
@@ -155,6 +162,7 @@ impl FileInput {
         self
     }
 
+    /// Runs with the paths after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(Vec<PathBuf>, &mut Window, &mut App) + 'static,
@@ -232,6 +240,15 @@ impl RenderOnce for FileInput {
 }
 
 /// A dashed area that takes dropped files; Browse opens the dialog instead.
+///
+/// ```
+/// use ely_core::forms::DropZone;
+///
+/// let photos = DropZone::new("photos")
+///     .hint("PNG or JPEG, up to 10 MB")
+///     .multiple()
+///     .on_drop(|_paths, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DropZone {
     id: ElementId,
@@ -242,6 +259,7 @@ pub struct DropZone {
 }
 
 impl DropZone {
+    /// A drop zone under `id` that takes one file of any kind.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -270,6 +288,7 @@ impl DropZone {
         self
     }
 
+    /// Runs with the paths dropped or chosen.
     pub fn on_drop(
         mut self,
         handler: impl Fn(Vec<PathBuf>, &mut Window, &mut App) + 'static,

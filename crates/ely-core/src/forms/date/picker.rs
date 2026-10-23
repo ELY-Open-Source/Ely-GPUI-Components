@@ -148,6 +148,13 @@ pub fn picker_field(
 }
 
 /// A field that opens a calendar and shows the day chosen.
+///
+/// ```
+/// use ely_core::forms::DatePicker;
+/// use jiff::civil::date;
+///
+/// let due = DatePicker::new("due", Some(date(2026, 10, 23))).on_change(|_day, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DatePicker {
     id: ElementId,
@@ -161,6 +168,7 @@ pub struct DatePicker {
 }
 
 impl DatePicker {
+    /// A field under `id` that opens a calendar, `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<Date>) -> Self {
         Self {
             id: id.into(),
@@ -174,6 +182,7 @@ impl DatePicker {
         }
     }
 
+    /// What it shows with no date chosen.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = Some(text.into());
         self
@@ -185,21 +194,25 @@ impl DatePicker {
         self
     }
 
+    /// The day ringed as today. Defaults to the system's date.
     pub fn today(mut self, date: Date) -> Self {
         self.today = Some(date);
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with the day picked.
     pub fn on_change(mut self, handler: impl Fn(Date, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -273,6 +286,14 @@ impl RenderOnce for DatePicker {
 }
 
 /// A field that picks a first and a last day. Two clicks set the span.
+///
+/// ```
+/// use ely_core::forms::DateRangePicker;
+///
+/// let trip = DateRangePicker::new("trip", None)
+///     .placeholder("Pick your dates")
+///     .on_change(|(_first, _last), _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DateRangePicker {
     id: ElementId,
@@ -284,6 +305,7 @@ pub struct DateRangePicker {
 }
 
 impl DateRangePicker {
+    /// A field under `id` that opens a calendar for a first and a last day.
     pub fn new(id: impl Into<ElementId>, value: Option<(Date, Date)>) -> Self {
         Self {
             id: id.into(),
@@ -295,21 +317,25 @@ impl DateRangePicker {
         }
     }
 
+    /// What it shows with no span chosen.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = Some(text.into());
         self
     }
 
+    /// The day ringed as today. Defaults to the system's date.
     pub fn today(mut self, date: Date) -> Self {
         self.today = Some(date);
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Runs with the first and last day once both are picked.
     pub fn on_change(
         mut self,
         handler: impl Fn((Date, Date), &mut Window, &mut App) + 'static,

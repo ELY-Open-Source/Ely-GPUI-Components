@@ -12,6 +12,14 @@ use crate::{
 };
 
 /// A raised round button for a screen's main action; a label makes it a pill.
+///
+/// ```
+/// use ely_core::{buttons::FloatingActionButton, primitives::IconName};
+///
+/// let compose = FloatingActionButton::new("compose", IconName::Pencil)
+///     .tooltip("Compose")
+///     .on_click(|_, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FloatingActionButton {
     id: ElementId,
@@ -22,6 +30,7 @@ pub struct FloatingActionButton {
 }
 
 impl FloatingActionButton {
+    /// A round button under `id` that shows `icon`.
     pub fn new(id: impl Into<ElementId>, icon: IconName) -> Self {
         Self {
             id: id.into(),
@@ -32,16 +41,19 @@ impl FloatingActionButton {
         }
     }
 
+    /// Text beside the icon, which widens it to a pill.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
     }
 
+    /// The tip it shows on hover.
     pub fn tooltip(mut self, text: impl Into<SharedString>) -> Self {
         self.tooltip = Some(text.into());
         self
     }
 
+    /// Runs on a press, or on Enter or Space released while focused.
     pub fn on_click(
         mut self,
         handler: impl Fn(&ClickEvent, &mut Window, &mut App) + 'static,

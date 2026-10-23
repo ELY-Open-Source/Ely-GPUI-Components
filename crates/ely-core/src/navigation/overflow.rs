@@ -54,6 +54,14 @@ pub(crate) fn list_button(
 }
 
 /// A button that lists every tab, for a strip too narrow to show them all.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::TabOverflowMenu};
+///
+/// let tabs = TabOverflowMenu::new("files", [Choice::new("a", "a.rs"), Choice::new("b", "b.rs")])
+///     .selected("a")
+///     .on_select(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TabOverflowMenu {
     id: ElementId,
@@ -63,6 +71,7 @@ pub struct TabOverflowMenu {
 }
 
 impl TabOverflowMenu {
+    /// A button under `id` that lists all `tabs`; it panics on render with none.
     pub fn new(id: impl Into<ElementId>, tabs: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -72,11 +81,13 @@ impl TabOverflowMenu {
         }
     }
 
+    /// The value of the tab chosen.
     pub fn selected(mut self, value: impl Into<SharedString>) -> Self {
         self.selected = Some(value.into());
         self
     }
 
+    /// Runs with the value of the tab picked.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

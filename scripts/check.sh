@@ -4,6 +4,7 @@ set -eu
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
+cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
 # Ely beside the newest GPUI Kit: a release that moves Kit's gpui pin fails to resolve here.
 kit="--manifest-path compat/kit/Cargo.toml"
 newest=$(cargo search gpui-kit --limit 1 --color never | sed -n 's/^gpui-kit = "\([^"]*\)".*/\1/p')
@@ -27,7 +28,7 @@ for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify; d
   [ -z "$(cargo tree -p ely-core -e normal --target all -i $c 2>/dev/null || true)" ] || { echo "ely-core pulls $c"; fail=1; }
 done
 files=$(git ls-files -co --exclude-standard '*.rs')
-multi=$(awk 'FNR==1{prev=0} /^[[:space:]]*\/\// {if(prev) print FILENAME":"FNR; prev=1; next} {prev=0}' $files)
+multi=$(awk 'FNR==1{prev=0} /^[[:space:]]*\/\/([^\/!]|$|\/\/)/ {if(prev) print FILENAME":"FNR; prev=1; next} {prev=0}' $files)
 [ -z "$multi" ] || { echo "multi-line comments:"; echo "$multi"; fail=1; }
 for f in $files AGENTS.md README.md TASKS.md tasks/*.md; do
   n=$(wc -l < "$f")
@@ -36,7 +37,7 @@ done
 core=crates/ely-core/src
 libs=$(ls -d crates/*/src | grep -v ely-gallery)
 components=$(find src $libs -name '*.rs' ! -path "$core/theme/*" ! -path "$core/motion/*" ! -path '*/tests/*' ! -name 'tests.rs' ! -name 'testing.rs')
-raw=$(awk '/#\[cfg\(test\)\]/{nextfile} /(^|[^.[:alnum:]_])px\(/{print FILENAME":"FNR": "$0}' $components)
+raw=$(awk '/#\[cfg\(test\)\]/{nextfile} /^[[:space:]]*\/\//{next} /(^|[^.[:alnum:]_])px\(/{print FILENAME":"FNR": "$0}' $components)
 [ -z "$raw" ] || { echo "raw px in components:"; echo "$raw"; fail=1; }
 deferred=$(grep -rn 'deferred(' src $libs --include='*.rs' | grep -v "^$core/primitives/layer.rs" || true)
 [ -z "$deferred" ] || { echo "gpui deferred outside primitives::raise:"; echo "$deferred"; fail=1; }

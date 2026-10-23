@@ -283,6 +283,12 @@ impl Track {
 }
 
 /// A value along a track. Drag the thumb, click the track, or use the arrow keys.
+///
+/// ```
+/// use ely_core::forms::Slider;
+///
+/// let volume = Slider::new("volume", 40.0).on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Slider {
     id: ElementId,
@@ -294,6 +300,7 @@ pub struct Slider {
 }
 
 impl Slider {
+    /// A slider under `id` at `value`, from 0 to 100 in steps of 1.
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
@@ -305,6 +312,7 @@ impl Slider {
         }
     }
 
+    /// Its least and greatest value. Panics on an empty range.
     pub fn range(mut self, min: f64, max: f64) -> Self {
         assert!(min < max, "slider range {min}..{max} is empty");
         self.range.0 = min;
@@ -312,6 +320,7 @@ impl Slider {
         self
     }
 
+    /// The grain a drag snaps to and a key press moves. Panics unless positive.
     pub fn step(mut self, step: f64) -> Self {
         assert!(step > 0.0, "slider step {step} must be positive");
         self.range.2 = step;
@@ -324,11 +333,13 @@ impl Slider {
         self
     }
 
+    /// Dims it and takes no drag.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with each new value.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -360,6 +371,15 @@ impl RenderOnce for Slider {
 }
 
 /// Two thumbs that bound a span. Neither passes the other.
+///
+/// ```
+/// use ely_core::forms::RangeSlider;
+///
+/// let price = RangeSlider::new("price", 20.0, 80.0)
+///     .range(0.0, 200.0)
+///     .step(5.0)
+///     .on_change(|(_low, _high), _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RangeSlider {
     id: ElementId,
@@ -371,6 +391,7 @@ pub struct RangeSlider {
 }
 
 impl RangeSlider {
+    /// Two thumbs under `id` at `low` and `high`, from 0 to 100 in steps of 1. Panics if `low` passes `high`.
     pub fn new(id: impl Into<ElementId>, low: f64, high: f64) -> Self {
         assert!(low <= high, "range {low}..{high} runs backwards");
         Self {
@@ -383,6 +404,7 @@ impl RangeSlider {
         }
     }
 
+    /// Its least and greatest value. Panics on an empty range.
     pub fn range(mut self, min: f64, max: f64) -> Self {
         assert!(min < max, "slider range {min}..{max} is empty");
         self.range.0 = min;
@@ -390,6 +412,7 @@ impl RangeSlider {
         self
     }
 
+    /// The grain a drag snaps to and a key press moves. Panics unless positive.
     pub fn step(mut self, step: f64) -> Self {
         assert!(step > 0.0, "slider step {step} must be positive");
         self.range.2 = step;
@@ -402,11 +425,13 @@ impl RangeSlider {
         self
     }
 
+    /// Dims it and takes no drag.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with each new pair.
     pub fn on_change(
         mut self,
         handler: impl Fn((f64, f64), &mut Window, &mut App) + 'static,

@@ -22,6 +22,20 @@ type Action = Box<dyn FnOnce(Close) -> AnyElement>;
 type OnEnter = Box<dyn FnOnce(Close) -> Run>;
 
 /// A card over a scrim: a title, a line of detail, the owner's content and a row of actions. Escape closes it, Tab stays inside, and focus returns on every close.
+///
+/// ```
+/// use ely_core::{buttons::Button, overlays::Dialog};
+/// use gpui::ParentElement;
+///
+/// let rename = Dialog::new("rename", "Rename file", |_, _| {})
+///     .detail("The new name shows everywhere.")
+///     .child("main.rs")
+///     .action(|close| {
+///         Button::new("done", "Done")
+///             .primary()
+///             .on_click(move |_, window, cx| close(window, cx))
+///     });
+/// ```
 #[derive(IntoElement)]
 pub struct Dialog {
     id: ElementId,
@@ -57,6 +71,7 @@ impl Dialog {
         }
     }
 
+    /// A line under the title.
     pub fn detail(mut self, text: impl Into<SharedString>) -> Self {
         self.detail = Some(text.into());
         self

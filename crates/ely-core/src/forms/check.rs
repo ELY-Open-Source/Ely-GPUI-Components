@@ -19,9 +19,12 @@ use crate::{
 /// A checkbox's state. `Mixed` is the dash for a parent whose children disagree.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum CheckState {
+    /// Unchecked.
     #[default]
     Off,
+    /// Checked.
     On,
+    /// A dash: some of its children are on.
     Mixed,
 }
 
@@ -97,6 +100,14 @@ pub(crate) fn check_mark(
 }
 
 /// A box that is on, off, or mixed, with an optional label beside it.
+///
+/// ```
+/// use ely_core::forms::Checkbox;
+///
+/// let terms = Checkbox::new("terms", false)
+///     .label("I accept the terms")
+///     .on_change(|_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Checkbox {
     id: ElementId,
@@ -107,6 +118,7 @@ pub struct Checkbox {
 }
 
 impl Checkbox {
+    /// A box under `id` in `state`.
     pub fn new(id: impl Into<ElementId>, state: impl Into<CheckState>) -> Self {
         Self {
             id: id.into(),
@@ -117,11 +129,13 @@ impl Checkbox {
         }
     }
 
+    /// Text beside the box; a press on it toggles too.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
@@ -193,6 +207,14 @@ impl RenderOnce for Checkbox {
 }
 
 /// Checkboxes for a list of choices; any number can be on.
+///
+/// ```
+/// use ely_core::forms::{CheckboxGroup, Choice};
+///
+/// let days = CheckboxGroup::new("days", [Choice::new("mon", "Monday"), Choice::new("tue", "Tuesday")])
+///     .selected(["mon"])
+///     .on_change(|_values, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CheckboxGroup {
     id: ElementId,
@@ -202,6 +224,7 @@ pub struct CheckboxGroup {
 }
 
 impl CheckboxGroup {
+    /// Boxes under `id`, one per choice.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -211,11 +234,13 @@ impl CheckboxGroup {
         }
     }
 
+    /// The values of the boxes that are on.
     pub fn selected(mut self, values: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = values.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Runs with the values on after each press.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

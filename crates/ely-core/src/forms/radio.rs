@@ -60,6 +60,12 @@ pub(crate) fn radio_mark(
 }
 
 /// One choice of several, with an optional label beside it.
+///
+/// ```
+/// use ely_core::forms::Radio;
+///
+/// let monthly = Radio::new("monthly", true).label("Monthly");
+/// ```
 #[derive(IntoElement)]
 pub struct Radio {
     id: ElementId,
@@ -71,6 +77,7 @@ pub struct Radio {
 }
 
 impl Radio {
+    /// A radio under `id`, on or off.
     pub fn new(id: impl Into<ElementId>, on: bool) -> Self {
         Self {
             id: id.into(),
@@ -82,11 +89,13 @@ impl Radio {
         }
     }
 
+    /// Text beside the dot; a press on it picks too.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
@@ -160,6 +169,14 @@ impl RenderOnce for Radio {
 }
 
 /// Radios for a list of choices. One Tab stop; the arrows move the choice.
+///
+/// ```
+/// use ely_core::forms::{Choice, RadioGroup};
+///
+/// let billing = RadioGroup::new("billing", [Choice::new("monthly", "Monthly"), Choice::new("yearly", "Yearly")])
+///     .selected("monthly")
+///     .on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RadioGroup {
     id: ElementId,
@@ -170,6 +187,7 @@ pub struct RadioGroup {
 }
 
 impl RadioGroup {
+    /// Radios under `id`, one per choice, in a column.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -180,6 +198,7 @@ impl RadioGroup {
         }
     }
 
+    /// The value chosen.
     pub fn selected(mut self, value: impl Into<SharedString>) -> Self {
         self.selected = Some(value.into());
         self
@@ -191,6 +210,7 @@ impl RadioGroup {
         self
     }
 
+    /// Runs with the value picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

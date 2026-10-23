@@ -11,13 +11,18 @@ use crate::{
 /// Whether someone is around.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Presence {
+    /// Around and free.
     Online,
+    /// Away from the desk.
     Away,
+    /// Around but not to be disturbed.
     Busy,
+    /// Not around.
     Offline,
 }
 
 impl Presence {
+    /// Its dot's color in `colors`.
     pub fn color(self, colors: &Palette) -> Hsla {
         match self {
             Self::Online => colors.success,
@@ -27,6 +32,7 @@ impl Presence {
         }
     }
 
+    /// Its English name.
     pub fn label(self) -> &'static str {
         match self {
             Self::Online => "Online",
@@ -57,6 +63,15 @@ fn tint(name: &str, colors: &Palette) -> Hsla {
 }
 
 /// A person or a team at a glance: their picture, or their initials on a tone kept by the name, or an icon. A presence dot can sit on the corner; squares suit teams.
+///
+/// ```
+/// use ely_core::{
+///     data_display::{Avatar, Presence},
+///     theme::AvatarSize,
+/// };
+///
+/// let ana = Avatar::new("ana", "Ana Lima").size(AvatarSize::Lg).presence(Presence::Online);
+/// ```
 #[derive(IntoElement)]
 pub struct Avatar {
     id: ElementId,
@@ -98,6 +113,7 @@ impl Avatar {
         self
     }
 
+    /// Its size.
     pub fn size(mut self, size: AvatarSize) -> Self {
         self.size = size;
         self
@@ -127,6 +143,7 @@ impl Avatar {
         self
     }
 
+    /// A dot at its corner for `presence`.
     pub fn presence(mut self, presence: Presence) -> Self {
         self.presence = Some(presence);
         self
@@ -236,6 +253,12 @@ pub fn more(rest: usize, size: AvatarSize, cx: &App) -> Div {
 }
 
 /// People side by side, each tucked under the next, and a count of the rest.
+///
+/// ```
+/// use ely_core::data_display::{Avatar, AvatarGroup};
+///
+/// let team = AvatarGroup::new([Avatar::new("ana", "Ana Lima"), Avatar::new("bo", "Bo Chen")]);
+/// ```
 #[derive(IntoElement)]
 pub struct AvatarGroup {
     people: Vec<Avatar>,
@@ -244,6 +267,7 @@ pub struct AvatarGroup {
 }
 
 impl AvatarGroup {
+    /// Up to four of `people`, overlapped, and a count of the rest.
     pub fn new(people: impl IntoIterator<Item = Avatar>) -> Self {
         Self {
             people: people.into_iter().collect(),
@@ -259,6 +283,7 @@ impl AvatarGroup {
         self
     }
 
+    /// Each avatar's size.
     pub fn size(mut self, size: AvatarSize) -> Self {
         self.size = size;
         self
@@ -281,6 +306,12 @@ impl RenderOnce for AvatarGroup {
 }
 
 /// Someone named in a line or a field: a small avatar and the name, in a pill.
+///
+/// ```
+/// use ely_core::data_display::UserChip;
+///
+/// let author = UserChip::new("author", "Ana Lima");
+/// ```
 #[derive(IntoElement)]
 pub struct UserChip {
     avatar: Avatar,
@@ -288,6 +319,7 @@ pub struct UserChip {
 }
 
 impl UserChip {
+    /// A chip under `id` with `name` and its initials.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>) -> Self {
         let name = name.into();
         Self {
@@ -296,6 +328,7 @@ impl UserChip {
         }
     }
 
+    /// A picture in place of the initials.
     pub fn image(mut self, source: impl Into<ImageSource>) -> Self {
         self.avatar = self.avatar.image(source);
         self

@@ -16,6 +16,15 @@ use crate::{
 };
 
 /// A titled message with a line, a time and actions: a row of a `NotificationCenter`, or on its own.
+///
+/// ```
+/// use ely_core::{buttons::Button, feedback::Notification, primitives::IconName};
+///
+/// let invite = Notification::new("invite", IconName::UserPlus, "Bo invited you")
+///     .body("to the Design team")
+///     .unread(true)
+///     .action(Button::new("accept", "Accept"));
+/// ```
 #[derive(IntoElement)]
 pub struct Notification {
     id: ElementId,
@@ -28,6 +37,7 @@ pub struct Notification {
 }
 
 impl Notification {
+    /// A notification under `id` that shows `icon` and `title`.
     pub fn new(id: impl Into<ElementId>, icon: IconName, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -40,6 +50,7 @@ impl Notification {
         }
     }
 
+    /// A line under the title.
     pub fn body(mut self, text: impl Into<SharedString>) -> Self {
         self.body = Some(text.into());
         self
@@ -51,11 +62,13 @@ impl Notification {
         self
     }
 
+    /// Marks it unread.
     pub fn unread(mut self, unread: bool) -> Self {
         self.unread = unread;
         self
     }
 
+    /// Adds an action at its end.
     pub fn action(mut self, action: impl IntoElement) -> Self {
         self.actions.push(action.into_any_element());
         self
@@ -151,6 +164,17 @@ impl RenderOnce for Notification {
 }
 
 /// Notifications under day headings, with Mark all read and Clear. The owner keeps the list and what is read.
+///
+/// ```
+/// use ely_core::{
+///     feedback::{Notification, NotificationCenter},
+///     primitives::IconName,
+/// };
+///
+/// let center = NotificationCenter::new("center")
+///     .group("Today", [Notification::new("deploy", IconName::Rocket, "Deploy finished")])
+///     .on_read_all(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NotificationCenter {
     id: ElementId,
@@ -160,6 +184,7 @@ pub struct NotificationCenter {
 }
 
 impl NotificationCenter {
+    /// An empty center under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -182,11 +207,13 @@ impl NotificationCenter {
         self
     }
 
+    /// Runs on Mark all read, shown while some are unread.
     pub fn on_read_all(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_read_all = Some(Rc::new(handler));
         self
     }
 
+    /// Runs on Clear, shown while the center holds any.
     pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_clear = Some(Rc::new(handler));
         self

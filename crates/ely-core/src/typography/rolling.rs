@@ -27,6 +27,12 @@ struct Change {
 }
 
 /// Number that rolls its digits, or counts, to each new value.
+///
+/// ```
+/// use ely_core::typography::AnimatedNumber;
+///
+/// let visits = AnimatedNumber::new("visits", 1284.0).count_up();
+/// ```
 #[derive(IntoElement)]
 pub struct AnimatedNumber {
     id: ElementId,
@@ -39,6 +45,7 @@ pub struct AnimatedNumber {
 }
 
 impl AnimatedNumber {
+    /// Shows `value`, rolling to each new one.
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
@@ -51,6 +58,7 @@ impl AnimatedNumber {
         }
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
@@ -74,6 +82,7 @@ impl AnimatedNumber {
         self
     }
 
+    /// Its text size.
     pub fn size(mut self, size: TextSize) -> Self {
         self.size = size;
         self

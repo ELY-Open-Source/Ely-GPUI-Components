@@ -88,6 +88,17 @@ fn rows_state(
 type OnRemove = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Rows the owner builds, each with a remove button, and a button that adds one.
+///
+/// ```
+/// use ely_core::forms::FieldArray;
+/// use gpui::div;
+///
+/// let emails = FieldArray::new("emails")
+///     .row(div())
+///     .add_label("Add email")
+///     .on_add(|_, _| {})
+///     .on_remove(|_index, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FieldArray {
     id: ElementId,
@@ -98,6 +109,7 @@ pub struct FieldArray {
 }
 
 impl FieldArray {
+    /// Rows under `id`, none yet, and an Add button.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -108,16 +120,19 @@ impl FieldArray {
         }
     }
 
+    /// Adds a row the owner built.
     pub fn row(mut self, row: impl IntoElement) -> Self {
         self.rows.push(row.into_any_element());
         self
     }
 
+    /// The add button's text; `Add` unless set.
     pub fn add_label(mut self, text: impl Into<SharedString>) -> Self {
         self.add_label = text.into();
         self
     }
 
+    /// Runs on the add button.
     pub fn on_add(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_add = Some(Rc::new(handler));
         self
@@ -212,6 +227,13 @@ fn render_rows(id: &ElementId, state: Entity<Rows>, add: &'static str, cx: &App)
 }
 
 /// Rows of key and value fields; add and remove rows.
+///
+/// ```
+/// use ely_core::forms::KeyValueInput;
+///
+/// let headers = KeyValueInput::new("headers", [("Accept".to_string(), "text/html".to_string())])
+///     .on_change(|_pairs, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct KeyValueInput {
     id: ElementId,
@@ -263,6 +285,14 @@ impl RenderOnce for KeyValueInput {
 }
 
 /// A list of text entries; add and remove entries.
+///
+/// ```
+/// use ely_core::forms::ListInput;
+///
+/// let tags = ListInput::new("tags", ["rust".to_string()])
+///     .placeholder("Tag")
+///     .on_change(|_items, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ListInput {
     id: ElementId,
@@ -272,6 +302,7 @@ pub struct ListInput {
 }
 
 impl ListInput {
+    /// A list of one-line fields under `id`, filled from `seed` on first render.
     pub fn new(id: impl Into<ElementId>, seed: impl IntoIterator<Item = String>) -> Self {
         Self {
             id: id.into(),
@@ -281,11 +312,13 @@ impl ListInput {
         }
     }
 
+    /// What an empty field shows; `Item` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
     }
 
+    /// Runs with every item after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(Vec<String>, &mut Window, &mut App) + 'static,

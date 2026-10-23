@@ -7,6 +7,12 @@ use super::tabular;
 use crate::{buttons::CopyButton, theme::ActiveTheme};
 
 /// Text with a copy button that confirms with a check.
+///
+/// ```
+/// use ely_core::typography::CopyableText;
+///
+/// let key = CopyableText::new("api-key", "sk-live-4f2a").mono();
+/// ```
 #[derive(IntoElement)]
 pub struct CopyableText {
     id: ElementId,
@@ -16,6 +22,7 @@ pub struct CopyableText {
 }
 
 impl CopyableText {
+    /// Shows `text` with a copy button under `id`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -25,6 +32,7 @@ impl CopyableText {
         }
     }
 
+    /// Sets it in the monospace face.
     pub fn mono(mut self) -> Self {
         self.mono = true;
         self

@@ -23,6 +23,16 @@ const PRESETS: [(&str, &str); 5] = [
 ];
 
 /// A five-field cron rule, read back in words with its next runs.
+///
+/// ```
+/// use ely_core::forms::{CronEditor, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn schedule(window: &mut Window, cx: &mut App) -> CronEditor {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     CronEditor::new("schedule", &state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct CronEditor {
     id: ElementId,
@@ -32,6 +42,7 @@ pub struct CronEditor {
 }
 
 impl CronEditor {
+    /// An editor under `id` that types the rule into `state` and shows its next three runs.
     pub fn new(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),

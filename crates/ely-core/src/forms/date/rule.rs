@@ -130,6 +130,7 @@ pub struct CronRule {
 }
 
 impl CronRule {
+    /// Reads a five-field rule, or says what is wrong with it.
     pub fn parse(source: &str) -> Result<Self, String> {
         let parts: Vec<&str> = source.split_whitespace().collect();
         let [minute, hour, day, month, weekday] = parts.as_slice() else {

@@ -49,6 +49,7 @@ macro_rules! text_kind {
         }
 
         impl $name {
+            /// `text` in this style.
             pub fn new(text: impl Into<SharedString>) -> Self {
                 Self { text: text.into(), style: StyleRefinement::default() }
             }
@@ -74,16 +75,64 @@ macro_rules! text_kind {
     };
 }
 
-text_kind!(Title, Xl, SEMIBOLD, fg, 1.3);
-text_kind!(Subtitle, Lg, NORMAL, fg_muted, 1.45);
+text_kind!(
+    /// A view's title: extra large and semibold.
+    ///
+    /// ```
+    /// use ely_core::typography::Title;
+    ///
+    /// let text = Title::new("Settings");
+    /// ```
+    Title, Xl, SEMIBOLD, fg, 1.3
+);
+text_kind!(
+    /// The line under a title, large and muted.
+    ///
+    /// ```
+    /// use ely_core::typography::Subtitle;
+    ///
+    /// let text = Subtitle::new("Manage your account");
+    /// ```
+    Subtitle, Lg, NORMAL, fg_muted, 1.45
+);
 text_kind!(
     /// Reading text. Loose leading.
+    ///
+    /// ```
+    /// use ely_core::typography::Paragraph;
+    ///
+    /// let text = Paragraph::new("Ely draws every component in light and dark.");
+    /// ```
     Paragraph, Md, NORMAL, fg, 1.6
 );
-text_kind!(Label, Base, MEDIUM, fg, 1.4);
-text_kind!(Caption, Sm, NORMAL, fg_muted, 1.45);
+text_kind!(
+    /// A control's name, medium weight.
+    ///
+    /// ```
+    /// use ely_core::typography::Label;
+    ///
+    /// let text = Label::new("Email");
+    /// ```
+    Label, Base, MEDIUM, fg, 1.4
+);
+text_kind!(
+    /// Small muted text under or beside its subject.
+    ///
+    /// ```
+    /// use ely_core::typography::Caption;
+    ///
+    /// let text = Caption::new("Updated just now");
+    /// ```
+    Caption, Sm, NORMAL, fg_muted, 1.45
+);
 
 /// Small upper-case eyebrow above a heading.
+///
+/// ```
+/// use ely_core::typography::Overline;
+///
+/// let eyebrow = Overline::new("Billing");
+/// ```
 #[derive(IntoElement)]
 pub struct Overline {
     text: SharedString,
@@ -91,6 +140,7 @@ pub struct Overline {
 }
 
 impl Overline {
+    /// `text`, set upper-case.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self {
             text: text.into(),
@@ -118,6 +168,12 @@ impl RenderOnce for Overline {
 }
 
 /// H1 to H6.
+///
+/// ```
+/// use ely_core::typography::Heading;
+///
+/// let title = Heading::h2("Payment method");
+/// ```
 #[derive(IntoElement)]
 pub struct Heading {
     level: u8,
@@ -139,26 +195,32 @@ impl Heading {
         }
     }
 
+    /// A level 1 heading.
     pub fn h1(text: impl Into<SharedString>) -> Self {
         Self::new(1, text)
     }
 
+    /// A level 2 heading.
     pub fn h2(text: impl Into<SharedString>) -> Self {
         Self::new(2, text)
     }
 
+    /// A level 3 heading.
     pub fn h3(text: impl Into<SharedString>) -> Self {
         Self::new(3, text)
     }
 
+    /// A level 4 heading.
     pub fn h4(text: impl Into<SharedString>) -> Self {
         Self::new(4, text)
     }
 
+    /// A level 5 heading.
     pub fn h5(text: impl Into<SharedString>) -> Self {
         Self::new(5, text)
     }
 
+    /// A level 6 heading.
     pub fn h6(text: impl Into<SharedString>) -> Self {
         Self::new(6, text)
     }

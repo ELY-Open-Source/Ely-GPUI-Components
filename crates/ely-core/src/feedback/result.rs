@@ -22,6 +22,14 @@ const CROSS: [[(f32, f32); 3]; 2] = [
 const ARC: usize = 64;
 
 /// Where a task ended: a ring and a check or an X that draw themselves, a title, a line and actions.
+///
+/// ```
+/// use ely_core::{buttons::Button, feedback::ResultView};
+///
+/// let paid = ResultView::success("paid", "Payment received")
+///     .body("A receipt is on its way.")
+///     .action(Button::new("done", "Done"));
+/// ```
 #[derive(IntoElement)]
 pub struct ResultView {
     id: ElementId,
@@ -30,6 +38,7 @@ pub struct ResultView {
 }
 
 impl ResultView {
+    /// A success under `id` titled `title`.
     pub fn success(id: impl Into<ElementId>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -38,6 +47,7 @@ impl ResultView {
         }
     }
 
+    /// A failure under `id` titled `title`.
     pub fn failure(id: impl Into<ElementId>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

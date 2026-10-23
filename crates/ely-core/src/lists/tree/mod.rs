@@ -50,6 +50,16 @@ pub(crate) struct TreeDrag {
 }
 
 /// Nodes that open and close, drawn a row at a time so large trees stay quick. Right and Left open, close and climb; Up and Down walk; Enter opens a node or activates a leaf; F2 renames. With `multiple`, Cmd and Shift widen the pick. With `checked`, boxes check whole branches. Nodes drag before, after or into others. Give it a height.
+///
+/// ```
+/// use ely_core::lists::{Tree, TreeNode};
+/// use gpui::{Styled, px};
+///
+/// let tree = Tree::new("tree", [TreeNode::new("src", "src").child(TreeNode::new("main", "main.rs"))])
+///     .selected(["main"])
+///     .on_select(|_keys, _, _| {})
+///     .h(px(320.0));
+/// ```
 #[derive(IntoElement)]
 pub struct Tree {
     id: ElementId,
@@ -68,6 +78,7 @@ pub struct Tree {
 }
 
 impl Tree {
+    /// A tree under `id` over `nodes`, all folded.
     pub fn new(id: impl Into<ElementId>, nodes: impl IntoIterator<Item = TreeNode>) -> Self {
         Self {
             id: id.into(),
@@ -92,16 +103,19 @@ impl Tree {
         self
     }
 
+    /// The keys of the nodes chosen.
     pub fn selected(mut self, keys: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.selected = keys.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Lets more than one node be chosen.
     pub fn multiple(mut self) -> Self {
         self.multiple = true;
         self
     }
 
+    /// Runs with the keys chosen after each change.
     pub fn on_select(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

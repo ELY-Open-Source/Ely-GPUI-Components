@@ -46,6 +46,15 @@ struct Turn {
 }
 
 /// A dial for audio-style values. Drag up or down, or use the arrow keys.
+///
+/// ```
+/// use ely_core::forms::Knob;
+///
+/// let gain = Knob::new("gain", 0.0)
+///     .range(-24.0, 24.0)
+///     .step(0.5)
+///     .on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Knob {
     id: ElementId,
@@ -56,6 +65,7 @@ pub struct Knob {
 }
 
 impl Knob {
+    /// A knob under `id` at `value`, from 0 to 100 in steps of 1.
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
@@ -66,6 +76,7 @@ impl Knob {
         }
     }
 
+    /// Its least and greatest value. Panics on an empty range.
     pub fn range(mut self, min: f64, max: f64) -> Self {
         assert!(min < max, "knob range {min}..{max} is empty");
         self.range.0 = min;
@@ -73,17 +84,20 @@ impl Knob {
         self
     }
 
+    /// The grain a drag snaps to and a key press moves. Panics unless positive.
     pub fn step(mut self, step: f64) -> Self {
         assert!(step > 0.0, "knob step {step} must be positive");
         self.range.2 = step;
         self
     }
 
+    /// Dims it and takes no turn.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs with each new value.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

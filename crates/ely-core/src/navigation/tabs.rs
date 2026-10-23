@@ -17,9 +17,12 @@ use crate::{
 /// Where a tab strip sits against its panel.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum TabPlacement {
+    /// A strip across the top.
     #[default]
     Top,
+    /// A column at the left.
     Left,
+    /// A strip across the bottom.
     Bottom,
 }
 
@@ -27,6 +30,14 @@ type OnValue = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
 /// A strip of tabs and the chosen tab's panel. A line slides to the chosen tab; arrows move it.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::Tabs};
+///
+/// let tabs = Tabs::new("tabs", [Choice::new("code", "Code"), Choice::new("issues", "Issues")], "code")
+///     .panel("The repository's files.")
+///     .on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Tabs {
     id: ElementId,
@@ -39,6 +50,7 @@ pub struct Tabs {
 }
 
 impl Tabs {
+    /// A strip under `id` of `tabs`, `selected` chosen.
     pub fn new(
         id: impl Into<ElementId>,
         tabs: impl IntoIterator<Item = Choice>,
@@ -55,6 +67,7 @@ impl Tabs {
         }
     }
 
+    /// Where the strip sits; the top unless set.
     pub fn placement(mut self, placement: TabPlacement) -> Self {
         self.placement = placement;
         self
@@ -66,6 +79,7 @@ impl Tabs {
         self
     }
 
+    /// Runs with the value of the tab chosen.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

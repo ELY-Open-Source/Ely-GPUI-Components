@@ -21,6 +21,7 @@ pub struct TreeRow {
 }
 
 impl TreeRow {
+    /// A row keyed `key` holding `cells`, with no rows under it.
     pub fn new(key: impl Into<SharedString>, cells: impl IntoIterator<Item = Cell>) -> Self {
         Self {
             key: key.into(),
@@ -29,6 +30,7 @@ impl TreeRow {
         }
     }
 
+    /// Adds rows under it.
     pub fn children(mut self, rows: impl IntoIterator<Item = TreeRow>) -> Self {
         self.children.extend(rows);
         self
@@ -51,6 +53,17 @@ fn flat<'a>(
 }
 
 /// Rows that open and close under table columns; the first column steps in by depth and carries each row's disclosure.
+///
+/// ```
+/// use ely_core::tables::{Cell, Column, TreeRow, TreeTable};
+///
+/// let budget = TreeTable::new(
+///     "budget",
+///     [Column::new("name", "Name"), Column::new("cost", "Cost")],
+///     [TreeRow::new("ops", [Cell::Text("Ops".into()), Cell::Number(1200.0)])
+///         .children([TreeRow::new("cloud", [Cell::Text("Cloud".into()), Cell::Number(800.0)])])],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct TreeTable {
     id: ElementId,
@@ -60,6 +73,7 @@ pub struct TreeTable {
 }
 
 impl TreeTable {
+    /// A table under `id` with `columns` over the tree `rows`, all folded.
     pub fn new(
         id: impl Into<ElementId>,
         columns: impl IntoIterator<Item = Column>,

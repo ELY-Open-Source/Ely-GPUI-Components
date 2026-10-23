@@ -16,11 +16,17 @@ use crate::{
 /// A file's state in git.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum GitStatus {
+    /// Changed since the last commit.
     Modified,
+    /// New and staged.
     Added,
+    /// Removed.
     Deleted,
+    /// New and not tracked.
     Untracked,
+    /// Moved or renamed.
     Renamed,
+    /// Changed on both sides of a merge.
     Conflicted,
 }
 
@@ -163,6 +169,14 @@ fn nodes(
 type OnOpen = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A project's files as a tree: folders first, an icon for each kind, git status by letter and tint, a dot on folders with changes, and a filter that keeps matches and opens the folders that hold them. Enter or a double press opens a file. Give it a height.
+///
+/// ```
+/// use ely_core::lists::{FileTree, GitStatus};
+///
+/// let files = FileTree::new("files", ["src/main.rs", "src/lib.rs", "Cargo.toml"])
+///     .status("src/lib.rs", GitStatus::Modified)
+///     .on_open(|_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileTree {
     id: ElementId,
@@ -187,11 +201,13 @@ impl FileTree {
         }
     }
 
+    /// Marks `path` with `status`.
     pub fn status(mut self, path: impl Into<SharedString>, status: GitStatus) -> Self {
         self.status.push((path.into(), status));
         self
     }
 
+    /// Runs with the path of the file opened.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

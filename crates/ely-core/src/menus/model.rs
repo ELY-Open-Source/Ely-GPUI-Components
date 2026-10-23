@@ -38,6 +38,7 @@ impl MenuItem {
         }
     }
 
+    /// A row that reads `label`.
     pub fn new(label: impl Into<SharedString>) -> Self {
         Self::with(label, Kind::Run)
     }
@@ -57,6 +58,7 @@ impl MenuItem {
         Self::with(label, Kind::Sub(menu))
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
@@ -68,11 +70,13 @@ impl MenuItem {
         self
     }
 
+    /// Shows it but takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
     }
 
+    /// Runs when the row is chosen.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self
@@ -95,15 +99,18 @@ pub struct Menu {
 }
 
 impl Menu {
+    /// An empty menu.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Adds a row.
     pub fn item(mut self, item: MenuItem) -> Self {
         self.entries.push(Entry::Item(item));
         self
     }
 
+    /// Adds a hairline.
     pub fn separator(mut self) -> Self {
         self.entries.push(Entry::Separator);
         self

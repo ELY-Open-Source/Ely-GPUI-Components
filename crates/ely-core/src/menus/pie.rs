@@ -23,6 +23,7 @@ pub struct PieItem {
 }
 
 impl PieItem {
+    /// A slice that shows `icon` and `label`.
     pub fn new(icon: IconName, label: impl Into<SharedString>) -> Self {
         Self {
             icon,
@@ -31,6 +32,7 @@ impl PieItem {
         }
     }
 
+    /// Runs when the slice is chosen.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self
@@ -65,6 +67,21 @@ fn slice(
 }
 
 /// Its children, and a ring of choices that opens at the pointer on a right click. The pointer's direction marks one; a click runs it.
+///
+/// ```
+/// use ely_core::{
+///     menus::{PieItem, PieMenu},
+///     primitives::IconName,
+/// };
+///
+/// let tools = PieMenu::new(
+///     "tools",
+///     [
+///         PieItem::new(IconName::Pencil, "Draw").on_click(|_, _| {}),
+///         PieItem::new(IconName::Eraser, "Erase").on_click(|_, _| {}),
+///     ],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct PieMenu {
     id: ElementId,
@@ -73,6 +90,7 @@ pub struct PieMenu {
 }
 
 impl PieMenu {
+    /// A ring under `id` of `items`. Panics on fewer than two.
     pub fn new(id: impl Into<ElementId>, items: impl IntoIterator<Item = PieItem>) -> Self {
         let items: Vec<PieItem> = items.into_iter().collect();
         assert!(items.len() >= 2, "a pie menu needs two slices or more");

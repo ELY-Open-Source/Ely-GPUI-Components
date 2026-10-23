@@ -35,6 +35,13 @@ fn title_row(title: SharedString, close: Close, cx: &App) -> impl IntoElement + 
 }
 
 /// Panel that slides in from an edge over a scrim.
+///
+/// ```
+/// use ely_core::{layout::Sheet, primitives::Place};
+/// use gpui::ParentElement;
+///
+/// let filters = Sheet::new("filters", Place::Right, "Filters", |_, _| {}).child("Status");
+/// ```
 #[derive(IntoElement)]
 pub struct Sheet {
     id: ElementId,
@@ -128,6 +135,13 @@ struct DrawerPull {
 const DISMISS: f32 = 0.3;
 
 /// Bottom panel with a grab handle; pull it down to dismiss.
+///
+/// ```
+/// use ely_core::layout::Drawer;
+/// use gpui::ParentElement;
+///
+/// let share = Drawer::new("share", |_, _| {}).child("Copy link");
+/// ```
 #[derive(IntoElement)]
 pub struct Drawer {
     id: ElementId,
@@ -136,6 +150,7 @@ pub struct Drawer {
 }
 
 impl Drawer {
+    /// A drawer under `id`; `on_close` runs when it is dismissed.
     pub fn new(
         id: impl Into<ElementId>,
         on_close: impl Fn(&mut Window, &mut App) + 'static,

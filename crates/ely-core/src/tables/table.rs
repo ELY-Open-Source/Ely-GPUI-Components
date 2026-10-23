@@ -27,6 +27,12 @@ use crate::{
 };
 
 /// One row: its key, which a selection names it by, and a cell for each column.
+///
+/// ```
+/// use ely_core::tables::{Cell, Row};
+///
+/// let ana = Row::new("ana", [Cell::Text("Ana".into()), Cell::Number(42.0)]);
+/// ```
 #[derive(Clone, Debug, PartialEq)]
 pub struct Row {
     pub(crate) key: SharedString,
@@ -34,6 +40,7 @@ pub struct Row {
 }
 
 impl Row {
+    /// A row keyed `key` holding `cells`, one per column.
     pub fn new(key: impl Into<SharedString>, cells: impl IntoIterator<Item = Cell>) -> Self {
         Self {
             key: key.into(),
@@ -62,6 +69,14 @@ pub(crate) struct View {
 pub(super) type OnSelect = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 
 /// Rows under headers. A press on a header sorts, rising then falling then off; Shift adds it to the sort. A header drags to move its column and its edge drags to resize it. A query and filter rules keep rows; pages split long results, or a long table draws only the rows in view. Rows can gather into folding groups, open a detail, or edit a cell in place. With a selection, a box leads each row. Footers show figures; tinted columns show where each number sits.
+///
+/// ```
+/// use ely_core::tables::{Cell, Column, DataTable, Row};
+///
+/// let people = DataTable::new("people", [Column::new("name", "Name"), Column::new("age", "Age")])
+///     .rows(vec![Row::new("ana", [Cell::Text("Ana".into()), Cell::Number(42.0)])])
+///     .on_select(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DataTable {
     pub(super) id: ElementId,

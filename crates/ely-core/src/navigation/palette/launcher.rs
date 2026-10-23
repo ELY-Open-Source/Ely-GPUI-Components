@@ -14,6 +14,20 @@ use crate::{
 };
 
 /// A search palette alone in a window above all others, as Spotlight is. A pick, Escape or a click elsewhere closes it.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::QuickLauncher};
+/// use gpui::{App, SharedString};
+///
+/// fn launcher(cx: &mut App) -> anyhow::Result<()> {
+///     QuickLauncher::open(
+///         |query| vec![(SharedString::from("Apps"), vec![Choice::new(query.to_string(), query.to_string())])],
+///         |_value, _, _| {},
+///         cx,
+///     )?;
+///     Ok(())
+/// }
+/// ```
 pub struct QuickLauncher {
     search: Search,
     on_open: OnValue,

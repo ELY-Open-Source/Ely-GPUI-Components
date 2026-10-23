@@ -15,12 +15,18 @@ use crate::{
 /// How a badge or a tag is tinted: quiet, the accent, or a severity.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Tone {
+    /// Quiet: muted text on a soft fill.
     #[default]
     Neutral,
+    /// The accent.
     Accent,
+    /// News that needs no action.
     Info,
+    /// Something worked.
     Success,
+    /// Something may go wrong.
     Warning,
+    /// Something failed.
     Danger,
 }
 
@@ -70,6 +76,12 @@ fn corner(over: AnyElement, badge: impl IntoElement) -> AnyElement {
 }
 
 /// A small label for a status or a kind, tinted by its tone, with a dot when it marks a state.
+///
+/// ```
+/// use ely_core::data_display::{Badge, Tone};
+///
+/// let beta = Badge::new("Beta").tone(Tone::Accent);
+/// ```
 #[derive(IntoElement)]
 pub struct Badge {
     label: SharedString,
@@ -78,6 +90,7 @@ pub struct Badge {
 }
 
 impl Badge {
+    /// A neutral badge that reads `label`.
     pub fn new(label: impl Into<SharedString>) -> Self {
         Self {
             label: label.into(),
@@ -86,6 +99,7 @@ impl Badge {
         }
     }
 
+    /// Its tint.
     pub fn tone(mut self, tone: impl Into<Tone>) -> Self {
         self.tone = tone.into();
         self
@@ -131,6 +145,12 @@ fn capped(count: usize, max: usize) -> Option<String> {
 }
 
 /// A number in a pill, for unread items or a queue. Its digits roll as it changes; past `max` it reads 99+. Zero hides it. Set `over` an icon or an avatar, it sits on the top-right corner.
+///
+/// ```
+/// use ely_core::{buttons::IconButton, data_display::CountBadge, primitives::IconName};
+///
+/// let unread = CountBadge::new("unread", 12).over(IconButton::new("inbox", IconName::Inbox));
+/// ```
 #[derive(IntoElement)]
 pub struct CountBadge {
     id: ElementId,
@@ -140,6 +160,7 @@ pub struct CountBadge {
 }
 
 impl CountBadge {
+    /// A count under `id`; 99+ past 99, hidden at zero.
     pub fn new(id: impl Into<ElementId>, count: usize) -> Self {
         Self {
             id: id.into(),
@@ -156,6 +177,7 @@ impl CountBadge {
         self
     }
 
+    /// Pins it to the corner of `element`.
     pub fn over(mut self, element: impl IntoElement) -> Self {
         self.over = Some(element.into_any_element());
         self
@@ -210,6 +232,15 @@ pub fn color_mark(color: Hsla, cx: &App) -> gpui::Div {
 }
 
 /// A small dot that says something is new or live. Set `over` an icon, it sits on the top-right corner.
+///
+/// ```
+/// use ely_core::{
+///     data_display::{DotBadge, Tone},
+///     primitives::{Icon, IconName},
+/// };
+///
+/// let alert = DotBadge::new().tone(Tone::Danger).over(Icon::new(IconName::Bell));
+/// ```
 #[derive(IntoElement)]
 pub struct DotBadge {
     tone: Tone,
@@ -217,6 +248,7 @@ pub struct DotBadge {
 }
 
 impl DotBadge {
+    /// An accent dot.
     pub fn new() -> Self {
         Self {
             tone: Tone::Accent,
@@ -224,11 +256,13 @@ impl DotBadge {
         }
     }
 
+    /// Its tint.
     pub fn tone(mut self, tone: impl Into<Tone>) -> Self {
         self.tone = tone.into();
         self
     }
 
+    /// Pins it to the corner of `element`.
     pub fn over(mut self, element: impl IntoElement) -> Self {
         self.over = Some(element.into_any_element());
         self
@@ -260,6 +294,15 @@ impl RenderOnce for DotBadge {
 type OnRemove = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A short label for a kind, a topic or a filter: an optional icon, the label, and an x when it can be removed. It is never wider than its container; a long label ends in an ellipsis.
+///
+/// ```
+/// use ely_core::{
+///     data_display::{Tag, Tone},
+///     primitives::IconName,
+/// };
+///
+/// let label = Tag::new("bug", "Bug").icon(IconName::Bug).tone(Tone::Danger);
+/// ```
 #[derive(IntoElement)]
 pub struct Tag {
     id: ElementId,
@@ -270,6 +313,7 @@ pub struct Tag {
 }
 
 impl Tag {
+    /// A neutral tag under `id` that reads `label`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -280,11 +324,13 @@ impl Tag {
         }
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// Its tint.
     pub fn tone(mut self, tone: impl Into<Tone>) -> Self {
         self.tone = tone.into();
         self

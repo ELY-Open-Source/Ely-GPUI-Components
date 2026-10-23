@@ -44,6 +44,12 @@ pub(crate) fn page_list(current: usize, total: usize, near: usize) -> Vec<Option
 type OnPage = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Numbered pages between previous and next; long runs fold into gaps.
+///
+/// ```
+/// use ely_core::navigation::Pagination;
+///
+/// let pages = Pagination::new("pages", 3, 12).jump().on_change(|_page, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Pagination {
     id: ElementId,
@@ -69,6 +75,7 @@ impl Pagination {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
@@ -86,6 +93,7 @@ impl Pagination {
         self
     }
 
+    /// Runs with the page chosen, from 1.
     pub fn on_change(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -234,6 +242,12 @@ mod tests {
 }
 
 /// Ends a list that loads in pages: a button that spins while more come, and how many show. Once all show, only the count stays.
+///
+/// ```
+/// use ely_core::navigation::LoadMore;
+///
+/// let more = LoadMore::new("more", false).on_load(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LoadMore {
     id: ElementId,
@@ -243,6 +257,7 @@ pub struct LoadMore {
 }
 
 impl LoadMore {
+    /// A button under `id` that loads the next page, or spins while `loading`.
     pub fn new(id: impl Into<ElementId>, loading: bool) -> Self {
         Self {
             id: id.into(),
@@ -259,6 +274,7 @@ impl LoadMore {
         self
     }
 
+    /// Runs on a press.
     pub fn on_load(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_load = Some(Rc::new(handler));
         self

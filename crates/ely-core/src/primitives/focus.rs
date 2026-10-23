@@ -6,13 +6,22 @@ use gpui::{
 
 use crate::theme::ActiveTheme;
 
-actions!(ely, [FocusNext, FocusPrev]);
+actions!(
+    ely,
+    [
+        /// Moves focus to the next Tab stop.
+        FocusNext,
+        /// Moves focus to the previous Tab stop.
+        FocusPrev
+    ]
+);
 
 /// The key context of every `FocusScope`; Tab and Shift-Tab bind under it.
 pub(crate) const CONTEXT: &str = "ElyFocus";
 
 /// Focus-colored border while focused. Give the element a 1px border.
 pub trait FocusRing: InteractiveElement + Sized {
+    /// Turns the border focus-colored while focused.
     fn focus_ring(self, cx: &App) -> Self {
         let ring = cx.theme().colors.focus;
         self.focus(move |style| style.border_color(ring))
@@ -22,6 +31,16 @@ pub trait FocusRing: InteractiveElement + Sized {
 impl<E: InteractiveElement> FocusRing for E {}
 
 /// Owns Tab and Shift-Tab for its subtree. `trap` keeps focus inside.
+///
+/// ```
+/// use ely_core::primitives::FocusScope;
+/// use gpui::{App, ParentElement, div};
+///
+/// fn root(cx: &mut App) -> FocusScope {
+///     let handle = cx.focus_handle();
+///     FocusScope::new(&handle).root().child(div())
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FocusScope {
     base: Div,
@@ -31,6 +50,7 @@ pub struct FocusScope {
 }
 
 impl FocusScope {
+    /// A scope that tracks `handle` and owns Tab inside it.
     pub fn new(handle: &FocusHandle) -> Self {
         Self {
             base: div().key_context(CONTEXT).track_focus(handle),
@@ -40,6 +60,7 @@ impl FocusScope {
         }
     }
 
+    /// Keeps Tab and Shift-Tab inside, as a dialog does.
     pub fn trap(mut self) -> Self {
         self.trap = true;
         self

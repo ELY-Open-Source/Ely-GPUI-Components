@@ -2,76 +2,118 @@ use gpui::{BoxShadow, Hsla, Pixels, Point, Rems, Size, px, rems, size};
 
 use super::{Mode, Theme};
 
+/// How much room controls take.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Density {
+    /// Controls 4 px shorter.
     Compact,
+    /// The default room.
     #[default]
     Standard,
+    /// Controls 4 px taller.
     Comfortable,
 }
 
+/// How large a control is.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum ControlSize {
+    /// 24 px tall at standard density.
     Sm,
+    /// 28 px tall at standard density.
     #[default]
     Md,
+    /// 32 px tall at standard density.
     Lg,
 }
 
 /// How large an avatar is.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum AvatarSize {
+    /// 20 px.
     Xs,
+    /// 24 px.
     Sm,
+    /// 32 px.
     #[default]
     Md,
+    /// 40 px.
     Lg,
+    /// 56 px.
     Xl,
 }
 
+/// How large an icon is.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum IconSize {
+    /// 12 px.
     Xs,
+    /// 14 px.
     Sm,
+    /// 16 px.
     #[default]
     Md,
+    /// 20 px.
     Lg,
+    /// 24 px.
     Xl,
+    /// 32 px.
     Xxl,
 }
 
+/// A step on the type scale.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TextSize {
+    /// 11 px.
     Xs,
+    /// 12 px.
     Sm,
+    /// 13 px, body text.
     Base,
+    /// 14 px.
     Md,
+    /// 16 px.
     Lg,
+    /// 20 px.
     Xl,
+    /// 24 px.
     Xxl,
+    /// 32 px.
     Display,
 }
 
+/// How wide a container may grow.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum ContainerSize {
+    /// 640 px.
     Sm,
+    /// 960 px.
     #[default]
     Md,
+    /// 1,200 px.
     Lg,
 }
 
+/// How round a corner is.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Radius {
+    /// 4 px.
     Sm,
+    /// 6 px.
     Md,
+    /// 8 px.
     Lg,
+    /// 12 px.
     Xl,
 }
 
+/// How high a box floats.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Elevation {
+    /// A shallow shadow.
     Raised,
+    /// A middle shadow, for what floats over the page.
     Floating,
+    /// The deepest shadow, for dialogs.
     Modal,
 }
 
@@ -80,6 +122,7 @@ pub(super) fn px_to_rems(value: f32) -> Rems {
 }
 
 impl Theme {
+    /// A control's height at `size`, moved 4 px by density.
     pub fn control_height(&self, size: ControlSize) -> Rems {
         let base = match size {
             ControlSize::Sm => 24.0,
@@ -94,6 +137,7 @@ impl Theme {
         px_to_rems(base + delta)
     }
 
+    /// A control's side padding at `size`, moved 2 px by density.
     pub fn control_padding(&self, size: ControlSize) -> Rems {
         let base = match size {
             ControlSize::Sm => 8.0,
@@ -108,6 +152,7 @@ impl Theme {
         px_to_rems(base + delta)
     }
 
+    /// An avatar's side at `size`.
     pub fn avatar_size(&self, size: AvatarSize) -> Rems {
         px_to_rems(match size {
             AvatarSize::Xs => 20.0,
@@ -118,6 +163,7 @@ impl Theme {
         })
     }
 
+    /// An icon's side at `size`, scaled with the text.
     pub fn icon_size(&self, size: IconSize) -> Rems {
         let base = match size {
             IconSize::Xs => 12.0,
@@ -130,6 +176,7 @@ impl Theme {
         px_to_rems(base * self.font_scale)
     }
 
+    /// A container's cap at `size`.
     pub fn container_width(&self, size: ContainerSize) -> Rems {
         px_to_rems(match size {
             ContainerSize::Sm => 640.0,
@@ -138,6 +185,7 @@ impl Theme {
         })
     }
 
+    /// A sidebar's width: 56 px folded to a rail, 240 px open.
     pub fn sidebar_width(&self, collapsed: bool) -> Rems {
         px_to_rems(if collapsed { 56.0 } else { 240.0 })
     }
@@ -147,10 +195,12 @@ impl Theme {
         px_to_rems(380.0)
     }
 
+    /// A scrollbar's thickness.
     pub fn scrollbar_thickness(&self) -> Rems {
         px_to_rems(6.0)
     }
 
+    /// The shortest a scrollbar's thumb gets.
     pub fn scrollbar_min_thumb(&self) -> Rems {
         px_to_rems(24.0)
     }
@@ -160,6 +210,7 @@ impl Theme {
         px_to_rems(160.0)
     }
 
+    /// A title bar's height.
     pub fn titlebar_height(&self) -> Rems {
         px_to_rems(38.0)
     }
@@ -184,6 +235,7 @@ impl Theme {
         px(1.0)
     }
 
+    /// A text caret's width.
     pub fn caret_width(&self) -> Rems {
         px_to_rems(1.5)
     }
@@ -193,6 +245,7 @@ impl Theme {
         px_to_rems(56.0)
     }
 
+    /// A progress bar's thickness.
     pub fn progress_thickness(&self) -> Rems {
         px_to_rems(2.0)
     }
@@ -202,6 +255,7 @@ impl Theme {
         px_to_rems(48.0)
     }
 
+    /// An about window's size.
     pub fn about_window(&self) -> Size<Pixels> {
         size(px(360.0), px(400.0))
     }
@@ -211,6 +265,7 @@ impl Theme {
         size(px(400.0), px(480.0))
     }
 
+    /// A splash window's size.
     pub fn splash_window(&self) -> Size<Pixels> {
         size(px(480.0), px(300.0))
     }
@@ -245,6 +300,7 @@ impl Theme {
         px_to_rems(10.0)
     }
 
+    /// An icon rail's width.
     pub fn rail_width(&self) -> Rems {
         px_to_rems(48.0)
     }
@@ -348,6 +404,7 @@ impl Theme {
         px_to_rems(2.0)
     }
 
+    /// A barcode's height.
     pub fn barcode_height(&self) -> Rems {
         px_to_rems(56.0)
     }
@@ -422,10 +479,12 @@ impl Theme {
         size(px_to_rems(32.0), px_to_rems(18.0))
     }
 
+    /// A slider track's thickness.
     pub fn slider_track(&self) -> Rems {
         px_to_rems(4.0)
     }
 
+    /// A slider thumb's side.
     pub fn slider_thumb(&self) -> Rems {
         px_to_rems(16.0)
     }
@@ -450,10 +509,12 @@ impl Theme {
         px_to_rems(280.0)
     }
 
+    /// The widest a tooltip grows before it wraps.
     pub fn tooltip_max_width(&self) -> Rems {
         px_to_rems(256.0)
     }
 
+    /// Text at `size`, scaled by `font_scale`.
     pub fn text_size(&self, size: TextSize) -> Rems {
         let base = match size {
             TextSize::Xs => 11.0,
@@ -468,6 +529,7 @@ impl Theme {
         px_to_rems(base * self.font_scale)
     }
 
+    /// A corner's radius at `size`, scaled by `radius_scale`.
     pub fn radius(&self, size: Radius) -> Rems {
         let base = match size {
             Radius::Sm => 4.0,
@@ -478,6 +540,7 @@ impl Theme {
         px_to_rems(base * self.radius_scale)
     }
 
+    /// The shadows for `level` in the mode shown.
     pub fn elevation(&self, level: Elevation) -> Vec<BoxShadow> {
         let dark = self.mode == Mode::Dark;
         let layers: &[(f32, f32, f32)] = match (level, dark) {

@@ -18,6 +18,15 @@ use crate::{
 pub(crate) const FORM_CONTEXT: &str = "ElyForm";
 
 /// Sections stacked with room between them. Cmd-Enter on any field or control inside submits the form.
+///
+/// ```
+/// use ely_core::forms::{Form, FormField, FormSection};
+/// use gpui::{ParentElement, div};
+///
+/// let profile = Form::new("profile")
+///     .child(FormSection::new("Profile").child(FormField::new("name", "Name").child(div())))
+///     .on_submit(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Form {
     id: ElementId,
@@ -26,6 +35,7 @@ pub struct Form {
 }
 
 impl Form {
+    /// An empty form under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -34,6 +44,7 @@ impl Form {
         }
     }
 
+    /// Runs on Command-Enter on the Mac, Control-Enter elsewhere, from any field inside.
     pub fn on_submit(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_submit = Some(Rc::new(handler));
         self
@@ -67,6 +78,15 @@ impl RenderOnce for Form {
 }
 
 /// A titled group of fields, with a line of context under the title.
+///
+/// ```
+/// use ely_core::forms::{FormField, FormSection};
+/// use gpui::{ParentElement, div};
+///
+/// let contact = FormSection::new("Contact")
+///     .description("How we reach you")
+///     .child(FormField::new("email", "Email").child(div()));
+/// ```
 #[derive(IntoElement)]
 pub struct FormSection {
     title: SharedString,
@@ -75,6 +95,7 @@ pub struct FormSection {
 }
 
 impl FormSection {
+    /// A section titled `title`.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -83,6 +104,7 @@ impl FormSection {
         }
     }
 
+    /// The line under the title.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
@@ -114,6 +136,12 @@ impl RenderOnce for FormSection {
 }
 
 /// A field's name, with a required mark and a help tip when asked.
+///
+/// ```
+/// use ely_core::forms::FormLabel;
+///
+/// let label = FormLabel::new("email-label", "Email").required();
+/// ```
 #[derive(IntoElement)]
 pub struct FormLabel {
     id: ElementId,
@@ -123,6 +151,7 @@ pub struct FormLabel {
 }
 
 impl FormLabel {
+    /// A label under `id` that reads `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -132,6 +161,7 @@ impl FormLabel {
         }
     }
 
+    /// Marks the field required.
     pub fn required(mut self) -> Self {
         self.required = true;
         self
@@ -162,6 +192,12 @@ impl RenderOnce for FormLabel {
 }
 
 /// Why a field failed, in the danger color. Each new message eases in.
+///
+/// ```
+/// use ely_core::forms::FormError;
+///
+/// let error = FormError::new("email-error", "Enter an email address.");
+/// ```
 #[derive(IntoElement)]
 pub struct FormError {
     id: ElementId,
@@ -169,6 +205,7 @@ pub struct FormError {
 }
 
 impl FormError {
+    /// An error under `id` that reads `text`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -203,6 +240,16 @@ impl RenderOnce for FormError {
 }
 
 /// A labeled control, with a description beneath, or the error once it fails.
+///
+/// ```
+/// use ely_core::forms::FormField;
+/// use gpui::{ParentElement, div};
+///
+/// let email = FormField::new("email", "Email")
+///     .required()
+///     .description("We never share it.")
+///     .child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct FormField {
     id: ElementId,
@@ -213,6 +260,7 @@ pub struct FormField {
 }
 
 impl FormField {
+    /// A field under `id` labeled `label`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>) -> Self {
         let id = id.into();
         Self {
@@ -224,16 +272,19 @@ impl FormField {
         }
     }
 
+    /// Marks it required.
     pub fn required(mut self) -> Self {
         self.label = self.label.required();
         self
     }
 
+    /// A tip behind a help mark beside the label.
     pub fn help(mut self, text: impl Into<SharedString>) -> Self {
         self.label = self.label.help(text);
         self
     }
 
+    /// A line under the control.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
@@ -270,12 +321,22 @@ impl RenderOnce for FormField {
 }
 
 /// Fields and actions in one row, their bottoms aligned; the row wraps when narrow.
+///
+/// ```
+/// use ely_core::{buttons::Button, forms::InlineForm};
+/// use gpui::{ParentElement, div};
+///
+/// let subscribe = InlineForm::new()
+///     .child(div())
+///     .child(Button::new("subscribe", "Subscribe").primary());
+/// ```
 #[derive(IntoElement)]
 pub struct InlineForm {
     children: SmallVec<[AnyElement; 4]>,
 }
 
 impl InlineForm {
+    /// An empty row.
     pub fn new() -> Self {
         Self {
             children: SmallVec::new(),
@@ -307,6 +368,12 @@ impl RenderOnce for InlineForm {
 }
 
 /// A dot and a word while there are unsaved changes; nothing once saved.
+///
+/// ```
+/// use ely_core::forms::DirtyIndicator;
+///
+/// let unsaved = DirtyIndicator::new("unsaved", true);
+/// ```
 #[derive(IntoElement)]
 pub struct DirtyIndicator {
     id: ElementId,
@@ -315,6 +382,7 @@ pub struct DirtyIndicator {
 }
 
 impl DirtyIndicator {
+    /// An indicator under `id`, shown while `dirty`.
     pub fn new(id: impl Into<ElementId>, dirty: bool) -> Self {
         Self {
             id: id.into(),
@@ -323,6 +391,7 @@ impl DirtyIndicator {
         }
     }
 
+    /// The word beside the dot; `Unsaved changes` unless set.
     pub fn label(mut self, text: impl Into<SharedString>) -> Self {
         self.label = text.into();
         self

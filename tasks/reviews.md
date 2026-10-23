@@ -430,3 +430,5 @@
 | T56 C4 | 1 | PASS | 87 containers listed in src/containers.rs, a test holds the list to every impl and macro; seven adders gain ParentElement; MapPopup and DashboardCard take children |
 | T56 C5 | 1 | FAIL | CONTRIBUTING.md still said 500 lines |
 | T56 C5 | 2 | PASS | check.sh warns past 800 and never fails on size; 54 files under 40 lines down to 34 (theme measures, editor readers and writing view, presets, find, changes, five test files merged into their owners) |
+| T56 C6 | 1 | FAIL | TabOverflowMenu::new described a strip it does not draw; check.sh's comment rule let `////` run on |
+| T56 C6 | 2 | PASS | 1,077 core items documented, deny(missing_docs) on core; an example per public component (325 by scan, 11 macro-made), 331 doctests in check.sh and CI; px and English scans skip comment lines |

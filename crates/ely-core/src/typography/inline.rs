@@ -11,12 +11,19 @@ use super::keys::{keystroke, keystroke_labels};
 use crate::theme::{ActiveTheme, Platform, Radius, TextSize};
 
 /// Monospace fragment on a quiet fill.
+///
+/// ```
+/// use ely_core::typography::Code;
+///
+/// let command = Code::new("cargo build");
+/// ```
 #[derive(IntoElement)]
 pub struct Code {
     text: SharedString,
 }
 
 impl Code {
+    /// `text` in monospace.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self { text: text.into() }
     }
@@ -57,6 +64,12 @@ fn cap(label: String, cx: &App) -> impl IntoElement + use<> {
 }
 
 /// One key, labeled for the theme's platform. Takes gpui key syntax.
+///
+/// ```
+/// use ely_core::typography::Kbd;
+///
+/// let save = Kbd::new("secondary-s");
+/// ```
 #[derive(IntoElement)]
 pub struct Kbd {
     source: SharedString,
@@ -83,12 +96,19 @@ impl RenderOnce for Kbd {
 }
 
 /// A chord sequence such as `"cmd-k cmd-s"`.
+///
+/// ```
+/// use ely_core::typography::KbdCombo;
+///
+/// let save_all = KbdCombo::new("cmd-k cmd-s");
+/// ```
 #[derive(IntoElement)]
 pub struct KbdCombo {
     source: SharedString,
 }
 
 impl KbdCombo {
+    /// Chords separated by spaces, each in gpui key syntax.
     pub fn new(source: &str) -> Self {
         Self {
             source: SharedString::from(source.to_string()),
@@ -127,12 +147,20 @@ impl RenderOnce for KbdCombo {
 }
 
 /// Quoted passage behind a rule.
+///
+/// ```
+/// use ely_core::typography::Blockquote;
+/// use gpui::ParentElement;
+///
+/// let quote = Blockquote::new().child("Simplicity is prerequisite for reliability.");
+/// ```
 #[derive(IntoElement)]
 pub struct Blockquote {
     children: SmallVec<[AnyElement; 2]>,
 }
 
 impl Blockquote {
+    /// An empty quote; its children are the passage.
     pub fn new() -> Self {
         Self {
             children: SmallVec::new(),
@@ -166,6 +194,12 @@ impl RenderOnce for Blockquote {
 }
 
 /// Text with marked ranges, as for search matches.
+///
+/// ```
+/// use ely_core::typography::Highlight;
+///
+/// let hit = Highlight::matching("Quarterly report.pdf", "report");
+/// ```
 #[derive(IntoElement)]
 pub struct Highlight {
     text: SharedString,

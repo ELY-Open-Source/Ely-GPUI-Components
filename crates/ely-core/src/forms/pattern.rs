@@ -96,6 +96,16 @@ pub fn regex_highlights(pattern: &str, cx: &App) -> Vec<(Range<usize>, Highlight
 }
 
 /// A regular expression field: colored as you type, checked as you type.
+///
+/// ```
+/// use ely_core::forms::{RegexInput, TextInput, regex_highlights};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn pattern(window: &mut Window, cx: &mut App) -> RegexInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx).highlighter(regex_highlights));
+///     RegexInput::new(&state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RegexInput {
     state: Entity<TextInput>,
@@ -111,6 +121,7 @@ impl RegexInput {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

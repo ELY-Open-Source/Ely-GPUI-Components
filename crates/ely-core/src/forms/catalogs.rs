@@ -92,6 +92,16 @@ impl Combobox {
 }
 
 /// The system's font families in a combobox, and a line set in the chosen one.
+///
+/// ```
+/// use ely_core::forms::{FontPicker, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn font(window: &mut Window, cx: &mut App) -> FontPicker {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     FontPicker::new("font", &state).selected("Inter")
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FontPicker {
     id: ElementId,
@@ -101,6 +111,7 @@ pub struct FontPicker {
 }
 
 impl FontPicker {
+    /// A picker under `id` that types into `state`.
     pub fn new(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),
@@ -110,11 +121,13 @@ impl FontPicker {
         }
     }
 
+    /// The family chosen.
     pub fn selected(mut self, family: impl Into<SharedString>) -> Self {
         self.selected = Some(family.into());
         self
     }
 
+    /// Runs with the family chosen.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

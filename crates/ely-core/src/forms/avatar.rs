@@ -40,6 +40,12 @@ pub(crate) fn picture(paths: &[PathBuf]) -> Result<PathBuf, &'static str> {
 type OnPicture = Rc<dyn Fn(PathBuf, &mut Window, &mut App)>;
 
 /// An avatar you replace: a hover shows a camera, a press or Enter opens the picture dialog, and a picture dropped on it works too. `on_change` gets its path.
+///
+/// ```
+/// use ely_core::{data_display::Avatar, forms::AvatarUpload};
+///
+/// let photo = AvatarUpload::new("photo", Avatar::new("me", "Ana Lima")).on_change(|_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AvatarUpload {
     id: ElementId,
@@ -48,6 +54,7 @@ pub struct AvatarUpload {
 }
 
 impl AvatarUpload {
+    /// An upload under `id` that shows `avatar`.
     pub fn new(id: impl Into<ElementId>, avatar: Avatar) -> Self {
         Self {
             id: id.into(),
@@ -56,6 +63,7 @@ impl AvatarUpload {
         }
     }
 
+    /// Runs with the picture's path once one is chosen.
     pub fn on_change(mut self, handler: impl Fn(PathBuf, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

@@ -14,15 +14,21 @@ use crate::{
     theme::{ActiveTheme, ControlSize, TextSize},
 };
 
+/// Names a pane; the first is 1.
 pub type PaneId = u64;
 
 /// Split tree. The live model and its saved form are the same data.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum PaneLayout {
+    /// One pane.
     Pane(PaneId),
+    /// Panes side by side or stacked.
     Split {
+        /// Horizontal sets them side by side.
         axis: Axis,
+        /// Each child's share.
         sizes: Vec<f32>,
+        /// The panes or splits it holds.
         children: Vec<PaneLayout>,
     },
 }
@@ -142,6 +148,21 @@ impl PaneLayout {
 type Content = Rc<dyn Fn(PaneId, &mut Window, &mut App) -> AnyElement>;
 
 /// Editor-style split panes: split right or down, close, focus.
+///
+/// ```
+/// use ely_core::layout::PaneGroup;
+/// use gpui::{App, AppContext, Axis, Entity, IntoElement, SharedString};
+///
+/// fn panes(cx: &mut App) -> Entity<PaneGroup> {
+///     let group = cx.new(|_| {
+///         PaneGroup::new(|pane, _, _| SharedString::from(format!("pane {pane}")).into_any_element())
+///     });
+///     group.update(cx, |group, cx| {
+///         group.split(1, Axis::Horizontal, cx);
+///     });
+///     group
+/// }
+/// ```
 pub struct PaneGroup {
     root: PaneLayout,
     focused: PaneId,
@@ -150,6 +171,7 @@ pub struct PaneGroup {
 }
 
 impl PaneGroup {
+    /// One pane, 1; `content` draws a pane by its id.
     pub fn new(content: impl Fn(PaneId, &mut Window, &mut App) -> AnyElement + 'static) -> Self {
         Self {
             root: PaneLayout::Pane(1),
@@ -159,10 +181,12 @@ impl PaneGroup {
         }
     }
 
+    /// The focused pane.
     pub fn focused(&self) -> PaneId {
         self.focused
     }
 
+    /// Every pane, in tree order.
     pub fn panes(&self) -> Vec<PaneId> {
         let mut out = Vec::new();
         self.root.panes(&mut out);
@@ -200,6 +224,7 @@ impl PaneGroup {
         cx.notify();
     }
 
+    /// Focuses `pane`; an unknown one logs and changes nothing.
     pub fn focus(&mut self, pane: PaneId, cx: &mut Context<Self>) {
         if !self.panes().contains(&pane) {
             log::error!("pane group: no pane {pane} to focus");
@@ -209,6 +234,7 @@ impl PaneGroup {
         cx.notify();
     }
 
+    /// The tree to save.
     pub fn layout(&self) -> PaneLayout {
         self.root.clone()
     }

@@ -17,6 +17,16 @@ use crate::{
 };
 
 /// Tools that float over a text field's selection while it has one and holds focus. Its buttons leave focus in the field.
+///
+/// ```
+/// use ely_core::{buttons::IconButton, forms::TextInput, overlays::FloatingToolbar, primitives::IconName};
+/// use gpui::{App, AppContext, ParentElement, Window};
+///
+/// fn tools(window: &mut Window, cx: &mut App) -> FloatingToolbar {
+///     let field = cx.new(|cx| TextInput::new(window, cx));
+///     FloatingToolbar::new("selection-tools", &field).child(IconButton::new("bold", IconName::Bold))
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FloatingToolbar {
     id: ElementId,
@@ -25,6 +35,7 @@ pub struct FloatingToolbar {
 }
 
 impl FloatingToolbar {
+    /// A toolbar under `id` over `field`'s selection; its children are the tools.
     pub fn new(id: impl Into<ElementId>, field: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),
@@ -97,6 +108,13 @@ impl RenderOnce for FloatingToolbar {
 }
 
 /// A panel that opens in the flow under a line, the way an editor peeks at a definition: a title bar with a close button over the owner's content.
+///
+/// ```
+/// use ely_core::overlays::Peek;
+/// use gpui::ParentElement;
+///
+/// let definition = Peek::new("peek", "fn render", true, |_, _| {}).child("impl RenderOnce for Button");
+/// ```
 #[derive(IntoElement)]
 pub struct Peek {
     id: ElementId,
@@ -107,6 +125,7 @@ pub struct Peek {
 }
 
 impl Peek {
+    /// A panel under `id` titled `title`, open or shut; `on_close` runs on its close button.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

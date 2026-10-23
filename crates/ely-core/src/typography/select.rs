@@ -29,6 +29,12 @@ fn index_at(layout: &TextLayout, position: gpui::Point<gpui::Pixels>) -> usize {
 }
 
 /// Read-only text the pointer can select and copy.
+///
+/// ```
+/// use ely_core::typography::SelectableText;
+///
+/// let log = SelectableText::new("log", "error: the build failed");
+/// ```
 #[derive(IntoElement)]
 pub struct SelectableText {
     id: ElementId,
@@ -36,6 +42,7 @@ pub struct SelectableText {
 }
 
 impl SelectableText {
+    /// Selectable `text` under `id`.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

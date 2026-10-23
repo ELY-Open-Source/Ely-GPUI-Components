@@ -35,6 +35,16 @@ static ZONES: LazyLock<Vec<(SharedString, TimeZone)>> = LazyLock::new(|| {
 });
 
 /// A searchable list of the system's time zones, each with its offset now.
+///
+/// ```
+/// use ely_core::forms::{TextInput, TimezoneSelect};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn zone(window: &mut Window, cx: &mut App) -> TimezoneSelect {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     TimezoneSelect::new("zone", &state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct TimezoneSelect {
     id: ElementId,
@@ -44,6 +54,7 @@ pub struct TimezoneSelect {
 }
 
 impl TimezoneSelect {
+    /// A field under `id` that types into `state` and suggests time zones.
     pub fn new(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),
@@ -59,6 +70,7 @@ impl TimezoneSelect {
         self
     }
 
+    /// Runs with the zone's name once one is chosen.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

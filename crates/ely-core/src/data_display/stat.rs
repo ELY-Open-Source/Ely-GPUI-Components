@@ -15,6 +15,12 @@ fn good(change: f64, down_is_good: bool) -> Option<bool> {
 }
 
 /// Which way a figure moved, as a signed share, and whether down is the good way.
+///
+/// ```
+/// use ely_core::data_display::TrendIndicator;
+///
+/// let latency = TrendIndicator::new(-0.12).down_is_good();
+/// ```
 #[derive(IntoElement, Clone, Copy)]
 pub struct TrendIndicator {
     change: f64,
@@ -68,6 +74,12 @@ impl RenderOnce for TrendIndicator {
 }
 
 /// A figure that matters: its label, the number rolling to each new value, units around it, and how it moved.
+///
+/// ```
+/// use ely_core::data_display::{Statistic, TrendIndicator};
+///
+/// let requests = Statistic::new("requests", "Requests", 12_400.0).trend(TrendIndicator::new(0.082));
+/// ```
 #[derive(IntoElement)]
 pub struct Statistic {
     id: ElementId,
@@ -81,6 +93,7 @@ pub struct Statistic {
 }
 
 impl Statistic {
+    /// A figure under `id` labeled `label` showing `value`, no decimals.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, value: f64) -> Self {
         Self {
             id: id.into(),
@@ -94,6 +107,7 @@ impl Statistic {
         }
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
@@ -111,6 +125,7 @@ impl Statistic {
         self
     }
 
+    /// How it moved.
     pub fn trend(mut self, trend: TrendIndicator) -> Self {
         self.trend = Some(trend);
         self
@@ -162,6 +177,17 @@ impl RenderOnce for Statistic {
 }
 
 /// A statistic on a quiet card, with an icon and a line of context.
+///
+/// ```
+/// use ely_core::{
+///     data_display::{KpiCard, Statistic},
+///     primitives::IconName,
+/// };
+///
+/// let revenue = KpiCard::new(Statistic::new("revenue", "Revenue", 48_200.0).prefix("$"))
+///     .icon(IconName::DollarSign)
+///     .caption("This month");
+/// ```
 #[derive(IntoElement)]
 pub struct KpiCard {
     base: Div,
@@ -171,6 +197,7 @@ pub struct KpiCard {
 }
 
 impl KpiCard {
+    /// `statistic` on a card.
     pub fn new(statistic: Statistic) -> Self {
         Self {
             base: div(),
@@ -180,11 +207,13 @@ impl KpiCard {
         }
     }
 
+    /// An icon at the card's corner.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// A line under the figure.
     pub fn caption(mut self, text: impl Into<SharedString>) -> Self {
         self.caption = Some(text.into());
         self

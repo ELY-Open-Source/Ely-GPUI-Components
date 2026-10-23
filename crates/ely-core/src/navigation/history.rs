@@ -13,6 +13,17 @@ use crate::{
 type OnGo = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Back and forward through visited places, and a list of every one of them, newest first.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::BackForwardNavigation};
+///
+/// let history = BackForwardNavigation::new(
+///     "history",
+///     [Choice::new("inbox", "Inbox"), Choice::new("draft", "Draft")],
+///     1,
+/// )
+/// .on_go(|_index, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BackForwardNavigation {
     id: ElementId,

@@ -18,6 +18,18 @@ struct PressState {
 }
 
 /// Pressed state and long press for any content.
+///
+/// ```
+/// use ely_core::primitives::Pressable;
+/// use gpui::{IntoElement, Styled, div};
+///
+/// let tile = Pressable::new("tile", |pressed, _, _| {
+///     div()
+///         .opacity(if pressed { 0.6 } else { 1.0 })
+///         .into_any_element()
+/// })
+/// .on_long_press(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Pressable {
     id: ElementId,
@@ -40,11 +52,13 @@ impl Pressable {
         }
     }
 
+    /// Runs when the pointer lifts before a long press.
     pub fn on_press(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_press = Some(Rc::new(handler));
         self
     }
 
+    /// Runs once the pointer rests down 500 ms.
     pub fn on_long_press(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_long_press = Some(Rc::new(handler));
         self

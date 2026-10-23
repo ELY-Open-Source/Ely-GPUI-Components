@@ -11,6 +11,12 @@ use crate::{
 };
 
 /// Minus and plus around a number that cannot be typed.
+///
+/// ```
+/// use ely_core::forms::Stepper;
+///
+/// let guests = Stepper::new("guests", 2.0).range(1.0, 12.0).on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Stepper {
     id: ElementId,
@@ -23,6 +29,7 @@ pub struct Stepper {
 }
 
 impl Stepper {
+    /// Minus and plus around `value` under `id`, unbounded, in steps of 1.
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
@@ -35,6 +42,7 @@ impl Stepper {
         }
     }
 
+    /// Its least and greatest value. Panics on an empty range.
     pub fn range(mut self, min: f64, max: f64) -> Self {
         assert!(min <= max, "stepper range {min}..{max} is empty");
         self.min = min;
@@ -42,6 +50,7 @@ impl Stepper {
         self
     }
 
+    /// How far a press moves it. Panics unless positive.
     pub fn step(mut self, step: f64) -> Self {
         assert!(step > 0.0, "stepper step {step} must be positive");
         self.step = step;
@@ -54,6 +63,7 @@ impl Stepper {
         self
     }
 
+    /// Runs with each new value.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

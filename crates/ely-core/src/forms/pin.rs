@@ -19,6 +19,12 @@ struct Pin {
 }
 
 /// Boxes for a one-time code. Typing moves along; a paste fills them all.
+///
+/// ```
+/// use ely_core::forms::PinInput;
+///
+/// let code = PinInput::new("code", 6).masked();
+/// ```
 #[derive(IntoElement)]
 pub struct PinInput {
     id: ElementId,
@@ -30,6 +36,7 @@ pub struct PinInput {
 }
 
 impl PinInput {
+    /// `length` boxes under `id`, for digits. Panics on zero.
     pub fn new(id: impl Into<ElementId>, length: usize) -> Self {
         assert!(length > 0, "a pin needs at least one box");
         Self {

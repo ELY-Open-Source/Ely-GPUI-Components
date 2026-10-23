@@ -33,6 +33,15 @@ fn mark(name: &SharedString, icon: Option<IconName>, cx: &App) -> impl IntoEleme
 }
 
 /// Name, version, credits: the About window's content.
+///
+/// ```
+/// use ely_core::shell::AboutDialog;
+///
+/// let about = AboutDialog::new("Ely", "0.1.1")
+///     .description("A component library for GPUI.")
+///     .link("Website", "https://example.com")
+///     .copyright("© 2026 Ely");
+/// ```
 #[derive(IntoElement, Clone)]
 pub struct AboutDialog {
     name: SharedString,
@@ -44,6 +53,7 @@ pub struct AboutDialog {
 }
 
 impl AboutDialog {
+    /// About the app `name` at `version`.
     pub fn new(name: impl Into<SharedString>, version: impl Into<SharedString>) -> Self {
         Self {
             name: name.into(),
@@ -61,16 +71,19 @@ impl AboutDialog {
         self
     }
 
+    /// A line under the name.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
     }
 
+    /// Adds a link that opens `url`.
     pub fn link(mut self, label: impl Into<SharedString>, url: impl Into<SharedString>) -> Self {
         self.links.push((label.into(), url.into()));
         self
     }
 
+    /// The copyright line.
     pub fn copyright(mut self, text: impl Into<SharedString>) -> Self {
         self.copyright = Some(text.into());
         self
@@ -125,6 +138,15 @@ impl RenderOnce for AboutDialog {
 }
 
 /// First screen while an app loads: mark, name, progress.
+///
+/// ```
+/// use ely_core::{primitives::IconName, shell::SplashScreen};
+///
+/// let splash = SplashScreen::new("Ely")
+///     .icon(IconName::Sparkles)
+///     .tagline("Components for GPUI")
+///     .status("Loading fonts…");
+/// ```
 #[derive(IntoElement, Clone)]
 pub struct SplashScreen {
     name: SharedString,
@@ -135,6 +157,7 @@ pub struct SplashScreen {
 }
 
 impl SplashScreen {
+    /// A splash for the app `name`.
     pub fn new(name: impl Into<SharedString>) -> Self {
         Self {
             name: name.into(),
@@ -145,16 +168,19 @@ impl SplashScreen {
         }
     }
 
+    /// The mark over the name.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// A line under the name.
     pub fn tagline(mut self, text: impl Into<SharedString>) -> Self {
         self.tagline = Some(text.into());
         self
     }
 
+    /// What is loading now.
     pub fn status(mut self, text: impl Into<SharedString>) -> Self {
         self.status = Some(text.into());
         self

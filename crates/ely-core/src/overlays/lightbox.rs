@@ -22,6 +22,7 @@ pub struct Slide {
 }
 
 impl Slide {
+    /// A picture from `source`, with `caption` under it.
     pub fn new(source: impl Into<ImageSource>, caption: impl Into<SharedString>) -> Self {
         Self {
             source: source.into(),
@@ -80,6 +81,18 @@ pub fn media_button(
 }
 
 /// Pictures over a dark layer, one at a time. Left and Right or the side buttons step through them; Escape, the close button or a press on the dark closes it.
+///
+/// ```
+/// use ely_core::overlays::{Lightbox, Slide};
+///
+/// let photos = Lightbox::new(
+///     "photos",
+///     [Slide::new("https://example.com/a.png", "Lisbon"), Slide::new("https://example.com/b.png", "Porto")],
+///     0,
+///     |_, _| {},
+/// )
+/// .on_step(|_index, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Lightbox {
     id: ElementId,
@@ -106,6 +119,7 @@ impl Lightbox {
         }
     }
 
+    /// Runs with the index of the picture stepped to.
     pub fn on_step(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_step = Some(Rc::new(handler));
         self

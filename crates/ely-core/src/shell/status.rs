@@ -17,8 +17,11 @@ use crate::{
 /// Network state as the host sees it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Connectivity {
+    /// Connected.
     Online,
+    /// No connection.
     Offline,
+    /// Trying to connect again.
     Reconnecting,
 }
 
@@ -60,6 +63,12 @@ pub(crate) fn connectivity_dot(
 }
 
 /// A quiet pill while offline or reconnecting, and briefly once back.
+///
+/// ```
+/// use ely_core::shell::{Connectivity, OfflineIndicator};
+///
+/// let network = OfflineIndicator::new("network", Connectivity::Reconnecting);
+/// ```
 #[derive(IntoElement)]
 pub struct OfflineIndicator {
     id: ElementId,
@@ -67,6 +76,7 @@ pub struct OfflineIndicator {
 }
 
 impl OfflineIndicator {
+    /// Shows `state` under `id`.
     pub fn new(id: impl Into<ElementId>, state: Connectivity) -> Self {
         Self {
             id: id.into(),
@@ -168,14 +178,23 @@ fn step(current: u32, direction: i8) -> Option<u32> {
 /// A press on a `ZoomControl` its owner handles.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ZoomStep {
+    /// Zooms out a step.
     Out,
+    /// Zooms in a step.
     In,
+    /// Back to 100%.
     Reset,
 }
 
 type OnZoom = Rc<dyn Fn(ZoomStep, &mut Window, &mut App)>;
 
 /// Minus, percentage, plus. Scales the window's rem size, and all it holds, unless an owner zooms its own content.
+///
+/// ```
+/// use ely_core::shell::ZoomControl;
+///
+/// let zoom = ZoomControl::new("zoom").owned(125, |_step, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ZoomControl {
     id: ElementId,
@@ -183,6 +202,7 @@ pub struct ZoomControl {
 }
 
 impl ZoomControl {
+    /// A control under `id` that zooms the window.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

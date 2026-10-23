@@ -94,6 +94,12 @@ impl Editing {
 }
 
 /// Text that becomes a field when clicked. Enter or leaving keeps; Escape reverts.
+///
+/// ```
+/// use ely_core::forms::InlineEdit;
+///
+/// let title = InlineEdit::new("title", "Untitled").on_commit(|_text, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InlineEdit {
     id: ElementId,
@@ -103,6 +109,7 @@ pub struct InlineEdit {
 }
 
 impl InlineEdit {
+    /// Text under `id` that turns into a field on a press, holding `value`.
     pub fn new(id: impl Into<ElementId>, value: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -112,11 +119,13 @@ impl InlineEdit {
         }
     }
 
+    /// What it shows while empty; `Empty` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
     }
 
+    /// Runs with the text kept on Enter or blur.
     pub fn on_commit(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

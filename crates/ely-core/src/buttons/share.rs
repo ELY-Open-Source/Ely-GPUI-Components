@@ -20,6 +20,14 @@ struct Anchor {
 }
 
 /// Opens the system share picker beside itself. macOS only.
+///
+/// ```
+/// use ely_core::buttons::ShareButton;
+///
+/// let share = ShareButton::new("share")
+///     .text("Ely ships 0.2")
+///     .url("https://example.com/blog/0-2");
+/// ```
 #[derive(IntoElement)]
 pub struct ShareButton {
     id: ElementId,
@@ -27,6 +35,7 @@ pub struct ShareButton {
 }
 
 impl ShareButton {
+    /// A share button under `id`, with nothing to share yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -34,11 +43,13 @@ impl ShareButton {
         }
     }
 
+    /// Text to share.
     pub fn text(mut self, text: impl Into<SharedString>) -> Self {
         self.items.text = Some(text.into());
         self
     }
 
+    /// An address to share.
     pub fn url(mut self, url: impl Into<SharedString>) -> Self {
         self.items.url = Some(url.into());
         self

@@ -7,8 +7,11 @@ use gpui::{App, Axis, ListOffset, ListState, Pixels, Point, ScrollHandle, point}
 /// What a scrollbar moves: a box, list or kept scroll.
 #[derive(Clone)]
 pub enum ScrollSource {
+    /// A box's handle.
     Handle(ScrollHandle),
+    /// A gpui list.
     List(ListState),
+    /// A scroll its owner keeps.
     Model(Rc<dyn ScrollModel>),
 }
 
@@ -36,8 +39,11 @@ impl From<&ListState> for ScrollSource {
 
 /// The track, and the shares shown and passed.
 pub struct ScrollPlace {
+    /// The track's length.
     pub span: Pixels,
+    /// The share of the content in view.
     pub shown: f32,
+    /// The share of the hidden content that lies before the view.
     pub passed: f32,
 }
 

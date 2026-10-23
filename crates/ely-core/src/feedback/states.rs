@@ -126,11 +126,13 @@ pub(super) fn disc(icon: IconName, cx: &App) -> AnyElement {
 
 macro_rules! words_builders {
     () => {
+        /// A line under the title.
         pub fn body(mut self, text: impl Into<SharedString>) -> Self {
             self.words.body = Some(text.into());
             self
         }
 
+        /// Adds an action under the words.
         pub fn action(mut self, action: impl IntoElement) -> Self {
             self.words.actions.push(action.into_any_element());
             self
@@ -140,6 +142,14 @@ macro_rules! words_builders {
 pub(super) use words_builders;
 
 /// What a view shows with nothing in it: an icon on a soft disc, a title, a line of help and actions. It rises in when it appears.
+///
+/// ```
+/// use ely_core::{buttons::Button, feedback::EmptyState, primitives::IconName};
+///
+/// let empty = EmptyState::new("no-files", IconName::FolderOpen, "No files yet")
+///     .body("Drop files here to upload them.")
+///     .action(Button::new("upload", "Upload"));
+/// ```
 #[derive(IntoElement)]
 pub struct EmptyState {
     id: ElementId,
@@ -148,6 +158,7 @@ pub struct EmptyState {
 }
 
 impl EmptyState {
+    /// An empty state under `id` that shows `icon` and `title`.
     pub fn new(id: impl Into<ElementId>, icon: IconName, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -171,6 +182,12 @@ enum Head {
 }
 
 /// A view that could not show what was asked: a status code or an icon, what happened, and a way on.
+///
+/// ```
+/// use ely_core::feedback::ErrorView;
+///
+/// let missing = ErrorView::not_found("missing");
+/// ```
 #[derive(IntoElement)]
 pub struct ErrorView {
     id: ElementId,
@@ -179,6 +196,7 @@ pub struct ErrorView {
 }
 
 impl ErrorView {
+    /// An error view under `id` that shows `icon` and `title`.
     pub fn new(id: impl Into<ElementId>, icon: IconName, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -200,20 +218,24 @@ impl ErrorView {
         }
     }
 
+    /// 404: the page is not found.
     pub fn not_found(id: impl Into<ElementId>) -> Self {
         Self::with_code(id, "404", "Page not found")
             .body("The link may be broken, or the page has moved.")
     }
 
+    /// 403: no access.
     pub fn no_permission(id: impl Into<ElementId>) -> Self {
         Self::with_code(id, "403", "You don't have access")
             .body("Ask an owner to share it with you.")
     }
 
+    /// Down for maintenance.
     pub fn maintenance(id: impl Into<ElementId>) -> Self {
         Self::new(id, IconName::Wrench, "Down for maintenance").body("We'll be back shortly.")
     }
 
+    /// No connection; work stays on this device.
     pub fn offline(id: impl Into<ElementId>) -> Self {
         Self::new(id, IconName::WifiOff, "You're offline")
             .body("Check your connection. Your work stays on this device.")
@@ -247,6 +269,13 @@ impl RenderOnce for ErrorView {
 }
 
 /// Shows its content, or an `ErrorView` of the error it holds, logged once per error. It never catches panics.
+///
+/// ```
+/// use ely_core::feedback::ErrorBoundary;
+///
+/// let report: anyhow::Result<&'static str> = Err(anyhow::anyhow!("the report did not load"));
+/// let view = ErrorBoundary::new("report", report).on_retry(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ErrorBoundary {
     id: ElementId,
@@ -255,6 +284,7 @@ pub struct ErrorBoundary {
 }
 
 impl ErrorBoundary {
+    /// Shows `content`, or an error view with Try again once it fails.
     pub fn new<E: IntoElement>(id: impl Into<ElementId>, content: anyhow::Result<E>) -> Self {
         Self {
             id: id.into(),
@@ -263,6 +293,7 @@ impl ErrorBoundary {
         }
     }
 
+    /// Runs on Try again.
     pub fn on_retry(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_retry = Some(Rc::new(handler));
         self

@@ -36,6 +36,15 @@ pub fn framed(ratio: f32, cx: &App) -> Div {
 }
 
 /// Themed `img()` that fills the box it is given.
+///
+/// ```
+/// use ely_core::primitives::Image;
+/// use gpui::{Styled, px};
+///
+/// let photo = Image::new("cover", "https://example.com/cover.png")
+///     .w(px(240.0))
+///     .h(px(160.0));
+/// ```
 #[derive(IntoElement)]
 pub struct Image {
     id: ElementId,
@@ -65,6 +74,7 @@ impl Image {
         }
     }
 
+    /// How the picture fills its box; cover unless set.
     pub fn fit(mut self, fit: ObjectFit) -> Self {
         self.fit = fit;
         self

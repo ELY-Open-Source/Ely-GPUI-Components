@@ -33,6 +33,7 @@ pub struct Toast {
 }
 
 impl Toast {
+    /// A toast titled `title`, gone after five seconds.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),
@@ -44,11 +45,13 @@ impl Toast {
         }
     }
 
+    /// A line under the title.
     pub fn body(mut self, text: impl Into<SharedString>) -> Self {
         self.body = Some(text.into());
         self
     }
 
+    /// Its severity's color and icon.
     pub fn severity(mut self, severity: Severity) -> Self {
         self.severity = Some(severity);
         self
@@ -203,6 +206,19 @@ fn run(live: &mut Live, cx: &mut Context<Toaster>) {
 }
 
 /// Where a window's toasts show: stacked in its bottom-right corner, the newest nearest it.
+///
+/// ```
+/// use ely_core::feedback::{Toast, ToastViewport, Toaster};
+/// use gpui::{App, AppContext};
+///
+/// fn toasts(cx: &mut App) -> ToastViewport {
+///     let toaster = cx.new(|_| Toaster::default());
+///     toaster.update(cx, |toaster, cx| {
+///         toaster.push(Toast::new("Saved").body("Your changes are safe."), cx);
+///     });
+///     ToastViewport::new("toasts", &toaster)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct ToastViewport {
     id: ElementId,
@@ -210,6 +226,7 @@ pub struct ToastViewport {
 }
 
 impl ToastViewport {
+    /// The stack under `id` of the toasts `toaster` holds.
     pub fn new(id: impl Into<ElementId>, toaster: &Entity<Toaster>) -> Self {
         Self {
             id: id.into(),

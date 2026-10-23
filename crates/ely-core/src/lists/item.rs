@@ -16,6 +16,15 @@ type OnClick = Rc<dyn Fn(&ClickEvent, &mut Window, &mut App)>;
 pub(crate) type OnSecondary = Rc<dyn Fn(Point<Pixels>, &mut Window, &mut App)>;
 
 /// One row of a list: something to lead with, a title and a line under it, and something at the end. It lights on hover when it can be pressed, and stays lit when selected.
+///
+/// ```
+/// use ely_core::{lists::ListItem, primitives::{Icon, IconName}};
+///
+/// let row = ListItem::new("inbox", "Inbox")
+///     .description("12 unread")
+///     .leading(Icon::new(IconName::Inbox))
+///     .selected(true);
+/// ```
 #[derive(IntoElement)]
 pub struct ListItem {
     id: ElementId,
@@ -39,6 +48,7 @@ pub struct ListItem {
 }
 
 impl ListItem {
+    /// A row under `id` titled `title`.
     pub fn new(id: impl Into<ElementId>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -108,6 +118,7 @@ impl ListItem {
         self
     }
 
+    /// Marks it chosen.
     pub fn selected(mut self, selected: bool) -> Self {
         self.selected = selected;
         self
@@ -125,6 +136,7 @@ impl ListItem {
         self
     }
 
+    /// Dims it and takes no press.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
@@ -260,6 +272,16 @@ impl RenderOnce for ListItem {
 }
 
 /// Rows in a column; `divided` draws a hairline between them.
+///
+/// ```
+/// use ely_core::lists::{List, ListItem};
+/// use gpui::ParentElement;
+///
+/// let rows = List::new()
+///     .divided()
+///     .child(ListItem::new("a", "Alpha"))
+///     .child(ListItem::new("b", "Beta"));
+/// ```
 #[derive(IntoElement, Default)]
 pub struct List {
     rows: SmallVec<[AnyElement; 8]>,
@@ -267,10 +289,12 @@ pub struct List {
 }
 
 impl List {
+    /// An empty list.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Puts a hairline between rows.
     pub fn divided(mut self) -> Self {
         self.divided = true;
         self

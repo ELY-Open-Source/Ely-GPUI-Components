@@ -119,6 +119,14 @@ enum Shown {
 }
 
 /// Overlay thumb over a box or list; drag to scroll.
+///
+/// ```
+/// use ely_core::layout::Scrollbar;
+/// use gpui::{Axis, ScrollHandle};
+///
+/// let handle = ScrollHandle::new();
+/// let bar = Scrollbar::new("list-bar", &handle, Axis::Vertical).auto();
+/// ```
 #[derive(IntoElement)]
 pub struct Scrollbar {
     id: ElementId,
@@ -128,6 +136,7 @@ pub struct Scrollbar {
 }
 
 impl Scrollbar {
+    /// A thumb along `axis` for `source`.
     pub fn new(id: impl Into<ElementId>, source: impl Into<ScrollSource>, axis: Axis) -> Self {
         Self {
             id: id.into(),
@@ -264,6 +273,13 @@ impl RenderOnce for Scrollbar {
 }
 
 /// Scroll region with overlay scrollbars that show while in use.
+///
+/// ```
+/// use ely_core::layout::ScrollArea;
+/// use gpui::{ParentElement, div};
+///
+/// let log = ScrollArea::new("log").vertical().shadows().child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct ScrollArea {
     id: ElementId,
@@ -275,6 +291,7 @@ pub struct ScrollArea {
 }
 
 impl ScrollArea {
+    /// A region under `id` that scrolls both ways.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),

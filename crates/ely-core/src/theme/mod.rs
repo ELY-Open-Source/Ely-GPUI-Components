@@ -29,10 +29,13 @@ pub use tokens::{
 
 const FRAME: Duration = Duration::from_millis(8);
 
+/// Light or dark.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Mode {
+    /// Dark text on light grounds.
     #[default]
     Light,
+    /// Light text on dark grounds.
     Dark,
 }
 
@@ -52,19 +55,29 @@ pub struct Theme {
     color_blind_safe: bool,
     transition: u64,
     custom: [Option<Palette>; 2],
+    /// The palette on screen, between two during a fade.
     pub colors: Palette,
+    /// How much room controls take.
     pub density: Density,
+    /// Scales every radius.
     pub radius_scale: f32,
+    /// Scales every text and icon size.
     pub font_scale: f32,
+    /// The face text sets in; Inter unless set.
     pub font_family: SharedString,
+    /// The face code sets in; JetBrains Mono unless set.
     pub mono_family: SharedString,
+    /// Holds repeating motion still and cuts the rest short.
     pub reduced_motion: bool,
+    /// Whose window buttons, title bar and key caps components draw; the system's to start.
     pub platform: Platform,
 }
 
 impl Global for Theme {}
 
+/// Reads the theme from the app.
 pub trait ActiveTheme {
+    /// The app's theme.
     fn theme(&self) -> &Theme;
 }
 
@@ -94,18 +107,22 @@ impl Theme {
         });
     }
 
+    /// The mode shown, or the one a fade heads to.
     pub fn mode(&self) -> Mode {
         self.mode
     }
 
+    /// Whether high contrast is on.
     pub fn high_contrast(&self) -> bool {
         self.high_contrast
     }
 
+    /// Whether charts wear the color-blind safe hues.
     pub fn color_blind_safe(&self) -> bool {
         self.color_blind_safe
     }
 
+    /// Whether the mode is dark.
     pub fn is_dark(&self) -> bool {
         self.mode == Mode::Dark
     }
@@ -127,6 +144,7 @@ impl Theme {
         cx.refresh_windows();
     }
 
+    /// Turns high contrast on or off with a fade; it strengthens Ely's own palettes alone.
     pub fn set_high_contrast(on: bool, cx: &mut App) {
         log::info!("theme: high contrast -> {on}");
         cx.global_mut::<Theme>().high_contrast = on;

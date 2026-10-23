@@ -10,8 +10,10 @@ macro_rules! icons {
 
         #[allow(non_upper_case_globals)]
         impl IconName {
-            $(pub const $variant: IconName = IconName { name: $file, svg: &svgs::$variant };)*
+            $(#[doc = concat!("Lucide's `", $file, "`.")]
+            pub const $variant: IconName = IconName { name: $file, svg: &svgs::$variant };)*
 
+            /// Every bundled icon.
             pub const ALL: &[IconName] = &[$(IconName::$variant,)*];
         }
     };

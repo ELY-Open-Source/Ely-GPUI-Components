@@ -14,34 +14,63 @@ use crate::forms::structure::FORM_CONTEXT;
 actions!(
     ely_input,
     [
+        /// Deletes the selection, or the character before the caret.
         Backspace,
+        /// Deletes the selection, or the character after the caret.
         Delete,
+        /// Deletes back to the start of the word before the caret.
         DeleteWordLeft,
+        /// Moves the caret one character left.
         Left,
+        /// Moves the caret one character right.
         Right,
+        /// Moves the caret up a line.
         Up,
+        /// Moves the caret down a line.
         Down,
+        /// Extends the selection one character left.
         SelectLeft,
+        /// Extends the selection one character right.
         SelectRight,
+        /// Extends the selection up a line.
         SelectUp,
+        /// Extends the selection down a line.
         SelectDown,
+        /// Moves the caret to the start of the word before it.
         WordLeft,
+        /// Moves the caret to the end of the word after it.
         WordRight,
+        /// Extends the selection to the start of the word before the caret.
         SelectWordLeft,
+        /// Extends the selection to the end of the word after the caret.
         SelectWordRight,
+        /// Moves the caret to the line's start.
         Home,
+        /// Moves the caret to the line's end.
         End,
+        /// Extends the selection to the line's start.
         SelectHome,
+        /// Extends the selection to the line's end.
         SelectEnd,
+        /// Selects all the text.
         SelectAll,
+        /// Copies the selection.
         Copy,
+        /// Copies the selection and deletes it.
         Cut,
+        /// Puts the clipboard's text at the caret.
         Paste,
+        /// Undoes the last edit.
         Undo,
+        /// Redoes the last edit undone.
         Redo,
+        /// Submits a one-line field; breaks the line in a multi-line one.
         Enter,
+        /// Breaks the line in a multi-line field.
         Newline,
+        /// Submits the field, or the form around it.
         Submit,
+        /// Opens the system's emoji and symbols palette.
         ShowCharacterPalette,
     ]
 );

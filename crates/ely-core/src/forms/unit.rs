@@ -11,6 +11,12 @@ use crate::theme::{ActiveTheme, Radius};
 type OnUnit = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A number with a unit you click through, such as px, % and em.
+///
+/// ```
+/// use ely_core::forms::UnitInput;
+///
+/// let width = UnitInput::new("width", 240.0, ["px", "%", "em"], "px").on_change(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct UnitInput {
     field: NumberInput,
@@ -20,6 +26,7 @@ pub struct UnitInput {
 }
 
 impl UnitInput {
+    /// A number field under `id` holding `value` in `unit`, one of `units`. Panics on no units.
     pub fn new(
         id: impl Into<ElementId>,
         value: f64,
@@ -37,16 +44,19 @@ impl UnitInput {
         }
     }
 
+    /// Its least and greatest value. Panics on an empty range.
     pub fn range(mut self, min: f64, max: f64) -> Self {
         self.field = self.field.range(min, max);
         self
     }
 
+    /// Places after the point.
     pub fn precision(mut self, places: usize) -> Self {
         self.field = self.field.precision(places);
         self
     }
 
+    /// Runs with each new value, typed ones included.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.field = self.field.on_change(handler);
         self

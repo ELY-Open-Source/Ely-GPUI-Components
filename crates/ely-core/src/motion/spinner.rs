@@ -46,6 +46,15 @@ const STILL: f32 = 0.3;
 const ARC: usize = 32;
 
 /// A small busy mark, one of six motions. Under reduced motion it rests on one frame.
+///
+/// ```
+/// use ely_core::{
+///     motion::{Spinner, SpinnerStyle},
+///     theme::IconSize,
+/// };
+///
+/// let busy = Spinner::new("busy").style(SpinnerStyle::Dots).size(IconSize::Sm);
+/// ```
 #[derive(IntoElement)]
 pub struct Spinner {
     id: ElementId,
@@ -55,6 +64,7 @@ pub struct Spinner {
 }
 
 impl Spinner {
+    /// A ring spinner under `id`, medium.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -64,11 +74,13 @@ impl Spinner {
         }
     }
 
+    /// How it moves.
     pub fn style(mut self, style: SpinnerStyle) -> Self {
         self.style = style;
         self
     }
 
+    /// Its size.
     pub fn size(mut self, size: IconSize) -> Self {
         self.size = size;
         self

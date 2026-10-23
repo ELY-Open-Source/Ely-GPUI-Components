@@ -22,6 +22,12 @@ pub(crate) fn monday_of((year, week): (i16, i8)) -> Date {
 }
 
 /// A calendar that picks whole weeks. The value is an ISO year and week.
+///
+/// ```
+/// use ely_core::forms::WeekPicker;
+///
+/// let sprint = WeekPicker::new("sprint", Some((2026, 43))).on_change(|(_year, _week), _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct WeekPicker {
     id: ElementId,
@@ -31,6 +37,7 @@ pub struct WeekPicker {
 }
 
 impl WeekPicker {
+    /// A calendar under `id` with the week `value` chosen.
     pub fn new(id: impl Into<ElementId>, value: Option<(i16, i8)>) -> Self {
         Self {
             id: id.into(),
@@ -46,6 +53,7 @@ impl WeekPicker {
         self
     }
 
+    /// Runs with the ISO year and week pressed.
     pub fn on_change(
         mut self,
         handler: impl Fn((i16, i8), &mut Window, &mut App) + 'static,

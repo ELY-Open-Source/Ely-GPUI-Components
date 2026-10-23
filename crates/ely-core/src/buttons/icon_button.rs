@@ -11,6 +11,14 @@ use crate::{
 };
 
 /// Square button holding one icon.
+///
+/// ```
+/// use ely_core::{buttons::IconButton, primitives::IconName};
+///
+/// let close = IconButton::new("close", IconName::X)
+///     .tooltip("Close")
+///     .on_click(|_, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct IconButton {
     id: ElementId,
@@ -23,6 +31,7 @@ pub struct IconButton {
 }
 
 impl IconButton {
+    /// A ghost button under `id` that shows `icon`.
     pub fn new(id: impl Into<ElementId>, icon: IconName) -> Self {
         Self {
             id: id.into(),
@@ -35,16 +44,19 @@ impl IconButton {
         }
     }
 
+    /// Its look.
     pub fn variant(mut self, variant: ButtonVariant) -> Self {
         self.variant = variant;
         self
     }
 
+    /// Its height and icon size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Dims it and takes no press; a disabled button is no Tab stop.
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
         self
@@ -56,6 +68,7 @@ impl IconButton {
         self
     }
 
+    /// Runs on a press, or on Enter or Space released while focused.
     pub fn on_click(
         mut self,
         handler: impl Fn(&ClickEvent, &mut Window, &mut App) + 'static,

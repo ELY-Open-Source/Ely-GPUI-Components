@@ -17,6 +17,16 @@ use crate::{
 type OnPick = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A search field: a magnifier, a clear button, recent searches while empty.
+///
+/// ```
+/// use ely_core::forms::{SearchInput, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn search(window: &mut Window, cx: &mut App) -> SearchInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     SearchInput::new("search", &state).history(["invoice", "receipt"])
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SearchInput {
     id: ElementId,
@@ -27,6 +37,7 @@ pub struct SearchInput {
 }
 
 impl SearchInput {
+    /// A search field under `id` over `state`.
     pub fn new(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),
@@ -43,6 +54,7 @@ impl SearchInput {
         self
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

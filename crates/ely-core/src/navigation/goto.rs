@@ -34,6 +34,16 @@ pub(crate) fn target(text: &str, lines: usize) -> Result<Option<(usize, Option<u
 type OnJump = Rc<dyn Fn(usize, Option<usize>, &mut Window, &mut App)>;
 
 /// A field that jumps to "line" or "line:column". Enter goes; a note says where, or why not.
+///
+/// ```
+/// use ely_core::{forms::TextInput, navigation::GoToLine};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn goto(window: &mut Window, cx: &mut App) -> GoToLine {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     GoToLine::new("goto", &state, 420).on_jump(|_line, _column, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct GoToLine {
     id: ElementId,
@@ -43,6 +53,7 @@ pub struct GoToLine {
 }
 
 impl GoToLine {
+    /// A field under `id` over `state` for a file of `lines` lines. Panics on zero lines.
     pub fn new(id: impl Into<ElementId>, state: &Entity<TextInput>, lines: usize) -> Self {
         assert!(lines >= 1, "a file to jump in has a line");
         Self {
@@ -53,6 +64,7 @@ impl GoToLine {
         }
     }
 
+    /// Runs with the line and, when typed, the column to go to.
     pub fn on_jump(
         mut self,
         handler: impl Fn(usize, Option<usize>, &mut Window, &mut App) + 'static,

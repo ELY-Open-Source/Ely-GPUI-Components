@@ -67,6 +67,12 @@ fn paint_runs(
 }
 
 /// Text as a QR code: dark modules on a light tile in both themes, so any camera reads it, inside the standard quiet margin.
+///
+/// ```
+/// use ely_core::data_display::QrCode;
+///
+/// let invite = QrCode::new("https://example.com/invite/4f2a").expect("short enough for a QR code");
+/// ```
 #[derive(IntoElement)]
 pub struct QrCode {
     base: Div,
@@ -74,6 +80,7 @@ pub struct QrCode {
 }
 
 impl QrCode {
+    /// `data` as a QR code, or why it cannot be one.
     pub fn new(data: impl AsRef<[u8]>) -> Result<Self, QrError> {
         let code = qrcode::QrCode::new(data)?;
         let dark: Vec<bool> = code
@@ -141,6 +148,13 @@ fn check_digit(digits: &str) -> u32 {
 }
 
 /// Text as a barcode, bars on a light tile in both themes with the text under them: Code 128 for printable ASCII, EAN-13 for retail numbers.
+///
+/// ```
+/// use ely_core::data_display::Barcode;
+///
+/// let label = Barcode::code128("ELY-0042").expect("printable ASCII");
+/// let product = Barcode::ean13("400638133393").expect("twelve or thirteen digits");
+/// ```
 #[derive(IntoElement)]
 pub struct Barcode {
     base: Div,

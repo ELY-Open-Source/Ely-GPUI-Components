@@ -12,6 +12,19 @@ use crate::{
 };
 
 /// A text field's frame: border, focus, and room for things before and after.
+///
+/// ```
+/// use ely_core::{
+///     forms::{Input, TextInput},
+///     primitives::{Icon, IconName},
+/// };
+/// use gpui::{App, AppContext, Window};
+///
+/// fn search(window: &mut Window, cx: &mut App) -> Input {
+///     let state = cx.new(|cx| TextInput::new(window, cx).placeholder("Search"));
+///     Input::new(&state).prefix(Icon::new(IconName::Search))
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct Input {
     state: Entity<TextInput>,
@@ -24,6 +37,7 @@ pub struct Input {
 }
 
 impl Input {
+    /// A field over `state`.
     pub fn new(state: &Entity<TextInput>) -> Self {
         Self {
             state: state.clone(),
@@ -36,16 +50,19 @@ impl Input {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self
     }
 
+    /// An element inside the field, before the text.
     pub fn prefix(mut self, prefix: impl IntoElement) -> Self {
         self.prefix = Some(prefix.into_any_element());
         self
     }
 
+    /// An element inside the field, after the text.
     pub fn suffix(mut self, suffix: impl IntoElement) -> Self {
         self.suffix = Some(suffix.into_any_element());
         self
@@ -161,6 +178,16 @@ impl RenderOnce for Input {
 }
 
 /// A masked field with a lock before it and an eye that shows the text.
+///
+/// ```
+/// use ely_core::forms::{PasswordInput, TextInput};
+/// use gpui::{App, AppContext, Window};
+///
+/// fn password(window: &mut Window, cx: &mut App) -> PasswordInput {
+///     let state = cx.new(|cx| TextInput::new(window, cx));
+///     PasswordInput::new(&state)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PasswordInput {
     state: Entity<TextInput>,
@@ -176,6 +203,7 @@ impl PasswordInput {
         }
     }
 
+    /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
         self

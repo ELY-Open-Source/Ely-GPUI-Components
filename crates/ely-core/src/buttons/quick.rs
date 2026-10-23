@@ -24,6 +24,7 @@ pub struct QuickAction {
 }
 
 impl QuickAction {
+    /// An action that shows `icon` and `label` and runs `run`.
     pub fn new(
         icon: IconName,
         label: impl Into<SharedString>,
@@ -38,6 +39,7 @@ impl QuickAction {
         }
     }
 
+    /// A line under the label.
     pub fn note(mut self, note: impl Into<SharedString>) -> Self {
         self.note = Some(note.into());
         self
@@ -52,6 +54,17 @@ impl QuickAction {
 }
 
 /// A list of actions. The pointer or the arrows choose; Enter or a click runs.
+///
+/// ```
+/// use ely_core::{
+///     buttons::{QuickAction, QuickActions},
+///     primitives::IconName,
+/// };
+///
+/// let start = QuickActions::new("start")
+///     .action(QuickAction::new(IconName::FilePlus, "New file", |_, _| {}).note("⌘N"))
+///     .action(QuickAction::new(IconName::FolderOpen, "Open folder", |_, _| {}));
+/// ```
 #[derive(IntoElement)]
 pub struct QuickActions {
     id: ElementId,
@@ -59,6 +72,7 @@ pub struct QuickActions {
 }
 
 impl QuickActions {
+    /// An empty grid under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -66,6 +80,7 @@ impl QuickActions {
         }
     }
 
+    /// Adds an action.
     pub fn action(mut self, action: QuickAction) -> Self {
         self.actions.push(action);
         self

@@ -41,6 +41,14 @@ fn moved(
 }
 
 /// Two lists and the buttons between them. Mark rows, then move them across.
+///
+/// ```
+/// use ely_core::forms::{Choice, TransferList};
+///
+/// let columns = TransferList::new("columns", [Choice::new("name", "Name"), Choice::new("email", "Email")])
+///     .chosen(["name"])
+///     .on_change(|_chosen, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TransferList {
     id: ElementId,
@@ -51,6 +59,7 @@ pub struct TransferList {
 }
 
 impl TransferList {
+    /// Two lists under `id`: the choices on the left, the chosen on the right.
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
@@ -61,16 +70,19 @@ impl TransferList {
         }
     }
 
+    /// The values in the right list.
     pub fn chosen(mut self, values: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         self.chosen = values.into_iter().map(Into::into).collect();
         self
     }
 
+    /// The two lists' titles; `Available` and `Chosen` unless set.
     pub fn titles(mut self, left: impl Into<SharedString>, right: impl Into<SharedString>) -> Self {
         self.titles = (left.into(), right.into());
         self
     }
 
+    /// Runs with the chosen values after each move.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SharedString], &mut Window, &mut App) + 'static,

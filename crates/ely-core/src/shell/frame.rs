@@ -34,6 +34,13 @@ fn cursor(edge: ResizeEdge) -> CursorStyle {
 }
 
 /// Resize margin, hairline and shadow for a client-drawn window; else a plain box.
+///
+/// ```
+/// use ely_core::shell::ResizeBorder;
+/// use gpui::{ParentElement, div};
+///
+/// let frame = ResizeBorder::new().child(div());
+/// ```
 #[derive(IntoElement, Default)]
 pub struct ResizeBorder {
     children: SmallVec<[AnyElement; 2]>,
@@ -41,6 +48,7 @@ pub struct ResizeBorder {
 }
 
 impl ResizeBorder {
+    /// An empty border.
     pub fn new() -> Self {
         Self::default()
     }

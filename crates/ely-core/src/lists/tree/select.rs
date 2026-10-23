@@ -43,6 +43,14 @@ fn choices(nodes: &[TreeNode]) -> Vec<Choice> {
 }
 
 /// A select whose choices are a tree's nodes, indented under their parents; any node can be picked.
+///
+/// ```
+/// use ely_core::lists::{TreeNode, TreeSelect};
+///
+/// let folder = TreeSelect::new("folder", [TreeNode::new("work", "Work").child(TreeNode::new("q4", "Q4"))])
+///     .selected("q4")
+///     .on_change(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TreeSelect {
     id: ElementId,
@@ -53,6 +61,7 @@ pub struct TreeSelect {
 }
 
 impl TreeSelect {
+    /// A select under `id` over the tree `nodes`.
     pub fn new(id: impl Into<ElementId>, nodes: impl IntoIterator<Item = TreeNode>) -> Self {
         Self {
             id: id.into(),
@@ -63,16 +72,19 @@ impl TreeSelect {
         }
     }
 
+    /// The key of the node chosen.
     pub fn selected(mut self, key: impl Into<SharedString>) -> Self {
         self.selected = Some(key.into());
         self
     }
 
+    /// What it shows with nothing chosen; `Choose` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
         self
     }
 
+    /// Runs with the key of the node picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

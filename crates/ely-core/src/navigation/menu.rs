@@ -46,6 +46,14 @@ fn show(state: &Entity<Open>, entry: Option<usize>, cx: &mut App) {
 }
 
 /// A row of entries; each opens a panel of links. While one is open, hovering another switches to it.
+///
+/// ```
+/// use ely_core::{forms::Choice, navigation::NavigationMenu};
+///
+/// let menu = NavigationMenu::new("site")
+///     .entry("Products", [Choice::new("kit", "Kit").note("Components for GPUI")])
+///     .on_select(|_value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NavigationMenu {
     id: ElementId,
@@ -54,6 +62,7 @@ pub struct NavigationMenu {
 }
 
 impl NavigationMenu {
+    /// An empty menu under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -74,6 +83,7 @@ impl NavigationMenu {
         self
     }
 
+    /// Runs with a link's value when it is picked.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

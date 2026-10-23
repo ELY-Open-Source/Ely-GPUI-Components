@@ -24,6 +24,7 @@ pub struct SwipeAction {
 }
 
 impl SwipeAction {
+    /// An action that shows `icon` and `label` and runs `run`.
     pub fn new(
         label: impl Into<SharedString>,
         icon: IconName,
@@ -37,6 +38,7 @@ impl SwipeAction {
         }
     }
 
+    /// Its tint.
     pub fn tone(mut self, tone: impl Into<Tone>) -> Self {
         self.tone = tone.into();
         self
@@ -79,6 +81,18 @@ fn rest(offset: Pixels, reach: Pixels) -> Pixels {
 }
 
 /// A row that slides left under a two-finger swipe to show the actions behind it, and snaps open or shut when the fingers lift. A press on the open row, or on an action, shuts it.
+///
+/// ```
+/// use ely_core::{
+///     data_display::Tone,
+///     lists::{ListItem, SwipeAction, SwipeableListItem},
+///     primitives::IconName,
+/// };
+///
+/// let mail = SwipeableListItem::new("mail-1", ListItem::new("mail", "Lunch on Friday?"))
+///     .action(SwipeAction::new("Archive", IconName::Archive, |_, _| {}))
+///     .action(SwipeAction::new("Delete", IconName::Trash2, |_, _| {}).tone(Tone::Danger));
+/// ```
 #[derive(IntoElement)]
 pub struct SwipeableListItem {
     id: ElementId,
@@ -87,6 +101,7 @@ pub struct SwipeableListItem {
 }
 
 impl SwipeableListItem {
+    /// A row under `id` showing `item`, with no actions yet.
     pub fn new(id: impl Into<ElementId>, item: impl IntoElement) -> Self {
         Self {
             id: id.into(),
@@ -95,6 +110,7 @@ impl SwipeableListItem {
         }
     }
 
+    /// Adds an action behind the row.
     pub fn action(mut self, action: SwipeAction) -> Self {
         self.actions.push(action);
         self

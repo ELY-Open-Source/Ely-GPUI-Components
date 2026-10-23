@@ -1,20 +1,40 @@
+//! Ely's core: the theme, motion, i18n and the general components, chapters 1–14.
+
+#![deny(missing_docs)]
+
 mod assets;
+/// Buttons and actions: Button, IconButton, groups, segmented controls, copy and share.
 pub mod buttons;
+/// Read-only displays: badges, tags, avatars, statistics, gauges, timelines and codes.
 pub mod data_display;
+/// What happened and where things stand: alerts, toasts, notifications, empty and error states.
 pub mod feedback;
+/// Text fields, choices, pickers, sliders and the form that holds them.
 pub mod forms;
+/// Messages by key, locales and right-to-left layout.
 pub mod i18n;
+/// Boxes, stacks, cards, panes, docks, sheets and the splits between them.
 pub mod layout;
+/// Lists and trees, selectable rows and titled sections.
 pub mod lists;
+/// Dropdown, context and menu-bar menus.
 pub mod menus;
+/// Durations, easings, springs and the effects built on them.
 pub mod motion;
+/// Tabs, breadcrumbs, palettes, pagination, steps and wizards.
 pub mod navigation;
+/// Dialogs, popovers, hover cards, lightboxes and tours.
 pub mod overlays;
 mod platform;
+/// Icons, focus, tooltips and the parts every component shares.
 pub mod primitives;
+/// The window: title bars, toolbars, status bars, columns and window management.
 pub mod shell;
+/// Data tables, pivots, spreadsheets and their filters.
 pub mod tables;
+/// Palettes, tokens and the theme every component reads.
 pub mod theme;
+/// Text, headings, links, keys, numbers and formats.
 pub mod typography;
 
 pub use assets::{Assets, Before};

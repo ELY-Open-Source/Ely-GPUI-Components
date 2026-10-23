@@ -49,6 +49,17 @@ fn open(
 }
 
 /// Filter rules to build: each a column, a test and a value, and a switch between keeping rows that pass all and rows that pass any. The owner keeps the rules and hands them to a `DataTable`.
+///
+/// ```
+/// use ely_core::tables::{FilterBuilder, FilterRule, Test};
+///
+/// let filters = FilterBuilder::new("filters", [("status", "Status"), ("owner", "Owner")])
+///     .rules(
+///         [FilterRule { column: "status".into(), test: Test::Equals, value: "open".into() }],
+///         false,
+///     )
+///     .on_change(|_rules, _any, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FilterBuilder {
     id: ElementId,
@@ -78,12 +89,14 @@ impl FilterBuilder {
         }
     }
 
+    /// The rules shown, and whether a row passes on any of them rather than all.
     pub fn rules(mut self, rules: impl IntoIterator<Item = FilterRule>, any: bool) -> Self {
         self.rules = rules.into_iter().collect();
         self.any = any;
         self
     }
 
+    /// Runs with the rules and the any switch after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[FilterRule], bool, &mut Window, &mut App) + 'static,
@@ -259,6 +272,14 @@ impl RenderOnce for FilterBuilder {
 }
 
 /// Sort keys to build, the first deciding most: each a column and a direction. Add one, flip it, remove it, or drag it to a new place. The owner keeps the keys and hands them to a `DataTable`.
+///
+/// ```
+/// use ely_core::tables::{SortBuilder, SortKey};
+///
+/// let sorts = SortBuilder::new("sorts", [("due", "Due"), ("title", "Title")])
+///     .keys([SortKey { column: "due".into(), rising: true }])
+///     .on_change(|_keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SortBuilder {
     id: ElementId,
@@ -296,6 +317,7 @@ impl SortBuilder {
         self
     }
 
+    /// Runs with the keys after each change.
     pub fn on_change(
         mut self,
         handler: impl Fn(&[SortKey], &mut Window, &mut App) + 'static,

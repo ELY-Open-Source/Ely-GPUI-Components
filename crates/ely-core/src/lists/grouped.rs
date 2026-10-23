@@ -10,6 +10,14 @@ use crate::{
 };
 
 /// Rows under group headers; each header pins to the top while its group scrolls past. Give it a height.
+///
+/// ```
+/// use ely_core::lists::{GroupedList, ListItem};
+///
+/// let contacts = GroupedList::new("contacts")
+///     .group("A", [ListItem::new("ana", "Ana Lima")])
+///     .group("B", [ListItem::new("bo", "Bo Chen")]);
+/// ```
 #[derive(IntoElement)]
 pub struct GroupedList {
     id: ElementId,
@@ -18,6 +26,7 @@ pub struct GroupedList {
 }
 
 impl GroupedList {
+    /// An empty list under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -26,6 +35,7 @@ impl GroupedList {
         }
     }
 
+    /// Adds `rows` under `title`.
     pub fn group(
         mut self,
         title: impl Into<SharedString>,

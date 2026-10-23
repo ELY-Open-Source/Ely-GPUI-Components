@@ -54,11 +54,13 @@ impl TreeNode {
         self
     }
 
+    /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
         self
     }
 
+    /// Adds a node under it.
     pub fn child(mut self, node: TreeNode) -> Self {
         match &mut self.children {
             Children::Known(children) => children.push(node),
@@ -254,8 +256,11 @@ pub(crate) fn find<'a>(nodes: &'a [TreeNode], key: &SharedString) -> Option<&'a 
 /// Where a dragged node lands against a row.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DropAt {
+    /// Above the row, as its sibling.
     Before,
+    /// Under the row, as its child.
     Inside,
+    /// Below the row, as its sibling.
     After,
 }
 

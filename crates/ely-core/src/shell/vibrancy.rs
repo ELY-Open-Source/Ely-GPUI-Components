@@ -6,12 +6,20 @@ use gpui::{
 use crate::theme::ActiveTheme;
 
 /// A pane the window's blur shows through: vibrancy on macOS, acrylic on Windows. Its window opens with `WindowBackgroundAppearance::Blurred` and nothing opaque beneath the pane; high contrast fills it solid.
+///
+/// ```
+/// use ely_core::shell::Vibrancy;
+/// use gpui::{ParentElement, div};
+///
+/// let pane = Vibrancy::new().child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct Vibrancy {
     base: Div,
 }
 
 impl Vibrancy {
+    /// An empty pane.
     pub fn new() -> Self {
         Self { base: div() }
     }

@@ -228,6 +228,14 @@ fn words(title: SharedString, body: SharedString, cx: &App) -> impl IntoElement 
 }
 
 /// Dims the window around one box and sets a card beside it: a title, a line and one button. Escape or the button closes it.
+///
+/// ```
+/// use ely_core::overlays::{Spotlight, TourStep};
+/// use gpui::{Bounds, point, px, size};
+///
+/// let target = Bounds::new(point(px(24.0), px(80.0)), size(px(120.0), px(32.0)));
+/// let tip = Spotlight::new("new-button", TourStep::new(target, "New", "Start a project here."), |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Spotlight {
     id: ElementId,
@@ -237,6 +245,7 @@ pub struct Spotlight {
 }
 
 impl Spotlight {
+    /// A spotlight under `id` on `step`; `on_close` runs on its button and on Escape.
     pub fn new(
         id: impl Into<ElementId>,
         step: TourStep,
@@ -301,6 +310,21 @@ impl RenderOnce for Spotlight {
 type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Spotlights one step after another: Back, Next and Done, the count, and Skip. Left and Right step too. The lit box glides between targets.
+///
+/// ```
+/// use ely_core::overlays::{Tour, TourStep};
+/// use gpui::{Bounds, point, px, size};
+///
+/// let first = Bounds::new(point(px(24.0), px(80.0)), size(px(120.0), px(32.0)));
+/// let second = Bounds::new(point(px(24.0), px(140.0)), size(px(120.0), px(32.0)));
+/// let tour = Tour::new(
+///     "intro",
+///     [TourStep::new(first, "New", "Start here."), TourStep::new(second, "Share", "Invite your team.")],
+///     0,
+///     |_, _| {},
+/// )
+/// .on_step(|_index, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Tour {
     id: ElementId,
@@ -327,6 +351,7 @@ impl Tour {
         }
     }
 
+    /// Runs with the index of the step moved to.
     pub fn on_step(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_step = Some(Rc::new(handler));
         self

@@ -9,6 +9,12 @@ use crate::{
 };
 
 /// A plain table: a header and rows of cells with hairlines between. To sort, page or select, use `DataTable`.
+///
+/// ```
+/// use ely_core::tables::Table;
+///
+/// let people = Table::new(["Name", "Role"]).row(["Ana", "Design"]).row(["Bo", "Engineering"]);
+/// ```
 #[derive(IntoElement)]
 pub struct Table {
     headers: Vec<SharedString>,
@@ -16,6 +22,7 @@ pub struct Table {
 }
 
 impl Table {
+    /// A table with `headers` and no rows yet.
     pub fn new(headers: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         Self {
             headers: headers.into_iter().map(Into::into).collect(),
@@ -23,6 +30,7 @@ impl Table {
         }
     }
 
+    /// Adds a row. Panics unless it has one cell per header.
     pub fn row(mut self, cells: impl IntoIterator<Item = impl IntoElement>) -> Self {
         let cells: Vec<AnyElement> = cells
             .into_iter()
@@ -71,6 +79,15 @@ impl RenderOnce for Table {
 }
 
 /// Numbers in a grid, each cell shaded by where it sits between the grid's lowest and highest, its value on top.
+///
+/// ```
+/// use ely_core::tables::HeatmapTable;
+///
+/// let load = HeatmapTable::new(["Mon", "Tue", "Wed"])
+///     .row("API", [0.4, 0.7, 0.9])
+///     .row("Web", [0.2, 0.3, 0.5])
+///     .decimals(1);
+/// ```
 #[derive(IntoElement)]
 pub struct HeatmapTable {
     columns: Vec<SharedString>,
@@ -79,6 +96,7 @@ pub struct HeatmapTable {
 }
 
 impl HeatmapTable {
+    /// A heat map with `columns` and no rows yet.
     pub fn new(columns: impl IntoIterator<Item = impl Into<SharedString>>) -> Self {
         Self {
             columns: columns.into_iter().map(Into::into).collect(),
@@ -87,6 +105,7 @@ impl HeatmapTable {
         }
     }
 
+    /// Adds a row labeled `label`. Panics unless it has one value per column.
     pub fn row(
         mut self,
         label: impl Into<SharedString>,
@@ -106,6 +125,7 @@ impl HeatmapTable {
         self
     }
 
+    /// Places after the point.
     pub fn decimals(mut self, decimals: usize) -> Self {
         self.decimals = decimals;
         self
