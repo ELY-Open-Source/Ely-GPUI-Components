@@ -442,17 +442,34 @@ impl RenderOnce for CommitInput {
                 div()
                     .flex()
                     .flex_wrap()
+                    .debug_selector(|| "commit-footer".into())
                     .items_center()
                     .gap_2()
-                    .child(div().flex_1().min_w_0().child(amend))
                     .child(
-                        Button::new((self.id.clone(), "commit"), label)
-                            .variant(ButtonVariant::Primary)
-                            .size(ControlSize::Sm)
-                            .disabled(!ready)
-                            .when_some(commit, |button, commit| {
-                                button.on_click(move |_, window, cx| commit(window, cx))
-                            }),
+                        div()
+                            .debug_selector(|| "commit-amend".into())
+                            .flex_grow_1()
+                            .flex_shrink_0()
+                            .max_w_full()
+                            .child(amend),
+                    )
+                    .child(
+                        div()
+                            .debug_selector(|| "commit-button".into())
+                            .flex()
+                            .flex_auto()
+                            .min_w_0()
+                            .max_w_full()
+                            .child(
+                                Button::new((self.id.clone(), "commit"), label)
+                                    .full_width()
+                                    .variant(ButtonVariant::Primary)
+                                    .size(ControlSize::Sm)
+                                    .disabled(!ready)
+                                    .when_some(commit, |button, commit| {
+                                        button.on_click(move |_, window, cx| commit(window, cx))
+                                    }),
+                            ),
                     ),
             )
     }

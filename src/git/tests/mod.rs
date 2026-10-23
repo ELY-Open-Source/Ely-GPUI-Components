@@ -5,6 +5,7 @@ use gpui::{
 
 use super::DiffViewer;
 
+mod commit;
 mod narrow;
 mod picking;
 use crate::{forms, primitives::FocusNext, theme::Theme};
