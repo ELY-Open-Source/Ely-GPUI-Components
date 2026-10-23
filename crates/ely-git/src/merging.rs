@@ -3,28 +3,39 @@ use similar::{DiffableStr, MergeResolution, TextMerge};
 /// Which side a conflict takes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Take {
+    /// Our lines.
     Ours,
+    /// Their lines.
     Theirs,
+    /// Ours, then theirs.
     Both,
 }
 
 /// How a merge region stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RegionKind {
+    /// Neither side changed it.
     Unchanged,
+    /// Only we changed it.
     Ours,
+    /// Only they changed it.
     Theirs,
     /// Both sides made the same change.
     Both,
+    /// Both sides changed it differently.
     Conflict,
 }
 
 /// A stretch of a three-way merge, with each side's lines.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Region {
+    /// How it stands.
     pub kind: RegionKind,
+    /// The base's lines.
     pub base: Vec<String>,
+    /// Our lines.
     pub ours: Vec<String>,
+    /// Their lines.
     pub theirs: Vec<String>,
 }
 
@@ -129,10 +140,13 @@ pub fn result(regions: &[Region], takes: &[Option<Take>]) -> (String, usize) {
 /// A marked conflict: its marker lines, from zero.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Conflict {
+    /// The `<<<<<<<` line.
     pub start: usize,
     /// A diff3 conflict's `|||||||` line, before its base.
     pub base: Option<usize>,
+    /// The `=======` line.
     pub middle: usize,
+    /// The `>>>>>>>` line.
     pub end: usize,
 }
 

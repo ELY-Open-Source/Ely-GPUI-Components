@@ -27,6 +27,7 @@ pub struct Slice {
 }
 
 impl Slice {
+    /// A slice named `name` with its own value. Panics on a negative value or one past `LIMIT`.
     pub fn new(name: impl Into<SharedString>, value: f64) -> Self {
         assert!(
             drawable(value) && value >= 0.0,
@@ -39,6 +40,7 @@ impl Slice {
         }
     }
 
+    /// The slices inside this one.
     pub fn children(mut self, children: impl IntoIterator<Item = Slice>) -> Self {
         self.children.extend(children);
         self
@@ -106,6 +108,15 @@ fn rings(slices: &[Slice]) -> Vec<Arc> {
 }
 
 /// Parts of parts as rings around a center that holds the whole, each arc as wide as its share. Hover reads an arc's path and share.
+///
+/// ```
+/// use ely_charts::{Slice, Sunburst};
+///
+/// let disk = Sunburst::new(
+///     "disk",
+///     [Slice::new("src", 0.0).children([Slice::new("ui", 40.0), Slice::new("core", 25.0)])],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct Sunburst {
     base: Div,
@@ -114,6 +125,7 @@ pub struct Sunburst {
 }
 
 impl Sunburst {
+    /// A sunburst under `id` over the top slices.
     pub fn new(id: impl Into<ElementId>, slices: impl IntoIterator<Item = Slice>) -> Self {
         Self {
             base: div(),

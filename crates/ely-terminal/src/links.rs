@@ -6,11 +6,15 @@ use regex::Regex;
 /// What a link in terminal text points at.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Target {
+    /// A web address.
     Url(SharedString),
     /// A file, with the line and column a compiler or a grep names, counted from one.
     Path {
+        /// The file.
         path: SharedString,
+        /// The line.
         line: Option<u32>,
+        /// The column.
         column: Option<u32>,
     },
 }

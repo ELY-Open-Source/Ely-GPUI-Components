@@ -12,16 +12,22 @@ pub enum Half {
 /// A line of the graph in one row, from a lane to a lane.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Stroke {
+    /// The lane it starts in.
     pub from: usize,
+    /// The lane it ends in.
     pub to: usize,
+    /// Which part of the row it crosses.
     pub half: Half,
 }
 
 /// A row of the graph: its commit's lane, the strokes through it, and how many lanes it spans.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct GraphRow {
+    /// The lane its commit sits in.
     pub lane: usize,
+    /// The lines through it.
     pub strokes: Vec<Stroke>,
+    /// How many lanes it spans.
     pub width: usize,
 }
 

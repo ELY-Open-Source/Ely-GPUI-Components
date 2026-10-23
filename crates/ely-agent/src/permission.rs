@@ -15,6 +15,13 @@ use crate::{
 };
 
 /// Asks before a tool runs: what it will do and its arguments, then Deny or Run. Escape, the scrim and Deny refuse it. Render it while the call waits.
+///
+/// ```
+/// use ely_agent::ToolApprovalDialog;
+///
+/// let approve = ToolApprovalDialog::new("approve", "write_file", r#"{"path": "notes.md"}"#, |_run, _, _| {})
+///     .detail("Writes one file.");
+/// ```
 #[derive(IntoElement)]
 pub struct ToolApprovalDialog {
     id: ElementId,
@@ -86,14 +93,23 @@ impl RenderOnce for ToolApprovalDialog {
 /// An answer to a request for permission.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Permission {
+    /// Allow it this once.
     Once,
+    /// Always allow it.
     Always,
+    /// Refuse it.
     Deny,
 }
 
 type OnPermission = Rc<dyn Fn(Permission, &mut Window, &mut App)>;
 
 /// Asks in place whether the agent may do something: allow once, always allow, or deny.
+///
+/// ```
+/// use ely_agent::PermissionPrompt;
+///
+/// let ask = PermissionPrompt::new("ask", "Run cargo test?", |_answer, _, _| {}).detail("cargo test --all");
+/// ```
 #[derive(IntoElement)]
 pub struct PermissionPrompt {
     id: ElementId,
@@ -103,6 +119,7 @@ pub struct PermissionPrompt {
 }
 
 impl PermissionPrompt {
+    /// A prompt under `id` asking `title`; `on_answer` gets the answer.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

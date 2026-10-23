@@ -18,17 +18,23 @@ use crate::{
 /// Sheets the app can print on.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Paper {
+    /// US Letter, 8.5 by 11 inches.
     #[default]
     Letter,
+    /// ISO A4, 210 by 297 millimeters.
     A4,
+    /// US Legal, 8.5 by 14 inches.
     Legal,
 }
 
 /// Space kept around what prints.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Margins {
+    /// No margin: print to the sheet's edge.
     None,
+    /// 4% of the sheet's width each side.
     Narrow,
+    /// 8% of the sheet's width each side.
     #[default]
     Normal,
 }
@@ -36,9 +42,13 @@ pub enum Margins {
 /// How a print goes: paper, turn, margins and copies.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct PrintSettings {
+    /// The sheet.
     pub paper: Paper,
+    /// Whether the sheet turns sideways.
     pub landscape: bool,
+    /// The space kept around.
     pub margins: Margins,
+    /// How many copies.
     pub copies: u32,
 }
 
@@ -70,6 +80,14 @@ const MOST_COPIES: f64 = 99.0;
 type OnSettings = Rc<dyn Fn(PrintSettings, &mut Window, &mut App)>;
 
 /// A print before it goes: the pages the app laid out for the settings, small on a desk, and the settings beside, paper, turn, margins and copies; each change asks the app for new pages.
+///
+/// ```
+/// use ely_documents::{DocPage, Margins, Paper, PrintPreview, PrintSettings};
+///
+/// let settings = PrintSettings { paper: Paper::A4, landscape: false, margins: Margins::Normal, copies: 1 };
+/// let page = DocPage { source: "pages/1.png".into(), width: 595.0, height: 842.0 };
+/// let preview = PrintPreview::new("print", vec![page], settings, |_settings, _, _| {}, |_settings, _, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PrintPreview {
     id: ElementId,
@@ -81,6 +99,7 @@ pub struct PrintPreview {
 }
 
 impl PrintPreview {
+    /// A preview under `id` of `pages` for `settings`; each change asks `on_change` for new pages.
     pub fn new(
         id: impl Into<ElementId>,
         pages: impl Into<Rc<Vec<DocPage>>>,

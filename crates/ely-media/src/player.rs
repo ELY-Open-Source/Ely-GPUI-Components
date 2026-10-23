@@ -31,6 +31,15 @@ struct Watch {
 }
 
 /// A video the host plays, one frame at a time, in its own shape. Controls sit over it and fade once the pointer rests while it plays: play and pause, the time, the scrubber, the speed, captions, picture in picture and full screen, each only with its handler. With focus, Space and K play and pause, J and L jump ten seconds and the arrows five, C turns captions, F fills the screen.
+///
+/// ```
+/// use ely_media::VideoPlayer;
+/// use std::time::Duration;
+///
+/// let video = VideoPlayer::new("video", None, 16.0 / 9.0, Duration::from_secs(90), Duration::ZERO)
+///     .playing(false)
+///     .on_play(|_play, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VideoPlayer {
     id: ElementId,
@@ -82,11 +91,13 @@ impl VideoPlayer {
         }
     }
 
+    /// How far it has loaded.
     pub fn loaded(mut self, loaded: Duration) -> Self {
         self.loaded = loaded;
         self
     }
 
+    /// Whether it plays now.
     pub fn playing(mut self, playing: bool) -> Self {
         self.playing = playing;
         self
@@ -112,16 +123,19 @@ impl VideoPlayer {
         self
     }
 
+    /// Runs with the time to seek to.
     pub fn on_seek(mut self, handler: impl Fn(Duration, &mut Window, &mut App) + 'static) -> Self {
         self.on_seek = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the speed picked.
     pub fn on_speed(mut self, handler: impl Fn(f32, &mut Window, &mut App) + 'static) -> Self {
         self.on_speed = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with whether captions should show.
     pub fn on_captions(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_captions = Some(Rc::new(handler));
         self
@@ -133,6 +147,7 @@ impl VideoPlayer {
         self
     }
 
+    /// Offers to go full screen.
     pub fn on_fullscreen(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_fullscreen = Some(Rc::new(handler));
         self

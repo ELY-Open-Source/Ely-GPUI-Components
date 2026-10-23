@@ -15,15 +15,20 @@ use crate::{
 /// A line that matched: its number, its text, and where in it the matches lie.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Hit {
+    /// The line, from one.
     pub line: usize,
+    /// The line's text.
     pub text: SharedString,
+    /// Where in the text the matches lie, in bytes.
     pub ranges: Vec<Range<usize>>,
 }
 
 /// A file and the lines in it that matched.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FileHits {
+    /// The file.
     pub path: SharedString,
+    /// The lines in it that matched.
     pub hits: Vec<Hit>,
 }
 
@@ -74,6 +79,13 @@ type OnOpen = Rc<dyn Fn(&SharedString, usize, &mut Window, &mut App)>;
 type OnPath = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// One matched line: its number, and its text trimmed near the first match with the matches marked; a replacement shows struck out beside the new text.
+///
+/// ```
+/// use ely_editor::{Hit, SearchResultItem};
+///
+/// let hit = Hit { line: 12, text: "let total = sum(values);".into(), ranges: vec![12..15] };
+/// let row = SearchResultItem::new("row", "src/lib.rs", hit).replacement("add");
+/// ```
 #[derive(IntoElement)]
 pub struct SearchResultItem {
     id: ElementId,
@@ -84,6 +96,7 @@ pub struct SearchResultItem {
 }
 
 impl SearchResultItem {
+    /// A row under `id` for `hit` in `path`.
     pub fn new(id: impl Into<ElementId>, path: impl Into<SharedString>, hit: Hit) -> Self {
         Self {
             id: id.into(),
@@ -100,6 +113,7 @@ impl SearchResultItem {
         self
     }
 
+    /// Runs with the path and line pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
@@ -287,6 +301,14 @@ fn results(
 }
 
 /// Results across files, folding by file, with the totals above; a replacement previews on each line.
+///
+/// ```
+/// use ely_editor::{FileHits, Hit, SearchPanel};
+///
+/// let hit = Hit { line: 12, text: "let total = sum(values);".into(), ranges: vec![12..15] };
+/// let results = SearchPanel::new("results", [FileHits { path: "src/lib.rs".into(), hits: vec![hit] }])
+///     .on_open(|_path, _line, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SearchPanel {
     id: ElementId,
@@ -298,6 +320,7 @@ pub struct SearchPanel {
 }
 
 impl SearchPanel {
+    /// A panel under `id` of `files`.
     pub fn new(id: impl Into<ElementId>, files: impl IntoIterator<Item = FileHits>) -> Self {
         Self {
             id: id.into(),
@@ -315,11 +338,13 @@ impl SearchPanel {
         self
     }
 
+    /// Previews replacing each match with this.
     pub fn replacement(mut self, text: impl Into<SharedString>) -> Self {
         self.replacement = Some(text.into());
         self
     }
 
+    /// Runs with the path and line pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
@@ -373,6 +398,14 @@ impl RenderOnce for SearchPanel {
 }
 
 /// Where a symbol is used, grouped by file, under its name and count.
+///
+/// ```
+/// use ely_editor::{FileHits, Hit, ReferencesPanel};
+///
+/// let hit = Hit { line: 3, text: "fn sum(values: &[i32]) -> i32".into(), ranges: vec![3..6] };
+/// let uses = ReferencesPanel::new("uses", "sum", [FileHits { path: "src/lib.rs".into(), hits: vec![hit] }])
+///     .on_open(|_path, _line, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ReferencesPanel {
     id: ElementId,
@@ -382,6 +415,7 @@ pub struct ReferencesPanel {
 }
 
 impl ReferencesPanel {
+    /// A panel under `id` of where `symbol` is used in `files`.
     pub fn new(
         id: impl Into<ElementId>,
         symbol: impl Into<SharedString>,
@@ -395,6 +429,7 @@ impl ReferencesPanel {
         }
     }
 
+    /// Runs with the path and line pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,

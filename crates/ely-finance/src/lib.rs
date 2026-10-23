@@ -1,3 +1,6 @@
+//! Ely's finance and trading components for GPUI: quotes, books, market charts, orders, portfolios and wallets.
+#![deny(missing_docs)]
+
 use ely_charts as charts;
 use ely_core::{
     buttons, data_display, forms, lists, menus, motion, overlays, primitives, tables, theme,

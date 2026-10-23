@@ -27,6 +27,12 @@ struct Live {
 }
 
 /// The latest values of a stream as a line that slides left as each new one arrives, the newest marked with a dot. The owner keeps the values and counts what it has pushed.
+///
+/// ```
+/// use ely_charts::RealtimeChart;
+///
+/// let load = RealtimeChart::new("load", [0.4, 0.6, 0.5], 3);
+/// ```
 #[derive(IntoElement)]
 pub struct RealtimeChart {
     base: Div,

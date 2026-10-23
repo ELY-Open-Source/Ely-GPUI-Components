@@ -1,3 +1,6 @@
+//! Ely's documents for GPUI: Markdown read, drawn and edited, block pages, math, diagrams, page viewers, print previews and readers.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, feedback, forms, i18n, layout, menus, motion, navigation, overlays,
     primitives, shell, theme, typography,

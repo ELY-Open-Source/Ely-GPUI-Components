@@ -1,3 +1,6 @@
+//! Ely's version control components for GPUI: changes, commits and their graph, diffs, blame, branches, merges and reviews.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, forms, i18n, lists, navigation, primitives, theme, typography,
 };

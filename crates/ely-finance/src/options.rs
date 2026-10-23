@@ -16,23 +16,38 @@ use crate::{
 /// One side of a strike: its bid, ask, volume, and implied volatility as a share.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct OptionQuote {
+    /// The best bid.
     pub bid: f64,
+    /// The best ask.
     pub ask: f64,
+    /// How many traded.
     pub volume: f64,
+    /// Implied volatility, as a share.
     pub volatility: f64,
 }
 
 /// A strike and its call and put.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Strike {
+    /// The strike price.
     pub strike: f64,
+    /// Its call.
     pub call: OptionQuote,
+    /// Its put.
     pub put: OptionQuote,
 }
 
 type OnPick = Rc<dyn Fn(f64, bool, &mut Window, &mut App)>;
 
 /// Calls and puts across strikes: calls to the left, puts to the right, strikes between; the side in the money is shaded and a line marks where the price stands. A press on a quote picks its option.
+///
+/// ```
+/// use ely_finance::{OptionChain, OptionQuote, Strike};
+///
+/// let quote = OptionQuote { bid: 1.2, ask: 1.3, volume: 540.0, volatility: 0.31 };
+/// let chain = OptionChain::new("chain", [Strike { strike: 100.0, call: quote, put: quote }], 101.5)
+///     .on_pick(|_strike, _call, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct OptionChain {
     id: ElementId,
@@ -42,6 +57,7 @@ pub struct OptionChain {
 }
 
 impl OptionChain {
+    /// A chain under `id` over `strikes`, low to high, the underlying at `spot`.
     pub fn new(
         id: impl Into<ElementId>,
         strikes: impl IntoIterator<Item = Strike>,
@@ -203,6 +219,12 @@ impl RenderOnce for OptionChain {
 }
 
 /// An option's or a book's greeks: how its price answers to the underlying, time, volatility and rates.
+///
+/// ```
+/// use ely_finance::GreeksTable;
+///
+/// let greeks = GreeksTable::new([0.54, 0.03, -0.05, 0.12, 0.02]);
+/// ```
 #[derive(IntoElement)]
 pub struct GreeksTable {
     greeks: [f64; 5],

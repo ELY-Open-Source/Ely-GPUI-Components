@@ -1,9 +1,13 @@
 /// A crop of a picture: its box in shares of the picture's width and height, each from 0 to 1.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Crop {
+    /// Its left edge.
     pub x: f32,
+    /// Its top edge.
     pub y: f32,
+    /// Its width.
     pub w: f32,
+    /// Its height.
     pub h: f32,
 }
 

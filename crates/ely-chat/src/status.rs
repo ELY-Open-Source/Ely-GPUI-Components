@@ -18,6 +18,12 @@ use crate::{
 };
 
 /// An answer that failed: what went wrong in a line, a detail, and a way to try again.
+///
+/// ```
+/// use ely_chat::ErrorMessage;
+///
+/// let error = ErrorMessage::new("error", "The answer stopped").detail("The network dropped.").on_retry(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ErrorMessage {
     id: ElementId,
@@ -27,6 +33,7 @@ pub struct ErrorMessage {
 }
 
 impl ErrorMessage {
+    /// An error under `id` titled `title`.
     pub fn new(id: impl Into<ElementId>, title: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -36,11 +43,13 @@ impl ErrorMessage {
         }
     }
 
+    /// A line on what went wrong.
     pub fn detail(mut self, text: impl Into<SharedString>) -> Self {
         self.detail = Some(text.into());
         self
     }
 
+    /// Offers to try again.
     pub fn on_retry(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_retry = Some(Rc::new(handler));
         self
@@ -70,6 +79,13 @@ impl RenderOnce for ErrorMessage {
 }
 
 /// Out of messages for now: when more come back, counting down, and the owner's way to raise the limit.
+///
+/// ```
+/// use ely_chat::RateLimitNotice;
+/// use web_time::{Duration, Instant};
+///
+/// let wait = RateLimitNotice::new("wait", Instant::now() + Duration::from_secs(90)).on_done(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RateLimitNotice {
     id: ElementId,
@@ -79,6 +95,7 @@ pub struct RateLimitNotice {
 }
 
 impl RateLimitNotice {
+    /// A notice under `id` that counts down to `until`.
     pub fn new(id: impl Into<ElementId>, until: Instant) -> Self {
         Self {
             id: id.into(),
@@ -94,6 +111,7 @@ impl RateLimitNotice {
         self
     }
 
+    /// Offers a plan with more room.
     pub fn on_upgrade(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_upgrade = Some(Rc::new(handler));
         self
@@ -150,6 +168,16 @@ impl RenderOnce for RateLimitNotice {
 }
 
 /// What went wrong with an answer, after a bad mark: reasons to pick, a note, then send; sending waits for a reason or a note.
+///
+/// ```
+/// use ely_chat::FeedbackForm;
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn feedback(note: &Entity<TextInput>) -> FeedbackForm {
+///     FeedbackForm::new("feedback", ["Wrong", "Too long"], ["Wrong"], note, |_picked, _, _| {}, |_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FeedbackForm {
     id: ElementId,
@@ -182,6 +210,7 @@ impl FeedbackForm {
         }
     }
 
+    /// Offers to close the form unsent.
     pub fn on_cancel(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_cancel = Some(Rc::new(handler));
         self
@@ -257,12 +286,20 @@ pub(crate) fn thought_for(took: Duration) -> String {
 }
 
 /// How long thinking took: a quiet line, such as “Thought for 12 seconds”.
+///
+/// ```
+/// use ely_chat::ThinkingDuration;
+/// use std::time::Duration;
+///
+/// let took = ThinkingDuration::new(Duration::from_secs(12));
+/// ```
 #[derive(IntoElement)]
 pub struct ThinkingDuration {
     took: Duration,
 }
 
 impl ThinkingDuration {
+    /// A note that thinking took `took`.
     pub fn new(took: Duration) -> Self {
         Self { took }
     }
@@ -277,6 +314,12 @@ impl RenderOnce for ThinkingDuration {
 }
 
 /// Work under way before an answer: a word, such as Thinking, with light sweeping across it; still under reduced motion.
+///
+/// ```
+/// use ely_chat::ThinkingIndicator;
+///
+/// let busy = ThinkingIndicator::new("busy").label("Searching the web");
+/// ```
 #[derive(IntoElement)]
 pub struct ThinkingIndicator {
     id: ElementId,
@@ -284,6 +327,7 @@ pub struct ThinkingIndicator {
 }
 
 impl ThinkingIndicator {
+    /// An indicator under `id`, reading Thinking unless labelled.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -315,6 +359,13 @@ impl RenderOnce for ThinkingIndicator {
 }
 
 /// The reasoning behind an answer, folded under how long it took; open, its steps read in a quiet column. While thinking, it says so and the reasoning streams in.
+///
+/// ```
+/// use ely_chat::ThinkingBlock;
+/// use std::time::Duration;
+///
+/// let reasoning = ThinkingBlock::new("reasoning", "First, check the dates.", false, Duration::from_secs(8));
+/// ```
 #[derive(IntoElement)]
 pub struct ThinkingBlock {
     id: ElementId,

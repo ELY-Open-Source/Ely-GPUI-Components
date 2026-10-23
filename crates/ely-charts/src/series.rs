@@ -16,6 +16,7 @@ pub(crate) fn drawable(value: f64) -> bool {
 }
 
 impl Series {
+    /// A series named `name`. Panics on a value not finite or past `LIMIT`.
     pub fn new(name: impl Into<SharedString>, values: impl IntoIterator<Item = f64>) -> Self {
         let values: Vec<f64> = values.into_iter().collect();
         assert!(
@@ -38,6 +39,7 @@ pub struct Points {
 }
 
 impl Points {
+    /// Points named `name`, each an x and a y. Panics on a value not finite or past `LIMIT`.
     pub fn new(
         name: impl Into<SharedString>,
         points: impl IntoIterator<Item = (f64, f64)>,

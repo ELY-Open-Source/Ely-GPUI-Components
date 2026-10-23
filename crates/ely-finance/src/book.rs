@@ -18,16 +18,22 @@ use crate::{
 /// Which side of the book took a trade, or wants to.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Side {
+    /// The buying side.
     Buy,
+    /// The selling side.
     Sell,
 }
 
 /// One trade as it printed: when, at what price, how much, and which side took it.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Trade {
+    /// When it printed.
     pub time: Timestamp,
+    /// Its price.
     pub price: f64,
+    /// How much traded.
     pub size: f64,
+    /// Which side took it.
     pub side: Side,
 }
 
@@ -82,6 +88,13 @@ pub(super) fn heading(names: &[&'static str], cx: &App) -> Div {
 }
 
 /// Orders waiting to buy and to sell, best in the middle: asks above falling to the spread, bids below; each level's running total shaded as a share of the deepest shown.
+///
+/// ```
+/// use ely_finance::OrderBook;
+///
+/// let book = OrderBook::new("book", [(99.5, 300.0), (99.4, 120.0)], [(99.6, 80.0), (99.7, 410.0)])
+///     .levels(5);
+/// ```
 #[derive(IntoElement)]
 pub struct OrderBook {
     id: ElementId,
@@ -122,11 +135,13 @@ impl OrderBook {
         self
     }
 
+    /// Decimal places for prices, two unless set.
     pub fn places(mut self, places: usize) -> Self {
         self.places = places;
         self
     }
 
+    /// Bids in red and asks in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -216,6 +231,14 @@ impl RenderOnce for OrderBook {
 }
 
 /// Quotes by venue on both sides: who bids how much at what price and who asks, best first, each price level shaded a step lighter than the better one.
+///
+/// ```
+/// use ely_finance::Level2Quotes;
+///
+/// let quotes = Level2Quotes::new()
+///     .bid("NSDQ", 99.5, 300.0)
+///     .ask("ARCA", 99.6, 80.0);
+/// ```
 #[derive(IntoElement)]
 pub struct Level2Quotes {
     bids: Vec<(SharedString, f64, f64)>,
@@ -226,6 +249,7 @@ pub struct Level2Quotes {
 }
 
 impl Level2Quotes {
+    /// Quotes with no venues yet, eight rows a side.
     pub fn new() -> Self {
         Self {
             bids: Vec::new(),
@@ -242,16 +266,19 @@ impl Level2Quotes {
         self
     }
 
+    /// A venue's ask: its price and size.
     pub fn ask(mut self, venue: impl Into<SharedString>, at: f64, size: f64) -> Self {
         self.asks.push((venue.into(), at, size));
         self
     }
 
+    /// How many rows each side shows, eight unless set.
     pub fn rows(mut self, rows: usize) -> Self {
         self.rows = rows;
         self
     }
 
+    /// Bids in red and asks in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

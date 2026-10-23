@@ -432,3 +432,5 @@
 | T56 C5 | 2 | PASS | check.sh warns past 800 and never fails on size; 54 files under 40 lines down to 34 (theme measures, editor readers and writing view, presets, find, changes, five test files merged into their owners) |
 | T56 C6 | 1 | FAIL | TabOverflowMenu::new described a strip it does not draw; check.sh's comment rule let `////` run on |
 | T56 C6 | 2 | PASS | 1,077 core items documented, deny(missing_docs) on core; an example per public component (325 by scan, 11 macro-made), 331 doctests in check.sh and CI; px and English scans skip comment lines |
+| T56 C7 | 1 | FAIL | CodeEditor::language said it set syntax colors; it only stores a name |
+| T56 C7 | 2 | PASS | 1,448 items in 13 crates (charts to files) documented, deny(missing_docs) on each; 332 examples, one per public component; CodeEditor and CodeBlock language docs name what the code does |

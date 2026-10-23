@@ -14,8 +14,11 @@ use crate::{
 /// A frame of a profile: its function, the samples taken in it alone, and the frames it called.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ProfileFrame {
+    /// The function's name.
     pub name: SharedString,
+    /// Samples taken in it alone.
     pub own: u64,
+    /// The frames it called.
     pub calls: Vec<ProfileFrame>,
 }
 
@@ -29,11 +32,17 @@ impl ProfileFrame {
 /// A frame as the graph lays it out: its path of call indices from the root, its depth, and its share of the width.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Placed {
+    /// Its call indices from the root.
     pub path: Vec<usize>,
+    /// The function's name.
     pub name: SharedString,
+    /// How deep it sits, a row per call.
     pub depth: usize,
+    /// Where it starts across the width, 0 to 1.
     pub start: f32,
+    /// Where it ends across the width, 0 to 1.
     pub end: f32,
+    /// Samples in it and under it.
     pub samples: u64,
 }
 
@@ -92,6 +101,17 @@ type OnFocus = Rc<dyn Fn(Vec<usize>, &mut Window, &mut App)>;
 type OnPath = Rc<dyn Fn(Option<Vec<usize>>, &mut Window, &mut App)>;
 
 /// A flame graph: each function as wide as its samples, callees stacked under callers, colored by name in the chart palette. Hover reads a frame; a press zooms into it and a press on a caller above zooms back out.
+///
+/// ```
+/// use ely_debug::{Flamegraph, ProfileFrame};
+///
+/// let root = ProfileFrame {
+///     name: "main".into(),
+///     own: 4,
+///     calls: vec![ProfileFrame { name: "parse".into(), own: 30, calls: Vec::new() }],
+/// };
+/// let flame = Flamegraph::new("flame", root).on_focus(|_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Flamegraph {
     id: ElementId,
@@ -103,6 +123,7 @@ pub struct Flamegraph {
 }
 
 impl Flamegraph {
+    /// A graph under `id` of the profile from `root`.
     pub fn new(id: impl Into<ElementId>, root: impl Into<Rc<ProfileFrame>>) -> Self {
         Self {
             id: id.into(),
@@ -120,11 +141,13 @@ impl Flamegraph {
         self
     }
 
+    /// The frame under the pointer, as call indices from the root.
     pub fn hovered(mut self, path: Option<Vec<usize>>) -> Self {
         self.hovered = path;
         self
     }
 
+    /// Runs with the frame to zoom into, as call indices from the root.
     pub fn on_focus(
         mut self,
         handler: impl Fn(Vec<usize>, &mut Window, &mut App) + 'static,
@@ -133,6 +156,7 @@ impl Flamegraph {
         self
     }
 
+    /// Runs with the frame under the pointer, or none when it leaves.
     pub fn on_hover(
         mut self,
         handler: impl Fn(Option<Vec<usize>>, &mut Window, &mut App) + 'static,

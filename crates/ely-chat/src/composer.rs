@@ -20,6 +20,12 @@ use crate::{
 type OnPaths = Rc<dyn Fn(Vec<PathBuf>, &mut Window, &mut App)>;
 
 /// Opens the system's file dialog to attach files; `on_pick` gets what was chosen.
+///
+/// ```
+/// use ely_chat::AttachmentButton;
+///
+/// let attach = AttachmentButton::new("attach", |_paths, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AttachmentButton {
     id: ElementId,
@@ -27,6 +33,7 @@ pub struct AttachmentButton {
 }
 
 impl AttachmentButton {
+    /// A button under `id` that opens the file dialog; `on_pick` gets the files chosen.
     pub fn new(
         id: impl Into<ElementId>,
         on_pick: impl Fn(Vec<PathBuf>, &mut Window, &mut App) + 'static,
@@ -65,6 +72,12 @@ impl RenderOnce for AttachmentButton {
 }
 
 /// Sends a message once there is one, or stops the answer while it streams.
+///
+/// ```
+/// use ely_chat::SendButton;
+///
+/// let send = SendButton::new("send", true, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SendButton {
     id: ElementId,
@@ -74,6 +87,7 @@ pub struct SendButton {
 }
 
 impl SendButton {
+    /// A button under `id`, pressable while `ready`; `on_send` sends.
     pub fn new(
         id: impl Into<ElementId>,
         ready: bool,
@@ -122,6 +136,12 @@ impl RenderOnce for SendButton {
 }
 
 /// The keys a composer takes, said quietly: Enter sends, Shift-Enter breaks the line.
+///
+/// ```
+/// use ely_chat::InputHint;
+///
+/// let hint = InputHint;
+/// ```
 #[derive(IntoElement)]
 pub struct InputHint;
 
@@ -143,6 +163,13 @@ impl RenderOnce for InputHint {
 }
 
 /// While files hover its parent, a veil over it that says a drop attaches them; it takes the drop. The parent is `relative`.
+///
+/// ```
+/// use ely_chat::DragDropOverlay;
+/// use gpui::{ParentElement, Styled, div};
+///
+/// let target = div().relative().child(DragDropOverlay::new(|_paths, _, _| {}));
+/// ```
 #[derive(IntoElement)]
 pub struct DragDropOverlay {
     on_drop: OnPaths,
@@ -256,6 +283,16 @@ fn offers(
 }
 
 /// Where a message is written: its attachments and context above, the field, and a row of the owner's tools with send. Enter sends, Shift-Enter breaks the line; `/` at the start offers commands and `@` offers context; files dropped on it attach.
+///
+/// ```
+/// use ely_chat::PromptInput;
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn composer(field: &Entity<TextInput>) -> PromptInput {
+///     PromptInput::new("composer", field, |_, _| {}).on_drop(|_paths, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PromptInput {
     id: ElementId,

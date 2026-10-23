@@ -47,6 +47,14 @@ struct Wave {
 }
 
 /// A sound's waveform, its peaks from 0 to 1 in time order, dark as far as it has played; the time under the pointer shows above it. A press or a drag seeks; with focus the arrows step five seconds, the Page keys fifty, Home and End go to the ends. The host plays it.
+///
+/// ```
+/// use ely_media::AudioWaveform;
+/// use std::time::Duration;
+///
+/// let wave = AudioWaveform::new("wave", vec![0.2, 0.8, 0.5], Duration::from_secs(30), Duration::from_secs(10))
+///     .on_seek(|_at, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AudioWaveform {
     id: ElementId,
@@ -57,6 +65,7 @@ pub struct AudioWaveform {
 }
 
 impl AudioWaveform {
+    /// A waveform under `id` of `peaks`, 0 to 1, over `length`, played to `at`. Panics on no peaks, a peak outside 0 to 1, or no length.
     pub fn new(
         id: impl Into<ElementId>,
         peaks: impl Into<Vec<f32>>,
@@ -207,12 +216,19 @@ impl RenderOnce for AudioWaveform {
 }
 
 /// Sound by pitch, low to high: bars rising from a line, each level from 0 to 1. The host sends new levels as it plays.
+///
+/// ```
+/// use ely_media::AudioSpectrum;
+///
+/// let bands = AudioSpectrum::new(vec![0.9, 0.6, 0.3, 0.1]);
+/// ```
 #[derive(IntoElement)]
 pub struct AudioSpectrum {
     levels: Vec<f32>,
 }
 
 impl AudioSpectrum {
+    /// A spectrum of `levels`, 0 to 1, low to high. Panics on none, or one outside 0 to 1.
     pub fn new(levels: impl Into<Vec<f32>>) -> Self {
         let levels: Vec<f32> = levels.into();
         assert!(

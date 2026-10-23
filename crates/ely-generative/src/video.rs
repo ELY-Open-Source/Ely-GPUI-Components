@@ -26,13 +26,30 @@ use crate::{
 /// A shot of a generated video: its key, its prompt, how long it runs, and how it came out.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Shot {
+    /// Its key.
     pub key: SharedString,
+    /// Its prompt.
     pub prompt: SharedString,
+    /// How long it runs.
     pub length: Duration,
+    /// How it came out.
     pub outcome: Outcome,
 }
 
 /// A video made shot by shot, laid along its time: a ruler, each shot as wide as it runs with its poster, a breathing placeholder while it comes or a mark if it failed, and the playhead. A press or Enter chooses a shot and a line under names it; Extend asks for the next. It scrolls sideways when long.
+///
+/// ```
+/// use ely_generative::{Outcome, Shot, VideoGenerationTimeline};
+/// use std::time::Duration;
+///
+/// let shot = Shot {
+///     key: "s1".into(),
+///     prompt: "Waves at dawn".into(),
+///     length: Duration::from_secs(4),
+///     outcome: Outcome::Done("out/s1.png".into()),
+/// };
+/// let timeline = VideoGenerationTimeline::new("timeline", [shot], Duration::from_secs(1)).on_extend(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VideoGenerationTimeline {
     id: ElementId,
@@ -71,11 +88,13 @@ impl VideoGenerationTimeline {
         }
     }
 
+    /// The shot picked, by key.
     pub fn selected(mut self, key: impl Into<SharedString>) -> Self {
         self.selected = Some(key.into());
         self
     }
 
+    /// Runs with the key of the shot picked.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

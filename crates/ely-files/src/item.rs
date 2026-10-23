@@ -17,6 +17,14 @@ pub(crate) fn detail(entry: &DirEntry, now: Timestamp) -> String {
 }
 
 /// A file or folder as a row: its icon and name over its size and when it changed. As a `ListItem`, it goes into a `SelectableList`.
+///
+/// ```
+/// use ely_core::lists::DirEntry;
+/// use ely_files::FileItem;
+/// use jiff::Timestamp;
+///
+/// let row = FileItem::new("row", DirEntry::file("notes.md", 1_200, Timestamp::UNIX_EPOCH));
+/// ```
 #[derive(IntoElement)]
 pub struct FileItem {
     id: ElementId,
@@ -24,6 +32,7 @@ pub struct FileItem {
 }
 
 impl FileItem {
+    /// A row under `id` for `entry`.
     pub fn new(id: impl Into<ElementId>, entry: DirEntry) -> Self {
         Self {
             id: id.into(),

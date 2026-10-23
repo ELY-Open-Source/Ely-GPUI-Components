@@ -16,11 +16,17 @@ use crate::{
 /// An instruction: its address, its bytes, its mnemonic and operands, an optional comment, and the source line it starts, when known.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Instruction {
+    /// Its address.
     pub address: u64,
+    /// Its bytes.
     pub bytes: Vec<u8>,
+    /// Its mnemonic, such as `mov`.
     pub mnemonic: SharedString,
+    /// Its operands as written.
     pub operands: SharedString,
+    /// A comment after it.
     pub comment: Option<SharedString>,
+    /// The source line it starts, when known.
     pub source: Option<SharedString>,
 }
 
@@ -70,6 +76,20 @@ enum Line {
 }
 
 /// Machine code as read: address, bytes, the mnemonic and its operands colored, comments, and the source lines they came from. The current instruction is marked; a press in the gutter sets or clears a breakpoint. Long listings draw only the rows in view; it fills its box.
+///
+/// ```
+/// use ely_debug::{Disassembly, Instruction};
+///
+/// let code = vec![Instruction {
+///     address: 0x1000,
+///     bytes: vec![0x48, 0x89, 0xe5],
+///     mnemonic: "mov".into(),
+///     operands: "rbp, rsp".into(),
+///     comment: None,
+///     source: Some("fn main() {".into()),
+/// }];
+/// let listing = Disassembly::new("listing", code).current(0).on_breakpoint(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Disassembly {
     id: ElementId,
@@ -80,6 +100,7 @@ pub struct Disassembly {
 }
 
 impl Disassembly {
+    /// A listing under `id` of `instructions`.
     pub fn new(id: impl Into<ElementId>, instructions: impl Into<Rc<Vec<Instruction>>>) -> Self {
         Self {
             id: id.into(),
@@ -90,16 +111,19 @@ impl Disassembly {
         }
     }
 
+    /// Marks the instruction about to run, by place.
     pub fn current(mut self, instruction: usize) -> Self {
         self.current = Some(instruction);
         self
     }
 
+    /// The instructions holding a breakpoint, by place.
     pub fn breakpoints(mut self, instructions: impl IntoIterator<Item = usize>) -> Self {
         self.breakpoints = instructions.into_iter().collect();
         self
     }
 
+    /// Runs with the instruction whose gutter was pressed, by place.
     pub fn on_breakpoint(
         mut self,
         handler: impl Fn(usize, &mut Window, &mut App) + 'static,

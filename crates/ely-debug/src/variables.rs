@@ -18,12 +18,19 @@ use crate::{
 /// What a value is, which picks its color.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ValueKind {
+    /// Text.
     Text,
+    /// A number.
     Number,
+    /// True or false.
     Bool,
+    /// No value.
     Null,
+    /// An object with fields.
     Object,
+    /// A list of items.
     List,
+    /// A function.
     Function,
 }
 
@@ -43,10 +50,15 @@ impl ValueKind {
 /// A variable: its name, its value as the debugger prints it, its kind and type, and its fields or items.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Variable {
+    /// Its name.
     pub name: SharedString,
+    /// Its value as the debugger prints it.
     pub value: SharedString,
+    /// What it is.
     pub kind: ValueKind,
+    /// Its type, when known.
     pub type_name: Option<SharedString>,
+    /// Its fields or items.
     pub children: Vec<Variable>,
 }
 
@@ -71,6 +83,15 @@ pub(crate) fn flat<'a>(
 type OnToggle = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 
 /// Variables by scope, as a tree: each with its value colored by kind and its type, fields and items opening under it; values that changed at the last step washed.
+///
+/// ```
+/// use ely_debug::{ValueKind, Variable, VariablesPanel};
+///
+/// let n = Variable { name: "n".into(), value: "3".into(), kind: ValueKind::Number, type_name: Some("i32".into()), children: Vec::new() };
+/// let locals = VariablesPanel::new("locals", [("Locals".into(), vec![n])])
+///     .changed(["Locals/n".into()])
+///     .on_toggle(|_key, _open, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VariablesPanel {
     id: ElementId,
@@ -81,6 +102,7 @@ pub struct VariablesPanel {
 }
 
 impl VariablesPanel {
+    /// A panel under `id` of named `scopes` and their variables.
     pub fn new(
         id: impl Into<ElementId>,
         scopes: impl IntoIterator<Item = (SharedString, Vec<Variable>)>,
@@ -106,6 +128,7 @@ impl VariablesPanel {
         self
     }
 
+    /// Runs with a row's key and whether it should open.
     pub fn on_toggle(
         mut self,
         handler: impl Fn(&SharedString, bool, &mut Window, &mut App) + 'static,
@@ -203,11 +226,24 @@ impl RenderOnce for VariablesPanel {
 /// A watched expression and what it gives: a value and its kind, or the error it raised.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Watch {
+    /// What is watched.
     pub expression: SharedString,
+    /// Its value and kind, or the error it raised.
     pub value: Result<(SharedString, ValueKind), SharedString>,
 }
 
 /// Expressions watched at every step, each with its value or its error; a field adds one, and each removes.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_debug::{ValueKind, Watch, WatchPanel};
+/// use gpui::Entity;
+///
+/// fn watches(field: &Entity<TextInput>) -> WatchPanel {
+///     let watch = Watch { expression: "n * 2".into(), value: Ok(("6".into(), ValueKind::Number)) };
+///     WatchPanel::new("watches", [watch], field).on_remove(|_ix, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct WatchPanel {
     id: ElementId,
@@ -231,6 +267,7 @@ impl WatchPanel {
         }
     }
 
+    /// Runs with the watch to remove, by place.
     pub fn on_remove(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_remove = Some(Rc::new(handler));
         self

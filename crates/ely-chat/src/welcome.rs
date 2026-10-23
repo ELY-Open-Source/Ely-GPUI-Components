@@ -24,6 +24,13 @@ pub(crate) fn greeting(hour: u8) -> &'static str {
 }
 
 /// The first thing a new conversation shows: a greeting by the time of day, then the owner's composer, starters and cards, in a centered column that scrolls when space runs short.
+///
+/// ```
+/// use ely_chat::WelcomeScreen;
+/// use gpui::ParentElement;
+///
+/// let welcome = WelcomeScreen::new("welcome", 9).name("Ana").child("What shall we work on?");
+/// ```
 #[derive(IntoElement)]
 pub struct WelcomeScreen {
     id: ElementId,
@@ -109,6 +116,13 @@ impl RenderOnce for WelcomeScreen {
 }
 
 /// Prompts to start from, as chips: each an icon and a few words; a press asks the owner to use it.
+///
+/// ```
+/// use ely_chat::SuggestionChips;
+/// use ely_core::primitives::IconName;
+///
+/// let chips = SuggestionChips::new("chips", [("Plan a trip", IconName::Map)], |_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SuggestionChips {
     id: ElementId,
@@ -117,6 +131,7 @@ pub struct SuggestionChips {
 }
 
 impl SuggestionChips {
+    /// Chips under `id` of prompts, each with its icon; `on_pick` takes the one pressed.
     pub fn new(
         id: impl Into<ElementId>,
         prompts: impl IntoIterator<Item = (impl Into<SharedString>, IconName)>,
@@ -154,6 +169,12 @@ impl RenderOnce for SuggestionChips {
 }
 
 /// Questions to ask next, under an answer: each a quiet line; a press asks it.
+///
+/// ```
+/// use ely_chat::FollowUpSuggestions;
+///
+/// let next = FollowUpSuggestions::new("next", ["What about hotels?"], |_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FollowUpSuggestions {
     id: ElementId,
@@ -162,6 +183,7 @@ pub struct FollowUpSuggestions {
 }
 
 impl FollowUpSuggestions {
+    /// Questions under `id` to ask next; `on_pick` takes the one pressed.
     pub fn new(
         id: impl Into<ElementId>,
         questions: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -223,6 +245,13 @@ impl RenderOnce for FollowUpSuggestions {
 }
 
 /// What the assistant can do, as cards three across: an icon, a name and a line each; a press starts with that.
+///
+/// ```
+/// use ely_chat::CapabilityCards;
+/// use ely_core::primitives::IconName;
+///
+/// let cards = CapabilityCards::new("cards", [(IconName::Code, "Code", "Write and fix code.")], |_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CapabilityCards {
     id: ElementId,
@@ -231,6 +260,7 @@ pub struct CapabilityCards {
 }
 
 impl CapabilityCards {
+    /// Cards under `id`, each an icon, a title and a line; `on_pick` takes the one pressed.
     pub fn new(
         id: impl Into<ElementId>,
         cards: impl IntoIterator<Item = (IconName, impl Into<SharedString>, impl Into<SharedString>)>,

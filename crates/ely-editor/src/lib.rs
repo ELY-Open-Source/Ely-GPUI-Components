@@ -1,3 +1,6 @@
+//! Ely's code editor for GPUI and the IDE parts around it: completions, find, problems, symbols, status items, tasks and settings.
+#![deny(missing_docs)]
+
 use ely_charts as charts;
 use ely_core::{
     buttons, data_display, forms, i18n, lists, menus, motion, navigation, primitives, shell, theme,

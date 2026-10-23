@@ -27,14 +27,20 @@ const TINT: f32 = 0.12;
 /// Someone in the document with you: a key, a name, a picture, where they are, and which of the theme's chart colors marks their cursor and selection.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Peer {
+    /// Their key.
     pub key: SharedString,
+    /// Their name.
     pub name: SharedString,
+    /// Their picture's address.
     pub picture: Option<SharedString>,
+    /// Where they are in the document.
     pub place: Option<SharedString>,
+    /// Their color, by place among the theme's chart colors.
     pub hue: usize,
 }
 
 impl Peer {
+    /// A peer named `name` under `key`, in chart color `hue`, with no picture or place.
     pub fn new(key: impl Into<SharedString>, name: impl Into<SharedString>, hue: usize) -> Self {
         Self {
             key: key.into(),
@@ -61,6 +67,12 @@ impl Peer {
 }
 
 /// Who else is here, their avatars overlapping, each ringed in their color: resting on one says where they are; a press follows them. Past `max`, the rest show as a count.
+///
+/// ```
+/// use ely_collab::{Peer, PresenceAvatars};
+///
+/// let here = PresenceAvatars::new("here", [Peer::new("ana", "Ana", 0), Peer::new("ben", "Ben", 1)]).max(3);
+/// ```
 #[derive(IntoElement)]
 pub struct PresenceAvatars {
     id: ElementId,
@@ -71,6 +83,7 @@ pub struct PresenceAvatars {
 }
 
 impl PresenceAvatars {
+    /// Avatars under `id` of `peers`, four before a count.
     pub fn new(id: impl Into<ElementId>, peers: impl IntoIterator<Item = Peer>) -> Self {
         Self {
             id: id.into(),
@@ -189,6 +202,12 @@ impl RenderOnce for PresenceAvatars {
 }
 
 /// Whether a document is live: a dot that breathes while others are here, and how many are.
+///
+/// ```
+/// use ely_collab::LiveIndicator;
+///
+/// let live = LiveIndicator::new("live", 2);
+/// ```
 #[derive(IntoElement)]
 pub struct LiveIndicator {
     id: ElementId,
@@ -250,6 +269,13 @@ impl RenderOnce for LiveIndicator {
 }
 
 /// Following someone's view: a frame in their color around what they see, a bar that names them, and a way to stop; Escape stops too.
+///
+/// ```
+/// use ely_collab::{FollowMode, Peer};
+/// use gpui::{ParentElement, div};
+///
+/// let follow = FollowMode::new("follow", Some(Peer::new("ana", "Ana", 0)), |_, _| {}).child(div());
+/// ```
 #[derive(IntoElement)]
 pub struct FollowMode {
     id: ElementId,

@@ -72,6 +72,14 @@ fn distance((x, y): (f32, f32), line: &[(f32, f32)]) -> f32 {
 }
 
 /// Records with many measures as lines across parallel axes, each axis on its own scale. Hover a line to read its record.
+///
+/// ```
+/// use ely_charts::ParallelCoordinates;
+///
+/// let cars = ParallelCoordinates::new("cars", ["Power", "Weight", "Price"])
+///     .record("Coupe", [300.0, 1400.0, 52.0])
+///     .record("Wagon", [180.0, 1700.0, 38.0]);
+/// ```
 #[derive(IntoElement)]
 pub struct ParallelCoordinates {
     base: Div,
@@ -82,6 +90,7 @@ pub struct ParallelCoordinates {
 }
 
 impl ParallelCoordinates {
+    /// Parallel coordinates under `id`, an axis for each of `axes`. Panics on fewer than two.
     pub fn new(
         id: impl Into<ElementId>,
         axes: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -117,6 +126,7 @@ impl ParallelCoordinates {
         self
     }
 
+    /// How values read on the axes.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

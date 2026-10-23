@@ -56,6 +56,12 @@ pub(crate) fn changed_words(text: &str, marks: &[(Range<usize>, Change)], kind: 
 }
 
 /// What changed between two versions of a page, word by word: added words washed, removed ones struck through.
+///
+/// ```
+/// use ely_documents::PageHistoryDiff;
+///
+/// let change = PageHistoryDiff::new("The boat left.", "The boat left at dawn.");
+/// ```
 #[derive(IntoElement)]
 pub struct PageHistoryDiff {
     before: SharedString,
@@ -63,6 +69,7 @@ pub struct PageHistoryDiff {
 }
 
 impl PageHistoryDiff {
+    /// The change from `before` to `after`.
     pub fn new(before: impl Into<SharedString>, after: impl Into<SharedString>) -> Self {
         Self {
             before: before.into(),
@@ -124,12 +131,27 @@ impl RenderOnce for PageHistoryDiff {
 /// A saved version of a page: when, by whom, and its text as markdown.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Version {
+    /// When it was saved.
     pub at: Timestamp,
+    /// Who saved it.
     pub author: SharedString,
+    /// Its text, as markdown.
     pub markdown: SharedString,
 }
 
 /// A page's versions, newest first, by time and author: pick one to read it or to see what it changed from the one before, and restore it.
+///
+/// ```
+/// use ely_documents::{Version, VersionHistory};
+/// use jiff::Timestamp;
+///
+/// let versions = VersionHistory::new(
+///     "versions",
+///     [Version { at: Timestamp::UNIX_EPOCH, author: "Ana".into(), markdown: "The boat left.".into() }],
+///     0,
+/// )
+/// .on_restore(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VersionHistory {
     id: ElementId,
@@ -166,11 +188,13 @@ impl VersionHistory {
         }
     }
 
+    /// Runs with the version picked, by place.
     pub fn on_select(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_select = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the version to restore, by place.
     pub fn on_restore(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_restore = Some(Rc::new(handler));
         self

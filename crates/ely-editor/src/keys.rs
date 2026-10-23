@@ -31,6 +31,7 @@ actions!(
         Delete,
         DeleteWordLeft,
         DeleteLineLeft,
+        /// Breaks the line at each cursor, keeping its indent.
         Newline,
         Indent,
         Outdent,
@@ -39,6 +40,7 @@ actions!(
         SelectAll,
         Copy,
         Cut,
+        /// Puts the clipboard's text at each cursor.
         Paste,
         AddCursorAbove,
         AddCursorBelow,

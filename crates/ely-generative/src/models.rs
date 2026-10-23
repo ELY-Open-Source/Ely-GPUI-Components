@@ -19,6 +19,15 @@ use crate::{
 };
 
 /// A model to choose: its name and maker, a line on what it does, facts such as its size and license, tags for what it can do, and Use unless it is in use.
+///
+/// ```
+/// use ely_generative::ModelCard;
+///
+/// let card = ModelCard::new("card", "ely-8b", "Ely", "A small model for chat.")
+///     .fact("Parameters", "8B")
+///     .tag("Vision")
+///     .on_use(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ModelCard {
     id: ElementId,
@@ -32,6 +41,7 @@ pub struct ModelCard {
 }
 
 impl ModelCard {
+    /// A card under `id` for the model `name` by `maker`, with a line `about` it.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -62,11 +72,13 @@ impl ModelCard {
         self
     }
 
+    /// Marks it as the model in use.
     pub fn in_use(mut self, in_use: bool) -> Self {
         self.in_use = in_use;
         self
     }
 
+    /// Offers to use the model.
     pub fn on_use(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_use = Some(Rc::new(handler));
         self
@@ -159,9 +171,13 @@ impl RenderOnce for ModelCard {
 /// Where a model stands on this machine.
 #[derive(Clone, Debug, PartialEq)]
 pub enum ModelState {
+    /// Not loaded.
     Idle,
+    /// Loading, this share done.
     Loading(f32),
+    /// Loaded and ready.
     Ready,
+    /// Failed, and why.
     Failed(SharedString),
 }
 
@@ -177,6 +193,12 @@ impl ModelState {
 }
 
 /// A model on this machine: a mark and a word for where it stands, a bar while it loads, and once loaded, the GPU memory it holds.
+///
+/// ```
+/// use ely_generative::{ModelState, ModelStatus};
+///
+/// let status = ModelStatus::new("status", "ely-8b", ModelState::Loading(0.6)).memory(6 << 30, 24 << 30);
+/// ```
 #[derive(IntoElement)]
 pub struct ModelStatus {
     id: ElementId,
@@ -186,6 +208,7 @@ pub struct ModelStatus {
 }
 
 impl ModelStatus {
+    /// A status under `id` for the model `name` in `state`. Panics on a load share outside 0 to 1.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>, state: ModelState) -> Self {
         if let ModelState::Loading(share) = state {
             assert!(

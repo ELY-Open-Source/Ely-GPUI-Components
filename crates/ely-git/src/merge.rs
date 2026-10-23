@@ -46,6 +46,15 @@ fn takes(
 }
 
 /// Ours, base and theirs side by side, rows in view.
+///
+/// ```
+/// use ely_git::{ThreeWayMerge, regions};
+/// use std::rc::Rc;
+///
+/// let parts = regions("a\nb\n", "a\nB\n", "a\nb!\n");
+/// let merge = ThreeWayMerge::new("merge", ["Ours", "Base", "Theirs"], Rc::new(parts))
+///     .on_take(|_ix, _take, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ThreeWayMerge {
     id: ElementId,
@@ -73,6 +82,7 @@ impl ThreeWayMerge {
         self
     }
 
+    /// Runs with a conflict's place and the side taken.
     pub fn on_take(
         mut self,
         handler: impl Fn(usize, Take, &mut Window, &mut App) + 'static,
@@ -271,6 +281,13 @@ fn word(take: Take) -> &'static str {
 }
 
 /// Marked conflicts, each accepting current, incoming, or both.
+///
+/// ```
+/// use ely_git::ConflictResolver;
+///
+/// let text = "<<<<<<< ours\nB\n=======\nb!\n>>>>>>> theirs\n";
+/// let resolve = ConflictResolver::new("resolve", text).on_resolve(|_text, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConflictResolver {
     id: ElementId,
@@ -279,6 +296,7 @@ pub struct ConflictResolver {
 }
 
 impl ConflictResolver {
+    /// A resolver under `id` of `text` with conflict markers.
     pub fn new(id: impl Into<ElementId>, text: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

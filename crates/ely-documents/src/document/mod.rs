@@ -89,6 +89,15 @@ struct Open {
 }
 
 /// A Markdown file: one text, one history, three views.
+///
+/// ```
+/// use ely_documents::{MarkdownDocument, MarkdownMode};
+/// use gpui::{App, AppContext, Entity, Window};
+///
+/// fn note(window: &mut Window, cx: &mut App) -> Entity<MarkdownDocument> {
+///     cx.new(|cx| MarkdownDocument::new("# Notes\n\nFirst line.", MarkdownMode::Visual, window, cx))
+/// }
+/// ```
 pub struct MarkdownDocument {
     editor: Entity<CodeEditor>,
     mode: MarkdownMode,
@@ -140,6 +149,7 @@ impl Focusable for MarkdownDocument {
 }
 
 impl MarkdownDocument {
+    /// A document of `text` shown in `mode`.
     pub fn new(
         text: impl Into<String>,
         mode: MarkdownMode,
@@ -210,10 +220,12 @@ impl MarkdownDocument {
         self.on_link = Some(Rc::new(handler));
     }
 
+    /// The code editor that holds the text and its undo.
     pub fn editor(&self) -> &Entity<CodeEditor> {
         &self.editor
     }
 
+    /// How it shows the text now.
     pub fn mode(&self) -> MarkdownMode {
         self.mode
     }

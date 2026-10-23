@@ -16,8 +16,11 @@ use crate::{
 /// How a search matches: case exactly, whole words only, the query as a regular expression.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct FindOptions {
+    /// Case must match.
     pub case: bool,
+    /// Whole words only.
     pub word: bool,
+    /// The query is a regular expression.
     pub regex: bool,
 }
 
@@ -57,6 +60,18 @@ type OnBool = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 type OnClose = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A find box: the query, its options when the owner takes them, where the current match stands among all, steps between them, and a replace row that folds away when the owner offers one.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_editor::FindWidget;
+/// use gpui::Entity;
+///
+/// fn find(query: &Entity<TextInput>) -> FindWidget {
+///     FindWidget::new("find", query, Some(2), 7)
+///         .on_step(|_next, _, _| {})
+///         .on_close(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FindWidget {
     id: ElementId,
@@ -103,6 +118,7 @@ impl FindWidget {
         self
     }
 
+    /// The options shown as on.
     pub fn options(mut self, options: FindOptions) -> Self {
         self.options = options;
         self
@@ -114,6 +130,7 @@ impl FindWidget {
         self
     }
 
+    /// Runs with the options after a toggle.
     pub fn on_options(
         mut self,
         handler: impl Fn(FindOptions, &mut Window, &mut App) + 'static,
@@ -143,6 +160,7 @@ impl FindWidget {
         self
     }
 
+    /// Runs when the box closes.
     pub fn on_close(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_close = Some(Rc::new(handler));
         self

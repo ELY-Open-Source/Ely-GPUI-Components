@@ -24,8 +24,11 @@ impl EventListener for Listener {
 /// What a terminal runs: a program and its arguments, the login shell when none; where; and variables on top of TERM, COLORTERM, and LANG when the app has none.
 #[derive(Clone, Debug, Default)]
 pub struct Launch {
+    /// The program and its arguments; the login shell when none.
     pub program: Option<(String, Vec<String>)>,
+    /// The folder it starts in; the app's when none.
     pub cwd: Option<PathBuf>,
+    /// Variables set over TERM, COLORTERM and LANG.
     pub env: Vec<(String, String)>,
 }
 

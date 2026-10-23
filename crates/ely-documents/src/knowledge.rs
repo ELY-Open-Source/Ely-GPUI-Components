@@ -20,13 +20,28 @@ use crate::{
 /// A page that links here: its icon and title, and the words around the link, the link's range among them.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Backlink {
+    /// The page's icon, an emoji.
     pub icon: SharedString,
+    /// The page's title.
     pub page: SharedString,
+    /// The words around the link.
     pub context: SharedString,
+    /// The link's bytes in `context`.
     pub mention: Range<usize>,
 }
 
 /// The pages that link to this one, each with the words around its link, the link lit; a press opens that page.
+///
+/// ```
+/// use ely_documents::{Backlink, Backlinks};
+///
+/// let context = "See the launch plan for dates.";
+/// let links = Backlinks::new(
+///     "links",
+///     [Backlink { icon: "📄".into(), page: "Roadmap".into(), context: context.into(), mention: 8..19 }],
+/// )
+/// .on_open(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Backlinks {
     id: ElementId,
@@ -35,6 +50,7 @@ pub struct Backlinks {
 }
 
 impl Backlinks {
+    /// Backlinks under `id` of `links`. Panics on a mention outside its context.
     pub fn new(id: impl Into<ElementId>, links: impl IntoIterator<Item = Backlink>) -> Self {
         let links: Vec<Backlink> = links.into_iter().collect();
         for link in &links {
@@ -54,6 +70,7 @@ impl Backlinks {
         }
     }
 
+    /// Runs with the backlink pressed, by place.
     pub fn on_open(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -121,14 +138,24 @@ impl RenderOnce for Backlinks {
 /// A page kept close at hand: its key, icon and title.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Favorite {
+    /// The page's key.
     pub key: SharedString,
+    /// Its icon, an emoji.
     pub icon: SharedString,
+    /// Its title.
     pub title: SharedString,
 }
 
 type OnMove = Rc<dyn Fn(usize, usize, &mut Window, &mut App)>;
 
 /// Pages pinned for quick reach: a press opens one, dragging reorders them, and the star lets one go.
+///
+/// ```
+/// use ely_documents::{Favorite, Favorites};
+///
+/// let pinned = Favorites::new("pinned", [Favorite { key: "plan".into(), icon: "🚀".into(), title: "Launch plan".into() }])
+///     .on_open(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Favorites {
     id: ElementId,
@@ -139,6 +166,7 @@ pub struct Favorites {
 }
 
 impl Favorites {
+    /// Favorites under `id` of `pages`, in order.
     pub fn new(id: impl Into<ElementId>, pages: impl IntoIterator<Item = Favorite>) -> Self {
         Self {
             id: id.into(),
@@ -149,6 +177,7 @@ impl Favorites {
         }
     }
 
+    /// Runs with the key of the page pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -157,6 +186,7 @@ impl Favorites {
         self
     }
 
+    /// Runs with the key of the page to unpin.
     pub fn on_unpin(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -258,14 +288,36 @@ impl RenderOnce for Favorites {
 /// A page in the trash: its key, icon, title, where it lived and when it went.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Trashed {
+    /// The page's key.
     pub key: SharedString,
+    /// Its icon, an emoji.
     pub icon: SharedString,
+    /// Its title.
     pub title: SharedString,
+    /// Where it lived.
     pub place: SharedString,
+    /// When it was deleted.
     pub deleted: Timestamp,
 }
 
 /// Deleted pages, the newest first, with where each lived and when it went: restore one, delete one for good, or empty it all, each final step asked twice.
+///
+/// ```
+/// use ely_documents::{TrashBin, Trashed};
+/// use jiff::Timestamp;
+///
+/// let trash = TrashBin::new(
+///     "trash",
+///     [Trashed {
+///         key: "old".into(),
+///         icon: "📄".into(),
+///         title: "Old notes".into(),
+///         place: "Team".into(),
+///         deleted: Timestamp::UNIX_EPOCH,
+///     }],
+/// )
+/// .on_restore(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TrashBin {
     id: ElementId,
@@ -276,6 +328,7 @@ pub struct TrashBin {
 }
 
 impl TrashBin {
+    /// A trash under `id` of `pages`, newest first.
     pub fn new(id: impl Into<ElementId>, pages: impl IntoIterator<Item = Trashed>) -> Self {
         let mut pages: Vec<Trashed> = pages.into_iter().collect();
         pages.sort_by_key(|page| std::cmp::Reverse(page.deleted));
@@ -288,6 +341,7 @@ impl TrashBin {
         }
     }
 
+    /// Runs with the key of the page to restore.
     pub fn on_restore(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -296,6 +350,7 @@ impl TrashBin {
         self
     }
 
+    /// Runs with the key of the page to delete for good.
     pub fn on_delete(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -304,6 +359,7 @@ impl TrashBin {
         self
     }
 
+    /// Runs when the trash is emptied.
     pub fn on_empty(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_empty = Some(Rc::new(handler));
         self

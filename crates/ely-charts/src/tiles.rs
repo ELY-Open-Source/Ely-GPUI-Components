@@ -89,6 +89,12 @@ pub(crate) fn key(steps: [Hsla; 5], (less, more): (&'static str, &'static str), 
 }
 
 /// Parts of a whole as tiles whose areas compare, laid out close to square, largest first. Hover reads one.
+///
+/// ```
+/// use ely_charts::Treemap;
+///
+/// let disk = Treemap::new("disk").tile("Photos", 40.0).tile("Mail", 12.0).tile("Apps", 25.0);
+/// ```
 #[derive(IntoElement)]
 pub struct Treemap {
     base: Div,
@@ -98,6 +104,7 @@ pub struct Treemap {
 }
 
 impl Treemap {
+    /// A treemap under `id`, with no tiles yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -107,6 +114,7 @@ impl Treemap {
         }
     }
 
+    /// A tile and its value. Panics on a negative value or one past `LIMIT`.
     pub fn tile(mut self, name: impl Into<SharedString>, value: f64) -> Self {
         assert!(
             drawable(value) && value >= 0.0,
@@ -116,6 +124,7 @@ impl Treemap {
         self
     }
 
+    /// How values read on the tiles and in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self
@@ -249,6 +258,14 @@ impl RenderOnce for Treemap {
 }
 
 /// A grid of values, a row per label down the side and a column per label along the bottom, each cell as strong as its value. Hover reads a cell.
+///
+/// ```
+/// use ely_charts::HeatmapChart;
+///
+/// let hours = HeatmapChart::new("hours", ["Mon", "Tue"])
+///     .row("Morning", [3.0, 5.0])
+///     .row("Evening", [8.0, 2.0]);
+/// ```
 #[derive(IntoElement)]
 pub struct HeatmapChart {
     base: Div,
@@ -259,6 +276,7 @@ pub struct HeatmapChart {
 }
 
 impl HeatmapChart {
+    /// A heatmap under `id`, a column for each of `columns`.
     pub fn new(
         id: impl Into<ElementId>,
         columns: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -293,6 +311,7 @@ impl HeatmapChart {
         self
     }
 
+    /// How values read in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

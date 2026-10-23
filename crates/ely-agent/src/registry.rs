@@ -14,8 +14,11 @@ use crate::{
 /// What an agent may do with a tool.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ToolAccess {
+    /// Runs without asking.
     Allow,
+    /// Asks first.
     Ask,
+    /// May not run.
     Deny,
 }
 
@@ -38,9 +41,13 @@ impl ToolAccess {
 /// A tool the agent can call: its name, where it comes from, what it does, and what the agent may do with it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct RegisteredTool {
+    /// Its name.
     pub name: SharedString,
+    /// Where it comes from, such as a server.
     pub source: SharedString,
+    /// What it does.
     pub description: SharedString,
+    /// What the agent may do with it.
     pub access: ToolAccess,
 }
 
@@ -71,6 +78,21 @@ pub(crate) fn grouped(tools: &[RegisteredTool], kept: &[usize]) -> Vec<(SharedSt
 type OnAccess = Rc<dyn Fn(usize, ToolAccess, &mut Window, &mut App)>;
 
 /// Every tool the agent may call, grouped by where it comes from and found by the owner's query: each allowed, asked for first, or denied.
+///
+/// ```
+/// use ely_agent::{RegisteredTool, ToolAccess, ToolRegistry};
+///
+/// let tools = ToolRegistry::new(
+///     "tools",
+///     [RegisteredTool {
+///         name: "read_file".into(),
+///         source: "Files".into(),
+///         description: "Reads a file.".into(),
+///         access: ToolAccess::Allow,
+///     }],
+/// )
+/// .on_access(|_ix, _access, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ToolRegistry {
     id: ElementId,
@@ -80,6 +102,7 @@ pub struct ToolRegistry {
 }
 
 impl ToolRegistry {
+    /// A registry under `id` of `tools`.
     pub fn new(id: impl Into<ElementId>, tools: impl IntoIterator<Item = RegisteredTool>) -> Self {
         Self {
             id: id.into(),

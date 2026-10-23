@@ -23,6 +23,13 @@ use crate::{
 type OnConvert = Rc<dyn Fn(f64, SharedString, SharedString, &mut Window, &mut App)>;
 
 /// An amount in one currency as another: the amount and both currencies to choose, a swap between them, the result, and the rate the owner gives.
+///
+/// ```
+/// use ely_finance::CurrencyConverter;
+///
+/// let convert = CurrencyConverter::new("convert", 100.0, ("USD", "EUR"), 0.92)
+///     .on_change(|_amount, _from, _to, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CurrencyConverter {
     id: ElementId,
@@ -174,6 +181,18 @@ fn shortened(address: &str) -> String {
 }
 
 /// A wallet at a glance: its name and network, the balance in its coin and in money, its address to copy, and a code to scan.
+///
+/// ```
+/// use ely_finance::CryptoWalletCard;
+///
+/// let wallet = CryptoWalletCard::new(
+///     "wallet",
+///     ("Savings", "Bitcoin"),
+///     (0.84, "BTC"),
+///     (52_000.0, "USD"),
+///     "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct CryptoWalletCard {
     id: ElementId,
@@ -302,22 +321,43 @@ impl RenderOnce for CryptoWalletCard {
 /// Whether a transfer has settled.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Settled {
+    /// Not yet settled.
     Pending,
+    /// Settled.
     Done,
+    /// Did not settle.
     Failed,
 }
 
 /// A transfer in or out: when, with whom, how much, positive when received, in what unit, and whether it settled.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Transfer {
+    /// When it was made.
     pub time: Timestamp,
+    /// Who it was with.
     pub party: SharedString,
+    /// How much, positive when received.
     pub amount: f64,
+    /// The unit, a currency or a coin.
     pub unit: SharedString,
+    /// Whether it settled.
     pub settled: Settled,
 }
 
 /// Transfers newest first: which way each went, with whom, when, how much, and whether it has settled.
+///
+/// ```
+/// use ely_finance::{Settled, TransactionList, Transfer};
+/// use jiff::Timestamp;
+///
+/// let history = TransactionList::new([Transfer {
+///     time: Timestamp::UNIX_EPOCH,
+///     party: "Ana".into(),
+///     amount: -20.0,
+///     unit: "USD".into(),
+///     settled: Settled::Done,
+/// }]);
+/// ```
 #[derive(IntoElement)]
 pub struct TransactionList {
     transfers: Vec<Transfer>,
@@ -325,6 +365,7 @@ pub struct TransactionList {
 }
 
 impl TransactionList {
+    /// A list of `transfers`, newest first.
     pub fn new(transfers: impl IntoIterator<Item = Transfer>) -> Self {
         let mut transfers: Vec<Transfer> = transfers.into_iter().collect();
         transfers.sort_by_key(|transfer| Reverse(transfer.time));

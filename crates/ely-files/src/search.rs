@@ -17,7 +17,9 @@ type OnFound = Rc<dyn Fn(&FoundFile, &mut Window, &mut App)>;
 /// A file a search found: its name and the folder it lives in.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FoundFile {
+    /// Its name.
     pub name: SharedString,
+    /// The folder it lives in.
     pub folder: SharedString,
 }
 
@@ -29,6 +31,17 @@ impl FoundFile {
 }
 
 /// A search over files: a field the host owns, and what it found, each file with its folder and a count above. The host searches as the text changes; Enter or a double press opens a file.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_files::{FileSearch, FoundFile};
+/// use gpui::Entity;
+///
+/// fn search(query: &Entity<TextInput>) -> FileSearch {
+///     FileSearch::new("search", query, [FoundFile { name: "notes.md".into(), folder: "Home".into() }])
+///         .on_open(|_file, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FileSearch {
     id: ElementId,
@@ -38,6 +51,7 @@ pub struct FileSearch {
 }
 
 impl FileSearch {
+    /// A search under `id`: `query` holds the words, `found` the files that fit.
     pub fn new(
         id: impl Into<ElementId>,
         query: &Entity<TextInput>,
@@ -59,6 +73,7 @@ impl FileSearch {
         }
     }
 
+    /// Runs with the file pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&FoundFile, &mut Window, &mut App) + 'static,

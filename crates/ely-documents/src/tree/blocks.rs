@@ -6,7 +6,9 @@ use crate::markdown::span;
 /// A heading anywhere in the file.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DocumentHeading {
+    /// Its level, 1 to 6.
     pub depth: u8,
+    /// Its text.
     pub title: String,
     /// Where its source starts, in bytes.
     pub at: usize,
@@ -15,10 +17,15 @@ pub struct DocumentHeading {
 /// A GitHub alert's kind, named by its marker.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertKind {
+    /// A note.
     Note,
+    /// A tip.
     Tip,
+    /// Something important.
     Important,
+    /// A warning.
     Warning,
+    /// A caution.
     Caution,
 }
 

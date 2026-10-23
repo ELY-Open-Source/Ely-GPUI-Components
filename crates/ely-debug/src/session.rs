@@ -17,19 +17,28 @@ use crate::{
 /// Whether the program runs or waits.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DebugState {
+    /// The program runs.
     Running,
+    /// The program waits.
     Paused,
 }
 
 /// What the debugger is asked to do.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DebugCommand {
+    /// Run on.
     Continue,
+    /// Stop and wait.
     Pause,
+    /// Run the next line, over calls.
     StepOver,
+    /// Step into the call on the line.
     StepInto,
+    /// Run to the end of this call.
     StepOut,
+    /// Start again.
     Restart,
+    /// End the session.
     Stop,
 }
 
@@ -37,6 +46,12 @@ type OnCommand = Rc<dyn Fn(DebugCommand, &mut Window, &mut App)>;
 type OnSwitch = Rc<dyn Fn(usize, bool, &mut Window, &mut App)>;
 
 /// The floating row that drives a debug session: continue or pause, the three steps while paused, restart and stop. Each tooltip names the key debuggers use for it; the app binds the keys.
+///
+/// ```
+/// use ely_debug::{DebugState, DebugToolbar};
+///
+/// let controls = DebugToolbar::new("controls", DebugState::Paused).on_command(|_command, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DebugToolbar {
     id: ElementId,
@@ -45,6 +60,7 @@ pub struct DebugToolbar {
 }
 
 impl DebugToolbar {
+    /// A toolbar under `id` for a program in `state`.
     pub fn new(id: impl Into<ElementId>, state: DebugState) -> Self {
         Self {
             id: id.into(),
@@ -53,6 +69,7 @@ impl DebugToolbar {
         }
     }
 
+    /// Runs with the command pressed.
     pub fn on_command(
         mut self,
         handler: impl Fn(DebugCommand, &mut Window, &mut App) + 'static,
@@ -147,15 +164,29 @@ impl RenderOnce for DebugToolbar {
 /// A breakpoint: where, whether it is on, the condition that guards it, and how often it has hit.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Breakpoint {
+    /// The file.
     pub path: SharedString,
     /// From one.
     pub line: usize,
+    /// Whether it is on.
     pub enabled: bool,
+    /// The condition that guards it.
     pub condition: Option<SharedString>,
+    /// How often it has hit.
     pub hits: usize,
 }
 
 /// Every breakpoint: turn each on or off, see its condition and hits, go to it, or remove it.
+///
+/// ```
+/// use ely_debug::{Breakpoint, BreakpointList};
+///
+/// let stops = BreakpointList::new(
+///     "stops",
+///     [Breakpoint { path: "src/main.rs".into(), line: 12, enabled: true, condition: Some("n > 3".into()), hits: 2 }],
+/// )
+/// .on_toggle(|_ix, _on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BreakpointList {
     id: ElementId,
@@ -166,6 +197,7 @@ pub struct BreakpointList {
 }
 
 impl BreakpointList {
+    /// A list under `id` of `breakpoints`.
     pub fn new(
         id: impl Into<ElementId>,
         breakpoints: impl IntoIterator<Item = Breakpoint>,
@@ -179,6 +211,7 @@ impl BreakpointList {
         }
     }
 
+    /// Runs with a breakpoint's place and whether it should be on.
     pub fn on_toggle(
         mut self,
         handler: impl Fn(usize, bool, &mut Window, &mut App) + 'static,
@@ -187,11 +220,13 @@ impl BreakpointList {
         self
     }
 
+    /// Runs with the breakpoint to go to, by place.
     pub fn on_open(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the breakpoint to remove, by place.
     pub fn on_remove(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_remove = Some(Rc::new(handler));
         self

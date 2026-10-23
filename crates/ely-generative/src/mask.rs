@@ -22,8 +22,11 @@ pub(crate) const REACH: (f32, f32) = (0.01, 0.2);
 /// A stroke of the mask brush: points as shares of the picture across and down, a radius as a share of its width, and whether it erases.
 #[derive(Clone, Debug, PartialEq)]
 pub struct MaskStroke {
+    /// Its points, as shares of the picture across and down.
     pub points: Vec<(f32, f32)>,
+    /// Its radius, as a share of the picture's width.
     pub radius: f32,
+    /// Whether it erases.
     pub erase: bool,
 }
 
@@ -114,6 +117,14 @@ type OnStroke = Rc<dyn Fn(MaskStroke, &mut Window, &mut App)>;
 pub(crate) type OnBrush = Rc<dyn Fn(f32, bool, &mut Window, &mut App)>;
 
 /// A picture to repaint in part: the brush masks where it passes and an erasing brush clears, the mask a wash over the picture. A ring follows the pointer at the brush's size. Focused, `[` and `]` size the brush and X swaps painting for erasing.
+///
+/// ```
+/// use ely_generative::InpaintCanvas;
+///
+/// let canvas = InpaintCanvas::new("canvas", "out/1.png", 1.5, [])
+///     .brush(0.04, false)
+///     .on_stroke(|_stroke, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InpaintCanvas {
     id: ElementId,

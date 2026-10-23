@@ -21,9 +21,13 @@ const FRESH: Duration = Duration::from_secs(2);
 /// A caption: its key, when it shows and when it goes, and its words.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Cue {
+    /// Its key.
     pub key: SharedString,
+    /// When it shows.
     pub start: Duration,
+    /// When it goes.
     pub end: Duration,
+    /// What it says.
     pub text: SharedString,
 }
 
@@ -99,6 +103,14 @@ pub(crate) fn retimed(cues: &[Cue], key: &str, edge: Edge, text: &str) -> Result
 }
 
 /// Captions to edit, a cue a block in time order: its start and end as mm:ss.mmm over its words, each edited in place, with seek and remove beside. The cue under the playhead is lit; Add puts a two-second cue there. A time that does not read, or ends before it starts, leaves the cue as it was and says why under it.
+///
+/// ```
+/// use ely_media::{Cue, SubtitleEditor};
+/// use std::time::Duration;
+///
+/// let cue = Cue { key: "c1".into(), start: Duration::ZERO, end: Duration::from_secs(3), text: "Hello.".into() };
+/// let subtitles = SubtitleEditor::new("subtitles", [cue], Duration::from_secs(1)).on_change(|_cues, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SubtitleEditor {
     id: ElementId,
@@ -138,11 +150,13 @@ impl SubtitleEditor {
         }
     }
 
+    /// Runs with the cues after each change.
     pub fn on_change(mut self, handler: impl Fn(&[Cue], &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the time to seek to.
     pub fn on_seek(mut self, handler: impl Fn(Duration, &mut Window, &mut App) + 'static) -> Self {
         self.on_seek = Some(Rc::new(handler));
         self

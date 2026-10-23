@@ -141,9 +141,13 @@ pub(crate) struct Table {
 /// A table column's alignment, as its delimiter row writes it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlignKind {
+    /// `---`, no colon.
     None,
+    /// `:---`, at the start.
     Left,
+    /// `---:`, at the end.
     Right,
+    /// `:---:`, in the middle.
     Center,
 }
 

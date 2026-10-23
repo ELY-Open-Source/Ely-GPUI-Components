@@ -40,6 +40,12 @@ pub fn continue_button(id: impl Into<ElementId>) -> Button {
 }
 
 /// A message quoted in a reply: a rule, who wrote it and the start of what they said; in the composer, a way to take it off.
+///
+/// ```
+/// use ely_chat::QuoteReply;
+///
+/// let quote = QuoteReply::new("quote", "Ana", "Can we ship Friday?").on_remove(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct QuoteReply {
     id: ElementId,
@@ -49,6 +55,7 @@ pub struct QuoteReply {
 }
 
 impl QuoteReply {
+    /// A quote under `id` of `text` by `author`.
     pub fn new(
         id: impl Into<ElementId>,
         author: impl Into<SharedString>,
@@ -62,6 +69,7 @@ impl QuoteReply {
         }
     }
 
+    /// Runs when the quote is taken off.
     pub fn on_remove(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_remove = Some(Rc::new(handler));
         self
@@ -112,6 +120,14 @@ impl RenderOnce for QuoteReply {
 }
 
 /// What can be done with a message, in a quiet row: copy, edit, regenerate, and a good or bad mark; each shows once its handler is set, copy always.
+///
+/// ```
+/// use ely_chat::MessageActions;
+///
+/// let actions = MessageActions::new("actions", "The answer as text.")
+///     .on_regenerate(|_, _| {})
+///     .rating(Some(true), |_rating, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MessageActions {
     id: ElementId,
@@ -135,11 +151,13 @@ impl MessageActions {
         }
     }
 
+    /// Offers to edit the message.
     pub fn on_edit(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_edit = Some(Rc::new(handler));
         self
     }
 
+    /// Offers another answer.
     pub fn on_regenerate(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_regenerate = Some(Rc::new(handler));
         self
@@ -215,6 +233,16 @@ impl RenderOnce for MessageActions {
 }
 
 /// A sent message opened to change: the field, focused as it opens, then cancel and save. Escape cancels; the submit key saves once the words changed.
+///
+/// ```
+/// use ely_chat::MessageEditor;
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn edit(field: &Entity<TextInput>) -> MessageEditor {
+///     MessageEditor::new("edit", field, "Can we ship Friday?", |_, _| {}, |_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct MessageEditor {
     id: ElementId,
@@ -305,6 +333,12 @@ impl RenderOnce for MessageEditor {
 }
 
 /// Which version of a message shows, among all it has: back, where it stands, forward.
+///
+/// ```
+/// use ely_chat::BranchNavigator;
+///
+/// let answers = BranchNavigator::new("answers", 2, 3, |_answer, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BranchNavigator {
     id: ElementId,
@@ -314,6 +348,7 @@ pub struct BranchNavigator {
 }
 
 impl BranchNavigator {
+    /// A navigator under `id` at answer `current` of `total`, counted from one; `on_change` takes the answer stepped to.
     pub fn new(
         id: impl Into<ElementId>,
         current: usize,

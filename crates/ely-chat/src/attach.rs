@@ -19,14 +19,32 @@ use crate::{
 /// Something attached to a message: its key, name and size, a picture's preview, and how far its upload has come, 0 to 1, while it goes.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Attachment {
+    /// Its key.
     pub key: SharedString,
+    /// Its file name.
     pub name: SharedString,
+    /// Its size in bytes.
     pub bytes: u64,
+    /// A picture's preview: a file or a web address.
     pub preview: Option<SharedString>,
+    /// How far its upload has come, 0 to 1, while it goes.
     pub progress: Option<f32>,
 }
 
 /// An attachment: a picture's thumbnail or the file's icon, its name, its size or how far it has gone up, and a way to take it off.
+///
+/// ```
+/// use ely_chat::{Attachment, AttachmentChip};
+///
+/// let file = Attachment {
+///     key: "a1".into(),
+///     name: "report.pdf".into(),
+///     bytes: 240_000,
+///     preview: None,
+///     progress: Some(0.4),
+/// };
+/// let chip = AttachmentChip::new("chip", file).on_remove(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AttachmentChip {
     id: ElementId,
@@ -35,6 +53,7 @@ pub struct AttachmentChip {
 }
 
 impl AttachmentChip {
+    /// A chip under `id` for `attachment`. Panics on an upload outside 0 to 1.
     pub fn new(id: impl Into<ElementId>, attachment: Attachment) -> Self {
         assert!(
             attachment
@@ -50,6 +69,7 @@ impl AttachmentChip {
         }
     }
 
+    /// Runs when the attachment is taken off.
     pub fn on_remove(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_remove = Some(Rc::new(handler));
         self
@@ -147,6 +167,13 @@ impl RenderOnce for AttachmentChip {
 }
 
 /// Context given to a message, such as files, pages and a selection: each a tag with its icon, to take off.
+///
+/// ```
+/// use ely_chat::ContextChips;
+/// use ely_core::primitives::IconName;
+///
+/// let context = ContextChips::new("context", [("main.rs", IconName::FileCode)]).on_remove(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ContextChips {
     id: ElementId,
@@ -155,6 +182,7 @@ pub struct ContextChips {
 }
 
 impl ContextChips {
+    /// Chips under `id`, a name and an icon for each piece of context.
     pub fn new(
         id: impl Into<ElementId>,
         items: impl IntoIterator<Item = (impl Into<SharedString>, IconName)>,

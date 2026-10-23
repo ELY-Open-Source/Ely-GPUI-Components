@@ -37,10 +37,12 @@ impl Default for DocumentLook {
 }
 
 impl MarkdownDocument {
+    /// How the document shows its text.
     pub fn look(&self) -> &DocumentLook {
         &self.look
     }
 
+    /// Sets how the document shows its text.
     pub fn set_look(&mut self, look: DocumentLook, cx: &mut Context<Self>) {
         log::info!("markdown document: look {look:?}");
         self.editor.update(cx, |editor, cx| {

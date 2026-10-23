@@ -91,6 +91,13 @@ impl View {
 }
 
 /// A picture to look at closely. It fits its stage at first, and again when the host gives it another; the buttons and the plus and minus keys zoom by steps and Cmd-scroll smoothly, 0 fits and 1 shows actual size, a double press toggles the two; a drag, a scroll or the arrows pan once it overhangs; R turns it a quarter clockwise and Shift-R back. The host gives it a height.
+///
+/// ```
+/// use ely_media::ImageViewer;
+/// use std::path::PathBuf;
+///
+/// let viewer = ImageViewer::new("viewer", PathBuf::from("photos/desk.png"));
+/// ```
 #[derive(IntoElement)]
 pub struct ImageViewer {
     id: ElementId,

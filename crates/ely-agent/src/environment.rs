@@ -34,10 +34,15 @@ fn dot(id: ElementId, color: Hsla, live: bool, cx: &App) -> AnyElement {
 /// Where a sandbox stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SandboxState {
+    /// Starting up.
     Starting,
+    /// Ready for work.
     Ready,
+    /// Running a task.
     Busy,
+    /// Stopped.
     Stopped,
+    /// Failed.
     Failed,
 }
 
@@ -64,6 +69,16 @@ impl SandboxState {
 }
 
 /// Where an agent's sandbox stands: its name, a dot and a word, what it uses of what it has, and how long it has run.
+///
+/// ```
+/// use ely_agent::{SandboxState, SandboxStatus};
+/// use std::time::Duration;
+///
+/// let sandbox = SandboxStatus::new("sandbox", "linux-1", SandboxState::Busy)
+///     .cpu(0.6)
+///     .memory(1 << 30, 4 << 30)
+///     .uptime(Duration::from_secs(320));
+/// ```
 #[derive(IntoElement)]
 pub struct SandboxStatus {
     id: ElementId,
@@ -75,6 +90,7 @@ pub struct SandboxStatus {
 }
 
 impl SandboxStatus {
+    /// A status under `id` for the sandbox `name` in `state`.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -107,6 +123,7 @@ impl SandboxStatus {
         self
     }
 
+    /// How long it has run.
     pub fn uptime(mut self, uptime: Duration) -> Self {
         self.uptime = Some(uptime);
         self
@@ -190,25 +207,44 @@ impl RenderOnce for SandboxStatus {
 /// Where a connected server stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ServerState {
+    /// Connected.
     Connected,
+    /// Connecting.
     Connecting,
+    /// Could not connect.
     Failed,
+    /// Turned off.
     Off,
 }
 
 /// A server or connector the agent can reach: its key and name, where it runs or why it failed, where it stands and how many tools it brings.
 #[derive(Clone, Debug, PartialEq)]
 pub struct McpServer {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// Where it runs, or why it failed.
     pub detail: SharedString,
+    /// Where it stands.
     pub state: ServerState,
+    /// How many tools it brings.
     pub tools: usize,
 }
 
 type OnToggle = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 
 /// Servers and connectors the agent can reach: each with a dot for where it stands, what it runs or why it failed, how many tools it brings, and a switch.
+///
+/// ```
+/// use ely_agent::{McpServer, McpServerList, ServerState};
+///
+/// let servers = McpServerList::new(
+///     "servers",
+///     [McpServer { key: "fs".into(), name: "Files".into(), detail: "local".into(), state: ServerState::Connected, tools: 6 }],
+/// )
+/// .on_toggle(|_key, _on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct McpServerList {
     id: ElementId,
@@ -217,6 +253,7 @@ pub struct McpServerList {
 }
 
 impl McpServerList {
+    /// A list under `id` of `servers`.
     pub fn new(id: impl Into<ElementId>, servers: impl IntoIterator<Item = McpServer>) -> Self {
         Self {
             id: id.into(),

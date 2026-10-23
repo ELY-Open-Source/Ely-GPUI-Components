@@ -17,6 +17,13 @@ use crate::{
 const THUMB: f32 = 0.75;
 
 /// Pages as small pictures down a column, each numbered, the current one outlined; a press goes to a page.
+///
+/// ```
+/// use ely_documents::{DocPage, PageThumbnailList};
+///
+/// let page = DocPage { source: "pages/1.png".into(), width: 595.0, height: 842.0 };
+/// let thumbs = PageThumbnailList::new("thumbs", vec![page], 0).on_pick(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PageThumbnailList {
     id: ElementId,
@@ -26,6 +33,7 @@ pub struct PageThumbnailList {
 }
 
 impl PageThumbnailList {
+    /// A column under `id` of `pages`, `current` outlined.
     pub fn new(
         id: impl Into<ElementId>,
         pages: impl Into<Rc<Vec<DocPage>>>,
@@ -39,6 +47,7 @@ impl PageThumbnailList {
         }
     }
 
+    /// Runs with the page pressed, by place.
     pub fn on_pick(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

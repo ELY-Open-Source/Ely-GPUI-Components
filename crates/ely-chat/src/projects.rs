@@ -22,12 +22,22 @@ type OnKey = OnValue;
 /// A project that holds conversations: its key, name, and how many it holds.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Project {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// How many conversations it holds.
     pub count: usize,
 }
 
 /// Projects in a column, each with how many conversations it holds, the open one marked; a press opens one.
+///
+/// ```
+/// use ely_chat::{Project, ProjectList};
+///
+/// let projects = ProjectList::new("projects", [Project { key: "p1".into(), name: "Launch".into(), count: 6 }])
+///     .active(Some("p1".into()), |_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProjectList {
     id: ElementId,
@@ -37,6 +47,7 @@ pub struct ProjectList {
 }
 
 impl ProjectList {
+    /// A list under `id` of `projects`.
     pub fn new(id: impl Into<ElementId>, projects: impl IntoIterator<Item = Project>) -> Self {
         Self {
             id: id.into(),
@@ -46,6 +57,7 @@ impl ProjectList {
         }
     }
 
+    /// The project open, by key, and what a press on another asks.
     pub fn active(
         mut self,
         active: Option<SharedString>,
@@ -114,6 +126,12 @@ impl RenderOnce for ProjectList {
 }
 
 /// What a project knows beyond the conversation: its files, how full that knowledge is, a way to add more and to take one off.
+///
+/// ```
+/// use ely_chat::ProjectKnowledgePanel;
+///
+/// let files = ProjectKnowledgePanel::new("files", [("brief.md", 12_000)], 10_000_000).on_add(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProjectKnowledgePanel {
     id: ElementId,
@@ -143,6 +161,7 @@ impl ProjectKnowledgePanel {
         }
     }
 
+    /// Offers to add a file.
     pub fn on_add(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_add = Some(Rc::new(handler));
         self
@@ -245,6 +264,14 @@ impl RenderOnce for ProjectKnowledgePanel {
 }
 
 /// A conversation someone shared, to read: who shared it and when, its messages as they stood, and a way to carry it on.
+///
+/// ```
+/// use ely_chat::SharedConversationView;
+/// use gpui::div;
+/// use jiff::Timestamp;
+///
+/// let shared = SharedConversationView::new("shared", "Ana", Timestamp::UNIX_EPOCH, div()).on_continue(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SharedConversationView {
     id: ElementId,
@@ -271,6 +298,7 @@ impl SharedConversationView {
         }
     }
 
+    /// Offers to carry on the conversation as your own.
     pub fn on_continue(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_continue = Some(Rc::new(handler));
         self
@@ -321,6 +349,12 @@ impl RenderOnce for SharedConversationView {
 const FORMATS: [(&str, &str); 3] = [("markdown", "Markdown"), ("pdf", "PDF"), ("json", "JSON")];
 
 /// Saves a conversation to a file: the format, whether its thinking goes with it, then export or cancel. Render it while open.
+///
+/// ```
+/// use ely_chat::ConversationExport;
+///
+/// let export = ConversationExport::new("export", "markdown", |_format, _, _| {}, |_, _| {}, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConversationExport {
     id: ElementId,

@@ -13,6 +13,13 @@ use crate::{
 type OnPick = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A theme at a glance: a small editor painted in its own palette, whatever the app's theme; a press picks it.
+///
+/// ```
+/// use ely_core::theme::Palette;
+/// use ely_editor::ThemePreview;
+///
+/// let dark = ThemePreview::new("dark", "Ely Dark", Palette::dark(false)).selected(true).on_pick(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ThemePreview {
     id: ElementId,
@@ -23,6 +30,7 @@ pub struct ThemePreview {
 }
 
 impl ThemePreview {
+    /// A preview under `id` of `palette`, titled `name`.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>, palette: Palette) -> Self {
         Self {
             id: id.into(),
@@ -33,11 +41,13 @@ impl ThemePreview {
         }
     }
 
+    /// Marks it as the theme in use.
     pub fn selected(mut self, selected: bool) -> Self {
         self.selected = selected;
         self
     }
 
+    /// Runs when it is pressed.
     pub fn on_pick(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

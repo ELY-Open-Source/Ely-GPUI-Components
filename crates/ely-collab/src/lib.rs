@@ -1,3 +1,6 @@
+//! Ely's collaboration components for GPUI: presence, remote cursors, comments, reactions, suggested changes and sharing.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, feedback, forms, i18n, overlays, primitives, theme, typography,
 };

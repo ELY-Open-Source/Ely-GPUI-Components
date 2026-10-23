@@ -19,8 +19,11 @@ use crate::{
 /// What someone may do with a shared document.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Role {
+    /// May read it.
     View,
+    /// May read it and comment.
     Comment,
+    /// May change it.
     Edit,
 }
 
@@ -42,6 +45,12 @@ fn role_label(role: Role) -> &'static str {
 }
 
 /// Picks what someone may do: view, comment or edit.
+///
+/// ```
+/// use ely_collab::{PermissionSelect, Role};
+///
+/// let role = PermissionSelect::new("role", Role::Comment, |_role, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PermissionSelect {
     id: ElementId,
@@ -50,6 +59,7 @@ pub struct PermissionSelect {
 }
 
 impl PermissionSelect {
+    /// A select under `id` showing `role`; `on_change` takes a new choice.
     pub fn new(
         id: impl Into<ElementId>,
         role: Role,
@@ -90,16 +100,31 @@ impl RenderOnce for PermissionSelect {
 /// Someone with access: name, email, picture, and what they may do; the owner's access stays.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Member {
+    /// Their name.
     pub name: SharedString,
+    /// Their email.
     pub email: SharedString,
+    /// Their picture's address.
     pub picture: Option<SharedString>,
+    /// What they may do.
     pub role: Role,
+    /// Whether they own the document.
     pub owner: bool,
 }
 
 type OnMemberRole = Rc<dyn Fn(usize, Role, &mut Window, &mut App)>;
 
 /// Who has access, each with what they may do: change it or take it away; the owner stays.
+///
+/// ```
+/// use ely_collab::{AccessList, Member, Role};
+///
+/// let access = AccessList::new(
+///     "access",
+///     [Member { name: "Ana".into(), email: "ana@ely.dev".into(), picture: None, role: Role::Edit, owner: true }],
+/// )
+/// .on_role(|_ix, _role, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AccessList {
     id: ElementId,
@@ -109,6 +134,7 @@ pub struct AccessList {
 }
 
 impl AccessList {
+    /// A list under `id` of `members`.
     pub fn new(id: impl Into<ElementId>, members: impl IntoIterator<Item = Member>) -> Self {
         Self {
             id: id.into(),
@@ -224,6 +250,13 @@ pub(crate) fn ready(emails: &[SharedString]) -> bool {
 }
 
 /// People to invite by email, each a chip that reads as danger until it is an address, what they may do, and a button that sends once every one is.
+///
+/// ```
+/// use ely_collab::{InviteInput, Role};
+///
+/// let invite = InviteInput::new("invite", ["ben@ely.dev"], |_emails, _, _| {}, |_, _| {})
+///     .role(Role::View, |_role, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct InviteInput {
     id: ElementId,
@@ -309,6 +342,12 @@ const RESTRICTED: &str = "restricted";
 const ANYONE: &str = "anyone";
 
 /// Who a link lets in: only the people added, or anyone who has it, at a role; and the link to copy.
+///
+/// ```
+/// use ely_collab::{LinkAccess, Role};
+///
+/// let link = LinkAccess::new("link", "https://ely.dev/d/42", Some(Role::View), |_role, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LinkAccess {
     id: ElementId,
@@ -411,6 +450,14 @@ impl RenderOnce for LinkAccess {
 }
 
 /// Sharing a document in one place: invite people, see and change who has access, choose who the link lets in, and copy it.
+///
+/// ```
+/// use ely_collab::{AccessList, LinkAccess, ShareDialog};
+///
+/// let share = ShareDialog::new("share", "Launch plan", |_, _| {})
+///     .access(AccessList::new("access", []))
+///     .link(LinkAccess::new("link", "https://ely.dev/d/42", None, |_role, _, _| {}));
+/// ```
 #[derive(IntoElement)]
 pub struct ShareDialog {
     id: ElementId,
@@ -438,16 +485,19 @@ impl ShareDialog {
         }
     }
 
+    /// The invite row.
     pub fn invite(mut self, invite: InviteInput) -> Self {
         self.invite = Some(invite.into_any_element());
         self
     }
 
+    /// The list of who has access.
     pub fn access(mut self, access: AccessList) -> Self {
         self.access = Some(access.into_any_element());
         self
     }
 
+    /// The link's access.
     pub fn link(mut self, link: LinkAccess) -> Self {
         self.link = Some(link.into_any_element());
         self

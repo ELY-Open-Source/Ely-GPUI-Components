@@ -29,6 +29,7 @@ fn item(
 macro_rules! pressable {
     ($name:ident) => {
         impl $name {
+            /// Runs when it is pressed.
             pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
                 self.press = Some(Rc::new(handler));
                 self
@@ -38,6 +39,12 @@ macro_rules! pressable {
 }
 
 /// The cursor's line and column, and how many characters are selected when some are.
+///
+/// ```
+/// use ely_editor::CursorPosition;
+///
+/// let place = CursorPosition::new("place", 12, 4).selected(18);
+/// ```
 #[derive(IntoElement)]
 pub struct CursorPosition {
     id: ElementId,
@@ -60,6 +67,7 @@ impl CursorPosition {
         }
     }
 
+    /// How many characters are selected.
     pub fn selected(mut self, characters: usize) -> Self {
         self.selected = characters;
         self
@@ -79,6 +87,12 @@ impl RenderOnce for CursorPosition {
 }
 
 /// The language a file is read as.
+///
+/// ```
+/// use ely_editor::LanguageMode;
+///
+/// let language = LanguageMode::new("language", "Rust").on_click(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LanguageMode {
     id: ElementId,
@@ -87,6 +101,7 @@ pub struct LanguageMode {
 }
 
 impl LanguageMode {
+    /// The item under `id` naming `language`.
     pub fn new(id: impl Into<ElementId>, language: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -110,6 +125,12 @@ impl RenderOnce for LanguageMode {
 }
 
 /// The text encoding a file is saved in.
+///
+/// ```
+/// use ely_editor::Encoding;
+///
+/// let encoding = Encoding::new("encoding", "UTF-8");
+/// ```
 #[derive(IntoElement)]
 pub struct Encoding {
     id: ElementId,
@@ -118,6 +139,7 @@ pub struct Encoding {
 }
 
 impl Encoding {
+    /// The item under `id` naming the encoding `name`, such as UTF-8.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -141,6 +163,12 @@ impl RenderOnce for Encoding {
 }
 
 /// How a file ends its lines.
+///
+/// ```
+/// use ely_editor::LineEnding;
+///
+/// let ending = LineEnding::new("ending", false);
+/// ```
 #[derive(IntoElement)]
 pub struct LineEnding {
     id: ElementId,
@@ -173,6 +201,12 @@ impl RenderOnce for LineEnding {
 }
 
 /// How a file indents: spaces or tabs, and how wide.
+///
+/// ```
+/// use ely_editor::IndentSettings;
+///
+/// let indent = IndentSettings::new("indent", true, 4);
+/// ```
 #[derive(IntoElement)]
 pub struct IndentSettings {
     id: ElementId,
@@ -182,6 +216,7 @@ pub struct IndentSettings {
 }
 
 impl IndentSettings {
+    /// The item under `id`: `spaces` or tabs, `size` columns wide. Panics on zero.
     pub fn new(id: impl Into<ElementId>, spaces: bool, size: usize) -> Self {
         assert!(size > 0, "an indent is at least one column");
         Self {
@@ -207,6 +242,12 @@ impl RenderOnce for IndentSettings {
 }
 
 /// The branch checked out, a mark when the tree has changes, and how far it is ahead of and behind its upstream.
+///
+/// ```
+/// use ely_editor::BranchIndicator;
+///
+/// let branch = BranchIndicator::new("branch", "main").dirty(true).sync(2, 0);
+/// ```
 #[derive(IntoElement)]
 pub struct BranchIndicator {
     id: ElementId,
@@ -218,6 +259,7 @@ pub struct BranchIndicator {
 }
 
 impl BranchIndicator {
+    /// The item under `id` naming `branch`.
     pub fn new(id: impl Into<ElementId>, branch: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -229,6 +271,7 @@ impl BranchIndicator {
         }
     }
 
+    /// Marks changes in the tree.
     pub fn dirty(mut self, dirty: bool) -> Self {
         self.dirty = dirty;
         self
@@ -257,14 +300,23 @@ impl RenderOnce for BranchIndicator {
 /// Where a language server stands.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum LspState {
+    /// Starting up.
     Starting,
+    /// Ready.
     Ready,
     /// Working on something it names.
     Busy(SharedString),
+    /// Stopped, and why.
     Failed(SharedString),
 }
 
 /// A language server's name and state: a spinner while it starts or works, a check when ready, a mark when it failed.
+///
+/// ```
+/// use ely_editor::{LspState, LspStatus};
+///
+/// let server = LspStatus::new("server", "rust-analyzer", LspState::Busy("indexing".into()));
+/// ```
 #[derive(IntoElement)]
 pub struct LspStatus {
     id: ElementId,
@@ -274,6 +326,7 @@ pub struct LspStatus {
 }
 
 impl LspStatus {
+    /// The item under `id` naming `server` in `state`.
     pub fn new(id: impl Into<ElementId>, server: impl Into<SharedString>, state: LspState) -> Self {
         Self {
             id: id.into(),
@@ -326,6 +379,12 @@ impl RenderOnce for LspStatus {
 }
 
 /// A bell with how many notifications wait, quiet when there are none.
+///
+/// ```
+/// use ely_editor::NotificationBell;
+///
+/// let bell = NotificationBell::new("bell", 3).on_click(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NotificationBell {
     id: ElementId,
@@ -334,6 +393,7 @@ pub struct NotificationBell {
 }
 
 impl NotificationBell {
+    /// The bell under `id` with `count` waiting.
     pub fn new(id: impl Into<ElementId>, count: usize) -> Self {
         Self {
             id: id.into(),

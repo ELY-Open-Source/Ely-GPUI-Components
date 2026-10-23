@@ -52,16 +52,18 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] C4 O-12 Container list in the repo; every listed component implements `ParentElement`; a test reads the list.
 - [x] C5 O-22 Line cap becomes an 800-line warning in check.sh; files under 40 lines merge by responsibility.
 - [x] C6 O-10 Rustdoc, core chapters 1–14 and theme, i18n: `#![deny(missing_docs)]`, a doctest per component.
-- [ ] C7 O-10 Rustdoc, verticals 15–27.
+- [x] C7 O-10 Rustdoc, verticals 15–27.
 - [ ] C8 O-10 Rustdoc, verticals 28–44 and desktop; `cargo doc` with docs.rs settings passes.
 
 ## D. Quality
 
 - [ ] D1 O-15 `tests/` apps on public API alone: a form, a list with a table, a workspace with overlays.
 - [ ] D2 O-16 clippy `expect_used`, `panic`, `unreachable` on library code; an allow list with reasons; CI counts and fails on a rise.
+  - Found in C7, for here: asserts that live data can trip. `forms::flag` on a lowercase region (`finance::EconomicCalendar`), `VersionHistory` on versions out of order, `GenerationGrid` and `ModelStatus` on a share past 0 to 1, `MicLevelMeter`, `AudioWaveform`, `AudioSpectrum` and `VoiceWaveform` on a level past 0 to 1, `CommentThread` on a thread with no comment.
 - [ ] D3 O-17 criterion benches: 100k-row table scroll, 10k-line editor typing, terminal scrollback, 2 MiB Markdown read; CI fails past 10% regression.
 - [ ] D4 O-19 Role and name on every interactive component; a test holds the list; VoiceOver walk of form, menu, dialog on the Mac, written down.
 - [ ] D5 O-20 Every declared locale has every key; a test walks them.
+  - Found in C6 and C7, for here: fixed English the copy test misses: `ConfirmButton`'s labels, `TimePicker`'s placeholder, `RelativeRange::label`, `ely_agent::AgentState::label`, `ThinkingIndicator`'s "Thinking".
 - [ ] D6 O-21 Each component's doc page names its platforms; a script matches them to `cfg(target_os)`.
 
 ## E. Release and CI

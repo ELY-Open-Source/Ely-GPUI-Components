@@ -53,6 +53,18 @@ pub fn passes(path: &str, include: &str, exclude: &str) -> bool {
 type OnBool = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// Which files a search reads: globs to include and to exclude, and whether ignored files stay out.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_editor::SearchFilters;
+/// use gpui::Entity;
+///
+/// fn filters(include: &Entity<TextInput>, exclude: &Entity<TextInput>) -> SearchFilters {
+///     SearchFilters::new("filters", include, exclude)
+///         .ignore(true)
+///         .on_ignore(|_ignore, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SearchFilters {
     id: ElementId,
@@ -63,6 +75,7 @@ pub struct SearchFilters {
 }
 
 impl SearchFilters {
+    /// Filters under `id`; `include` and `exclude` hold comma-separated globs.
     pub fn new(
         id: impl Into<ElementId>,
         include: &Entity<TextInput>,
@@ -83,6 +96,7 @@ impl SearchFilters {
         self
     }
 
+    /// Runs with whether ignored files should stay out.
     pub fn on_ignore(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_ignore = Some(Rc::new(handler));
         self

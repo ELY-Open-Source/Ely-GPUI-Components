@@ -22,6 +22,12 @@ pub(crate) fn span(width: u32, height: u32) -> (f32, f32) {
 }
 
 /// A picture's shape: a chip per ratio, each with an outline drawn to its proportions. The chosen chip takes accent; each is a Tab stop.
+///
+/// ```
+/// use ely_generative::AspectRatioPicker;
+///
+/// let shape = AspectRatioPicker::new("shape", [(1, 1), (16, 9), (9, 16)], (16, 9)).on_select(|_ratio, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AspectRatioPicker {
     id: ElementId,
@@ -53,6 +59,7 @@ impl AspectRatioPicker {
         }
     }
 
+    /// Runs with the ratio picked, as width and height.
     pub fn on_select(
         mut self,
         handler: impl Fn((u32, u32), &mut Window, &mut App) + 'static,

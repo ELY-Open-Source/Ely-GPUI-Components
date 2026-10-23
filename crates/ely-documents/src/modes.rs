@@ -178,6 +178,16 @@ pub(crate) fn at_edge(input: &TextInput, last: bool) -> bool {
 }
 
 /// Markdown written as visual, source, or split views.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_documents::{MarkdownEditor, MarkdownMode};
+/// use gpui::Entity;
+///
+/// fn notes(field: &Entity<TextInput>) -> MarkdownEditor {
+///     MarkdownEditor::new("notes", field, MarkdownMode::Split).on_mode(|_mode, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct MarkdownEditor {
     id: ElementId,
@@ -205,6 +215,7 @@ impl MarkdownEditor {
         self
     }
 
+    /// Runs with the mode picked.
     pub fn on_mode(
         mut self,
         handler: impl Fn(MarkdownMode, &mut Window, &mut App) + 'static,

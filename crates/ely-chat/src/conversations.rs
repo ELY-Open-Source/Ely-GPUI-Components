@@ -19,9 +19,13 @@ use crate::{
 /// A conversation in a list: its key, its title, when it last moved, and whether it is pinned.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Conversation {
+    /// Its key.
     pub key: SharedString,
+    /// Its title.
     pub title: SharedString,
+    /// When it last moved.
     pub at: Timestamp,
+    /// Whether it stays on top.
     pub pinned: bool,
 }
 
@@ -87,6 +91,14 @@ pub fn new_chat_button(id: impl Into<ElementId>) -> Button {
 type OnKey = OnValue;
 
 /// One conversation in the list: its title, a pin when pinned, the one open marked with its menu of rename, pin and delete, which the others show on hover or focus.
+///
+/// ```
+/// use ely_chat::{Conversation, ConversationItem};
+/// use jiff::Timestamp;
+///
+/// let chat = Conversation { key: "c1".into(), title: "Trip plan".into(), at: Timestamp::UNIX_EPOCH, pinned: false };
+/// let row = ConversationItem::new("row", chat).active(true).on_select(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ConversationItem {
     id: ElementId,
@@ -99,6 +111,7 @@ pub struct ConversationItem {
 }
 
 impl ConversationItem {
+    /// A row under `id` for `conversation`.
     pub fn new(id: impl Into<ElementId>, conversation: Conversation) -> Self {
         Self {
             id: id.into(),
@@ -111,11 +124,13 @@ impl ConversationItem {
         }
     }
 
+    /// Marks it as the one open.
     pub fn active(mut self, active: bool) -> Self {
         self.active = active;
         self
     }
 
+    /// Runs with the conversation's key when the row is pressed.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -235,6 +250,16 @@ impl RenderOnce for ConversationItem {
 }
 
 /// Conversations down a column, pinned first, then under their day, newest first; a query keeps those whose titles hold every word.
+///
+/// ```
+/// use ely_chat::{Conversation, ConversationList};
+/// use jiff::{Timestamp, civil::date};
+///
+/// let chat = Conversation { key: "c1".into(), title: "Trip plan".into(), at: Timestamp::UNIX_EPOCH, pinned: true };
+/// let history = ConversationList::new("history", [chat], date(2026, 10, 23))
+///     .active(Some("c1".into()), |_key, _, _| {})
+///     .query("trip");
+/// ```
 #[derive(IntoElement)]
 pub struct ConversationList {
     id: ElementId,

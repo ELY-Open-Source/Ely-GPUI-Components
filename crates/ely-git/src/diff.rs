@@ -6,29 +6,40 @@ use similar::{ChangeTag, TextDiff, udiff::UnifiedHunkHeader};
 /// Whether a diff line stayed, came in, or went.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LineKind {
+    /// Unchanged.
     Same,
+    /// Came in.
     Added,
+    /// Went out.
     Removed,
 }
 
 /// A diff line: kind, numbers from one, text, changed words.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DiffLine {
+    /// Whether it stayed, came in or went.
     pub kind: LineKind,
+    /// Its number in the old text.
     pub old: Option<usize>,
+    /// Its number in the new text.
     pub new: Option<usize>,
+    /// Its text, without its line end.
     pub text: SharedString,
+    /// The changed words, in bytes, after `mark_words`.
     pub words: Vec<Range<usize>>,
 }
 
 /// A hunk of changes in context, or folded unchanged lines.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Stretch {
+    /// Changed lines with context around them.
     Hunk {
         /// `@@ -old +new @@`, from one.
         header: SharedString,
+        /// Its lines.
         lines: Vec<DiffLine>,
     },
+    /// Unchanged lines folded away.
     Folded(Vec<DiffLine>),
 }
 

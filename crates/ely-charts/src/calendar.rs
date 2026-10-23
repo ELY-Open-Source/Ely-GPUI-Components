@@ -23,6 +23,14 @@ use super::{
 use crate::theme::{ActiveTheme, Radius, TextSize};
 
 /// A year of daily counts as a grid of weeks, Monday first, each day as strong as its count on a scale of five. Hover reads a day.
+///
+/// ```
+/// use ely_charts::CalendarHeatmap;
+/// use jiff::civil::date;
+///
+/// let commits = CalendarHeatmap::new("commits", date(2026, 1, 1), [0.0, 3.0, 1.0, 7.0])
+///     .format(|count| format!("{count} commits"));
+/// ```
 #[derive(IntoElement)]
 pub struct CalendarHeatmap {
     base: Div,
@@ -58,6 +66,7 @@ impl CalendarHeatmap {
         }
     }
 
+    /// How counts read in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

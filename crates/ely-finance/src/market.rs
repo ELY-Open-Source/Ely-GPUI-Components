@@ -25,13 +25,16 @@ use crate::{
 /// How a market chart draws its prices.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum ChartKind {
+    /// Candles: a body from open to close, wicks to the high and low.
     #[default]
     Candles,
     /// Open, high, low and close as bars with ticks.
     Bars,
     /// Candles smoothed by averaging, which hold a trend's color longer.
     HeikinAshi,
+    /// A line through the closes.
     Line,
+    /// A line through the closes, the area under it filled.
     Area,
 }
 
@@ -45,6 +48,17 @@ pub struct ChartSync {
 }
 
 /// A market's prices over time as candles, bars or a line, on a price scale at the right. Drag or scroll sideways to move through time, hold Cmd and scroll to zoom, and double-press to return to the newest; the crosshair reads each candle.
+///
+/// ```
+/// use ely_finance::{Candle, CandlestickChart, ChartKind, Overlay};
+/// use jiff::Timestamp;
+///
+/// let day = Candle::new(Timestamp::UNIX_EPOCH, (10.0, 12.0, 9.5, 11.5), 4200.0);
+/// let prices = CandlestickChart::new("prices", vec![day])
+///     .kind(ChartKind::HeikinAshi)
+///     .overlay(Overlay::Sma(20))
+///     .volume();
+/// ```
 #[derive(IntoElement)]
 pub struct CandlestickChart {
     base: Div,
@@ -113,6 +127,7 @@ impl CandlestickChart {
         self
     }
 
+    /// How it draws its prices, candles unless set.
     pub fn kind(mut self, kind: ChartKind) -> Self {
         self.kind = kind;
         self
@@ -136,6 +151,7 @@ impl CandlestickChart {
         self
     }
 
+    /// A line drawn over the prices.
     pub fn overlay(mut self, overlay: Overlay) -> Self {
         self.overlays.push(overlay);
         self

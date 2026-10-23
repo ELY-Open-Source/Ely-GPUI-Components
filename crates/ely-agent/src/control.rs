@@ -16,6 +16,16 @@ use crate::{
 };
 
 /// A question an agent waits on: a few answers to pick, a line to write one, and, once answered, the answer.
+///
+/// ```
+/// use ely_agent::HumanInputRequest;
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn ask(field: &Entity<TextInput>) -> HumanInputRequest {
+///     HumanInputRequest::new("ask", "Which branch?", field, |_answer, _, _| {}).choices(["main", "dev"])
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct HumanInputRequest {
     id: ElementId,
@@ -139,6 +149,12 @@ impl RenderOnce for HumanInputRequest {
 }
 
 /// What a session cost, as a whole and part by part: the total, then a bar of each part's share with its amount.
+///
+/// ```
+/// use ely_agent::CostBreakdown;
+///
+/// let cost = CostBreakdown::new("This run", "USD").part("Model", 0.42).part("Search", 0.05);
+/// ```
 #[derive(IntoElement)]
 pub struct CostBreakdown {
     label: SharedString,
@@ -156,6 +172,7 @@ impl CostBreakdown {
         }
     }
 
+    /// A cost and what it went to. Panics on a cost not finite or below zero.
     pub fn part(mut self, name: impl Into<SharedString>, cost: f64) -> Self {
         assert!(cost >= 0.0 && cost.is_finite(), "a cost of {cost}");
         self.parts.push((name.into(), cost));

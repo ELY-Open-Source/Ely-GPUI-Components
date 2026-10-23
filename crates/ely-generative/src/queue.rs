@@ -27,15 +27,20 @@ pub enum JobState {
     Running(f32, Option<Duration>),
     /// Finished, and how long it took.
     Done(Duration),
+    /// Failed, and why.
     Failed(SharedString),
 }
 
 /// One generation in line: its key, its prompt, where it stands, and its picture once done.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Job {
+    /// Its key.
     pub key: SharedString,
+    /// Its prompt.
     pub prompt: SharedString,
+    /// Where it stands.
     pub state: JobState,
+    /// Its picture once done, a file or a web address.
     pub picture: Option<SharedString>,
 }
 
@@ -59,6 +64,16 @@ pub(crate) fn status(state: &JobState) -> String {
 }
 
 /// Generations in line, newest last: each row shows its picture or where it stands, its prompt, and how far it has come; Cancel while it waits or runs, Retry once it fails, and Remove once it ends. New rows fold in.
+///
+/// ```
+/// use ely_generative::{GenerationQueue, Job, JobState};
+///
+/// let queue = GenerationQueue::new(
+///     "queue",
+///     [Job { key: "j1".into(), prompt: "A lighthouse at dusk".into(), state: JobState::Queued(2), picture: None }],
+/// )
+/// .on_cancel(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct GenerationQueue {
     id: ElementId,
@@ -69,6 +84,7 @@ pub struct GenerationQueue {
 }
 
 impl GenerationQueue {
+    /// A queue under `id` of `jobs`.
     pub fn new(id: impl Into<ElementId>, jobs: impl IntoIterator<Item = Job>) -> Self {
         let jobs: Vec<Job> = jobs.into_iter().collect();
         for job in &jobs {
@@ -89,6 +105,7 @@ impl GenerationQueue {
         }
     }
 
+    /// Runs with the key of the job to cancel.
     pub fn on_cancel(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -97,6 +114,7 @@ impl GenerationQueue {
         self
     }
 
+    /// Runs with the key of the job to try again.
     pub fn on_retry(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -105,6 +123,7 @@ impl GenerationQueue {
         self
     }
 
+    /// Runs with the key of the job to take off.
     pub fn on_remove(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

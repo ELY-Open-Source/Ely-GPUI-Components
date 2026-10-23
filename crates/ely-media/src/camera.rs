@@ -34,6 +34,12 @@ pub fn name_chip(cx: &App) -> Div {
 }
 
 /// What a camera sees, in its own shape, from frames the host hands in; the host mirrors them if it will. With no frame it shows the camera off.
+///
+/// ```
+/// use ely_media::CameraPreview;
+///
+/// let camera = CameraPreview::new("camera", 16.0 / 9.0).frame("frames/now.png").name("FaceTime HD");
+/// ```
 #[derive(IntoElement)]
 pub struct CameraPreview {
     id: ElementId,
@@ -115,8 +121,11 @@ impl RenderOnce for CameraPreview {
 /// What a device is for.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DeviceKind {
+    /// Picks up sound.
     Microphone,
+    /// Picks up pictures.
     Camera,
+    /// Plays sound.
     Speaker,
 }
 
@@ -141,11 +150,21 @@ impl DeviceKind {
 /// A device to pick: its key and its name.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Device {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
 }
 
 /// A choice of microphone, camera or speaker, each with its kind's icon. With none attached it says so and stays shut.
+///
+/// ```
+/// use ely_media::{Device, DeviceKind, DeviceSelector};
+///
+/// let mic = DeviceSelector::new("mic", DeviceKind::Microphone, [Device { key: "m1".into(), name: "Studio mic".into() }])
+///     .chosen("m1")
+///     .on_change(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DeviceSelector {
     id: ElementId,
@@ -156,6 +175,7 @@ pub struct DeviceSelector {
 }
 
 impl DeviceSelector {
+    /// A selector under `id` of `devices` of `kind`.
     pub fn new(
         id: impl Into<ElementId>,
         kind: DeviceKind,

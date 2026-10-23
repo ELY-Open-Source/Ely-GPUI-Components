@@ -20,9 +20,13 @@ use crate::{
 /// A song: its key, title, artist and length.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Track {
+    /// Its key.
     pub key: SharedString,
+    /// Its title.
     pub title: SharedString,
+    /// Who made it.
     pub artist: SharedString,
+    /// How long it runs.
     pub length: Duration,
 }
 
@@ -60,6 +64,18 @@ fn playing(id: ElementId, moving: bool, cx: &App) -> impl IntoElement {
 }
 
 /// Songs in order, a row a song: its number, title and artist, and its length. The song under way is lit, its bars moving while it plays. Up and Down move; Enter or a double press plays a song.
+///
+/// ```
+/// use ely_media::{Playlist, Track};
+/// use std::time::Duration;
+///
+/// let songs = Playlist::new(
+///     "songs",
+///     [Track { key: "t1".into(), title: "Dawn".into(), artist: "Ana".into(), length: Duration::from_secs(214) }],
+/// )
+/// .current("t1", true)
+/// .on_play(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Playlist {
     id: ElementId,
@@ -70,6 +86,7 @@ pub struct Playlist {
 }
 
 impl Playlist {
+    /// A list under `id` of `tracks`.
     pub fn new(id: impl Into<ElementId>, tracks: impl IntoIterator<Item = Track>) -> Self {
         let tracks: Vec<Track> = tracks.into_iter().collect();
         for (ix, track) in tracks.iter().enumerate() {
@@ -157,6 +174,15 @@ impl RenderOnce for Playlist {
 }
 
 /// A song the host plays: its cover, title and artist, where it stands along a scrubber with the time played and left, the transport, and the volume.
+///
+/// ```
+/// use ely_media::{AudioPlayer, MediaControls, VolumeControl};
+/// use std::time::Duration;
+///
+/// let player = AudioPlayer::new("player", "Dawn", "Ana", Duration::from_secs(214), Duration::from_secs(40))
+///     .controls(MediaControls::new("transport", true))
+///     .volume(VolumeControl::new("volume", 0.6, false));
+/// ```
 #[derive(IntoElement)]
 pub struct AudioPlayer {
     id: ElementId,
@@ -171,6 +197,7 @@ pub struct AudioPlayer {
 }
 
 impl AudioPlayer {
+    /// A player under `id` of the song `title` by `artist`, `length` long, played to `at`.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,
@@ -205,6 +232,7 @@ impl AudioPlayer {
         self
     }
 
+    /// The volume beside the transport.
     pub fn volume(mut self, volume: VolumeControl) -> Self {
         self.volume = Some(volume);
         self

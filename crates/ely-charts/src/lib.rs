@@ -1,3 +1,6 @@
+//! Ely's charts for GPUI: lines, bars, areas, pies, scatter, flows, schedules and the axes under them.
+#![deny(missing_docs)]
+
 use ely_core::{buttons, motion, primitives, theme, typography};
 
 mod axes;

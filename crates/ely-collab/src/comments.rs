@@ -23,24 +23,42 @@ use crate::{
 /// A comment: who wrote it, when, what, and the reactions it has.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Comment {
+    /// Who wrote it.
     pub author: Peer,
+    /// When.
     pub at: Timestamp,
+    /// What it says.
     pub body: SharedString,
+    /// Its reactions.
     pub reactions: Vec<Reaction>,
 }
 
 /// A conversation on a document: its key, the words it is about, its comments in order, and whether it is resolved.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Thread {
+    /// Its key.
     pub key: SharedString,
+    /// The words it is about.
     pub quote: Option<SharedString>,
+    /// Its comments, in order.
     pub comments: Vec<Comment>,
+    /// Whether it is resolved.
     pub resolved: bool,
 }
 
 type OnReact = Rc<dyn Fn(usize, &SharedString, &mut Window, &mut App)>;
 
 /// A field to answer in and a button to send; Enter sends too, never an empty answer.
+///
+/// ```
+/// use ely_collab::Reply;
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn answer(field: &Entity<TextInput>) -> Reply {
+///     Reply::new("answer", field, |_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct Reply {
     id: ElementId,
@@ -49,6 +67,7 @@ pub struct Reply {
 }
 
 impl Reply {
+    /// A reply under `id`; `field` holds the answer and `on_send` sends it.
     pub fn new(
         id: impl Into<ElementId>,
         field: &Entity<TextInput>,
@@ -100,6 +119,20 @@ impl RenderOnce for Reply {
 }
 
 /// A conversation on a document: the words it is about, each comment with its author, time and reactions, a reply below, and resolve or reopen above; a resolved thread quiets down and takes no replies.
+///
+/// ```
+/// use ely_collab::{Comment, CommentThread, Peer, Thread};
+/// use jiff::Timestamp;
+///
+/// let comment = Comment {
+///     author: Peer::new("ana", "Ana", 0),
+///     at: Timestamp::UNIX_EPOCH,
+///     body: "Which boat?".into(),
+///     reactions: Vec::new(),
+/// };
+/// let thread = Thread { key: "t1".into(), quote: Some("The boat".into()), comments: vec![comment], resolved: false };
+/// let view = CommentThread::new("thread", thread).active(true).on_resolve(|_resolve, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CommentThread {
     id: ElementId,
@@ -111,6 +144,7 @@ pub struct CommentThread {
 }
 
 impl CommentThread {
+    /// A thread under `id` showing `thread`. Panics on a thread with no comment.
     pub fn new(id: impl Into<ElementId>, thread: Thread) -> Self {
         assert!(
             !thread.comments.is_empty(),
@@ -298,6 +332,20 @@ impl RenderOnce for CommentThread {
 }
 
 /// A comment's mark beside the words it is about, with how many comments it holds; a press opens the thread in a bubble over the page.
+///
+/// ```
+/// use ely_collab::{Comment, CommentMarker, Peer, Thread};
+/// use jiff::Timestamp;
+///
+/// let comment = Comment {
+///     author: Peer::new("ana", "Ana", 0),
+///     at: Timestamp::UNIX_EPOCH,
+///     body: "Which boat?".into(),
+///     reactions: Vec::new(),
+/// };
+/// let thread = Thread { key: "t1".into(), quote: None, comments: vec![comment], resolved: false };
+/// let marker = CommentMarker::new("marker", thread);
+/// ```
 #[derive(IntoElement)]
 pub struct CommentMarker {
     id: ElementId,
@@ -307,6 +355,7 @@ pub struct CommentMarker {
 }
 
 impl CommentMarker {
+    /// A marker under `id` for `thread`.
     pub fn new(id: impl Into<ElementId>, thread: Thread) -> Self {
         Self {
             id: id.into(),
@@ -316,6 +365,7 @@ impl CommentMarker {
         }
     }
 
+    /// Answers in `field`; `on_send` takes its text.
     pub fn reply(
         mut self,
         field: &Entity<TextInput>,
@@ -325,6 +375,7 @@ impl CommentMarker {
         self
     }
 
+    /// Runs with true to resolve, false to reopen.
     pub fn on_resolve(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_resolve = Some(Rc::new(handler));
         self

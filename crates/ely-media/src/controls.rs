@@ -25,6 +25,12 @@ pub(crate) fn speaker(level: f32, muted: bool) -> IconName {
 }
 
 /// A volume from 0 to 1 and a mute: a speaker that mutes and unmutes, drawn by the level, beside a slider whose arrows step a twentieth. Muted, the slider rests at zero, and moving it unmutes.
+///
+/// ```
+/// use ely_media::VolumeControl;
+///
+/// let volume = VolumeControl::new("volume", 0.6, false).on_level(|_level, _, _| {}).on_mute(|_mute, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VolumeControl {
     id: ElementId,
@@ -35,6 +41,7 @@ pub struct VolumeControl {
 }
 
 impl VolumeControl {
+    /// A control under `id` at `level`, 0 to 1, muted or not. Panics on a level outside 0 to 1.
     pub fn new(id: impl Into<ElementId>, level: f32, muted: bool) -> Self {
         assert!((0.0..=1.0).contains(&level), "a volume of {level}");
         Self {
@@ -46,6 +53,7 @@ impl VolumeControl {
         }
     }
 
+    /// Runs with each new level.
     pub fn on_level(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.on_level = Some(Rc::new(handler));
         self
@@ -101,6 +109,12 @@ impl RenderOnce for VolumeControl {
 }
 
 /// How fast it plays, one of `SPEEDS`, chosen from a menu under its button.
+///
+/// ```
+/// use ely_media::PlaybackSpeedControl;
+///
+/// let speed = PlaybackSpeedControl::new("speed", 1.25).on_change(|_speed, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PlaybackSpeedControl {
     id: ElementId,
@@ -109,6 +123,7 @@ pub struct PlaybackSpeedControl {
 }
 
 impl PlaybackSpeedControl {
+    /// A control under `id` at `speed`, one of `SPEEDS`. Panics on any other.
     pub fn new(id: impl Into<ElementId>, speed: f32) -> Self {
         assert!(SPEEDS.contains(&speed), "a speed of {speed}");
         Self {
@@ -118,6 +133,7 @@ impl PlaybackSpeedControl {
         }
     }
 
+    /// Runs with the speed picked.
     pub fn on_change(mut self, handler: impl Fn(f32, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -148,8 +164,11 @@ impl RenderOnce for PlaybackSpeedControl {
 /// Whether a list plays again: not, all of it, or the one song.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Repeat {
+    /// Plays the list once.
     Off,
+    /// Plays the whole list again.
     All,
+    /// Plays the one song again.
     One,
 }
 
@@ -165,6 +184,14 @@ impl Repeat {
 }
 
 /// The transport: shuffle, back, play or pause, forward and repeat, each shown only with its handler; shuffle and repeat stay lit while on.
+///
+/// ```
+/// use ely_media::{MediaControls, Repeat};
+///
+/// let transport = MediaControls::new("transport", true)
+///     .on_play(|_play, _, _| {})
+///     .repeat(Repeat::All, |_repeat, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MediaControls {
     id: ElementId,
@@ -179,6 +206,7 @@ pub struct MediaControls {
 }
 
 impl MediaControls {
+    /// Controls under `id`, playing or not.
     pub fn new(id: impl Into<ElementId>, playing: bool) -> Self {
         Self {
             id: id.into(),
@@ -199,11 +227,13 @@ impl MediaControls {
         self
     }
 
+    /// Offers to go back a song.
     pub fn on_back(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_back = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to go forward a song.
     pub fn on_forward(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_forward = Some(Rc::new(handler));
         self

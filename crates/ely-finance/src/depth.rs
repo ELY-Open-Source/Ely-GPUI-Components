@@ -52,6 +52,12 @@ fn total_at(side: &[(f64, f64)], price: f64, bids: bool) -> Option<f64> {
 }
 
 /// Orders waiting to buy and to sell as the running total at each price: bids step up to the left of the spread, asks to the right. Hover reads the total to any price.
+///
+/// ```
+/// use ely_finance::DepthChart;
+///
+/// let depth = DepthChart::new("depth", [(99.5, 300.0), (99.4, 120.0)], [(99.6, 80.0), (99.7, 410.0)]);
+/// ```
 #[derive(IntoElement)]
 pub struct DepthChart {
     base: Div,

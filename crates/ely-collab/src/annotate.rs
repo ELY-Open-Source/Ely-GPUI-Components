@@ -15,12 +15,26 @@ const PICKED: f32 = 0.36;
 /// A stretch of text someone marked: its byte range, who marked it, and the note they left; without a note it is a plain highlight.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Annotation {
+    /// The bytes marked.
     pub range: Range<usize>,
+    /// Who marked them.
     pub author: Peer,
+    /// The note they left.
     pub note: Option<SharedString>,
 }
 
 /// Text with stretches people marked, each washed in its author's color and noted ones underlined: resting on a noted one shows the note and who left it; a press picks one.
+///
+/// ```
+/// use ely_collab::{AnnotatedText, Annotation, Peer};
+///
+/// let ana = Peer::new("ana", "Ana", 0);
+/// let text = AnnotatedText::new(
+///     "text",
+///     "The boat left at dawn.",
+///     [Annotation { range: 4..8, author: ana, note: Some("Which boat?".into()) }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct AnnotatedText {
     id: ElementId,

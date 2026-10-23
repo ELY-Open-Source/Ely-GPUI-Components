@@ -19,24 +19,39 @@ use crate::markdown::{file_tree, span, walk};
 pub enum BlockCommand {
     /// Levels 1 to 6.
     Heading(u8),
+    /// Turn the line into a paragraph.
     Paragraph,
     /// A level up; a paragraph turns level 6.
     Promote,
     /// A level down; level 6 turns a paragraph.
     Demote,
+    /// Wrap the block in a quote, or take the quote off.
     Quote,
+    /// Make it a numbered list, or take the list off.
     OrderedList,
+    /// Make it a bulleted list, or take the list off.
     BulletList,
+    /// Make it a task list, or take the list off.
     TaskList,
+    /// A rule after the caret.
     Rule,
+    /// A code block after the caret.
     CodeBlock,
+    /// A math block after the caret.
     MathBlock,
+    /// A table of contents after the caret.
     Toc,
+    /// Front matter at the top.
     FrontMatter,
+    /// A footnote definition after the caret.
     Footnote,
+    /// A link definition after the caret.
     LinkDefinition,
+    /// An empty paragraph before the block.
     ParagraphBefore,
+    /// An empty paragraph after the block.
     ParagraphAfter,
+    /// Delete the block.
     Delete,
 }
 

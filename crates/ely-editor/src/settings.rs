@@ -16,15 +16,24 @@ use crate::{
 /// A setting's value and the form it takes.
 #[derive(Clone, Debug, PartialEq)]
 pub enum SettingValue {
+    /// On or off.
     Bool(bool),
+    /// A number within bounds.
     Number {
+        /// The number.
         value: f64,
+        /// The least it takes.
         min: f64,
+        /// The most it takes.
         max: f64,
+        /// How far a step moves it.
         step: f64,
     },
+    /// One of a set of words.
     Choice {
+        /// The word chosen.
         value: SharedString,
+        /// The words offered.
         choices: Vec<SharedString>,
     },
 }
@@ -44,14 +53,20 @@ impl SettingValue {
 /// One setting: its dotted key, title, what it does, its value and the value it starts from.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Setting {
+    /// Its dotted key, such as `editor.tabSize`.
     pub key: SharedString,
+    /// Its title.
     pub title: SharedString,
+    /// What it does.
     pub description: SharedString,
+    /// Its value.
     pub value: SettingValue,
+    /// The value it starts from.
     pub default: SettingValue,
 }
 
 impl Setting {
+    /// Whether its value differs from its default.
     pub fn modified(&self) -> bool {
         self.value != self.default
     }
@@ -73,6 +88,20 @@ type OnIndex = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 type OnFlag = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// Settings two ways: as rows of controls by section, each changed one marked with a way back, or as the JSON a settings file holds.
+///
+/// ```
+/// use ely_editor::{Setting, SettingValue, SettingsEditor};
+///
+/// let tab = Setting {
+///     key: "editor.tabSize".into(),
+///     title: "Tab size".into(),
+///     description: "Spaces a tab takes.".into(),
+///     value: SettingValue::Number { value: 4.0, min: 1.0, max: 8.0, step: 1.0 },
+///     default: SettingValue::Number { value: 4.0, min: 1.0, max: 8.0, step: 1.0 },
+/// };
+/// let settings = SettingsEditor::new("settings", [("Editor", vec![tab])])
+///     .on_change(|_key, _value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SettingsEditor {
     id: ElementId,
@@ -85,6 +114,7 @@ pub struct SettingsEditor {
 }
 
 impl SettingsEditor {
+    /// An editor under `id` of titled `groups`, the first shown. Panics on none.
     pub fn new(
         id: impl Into<ElementId>,
         groups: impl IntoIterator<Item = (impl Into<SharedString>, Vec<Setting>)>,
@@ -105,6 +135,7 @@ impl SettingsEditor {
         }
     }
 
+    /// The section shown, by place.
     pub fn section(mut self, section: usize) -> Self {
         self.section = section;
         self
@@ -116,6 +147,7 @@ impl SettingsEditor {
         self
     }
 
+    /// Runs with a setting's key and its new value.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, SettingValue, &mut Window, &mut App) + 'static,
@@ -124,6 +156,7 @@ impl SettingsEditor {
         self
     }
 
+    /// Runs with the section picked.
     pub fn on_section(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_section = Some(Rc::new(handler));
         self

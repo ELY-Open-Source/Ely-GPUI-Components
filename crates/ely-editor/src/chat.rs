@@ -16,6 +16,19 @@ type OnAsk = Rc<dyn Fn(SharedString, &mut Window, &mut App)>;
 type OnClose = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A prompt between lines of code: ask for a change, send it, or close it. A working state shows while an answer comes.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_editor::InlineChat;
+/// use gpui::Entity;
+///
+/// fn ask(field: &Entity<TextInput>) -> InlineChat {
+///     InlineChat::new("ask", field)
+///         .working(false)
+///         .on_ask(|_prompt, _, _| {})
+///         .on_close(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct InlineChat {
     base: Div,
@@ -27,6 +40,7 @@ pub struct InlineChat {
 }
 
 impl InlineChat {
+    /// A prompt under `id`; `field` holds what is typed.
     pub fn new(id: impl Into<ElementId>, field: &Entity<TextInput>) -> Self {
         Self {
             base: div(),
@@ -44,6 +58,7 @@ impl InlineChat {
         self
     }
 
+    /// Runs with the prompt when it is sent.
     pub fn on_ask(
         mut self,
         handler: impl Fn(SharedString, &mut Window, &mut App) + 'static,
@@ -52,6 +67,7 @@ impl InlineChat {
         self
     }
 
+    /// Runs when the prompt closes.
     pub fn on_close(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_close = Some(Rc::new(handler));
         self

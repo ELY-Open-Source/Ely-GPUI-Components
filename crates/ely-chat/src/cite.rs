@@ -17,13 +17,24 @@ use crate::{
 /// Where an answer's words came from: the site, the page's title, its address and a line from it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Source {
+    /// The site's name.
     pub site: SharedString,
+    /// The page's title.
     pub title: SharedString,
+    /// Its address.
     pub url: SharedString,
+    /// A line from it.
     pub snippet: Option<SharedString>,
 }
 
 /// A source at a glance: its site, title and a line from it; a press opens it.
+///
+/// ```
+/// use ely_chat::{Source, SourceCard};
+///
+/// let source = Source { site: "Ely".into(), title: "Docs".into(), url: "https://ely.dev/docs".into(), snippet: None };
+/// let card = SourceCard::new("card", source).number(1).on_open(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SourceCard {
     id: ElementId,
@@ -33,6 +44,7 @@ pub struct SourceCard {
 }
 
 impl SourceCard {
+    /// A card under `id` for `source`.
     pub fn new(id: impl Into<ElementId>, source: Source) -> Self {
         Self {
             id: id.into(),
@@ -48,6 +60,7 @@ impl SourceCard {
         self
     }
 
+    /// Runs when the card is pressed.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -126,6 +139,13 @@ impl RenderOnce for SourceCard {
 }
 
 /// A citation in running text: a small numbered pill; resting on it shows its source, a press opens it.
+///
+/// ```
+/// use ely_chat::{CitationBadge, Source};
+///
+/// let source = Source { site: "Ely".into(), title: "Docs".into(), url: "https://ely.dev/docs".into(), snippet: None };
+/// let badge = CitationBadge::new("cite-1", 1, source);
+/// ```
 #[derive(IntoElement)]
 pub struct CitationBadge {
     id: ElementId,
@@ -135,6 +155,7 @@ pub struct CitationBadge {
 }
 
 impl CitationBadge {
+    /// Badge `number` under `id`, citing `source`.
     pub fn new(id: impl Into<ElementId>, number: usize, source: Source) -> Self {
         Self {
             id: id.into(),
@@ -144,6 +165,7 @@ impl CitationBadge {
         }
     }
 
+    /// Runs when the badge is pressed.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -184,6 +206,13 @@ impl RenderOnce for CitationBadge {
 }
 
 /// An answer's sources, folded under how many there are with their sites in a row; open, each as a card, numbered as cited. A press opens one.
+///
+/// ```
+/// use ely_chat::{Source, SourceList};
+///
+/// let source = Source { site: "Ely".into(), title: "Docs".into(), url: "https://ely.dev/docs".into(), snippet: None };
+/// let sources = SourceList::new("sources", [source]).on_open(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SourceList {
     id: ElementId,
@@ -192,6 +221,7 @@ pub struct SourceList {
 }
 
 impl SourceList {
+    /// A list under `id` of `sources`, numbered in order.
     pub fn new(id: impl Into<ElementId>, sources: impl IntoIterator<Item = Source>) -> Self {
         Self {
             id: id.into(),

@@ -26,8 +26,11 @@ const ZOOM: f32 = 1.25;
 /// Where the camera sits around a model: turned by yaw and pitch in radians, at a distance that is a share of the one that fits the model in view.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Orbit {
+    /// The turn around the up axis, in radians.
     pub yaw: f32,
+    /// The tilt up or down, in radians.
     pub pitch: f32,
+    /// How far away, as a share of the distance that fits the model.
     pub distance: f32,
 }
 
@@ -58,6 +61,12 @@ impl Orbit {
 struct Orbiting(EntityId);
 
 /// A 3D model the host renders, a frame for each view, in the view's shape. A drag or the arrows turn the camera around it; Command-scroll, + and - bring it nearer or farther; 0 or the reset button returns to the start. Until its first frame, it shows a spinner.
+///
+/// ```
+/// use ely_media::{ModelViewer, Orbit};
+///
+/// let model = ModelViewer::new("model", 4.0 / 3.0, Orbit::START).on_orbit(|_orbit, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ModelViewer {
     id: ElementId,

@@ -14,9 +14,13 @@ use crate::{
 /// A command run before: what, where, when, and how it ended when that is known.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PastCommand {
+    /// The command as typed.
     pub command: SharedString,
+    /// The folder it ran in.
     pub cwd: SharedString,
+    /// When it ran, as it reads.
     pub when: SharedString,
+    /// Its exit code, when known.
     pub code: Option<i32>,
 }
 
@@ -24,6 +28,22 @@ type OnPick = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Commands run before, newest first, found by any of their letters and picked to run again: a palette over the terminal.
+///
+/// ```
+/// use ely_terminal::{CommandHistory, PastCommand};
+///
+/// let past = CommandHistory::new(
+///     "past",
+///     [PastCommand {
+///         command: "cargo test".into(),
+///         cwd: "~/code/ely".into(),
+///         when: "2 min ago".into(),
+///         code: Some(0),
+///     }],
+///     |_, _| {},
+/// )
+/// .on_pick(|_command, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CommandHistory {
     id: ElementId,
@@ -47,6 +67,7 @@ impl CommandHistory {
         }
     }
 
+    /// Runs with the command picked.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

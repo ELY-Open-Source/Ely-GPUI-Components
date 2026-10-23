@@ -5,12 +5,16 @@ use super::buffer::Buffer;
 /// A cursor and the text it holds: `head` moves, `anchor` stays; `goal` keeps the column a vertical move aims for.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Selection {
+    /// Where the selection started; it stays as the head moves.
     pub anchor: usize,
+    /// Where the cursor is.
     pub head: usize,
+    /// The column a move up or down aims for.
     pub goal: Option<usize>,
 }
 
 impl Selection {
+    /// A caret at `at`, nothing selected.
     pub fn caret(at: usize) -> Self {
         Self {
             anchor: at,
@@ -19,10 +23,12 @@ impl Selection {
         }
     }
 
+    /// The bytes it covers, start first.
     pub fn range(&self) -> Range<usize> {
         self.anchor.min(self.head)..self.anchor.max(self.head)
     }
 
+    /// Whether it is a caret, nothing selected.
     pub fn is_empty(&self) -> bool {
         self.anchor == self.head
     }

@@ -25,9 +25,13 @@ use crate::{
 /// A held position: its symbol, how many, what each cost on average, and the last price.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Position {
+    /// The ticker.
     pub symbol: SharedString,
+    /// How many are held.
     pub quantity: f64,
+    /// What each cost on average.
     pub cost: f64,
+    /// The last price.
     pub last: f64,
 }
 
@@ -44,6 +48,15 @@ fn signed(share: f64) -> Cell {
 }
 
 /// Positions held, with what each is worth now and what it has made or lost; totals below.
+///
+/// ```
+/// use ely_finance::{Position, PositionTable};
+///
+/// let held = PositionTable::new(
+///     "held",
+///     [Position { symbol: "ELY".into(), quantity: 100.0, cost: 12.5, last: 14.2 }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct PositionTable {
     id: ElementId,
@@ -51,6 +64,7 @@ pub struct PositionTable {
 }
 
 impl PositionTable {
+    /// A table under `id` of `positions`.
     pub fn new(id: impl Into<ElementId>, positions: impl IntoIterator<Item = Position>) -> Self {
         Self {
             id: id.into(),
@@ -108,12 +122,29 @@ impl RenderOnce for PositionTable {
 /// An order still working: when it was placed, its order, and how many of its quantity have filled.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Working {
+    /// When it was placed.
     pub time: Timestamp,
+    /// The order.
     pub order: Order,
+    /// How many of its quantity have filled.
     pub filled: f64,
 }
 
 /// Orders still working, newest first: when, what, which way, how, how much at what price, and how far each has filled.
+///
+/// ```
+/// use ely_finance::{Order, OrderKind, OrderTable, Side, Working};
+/// use jiff::Timestamp;
+///
+/// let order = Order {
+///     symbol: "ELY".into(),
+///     side: Side::Buy,
+///     kind: OrderKind::Limit,
+///     quantity: 100.0,
+///     price: 14.0,
+/// };
+/// let open = OrderTable::new("open", [Working { time: Timestamp::UNIX_EPOCH, order, filled: 40.0 }]);
+/// ```
 #[derive(IntoElement)]
 pub struct OrderTable {
     id: ElementId,
@@ -122,6 +153,7 @@ pub struct OrderTable {
 }
 
 impl OrderTable {
+    /// A table under `id` of `orders`, newest first. Panics on an order with no quantity or filled past it.
     pub fn new(id: impl Into<ElementId>, orders: impl IntoIterator<Item = Working>) -> Self {
         let mut orders: Vec<Working> = orders.into_iter().collect();
         assert!(
@@ -205,15 +237,38 @@ impl RenderOnce for OrderTable {
 /// A filled trade: when, what, which way, how much at what price, and its fee.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Fill {
+    /// When it filled.
     pub time: Timestamp,
+    /// The ticker.
     pub symbol: SharedString,
+    /// Which way it went.
     pub side: Side,
+    /// How many.
     pub quantity: f64,
+    /// The price of each.
     pub price: f64,
+    /// The fee paid.
     pub fee: f64,
 }
 
 /// Trades filled, newest first, with what each came to after its fee; totals below.
+///
+/// ```
+/// use ely_finance::{Fill, Side, TradeHistoryTable};
+/// use jiff::Timestamp;
+///
+/// let fills = TradeHistoryTable::new(
+///     "fills",
+///     [Fill {
+///         time: Timestamp::UNIX_EPOCH,
+///         symbol: "ELY".into(),
+///         side: Side::Sell,
+///         quantity: 50.0,
+///         price: 14.3,
+///         fee: 1.0,
+///     }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct TradeHistoryTable {
     id: ElementId,
@@ -222,6 +277,7 @@ pub struct TradeHistoryTable {
 }
 
 impl TradeHistoryTable {
+    /// A table under `id` of `fills`, newest first.
     pub fn new(id: impl Into<ElementId>, fills: impl IntoIterator<Item = Fill>) -> Self {
         let mut fills: Vec<Fill> = fills.into_iter().collect();
         fills.sort_by_key(|fill| Reverse(fill.time));
@@ -289,6 +345,12 @@ impl RenderOnce for TradeHistoryTable {
 }
 
 /// A profit or loss as it reads at a glance: signed and tinted in its currency, its share of cost below, flashing when it moves.
+///
+/// ```
+/// use ely_finance::PnLDisplay;
+///
+/// let today = PnLDisplay::new("today", "Today", (172.0, 0.012), "USD");
+/// ```
 #[derive(IntoElement)]
 pub struct PnLDisplay {
     id: ElementId,
@@ -321,6 +383,7 @@ impl PnLDisplay {
         }
     }
 
+    /// Gains in red and losses in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

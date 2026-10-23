@@ -17,9 +17,13 @@ use crate::{
 /// Where an extension stands here.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExtensionState {
+    /// Not installed.
     Available,
+    /// Being installed.
     Installing,
+    /// Installed and on.
     Installed,
+    /// Installed and off.
     Disabled,
     /// Installed, with a newer version out.
     Outdated,
@@ -28,28 +32,59 @@ pub enum ExtensionState {
 /// An extension in the marketplace: who makes it, what it does, how many use it and how they rate it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Extension {
+    /// Its marketplace id.
     pub id: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// Who makes it.
     pub publisher: SharedString,
+    /// What it does.
     pub description: SharedString,
+    /// Its version.
     pub version: SharedString,
+    /// How many installed it.
     pub installs: u64,
+    /// Its rating, out of five.
     pub rating: f32,
+    /// Where it stands here.
     pub state: ExtensionState,
 }
 
 /// What a press on an extension's button asks for.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExtensionAction {
+    /// Install it.
     Install,
+    /// Remove it.
     Uninstall,
+    /// Turn it back on.
     Enable,
+    /// Take its newer version.
     Update,
 }
 
 type OnAction = Rc<dyn Fn(&SharedString, ExtensionAction, &mut Window, &mut App)>;
 
 /// Extensions, each with its mark, name, maker, what it does, its reach and rating, and the one action it needs next.
+///
+/// ```
+/// use ely_editor::{Extension, ExtensionState, ExtensionsPanel};
+///
+/// let panel = ExtensionsPanel::new(
+///     "extensions",
+///     [Extension {
+///         id: "ely.rust".into(),
+///         name: "Rust".into(),
+///         publisher: "Ely".into(),
+///         description: "Rust support".into(),
+///         version: "1.2.0".into(),
+///         installs: 12_000,
+///         rating: 4.6,
+///         state: ExtensionState::Available,
+///     }],
+/// )
+/// .on_action(|_id, _action, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ExtensionsPanel {
     id: ElementId,
@@ -58,6 +93,7 @@ pub struct ExtensionsPanel {
 }
 
 impl ExtensionsPanel {
+    /// A panel under `id` of `extensions`.
     pub fn new(id: impl Into<ElementId>, extensions: impl IntoIterator<Item = Extension>) -> Self {
         Self {
             id: id.into(),
@@ -66,6 +102,7 @@ impl ExtensionsPanel {
         }
     }
 
+    /// Runs with an extension's id and the action its button asks for.
     pub fn on_action(
         mut self,
         handler: impl Fn(&SharedString, ExtensionAction, &mut Window, &mut App) + 'static,

@@ -233,6 +233,14 @@ fn board(
 }
 
 /// Prices as bricks of one size, laid only when the close moves a whole brick past the last, so time drops out and trends stand clear. Hover reads a brick.
+///
+/// ```
+/// use ely_finance::{Candle, RenkoChart};
+/// use jiff::Timestamp;
+///
+/// let day = Candle::new(Timestamp::UNIX_EPOCH, (10.0, 12.0, 9.5, 11.5), 4200.0);
+/// let bricks = RenkoChart::new("bricks", vec![day], 0.5);
+/// ```
 #[derive(IntoElement)]
 pub struct RenkoChart {
     base: Div,
@@ -244,6 +252,7 @@ pub struct RenkoChart {
 }
 
 impl RenkoChart {
+    /// A Renko chart under `id` of `candles`, bricks of `size`. Panics on a size not finite or not positive.
     pub fn new(id: impl Into<ElementId>, candles: impl Into<Rc<Vec<Candle>>>, size: f64) -> Self {
         assert!(
             size.is_finite() && size > 0.0,
@@ -259,6 +268,7 @@ impl RenkoChart {
         }
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -319,6 +329,14 @@ impl RenderOnce for RenkoChart {
 }
 
 /// Prices as columns of Xs where they rose and Os where they fell, a new column each time they turn by the reversal. Hover reads a column.
+///
+/// ```
+/// use ely_finance::{Candle, PointFigureChart};
+/// use jiff::Timestamp;
+///
+/// let day = Candle::new(Timestamp::UNIX_EPOCH, (10.0, 12.0, 9.5, 11.5), 4200.0);
+/// let columns = PointFigureChart::new("columns", vec![day], 0.5, 3);
+/// ```
 #[derive(IntoElement)]
 pub struct PointFigureChart {
     base: Div,
@@ -351,6 +369,7 @@ impl PointFigureChart {
         }
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

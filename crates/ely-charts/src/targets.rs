@@ -37,6 +37,7 @@ pub struct Bullet {
 }
 
 impl Bullet {
+    /// A bullet named `label`, its value and its target. Panics on a negative value or one past `LIMIT`.
     pub fn new(label: impl Into<SharedString>, value: f64, target: f64) -> Self {
         assert!(
             drawable(value) && drawable(target) && value >= 0.0 && target >= 0.0,
@@ -73,6 +74,13 @@ impl Bullet {
 }
 
 /// Measures against their targets, a row each: a thin bar for the value over bands from poor to good, and a mark at the target. Hover a row to read it.
+///
+/// ```
+/// use ely_charts::{Bullet, BulletChart};
+///
+/// let sales = BulletChart::new("sales")
+///     .bullet(Bullet::new("Q3", 270.0, 250.0).bands([150.0, 225.0, 300.0]));
+/// ```
 #[derive(IntoElement)]
 pub struct BulletChart {
     base: Div,
@@ -82,6 +90,7 @@ pub struct BulletChart {
 }
 
 impl BulletChart {
+    /// A bullet chart under `id`, with no rows yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -91,11 +100,13 @@ impl BulletChart {
         }
     }
 
+    /// A row.
     pub fn bullet(mut self, bullet: Bullet) -> Self {
         self.bullets.push(bullet);
         self
     }
 
+    /// How values read on the rows and in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self
@@ -263,6 +274,14 @@ impl RenderOnce for BulletChart {
 }
 
 /// Goals as rings around one center, each filling clockwise toward its target; the center reads the goal under the pointer, or the first.
+///
+/// ```
+/// use ely_charts::ProgressChart;
+///
+/// let goals = ProgressChart::new("goals")
+///     .goal("Move", 420.0, 600.0)
+///     .goal("Stand", 10.0, 12.0);
+/// ```
 #[derive(IntoElement)]
 pub struct ProgressChart {
     base: Div,
@@ -272,6 +291,7 @@ pub struct ProgressChart {
 }
 
 impl ProgressChart {
+    /// A progress chart under `id`, with no goals yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -291,6 +311,7 @@ impl ProgressChart {
         self
     }
 
+    /// How values read in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

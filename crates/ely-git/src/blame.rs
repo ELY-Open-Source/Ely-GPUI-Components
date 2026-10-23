@@ -17,10 +17,15 @@ use crate::{
 /// Who last changed lines; age 0 newest, 1 oldest.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Blame {
+    /// The commit's id.
     pub commit: SharedString,
+    /// Who made it.
     pub author: SharedString,
+    /// When, as it reads.
     pub when: SharedString,
+    /// The commit's subject.
     pub subject: SharedString,
+    /// How old the change is, 0 newest to 1 oldest.
     pub age: f32,
 }
 
@@ -37,12 +42,25 @@ pub(crate) fn runs(owners: &[Option<usize>]) -> Vec<(Option<usize>, Range<usize>
 }
 
 /// Who last changed a line, quietly after its code.
+///
+/// ```
+/// use ely_git::{Blame, GitBlameAnnotation};
+///
+/// let note = GitBlameAnnotation::new(Blame {
+///     commit: "a1b2c3d".into(),
+///     author: "Ana".into(),
+///     when: "3 days ago".into(),
+///     subject: "Fix the parser".into(),
+///     age: 0.2,
+/// });
+/// ```
 #[derive(IntoElement)]
 pub struct GitBlameAnnotation {
     blame: Blame,
 }
 
 impl GitBlameAnnotation {
+    /// A note of `blame`.
     pub fn new(blame: Blame) -> Self {
         Self { blame }
     }
@@ -66,6 +84,21 @@ impl RenderOnce for GitBlameAnnotation {
 type OnCommit = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Code beside each run's last author; a press picks it.
+///
+/// ```
+/// use ely_git::{Blame, BlameView};
+///
+/// let blame = Blame {
+///     commit: "a1b2c3d".into(),
+///     author: "Ana".into(),
+///     when: "3 days ago".into(),
+///     subject: "Fix the parser".into(),
+///     age: 0.2,
+/// };
+/// let view = BlameView::new("blame", "let a = 1;\nlet b = 2;", [0, 0], [blame])
+///     .current(1)
+///     .on_commit(|_commit, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BlameView {
     id: ElementId,
@@ -119,6 +152,7 @@ impl BlameView {
         self
     }
 
+    /// Runs with the commit of the run pressed.
     pub fn on_commit(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

@@ -88,6 +88,16 @@ pub(super) fn marks(first: Date, count: i32) -> Vec<(i32, String)> {
 }
 
 /// Tasks on a timeline, a row each: bars from first day to last, filled as far as they are done, with arrows from the tasks they wait for and a line at today. Hover a row to read it.
+///
+/// ```
+/// use ely_charts::{GanttChart, Task};
+/// use jiff::civil::date;
+///
+/// let plan = GanttChart::new("plan")
+///     .task(Task::new("Design", date(2026, 10, 1), date(2026, 10, 7)).done(1.0))
+///     .task(Task::new("Build", date(2026, 10, 8), date(2026, 10, 20)).after(0))
+///     .today(date(2026, 10, 12));
+/// ```
 #[derive(IntoElement)]
 pub struct GanttChart {
     base: Div,
@@ -97,6 +107,7 @@ pub struct GanttChart {
 }
 
 impl GanttChart {
+    /// A Gantt chart under `id`, with no tasks yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),

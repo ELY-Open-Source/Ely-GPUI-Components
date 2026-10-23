@@ -108,6 +108,13 @@ fn share(bounds: Bounds<Pixels>, at: gpui::Point<Pixels>) -> (f32, f32) {
 }
 
 /// A picture to mark up, its shape from the host: boxes, arrows, freehand lines and numbered pins, each in one of four chart colors. Tools and colors sit above; V, B, A, P and N pick a tool; with Select a press chooses a mark, Delete removes it and Escape lets it go; Cmd-Z and Shift-Cmd-Z undo and redo. The host keeps the marks.
+///
+/// ```
+/// use ely_media::{ImageAnnotator, Mark};
+///
+/// let marks = [Mark::Box { from: (0.1, 0.2), to: (0.4, 0.5), color: 0 }];
+/// let notes = ImageAnnotator::new("notes", "photos/desk.png", 1.5, marks).on_change(|_marks, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ImageAnnotator {
     id: ElementId,
@@ -142,6 +149,7 @@ impl ImageAnnotator {
         }
     }
 
+    /// Runs with the marks after each change.
     pub fn on_change(mut self, handler: impl Fn(&[Mark], &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

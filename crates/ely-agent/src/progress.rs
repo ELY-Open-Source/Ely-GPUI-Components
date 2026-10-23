@@ -17,13 +17,27 @@ use crate::{
 /// One step of an agent's work: what it did, where it stands, a line below, how long it took.
 #[derive(Clone, Debug, PartialEq)]
 pub struct AgentStep {
+    /// What it did.
     pub title: SharedString,
+    /// Where it stands.
     pub state: StepState,
+    /// A line below it.
     pub detail: Option<SharedString>,
+    /// How long it took.
     pub took: Option<Duration>,
 }
 
 /// An agent's steps down a rail, each marked by where it stands.
+///
+/// ```
+/// use ely_agent::{AgentStep, AgentStepList};
+/// use ely_chat::StepState;
+///
+/// let steps = AgentStepList::new(
+///     "steps",
+///     [AgentStep { title: "Read the brief".into(), state: StepState::Done, detail: None, took: None }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct AgentStepList {
     id: ElementId,
@@ -31,6 +45,7 @@ pub struct AgentStepList {
 }
 
 impl AgentStepList {
+    /// A list under `id` of `steps`.
     pub fn new(id: impl Into<ElementId>, steps: impl IntoIterator<Item = AgentStep>) -> Self {
         Self {
             id: id.into(),
@@ -74,6 +89,13 @@ impl RenderOnce for AgentStepList {
 }
 
 /// An agent's plan: items waiting, at work or done, with how many are done; a done item goes quiet and struck through.
+///
+/// ```
+/// use ely_agent::AgentPlan;
+/// use ely_chat::StepState;
+///
+/// let plan = AgentPlan::new("plan", "Ship the docs", [("Write", StepState::Done), ("Review", StepState::Working)]);
+/// ```
 #[derive(IntoElement)]
 pub struct AgentPlan {
     id: ElementId,
@@ -82,6 +104,7 @@ pub struct AgentPlan {
 }
 
 impl AgentPlan {
+    /// A plan under `id` titled `title`, its items each with where it stands.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,
@@ -165,14 +188,20 @@ impl RenderOnce for AgentPlan {
 /// Where an agent stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AgentState {
+    /// Deciding what to do.
     Planning,
+    /// Doing it.
     Working,
+    /// Waiting on someone.
     Waiting,
+    /// Finished.
     Done,
+    /// Stopped by an error.
     Failed,
 }
 
 impl AgentState {
+    /// Its state as a word.
     pub fn label(self) -> &'static str {
         match self {
             Self::Planning => "Planning",
@@ -185,6 +214,12 @@ impl AgentState {
 }
 
 /// A pill that says where an agent stands, moving while it plans or works.
+///
+/// ```
+/// use ely_agent::{AgentState, AgentStatus};
+///
+/// let status = AgentStatus::new("status", AgentState::Working);
+/// ```
 #[derive(IntoElement)]
 pub struct AgentStatus {
     id: ElementId,
@@ -192,6 +227,7 @@ pub struct AgentStatus {
 }
 
 impl AgentStatus {
+    /// A pill under `id` for `state`.
     pub fn new(id: impl Into<ElementId>, state: AgentState) -> Self {
         Self {
             id: id.into(),
@@ -246,6 +282,13 @@ impl RenderOnce for AgentStatus {
 }
 
 /// How far an agent has come: the step at work, how many are done of how many, the time so far, and a bar split by step when there are two or more.
+///
+/// ```
+/// use ely_agent::AgentProgress;
+/// use std::time::Duration;
+///
+/// let progress = AgentProgress::new("progress", "Running tests", 2, 5).elapsed(Duration::from_secs(48));
+/// ```
 #[derive(IntoElement)]
 pub struct AgentProgress {
     id: ElementId,
@@ -256,6 +299,7 @@ pub struct AgentProgress {
 }
 
 impl AgentProgress {
+    /// Progress under `id` at step `current`, `done` of `total`.
     pub fn new(
         id: impl Into<ElementId>,
         current: impl Into<SharedString>,
@@ -275,6 +319,7 @@ impl AgentProgress {
         }
     }
 
+    /// The time so far.
     pub fn elapsed(mut self, elapsed: Duration) -> Self {
         self.elapsed = Some(elapsed);
         self

@@ -82,6 +82,12 @@ fn revealed(id: &ElementId, text: &str, live: bool, window: &mut Window, cx: &mu
 }
 
 /// Text as it arrives: what came in shows at a steady pace, catching up when far behind, with a caret while more may come.
+///
+/// ```
+/// use ely_chat::StreamingText;
+///
+/// let reply = StreamingText::new("reply", "The boat left", true);
+/// ```
 #[derive(IntoElement)]
 pub struct StreamingText {
     id: ElementId,
@@ -126,12 +132,19 @@ impl RenderOnce for StreamingText {
 }
 
 /// Where more will come before any text has: a small block that blinks while it waits, still under reduced motion.
+///
+/// ```
+/// use ely_chat::StreamingCursor;
+///
+/// let cursor = StreamingCursor::new("cursor");
+/// ```
 #[derive(IntoElement)]
 pub struct StreamingCursor {
     id: ElementId,
 }
 
 impl StreamingCursor {
+    /// A cursor under `id`.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self { id: id.into() }
     }
@@ -152,6 +165,12 @@ impl RenderOnce for StreamingCursor {
 }
 
 /// Markdown as it arrives, revealed like streaming text: headings, lists, tables and math take shape as their lines land, code in code blocks.
+///
+/// ```
+/// use ely_chat::StreamingMarkdown;
+///
+/// let reply = StreamingMarkdown::new("reply", "## Plan\n\n- Pack", true);
+/// ```
 #[derive(IntoElement)]
 pub struct StreamingMarkdown {
     id: ElementId,

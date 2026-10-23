@@ -21,10 +21,15 @@ const ALL: &str = "All";
 /// A page to start from: its name, icon, category, a line about it, and its text as markdown.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Template {
+    /// Its name.
     pub name: SharedString,
+    /// Its icon, an emoji.
     pub icon: SharedString,
+    /// Its category.
     pub category: SharedString,
+    /// A line about it.
     pub description: SharedString,
+    /// Its text, as markdown.
     pub markdown: SharedString,
 }
 
@@ -52,6 +57,22 @@ pub(crate) fn kept(templates: &[Template], query: &str, category: &str) -> Vec<u
 }
 
 /// Pages to start from: found by name, kept by category, the one in view shown as it will read; Use takes it.
+///
+/// ```
+/// use ely_documents::{Template, TemplatePicker};
+///
+/// let start = TemplatePicker::new(
+///     "start",
+///     vec![Template {
+///         name: "Meeting".into(),
+///         icon: "📝".into(),
+///         category: "Work".into(),
+///         description: "Notes and actions".into(),
+///         markdown: "# Meeting\n\n## Actions".into(),
+///     }],
+/// )
+/// .on_use(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TemplatePicker {
     id: ElementId,
@@ -60,6 +81,7 @@ pub struct TemplatePicker {
 }
 
 impl TemplatePicker {
+    /// A picker under `id` of `templates`. Panics on none.
     pub fn new(id: impl Into<ElementId>, templates: impl Into<Rc<Vec<Template>>>) -> Self {
         let templates = templates.into();
         assert!(!templates.is_empty(), "a template picker has templates");

@@ -66,6 +66,12 @@ macro_rules! sized_chart {
 }
 
 /// How values spread: bars counting them in equal bins across their rounded range.
+///
+/// ```
+/// use ely_charts::Histogram;
+///
+/// let latency = Histogram::new("latency", [12.0, 15.0, 15.5, 18.0, 31.0]).bins(4);
+/// ```
 #[derive(IntoElement)]
 pub struct Histogram {
     base: Div,
@@ -75,6 +81,7 @@ pub struct Histogram {
 }
 
 impl Histogram {
+    /// A histogram under `id` of `values`. Panics on a value not finite or past `LIMIT`.
     pub fn new(id: impl Into<ElementId>, values: impl IntoIterator<Item = f64>) -> Self {
         let values: Vec<f64> = values.into_iter().collect();
         assert!(
@@ -89,6 +96,7 @@ impl Histogram {
         }
     }
 
+    /// How many bins, ten unless set. Panics on zero.
     pub fn bins(mut self, bins: usize) -> Self {
         assert!(bins > 0, "a histogram needs a bin");
         self.bins = bins;
@@ -113,6 +121,15 @@ impl Histogram {
 sized_chart!(Histogram);
 
 /// A running total from a start through its changes: rises and falls float from where the last left off, and totals stand on zero.
+///
+/// ```
+/// use ely_charts::WaterfallChart;
+///
+/// let profit = WaterfallChart::new("profit")
+///     .step("Revenue", 120.0)
+///     .step("Costs", -70.0)
+///     .total("Profit");
+/// ```
 #[derive(IntoElement)]
 pub struct WaterfallChart {
     base: Div,
@@ -121,6 +138,7 @@ pub struct WaterfallChart {
 }
 
 impl WaterfallChart {
+    /// A waterfall under `id`, with no steps yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -227,6 +245,14 @@ impl WaterfallChart {
 sized_chart!(WaterfallChart);
 
 /// Spreads side by side: a box from the first quartile to the third with the median across it, whiskers to the farthest values within reach, and dots past them.
+///
+/// ```
+/// use ely_charts::BoxPlot;
+///
+/// let spread = BoxPlot::new("spread")
+///     .group("East", [3.0, 5.0, 6.0, 9.0])
+///     .group("West", [2.0, 4.0, 4.5, 12.0]);
+/// ```
 #[derive(IntoElement)]
 pub struct BoxPlot {
     base: Div,
@@ -235,6 +261,14 @@ pub struct BoxPlot {
 }
 
 /// Spreads side by side as mirrored shapes, each as wide as its values gather, the median marked.
+///
+/// ```
+/// use ely_charts::ViolinPlot;
+///
+/// let spread = ViolinPlot::new("spread")
+///     .group("East", [3.0, 5.0, 6.0, 9.0])
+///     .group("West", [2.0, 4.0, 4.5, 12.0]);
+/// ```
 #[derive(IntoElement)]
 pub struct ViolinPlot {
     base: Div,
@@ -245,6 +279,7 @@ pub struct ViolinPlot {
 macro_rules! grouped {
     ($name:ident) => {
         impl $name {
+            /// A chart under `id`, with no groups yet.
             pub fn new(id: impl Into<ElementId>) -> Self {
                 Self {
                     base: div(),

@@ -18,10 +18,13 @@ type OnThread = Rc<dyn Fn(u64, &mut Window, &mut App)>;
 /// A frame of the call stack: its function, where it is, and whether it is library code.
 #[derive(Clone, Debug, PartialEq)]
 pub struct StackFrame {
+    /// The function.
     pub function: SharedString,
+    /// The file.
     pub path: SharedString,
     /// From one.
     pub line: usize,
+    /// Whether it is library code.
     pub library: bool,
 }
 
@@ -48,6 +51,19 @@ pub(crate) fn shown(frames: &[StackFrame], libraries: bool) -> Vec<Shown> {
 }
 
 /// Where the program is paused, innermost call first: the current frame marked, runs of library frames folded until pressed; a press moves to a frame.
+///
+/// ```
+/// use ely_debug::{CallStack, StackFrame};
+///
+/// let stack = CallStack::new(
+///     "stack",
+///     [
+///         StackFrame { function: "parse".into(), path: "src/parse.rs".into(), line: 40, library: false },
+///         StackFrame { function: "main".into(), path: "src/main.rs".into(), line: 8, library: false },
+///     ],
+/// )
+/// .on_pick(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CallStack {
     id: ElementId,
@@ -59,6 +75,7 @@ pub struct CallStack {
 }
 
 impl CallStack {
+    /// A stack under `id` of `frames`, innermost first, the first current.
     pub fn new(id: impl Into<ElementId>, frames: impl IntoIterator<Item = StackFrame>) -> Self {
         Self {
             id: id.into(),
@@ -70,6 +87,7 @@ impl CallStack {
         }
     }
 
+    /// The current frame, by place; one past the frames is logged and none is marked.
     pub fn current(mut self, frame: usize) -> Self {
         if frame >= self.frames.len() {
             log::error!(
@@ -87,11 +105,13 @@ impl CallStack {
         self
     }
 
+    /// Runs with the frame pressed, by place.
     pub fn on_pick(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with whether library frames should show one by one.
     pub fn on_libraries(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_libraries = Some(Rc::new(handler));
         self
@@ -190,7 +210,9 @@ impl RenderOnce for CallStack {
 /// How a thread stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ThreadState {
+    /// Running.
     Running,
+    /// Waiting.
     Paused,
     /// Stopped on a breakpoint.
     Stopped,
@@ -209,12 +231,23 @@ impl ThreadState {
 /// A thread: its id, its name, and how it stands.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Thread {
+    /// Its id.
     pub id: u64,
+    /// Its name.
     pub name: SharedString,
+    /// How it stands.
     pub state: ThreadState,
 }
 
 /// The program's threads, each with how it stands; a press picks the one whose stack shows.
+///
+/// ```
+/// use ely_debug::{Thread, ThreadList, ThreadState};
+///
+/// let threads = ThreadList::new("threads", [Thread { id: 1, name: "main".into(), state: ThreadState::Stopped }])
+///     .selected(1)
+///     .on_pick(|_id, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ThreadList {
     id: ElementId,
@@ -224,6 +257,7 @@ pub struct ThreadList {
 }
 
 impl ThreadList {
+    /// A list under `id` of `threads`.
     pub fn new(id: impl Into<ElementId>, threads: impl IntoIterator<Item = Thread>) -> Self {
         Self {
             id: id.into(),
@@ -233,11 +267,13 @@ impl ThreadList {
         }
     }
 
+    /// The thread whose stack shows, by id.
     pub fn selected(mut self, thread: u64) -> Self {
         self.selected = Some(thread);
         self
     }
 
+    /// Runs with the id of the thread pressed.
     pub fn on_pick(mut self, handler: impl Fn(u64, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self

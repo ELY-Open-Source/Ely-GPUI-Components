@@ -28,11 +28,14 @@ use crate::forms::{History, InputEvent, TextInput, code_highlights};
 /// A block as the editor gives it out and takes it in: its kind and the text of each of its fields.
 #[derive(Clone, Debug, PartialEq)]
 pub struct BlockData {
+    /// What the block is.
     pub kind: BlockKind,
+    /// The text of each field.
     pub texts: Vec<String>,
 }
 
 impl BlockData {
+    /// A block of `kind` holding `texts`, one per field. Panics on a count the kind cannot hold.
     pub fn new(kind: BlockKind, texts: impl IntoIterator<Item = impl Into<String>>) -> Self {
         let texts: Vec<String> = texts.into_iter().map(Into::into).collect();
         assert!(
@@ -48,6 +51,7 @@ impl BlockData {
 /// What a block editor tells its owner.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum BlockEvent {
+    /// The document changed.
     Changed,
 }
 
@@ -75,6 +79,19 @@ struct Snapshot {
 }
 
 /// A document of blocks, Notion-like, that fills its box and scrolls, keeping the caret in view: prose, lists and to-dos, quotes and callouts, toggles, code, math, diagrams, dividers, tables, media, columns and synced blocks. Markdown at a paragraph's start changes its kind; `/` offers every kind; `@` and `:` suggest people and emoji; blocks drag by their handle. Undo covers text and structure alike.
+///
+/// ```
+/// use ely_documents::{BlockData, BlockEditor, BlockKind};
+/// use gpui::{App, AppContext, Entity, Window};
+///
+/// fn page(window: &mut Window, cx: &mut App) -> Entity<BlockEditor> {
+///     let blocks = vec![
+///         BlockData::new(BlockKind::Heading(1), ["Plan"]),
+///         BlockData::new(BlockKind::Todo(false), ["Ship the docs"]),
+///     ];
+///     cx.new(|cx| BlockEditor::new(blocks, window, cx).people(["ana", "ben"]))
+/// }
+/// ```
 pub struct BlockEditor {
     pub(crate) blocks: Vec<Block>,
     next: u64,
@@ -96,6 +113,7 @@ pub struct BlockEditor {
 impl EventEmitter<BlockEvent> for BlockEditor {}
 
 impl BlockEditor {
+    /// An editor of `blocks`.
     pub fn new(blocks: Vec<BlockData>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let synced = cx.observe_global_in::<SyncedTexts>(window, |editor, _, cx| editor.pull(cx));
         let mut editor = Self {
@@ -437,6 +455,7 @@ impl BlockEditor {
         self.after_change(cx);
     }
 
+    /// Removes the block `key`, the caret moving to the end of the one before; an unknown key is logged.
     pub fn remove(&mut self, key: u64, window: &mut Window, cx: &mut Context<Self>) {
         let Some(ix) = self.found(key, "remove") else {
             return;
@@ -455,6 +474,7 @@ impl BlockEditor {
         }
     }
 
+    /// Copies the block `key` in after it; an unknown key is logged.
     pub fn duplicate(&mut self, key: u64, window: &mut Window, cx: &mut Context<Self>) {
         let Some(ix) = self.found(key, "duplicate") else {
             return;

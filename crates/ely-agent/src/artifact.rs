@@ -15,6 +15,18 @@ use crate::{
 };
 
 /// What an agent made, in a panel of its own: its title, the version shown among all, copy and download, and the artifact, as preview or source when it has both.
+///
+/// ```
+/// use ely_agent::ArtifactPanel;
+/// use ely_core::primitives::IconName;
+/// use gpui::div;
+///
+/// let page = ArtifactPanel::new("page", "Landing page", IconName::FileCode)
+///     .preview(div())
+///     .source(div())
+///     .version(2, 3, |_version, _, _| {})
+///     .on_copy(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ArtifactPanel {
     id: ElementId,
@@ -28,6 +40,7 @@ pub struct ArtifactPanel {
 }
 
 impl ArtifactPanel {
+    /// A panel under `id` titled `title`, with its icon.
     pub fn new(id: impl Into<ElementId>, title: impl Into<SharedString>, icon: IconName) -> Self {
         Self {
             id: id.into(),
@@ -64,11 +77,13 @@ impl ArtifactPanel {
         self
     }
 
+    /// Offers to copy the artifact.
     pub fn on_copy(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_copy = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to download the artifact.
     pub fn on_download(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_download = Some(Rc::new(handler));
         self

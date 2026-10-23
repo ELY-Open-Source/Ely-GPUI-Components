@@ -56,6 +56,16 @@ pub(crate) fn fill(template: &str, values: &[(String, String)]) -> (String, Vec<
 }
 
 /// A prompt to try: a template whose `{names}` become fields, the prompt as it will go with blanks marked, Run once every name has a value, and what came back with its tokens and time.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_generative::PromptPlayground;
+/// use gpui::Entity;
+///
+/// fn playground(template: &Entity<TextInput>) -> PromptPlayground {
+///     PromptPlayground::new("playground", template).on_run(|_prompt, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PromptPlayground {
     id: ElementId,

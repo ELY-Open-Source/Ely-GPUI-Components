@@ -22,8 +22,11 @@ pub enum TunePhase {
     Queued(usize),
     /// Training: the epoch under way from one, of how many, and the share of it done.
     Running(usize, usize, f32),
+    /// Finished.
     Done,
+    /// Failed, and why.
     Failed(SharedString),
+    /// Stopped by the owner.
     Canceled,
 }
 
@@ -50,6 +53,14 @@ pub(crate) fn progress(epoch: usize, epochs: usize, share: f32) -> (f32, String)
 }
 
 /// A fine-tuning job: its name, the base model and data it learns from, where it stands, how far it has come by epoch, and its loss on training and held-out data. Cancel while it waits or trains; Open once done.
+///
+/// ```
+/// use ely_generative::{FineTuneJobCard, TunePhase};
+///
+/// let job = FineTuneJobCard::new("job", "support-v2", "ely-8b", "tickets.jsonl", TunePhase::Running(2, 3, 0.4))
+///     .loss(vec![1.2, 0.8], vec![1.3, 0.9])
+///     .on_cancel(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FineTuneJobCard {
     id: ElementId,
@@ -64,6 +75,7 @@ pub struct FineTuneJobCard {
 }
 
 impl FineTuneJobCard {
+    /// A card under `id` for the job `name`, tuning `base` on `data`, in `phase`.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -108,11 +120,13 @@ impl FineTuneJobCard {
         self
     }
 
+    /// Offers to stop the job.
     pub fn on_cancel(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_cancel = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to open the tuned model.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self

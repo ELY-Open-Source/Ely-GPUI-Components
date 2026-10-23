@@ -21,9 +21,13 @@ pub enum Overlay {
 /// A pane of its own under the prices.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Study {
+    /// Moving average convergence and divergence.
     Macd,
+    /// The relative strength index.
     Rsi,
+    /// The stochastic K, D and J lines.
     Kdj,
+    /// On-balance volume.
     Obv,
 }
 

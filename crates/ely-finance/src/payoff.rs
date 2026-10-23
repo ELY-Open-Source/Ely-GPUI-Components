@@ -15,9 +15,13 @@ use crate::{
 /// A leg of an options position: a call or a put at a strike, how many (negative when sold), and the premium paid or taken for each.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Leg {
+    /// A call, rather than a put.
     pub call: bool,
+    /// The strike price.
     pub strike: f64,
+    /// How many, negative when sold.
     pub quantity: f64,
+    /// The premium paid or taken for each.
     pub premium: f64,
 }
 
@@ -46,6 +50,20 @@ pub(crate) fn breakevens(prices: &[f64], values: &[f64]) -> Vec<f64> {
 }
 
 /// What an options position pays at expiry across prices of the underlying: profit shaded above zero, loss below, the break-evens and the price marked. Hover reads the result at any price.
+///
+/// ```
+/// use ely_finance::{Leg, PayoffDiagram};
+///
+/// let spread = PayoffDiagram::new(
+///     "spread",
+///     [
+///         Leg { call: true, strike: 100.0, quantity: 1.0, premium: 3.0 },
+///         Leg { call: true, strike: 110.0, quantity: -1.0, premium: 1.0 },
+///     ],
+///     (80.0, 130.0),
+///     104.0,
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct PayoffDiagram {
     base: Div,
@@ -78,6 +96,7 @@ impl PayoffDiagram {
         }
     }
 
+    /// Profit in red and loss in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

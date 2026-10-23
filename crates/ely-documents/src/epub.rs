@@ -19,7 +19,9 @@ const SIZES: [TextSize; 4] = [TextSize::Sm, TextSize::Base, TextSize::Lg, TextSi
 /// A chapter of a book the app opened: its title and its text, as markdown.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Chapter {
+    /// The chapter's title.
     pub title: SharedString,
+    /// Its text, as markdown.
     pub markdown: SharedString,
 }
 
@@ -32,6 +34,16 @@ struct Place {
 }
 
 /// A book read a chapter at a time: the chapter in a column sized for reading with how far through it the reader is, the chapters listed to jump between, the type a step larger or smaller, and the chapters before and after a press away.
+///
+/// ```
+/// use ely_documents::{Chapter, EpubReader};
+///
+/// let book = EpubReader::new(
+///     "book",
+///     "The Sea",
+///     vec![Chapter { title: "One".into(), markdown: "The boat left at dawn.".into() }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct EpubReader {
     id: ElementId,
@@ -40,6 +52,7 @@ pub struct EpubReader {
 }
 
 impl EpubReader {
+    /// A reader under `id` of the book `title` and its `chapters`. Panics on none.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

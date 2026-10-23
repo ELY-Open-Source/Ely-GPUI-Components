@@ -20,8 +20,11 @@ const QUICK: [&str; 6] = ["👍", "❤️", "🎉", "😄", "👀", "🙏"];
 /// A reaction on a comment: its emoji, how many gave it, and whether you did.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Reaction {
+    /// Its emoji.
     pub emoji: SharedString,
+    /// How many gave it.
     pub count: usize,
+    /// Whether you did.
     pub mine: bool,
 }
 
@@ -56,6 +59,12 @@ pub fn toggled(reactions: &[Reaction], emoji: &str) -> Vec<Reaction> {
 }
 
 /// Picks an emoji to react with: a few most used, then every one.
+///
+/// ```
+/// use ely_collab::ReactionPicker;
+///
+/// let pick = ReactionPicker::new("pick", |_emoji, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ReactionPicker {
     id: ElementId,
@@ -63,6 +72,7 @@ pub struct ReactionPicker {
 }
 
 impl ReactionPicker {
+    /// A picker under `id`; `on_pick` takes the emoji picked.
     pub fn new(
         id: impl Into<ElementId>,
         on_pick: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -112,6 +122,13 @@ impl RenderOnce for ReactionPicker {
 }
 
 /// Reactions under a comment: each emoji with its count, yours outlined; a press toggles yours, and the picker adds another.
+///
+/// ```
+/// use ely_collab::{Reaction, Reactions};
+///
+/// let reactions = Reactions::new("reactions", [Reaction { emoji: "👍".into(), count: 3, mine: true }])
+///     .on_toggle(|_emoji, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Reactions {
     id: ElementId,
@@ -120,6 +137,7 @@ pub struct Reactions {
 }
 
 impl Reactions {
+    /// Reactions under `id`, in order.
     pub fn new(id: impl Into<ElementId>, reactions: impl IntoIterator<Item = Reaction>) -> Self {
         Self {
             id: id.into(),

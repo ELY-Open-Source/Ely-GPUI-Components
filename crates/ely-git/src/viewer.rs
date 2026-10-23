@@ -23,7 +23,9 @@ use crate::{
 /// How a diff lays out.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum DiffLayout {
+    /// Old and new lines in one column.
     Unified,
+    /// Old lines left, new lines right.
     Split,
 }
 
@@ -35,6 +37,14 @@ type OnLayout = Rc<dyn Fn(DiffLayout, &mut Window, &mut App)>;
 type OnLine = Rc<dyn Fn(Place, bool, &mut Window, &mut App)>;
 
 /// A file's changes, unified or split; fills its box.
+///
+/// ```
+/// use ely_git::{DiffLayout, DiffViewer};
+///
+/// let change = DiffViewer::new("change", "src/lib.rs", "let a = 1;\n", "let a = 2;\n")
+///     .layout(DiffLayout::Split)
+///     .on_layout(|_layout, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DiffViewer {
     id: ElementId,
@@ -54,6 +64,7 @@ pub struct DiffViewer {
 }
 
 impl DiffViewer {
+    /// A viewer under `id` of the change in `path` from `old` to `new`.
     pub fn new(
         id: impl Into<ElementId>,
         path: impl Into<SharedString>,
@@ -134,6 +145,7 @@ impl DiffViewer {
         self
     }
 
+    /// How its lines lay out.
     pub fn layout(mut self, layout: DiffLayout) -> Self {
         self.layout = layout;
         self
@@ -145,11 +157,13 @@ impl DiffViewer {
         self
     }
 
+    /// Runs with the place of a folded stretch pressed open.
     pub fn on_open(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the layout picked.
     pub fn on_layout(
         mut self,
         handler: impl Fn(DiffLayout, &mut Window, &mut App) + 'static,

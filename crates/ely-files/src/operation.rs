@@ -18,7 +18,9 @@ use crate::{
 /// What an operation does to files.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FileOperation {
+    /// Copies the files.
     Copy,
+    /// Moves the files.
     Move,
 }
 
@@ -47,6 +49,14 @@ pub(crate) fn headline(
 }
 
 /// A copy or a move under way: what it does and where to, a bar, the bytes done of all with the time left, and the file it takes now. Pause or resume and cancel while it runs; a failure says why in the danger tone.
+///
+/// ```
+/// use ely_files::{FileOperation, FileOperationProgress, TransferState};
+///
+/// let copy = FileOperationProgress::new("copy", FileOperation::Copy, 12, "Backup", (4_000_000, 9_000_000), TransferState::Moving { rate: 800_000 })
+///     .current("IMG_7.jpg")
+///     .on_cancel(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileOperationProgress {
     id: ElementId,
@@ -97,16 +107,19 @@ impl FileOperationProgress {
         self
     }
 
+    /// Offers to pause.
     pub fn on_pause(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_pause = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to resume.
     pub fn on_resume(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_resume = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to cancel.
     pub fn on_cancel(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_cancel = Some(Rc::new(handler));
         self

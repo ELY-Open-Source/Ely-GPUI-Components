@@ -31,6 +31,14 @@ type OnFlag = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 type OnRun = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A tool's log by channel: pick the channel, clear it, and keep the newest line in view or let it stay put.
+///
+/// ```
+/// use ely_editor::OutputPanel;
+///
+/// let output = OutputPanel::new("output", ["Build", "Tests"], "Build", ["Compiling ely", "Finished"])
+///     .follow(true)
+///     .on_channel(|_channel, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct OutputPanel {
     id: ElementId,
@@ -44,6 +52,7 @@ pub struct OutputPanel {
 }
 
 impl OutputPanel {
+    /// A panel under `id` over `channels`, showing `channel` and its `lines`, oldest first.
     pub fn new(
         id: impl Into<ElementId>,
         channels: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -73,6 +82,7 @@ impl OutputPanel {
         self
     }
 
+    /// Runs with the channel picked.
     pub fn on_channel(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -81,11 +91,13 @@ impl OutputPanel {
         self
     }
 
+    /// Runs when Clear is pressed.
     pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_clear = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with whether the newest line should stay in view.
     pub fn on_follow(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_follow = Some(Rc::new(handler));
         self
@@ -174,13 +186,32 @@ impl RenderOnce for OutputPanel {
 /// What a debug console shows: what was typed, what came back, a value with its type, or an error.
 #[derive(Clone, Debug, PartialEq)]
 pub enum ConsoleEntry {
+    /// What was typed.
     Input(SharedString),
+    /// What came back.
     Output(SharedString),
+    /// A value and its type.
     Value(SharedString, SharedString),
+    /// An error.
     Error(SharedString),
 }
 
 /// A read-eval-print prompt beside a paused program: entries above, the prompt below; Enter evaluates.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_editor::{ConsoleEntry, DebugConsole};
+/// use gpui::Entity;
+///
+/// fn repl(field: &Entity<TextInput>) -> DebugConsole {
+///     DebugConsole::new(
+///         "repl",
+///         field,
+///         [ConsoleEntry::Input("x + 1".into()), ConsoleEntry::Value("42".into(), "i32".into())],
+///     )
+///     .on_eval(|_prompt, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct DebugConsole {
     id: ElementId,
@@ -190,6 +221,7 @@ pub struct DebugConsole {
 }
 
 impl DebugConsole {
+    /// A console under `id` of `entries`; `field` holds the prompt.
     pub fn new(
         id: impl Into<ElementId>,
         field: &Entity<TextInput>,
@@ -203,6 +235,7 @@ impl DebugConsole {
         }
     }
 
+    /// Runs with the prompt when Enter evaluates it.
     pub fn on_eval(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

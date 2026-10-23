@@ -178,6 +178,14 @@ pub(crate) fn sankey(
 }
 
 /// How things flow from where they start to where they end: nodes in columns, ribbons as thick as what passes. Hover a node or a ribbon to read it.
+///
+/// ```
+/// use ely_charts::SankeyChart;
+///
+/// let visits = SankeyChart::new("visits", ["Search", "Home", "Signup"])
+///     .link(0, 1, 80.0)
+///     .link(1, 2, 30.0);
+/// ```
 #[derive(IntoElement)]
 pub struct SankeyChart {
     base: Div,
@@ -188,6 +196,7 @@ pub struct SankeyChart {
 }
 
 impl SankeyChart {
+    /// A Sankey chart under `id` over `nodes`; links name them by place.
     pub fn new(
         id: impl Into<ElementId>,
         nodes: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -219,6 +228,7 @@ impl SankeyChart {
         self
     }
 
+    /// How values read beside the nodes and in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

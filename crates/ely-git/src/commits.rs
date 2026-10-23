@@ -17,17 +17,37 @@ use crate::{
 /// A commit as lists show it; first parent first.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Commit {
+    /// Its id.
     pub id: SharedString,
+    /// Its parents' ids, the first parent first.
     pub parents: Vec<SharedString>,
+    /// Its subject.
     pub subject: SharedString,
+    /// Who made it.
     pub author: SharedString,
+    /// When, as it reads.
     pub when: SharedString,
+    /// The branches and tags pointing at it.
     pub refs: Vec<SharedString>,
 }
 
 type OnPick = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// One commit in a row: author, subject, refs, id, when.
+///
+/// ```
+/// use ely_git::{Commit, CommitItem};
+///
+/// let commit = Commit {
+///     id: "a1b2c3d".into(),
+///     parents: vec!["9f8e7d6".into()],
+///     subject: "Fix the parser".into(),
+///     author: "Ana".into(),
+///     when: "3 days ago".into(),
+///     refs: vec!["main".into()],
+/// };
+/// let row = CommitItem::new("row", commit).on_pick(|_id, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CommitItem {
     id: ElementId,
@@ -37,6 +57,7 @@ pub struct CommitItem {
 }
 
 impl CommitItem {
+    /// A row under `id` for `commit`.
     pub fn new(id: impl Into<ElementId>, commit: Commit) -> Self {
         Self {
             id: id.into(),
@@ -46,11 +67,13 @@ impl CommitItem {
         }
     }
 
+    /// Marks the row as picked.
     pub fn selected(mut self, selected: bool) -> Self {
         self.selected = selected;
         self
     }
 
+    /// Runs with the commit's id when the row is pressed.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -141,6 +164,22 @@ impl RenderOnce for CommitItem {
 type OnEnd = Rc<dyn Fn(&mut App)>;
 
 /// Commits newest first; draws rows in view, fills its box.
+///
+/// ```
+/// use ely_git::{Commit, CommitList, lanes};
+/// use std::rc::Rc;
+///
+/// let commit = Commit {
+///     id: "a1b2c3d".into(),
+///     parents: Vec::new(),
+///     subject: "First commit".into(),
+///     author: "Ana".into(),
+///     when: "3 days ago".into(),
+///     refs: Vec::new(),
+/// };
+/// let graph = lanes([("a1b2c3d", &[][..])]);
+/// let log = CommitList::new("log", Rc::new(vec![commit])).graph(Rc::new(graph));
+/// ```
 #[derive(IntoElement)]
 pub struct CommitList {
     id: ElementId,
@@ -152,6 +191,7 @@ pub struct CommitList {
 }
 
 impl CommitList {
+    /// A list under `id` of `commits`, newest first.
     pub fn new(id: impl Into<ElementId>, commits: Rc<Vec<Commit>>) -> Self {
         Self {
             id: id.into(),
@@ -163,11 +203,13 @@ impl CommitList {
         }
     }
 
+    /// The commit shown as picked, by id.
     pub fn selected(mut self, id: impl Into<SharedString>) -> Self {
         self.selected = Some(id.into());
         self
     }
 
+    /// Runs with the id of the commit pressed.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

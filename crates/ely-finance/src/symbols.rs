@@ -16,6 +16,12 @@ use crate::{
 };
 
 /// A symbol as a small tile of its letters, toned steadily from its name, beside the symbol and what it trades on.
+///
+/// ```
+/// use ely_finance::SymbolBadge;
+///
+/// let badge = SymbolBadge::new("badge", "ELY").venue("NASDAQ");
+/// ```
 #[derive(IntoElement)]
 pub struct SymbolBadge {
     id: ElementId,
@@ -24,6 +30,7 @@ pub struct SymbolBadge {
 }
 
 impl SymbolBadge {
+    /// A badge under `id` for `symbol`.
     pub fn new(id: impl Into<ElementId>, symbol: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -73,6 +80,17 @@ impl RenderOnce for SymbolBadge {
 }
 
 /// A search for a symbol by its letters or its name, each result with where it trades.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_finance::SymbolSearch;
+/// use gpui::Entity;
+///
+/// fn search(field: &Entity<TextInput>) -> SymbolSearch {
+///     SymbolSearch::new("search", field, [("ELY".into(), "Ely Inc.".into(), "NASDAQ".into())])
+///         .on_pick(|_symbol, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SymbolSearch {
     id: ElementId,
@@ -96,6 +114,7 @@ impl SymbolSearch {
         }
     }
 
+    /// Runs with the symbol picked.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -124,16 +143,38 @@ impl RenderOnce for SymbolSearch {
 /// A symbol on a watchlist: its name, last price, the last session's close, and today's prices so far.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Watch {
+    /// The ticker.
     pub symbol: SharedString,
+    /// The company's name.
     pub name: SharedString,
+    /// The last price.
     pub last: f64,
+    /// The last session's close.
     pub close: f64,
+    /// Today's prices so far, oldest first.
     pub day: Vec<f32>,
 }
 
 type OnSymbol = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// Symbols to keep an eye on, each with its tile, today's line, its price and move; a press picks one, and the keys walk the list.
+///
+/// ```
+/// use ely_finance::{Watch, Watchlist};
+///
+/// let list = Watchlist::new(
+///     "list",
+///     [Watch {
+///         symbol: "ELY".into(),
+///         name: "Ely Inc.".into(),
+///         last: 14.2,
+///         close: 12.9,
+///         day: vec![12.9, 13.6, 14.2],
+///     }],
+/// )
+/// .selected("ELY")
+/// .on_select(|_symbol, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Watchlist {
     id: ElementId,
@@ -144,6 +185,7 @@ pub struct Watchlist {
 }
 
 impl Watchlist {
+    /// A list under `id` of `watches`.
     pub fn new(id: impl Into<ElementId>, watches: impl IntoIterator<Item = Watch>) -> Self {
         Self {
             id: id.into(),
@@ -154,11 +196,13 @@ impl Watchlist {
         }
     }
 
+    /// The symbol picked.
     pub fn selected(mut self, symbol: impl Into<SharedString>) -> Self {
         self.selected = Some(symbol.into());
         self
     }
 
+    /// Runs with the symbol pressed or reached by key.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -167,6 +211,7 @@ impl Watchlist {
         self
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -248,6 +293,18 @@ impl RenderOnce for Watchlist {
 type OnRules = Rc<dyn Fn(&[FilterRule], bool, &mut Window, &mut App)>;
 
 /// Securities narrowed by rules: the rules to build above, and the table of what passes them below.
+///
+/// ```
+/// use ely_core::tables::{Cell, Column, Row};
+/// use ely_finance::Screener;
+///
+/// let screen = Screener::new(
+///     "screen",
+///     [Column::new("symbol", "Symbol"), Column::new("pe", "P/E")],
+///     [Row::new("ely", [Cell::Text("ELY".into()), Cell::Number(18.0)])],
+/// )
+/// .on_rules(|_rules, _any, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Screener {
     id: ElementId,
@@ -259,6 +316,7 @@ pub struct Screener {
 }
 
 impl Screener {
+    /// A screener under `id` over a table of `columns` and `rows`.
     pub fn new(
         id: impl Into<ElementId>,
         columns: impl IntoIterator<Item = Column>,
@@ -281,6 +339,7 @@ impl Screener {
         self
     }
 
+    /// Runs with the rules and whether a row passes any rather than all, after each change.
     pub fn on_rules(
         mut self,
         handler: impl Fn(&[FilterRule], bool, &mut Window, &mut App) + 'static,

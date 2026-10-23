@@ -22,9 +22,13 @@ type OnBool = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 /// Where a pull request stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PullState {
+    /// Open for review.
     Open,
+    /// Not ready for review.
     Draft,
+    /// Merged.
     Merged,
+    /// Closed without merging.
     Closed,
 }
 
@@ -42,22 +46,53 @@ impl PullState {
 /// A pull request: number, title and author, the branch it merges and where, its state, checks, reviewers, comments and size.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PullRequest {
+    /// Its number.
     pub number: u32,
+    /// Its title.
     pub title: SharedString,
+    /// Who opened it.
     pub author: SharedString,
+    /// The branch it merges.
     pub head: SharedString,
+    /// The branch it merges into.
     pub base: SharedString,
+    /// Where it stands.
     pub state: PullState,
     /// Checks passed, failed, and still running.
     pub checks: (usize, usize, usize),
+    /// Who reviews it.
     pub reviewers: Vec<SharedString>,
+    /// How many comments it has.
     pub comments: usize,
+    /// Lines added.
     pub added: usize,
+    /// Lines removed.
     pub removed: usize,
+    /// When it last changed, as it reads.
     pub when: SharedString,
 }
 
 /// A pull request at a glance: state and title, the branches, checks, reviewers, comments and size; a press opens it.
+///
+/// ```
+/// use ely_git::{PullRequest, PullRequestCard, PullState};
+///
+/// let pull = PullRequest {
+///     number: 42,
+///     title: "Fix the parser".into(),
+///     author: "ana".into(),
+///     head: "fix-parser".into(),
+///     base: "main".into(),
+///     state: PullState::Open,
+///     checks: (5, 0, 1),
+///     reviewers: vec!["ben".into()],
+///     comments: 3,
+///     added: 120,
+///     removed: 18,
+///     when: "1 hour ago".into(),
+/// };
+/// let card = PullRequestCard::new("card", pull).on_open(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PullRequestCard {
     id: ElementId,
@@ -66,6 +101,7 @@ pub struct PullRequestCard {
 }
 
 impl PullRequestCard {
+    /// A card under `id` for `pull`.
     pub fn new(id: impl Into<ElementId>, pull: PullRequest) -> Self {
         Self {
             id: id.into(),
@@ -74,6 +110,7 @@ impl PullRequestCard {
         }
     }
 
+    /// Runs when the card is pressed.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -207,12 +244,28 @@ impl RenderOnce for PullRequestCard {
 /// One comment in a review thread.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ReviewNote {
+    /// Who wrote it.
     pub author: SharedString,
+    /// When, as it reads.
     pub when: SharedString,
+    /// What it says.
     pub body: SharedString,
 }
 
 /// A review thread on a line: the line it is about, each comment, a reply field, and resolve or reopen; a resolved thread quiets down.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_git::{ReviewComment, ReviewNote};
+/// use gpui::Entity;
+///
+/// fn thread(reply: &Entity<TextInput>) -> ReviewComment {
+///     let note = ReviewNote { author: "ben".into(), when: "1 hour ago".into(), body: "Unwrap here?".into() };
+///     ReviewComment::new("thread", "src/lib.rs", 12, "let v = read().unwrap();", [note], reply)
+///         .on_reply(|_, _| {})
+///         .on_resolve(|_resolved, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct ReviewComment {
     id: ElementId,
@@ -249,11 +302,13 @@ impl ReviewComment {
         }
     }
 
+    /// Quiets the thread as settled.
     pub fn resolved(mut self, resolved: bool) -> Self {
         self.resolved = resolved;
         self
     }
 
+    /// Runs when Reply is pressed.
     pub fn on_reply(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_reply = Some(Rc::new(handler));
         self

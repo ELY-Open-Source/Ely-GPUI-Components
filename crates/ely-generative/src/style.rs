@@ -16,12 +16,22 @@ use crate::{
 /// A style to generate in: its key, its name, and a picture of it; one with no picture draws a plain tile.
 #[derive(Clone, Debug, PartialEq)]
 pub struct StylePreset {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// Its sample picture, a file or a web address.
     pub picture: Option<SharedString>,
 }
 
 /// Styles to generate in, a tile each with its picture and name. The chosen tile takes accent; each is a Tab stop.
+///
+/// ```
+/// use ely_generative::{StylePreset, StylePresetPicker};
+///
+/// let styles = StylePresetPicker::new("styles", [StylePreset { key: "ink".into(), name: "Ink".into(), picture: None }], "ink")
+///     .on_select(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StylePresetPicker {
     id: ElementId,
@@ -50,6 +60,7 @@ impl StylePresetPicker {
         }
     }
 
+    /// Runs with the key of the preset picked.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

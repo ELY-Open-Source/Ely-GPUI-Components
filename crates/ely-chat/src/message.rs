@@ -16,13 +16,23 @@ use crate::{
 /// Who a message is from, or what it says about the conversation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Role {
+    /// The person asking.
     User,
+    /// The model answering.
     Assistant,
+    /// A note about the conversation.
     System,
+    /// Something that went wrong.
     Error,
 }
 
 /// Who wrote a message at a glance: a person's picture or initials, the assistant's mark, or a warning for an error.
+///
+/// ```
+/// use ely_chat::{MessageAvatar, Role};
+///
+/// let avatar = MessageAvatar::new("avatar", Role::User, "Ana");
+/// ```
 #[derive(IntoElement)]
 pub struct MessageAvatar {
     id: ElementId,
@@ -32,6 +42,7 @@ pub struct MessageAvatar {
 }
 
 impl MessageAvatar {
+    /// An avatar under `id` for `name`, in the look `role` takes.
     pub fn new(id: impl Into<ElementId>, role: Role, name: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -83,6 +94,13 @@ impl RenderOnce for MessageAvatar {
 }
 
 /// A message's name line: who, when, and what model answered.
+///
+/// ```
+/// use ely_chat::MessageHeader;
+/// use jiff::Timestamp;
+///
+/// let header = MessageHeader::new("header", "Assistant").at(Timestamp::UNIX_EPOCH).model("ely-1");
+/// ```
 #[derive(IntoElement)]
 pub struct MessageHeader {
     id: ElementId,
@@ -92,6 +110,7 @@ pub struct MessageHeader {
 }
 
 impl MessageHeader {
+    /// A header under `id` naming `name`.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -101,11 +120,13 @@ impl MessageHeader {
         }
     }
 
+    /// When it was sent.
     pub fn at(mut self, at: Timestamp) -> Self {
         self.at = Some(at);
         self
     }
 
+    /// The model that answered.
     pub fn model(mut self, model: impl Into<SharedString>) -> Self {
         self.model = Some(model.into());
         self
@@ -143,6 +164,12 @@ impl RenderOnce for MessageHeader {
 }
 
 /// A message's last line: quiet facts, such as tokens and time, then its actions.
+///
+/// ```
+/// use ely_chat::MessageFooter;
+///
+/// let footer = MessageFooter::new().fact("512 tokens").fact("1.2 s");
+/// ```
 #[derive(IntoElement, Default)]
 pub struct MessageFooter {
     facts: Vec<SharedString>,
@@ -150,10 +177,12 @@ pub struct MessageFooter {
 }
 
 impl MessageFooter {
+    /// A footer with no facts yet.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// A fact, such as a token count.
     pub fn fact(mut self, fact: impl Into<SharedString>) -> Self {
         self.facts.push(fact.into());
         self
@@ -183,6 +212,15 @@ impl RenderOnce for MessageFooter {
 }
 
 /// One message: yours in a quiet bubble on the right, the assistant's as prose beside its mark, a system note centered and small, an error beside a warning, its body an `ErrorMessage`. A header, a footer and an avatar are optional.
+///
+/// ```
+/// use ely_chat::{MessageBubble, MessageHeader, Role};
+/// use gpui::ParentElement;
+///
+/// let bubble = MessageBubble::new(Role::Assistant)
+///     .header(MessageHeader::new("header", "Assistant"))
+///     .child("Here is the plan.");
+/// ```
 #[derive(IntoElement)]
 pub struct MessageBubble {
     role: Role,
@@ -193,6 +231,7 @@ pub struct MessageBubble {
 }
 
 impl MessageBubble {
+    /// A bubble in the look `role` takes.
     pub fn new(role: Role) -> Self {
         Self {
             role,
@@ -203,16 +242,19 @@ impl MessageBubble {
         }
     }
 
+    /// The avatar beside it.
     pub fn avatar(mut self, avatar: MessageAvatar) -> Self {
         self.avatar = Some(avatar);
         self
     }
 
+    /// The header over it.
     pub fn header(mut self, header: MessageHeader) -> Self {
         self.header = Some(header);
         self
     }
 
+    /// The footer under it.
     pub fn footer(mut self, footer: MessageFooter) -> Self {
         self.footer = Some(footer);
         self
@@ -300,6 +342,13 @@ impl RenderOnce for MessageBubble {
 }
 
 /// A conversation's frame: its messages in a column sized for reading, the composer held at the bottom.
+///
+/// ```
+/// use ely_chat::ChatContainer;
+/// use gpui::div;
+///
+/// let chat = ChatContainer::new(div()).composer(div());
+/// ```
 #[derive(IntoElement)]
 pub struct ChatContainer {
     messages: AnyElement,
@@ -307,6 +356,7 @@ pub struct ChatContainer {
 }
 
 impl ChatContainer {
+    /// A chat of `messages`, such as a `MessageList`.
     pub fn new(messages: impl IntoElement) -> Self {
         Self {
             messages: messages.into_any_element(),
@@ -314,6 +364,7 @@ impl ChatContainer {
         }
     }
 
+    /// The composer under the messages.
     pub fn composer(mut self, composer: impl IntoElement) -> Self {
         self.composer = Some(composer.into_any_element());
         self

@@ -31,6 +31,15 @@ fn clock(played: Duration, length: Duration) -> String {
 }
 
 /// A voice note or a song: play and pause, a waveform lit as far as it has played, and the time; a press on the waveform seeks there, and so do Left and Right once it has focus. The host plays it.
+///
+/// ```
+/// use ely_chat::AudioMessage;
+/// use std::time::Duration;
+///
+/// let voice = AudioMessage::new("voice", vec![0.2, 0.8, 0.5, 0.3], Duration::from_secs(14))
+///     .played(Duration::from_secs(4), true)
+///     .on_toggle(|_play, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AudioMessage {
     id: ElementId,
@@ -191,6 +200,13 @@ impl RenderOnce for AudioMessage {
 }
 
 /// A video in a message: the frame the host shows, its poster or the playing frame, with play and pause over it and the time. The host decodes and plays it.
+///
+/// ```
+/// use ely_chat::VideoMessage;
+/// use std::time::Duration;
+///
+/// let clip = VideoMessage::new("clip", "https://ely.dev/frame.jpg", 1920.0, 1080.0, Duration::from_secs(42));
+/// ```
 #[derive(IntoElement)]
 pub struct VideoMessage {
     id: ElementId,
@@ -222,6 +238,7 @@ impl VideoMessage {
         }
     }
 
+    /// How far it has played, and whether it plays now.
     pub fn played(mut self, played: Duration, playing: bool) -> Self {
         self.played = played.min(self.length);
         self.playing = playing;

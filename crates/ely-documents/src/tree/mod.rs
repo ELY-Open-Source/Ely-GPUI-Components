@@ -21,13 +21,21 @@ use stack::close;
 /// How a stretch of inline text prints.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Style {
+    /// Bold.
     Strong,
+    /// Italic.
     Emphasis,
+    /// Struck through.
     Strike,
+    /// Inline code.
     Code,
+    /// A link.
     Link,
+    /// Inline math.
     Math,
+    /// A footnote reference.
     Footnote,
+    /// Underlined.
     Underline,
     /// A highlighted run, as `<mark>`.
     Mark,
@@ -36,8 +44,11 @@ pub enum Style {
 /// Inline text, its styled stretches and link addresses.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Inline {
+    /// The text as drawn.
     pub text: String,
+    /// Styled stretches, in bytes of `text`.
     pub styles: Vec<(Range<usize>, Style)>,
+    /// Link addresses, in bytes of `text`.
     pub links: Vec<(Range<usize>, String)>,
     /// Where each piece was written: drawn start, source span.
     pub sources: Vec<(usize, Range<usize>, Escapes)>,
@@ -46,50 +57,73 @@ pub struct Inline {
 /// A block of a markdown document.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Node {
+    /// A paragraph.
     Paragraph(Inline),
+    /// A heading of this level.
     Heading(u8, Inline),
+    /// A quote and its blocks.
     Quote(Vec<Node>),
+    /// A code block.
     Code {
+        /// Its language, when named.
         language: Option<String>,
+        /// Its text.
         text: String,
         /// Where its lines start in the source.
         from: usize,
     },
     /// Items and blocks; ordered from `start`; tasks carry checkboxes.
     List {
+        /// The first item's number, when ordered.
         start: Option<u64>,
+        /// Each item's task box, if any, and its blocks.
         items: Vec<(Option<bool>, Vec<Node>)>,
     },
     /// Each cell's blocks: its text, split at pictures.
     Table {
+        /// Each column's alignment.
         aligns: Vec<AlignKind>,
+        /// The head row's cells.
         head: Vec<Vec<Node>>,
+        /// The body rows' cells.
         rows: Vec<Vec<Vec<Node>>>,
     },
+    /// A rule.
     Rule,
+    /// A math block's TeX.
     Math(String),
     /// A picture, and the link around it.
     Image {
+        /// Its alt text.
         alt: String,
+        /// Its address.
         url: String,
+        /// The address it links to.
         link: Option<String>,
         /// Its source start.
         at: usize,
     },
+    /// A footnote definition.
     Footnote {
+        /// Its label.
         label: String,
+        /// Its blocks.
         body: Vec<Node>,
     },
     /// A GitHub alert: a quote under its kind's title.
     Alert {
+        /// Its kind.
         kind: AlertKind,
+        /// Its blocks after the marker.
         body: Vec<Node>,
     },
     /// `[toc]`: the file's headings.
     Toc(Vec<DocumentHeading>),
     /// Front matter, its fences cut; lines start at `from`.
     FrontMatter {
+        /// Its text.
         text: String,
+        /// Where its lines start in the source.
         from: usize,
     },
 }

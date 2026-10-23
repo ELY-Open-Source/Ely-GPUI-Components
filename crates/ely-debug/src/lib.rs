@@ -1,3 +1,6 @@
+//! Ely's debugging and profiling components for GPUI: the debug toolbar, breakpoints, stacks, variables, memory, disassembly, network and profiles.
+#![deny(missing_docs)]
+
 use ely_charts as charts;
 use ely_core::{buttons, forms, primitives, theme, typography};
 

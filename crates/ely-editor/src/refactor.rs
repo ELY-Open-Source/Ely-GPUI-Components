@@ -15,20 +15,27 @@ use crate::{
 /// What a code action does.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ActionKind {
+    /// Fixes a problem.
     QuickFix,
+    /// Reshapes code.
     Refactor,
+    /// Works on the whole file, such as organizing imports.
     Source,
 }
 
 /// A change the tools offer at the cursor; a preferred one leads its group.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CodeAction {
+    /// What it does.
     pub title: SharedString,
+    /// Its kind.
     pub kind: ActionKind,
+    /// Whether it leads its group.
     pub preferred: bool,
 }
 
 impl CodeAction {
+    /// An action titled `title`, of `kind`.
     pub fn new(title: impl Into<SharedString>, kind: ActionKind) -> Self {
         Self {
             title: title.into(),
@@ -37,6 +44,7 @@ impl CodeAction {
         }
     }
 
+    /// Leads its group.
     pub fn preferred(mut self) -> Self {
         self.preferred = true;
         self
@@ -46,6 +54,16 @@ impl CodeAction {
 type OnAction = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// A lightbulb that opens the actions at the cursor: fixes, refactors and source actions, each group led by its preferred one.
+///
+/// ```
+/// use ely_editor::{ActionKind, CodeAction, CodeActionMenu};
+///
+/// let fixes = CodeActionMenu::new(
+///     "fixes",
+///     [CodeAction::new("Import HashMap", ActionKind::QuickFix).preferred()],
+/// )
+/// .on_pick(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CodeActionMenu {
     id: ElementId,
@@ -54,6 +72,7 @@ pub struct CodeActionMenu {
 }
 
 impl CodeActionMenu {
+    /// A menu under `id` of `actions`.
     pub fn new(id: impl Into<ElementId>, actions: impl IntoIterator<Item = CodeAction>) -> Self {
         Self {
             id: id.into(),
@@ -114,6 +133,18 @@ type OnName = Rc<dyn Fn(SharedString, &mut Window, &mut App)>;
 type OnCancel = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A small box over a symbol to rename it: Enter renames everywhere, Escape keeps the name.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_editor::RenameInput;
+/// use gpui::Entity;
+///
+/// fn rename(field: &Entity<TextInput>) -> RenameInput {
+///     RenameInput::new("rename", field)
+///         .on_rename(|_name, _, _| {})
+///         .on_cancel(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RenameInput {
     id: ElementId,
@@ -133,6 +164,7 @@ impl RenameInput {
         }
     }
 
+    /// Runs with the new name on Enter.
     pub fn on_rename(
         mut self,
         handler: impl Fn(SharedString, &mut Window, &mut App) + 'static,
@@ -141,6 +173,7 @@ impl RenameInput {
         self
     }
 
+    /// Runs on Escape.
     pub fn on_cancel(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_cancel = Some(Rc::new(handler));
         self

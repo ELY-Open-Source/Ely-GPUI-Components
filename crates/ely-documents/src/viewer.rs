@@ -24,23 +24,31 @@ const STEPS: [f32; 9] = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0];
 /// A page the app drew: its picture, a file or a web address, and its size in points.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DocPage {
+    /// Its picture: a file or a web address.
     pub source: SharedString,
+    /// Its width in points.
     pub width: f32,
+    /// Its height in points.
     pub height: f32,
 }
 
 /// A stretch of a page a search found, in the page's points.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PageHit {
+    /// The page, by place.
     pub page: usize,
+    /// Its stretch, in the page's points.
     pub bounds: Bounds<f32>,
 }
 
 /// A note pinned to a page, at a point in its points.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PageNote {
+    /// The page, by place.
     pub page: usize,
+    /// Where it sits, in the page's points.
     pub at: Point<f32>,
+    /// What it says.
     pub text: SharedString,
 }
 
@@ -79,6 +87,13 @@ fn page_in_view(scroll: &ScrollHandle, count: usize) -> usize {
 }
 
 /// Pages the app drew, one under another on a desk: the page in view and its count, zoom by steps or to the width, the pages as thumbnails beside, a find bar whose hits light on the page, and notes pinned where a press puts them.
+///
+/// ```
+/// use ely_documents::{DocPage, DocumentViewer};
+///
+/// let page = DocPage { source: "pages/1.png".into(), width: 595.0, height: 842.0 };
+/// let viewer = DocumentViewer::new("viewer", "Report", vec![page]).thumbnails();
+/// ```
 #[derive(IntoElement)]
 pub struct DocumentViewer {
     id: ElementId,
@@ -93,6 +108,7 @@ pub struct DocumentViewer {
 }
 
 impl DocumentViewer {
+    /// A viewer under `id` of the document `title` and its `pages`. Panics on a page with no size.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

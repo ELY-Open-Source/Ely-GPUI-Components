@@ -37,6 +37,12 @@ pub(crate) type OnHeading = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 type DrawCode = Rc<dyn Fn(ElementId, Option<SharedString>, SharedString) -> AnyElement>;
 
 /// Markdown drawn as a document; links go to the host.
+///
+/// ```
+/// use ely_documents::MarkdownRenderer;
+///
+/// let page = MarkdownRenderer::new("page", "# Title\n\nSome **bold** words.").on_link(|_url, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MarkdownRenderer {
     id: ElementId,
@@ -52,6 +58,7 @@ pub struct MarkdownRenderer {
 }
 
 impl MarkdownRenderer {
+    /// Markdown under `id`, drawn from `source`.
     pub fn new(id: impl Into<ElementId>, source: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

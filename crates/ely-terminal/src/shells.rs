@@ -15,13 +15,28 @@ use crate::{
 /// A shell a terminal can start: its name and its program.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ShellChoice {
+    /// Its name, as listed.
     pub name: SharedString,
+    /// The program it runs.
     pub program: SharedString,
 }
 
 type OnIndex = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// A new terminal in the default shell, with the others under its arrow, the default checked.
+///
+/// ```
+/// use ely_terminal::{ShellChoice, ShellSelector};
+///
+/// let shells = ShellSelector::new(
+///     "shells",
+///     [
+///         ShellChoice { name: "zsh".into(), program: "/bin/zsh".into() },
+///         ShellChoice { name: "bash".into(), program: "/bin/bash".into() },
+///     ],
+/// )
+/// .on_pick(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ShellSelector {
     id: ElementId,
@@ -31,6 +46,7 @@ pub struct ShellSelector {
 }
 
 impl ShellSelector {
+    /// A selector under `id` over `shells`, the first the default. Panics on none.
     pub fn new(id: impl Into<ElementId>, shells: impl IntoIterator<Item = ShellChoice>) -> Self {
         let shells: Vec<ShellChoice> = shells.into_iter().collect();
         assert!(
@@ -45,6 +61,7 @@ impl ShellSelector {
         }
     }
 
+    /// The default shell, by place; one past the list is logged and left as it was.
     pub fn default_shell(mut self, default: usize) -> Self {
         if default >= self.shells.len() {
             log::error!(
@@ -96,6 +113,14 @@ impl RenderOnce for ShellSelector {
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// The row over a terminal: its title and how its program stands, the shell selector, and split, clear, stop and maximize.
+///
+/// ```
+/// use ely_terminal::TerminalToolbar;
+///
+/// let bar = TerminalToolbar::new("bar", "cargo test", None)
+///     .on_clear(|_, _| {})
+///     .on_stop(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TerminalToolbar {
     id: ElementId,
@@ -121,6 +146,7 @@ impl TerminalToolbar {
         }
     }
 
+    /// The shell selector, at the right of the title.
     pub fn shells(mut self, selector: ShellSelector) -> Self {
         self.shells = Some(selector.into_any_element());
         self
@@ -137,18 +163,22 @@ impl TerminalToolbar {
         self
     }
 
+    /// Shows a split button; a press runs `run`.
     pub fn on_split(self, run: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.action("split", IconName::Columns2, "Split terminal", run)
     }
 
+    /// Shows a clear button; a press runs `run`.
     pub fn on_clear(self, run: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.action("clear", IconName::Eraser, "Clear", run)
     }
 
+    /// Shows a stop button; a press runs `run`.
     pub fn on_stop(self, run: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.action("stop", IconName::CircleStop, "Stop the program", run)
     }
 
+    /// Shows a maximize button; a press runs `run`.
     pub fn on_maximize(self, run: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.action("maximize", IconName::Maximize2, "Maximize", run)
     }

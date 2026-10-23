@@ -18,6 +18,12 @@ use crate::{
 const RAISE: f32 = 0.4;
 
 /// A note's mark in running text, a small number; resting the pointer on it shows the note.
+///
+/// ```
+/// use ely_documents::Footnote;
+///
+/// let note = Footnote::new("note-1", 1, "First printed in 1952.");
+/// ```
 #[derive(IntoElement)]
 pub struct Footnote {
     id: ElementId,
@@ -26,6 +32,7 @@ pub struct Footnote {
 }
 
 impl Footnote {
+    /// Note `number` under `id`, reading `note`.
     pub fn new(id: impl Into<ElementId>, number: usize, note: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -55,6 +62,12 @@ impl RenderOnce for Footnote {
 }
 
 /// A term whose meaning is a rest of the pointer away: underlined in dashes, its definition in a card.
+///
+/// ```
+/// use ely_documents::TooltipTerm;
+///
+/// let term = TooltipTerm::new("gpu", "GPU", "A chip that draws.");
+/// ```
 #[derive(IntoElement)]
 pub struct TooltipTerm {
     id: ElementId,
@@ -63,6 +76,7 @@ pub struct TooltipTerm {
 }
 
 impl TooltipTerm {
+    /// The term `term` under `id`, meaning `meaning`.
     pub fn new(
         id: impl Into<ElementId>,
         term: impl Into<SharedString>,
@@ -105,12 +119,19 @@ impl RenderOnce for TooltipTerm {
 }
 
 /// Terms and what they mean, in order, under the letter each starts with.
+///
+/// ```
+/// use ely_documents::Glossary;
+///
+/// let terms = Glossary::new([("Atlas", "Pictures packed in one texture."), ("Frame", "One drawing of the window.")]);
+/// ```
 #[derive(IntoElement)]
 pub struct Glossary {
     entries: Vec<(SharedString, SharedString)>,
 }
 
 impl Glossary {
+    /// A glossary of terms and their meanings.
     pub fn new(
         entries: impl IntoIterator<Item = (impl Into<SharedString>, impl Into<SharedString>)>,
     ) -> Self {
@@ -182,12 +203,21 @@ impl RenderOnce for Glossary {
 }
 
 /// How far a reader is through what `scroll` scrolls, as a thin bar that fills from the left.
+///
+/// ```
+/// use ely_documents::ReadingProgress;
+/// use gpui::ScrollHandle;
+///
+/// let scroll = ScrollHandle::new();
+/// let progress = ReadingProgress::new(&scroll);
+/// ```
 #[derive(IntoElement)]
 pub struct ReadingProgress {
     scroll: ScrollHandle,
 }
 
 impl ReadingProgress {
+    /// Progress through what `scroll` scrolls.
     pub fn new(scroll: &ScrollHandle) -> Self {
         Self {
             scroll: scroll.clone(),
@@ -229,6 +259,16 @@ impl RenderOnce for ReadingProgress {
 }
 
 /// Writing with nothing else in view: while on, the chrome folds away and the text sits in a centered column; Escape leaves.
+///
+/// ```
+/// use ely_documents::ZenMode;
+/// use gpui::{ParentElement, div};
+///
+/// let zen = ZenMode::new("zen", true)
+///     .chrome(div())
+///     .child("The boat left at dawn.")
+///     .on_exit(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ZenMode {
     id: ElementId,
@@ -239,6 +279,7 @@ pub struct ZenMode {
 }
 
 impl ZenMode {
+    /// A mode under `id`, on or off.
     pub fn new(id: impl Into<ElementId>, on: bool) -> Self {
         Self {
             id: id.into(),

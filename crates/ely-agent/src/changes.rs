@@ -19,17 +19,24 @@ use crate::{
 /// Where a proposed change stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ChangeState {
+    /// Waiting for a verdict.
     Proposed,
+    /// Taken.
     Accepted,
+    /// Turned down.
     Rejected,
 }
 
 /// A change an agent proposes to one file: its path, the text before and after, and where it stands.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FileChange {
+    /// The file's path.
     pub path: SharedString,
+    /// Its text before.
     pub old: SharedString,
+    /// Its text after.
     pub new: SharedString,
+    /// Where the change stands.
     pub state: ChangeState,
 }
 
@@ -77,6 +84,18 @@ fn verdict(id: &ElementId, state: ChangeState, on_decide: Option<OnFlag>, cx: &A
 }
 
 /// One file an agent would change: its path and how much moves, Reject or Accept while proposed; opened, the diff.
+///
+/// ```
+/// use ely_agent::{ChangeState, FileChange, FileChangeCard};
+///
+/// let change = FileChange {
+///     path: "src/lib.rs".into(),
+///     old: "let a = 1;\n".into(),
+///     new: "let a = 2;\n".into(),
+///     state: ChangeState::Proposed,
+/// };
+/// let card = FileChangeCard::new("card", change).on_decide(|_accept, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileChangeCard {
     id: ElementId,
@@ -85,6 +104,7 @@ pub struct FileChangeCard {
 }
 
 impl FileChangeCard {
+    /// A card under `id` for `change`.
     pub fn new(id: impl Into<ElementId>, change: FileChange) -> Self {
         Self {
             id: id.into(),
@@ -199,6 +219,18 @@ impl RenderOnce for FileChangeCard {
 }
 
 /// Every file an agent would change, reviewed together: how many and how much, all at once or a card each.
+///
+/// ```
+/// use ely_agent::{ChangeState, FileChange, MultiFileDiffReview};
+///
+/// let change = FileChange {
+///     path: "src/lib.rs".into(),
+///     old: "let a = 1;\n".into(),
+///     new: "let a = 2;\n".into(),
+///     state: ChangeState::Proposed,
+/// };
+/// let review = MultiFileDiffReview::new("review", [change]).on_decide(|_decision, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MultiFileDiffReview {
     id: ElementId,
@@ -207,6 +239,7 @@ pub struct MultiFileDiffReview {
 }
 
 impl MultiFileDiffReview {
+    /// A review under `id` of `changes`.
     pub fn new(id: impl Into<ElementId>, changes: impl IntoIterator<Item = FileChange>) -> Self {
         Self {
             id: id.into(),

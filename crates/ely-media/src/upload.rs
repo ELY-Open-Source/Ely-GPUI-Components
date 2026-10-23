@@ -25,6 +25,12 @@ struct Told {
 }
 
 /// A picture to send: a drop zone until one is chosen, then the picture to crop, its name, Replace and Remove. Only pictures are taken; the picture's shape comes from the file. The host keeps the file and its crop; with none yet, the upload reports the largest centered box of its aspect once the picture opens.
+///
+/// ```
+/// use ely_media::ImageUpload;
+///
+/// let avatar = ImageUpload::new("avatar", None, None).aspect(Some(1.0)).on_pick(|_path, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ImageUpload {
     id: ElementId,
@@ -62,11 +68,13 @@ impl ImageUpload {
         self
     }
 
+    /// Runs with the crop after each change.
     pub fn on_crop(mut self, handler: impl Fn(Crop, &mut Window, &mut App) + 'static) -> Self {
         self.on_crop = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to take the picture off.
     pub fn on_remove(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_remove = Some(Rc::new(handler));
         self

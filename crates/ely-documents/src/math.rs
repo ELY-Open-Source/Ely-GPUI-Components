@@ -53,6 +53,12 @@ fn parsed(source: &str) -> Result<Vec<ratex_parser::parse_node::ParseNode>, Math
 }
 
 /// TeX typeset by RaTeX; a failure shows why and source.
+///
+/// ```
+/// use ely_documents::Latex;
+///
+/// let area = Latex::parse("area", r"A = \pi r^2").expect("parses").display();
+/// ```
 #[derive(IntoElement)]
 pub struct Latex {
     id: ElementId,
@@ -62,6 +68,7 @@ pub struct Latex {
 }
 
 impl Latex {
+    /// A formula under `id` from TeX `source`, or why it does not parse.
     pub fn parse(id: impl Into<ElementId>, source: &str) -> Result<Self, MathError> {
         parsed(source)?;
         Ok(Self {
@@ -72,6 +79,7 @@ impl Latex {
         })
     }
 
+    /// Its text size, large unless set.
     pub fn size(mut self, size: TextSize) -> Self {
         self.size = size;
         self

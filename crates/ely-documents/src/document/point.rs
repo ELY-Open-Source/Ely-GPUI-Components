@@ -19,19 +19,33 @@ use crate::{
 /// A top-level block's kind.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TargetBlock {
+    /// A paragraph.
     Paragraph,
+    /// A heading of this level.
     Heading(u8),
+    /// A quote.
     Quote,
+    /// A GitHub alert.
     Alert,
+    /// A list.
     List,
+    /// A code block.
     Code,
+    /// A math block.
     Math,
+    /// A table.
     Table,
+    /// A rule.
     Rule,
+    /// An HTML block.
     Html,
+    /// A footnote definition.
     Footnote,
+    /// A link definition.
     Definition,
+    /// Front matter.
     FrontMatter,
+    /// A table of contents.
     Toc,
 }
 
@@ -65,8 +79,11 @@ pub struct DocumentTarget {
     pub at: usize,
     /// None past the last block.
     pub block: Option<TargetBlock>,
+    /// The link's address, pressed on one.
     pub link: Option<String>,
+    /// The picture's address, pressed on one.
     pub image: Option<String>,
+    /// Whether it lies in a table.
     pub in_table: bool,
     /// The code block's text, pressed in one.
     pub code: Option<String>,

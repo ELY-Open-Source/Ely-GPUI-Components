@@ -44,6 +44,12 @@ pub(crate) fn changes(old: &str, new: &str) -> (String, Runs) {
 }
 
 /// Two versions of a prompt as one text: words taken out struck through on the danger wash, words put in on the success wash.
+///
+/// ```
+/// use ely_generative::PromptDiff;
+///
+/// let change = PromptDiff::new("A lighthouse", "A lighthouse at dusk, in fog");
+/// ```
 #[derive(IntoElement)]
 pub struct PromptDiff {
     old: SharedString,
@@ -51,6 +57,7 @@ pub struct PromptDiff {
 }
 
 impl PromptDiff {
+    /// The change from `old` to `new`.
     pub fn new(old: impl Into<SharedString>, new: impl Into<SharedString>) -> Self {
         Self {
             old: old.into(),
@@ -106,14 +113,33 @@ pub(crate) fn compared(versions: &[PromptVersion], chosen: usize) -> (SharedStri
 /// A prompt as saved: its key, its words, who saved it, when, and a note on what changed.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PromptVersion {
+    /// Its key.
     pub key: SharedString,
+    /// Its text.
     pub text: SharedString,
+    /// Who wrote it.
     pub author: SharedString,
+    /// When.
     pub at: Timestamp,
+    /// A note on what changed.
     pub note: SharedString,
 }
 
 /// A prompt's versions, newest first, and what the chosen one changed from the one before it. A press or Enter chooses a version; Restore brings back an older one.
+///
+/// ```
+/// use ely_generative::{PromptVersion, PromptVersionHistory};
+/// use jiff::Timestamp;
+///
+/// let version = PromptVersion {
+///     key: "v2".into(),
+///     text: "A lighthouse at dusk".into(),
+///     author: "Ana".into(),
+///     at: Timestamp::UNIX_EPOCH,
+///     note: "Added the hour".into(),
+/// };
+/// let history = PromptVersionHistory::new("history", [version], 0).on_restore(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PromptVersionHistory {
     id: ElementId,
@@ -147,6 +173,7 @@ impl PromptVersionHistory {
         }
     }
 
+    /// Runs with the version chosen, by place.
     pub fn on_choose(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_choose = Some(Rc::new(handler));
         self

@@ -65,6 +65,16 @@ fn write(field: &Entity<TextInput>, range: Range<usize>, text: &str, cx: &mut Ap
 }
 
 /// Edits the link at the caret, or links the selection, in a panel under it: the address is checked as it is typed and applied with Enter; the link can be removed or opened from the same place. Escape or a press outside closes it, and focus returns to the text. Render it only while open.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_documents::LinkEditor;
+/// use gpui::Entity;
+///
+/// fn link(field: &Entity<TextInput>) -> LinkEditor {
+///     LinkEditor::new("link", field, |_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct LinkEditor {
     id: ElementId,
@@ -73,6 +83,7 @@ pub struct LinkEditor {
 }
 
 impl LinkEditor {
+    /// An editor under `id` for the link at the caret of `field`; `on_close` runs on every way out.
     pub fn new(
         id: impl Into<ElementId>,
         field: &Entity<TextInput>,

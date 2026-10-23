@@ -76,6 +76,16 @@ pub(crate) fn tool(
 }
 
 /// The formats a markdown field takes, in a row above it: inline styles, headings, quote and lists. A tool shows pressed while the selection holds its format; a press applies it and leaves focus in the field.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_documents::FixedFormatToolbar;
+/// use gpui::Entity;
+///
+/// fn tools(field: &Entity<TextInput>) -> FixedFormatToolbar {
+///     FixedFormatToolbar::new("tools", field)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct FixedFormatToolbar {
     id: ElementId,
@@ -84,6 +94,7 @@ pub struct FixedFormatToolbar {
 }
 
 impl FixedFormatToolbar {
+    /// A toolbar under `id` over `field`.
     pub fn new(id: impl Into<ElementId>, field: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),

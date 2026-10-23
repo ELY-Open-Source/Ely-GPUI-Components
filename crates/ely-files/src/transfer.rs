@@ -23,9 +23,12 @@ pub enum TransferState {
     Queued,
     /// Moving `rate` bytes a second.
     Moving {
+        /// Bytes a second.
         rate: u64,
     },
+    /// Paused.
     Paused,
+    /// Finished.
     Done,
     /// Stopped, and why.
     Failed(SharedString),
@@ -34,11 +37,17 @@ pub enum TransferState {
 /// One file on its way: its key, its name, whether it goes up, the bytes moved of all, and where it stands.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Transfer {
+    /// Its key.
     pub key: SharedString,
+    /// Its file's name.
     pub name: SharedString,
+    /// Whether it goes up, rather than down.
     pub upload: bool,
+    /// The bytes moved.
     pub moved: u64,
+    /// The bytes in all.
     pub total: u64,
+    /// Where it stands.
     pub state: TransferState,
 }
 

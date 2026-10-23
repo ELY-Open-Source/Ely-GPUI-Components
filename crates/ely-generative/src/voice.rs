@@ -18,15 +18,30 @@ use crate::{
 /// A voice to speak with: its key, its name, a line on how it sounds, and tags such as its language.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Voice {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// A line about how it sounds.
     pub about: SharedString,
+    /// Words that describe it.
     pub tags: Vec<SharedString>,
 }
 
 type OnPlay = Rc<dyn Fn(Option<SharedString>, &mut Window, &mut App)>;
 
 /// Voices to speak with, a row each: a sample to play, the name and how it sounds, and its tags, which drop below when narrow. A press or Enter chooses a row; the chosen one takes the active wash and a check. The host plays the samples.
+///
+/// ```
+/// use ely_generative::{TTSVoicePicker, Voice};
+///
+/// let voices = TTSVoicePicker::new(
+///     "voices",
+///     [Voice { key: "v1".into(), name: "Iris".into(), about: "Warm and calm".into(), tags: vec!["calm".into()] }],
+/// )
+/// .selected("v1")
+/// .on_play(|_voice, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TTSVoicePicker {
     id: ElementId,
@@ -38,6 +53,7 @@ pub struct TTSVoicePicker {
 }
 
 impl TTSVoicePicker {
+    /// A picker under `id` of `voices`.
     pub fn new(id: impl Into<ElementId>, voices: impl IntoIterator<Item = Voice>) -> Self {
         Self {
             id: id.into(),
@@ -49,6 +65,7 @@ impl TTSVoicePicker {
         }
     }
 
+    /// The voice picked, by key.
     pub fn selected(mut self, key: impl Into<SharedString>) -> Self {
         self.selected = Some(key.into());
         self
@@ -60,6 +77,7 @@ impl TTSVoicePicker {
         self
     }
 
+    /// Runs with the key of the voice picked.
     pub fn on_select(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

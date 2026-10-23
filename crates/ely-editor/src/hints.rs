@@ -19,13 +19,18 @@ use crate::{
 /// A completion: what it inserts, its kind, a detail such as its type, and its documentation.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CompletionItem {
+    /// What it inserts.
     pub label: SharedString,
+    /// Its kind.
     pub kind: SymbolKind,
+    /// A detail, such as its type.
     pub detail: Option<SharedString>,
+    /// Its documentation.
     pub docs: Option<SharedString>,
 }
 
 impl CompletionItem {
+    /// An item that inserts `label`, of `kind`.
     pub fn new(label: impl Into<SharedString>, kind: SymbolKind) -> Self {
         Self {
             label: label.into(),
@@ -35,11 +40,13 @@ impl CompletionItem {
         }
     }
 
+    /// A detail, such as its type.
     pub fn detail(mut self, detail: impl Into<SharedString>) -> Self {
         self.detail = Some(detail.into());
         self
     }
 
+    /// Its documentation.
     pub fn docs(mut self, docs: impl Into<SharedString>) -> Self {
         self.docs = Some(docs.into());
         self
@@ -69,6 +76,17 @@ pub fn completions(
 type OnPick = Rc<dyn Fn(&CompletionItem, &mut Window, &mut App)>;
 
 /// Completions at the cursor: each with its kind's mark, the typed letters bold and its detail; the chosen one's documentation beside.
+///
+/// ```
+/// use ely_editor::{CompletionItem, CompletionMenu, SymbolKind};
+///
+/// let menu = CompletionMenu::new(
+///     "complete",
+///     [CompletionItem::new("push", SymbolKind::Method).detail("fn(&mut self, T)")],
+/// )
+/// .typed("pu")
+/// .on_pick(|_item, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CompletionMenu {
     id: ElementId,
@@ -79,6 +97,7 @@ pub struct CompletionMenu {
 }
 
 impl CompletionMenu {
+    /// A menu under `id` of `items`.
     pub fn new(id: impl Into<ElementId>, items: impl IntoIterator<Item = CompletionItem>) -> Self {
         Self {
             id: id.into(),
@@ -101,6 +120,7 @@ impl CompletionMenu {
         self
     }
 
+    /// Runs with the item picked.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&CompletionItem, &mut Window, &mut App) + 'static,
@@ -217,14 +237,28 @@ impl RenderOnce for CompletionMenu {
 /// A callable's shape: its label and where each parameter sits in it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Signature {
+    /// The callable as it reads, such as `fn add(a: i32, b: i32)`.
     pub label: SharedString,
+    /// Where each parameter sits in the label, in bytes.
     pub params: Vec<Range<usize>>,
+    /// Its documentation.
     pub docs: Option<SharedString>,
 }
 
 type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// The signature of the call being typed, the parameter at the cursor bold and underlined; arrows walk its overloads.
+///
+/// ```
+/// use ely_editor::{Signature, SignatureHelp};
+///
+/// let label = "fn add(a: i32, b: i32)";
+/// let help = SignatureHelp::new(
+///     "help",
+///     [Signature { label: label.into(), params: vec![7..13, 15..21], docs: None }],
+/// )
+/// .at(0, 1);
+/// ```
 #[derive(IntoElement)]
 pub struct SignatureHelp {
     id: ElementId,
@@ -235,6 +269,7 @@ pub struct SignatureHelp {
 }
 
 impl SignatureHelp {
+    /// Help under `id` for `signatures`, the first shown. Panics on none.
     pub fn new(id: impl Into<ElementId>, signatures: impl IntoIterator<Item = Signature>) -> Self {
         let signatures: Vec<Signature> = signatures.into_iter().collect();
         assert!(

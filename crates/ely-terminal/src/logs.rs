@@ -17,10 +17,15 @@ use crate::{
 /// How loud a log line is, quietest first.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum LogLevel {
+    /// Fine detail.
     Trace,
+    /// Detail for debugging.
     Debug,
+    /// Normal events.
     Info,
+    /// Something to look at.
     Warn,
+    /// Something failed.
     Error,
 }
 
@@ -56,9 +61,13 @@ impl LogLevel {
 /// One line of a log: when, how loud, from where, and what it says, escape codes and all.
 #[derive(Clone, Debug, PartialEq)]
 pub struct LogLine {
+    /// When it was written, as it reads.
     pub at: SharedString,
+    /// How loud it is.
     pub level: LogLevel,
+    /// Where it came from.
     pub target: SharedString,
+    /// What it says, escape codes and all.
     pub message: SharedString,
 }
 
@@ -82,6 +91,18 @@ type OnLevel = Rc<dyn Fn(LogLevel, &mut Window, &mut App)>;
 type OnBool = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// A log, newest at the bottom: from a chosen level up, found by a query, following new lines until a scroll up lets go. Long logs draw only the lines in view.
+///
+/// ```
+/// use ely_terminal::{LogLevel, LogLine, LogViewer};
+///
+/// let lines = vec![LogLine {
+///     at: "12:04:31".into(),
+///     level: LogLevel::Warn,
+///     target: "net".into(),
+///     message: "retrying in 2 s".into(),
+/// }];
+/// let log = LogViewer::new("log", lines).least(LogLevel::Info).query("net");
+/// ```
 #[derive(IntoElement)]
 pub struct LogViewer {
     id: ElementId,
@@ -94,6 +115,7 @@ pub struct LogViewer {
 }
 
 impl LogViewer {
+    /// A viewer under `id` of `lines`, oldest first, every level shown and following new lines.
     pub fn new(id: impl Into<ElementId>, lines: impl Into<Rc<Vec<LogLine>>>) -> Self {
         Self {
             id: id.into(),
@@ -112,21 +134,25 @@ impl LogViewer {
         self
     }
 
+    /// Shows only lines whose target or text holds this, case aside.
     pub fn query(mut self, query: impl Into<SharedString>) -> Self {
         self.query = query.into();
         self
     }
 
+    /// Whether new lines stay in view.
     pub fn follow(mut self, follow: bool) -> Self {
         self.follow = follow;
         self
     }
 
+    /// Runs with the quietest level picked.
     pub fn on_least(mut self, handler: impl Fn(LogLevel, &mut Window, &mut App) + 'static) -> Self {
         self.on_least = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with whether new lines should stay in view.
     pub fn on_follow(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_follow = Some(Rc::new(handler));
         self

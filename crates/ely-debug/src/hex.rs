@@ -42,6 +42,14 @@ pub(crate) fn inspect(bytes: &[u8], at: usize) -> String {
 }
 
 /// Memory as a hex dump: each row its address, sixteen bytes in fours, and the same bytes as text. A press selects a byte; the one under the pointer lights on both sides, and the selection reads below as numbers. Long dumps draw only the rows in view; it fills its box.
+///
+/// ```
+/// use ely_debug::HexViewer;
+///
+/// let memory = HexViewer::new("memory", b"Hello, world!\n".to_vec())
+///     .base(0x7ff0_0000)
+///     .selected(0..5);
+/// ```
 #[derive(IntoElement)]
 pub struct HexViewer {
     id: ElementId,
@@ -52,6 +60,7 @@ pub struct HexViewer {
 }
 
 impl HexViewer {
+    /// A dump under `id` of `bytes`, from address zero.
     pub fn new(id: impl Into<ElementId>, bytes: impl Into<Rc<Vec<u8>>>) -> Self {
         Self {
             id: id.into(),
@@ -73,6 +82,7 @@ impl HexViewer {
         self
     }
 
+    /// The bytes selected; an empty range or one past the bytes is logged and none is selected.
     pub fn selected(mut self, bytes: Range<usize>) -> Self {
         let inside = bytes.start < bytes.end && bytes.end <= self.bytes.len();
         if !inside {
@@ -85,6 +95,7 @@ impl HexViewer {
         self
     }
 
+    /// Runs with the byte pressed, by place.
     pub fn on_select(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_select = Some(Rc::new(handler));
         self

@@ -38,8 +38,11 @@ const HIDE_CURSOR: &[u8] = b"\x1b[?25l";
 /// What a terminal tells its host.
 #[derive(Clone, Debug, PartialEq)]
 pub enum TerminalEvent {
+    /// The program set its title.
     Title(SharedString),
+    /// The program ended.
     Exited(ExitStatus),
+    /// The program rang the bell.
     Bell,
     /// A path a Cmd-press opened; URLs open in the browser.
     Open(Target),
@@ -48,6 +51,15 @@ pub enum TerminalEvent {
 }
 
 /// A terminal: a program on a pseudo-terminal, or replayed output, drawn cell by cell. Type to it, drag to select, Cmd-press a link.
+///
+/// ```
+/// use ely_terminal::Terminal;
+/// use gpui::{App, AppContext, Entity};
+///
+/// fn replayed(cx: &mut App) -> Entity<Terminal> {
+///     cx.new(|cx| Terminal::replay(b"$ ls\r\nCargo.toml  src\r\n", 80, 24, cx))
+/// }
+/// ```
 pub struct Terminal {
     pub(crate) term: Arc<FairMutex<Term<Listener>>>,
     pub(crate) pty: Option<Notifier>,
@@ -143,6 +155,7 @@ impl Terminal {
         }
     }
 
+    /// The title the program set.
     pub fn title(&self) -> &SharedString {
         &self.title
     }

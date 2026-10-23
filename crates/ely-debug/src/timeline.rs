@@ -17,9 +17,13 @@ use crate::{
 /// A stretch of work on a track, in milliseconds.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Span {
+    /// The track it runs on, by place.
     pub track: usize,
+    /// What ran.
     pub name: SharedString,
+    /// When it started, in milliseconds.
     pub start: f64,
+    /// When it ended, in milliseconds.
     pub end: f64,
 }
 
@@ -76,6 +80,13 @@ fn tint(name: &str, palette: &[Hsla; 8]) -> Hsla {
 type OnRange = Rc<dyn Fn((f64, f64), &mut Window, &mut App)>;
 
 /// Work over time on tracks, such as threads: each span a bar from its start to its end under a time axis. The wheel zooms around the pointer and a sideways wheel pans; a press picks a span.
+///
+/// ```
+/// use ely_debug::{Span, TimelineProfiler};
+///
+/// let spans = vec![Span { track: 0, name: "layout".into(), start: 2.0, end: 9.5 }];
+/// let frame = TimelineProfiler::new("frame", ["Main"], spans, (0.0, 16.0)).on_range(|_range, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TimelineProfiler {
     id: ElementId,
@@ -106,11 +117,13 @@ impl TimelineProfiler {
         }
     }
 
+    /// The span picked, by place.
     pub fn selected(mut self, span: usize) -> Self {
         self.selected = Some(span);
         self
     }
 
+    /// Runs with the range in view after a zoom or a pan.
     pub fn on_range(
         mut self,
         handler: impl Fn((f64, f64), &mut Window, &mut App) + 'static,
@@ -119,6 +132,7 @@ impl TimelineProfiler {
         self
     }
 
+    /// Runs with the span pressed, by place.
     pub fn on_select(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_select = Some(Rc::new(handler));
         self

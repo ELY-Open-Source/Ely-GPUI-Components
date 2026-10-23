@@ -32,6 +32,14 @@ pub(crate) fn stepped(at: usize, count: usize, columns: usize, key: &str) -> Opt
 }
 
 /// Files and folders as tiles, in the order given: a large icon over the name in two lines at most. A press picks a tile and a double press opens it; with focus the arrows move by tile and by row, Home and End go to the ends, and Enter opens.
+///
+/// ```
+/// use ely_core::lists::DirEntry;
+/// use ely_files::FileGrid;
+/// use jiff::Timestamp;
+///
+/// let tiles = FileGrid::new("tiles", [DirEntry::folder("Photos", Timestamp::UNIX_EPOCH)]).on_open(|_entry, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileGrid {
     id: ElementId,
@@ -42,6 +50,7 @@ pub struct FileGrid {
 }
 
 impl FileGrid {
+    /// A grid under `id` of `entries`.
     pub fn new(id: impl Into<ElementId>, entries: impl IntoIterator<Item = DirEntry>) -> Self {
         let entries: Vec<DirEntry> = entries.into_iter().collect();
         for (ix, entry) in entries.iter().enumerate() {
@@ -81,6 +90,7 @@ impl FileGrid {
         self
     }
 
+    /// Runs with the entry opened, a file or a folder.
     pub fn on_open(mut self, handler: impl Fn(&DirEntry, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self

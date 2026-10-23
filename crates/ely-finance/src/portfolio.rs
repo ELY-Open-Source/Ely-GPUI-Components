@@ -12,6 +12,14 @@ use crate::{
 };
 
 /// A portfolio at a glance: what it is worth, how it moved today and in all, the cash in it, and how it splits across holdings.
+///
+/// ```
+/// use ely_finance::PortfolioSummary;
+///
+/// let summary = PortfolioSummary::new("summary", 52_400.0, ((310.0, 0.006), (8_200.0, 0.185)), 2_400.0, "USD")
+///     .holding("ELY", 30_000.0)
+///     .holding("ACME", 20_000.0);
+/// ```
 #[derive(IntoElement)]
 pub struct PortfolioSummary {
     id: ElementId,
@@ -114,6 +122,13 @@ fn growth(values: &[f64]) -> Option<Vec<f64>> {
 }
 
 /// How a portfolio grew against a benchmark, both from the same start, and below it how far it fell from each high.
+///
+/// ```
+/// use ely_finance::PerformanceChart;
+///
+/// let growth = PerformanceChart::new("growth", ["Jan", "Feb", "Mar"], [100.0, 104.0, 99.0])
+///     .benchmark("S&P 500", [100.0, 102.0, 103.0]);
+/// ```
 #[derive(IntoElement)]
 pub struct PerformanceChart {
     id: ElementId,
@@ -212,14 +227,36 @@ impl RenderOnce for PerformanceChart {
 /// A dividend: when shares must be held by, when it pays, how much for each share, its yield as a share, and how often it pays.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Dividend {
+    /// The ex-dividend date, by which shares must be held.
     pub ex: Date,
+    /// The day it pays.
     pub pay: Date,
+    /// How much for each share.
     pub amount: f64,
+    /// Its yield, as a share.
     pub dividend_yield: f64,
+    /// How often it pays, such as Quarterly.
     pub frequency: SharedString,
 }
 
 /// Dividends by date: when to hold by, when each pays, how much, its yield and how often.
+///
+/// ```
+/// use ely_finance::{Dividend, DividendTable};
+/// use jiff::civil::date;
+///
+/// let payouts = DividendTable::new(
+///     "payouts",
+///     [Dividend {
+///         ex: date(2026, 11, 3),
+///         pay: date(2026, 11, 20),
+///         amount: 0.24,
+///         dividend_yield: 0.016,
+///         frequency: "Quarterly".into(),
+///     }],
+///     "USD",
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct DividendTable {
     id: ElementId,
@@ -228,6 +265,7 @@ pub struct DividendTable {
 }
 
 impl DividendTable {
+    /// A table under `id` of `dividends`, amounts in an ISO 4217 `currency`.
     pub fn new(
         id: impl Into<ElementId>,
         dividends: impl IntoIterator<Item = Dividend>,
@@ -279,12 +317,16 @@ impl RenderOnce for DividendTable {
 /// A line of a financial statement: its name, a value for each period, and the lines inside it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Statement {
+    /// The line's name.
     pub name: SharedString,
+    /// A value for each period.
     pub values: Vec<f64>,
+    /// The lines inside it.
     pub lines: Vec<Statement>,
 }
 
 impl Statement {
+    /// A line named `name`, a value for each period.
     pub fn new(name: impl Into<SharedString>, values: impl IntoIterator<Item = f64>) -> Self {
         Self {
             name: name.into(),
@@ -293,6 +335,7 @@ impl Statement {
         }
     }
 
+    /// The lines inside it, drawn under it when it opens.
     pub fn lines(mut self, lines: impl IntoIterator<Item = Statement>) -> Self {
         self.lines.extend(lines);
         self
@@ -300,6 +343,17 @@ impl Statement {
 }
 
 /// A financial statement by period: its lines as rows that open to the lines inside them, a column for each period.
+///
+/// ```
+/// use ely_finance::{FinancialStatementTable, Statement};
+///
+/// let income = FinancialStatementTable::new(
+///     "income",
+///     ["2025", "2026"],
+///     [Statement::new("Revenue", [120.0, 150.0])
+///         .lines([Statement::new("Products", [80.0, 95.0]), Statement::new("Services", [40.0, 55.0])])],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct FinancialStatementTable {
     id: ElementId,
@@ -308,6 +362,7 @@ pub struct FinancialStatementTable {
 }
 
 impl FinancialStatementTable {
+    /// A table under `id`, a column for each of `periods` and a row for each of `lines`. Panics on a line without a value per period.
     pub fn new(
         id: impl Into<ElementId>,
         periods: impl IntoIterator<Item = impl Into<SharedString>>,

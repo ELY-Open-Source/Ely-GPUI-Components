@@ -50,19 +50,31 @@ pub fn device_toggle(
 /// Where a screen recording stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Recording {
+    /// Not recording.
     Idle,
     /// Running, counted from `since`; a resume moves `since` on by the pause.
     Running {
+        /// When it started.
         since: Instant,
     },
     /// Paused at `at`, counted from `since`.
     Paused {
+        /// When it started.
         since: Instant,
+        /// When it paused.
         at: Instant,
     },
 }
 
 /// A screen recording's controls in one pill. Idle, Record starts it; running, a live dot and the time it has run sit before pause and stop; paused, the time holds and resume takes pause's place. Mic and camera toggles follow, each shown with its handler.
+///
+/// ```
+/// use ely_media::{Recording, ScreenRecorderControls};
+///
+/// let recorder = ScreenRecorderControls::new("recorder", Recording::Idle)
+///     .on_record(|_, _| {})
+///     .mic(true, |_on, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ScreenRecorderControls {
     id: ElementId,
@@ -76,6 +88,7 @@ pub struct ScreenRecorderControls {
 }
 
 impl ScreenRecorderControls {
+    /// Controls under `id` for a recording in `state`. Panics on a pause before its start.
     pub fn new(id: impl Into<ElementId>, state: Recording) -> Self {
         if let Recording::Paused { since, at } = state {
             assert!(since <= at, "a pause before its recording started");
@@ -92,21 +105,25 @@ impl ScreenRecorderControls {
         }
     }
 
+    /// Runs when recording should start.
     pub fn on_record(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_record = Some(Rc::new(handler));
         self
     }
 
+    /// Runs when recording should pause.
     pub fn on_pause(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_pause = Some(Rc::new(handler));
         self
     }
 
+    /// Runs when recording should resume.
     pub fn on_resume(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_resume = Some(Rc::new(handler));
         self
     }
 
+    /// Runs when recording should stop.
     pub fn on_stop(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_stop = Some(Rc::new(handler));
         self
@@ -237,12 +254,19 @@ impl RenderOnce for ScreenRecorderControls {
 }
 
 /// A microphone's level as it comes in, 0 to 1: segments lit up to it, amber near the top and red at the top. The host sends levels as they come.
+///
+/// ```
+/// use ely_media::MicLevelMeter;
+///
+/// let meter = MicLevelMeter::new(0.4);
+/// ```
 #[derive(IntoElement)]
 pub struct MicLevelMeter {
     level: f32,
 }
 
 impl MicLevelMeter {
+    /// A meter at `level`, 0 to 1. Panics on a level outside that.
     pub fn new(level: f32) -> Self {
         assert!((0.0..=1.0).contains(&level), "a level of {level}");
         Self { level }

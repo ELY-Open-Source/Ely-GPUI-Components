@@ -21,6 +21,15 @@ use crate::{
 type OnSeek = Rc<dyn Fn(f32, &mut Window, &mut App)>;
 
 /// A generated sound: its prompt, its model and length, a bar while it is made, then a player with its waveform. Regenerate and Download wait for it. The host plays it.
+///
+/// ```
+/// use ely_generative::AudioGenerationPlayer;
+/// use std::time::Duration;
+///
+/// let sound = AudioGenerationPlayer::new("sound", "Rain on a tin roof", "ely-audio", vec![0.2, 0.7, 0.4], Duration::from_secs(9))
+///     .played(Duration::from_secs(3), false)
+///     .on_toggle(|_play, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct AudioGenerationPlayer {
     id: ElementId,
@@ -93,11 +102,13 @@ impl AudioGenerationPlayer {
         self
     }
 
+    /// Offers to make the sound again.
     pub fn on_regenerate(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_regenerate = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to download the sound.
     pub fn on_download(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_download = Some(Rc::new(handler));
         self

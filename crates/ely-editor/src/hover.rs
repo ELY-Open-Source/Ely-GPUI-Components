@@ -14,6 +14,16 @@ use crate::{
 type OnPress = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// What a hover over a symbol reads: its signature in code, a problem when there is one, its documentation, and links.
+///
+/// ```
+/// use ely_core::primitives::Severity;
+/// use ely_editor::HoverInfo;
+///
+/// let info = HoverInfo::new("info", "fn len(&self) -> usize")
+///     .docs("Returns the number of elements.")
+///     .problem(Severity::Warning, "unused result")
+///     .link("Go to definition", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct HoverInfo {
     id: ElementId,
@@ -24,6 +34,7 @@ pub struct HoverInfo {
 }
 
 impl HoverInfo {
+    /// A card under `id` reading `signature` as code.
     pub fn new(id: impl Into<ElementId>, signature: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -34,6 +45,7 @@ impl HoverInfo {
         }
     }
 
+    /// A problem here, by severity.
     pub fn problem(mut self, severity: Severity, message: impl Into<SharedString>) -> Self {
         self.problem = Some((severity, message.into()));
         self
@@ -45,6 +57,7 @@ impl HoverInfo {
         self
     }
 
+    /// A link at the bottom; a press runs `handler`.
     pub fn link(
         mut self,
         label: impl Into<SharedString>,

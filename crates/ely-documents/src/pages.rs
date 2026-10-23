@@ -17,6 +17,13 @@ use crate::{
 type OnCover = Rc<dyn Fn(Option<SharedString>, &mut Window, &mut App)>;
 
 /// A page's cover, a picture across its top; on hover, covers to switch to and a way to take it off.
+///
+/// ```
+/// use ely_documents::PageCover;
+///
+/// let cover = PageCover::new("cover", "https://ely.dev/covers/sea.jpg")
+///     .choices(["https://ely.dev/covers/hill.jpg"], |_cover, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PageCover {
     id: ElementId,
@@ -119,6 +126,12 @@ impl RenderOnce for PageCover {
 }
 
 /// A page's icon, an emoji set large; on hover, a way to pick another.
+///
+/// ```
+/// use ely_documents::PageIcon;
+///
+/// let icon = PageIcon::new("icon", "🚀").on_change(|_emoji, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct PageIcon {
     id: ElementId,
@@ -127,6 +140,7 @@ pub struct PageIcon {
 }
 
 impl PageIcon {
+    /// An icon under `id` showing `emoji`.
     pub fn new(id: impl Into<ElementId>, emoji: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -135,6 +149,7 @@ impl PageIcon {
         }
     }
 
+    /// Runs with the emoji picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

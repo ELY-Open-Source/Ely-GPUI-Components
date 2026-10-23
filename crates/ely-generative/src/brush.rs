@@ -12,6 +12,12 @@ use crate::{
 };
 
 /// The mask brush: paint or erase, its size, and a way back: Undo takes the last stroke, Clear takes them all.
+///
+/// ```
+/// use ely_generative::MaskBrush;
+///
+/// let brush = MaskBrush::new("brush", 0.05, false, 3).on_brush(|_radius, _erase, _, _| {}).on_undo(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MaskBrush {
     id: ElementId,
@@ -50,11 +56,13 @@ impl MaskBrush {
         self
     }
 
+    /// Offers to take back the last stroke.
     pub fn on_undo(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_undo = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to clear the mask.
     pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_clear = Some(Rc::new(handler));
         self

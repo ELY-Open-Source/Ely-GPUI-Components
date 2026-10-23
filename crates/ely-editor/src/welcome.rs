@@ -19,10 +19,15 @@ use crate::{
 /// A project opened before: its name, where it lives, its branch, when it was last opened, and whether it is pinned.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Project {
+    /// Its name.
     pub name: SharedString,
+    /// Where it lives.
     pub path: SharedString,
+    /// The branch it was on.
     pub branch: Option<SharedString>,
+    /// When it was last opened, as it reads.
     pub opened: SharedString,
+    /// Whether it stays on top.
     pub pinned: bool,
 }
 
@@ -36,6 +41,22 @@ pub(crate) fn ordered(projects: &[Project]) -> Vec<(usize, &Project)> {
 type OnIndex = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Projects opened before, pinned ones first: each with its path, branch and when; a press opens one, the pin keeps it on top.
+///
+/// ```
+/// use ely_editor::{Project, RecentProjects};
+///
+/// let recent = RecentProjects::new(
+///     "recent",
+///     [Project {
+///         name: "ely".into(),
+///         path: "~/code/ely".into(),
+///         branch: Some("main".into()),
+///         opened: "2 hours ago".into(),
+///         pinned: true,
+///     }],
+/// )
+/// .on_open(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RecentProjects {
     id: ElementId,
@@ -46,6 +67,7 @@ pub struct RecentProjects {
 }
 
 impl RecentProjects {
+    /// A list under `id` of `projects`.
     pub fn new(id: impl Into<ElementId>, projects: impl IntoIterator<Item = Project>) -> Self {
         Self {
             id: id.into(),
@@ -56,16 +78,19 @@ impl RecentProjects {
         }
     }
 
+    /// Runs with the project pressed, by place.
     pub fn on_open(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the project whose pin was pressed, by place.
     pub fn on_pin(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_pin = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the project to take off the list, by place.
     pub fn on_remove(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_remove = Some(Rc::new(handler));
         self
@@ -182,6 +207,19 @@ impl RenderOnce for RecentProjects {
 type OnClose = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A palette of projects by name or path, pinned ones first; a pick opens it.
+///
+/// ```
+/// use ely_editor::{Project, ProjectSwitcher};
+///
+/// let project = Project {
+///     name: "ely".into(),
+///     path: "~/code/ely".into(),
+///     branch: None,
+///     opened: "yesterday".into(),
+///     pinned: false,
+/// };
+/// let switch = ProjectSwitcher::new("switch", [project], |_, _| {}).on_open(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProjectSwitcher {
     id: ElementId,
@@ -205,6 +243,7 @@ impl ProjectSwitcher {
         }
     }
 
+    /// Runs with the project picked, by place.
     pub fn on_open(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -305,6 +344,16 @@ pub(crate) struct StartAction {
 type OnFlag = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// The first page an editor shows: ways to start, recent projects, and whether to show it at startup.
+///
+/// ```
+/// use ely_core::primitives::IconName;
+/// use ely_editor::WelcomePage;
+///
+/// let welcome = WelcomePage::new("welcome", "Ely", "Write code")
+///     .action(IconName::File, "New file", Some("secondary-n"))
+///     .show_at_start(true)
+///     .on_action(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct WelcomePage {
     id: ElementId,
@@ -318,6 +367,7 @@ pub struct WelcomePage {
 }
 
 impl WelcomePage {
+    /// A page under `id` headed `title` over `tagline`.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,
@@ -335,6 +385,7 @@ impl WelcomePage {
         }
     }
 
+    /// A way to start: its icon, words and keys.
     pub fn action(
         mut self,
         icon: IconName,
@@ -355,16 +406,19 @@ impl WelcomePage {
         self
     }
 
+    /// Whether the page shows at startup; on unless set.
     pub fn show_at_start(mut self, show: bool) -> Self {
         self.show_at_start = show;
         self
     }
 
+    /// Runs with the way to start pressed, by place.
     pub fn on_action(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_action = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with whether the page should show at startup.
     pub fn on_show(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_show = Some(Rc::new(handler));
         self

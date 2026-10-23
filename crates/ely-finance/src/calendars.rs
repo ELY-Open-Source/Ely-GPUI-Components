@@ -21,17 +21,41 @@ use crate::{
 /// An economic release: when, for which region, what, how much it moves markets from one to three, and its figure as it came, as forecast and as before.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Release {
+    /// When it comes out.
     pub time: Timestamp,
+    /// The region as a two-letter capital code, such as `US`; its flag is drawn from it.
     pub region: SharedString,
+    /// What is released.
     pub event: SharedString,
+    /// How much it moves markets, from one to three.
     pub weight: u8,
+    /// The figure as it came, once out.
     pub actual: Option<f64>,
+    /// The figure forecast.
     pub forecast: Option<f64>,
+    /// The figure before.
     pub previous: Option<f64>,
+    /// The unit its figures read in, such as `%`.
     pub unit: SharedString,
 }
 
 /// Economic releases by day: the time, the region's flag, the event and how much it matters, then the figure as it came beside the forecast and the one before.
+///
+/// ```
+/// use ely_finance::{EconomicCalendar, Release};
+/// use jiff::Timestamp;
+///
+/// let week = EconomicCalendar::new([Release {
+///     time: Timestamp::UNIX_EPOCH,
+///     region: "US".into(),
+///     event: "CPI".into(),
+///     weight: 3,
+///     actual: None,
+///     forecast: Some(2.4),
+///     previous: Some(2.5),
+///     unit: "%".into(),
+/// }]);
+/// ```
 #[derive(IntoElement)]
 pub struct EconomicCalendar {
     releases: Vec<Release>,
@@ -39,6 +63,7 @@ pub struct EconomicCalendar {
 }
 
 impl EconomicCalendar {
+    /// A calendar of `releases`. Panics on a weight outside one to three.
     pub fn new(releases: impl IntoIterator<Item = Release>) -> Self {
         let releases: Vec<Release> = releases.into_iter().collect();
         assert!(
@@ -53,6 +78,7 @@ impl EconomicCalendar {
         }
     }
 
+    /// The time zone its times read in; the system's unless set.
     pub fn zone(mut self, zone: TimeZone) -> Self {
         self.zone = Some(zone);
         self
@@ -185,11 +211,17 @@ impl RenderOnce for EconomicCalendar {
 /// A company's earnings date: when it reports, before the open or after the close, and earnings per share as expected and, once reported, as they came.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Earnings {
+    /// The day it reports.
     pub date: Date,
+    /// The ticker.
     pub symbol: SharedString,
+    /// The company's name.
     pub name: SharedString,
+    /// Whether it reports before the open, rather than after the close.
     pub before_open: bool,
+    /// Earnings per share as expected.
     pub estimate: f64,
+    /// Earnings per share as they came, once reported.
     pub reported: Option<f64>,
 }
 
@@ -199,6 +231,23 @@ pub(crate) fn surprise(estimate: f64, reported: f64) -> f64 {
 }
 
 /// Earnings by date: each company, when in the day it reports, what is expected, and once reported, how far it beat or missed.
+///
+/// ```
+/// use ely_finance::{Earnings, EarningsCalendar};
+/// use jiff::civil::date;
+///
+/// let season = EarningsCalendar::new(
+///     "season",
+///     [Earnings {
+///         date: date(2026, 10, 28),
+///         symbol: "ELY".into(),
+///         name: "Ely Inc.".into(),
+///         before_open: true,
+///         estimate: 1.12,
+///         reported: None,
+///     }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct EarningsCalendar {
     id: ElementId,
@@ -206,6 +255,7 @@ pub struct EarningsCalendar {
 }
 
 impl EarningsCalendar {
+    /// A calendar under `id` of `earnings`.
     pub fn new(id: impl Into<ElementId>, earnings: impl IntoIterator<Item = Earnings>) -> Self {
         Self {
             id: id.into(),
@@ -275,16 +325,38 @@ impl RenderOnce for EarningsCalendar {
 /// A story: where it ran, when, its headline, the symbols it touches, and which way it leans for them, if either.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Story {
+    /// Where it ran.
     pub source: SharedString,
+    /// When it ran.
     pub time: Timestamp,
+    /// Its headline.
     pub headline: SharedString,
+    /// The symbols it touches.
     pub symbols: Vec<SharedString>,
+    /// Which way it leans: `Some(true)` up, `Some(false)` down, `None` neither.
     pub lean: Option<bool>,
 }
 
 type OnStory = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// Stories newest first: a dot for how each leans, where and when it ran, its headline, and the symbols it touches. A press opens one.
+///
+/// ```
+/// use ely_finance::{NewsFeed, Story};
+/// use jiff::Timestamp;
+///
+/// let news = NewsFeed::new(
+///     "news",
+///     [Story {
+///         source: "Wire".into(),
+///         time: Timestamp::UNIX_EPOCH,
+///         headline: "Ely beats estimates".into(),
+///         symbols: vec!["ELY".into()],
+///         lean: Some(true),
+///     }],
+/// )
+/// .on_open(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NewsFeed {
     id: ElementId,
@@ -294,6 +366,7 @@ pub struct NewsFeed {
 }
 
 impl NewsFeed {
+    /// A feed under `id` of `stories`, newest first.
     pub fn new(id: impl Into<ElementId>, stories: impl IntoIterator<Item = Story>) -> Self {
         Self {
             id: id.into(),
@@ -303,6 +376,7 @@ impl NewsFeed {
         }
     }
 
+    /// The time zone its times read in; the system's unless set.
     pub fn zone(mut self, zone: TimeZone) -> Self {
         self.zone = Some(zone);
         self

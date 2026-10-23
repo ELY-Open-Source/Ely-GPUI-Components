@@ -31,6 +31,12 @@ pub const INTERVALS: [(&str, &str); 8] = [
 ];
 
 /// A span of history to show, from a day to all of it.
+///
+/// ```
+/// use ely_finance::TimeRangeSelector;
+///
+/// let range = TimeRangeSelector::new("range", "1M").on_change(|_span, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TimeRangeSelector {
     id: ElementId,
@@ -52,6 +58,7 @@ impl TimeRangeSelector {
         }
     }
 
+    /// Runs with the span picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -77,6 +84,12 @@ impl RenderOnce for TimeRangeSelector {
 }
 
 /// How long each candle lasts, from a minute to a month.
+///
+/// ```
+/// use ely_finance::IntervalSelector;
+///
+/// let interval = IntervalSelector::new("interval", "1h").on_change(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct IntervalSelector {
     id: ElementId,
@@ -98,6 +111,7 @@ impl IntervalSelector {
         }
     }
 
+    /// Runs with the key of the interval picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -145,6 +159,12 @@ const KINDS: [(ChartKind, &str, &str, IconName); 5] = [
 type OnKind = Rc<dyn Fn(ChartKind, &mut Window, &mut App)>;
 
 /// How a market chart draws its prices, chosen from candles, bars, Heikin-Ashi, a line or an area.
+///
+/// ```
+/// use ely_finance::{ChartKind, ChartTypeSwitcher};
+///
+/// let kind = ChartTypeSwitcher::new("kind", ChartKind::Candles).on_change(|_kind, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ChartTypeSwitcher {
     id: ElementId,
@@ -153,6 +173,7 @@ pub struct ChartTypeSwitcher {
 }
 
 impl ChartTypeSwitcher {
+    /// A switcher under `id` showing `kind`.
     pub fn new(id: impl Into<ElementId>, kind: ChartKind) -> Self {
         Self {
             id: id.into(),
@@ -161,6 +182,7 @@ impl ChartTypeSwitcher {
         }
     }
 
+    /// Runs with the kind picked.
     pub fn on_change(
         mut self,
         handler: impl Fn(ChartKind, &mut Window, &mut App) + 'static,
@@ -201,10 +223,14 @@ impl RenderOnce for ChartTypeSwitcher {
 /// How charts share a space: one, two across, two down, or four.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Arrangement {
+    /// One chart.
     #[default]
     One,
+    /// Two side by side.
     Across,
+    /// Two, one above the other.
     Down,
+    /// Four in a grid.
     Four,
 }
 
@@ -229,6 +255,16 @@ impl Arrangement {
 type OnArrange = Rc<dyn Fn(Arrangement, &mut Window, &mut App)>;
 
 /// Charts arranged one, two across, two down or four to a grid, split by hairlines, with the four arrangements to switch between above them.
+///
+/// ```
+/// use ely_finance::{Arrangement, MultiChartLayout};
+/// use gpui::{ParentElement, div};
+///
+/// let grid = MultiChartLayout::new("grid", Arrangement::Across)
+///     .child(div())
+///     .child(div())
+///     .on_arrange(|_arrangement, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct MultiChartLayout {
     id: ElementId,
@@ -238,6 +274,7 @@ pub struct MultiChartLayout {
 }
 
 impl MultiChartLayout {
+    /// A layout under `id` in `arrangement`, with no charts yet.
     pub fn new(id: impl Into<ElementId>, arrangement: Arrangement) -> Self {
         Self {
             id: id.into(),
@@ -253,6 +290,7 @@ impl MultiChartLayout {
         self
     }
 
+    /// Runs with the arrangement picked.
     pub fn on_arrange(
         mut self,
         handler: impl Fn(Arrangement, &mut Window, &mut App) + 'static,

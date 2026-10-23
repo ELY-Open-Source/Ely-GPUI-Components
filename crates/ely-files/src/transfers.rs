@@ -39,7 +39,8 @@ pub(crate) fn tally(transfers: &[Transfer]) -> String {
 }
 
 macro_rules! asks {
-    ($name:ident) => {
+    ($name:ident, $doc:literal) => {
+        #[doc = $doc]
         pub fn $name(
             mut self,
             handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -51,6 +52,16 @@ macro_rules! asks {
 }
 
 /// Uploads and downloads in one queue, a row a file: which way it goes, its bar, its status, and pause, resume, retry or cancel. How many move and wait sits above.
+///
+/// ```
+/// use ely_files::{Transfer, TransferQueue, TransferState};
+///
+/// let queue = TransferQueue::new(
+///     "queue",
+///     [Transfer { key: "t1".into(), name: "video.mp4".into(), upload: true, moved: 0, total: 80_000_000, state: TransferState::Queued }],
+/// )
+/// .cancel(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TransferQueue {
     id: ElementId,
@@ -59,6 +70,7 @@ pub struct TransferQueue {
 }
 
 impl TransferQueue {
+    /// A queue under `id` of `transfers`.
     pub fn new(id: impl Into<ElementId>, transfers: impl IntoIterator<Item = Transfer>) -> Self {
         let transfers: Vec<Transfer> = transfers.into_iter().collect();
         unique(&transfers);
@@ -69,10 +81,10 @@ impl TransferQueue {
         }
     }
 
-    asks!(pause);
-    asks!(resume);
-    asks!(retry);
-    asks!(cancel);
+    asks!(pause, "Runs with the key of a transfer to pause.");
+    asks!(resume, "Runs with the key of a transfer to resume.");
+    asks!(retry, "Runs with the key of a transfer to try again.");
+    asks!(cancel, "Runs with the key of a transfer to cancel.");
 }
 
 impl RenderOnce for TransferQueue {
@@ -102,6 +114,17 @@ impl RenderOnce for TransferQueue {
 }
 
 /// Downloads as a browser keeps them: those on their way above, those finished below under a header with Clear. A finished one opens with a press and shows its folder; the rest pause, resume, retry or cancel.
+///
+/// ```
+/// use ely_files::{DownloadManager, Transfer, TransferState};
+///
+/// let downloads = DownloadManager::new(
+///     "downloads",
+///     [Transfer { key: "d1".into(), name: "setup.dmg".into(), upload: false, moved: 80_000_000, total: 80_000_000, state: TransferState::Done }],
+/// )
+/// .open(|_key, _, _| {})
+/// .on_clear(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DownloadManager {
     id: ElementId,
@@ -111,6 +134,7 @@ pub struct DownloadManager {
 }
 
 impl DownloadManager {
+    /// A manager under `id` of `downloads`.
     pub fn new(id: impl Into<ElementId>, downloads: impl IntoIterator<Item = Transfer>) -> Self {
         let downloads: Vec<Transfer> = downloads.into_iter().collect();
         unique(&downloads);
@@ -125,12 +149,15 @@ impl DownloadManager {
         }
     }
 
-    asks!(pause);
-    asks!(resume);
-    asks!(retry);
-    asks!(cancel);
-    asks!(open);
-    asks!(show);
+    asks!(pause, "Runs with the key of a transfer to pause.");
+    asks!(resume, "Runs with the key of a transfer to resume.");
+    asks!(retry, "Runs with the key of a transfer to try again.");
+    asks!(cancel, "Runs with the key of a transfer to cancel.");
+    asks!(open, "Runs with the key of a finished download to open.");
+    asks!(
+        show,
+        "Runs with the key of a finished download to show in its folder."
+    );
 
     /// Clears the finished ones from the list.
     pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {

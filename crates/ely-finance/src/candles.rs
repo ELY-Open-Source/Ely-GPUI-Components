@@ -3,15 +3,22 @@ use jiff::Timestamp;
 /// One period of a market: when it opened, its open, high, low and close, and how much traded.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Candle {
+    /// When the period opened.
     pub time: Timestamp,
+    /// Its first price.
     pub open: f64,
+    /// Its highest price.
     pub high: f64,
+    /// Its lowest price.
     pub low: f64,
+    /// Its last price.
     pub close: f64,
+    /// How much traded.
     pub volume: f64,
 }
 
 impl Candle {
+    /// A candle from its time, its open, high, low and close, and its volume. Panics on a value not finite, a high or low that does not hold the open and close, or negative volume.
     pub fn new(
         time: Timestamp,
         (open, high, low, close): (f64, f64, f64, f64),

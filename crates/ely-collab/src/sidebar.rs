@@ -19,6 +19,20 @@ type OnThreadFlag = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 type OnThreadReact = Rc<dyn Fn(&SharedString, usize, &SharedString, &mut Window, &mut App)>;
 
 /// Every conversation on a document down a column, split into open and resolved when the owner resolves: a press picks one, and the one picked takes replies.
+///
+/// ```
+/// use ely_collab::{Comment, CommentSidebar, Peer, Thread};
+/// use jiff::Timestamp;
+///
+/// let comment = Comment {
+///     author: Peer::new("ana", "Ana", 0),
+///     at: Timestamp::UNIX_EPOCH,
+///     body: "Which boat?".into(),
+///     reactions: Vec::new(),
+/// };
+/// let thread = Thread { key: "t1".into(), quote: None, comments: vec![comment], resolved: false };
+/// let comments = CommentSidebar::new("comments", [thread]).on_resolve(|_key, _resolve, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CommentSidebar {
     id: ElementId,
@@ -31,6 +45,7 @@ pub struct CommentSidebar {
 }
 
 impl CommentSidebar {
+    /// A sidebar under `id` of `threads`.
     pub fn new(id: impl Into<ElementId>, threads: impl IntoIterator<Item = Thread>) -> Self {
         Self {
             id: id.into(),

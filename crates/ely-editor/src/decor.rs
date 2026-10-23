@@ -14,44 +14,58 @@ use crate::{
 /// A problem in a span of code: squiggled under it and marked in the gutter.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Diagnostic {
+    /// The bytes it covers.
     pub range: Range<usize>,
+    /// How bad it is.
     pub severity: Severity,
+    /// What is wrong.
     pub message: SharedString,
 }
 
 /// A note set into the code at an offset, such as an inferred type or a parameter name.
 #[derive(Clone, Debug, PartialEq)]
 pub struct InlayHint {
+    /// Where it sits, in bytes.
     pub offset: usize,
+    /// What it reads.
     pub text: SharedString,
 }
 
 /// Actions over a line, such as "3 references" or "Run test", in a quiet row above it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CodeLens {
+    /// The line it sits over.
     pub line: usize,
+    /// Its actions, left to right.
     pub items: Vec<SharedString>,
 }
 
 /// A suggestion shown in grey at an offset; its first line continues the line, the rest follow below.
 #[derive(Clone, Debug, PartialEq)]
 pub struct GhostText {
+    /// Where it starts, in bytes.
     pub offset: usize,
+    /// What it suggests.
     pub text: SharedString,
 }
 
 /// A change against the saved text: lines added from `line` on, and the lines they replaced, shown above them.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DiffHunk {
+    /// The first line added.
     pub line: usize,
+    /// How many lines were added.
     pub added: usize,
+    /// The lines they replaced.
     pub removed: Vec<SharedString>,
 }
 
 /// A line's state against version control.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum GitMark {
+    /// The lines are new.
     Added,
+    /// The lines changed.
     Modified,
     /// Lines were removed just below this one.
     Deleted,
@@ -60,6 +74,12 @@ pub enum GitMark {
 type OnUnlock = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A strip above code that cannot be changed here, why, and a way to change it anyway.
+///
+/// ```
+/// use ely_editor::ReadOnlyBanner;
+///
+/// let locked = ReadOnlyBanner::new("locked", "This file is generated.").action("Edit anyway", |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ReadOnlyBanner {
     id: ElementId,
@@ -68,6 +88,7 @@ pub struct ReadOnlyBanner {
 }
 
 impl ReadOnlyBanner {
+    /// A banner under `id` saying `message`.
     pub fn new(id: impl Into<ElementId>, message: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -76,6 +97,7 @@ impl ReadOnlyBanner {
         }
     }
 
+    /// A button that changes the code anyway.
     pub fn action(
         mut self,
         label: impl Into<SharedString>,
@@ -120,10 +142,14 @@ impl RenderOnce for ReadOnlyBanner {
 /// Which mode a modal editor is in.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum VimMode {
+    /// Keys run commands.
     #[default]
     Normal,
+    /// Keys type text.
     Insert,
+    /// Keys extend a selection.
     Visual,
+    /// Keys type over text.
     Replace,
 }
 
@@ -139,6 +165,12 @@ impl VimMode {
 }
 
 /// The modal editing mode as a small tag, tinted by mode, and a pending command after it.
+///
+/// ```
+/// use ely_editor::{VimMode, VimModeIndicator};
+///
+/// let mode = VimModeIndicator::new(VimMode::Normal).pending("d2");
+/// ```
 #[derive(IntoElement)]
 pub struct VimModeIndicator {
     mode: VimMode,
@@ -146,6 +178,7 @@ pub struct VimModeIndicator {
 }
 
 impl VimModeIndicator {
+    /// A tag for `mode`.
     pub fn new(mode: VimMode) -> Self {
         Self {
             mode,

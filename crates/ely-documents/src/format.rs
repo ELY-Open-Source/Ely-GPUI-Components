@@ -8,15 +8,25 @@ use crate::forms::TextInput;
 /// A format the toolbars apply to markdown.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Format {
+    /// Bold.
     Bold,
+    /// Italic.
     Italic,
+    /// Struck through.
     Strike,
+    /// Inline code.
     Code,
+    /// A link.
     Link,
+    /// A heading of this level.
     Heading(u8),
+    /// A quote.
     Quote,
+    /// A bulleted list.
     Bullet,
+    /// A numbered list.
     Numbered,
+    /// A task list.
     Task,
 }
 

@@ -18,8 +18,11 @@ type OnRecent = Rc<dyn Fn(&RecentFile, &mut Window, &mut App)>;
 /// A file opened lately: its name, the folder it lives in, and when it was opened.
 #[derive(Clone, Debug, PartialEq)]
 pub struct RecentFile {
+    /// Its name.
     pub name: SharedString,
+    /// The folder it lives in.
     pub folder: SharedString,
+    /// When it was opened.
     pub opened: Timestamp,
 }
 
@@ -42,6 +45,14 @@ pub(crate) fn day_label(day: Date, today: Date) -> String {
 }
 
 /// Files opened lately, newest first, under a header for each day: Today, Yesterday, then the weekday and date. Each day is a list; Tab moves between days, and Enter or a double press opens a file.
+///
+/// ```
+/// use ely_files::{RecentFile, RecentFiles};
+/// use jiff::Timestamp;
+///
+/// let recent = RecentFiles::new("recent", [RecentFile { name: "notes.md".into(), folder: "Home".into(), opened: Timestamp::UNIX_EPOCH }])
+///     .on_open(|_file, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct RecentFiles {
     id: ElementId,
@@ -51,6 +62,7 @@ pub struct RecentFiles {
 }
 
 impl RecentFiles {
+    /// A list under `id` of `files`.
     pub fn new(id: impl Into<ElementId>, files: impl IntoIterator<Item = RecentFile>) -> Self {
         let files: Vec<RecentFile> = files.into_iter().collect();
         for (ix, file) in files.iter().enumerate() {
@@ -74,6 +86,7 @@ impl RecentFiles {
         self
     }
 
+    /// Runs with the file pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&RecentFile, &mut Window, &mut App) + 'static,

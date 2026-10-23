@@ -22,8 +22,11 @@ const WASH: f32 = 0.14;
 /// How someone works on a shared document: changing it, suggesting changes for others to take, or only reading.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum EditMode {
+    /// Changes go in at once.
     Editing,
+    /// Changes wait as suggestions.
     Suggesting,
+    /// Read only.
     Viewing,
 }
 
@@ -41,6 +44,12 @@ const MODES: [(EditMode, &str, &str, IconName); 3] = [
 type OnMode = Rc<dyn Fn(EditMode, &mut Window, &mut App)>;
 
 /// Picks how you work on a shared document: edit it, suggest changes for others to take, or only read.
+///
+/// ```
+/// use ely_collab::{EditMode, SuggestionMode};
+///
+/// let mode = SuggestionMode::new("mode", EditMode::Suggesting, |_mode, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SuggestionMode {
     id: ElementId,
@@ -49,6 +58,7 @@ pub struct SuggestionMode {
 }
 
 impl SuggestionMode {
+    /// A picker under `id` showing `mode`; `on_change` takes a new choice.
     pub fn new(
         id: impl Into<ElementId>,
         mode: EditMode,
@@ -89,17 +99,24 @@ impl RenderOnce for SuggestionMode {
 /// A change someone suggests: who, the stretch of the text it replaces, empty to insert, and what goes there, empty to delete.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Suggestion {
+    /// Who suggests it.
     pub author: Peer,
+    /// The bytes of the text it replaces, empty to insert.
     pub range: Range<usize>,
+    /// What goes there, empty to delete.
     pub text: SharedString,
 }
 
 /// What a reviewer decides: take or drop one suggestion, or all of them.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Decision {
+    /// Take this suggestion, by place.
     Accept(usize),
+    /// Drop this suggestion, by place.
     Reject(usize),
+    /// Take every suggestion.
     AcceptAll,
+    /// Drop every suggestion.
     RejectAll,
 }
 
@@ -215,6 +232,15 @@ fn described(base: &str, suggestion: &Suggestion) -> String {
 type OnDecide = Rc<dyn Fn(Decision, &mut Window, &mut App)>;
 
 /// Suggested changes in place: removed words struck and added ones underlined, each in its author's color, then each change with who made it, to accept or reject, one by one or all at once.
+///
+/// ```
+/// use ely_collab::{Peer, TrackChanges, suggested};
+///
+/// let ana = Peer::new("ana", "Ana", 0);
+/// let base = "The boat left.";
+/// let changes = TrackChanges::new("changes", base, suggested(base, "The boat left at dawn.", &ana))
+///     .on_decide(|_decision, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TrackChanges {
     id: ElementId,
@@ -268,6 +294,7 @@ impl TrackChanges {
         }
     }
 
+    /// Runs with what the reviewer decided.
     pub fn on_decide(
         mut self,
         handler: impl Fn(Decision, &mut Window, &mut App) + 'static,

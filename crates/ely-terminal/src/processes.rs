@@ -14,17 +14,31 @@ use crate::{
 /// A running process: its id, name and owner, and what it takes.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Process {
+    /// Its process id.
     pub pid: u32,
+    /// Its name.
     pub name: SharedString,
+    /// Who runs it.
     pub user: SharedString,
     /// Percent of one core.
     pub cpu: f32,
+    /// The memory it holds, in bytes.
     pub memory: u64,
 }
 
 type OnPids = Rc<dyn Fn(Vec<u32>, &mut Window, &mut App)>;
 
 /// Running processes as a table, busiest first: found by a query, sorted by any column, and the selected ones ended.
+///
+/// ```
+/// use ely_terminal::{Process, ProcessList};
+///
+/// let top = ProcessList::new(
+///     "top",
+///     [Process { pid: 412, name: "cargo".into(), user: "ana".into(), cpu: 84.0, memory: 512 << 20 }],
+/// )
+/// .on_end(|_pids, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProcessList {
     id: ElementId,
@@ -36,6 +50,7 @@ pub struct ProcessList {
 }
 
 impl ProcessList {
+    /// A table under `id` of `processes`.
     pub fn new(id: impl Into<ElementId>, processes: impl IntoIterator<Item = Process>) -> Self {
         Self {
             id: id.into(),
@@ -47,16 +62,19 @@ impl ProcessList {
         }
     }
 
+    /// Narrows the table to rows that hold this, as the table's search reads it.
     pub fn query(mut self, query: impl Into<SharedString>) -> Self {
         self.query = query.into();
         self
     }
 
+    /// The processes selected, by id.
     pub fn selected(mut self, pids: impl IntoIterator<Item = u32>) -> Self {
         self.selected = pids.into_iter().collect();
         self
     }
 
+    /// Runs with the selected ids after a change.
     pub fn on_select(
         mut self,
         handler: impl Fn(Vec<u32>, &mut Window, &mut App) + 'static,

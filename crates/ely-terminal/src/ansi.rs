@@ -133,12 +133,19 @@ impl Pen {
 }
 
 /// Text colored by the escape codes in it, as a terminal would print it; other codes drop away.
+///
+/// ```
+/// use ely_terminal::AnsiText;
+///
+/// let output = AnsiText::new("\u{1b}[32mok\u{1b}[0m 12 tests passed");
+/// ```
 #[derive(IntoElement)]
 pub struct AnsiText {
     source: SharedString,
 }
 
 impl AnsiText {
+    /// Text that prints `source`.
     pub fn new(source: impl Into<SharedString>) -> Self {
         Self {
             source: source.into(),

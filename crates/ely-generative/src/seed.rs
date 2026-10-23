@@ -29,6 +29,16 @@ fn roll() -> u32 {
 }
 
 /// A generation's seed in the owner's field: digits up to `u32::MAX`, empty for a new one each run, and a die that rolls one.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_generative::SeedInput;
+/// use gpui::Entity;
+///
+/// fn seed(field: &Entity<TextInput>) -> SeedInput {
+///     SeedInput::new("seed", field)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SeedInput {
     id: ElementId,
@@ -36,6 +46,7 @@ pub struct SeedInput {
 }
 
 impl SeedInput {
+    /// A seed under `id`; `field` holds its digits.
     pub fn new(id: impl Into<ElementId>, field: &Entity<TextInput>) -> Self {
         Self {
             id: id.into(),

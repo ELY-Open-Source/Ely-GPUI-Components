@@ -21,8 +21,11 @@ type OnView = Rc<dyn Fn(FileView, &mut Window, &mut App)>;
 /// How an explorer shows a folder: a list that sorts by column, tiles, or columns along the path.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FileView {
+    /// A list that sorts by column.
     List,
+    /// Tiles.
     Icons,
+    /// Columns along the path.
     Columns,
 }
 
@@ -34,6 +37,17 @@ const VIEWS: [(FileView, &str, &str, IconName); 3] = [
 ];
 
 /// A folder three ways: a list that sorts by column, tiles, or columns that walk the path. Its name, its count and a switch of views sit above the path, which climbs. Opening a folder goes into it; opening a file hands it to the host, which lists each folder it goes to.
+///
+/// ```
+/// use ely_core::lists::DirEntry;
+/// use ely_files::{FileExplorer, FileView};
+/// use jiff::Timestamp;
+///
+/// let root = vec![DirEntry::file("notes.md", 1_200, Timestamp::UNIX_EPOCH)];
+/// let explorer = FileExplorer::new("explorer", ["Home"], [root], FileView::List)
+///     .on_open(|_entry, _, _| {})
+///     .on_view(|_view, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileExplorer {
     id: ElementId,
@@ -95,6 +109,7 @@ impl FileExplorer {
         self
     }
 
+    /// Runs with the view picked.
     pub fn on_view(mut self, handler: impl Fn(FileView, &mut Window, &mut App) + 'static) -> Self {
         self.on_view = Some(Rc::new(handler));
         self

@@ -22,6 +22,15 @@ use crate::{
 };
 
 /// Stages a group passes through, each bar as wide as those who reached it, centered, with how many carried on from the stage before. Hover reads a stage.
+///
+/// ```
+/// use ely_charts::FunnelChart;
+///
+/// let signup = FunnelChart::new("signup")
+///     .stage("Visited", 1000.0)
+///     .stage("Started", 420.0)
+///     .stage("Finished", 180.0);
+/// ```
 #[derive(IntoElement)]
 pub struct FunnelChart {
     base: Div,
@@ -31,6 +40,7 @@ pub struct FunnelChart {
 }
 
 impl FunnelChart {
+    /// A funnel under `id`, with no stages yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -40,6 +50,7 @@ impl FunnelChart {
         }
     }
 
+    /// A stage and how many reached it. Panics on a negative value or one past `LIMIT`.
     pub fn stage(mut self, name: impl Into<SharedString>, value: f64) -> Self {
         assert!(
             drawable(value) && value >= 0.0,
@@ -49,6 +60,7 @@ impl FunnelChart {
         self
     }
 
+    /// How values read in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

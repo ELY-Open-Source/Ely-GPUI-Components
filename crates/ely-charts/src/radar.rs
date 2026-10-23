@@ -42,6 +42,14 @@ fn spoke_at(count: usize, center: (f32, f32), at: (f32, f32)) -> usize {
 }
 
 /// Values on spokes around a center, a shape per series: rings mark the scale, spokes the axes. Hover a spoke to read every series on it; a press on a legend name hides it.
+///
+/// ```
+/// use ely_charts::{RadarChart, Series};
+///
+/// let skills = RadarChart::new("skills", ["Speed", "Range", "Power"])
+///     .series(Series::new("A", [3.0, 5.0, 4.0]))
+///     .series(Series::new("B", [4.0, 2.0, 5.0]));
+/// ```
 #[derive(IntoElement)]
 pub struct RadarChart {
     base: Div,
@@ -52,6 +60,7 @@ pub struct RadarChart {
 }
 
 impl RadarChart {
+    /// A radar under `id`, a spoke for each of `axes`. Panics on fewer than three.
     pub fn new(
         id: impl Into<ElementId>,
         axes: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -67,6 +76,7 @@ impl RadarChart {
         }
     }
 
+    /// A series, a value per spoke. Panics when the counts differ.
     pub fn series(mut self, series: Series) -> Self {
         assert_eq!(
             series.values.len(),

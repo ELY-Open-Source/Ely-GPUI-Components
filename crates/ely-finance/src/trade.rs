@@ -16,9 +16,12 @@ use crate::{
 /// How an order fills: now at the market, at its price or better, or once the market reaches its stop.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum OrderKind {
+    /// At once, at the market.
     #[default]
     Market,
+    /// At its price or better.
     Limit,
+    /// Once the market reaches its price.
     Stop,
 }
 
@@ -35,10 +38,15 @@ impl OrderKind {
 /// An order before it is placed: its symbol, which way, how it fills, how much, and the price it waits for when it waits.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Order {
+    /// The ticker.
     pub symbol: SharedString,
+    /// Which way it goes.
     pub side: Side,
+    /// How it fills.
     pub kind: OrderKind,
+    /// How many.
     pub quantity: f64,
+    /// The price it waits for; a market order passes it by.
     pub price: f64,
 }
 
@@ -77,6 +85,21 @@ type OnOrder = Rc<dyn Fn(Order, &mut Window, &mut App)>;
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// An order to fill in: its side, how it fills, its price when it waits for one, its quantity and what it comes to; the button places it.
+///
+/// ```
+/// use ely_finance::{Order, OrderEntry, OrderKind, Side};
+///
+/// let order = Order {
+///     symbol: "ELY".into(),
+///     side: Side::Buy,
+///     kind: OrderKind::Market,
+///     quantity: 100.0,
+///     price: 0.0,
+/// };
+/// let entry = OrderEntry::new("entry", order, 14.2)
+///     .on_change(|_order, _, _| {})
+///     .on_submit(|_order, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct OrderEntry {
     id: ElementId,
@@ -87,6 +110,7 @@ pub struct OrderEntry {
 }
 
 impl OrderEntry {
+    /// An entry under `id` holding `order`, the market at `last`.
     pub fn new(id: impl Into<ElementId>, order: Order, last: f64) -> Self {
         Self {
             id: id.into(),
@@ -103,6 +127,7 @@ impl OrderEntry {
         self
     }
 
+    /// Runs with the order when the button places it.
     pub fn on_submit(mut self, handler: impl Fn(Order, &mut Window, &mut App) + 'static) -> Self {
         self.on_submit = Some(Rc::new(handler));
         self
@@ -249,6 +274,12 @@ impl RenderOnce for OrderEntry {
 type OnSide = Rc<dyn Fn(Side, &mut Window, &mut App)>;
 
 /// Buy or sell at a press: the bid on the sell button, the ask on the buy button, and the spread between them.
+///
+/// ```
+/// use ely_finance::QuickTradeButtons;
+///
+/// let quick = QuickTradeButtons::new("quick", 99.5, 99.6).on_trade(|_side, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct QuickTradeButtons {
     id: ElementId,
@@ -258,6 +289,7 @@ pub struct QuickTradeButtons {
 }
 
 impl QuickTradeButtons {
+    /// Buttons under `id` at `bid` and `ask`. Panics on quotes not finite.
     pub fn new(id: impl Into<ElementId>, bid: f64, ask: f64) -> Self {
         assert!(bid.is_finite() && ask.is_finite(), "quotes are finite");
         Self {
@@ -268,6 +300,7 @@ impl QuickTradeButtons {
         }
     }
 
+    /// Runs with the side pressed.
     pub fn on_trade(mut self, handler: impl Fn(Side, &mut Window, &mut App) + 'static) -> Self {
         self.on_trade = Some(Rc::new(handler));
         self
@@ -313,6 +346,19 @@ impl RenderOnce for QuickTradeButtons {
 }
 
 /// Asks before an order goes, reading back what it will do and what it comes to.
+///
+/// ```
+/// use ely_finance::{Order, OrderConfirmDialog, OrderKind, Side};
+///
+/// let order = Order {
+///     symbol: "ELY".into(),
+///     side: Side::Sell,
+///     kind: OrderKind::Limit,
+///     quantity: 50.0,
+///     price: 15.0,
+/// };
+/// let confirm = OrderConfirmDialog::new("confirm", order, 14.2, |_, _| {}).on_confirm(|_order, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct OrderConfirmDialog {
     id: ElementId,
@@ -339,6 +385,7 @@ impl OrderConfirmDialog {
         }
     }
 
+    /// Runs with the order when it is placed.
     pub fn on_confirm(mut self, handler: impl Fn(Order, &mut Window, &mut App) + 'static) -> Self {
         self.on_confirm = Some(Rc::new(handler));
         self

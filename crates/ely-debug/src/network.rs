@@ -15,14 +15,23 @@ use crate::{
 /// A request the page made: method and address, status once answered, kind, size, when it started and how long it took in milliseconds, and its headers and body.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Request {
+    /// The method, such as GET.
     pub method: SharedString,
+    /// The address.
     pub url: SharedString,
+    /// The status, once answered.
     pub status: Option<u16>,
+    /// What it fetched, such as `fetch` or `img`.
     pub kind: SharedString,
+    /// Its size in bytes.
     pub size: u64,
+    /// When it started, in milliseconds.
     pub start: f64,
+    /// How long it took, in milliseconds.
     pub duration: f64,
+    /// Its headers.
     pub headers: Vec<(SharedString, SharedString)>,
+    /// Its body, when there is one.
     pub body: Option<SharedString>,
 }
 
@@ -48,6 +57,26 @@ pub(crate) fn name(url: &str) -> &str {
 }
 
 /// Requests in the order they started: name, status, kind, size and time, with a waterfall of when each ran; a query keeps those whose address holds it. A press opens a request's headers and body below.
+///
+/// ```
+/// use ely_debug::{NetworkInspector, Request};
+///
+/// let page = NetworkInspector::new(
+///     "page",
+///     [Request {
+///         method: "GET".into(),
+///         url: "https://ely.dev/app.js".into(),
+///         status: Some(200),
+///         kind: "script".into(),
+///         size: 48_000,
+///         start: 12.0,
+///         duration: 84.0,
+///         headers: vec![("content-type".into(), "text/javascript".into())],
+///         body: None,
+///     }],
+/// )
+/// .on_select(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct NetworkInspector {
     id: ElementId,
@@ -58,6 +87,7 @@ pub struct NetworkInspector {
 }
 
 impl NetworkInspector {
+    /// An inspector under `id` of `requests`.
     pub fn new(id: impl Into<ElementId>, requests: impl IntoIterator<Item = Request>) -> Self {
         Self {
             id: id.into(),
@@ -68,16 +98,19 @@ impl NetworkInspector {
         }
     }
 
+    /// Keeps the requests whose address holds this.
     pub fn query(mut self, query: impl Into<SharedString>) -> Self {
         self.query = query.into();
         self
     }
 
+    /// Opens a request's headers and body, by place.
     pub fn selected(mut self, request: usize) -> Self {
         self.selected = Some(request);
         self
     }
 
+    /// Runs with the request pressed, by place.
     pub fn on_select(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_select = Some(Rc::new(handler));
         self

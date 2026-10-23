@@ -13,6 +13,12 @@ use crate::{
 };
 
 /// Starts and stops dictation: a microphone at rest, a stop square while it records.
+///
+/// ```
+/// use ely_chat::VoiceInputButton;
+///
+/// let mic = VoiceInputButton::new("mic", false, |_record, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VoiceInputButton {
     id: ElementId,
@@ -65,6 +71,13 @@ impl RenderOnce for VoiceInputButton {
 }
 
 /// Sound as it records: a red dot, how long it has run, and bars that follow the latest levels, 0 to 1, oldest first. The dot's rings rest under reduced motion.
+///
+/// ```
+/// use ely_chat::VoiceWaveform;
+/// use web_time::Instant;
+///
+/// let wave = VoiceWaveform::new("wave", Instant::now(), vec![0.2, 0.6, 0.4]);
+/// ```
 #[derive(IntoElement)]
 pub struct VoiceWaveform {
     id: ElementId,
@@ -73,6 +86,7 @@ pub struct VoiceWaveform {
 }
 
 impl VoiceWaveform {
+    /// A waveform under `id` of input since `since`, its `levels` 0 to 1. Panics on a level outside that.
     pub fn new(id: impl Into<ElementId>, since: Instant, levels: impl Into<Vec<f32>>) -> Self {
         let levels: Vec<f32> = levels.into();
         assert!(

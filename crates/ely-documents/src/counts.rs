@@ -11,6 +11,12 @@ use crate::{
 const NEAR: f32 = 0.9;
 
 /// Words and characters in a text, as one quiet line; against a limit, characters warn near it and turn to danger past it.
+///
+/// ```
+/// use ely_documents::WordCount;
+///
+/// let count = WordCount::new("A short note to the team.").limit(280);
+/// ```
 #[derive(IntoElement)]
 pub struct WordCount {
     text: SharedString,
@@ -18,6 +24,7 @@ pub struct WordCount {
 }
 
 impl WordCount {
+    /// The count of `text`.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self {
             text: text.into(),
@@ -62,12 +69,19 @@ impl RenderOnce for WordCount {
 }
 
 /// How long a text takes to read, at an adult's pace.
+///
+/// ```
+/// use ely_documents::ReadingTime;
+///
+/// let time = ReadingTime::new("A short note to the team.");
+/// ```
 #[derive(IntoElement)]
 pub struct ReadingTime {
     text: SharedString,
 }
 
 impl ReadingTime {
+    /// The reading time of `text`.
     pub fn new(text: impl Into<SharedString>) -> Self {
         Self { text: text.into() }
     }

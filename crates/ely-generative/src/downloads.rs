@@ -19,20 +19,28 @@ use crate::{
 /// Where a model's download stands.
 #[derive(Clone, Debug, PartialEq)]
 pub enum DownloadState {
+    /// Waiting to start.
     Queued,
     /// Under way: the share fetched, and bytes a second.
     Fetching(f32, u64),
+    /// Paused at this share fetched.
     Paused(f32),
+    /// Fetched.
     Done,
+    /// Failed, and why.
     Failed(SharedString),
 }
 
 /// One model to fetch: its key, its name, its size in bytes, and where it stands.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Download {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub name: SharedString,
+    /// Its size in bytes.
     pub bytes: u64,
+    /// Where it stands.
     pub state: DownloadState,
 }
 
@@ -69,6 +77,16 @@ pub(crate) fn status(download: &Download) -> String {
 }
 
 /// Models on their way to this machine: each row its name, how much of how much with speed and time left, a bar while it comes; Pause and Resume, Cancel, Retry once it fails, and Delete once it is here.
+///
+/// ```
+/// use ely_generative::{Download, DownloadState, ModelDownloadManager};
+///
+/// let models = ModelDownloadManager::new(
+///     "models",
+///     [Download { key: "m1".into(), name: "ely-8b".into(), bytes: 4_800_000_000, state: DownloadState::Fetching(0.3, 40_000_000) }],
+/// )
+/// .on_pause(|_key, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ModelDownloadManager {
     id: ElementId,
@@ -81,6 +99,7 @@ pub struct ModelDownloadManager {
 }
 
 impl ModelDownloadManager {
+    /// A manager under `id` of `downloads`.
     pub fn new(id: impl Into<ElementId>, downloads: impl IntoIterator<Item = Download>) -> Self {
         let downloads: Vec<Download> = downloads.into_iter().collect();
         for download in &downloads {
@@ -104,6 +123,7 @@ impl ModelDownloadManager {
         }
     }
 
+    /// Runs with the key of the download to pause.
     pub fn on_pause(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -112,6 +132,7 @@ impl ModelDownloadManager {
         self
     }
 
+    /// Runs with the key of the download to resume.
     pub fn on_resume(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -120,6 +141,7 @@ impl ModelDownloadManager {
         self
     }
 
+    /// Runs with the key of the download to cancel.
     pub fn on_cancel(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -128,6 +150,7 @@ impl ModelDownloadManager {
         self
     }
 
+    /// Runs with the key of the download to try again.
     pub fn on_retry(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

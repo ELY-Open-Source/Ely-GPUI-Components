@@ -7,6 +7,12 @@ use crate::{
 };
 
 /// The best bid and ask, and the spread between them in price and in basis points.
+///
+/// ```
+/// use ely_finance::SpreadIndicator;
+///
+/// let spread = SpreadIndicator::new(99.5, 99.6);
+/// ```
 #[derive(IntoElement)]
 pub struct SpreadIndicator {
     bid: f64,
@@ -16,6 +22,7 @@ pub struct SpreadIndicator {
 }
 
 impl SpreadIndicator {
+    /// The best `bid` and `ask`. Panics on prices not finite.
     pub fn new(bid: f64, ask: f64) -> Self {
         assert!(
             bid.is_finite() && ask.is_finite(),
@@ -29,11 +36,13 @@ impl SpreadIndicator {
         }
     }
 
+    /// Decimal places, two unless set.
     pub fn places(mut self, places: usize) -> Self {
         self.places = places;
         self
     }
 
+    /// The bid in red and the ask in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -79,6 +88,12 @@ impl RenderOnce for SpreadIndicator {
 }
 
 /// The weight of waiting orders on each side as one bar split where they balance.
+///
+/// ```
+/// use ely_finance::BidAskBar;
+///
+/// let weight = BidAskBar::new(1_200.0, 800.0);
+/// ```
 #[derive(IntoElement)]
 pub struct BidAskBar {
     bids: f64,
@@ -97,6 +112,7 @@ impl BidAskBar {
         }
     }
 
+    /// Bids in red and asks in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

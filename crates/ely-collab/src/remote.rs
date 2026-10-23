@@ -25,6 +25,16 @@ pub(crate) fn in_view(field: Bounds<Pixels>, caret: Bounds<Pixels>) -> bool {
 }
 
 /// Someone else's caret in a shared field: a bar in their color, their name on a flag above. Lay it over the field, in a box its size; it reads where `offset` sits as the field paints.
+///
+/// ```
+/// use ely_collab::{Peer, RemoteCursor};
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn caret(input: &Entity<TextInput>) -> RemoteCursor {
+///     RemoteCursor::new(&Peer::new("ana", "Ana", 0), input, 4)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RemoteCursor {
     peer: Peer,
@@ -33,6 +43,7 @@ pub struct RemoteCursor {
 }
 
 impl RemoteCursor {
+    /// `peer`'s caret at byte `offset` of `input`.
     pub fn new(peer: &Peer, input: &Entity<TextInput>, offset: usize) -> Self {
         Self {
             peer: peer.clone(),
@@ -110,6 +121,16 @@ impl RenderOnce for RemoteCursor {
 }
 
 /// Someone else's selection in a shared field, washed in their color. Lay it over the field, in a box its size; it reads where `range` sits as the field paints.
+///
+/// ```
+/// use ely_collab::{Peer, RemoteSelection};
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn selection(input: &Entity<TextInput>) -> RemoteSelection {
+///     RemoteSelection::new(&Peer::new("ana", "Ana", 0), input, 4..8)
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RemoteSelection {
     peer: Peer,
@@ -118,6 +139,7 @@ pub struct RemoteSelection {
 }
 
 impl RemoteSelection {
+    /// `peer`'s selection over `range` of `input`.
     pub fn new(peer: &Peer, input: &Entity<TextInput>, range: Range<usize>) -> Self {
         Self {
             peer: peer.clone(),

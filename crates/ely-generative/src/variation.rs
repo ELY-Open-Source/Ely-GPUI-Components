@@ -16,6 +16,14 @@ use crate::{
 };
 
 /// Variations of one picture: the chosen one large, every one as a thumbnail to choose, and ways on from the chosen: vary it a little or a lot, or upscale it. The large picture fades in on each choice.
+///
+/// ```
+/// use ely_generative::VariationPicker;
+///
+/// let pick = VariationPicker::new("pick", ["out/1.png", "out/2.png", "out/3.png", "out/4.png"], 1.0, 0)
+///     .on_choose(|_ix, _, _| {})
+///     .on_vary(|_strong, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VariationPicker {
     id: ElementId,
@@ -54,6 +62,7 @@ impl VariationPicker {
         }
     }
 
+    /// Runs with the picture chosen, by place.
     pub fn on_choose(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_choose = Some(Rc::new(handler));
         self
@@ -65,6 +74,7 @@ impl VariationPicker {
         self
     }
 
+    /// Offers to upscale the chosen picture.
     pub fn on_upscale(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_upscale = Some(Rc::new(handler));
         self

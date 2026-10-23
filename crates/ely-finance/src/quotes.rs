@@ -37,6 +37,12 @@ pub(crate) fn change(amount: f64, share: f64, places: usize) -> String {
 }
 
 /// A price read to its places that tints green or red for a moment each time it moves, with an arrow the way it last went.
+///
+/// ```
+/// use ely_finance::PriceText;
+///
+/// let last = PriceText::new("last", 14.2).from(14.05).places(2);
+/// ```
 #[derive(IntoElement)]
 pub struct PriceText {
     id: ElementId,
@@ -48,6 +54,7 @@ pub struct PriceText {
 }
 
 impl PriceText {
+    /// A price under `id`. Panics on a value not finite.
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         assert!(value.is_finite(), "a price needs a finite value");
         Self {
@@ -66,16 +73,19 @@ impl PriceText {
         self
     }
 
+    /// Decimal places, two unless set.
     pub fn places(mut self, places: usize) -> Self {
         self.places = places;
         self
     }
 
+    /// Its text size, `Base` unless set.
     pub fn size(mut self, size: TextSize) -> Self {
         self.size = size;
         self
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -118,6 +128,12 @@ impl RenderOnce for PriceText {
 }
 
 /// A move since a reference, its amount and share, tinted by which way it went.
+///
+/// ```
+/// use ely_finance::PriceChangeBadge;
+///
+/// let change = PriceChangeBadge::new(12.9, 14.2);
+/// ```
 #[derive(IntoElement)]
 pub struct PriceChangeBadge {
     amount: f64,
@@ -141,11 +157,13 @@ impl PriceChangeBadge {
         }
     }
 
+    /// Decimal places, two unless set.
     pub fn places(mut self, places: usize) -> Self {
         self.places = places;
         self
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -166,6 +184,12 @@ impl RenderOnce for PriceChangeBadge {
 }
 
 /// A symbol at a glance: its name, price and move since the last close, the day's line, and where the price sits in the day's range.
+///
+/// ```
+/// use ely_finance::QuoteCard;
+///
+/// let card = QuoteCard::new("card", ("ELY", "Ely Inc."), (14.2, 12.9), [12.9, 13.6, 14.2]);
+/// ```
 #[derive(IntoElement)]
 pub struct QuoteCard {
     id: ElementId,
@@ -198,6 +222,7 @@ impl QuoteCard {
         }
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -309,6 +334,12 @@ impl RenderOnce for QuoteCard {
 }
 
 /// Quotes running past in a band, each symbol with its price and move.
+///
+/// ```
+/// use ely_finance::TickerTape;
+///
+/// let tape = TickerTape::new("tape").quote("ELY", 14.2, 0.1).quote("ACME", 88.0, -0.02);
+/// ```
 #[derive(IntoElement)]
 pub struct TickerTape {
     id: ElementId,
@@ -317,6 +348,7 @@ pub struct TickerTape {
 }
 
 impl TickerTape {
+    /// A tape under `id`, with no quotes yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -331,6 +363,7 @@ impl TickerTape {
         self
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

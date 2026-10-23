@@ -7,23 +7,36 @@ use crate::forms::ink;
 pub enum Mark {
     /// A box from one corner to the other.
     Box {
+        /// The first corner.
         from: (f32, f32),
+        /// The opposite corner.
         to: (f32, f32),
+        /// Its color.
         color: usize,
     },
     /// An arrow from its tail to its head.
     Arrow {
+        /// Its tail.
         from: (f32, f32),
+        /// Its head.
         to: (f32, f32),
+        /// Its color.
         color: usize,
     },
     /// A line drawn freehand.
     Pen {
+        /// The points it runs through.
         points: Vec<(f32, f32)>,
+        /// Its color.
         color: usize,
     },
     /// A numbered pin, counted in the order pins were placed.
-    Pin { at: (f32, f32), color: usize },
+    Pin {
+        /// Where it sits.
+        at: (f32, f32),
+        /// Its color.
+        color: usize,
+    },
 }
 
 /// How marks look: the line's width, an arrow head's length, the chart colors, and the chosen mark's halo.
@@ -106,9 +119,13 @@ pub(crate) fn paint(
 pub enum Tool {
     /// Chooses a mark instead of making one.
     Select,
+    /// Draws boxes.
     Box,
+    /// Draws arrows.
     Arrow,
+    /// Draws freehand.
     Pen,
+    /// Places numbered pins.
     Pin,
 }
 

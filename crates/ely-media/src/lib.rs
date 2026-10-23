@@ -1,3 +1,6 @@
+//! Ely's media components for GPUI: players and their controls, waveforms, pictures to view, crop and mark, cameras, devices and recording.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, feedback, forms, layout, lists, menus, motion, overlays, primitives,
     theme, typography,

@@ -27,6 +27,12 @@ pub(crate) fn fold_at(code: &str, lines: usize) -> Option<usize> {
 }
 
 /// Code in a message: its language, a copy button, and the owner's download, run and apply; long code folds to a few lines until opened.
+///
+/// ```
+/// use ely_chat::CodeBlock;
+///
+/// let code = CodeBlock::new("code", "fn main() {}").language("rust").on_apply(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CodeBlock {
     id: ElementId,
@@ -38,6 +44,7 @@ pub struct CodeBlock {
 }
 
 impl CodeBlock {
+    /// A block under `id` of `code`.
     pub fn new(id: impl Into<ElementId>, code: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
@@ -49,16 +56,19 @@ impl CodeBlock {
         }
     }
 
+    /// The language named in its header, such as `rust`; `code` unless set.
     pub fn language(mut self, language: impl Into<SharedString>) -> Self {
         self.language = Some(language.into());
         self
     }
 
+    /// Offers to save the code as a file.
     pub fn on_download(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_download = Some(Rc::new(handler));
         self
     }
 
+    /// Offers to run the code.
     pub fn on_run(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_run = Some(Rc::new(handler));
         self

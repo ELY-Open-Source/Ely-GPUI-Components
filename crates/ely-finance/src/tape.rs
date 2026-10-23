@@ -21,6 +21,17 @@ use crate::{
 };
 
 /// Trades as they print, newest on top: the time, price and size tinted by the side that took them; trades of at least `large` stand bold, and the newest flashes in.
+///
+/// ```
+/// use ely_finance::{Side, TimeAndSales, Trade};
+/// use jiff::Timestamp;
+///
+/// let prints = TimeAndSales::new(
+///     "prints",
+///     [Trade { time: Timestamp::UNIX_EPOCH, price: 99.6, size: 200.0, side: Side::Buy }],
+/// )
+/// .large(1_000.0);
+/// ```
 #[derive(IntoElement)]
 pub struct TimeAndSales {
     id: ElementId,
@@ -52,16 +63,19 @@ impl TimeAndSales {
         self
     }
 
+    /// How many trades show, twelve unless set.
     pub fn rows(mut self, rows: usize) -> Self {
         self.rows = rows;
         self
     }
 
+    /// The time zone its times read in; the system's unless set.
     pub fn zone(mut self, zone: TimeZone) -> Self {
         self.zone = Some(zone);
         self
     }
 
+    /// Buys in red and sells in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self
@@ -124,6 +138,13 @@ impl RenderOnce for TimeAndSales {
 type OnTrade = Rc<dyn Fn(Side, f64, &mut Window, &mut App)>;
 
 /// The book as a ladder of prices around the last trade: size bid at each price on the left, asked on the right, the last price marked in the middle. A press on a size side trades at its price.
+///
+/// ```
+/// use ely_finance::DomLadder;
+///
+/// let ladder = DomLadder::new("ladder", [(99.5, 300.0)], [(99.6, 80.0)], 99.55, 0.05)
+///     .on_trade(|_side, _price, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DomLadder {
     id: ElementId,
@@ -163,6 +184,7 @@ impl DomLadder {
         }
     }
 
+    /// How many prices show, fifteen unless set.
     pub fn rows(mut self, rows: usize) -> Self {
         self.rows = rows;
         self
@@ -177,6 +199,7 @@ impl DomLadder {
         self
     }
 
+    /// Bids in red and asks in green, as markets in China and Japan read rises.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

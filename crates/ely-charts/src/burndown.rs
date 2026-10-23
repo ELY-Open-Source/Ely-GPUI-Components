@@ -48,6 +48,15 @@ pub(crate) fn burn(count: usize, scope: f64, left: &[f64], frame: Rect) -> Burn 
 }
 
 /// Work left over a sprint, a day at a time: the ideal line from the scope down to nothing on the last day, what was left at each day's end so far, and a line at today. Hover a day to read it.
+///
+/// ```
+/// use ely_charts::BurndownChart;
+/// use jiff::civil::date;
+///
+/// let sprint = BurndownChart::new("sprint", date(2026, 10, 5), date(2026, 10, 16), 40.0)
+///     .left([36.0, 31.0, 30.0, 22.0])
+///     .today(date(2026, 10, 8));
+/// ```
 #[derive(IntoElement)]
 pub struct BurndownChart {
     base: Div,

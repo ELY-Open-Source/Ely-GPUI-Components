@@ -44,6 +44,17 @@ fn header(id: ElementId, toggle: Option<Entity<bool>>, cx: &App) -> Stateful<Div
 }
 
 /// One call to a tool: its status, name, what it touched and how long it took; opened, its arguments and what came back.
+///
+/// ```
+/// use ely_agent::ToolCallCard;
+/// use ely_chat::StepState;
+/// use std::time::Duration;
+///
+/// let call = ToolCallCard::new("call", "read_file", StepState::Done)
+///     .summary("notes.md")
+///     .took(Duration::from_millis(40))
+///     .result("12 lines");
+/// ```
 #[derive(IntoElement)]
 pub struct ToolCallCard {
     id: ElementId,
@@ -56,6 +67,7 @@ pub struct ToolCallCard {
 }
 
 impl ToolCallCard {
+    /// A card under `id` for a call to `name` in `status`.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>, status: StepState) -> Self {
         Self {
             id: id.into(),
@@ -74,6 +86,7 @@ impl ToolCallCard {
         self
     }
 
+    /// How long the call took.
     pub fn took(mut self, took: Duration) -> Self {
         self.took = Some(took);
         self
@@ -186,6 +199,16 @@ impl RenderOnce for ToolCallCard {
 }
 
 /// Several tool calls under one line, shut until opened, such as "Read 3 files".
+///
+/// ```
+/// use ely_agent::{ToolCallCard, ToolCallGroup};
+/// use ely_chat::StepState;
+/// use gpui::ParentElement;
+///
+/// let group = ToolCallGroup::new("group", "Read 2 files")
+///     .child(ToolCallCard::new("a", "read_file", StepState::Done))
+///     .child(ToolCallCard::new("b", "read_file", StepState::Done));
+/// ```
 #[derive(IntoElement)]
 pub struct ToolCallGroup {
     id: ElementId,
@@ -194,6 +217,7 @@ pub struct ToolCallGroup {
 }
 
 impl ToolCallGroup {
+    /// A group under `id` headed `label`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

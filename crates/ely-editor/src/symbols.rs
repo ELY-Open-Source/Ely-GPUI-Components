@@ -16,20 +16,32 @@ use crate::{
 /// What a symbol in code is.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SymbolKind {
+    /// A module.
     Module,
+    /// A struct.
     Struct,
+    /// An enum.
     Enum,
+    /// A trait.
     Trait,
+    /// A function.
     Function,
+    /// A method.
     Method,
+    /// A field.
     Field,
+    /// A variable.
     Variable,
+    /// A constant.
     Constant,
+    /// A keyword.
     Keyword,
+    /// A snippet.
     Snippet,
 }
 
 impl SymbolKind {
+    /// The icon its kind shows.
     pub fn icon(self) -> IconName {
         match self {
             SymbolKind::Module => IconName::Package,
@@ -59,6 +71,7 @@ impl SymbolKind {
         }
     }
 
+    /// Its kind as a word, such as `struct`.
     pub fn word(self) -> &'static str {
         match self {
             SymbolKind::Module => "module",
@@ -79,14 +92,20 @@ impl SymbolKind {
 /// A symbol in a file: its name, kind, the line it starts on, a detail such as its type, and what it holds.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Symbol {
+    /// Its name.
     pub name: SharedString,
+    /// Its kind.
     pub kind: SymbolKind,
+    /// The line it starts on.
     pub line: usize,
+    /// A detail, such as its type.
     pub detail: Option<SharedString>,
+    /// What it holds.
     pub children: Vec<Symbol>,
 }
 
 impl Symbol {
+    /// A symbol named `name`, of `kind`, starting on `line`.
     pub fn new(name: impl Into<SharedString>, kind: SymbolKind, line: usize) -> Self {
         Self {
             name: name.into(),
@@ -97,11 +116,13 @@ impl Symbol {
         }
     }
 
+    /// A detail, such as its type.
     pub fn detail(mut self, detail: impl Into<SharedString>) -> Self {
         self.detail = Some(detail.into());
         self
     }
 
+    /// What it holds.
     pub fn children(mut self, children: impl IntoIterator<Item = Symbol>) -> Self {
         self.children = children.into_iter().collect();
         self
@@ -157,6 +178,18 @@ pub(crate) fn enclosing(symbols: &[Symbol], line: usize) -> Option<&Symbol> {
 }
 
 /// A file's symbols as a tree filling its box, the one around the cursor chosen; a press goes to its line.
+///
+/// ```
+/// use ely_editor::{Symbol, SymbolKind, SymbolOutline};
+///
+/// let outline = SymbolOutline::new(
+///     "outline",
+///     [Symbol::new("Point", SymbolKind::Struct, 3)
+///         .children([Symbol::new("x", SymbolKind::Field, 4).detail("f32")])],
+/// )
+/// .cursor(4)
+/// .on_pick(|_line, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct SymbolOutline {
     id: ElementId,
@@ -166,6 +199,7 @@ pub struct SymbolOutline {
 }
 
 impl SymbolOutline {
+    /// An outline under `id` of `symbols`.
     pub fn new(id: impl Into<ElementId>, symbols: impl IntoIterator<Item = Symbol>) -> Self {
         Self {
             id: id.into(),
@@ -181,6 +215,7 @@ impl SymbolOutline {
         self
     }
 
+    /// Runs with the line of the symbol pressed.
     pub fn on_pick(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self
@@ -228,6 +263,13 @@ type OnClose = Rc<dyn Fn(&mut Window, &mut App)>;
 type OnFlip = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// A palette of a file's symbols by name, each with its kind and what holds it; `@` style jumping.
+///
+/// ```
+/// use ely_editor::{GoToSymbol, Symbol, SymbolKind};
+///
+/// let jump = GoToSymbol::new("jump", [Symbol::new("main", SymbolKind::Function, 1)], |_, _| {})
+///     .on_pick(|_line, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct GoToSymbol {
     id: ElementId,
@@ -251,6 +293,7 @@ impl GoToSymbol {
         }
     }
 
+    /// Runs with the line of the symbol picked.
     pub fn on_pick(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_pick = Some(Rc::new(handler));
         self
@@ -328,13 +371,34 @@ impl RenderOnce for GoToSymbol {
 /// A call in a hierarchy: who, of what kind, where, and the calls under it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Call {
+    /// Who calls or is called.
     pub name: SharedString,
+    /// Its kind.
     pub kind: SymbolKind,
+    /// Where it sits, such as a path and line.
     pub place: SharedString,
+    /// The calls under it.
     pub calls: Vec<Call>,
 }
 
 /// Who calls a function or whom it calls, or a type's supertypes and subtypes, as a tree filling its box that flips between the two directions.
+///
+/// ```
+/// use ely_editor::{Call, CallHierarchy, SymbolKind};
+///
+/// let root = Call {
+///     name: "save".into(),
+///     kind: SymbolKind::Function,
+///     place: "src/file.rs:40".into(),
+///     calls: vec![Call {
+///         name: "on_key".into(),
+///         kind: SymbolKind::Method,
+///         place: "src/view.rs:12".into(),
+///         calls: Vec::new(),
+///     }],
+/// };
+/// let callers = CallHierarchy::new("callers", root, true).on_flip(|_incoming, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CallHierarchy {
     id: ElementId,

@@ -20,30 +20,37 @@ use crate::{
 /// How the gutter numbers lines.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum LineNumbers {
+    /// Numbers counted from the first line.
     #[default]
     Absolute,
     /// Distances from the cursor's line, which shows its own number.
     Relative,
+    /// No numbers.
     Hidden,
 }
 
 /// How the cursor draws.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum CursorShape {
+    /// A thin bar between characters.
     #[default]
     Line,
+    /// A box over a character.
     Block,
+    /// A bar under a character.
     Underline,
 }
 
 /// What the editor tells its owner.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum EditorEvent {
+    /// The text changed.
     Changed,
     /// A press on a code lens: its line and the item's place.
     Lens(usize, usize),
     /// The inline chat's prompt, sent.
     Asked(SharedString),
+    /// The inline chat closed.
     ChatClosed,
     /// The read-only banner's action.
     Unlock,
@@ -98,9 +105,13 @@ pub(crate) struct Snapshot {
 /// Where the code sat when last painted, in window pixels: its left edge, the top of the first row, a character's width and a row's height.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Metrics {
+    /// The code's left edge.
     pub left: Pixels,
+    /// The top of the first row.
     pub top: Pixels,
+    /// A character's width.
     pub advance: Pixels,
+    /// A row's height.
     pub line: Pixels,
     /// The code font's size.
     pub size: Pixels,
@@ -111,6 +122,21 @@ pub struct Metrics {
 const BLINK: Duration = Duration::from_millis(530);
 
 /// Code to read and edit: syntax colors, many cursors, folds, a gutter, a minimap, and what tools lay over it.
+///
+/// ```
+/// use ely_editor::{CodeEditor, CursorShape, LineNumbers};
+/// use gpui::{App, AppContext, Entity, Window};
+///
+/// fn editor(window: &mut Window, cx: &mut App) -> Entity<CodeEditor> {
+///     cx.new(|cx| {
+///         CodeEditor::new("fn main() {}\n", window, cx)
+///             .language("rust")
+///             .line_numbers(LineNumbers::Relative)
+///             .cursor_shape(CursorShape::Block)
+///             .minimap()
+///     })
+/// }
+/// ```
 pub struct CodeEditor {
     pub(crate) buffer: Buffer,
     pub(crate) selections: Vec<Selection>,
@@ -158,6 +184,7 @@ fn kept(fits: bool, what: &str) -> bool {
 }
 
 impl CodeEditor {
+    /// An editor of `text`, one caret at its start.
     pub fn new(text: impl Into<String>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let focus = cx.focus_handle().tab_stop(true);
         let chat_field =
@@ -228,16 +255,19 @@ impl CodeEditor {
         }
     }
 
+    /// The language name it holds for the owner, such as `Rust`; colors come from the highlighter.
     pub fn language(mut self, name: impl Into<SharedString>) -> Self {
         self.options.language = name.into();
         self
     }
 
+    /// How the gutter numbers lines, from the first unless set.
     pub fn line_numbers(mut self, numbers: LineNumbers) -> Self {
         self.options.numbers = numbers;
         self
     }
 
+    /// How the cursor draws, a line unless set.
     pub fn cursor_shape(mut self, shape: CursorShape) -> Self {
         self.options.cursor = shape;
         self
@@ -249,6 +279,7 @@ impl CodeEditor {
         self
     }
 
+    /// Hides the lines that mark each indent.
     pub fn hide_indent_guides(mut self) -> Self {
         self.options.guides = false;
         self
@@ -266,6 +297,7 @@ impl CodeEditor {
         self
     }
 
+    /// A small map of the whole file at the right.
     pub fn minimap(mut self) -> Self {
         self.options.minimap = true;
         self
@@ -277,6 +309,7 @@ impl CodeEditor {
         self
     }
 
+    /// Takes no typing.
     pub fn read_only(mut self) -> Self {
         self.options.read_only = true;
         self
@@ -289,10 +322,12 @@ impl CodeEditor {
         self
     }
 
+    /// The whole text.
     pub fn text(&self) -> &str {
         self.buffer.text()
     }
 
+    /// Every selection, the primary last.
     pub fn selections(&self) -> &[Selection] {
         &self.selections
     }
@@ -308,6 +343,7 @@ impl CodeEditor {
         (line + 1, column + 1)
     }
 
+    /// The language name it holds, `Plain text` unless set.
     pub fn language_name(&self) -> &SharedString {
         &self.options.language
     }
@@ -317,10 +353,12 @@ impl CodeEditor {
         self.marks.chat
     }
 
+    /// Whether it takes no typing.
     pub fn is_read_only(&self) -> bool {
         self.options.read_only
     }
 
+    /// Replaces the text, as one undo step, one caret at the start.
     pub fn set_text(&mut self, text: impl Into<String>, cx: &mut Context<Self>) {
         let before = self.snapshot();
         self.buffer = Buffer::new(text);
@@ -331,22 +369,26 @@ impl CodeEditor {
         self.commit(before, false, cx);
     }
 
+    /// How the cursor draws.
     pub fn set_cursor_shape(&mut self, shape: CursorShape, cx: &mut Context<Self>) {
         self.options.cursor = shape;
         cx.notify();
     }
 
+    /// How the gutter numbers lines.
     pub fn set_line_numbers(&mut self, numbers: LineNumbers, cx: &mut Context<Self>) {
         self.options.numbers = numbers;
         cx.notify();
     }
 
+    /// Whether it takes no typing.
     pub fn set_read_only(&mut self, read_only: bool, cx: &mut Context<Self>) {
         log::info!("code editor: read only {read_only}");
         self.options.read_only = read_only;
         cx.notify();
     }
 
+    /// Problems to squiggle; one that does not fit the text is logged and dropped.
     pub fn set_diagnostics(&mut self, mut diagnostics: Vec<Diagnostic>, cx: &mut Context<Self>) {
         let text = self.buffer.text();
         diagnostics
@@ -358,6 +400,7 @@ impl CodeEditor {
         cx.notify();
     }
 
+    /// Washes behind spans of text; one that does not fit is logged and dropped.
     pub fn set_backgrounds(
         &mut self,
         mut ranges: Vec<(Range<usize>, gpui::Hsla)>,
@@ -372,6 +415,7 @@ impl CodeEditor {
         cx.notify();
     }
 
+    /// Notes set into the code; one that does not fit is logged and dropped.
     pub fn set_inlay_hints(&mut self, mut hints: Vec<InlayHint>, cx: &mut Context<Self>) {
         let text = self.buffer.text();
         hints.retain(|hint| kept(text.is_char_boundary(hint.offset), "an inlay hint"));
@@ -380,6 +424,7 @@ impl CodeEditor {
         cx.notify();
     }
 
+    /// Rows of actions over lines.
     pub fn set_code_lenses(&mut self, lenses: Vec<CodeLens>, cx: &mut Context<Self>) {
         self.marks.lenses = lenses;
         cx.notify();
@@ -393,16 +438,19 @@ impl CodeEditor {
         cx.notify();
     }
 
+    /// Changes against the saved text.
     pub fn set_diff(&mut self, hunks: Vec<DiffHunk>, cx: &mut Context<Self>) {
         self.marks.hunks = hunks;
         cx.notify();
     }
 
+    /// Version control marks by line.
     pub fn set_git_marks(&mut self, marks: Vec<(usize, GitMark)>, cx: &mut Context<Self>) {
         self.marks.git = marks;
         cx.notify();
     }
 
+    /// Sets a breakpoint on `line`, or takes it away.
     pub fn toggle_breakpoint(&mut self, line: usize, cx: &mut Context<Self>) {
         if !self.marks.breakpoints.remove(&line) {
             self.marks.breakpoints.insert(line);
@@ -411,6 +459,7 @@ impl CodeEditor {
         cx.notify();
     }
 
+    /// The lines holding a breakpoint.
     pub fn breakpoints(&self) -> &BTreeSet<usize> {
         &self.marks.breakpoints
     }

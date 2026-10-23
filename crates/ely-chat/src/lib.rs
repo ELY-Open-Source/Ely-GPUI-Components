@@ -1,3 +1,6 @@
+//! Ely's AI chat for GPUI: messages and their parts, the composer, streaming, citations, attachments, conversations and projects.
+#![deny(missing_docs)]
+
 use ely_core::{
     buttons, data_display, feedback, forms, i18n, layout, menus, motion, overlays, primitives,
     theme, typography,

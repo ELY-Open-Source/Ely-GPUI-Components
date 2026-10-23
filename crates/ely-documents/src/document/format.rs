@@ -16,12 +16,19 @@ use crate::{
 /// An inline format of Typora's Format menu.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum InlineFormat {
+    /// Bold.
     Strong,
+    /// Italic.
     Emphasis,
+    /// Inline code.
     Code,
+    /// Struck through.
     Strike,
+    /// Underlined.
     Underline,
+    /// A link.
     Link,
+    /// A picture.
     Image,
     /// Every inline mark in the touched blocks.
     Clear,
@@ -32,9 +39,13 @@ pub enum InlineFormat {
 pub enum EditRefusal {
     /// Preview takes no edits.
     Preview,
+    /// Code holds the caret.
     Code,
+    /// Math holds the caret.
     Math,
+    /// HTML holds the caret.
     Html,
+    /// Front matter holds the caret.
     FrontMatter,
     /// No paragraph, heading or cell at the caret.
     Outside,

@@ -15,6 +15,12 @@ use crate::{
 };
 
 /// A Mermaid diagram; a failure shows why and the source.
+///
+/// ```
+/// use ely_documents::Diagram;
+///
+/// let flow = Diagram::new("flow", "graph LR\n  Draft --> Review --> Ship");
+/// ```
 #[derive(IntoElement)]
 pub struct Diagram {
     id: ElementId,
@@ -22,6 +28,7 @@ pub struct Diagram {
 }
 
 impl Diagram {
+    /// A diagram under `id` drawn from Mermaid `source`.
     pub fn new(id: impl Into<ElementId>, source: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),

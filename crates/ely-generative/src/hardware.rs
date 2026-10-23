@@ -11,13 +11,26 @@ use crate::{
 /// One part of the machine: its name, how full it is from 0 to 1, that in units, and its recent shares, oldest first.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Reading {
+    /// Its name, such as GPU.
     pub name: SharedString,
+    /// How full it is, 0 to 1.
     pub share: f32,
+    /// That in units, such as `12 / 24 GB`.
     pub detail: SharedString,
+    /// Its recent shares, oldest first.
     pub history: Vec<f32>,
 }
 
 /// The machine at work: a meter for each part, as GPU, its memory and the CPU, that turns amber then red as it fills, and beside it a line of its recent history.
+///
+/// ```
+/// use ely_generative::{HardwareMonitor, Reading};
+///
+/// let machine = HardwareMonitor::new(
+///     "machine",
+///     [Reading { name: "GPU".into(), share: 0.62, detail: "15 / 24 GB".into(), history: vec![0.4, 0.55, 0.62] }],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct HardwareMonitor {
     id: ElementId,
@@ -25,6 +38,7 @@ pub struct HardwareMonitor {
 }
 
 impl HardwareMonitor {
+    /// A monitor under `id` of `readings`.
     pub fn new(id: impl Into<ElementId>, readings: impl IntoIterator<Item = Reading>) -> Self {
         let readings: Vec<Reading> = readings.into_iter().collect();
         for reading in &readings {

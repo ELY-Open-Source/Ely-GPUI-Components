@@ -23,12 +23,19 @@ const NEAR: f64 = 0.9;
 /// One tuning knob: its key and name, its value, range and step, and a line on what it does.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Parameter {
+    /// Its key.
     pub key: SharedString,
+    /// Its name.
     pub label: SharedString,
+    /// Its value.
     pub value: f64,
+    /// The least it takes.
     pub min: f64,
+    /// The most it takes.
     pub max: f64,
+    /// How far a step moves it.
     pub step: f64,
+    /// A line on what it does.
     pub hint: Option<SharedString>,
 }
 
@@ -44,6 +51,21 @@ fn places(parameter: &Parameter) -> usize {
 }
 
 /// How answers are made, knob by knob: each a slider with its value, such as temperature, top p and the longest answer.
+///
+/// ```
+/// use ely_chat::{Parameter, ParameterPanel};
+///
+/// let temperature = Parameter {
+///     key: "temperature".into(),
+///     label: "Temperature".into(),
+///     value: 0.7,
+///     min: 0.0,
+///     max: 2.0,
+///     step: 0.1,
+///     hint: Some("Higher reads looser.".into()),
+/// };
+/// let knobs = ParameterPanel::new("knobs", [temperature], |_key, _value, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ParameterPanel {
     id: ElementId,
@@ -140,6 +162,12 @@ impl RenderOnce for ParameterPanel {
 }
 
 /// A token count against a limit: quiet while there is room, amber near the end, red past it.
+///
+/// ```
+/// use ely_chat::TokenCounter;
+///
+/// let tokens = TokenCounter::new(1_200).limit(8_000);
+/// ```
 #[derive(IntoElement)]
 pub struct TokenCounter {
     tokens: usize,
@@ -155,6 +183,7 @@ impl TokenCounter {
         }
     }
 
+    /// The most tokens the model takes. Panics on zero.
     pub fn limit(mut self, limit: usize) -> Self {
         assert!(limit > 0, "a limit of none takes no tokens");
         self.limit = Some(limit);
@@ -199,6 +228,12 @@ pub(crate) fn cost(input: usize, output: usize, per_million_in: f64, per_million
 }
 
 /// What a message may cost: its tokens in and out at the model's prices per million; the parts in a tooltip.
+///
+/// ```
+/// use ely_chat::CostEstimator;
+///
+/// let cost = CostEstimator::new("cost", 1_200, 400, (3.0, 15.0));
+/// ```
 #[derive(IntoElement)]
 pub struct CostEstimator {
     id: ElementId,
@@ -246,6 +281,16 @@ impl RenderOnce for CostEstimator {
 }
 
 /// The instructions every answer follows: a titled field, its tokens against the limit, and a way back to the default.
+///
+/// ```
+/// use ely_chat::SystemPromptEditor;
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+///
+/// fn system(field: &Entity<TextInput>) -> SystemPromptEditor {
+///     SystemPromptEditor::new("system", field, 120, 4_000).on_reset(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct SystemPromptEditor {
     id: ElementId,

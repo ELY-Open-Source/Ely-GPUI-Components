@@ -1,3 +1,6 @@
+//! Ely's agent components for GPUI: tool calls, approvals, plans and progress, proposed changes, sandboxes, servers, memory and previews.
+#![deny(missing_docs)]
+
 use ely_chat as chat;
 use ely_collab as collab;
 use ely_core::{

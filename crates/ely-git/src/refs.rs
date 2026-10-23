@@ -17,12 +17,19 @@ use crate::{
 /// A branch, its upstream distance, and its last commit.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Branch {
+    /// Its name.
     pub name: SharedString,
+    /// Whether it lives on a remote.
     pub remote: bool,
+    /// Whether it is checked out.
     pub current: bool,
+    /// Commits not yet pushed.
     pub ahead: usize,
+    /// Commits not yet pulled.
     pub behind: usize,
+    /// Its last commit's subject.
     pub subject: SharedString,
+    /// When that commit was made, as it reads.
     pub when: SharedString,
 }
 
@@ -43,6 +50,23 @@ pub(super) type OnName = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 pub(super) type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Branches as a palette; an unknown query makes one.
+///
+/// ```
+/// use ely_git::{Branch, BranchSelector};
+///
+/// let main = Branch {
+///     name: "main".into(),
+///     remote: false,
+///     current: true,
+///     ahead: 1,
+///     behind: 0,
+///     subject: "Fix the parser".into(),
+///     when: "3 days ago".into(),
+/// };
+/// let pick = BranchSelector::new("pick", [main], |_, _| {})
+///     .on_pick(|_name, _, _| {})
+///     .on_create(|_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BranchSelector {
     id: ElementId,
@@ -53,6 +77,7 @@ pub struct BranchSelector {
 }
 
 impl BranchSelector {
+    /// A palette under `id` of `branches`; `on_close` runs on Escape, a click outside, or a pick.
     pub fn new(
         id: impl Into<ElementId>,
         branches: impl IntoIterator<Item = Branch>,
@@ -67,6 +92,7 @@ impl BranchSelector {
         }
     }
 
+    /// Runs with the branch picked.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -75,6 +101,7 @@ impl BranchSelector {
         self
     }
 
+    /// Runs with the name typed for a new branch.
     pub fn on_create(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -303,6 +330,21 @@ pub(super) fn action(
 }
 
 /// Branches with upstream distance and last commit.
+///
+/// ```
+/// use ely_git::{Branch, BranchList};
+///
+/// let main = Branch {
+///     name: "main".into(),
+///     remote: false,
+///     current: true,
+///     ahead: 1,
+///     behind: 0,
+///     subject: "Fix the parser".into(),
+///     when: "3 days ago".into(),
+/// };
+/// let branches = BranchList::new("branches", [main]).selected("main").on_switch(|_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct BranchList {
     id: ElementId,
@@ -314,6 +356,7 @@ pub struct BranchList {
 }
 
 impl BranchList {
+    /// A list under `id` of `branches`.
     pub fn new(id: impl Into<ElementId>, branches: impl IntoIterator<Item = Branch>) -> Self {
         Self {
             id: id.into(),
@@ -340,6 +383,7 @@ impl BranchList {
         self
     }
 
+    /// Runs with the branch to switch to.
     pub fn on_switch(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -348,6 +392,7 @@ impl BranchList {
         self
     }
 
+    /// Runs with the branch to delete.
     pub fn on_delete(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

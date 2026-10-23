@@ -11,6 +11,14 @@ use crate::{
 };
 
 /// Symbols as tiles sized by their weight and tinted by their move: deeper green as they rise, deeper red as they fall, quiet near flat. Hover reads one.
+///
+/// ```
+/// use ely_finance::MarketHeatmap;
+///
+/// let sectors = MarketHeatmap::new("sectors")
+///     .tile("ELY", 3.2e12, 0.012)
+///     .tile("ACME", 1.1e12, -0.021);
+/// ```
 #[derive(IntoElement)]
 pub struct MarketHeatmap {
     base: Div,
@@ -21,6 +29,7 @@ pub struct MarketHeatmap {
 }
 
 impl MarketHeatmap {
+    /// A heatmap under `id`, with no tiles yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -48,6 +57,7 @@ impl MarketHeatmap {
         self
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

@@ -101,6 +101,16 @@ fn outside(center: (f32, f32), radius: f32, angle: f32, label: Div) -> Div {
 }
 
 /// Flows between groups around a circle: each group's arc as long as all it sends, each ribbon as wide at each end as what goes that way. Hover a group to follow its ribbons.
+///
+/// ```
+/// use ely_charts::ChordDiagram;
+///
+/// let trade = ChordDiagram::new(
+///     "trade",
+///     ["East", "West"],
+///     vec![vec![0.0, 5.0], vec![3.0, 0.0]],
+/// );
+/// ```
 #[derive(IntoElement)]
 pub struct ChordDiagram {
     base: Div,
@@ -138,6 +148,7 @@ impl ChordDiagram {
         }
     }
 
+    /// How flows read in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self

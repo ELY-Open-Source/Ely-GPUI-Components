@@ -14,6 +14,16 @@ use crate::{
 type OnToggle = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A chart's key: a dot in each series' color and its name; with `on_toggle`, a press or Enter hides or shows one.
+///
+/// ```
+/// use ely_charts::ChartLegend;
+/// use gpui::{blue, red};
+///
+/// let key = ChartLegend::new("key")
+///     .entry(blue(), "Revenue", false)
+///     .entry(red(), "Costs", true)
+///     .on_toggle(|_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ChartLegend {
     id: ElementId,
@@ -22,6 +32,7 @@ pub struct ChartLegend {
 }
 
 impl ChartLegend {
+    /// A legend under `id`, with no entries yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -36,6 +47,7 @@ impl ChartLegend {
         self
     }
 
+    /// Runs with the name of the entry pressed; the owner hides or shows its series.
     pub fn on_toggle(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
@@ -93,6 +105,13 @@ impl RenderOnce for ChartLegend {
 }
 
 /// A chart's reading at one place: a title, then a row for each series with its dot, name and value.
+///
+/// ```
+/// use ely_charts::ChartTooltip;
+/// use gpui::blue;
+///
+/// let reading = ChartTooltip::new("March").row(Some(blue()), "Revenue", "1.2K");
+/// ```
 #[derive(IntoElement)]
 pub struct ChartTooltip {
     title: SharedString,
@@ -100,6 +119,7 @@ pub struct ChartTooltip {
 }
 
 impl ChartTooltip {
+    /// A tooltip headed `title`, with no rows yet.
     pub fn new(title: impl Into<SharedString>) -> Self {
         Self {
             title: title.into(),

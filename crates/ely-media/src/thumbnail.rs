@@ -14,6 +14,12 @@ use crate::{
 };
 
 /// A picture in its own shape, taken from the host, as wide as its box: a shimmer while it loads, a mark if it fails, and a short label in a corner when given, such as a length or a count. Chosen, an accent ring holds it; with `on_click` it is a Tab stop.
+///
+/// ```
+/// use ely_media::ImageThumbnail;
+///
+/// let thumb = ImageThumbnail::new("thumb", "photos/desk.png", 1.5).label("+3").selected(true);
+/// ```
 #[derive(IntoElement)]
 pub struct ImageThumbnail {
     id: ElementId,
@@ -43,11 +49,13 @@ impl ImageThumbnail {
         self
     }
 
+    /// Marks it as chosen.
     pub fn selected(mut self, selected: bool) -> Self {
         self.selected = selected;
         self
     }
 
+    /// Runs when it is pressed.
     pub fn on_click(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Rc::new(handler));
         self

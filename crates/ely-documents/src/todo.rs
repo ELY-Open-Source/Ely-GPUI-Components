@@ -15,6 +15,12 @@ use crate::{
 type OnItem = Rc<dyn Fn(usize, bool, &mut Window, &mut App)>;
 
 /// A to-do: its box and its words; done, the words go quiet and struck through.
+///
+/// ```
+/// use ely_documents::TodoItem;
+///
+/// let item = TodoItem::new("ship", "Ship the docs", false).on_toggle(|_done, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TodoItem {
     id: ElementId,
@@ -24,6 +30,7 @@ pub struct TodoItem {
 }
 
 impl TodoItem {
+    /// A to-do under `id` reading `label`, done or not.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, done: bool) -> Self {
         Self {
             id: id.into(),
@@ -33,6 +40,7 @@ impl TodoItem {
         }
     }
 
+    /// Runs with whether it should be done.
     pub fn on_toggle(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_toggle = Some(Rc::new(handler));
         self
@@ -60,6 +68,13 @@ impl RenderOnce for TodoItem {
 }
 
 /// To-dos under a title, with how many are done as a count and a bar. With `on_add`, a field under them adds one.
+///
+/// ```
+/// use ely_documents::Checklist;
+///
+/// let launch = Checklist::new("launch", "Launch", [("Write docs", true), ("Tag release", false)])
+///     .on_toggle(|_ix, _done, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Checklist {
     id: ElementId,
@@ -70,6 +85,7 @@ pub struct Checklist {
 }
 
 impl Checklist {
+    /// A checklist under `id` headed `title`, its items each with whether it is done.
     pub fn new(
         id: impl Into<ElementId>,
         title: impl Into<SharedString>,

@@ -18,13 +18,27 @@ type OnAt = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 /// A tag, its message if annotated, its commit, when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct GitTag {
+    /// Its name.
     pub name: SharedString,
+    /// Its message, when annotated.
     pub message: Option<SharedString>,
+    /// The commit it points at.
     pub commit: SharedString,
+    /// When it was made, as it reads.
     pub when: SharedString,
 }
 
 /// Tags newest first, with message and commit.
+///
+/// ```
+/// use ely_git::{GitTag, TagList};
+///
+/// let tags = TagList::new(
+///     "tags",
+///     [GitTag { name: "v1.0".into(), message: Some("First release".into()), commit: "a1b2c3d".into(), when: "May 2".into() }],
+/// )
+/// .on_pick(|_name, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TagList {
     id: ElementId,
@@ -34,6 +48,7 @@ pub struct TagList {
 }
 
 impl TagList {
+    /// A list under `id` of `tags`.
     pub fn new(id: impl Into<ElementId>, tags: impl IntoIterator<Item = GitTag>) -> Self {
         Self {
             id: id.into(),
@@ -105,20 +120,36 @@ impl RenderOnce for TagList {
 /// A stash: its message, branch, and when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Stash {
+    /// Its message.
     pub message: SharedString,
+    /// The branch it was made on.
     pub branch: SharedString,
+    /// When it was made, as it reads.
     pub when: SharedString,
 }
 
 /// What a stash list does to a stash.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum StashAction {
+    /// Puts its changes back and keeps it.
     Apply,
+    /// Puts its changes back and drops it.
     Pop,
+    /// Throws it away.
     Drop,
 }
 
 /// Stashes newest first: apply, pop or drop.
+///
+/// ```
+/// use ely_git::{Stash, StashList};
+///
+/// let stashes = StashList::new(
+///     "stashes",
+///     [Stash { message: "WIP parser".into(), branch: "main".into(), when: "2 hours ago".into() }],
+/// )
+/// .on_action(|_ix, _action, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct StashList {
     id: ElementId,
@@ -129,6 +160,7 @@ pub struct StashList {
 }
 
 impl StashList {
+    /// A list under `id` of `stashes`.
     pub fn new(id: impl Into<ElementId>, stashes: impl IntoIterator<Item = Stash>) -> Self {
         Self {
             id: id.into(),
@@ -151,6 +183,7 @@ impl StashList {
         self
     }
 
+    /// Runs with a stash's place and the action asked for.
     pub fn on_action(
         mut self,
         handler: impl Fn(usize, StashAction, &mut Window, &mut App) + 'static,

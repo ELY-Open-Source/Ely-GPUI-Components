@@ -16,20 +16,30 @@ use crate::{
 /// Where a task's last run stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TaskState {
+    /// Not run yet.
     Idle,
+    /// Running now.
     Running,
+    /// Passed, in this long.
     Passed(Duration),
+    /// Failed with this exit code.
     Failed(i32),
 }
 
 /// A task to run: its name, group, command, and where and with what it runs.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Task {
+    /// Its name.
     pub name: SharedString,
+    /// The group it is listed under.
     pub group: SharedString,
+    /// The command it runs.
     pub command: SharedString,
+    /// The folder it runs in.
     pub cwd: SharedString,
+    /// The variables it runs with.
     pub env: Vec<(SharedString, SharedString)>,
+    /// Where its last run stands.
     pub state: TaskState,
 }
 
@@ -37,6 +47,24 @@ type OnIndex = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 type OnOpen = Rc<dyn Fn(Option<usize>, &mut Window, &mut App)>;
 
 /// Tasks by group, each with how its last run went and a run or stop button; one opens to show its configuration.
+///
+/// ```
+/// use ely_editor::{Task, TaskRunner, TaskState};
+///
+/// let tasks = TaskRunner::new(
+///     "tasks",
+///     [Task {
+///         name: "test".into(),
+///         group: "Cargo".into(),
+///         command: "cargo test".into(),
+///         cwd: ".".into(),
+///         env: Vec::new(),
+///         state: TaskState::Idle,
+///     }],
+/// )
+/// .on_run(|_ix, _, _| {})
+/// .on_stop(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct TaskRunner {
     id: ElementId,
@@ -48,6 +76,7 @@ pub struct TaskRunner {
 }
 
 impl TaskRunner {
+    /// A runner under `id` of `tasks`.
     pub fn new(id: impl Into<ElementId>, tasks: impl IntoIterator<Item = Task>) -> Self {
         Self {
             id: id.into(),
@@ -65,11 +94,13 @@ impl TaskRunner {
         self
     }
 
+    /// Runs with the task to run, by place.
     pub fn on_run(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_run = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the task to stop, by place.
     pub fn on_stop(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_stop = Some(Rc::new(handler));
         self

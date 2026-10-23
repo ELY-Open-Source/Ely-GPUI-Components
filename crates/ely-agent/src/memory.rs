@@ -19,15 +19,31 @@ use crate::{
 /// Something an agent keeps between conversations: its key and words, where it came from, and when.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Memory {
+    /// Its key.
     pub key: SharedString,
+    /// Its words.
     pub text: SharedString,
+    /// Where it came from.
     pub source: Option<SharedString>,
+    /// When it was kept.
     pub at: Timestamp,
 }
 
 type OnForget = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// What an agent keeps between conversations: a field to add a memory, then each one with where it came from, when, and a way to forget it.
+///
+/// ```
+/// use ely_agent::{Memory, MemoryPanel};
+/// use ely_core::forms::TextInput;
+/// use gpui::Entity;
+/// use jiff::Timestamp;
+///
+/// fn memories(field: &Entity<TextInput>) -> MemoryPanel {
+///     let memory = Memory { key: "m1".into(), text: "Prefers metric units.".into(), source: None, at: Timestamp::UNIX_EPOCH };
+///     MemoryPanel::new("memories", field, [memory]).on_forget(|_key, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct MemoryPanel {
     id: ElementId,
@@ -155,13 +171,29 @@ impl RenderOnce for MemoryPanel {
 /// A point an agent can go back to: its key, what it had done, when, and how many files it had touched.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Checkpoint {
+    /// Its key.
     pub key: SharedString,
+    /// What the agent had done.
     pub label: SharedString,
+    /// When.
     pub at: Timestamp,
+    /// How many files it had touched.
     pub files: usize,
 }
 
 /// Points an agent can go back to, newest first: each with what it had done, when and how many files it had touched; the one it stands on marked, Rewind on the rest.
+///
+/// ```
+/// use ely_agent::{Checkpoint, CheckpointList};
+/// use jiff::Timestamp;
+///
+/// let points = CheckpointList::new(
+///     "points",
+///     [Checkpoint { key: "c1".into(), label: "Added tests".into(), at: Timestamp::UNIX_EPOCH, files: 3 }],
+///     0,
+/// )
+/// .on_rewind(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CheckpointList {
     id: ElementId,

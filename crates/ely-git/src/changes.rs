@@ -19,7 +19,9 @@ use crate::{
 /// A changed file: path, status, and lines changed.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Changed {
+    /// The file's path.
     pub path: SharedString,
+    /// Its status.
     pub status: GitStatus,
     /// Added and removed lines; None when not counted.
     pub lines: Option<(usize, usize)>,
@@ -28,9 +30,13 @@ pub struct Changed {
 /// What a changes list asks for a file.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ChangeAction {
+    /// Stage it.
     Stage,
+    /// Unstage it.
     Unstage,
+    /// Throw its changes away.
     Discard,
+    /// Open it.
     Open,
 }
 
@@ -40,10 +46,15 @@ type OnAll = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 /// The part of the work tree listing a file.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ChangeSection {
+    /// Changed on both sides of a merge.
     Conflicted,
+    /// Staged for the next commit.
     Staged,
+    /// Changed, not staged.
     Unstaged,
+    /// New and not tracked.
     Untracked,
+    /// Ignored by Git.
     Ignored,
 }
 
@@ -60,6 +71,18 @@ impl ChangeSection {
 }
 
 /// Work tree files in five sections, each with its actions.
+///
+/// ```
+/// use ely_core::lists::GitStatus;
+/// use ely_git::{Changed, ChangesList};
+///
+/// let changes = ChangesList::new(
+///     "changes",
+///     [Changed { path: "src/lib.rs".into(), status: GitStatus::Modified, lines: Some((4, 1)) }],
+///     [Changed { path: "README.md".into(), status: GitStatus::Modified, lines: None }],
+/// )
+/// .on_action(|_path, _section, _action, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ChangesList {
     id: ElementId,
@@ -74,6 +97,7 @@ pub struct ChangesList {
 }
 
 impl ChangesList {
+    /// A list under `id` of `staged` and `unstaged` files.
     pub fn new(
         id: impl Into<ElementId>,
         staged: impl IntoIterator<Item = Changed>,
@@ -116,6 +140,7 @@ impl ChangesList {
         self
     }
 
+    /// Runs with a file's path, its section and the action asked for.
     pub fn on_action(
         mut self,
         handler: impl Fn(&SharedString, ChangeSection, ChangeAction, &mut Window, &mut App) + 'static,
@@ -345,6 +370,16 @@ const SUBJECT: (usize, usize) = (50, 72);
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// A commit message, its counted subject, body, and button.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_git::CommitInput;
+/// use gpui::Entity;
+///
+/// fn message(subject: &Entity<TextInput>, body: &Entity<TextInput>) -> CommitInput {
+///     CommitInput::new("message", subject, body, "main", 3).on_commit(|_, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct CommitInput {
     id: ElementId,
@@ -358,6 +393,7 @@ pub struct CommitInput {
 }
 
 impl CommitInput {
+    /// A message under `id`: `subject` and `body` hold its text, committing `staged` files on `branch`.
     pub fn new(
         id: impl Into<ElementId>,
         subject: &Entity<TextInput>,
@@ -377,16 +413,19 @@ impl CommitInput {
         }
     }
 
+    /// Amends the last commit instead of making one.
     pub fn amend(mut self, amend: bool) -> Self {
         self.amend = amend;
         self
     }
 
+    /// Runs with whether to amend.
     pub fn on_amend(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_amend = Some(Rc::new(handler));
         self
     }
 
+    /// Runs when the commit button is pressed.
     pub fn on_commit(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_commit = Some(Rc::new(handler));
         self

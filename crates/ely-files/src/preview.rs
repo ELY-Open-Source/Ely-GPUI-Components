@@ -36,6 +36,14 @@ pub(crate) fn kind(entry: &DirEntry) -> String {
 }
 
 /// A file shown large, as a quick look shows it: its picture in the host's shape, the first lines of its text, or its kind's icon; its name, its kind and size, and when it changed below.
+///
+/// ```
+/// use ely_core::lists::DirEntry;
+/// use ely_files::FilePreview;
+/// use jiff::Timestamp;
+///
+/// let peek = FilePreview::new("peek", DirEntry::file("notes.md", 1_200, Timestamp::UNIX_EPOCH)).text("# Notes\n\nFirst line.");
+/// ```
 #[derive(IntoElement)]
 pub struct FilePreview {
     id: ElementId,
@@ -44,6 +52,7 @@ pub struct FilePreview {
 }
 
 impl FilePreview {
+    /// A preview under `id` of `entry`.
     pub fn new(id: impl Into<ElementId>, entry: DirEntry) -> Self {
         Self {
             id: id.into(),

@@ -17,6 +17,21 @@ type OnPick = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 pub(crate) type Counted = (Commit, Option<(usize, usize)>);
 
 /// A file's commits newest first; draws rows in view.
+///
+/// ```
+/// use ely_git::{Commit, FileHistory};
+/// use std::rc::Rc;
+///
+/// let commit = Commit {
+///     id: "a1b2c3d".into(),
+///     parents: Vec::new(),
+///     subject: "Fix the parser".into(),
+///     author: "Ana".into(),
+///     when: "3 days ago".into(),
+///     refs: Vec::new(),
+/// };
+/// let history = FileHistory::new("history", Rc::new(vec![(commit, Some((4, 1)))]));
+/// ```
 #[derive(IntoElement)]
 pub struct FileHistory {
     id: ElementId,
@@ -36,11 +51,13 @@ impl FileHistory {
         }
     }
 
+    /// The commit shown as picked, by id.
     pub fn selected(mut self, id: impl Into<SharedString>) -> Self {
         self.selected = Some(id.into());
         self
     }
 
+    /// Runs with the id of the commit pressed.
     pub fn on_pick(
         mut self,
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,

@@ -17,17 +17,24 @@ use crate::{
 /// Where a binding comes from.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum KeySource {
+    /// Built in.
     Default,
+    /// Set by the user.
     User,
 }
 
 /// A command and the keys that run it, in gpui key syntax, when a context holds.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Keybinding {
+    /// The command's id.
     pub command: SharedString,
+    /// Its title as listed.
     pub title: SharedString,
+    /// The keys that run it, in gpui key syntax.
     pub keys: Option<SharedString>,
+    /// The context it needs.
     pub when: Option<SharedString>,
+    /// Where the binding comes from.
     pub source: KeySource,
 }
 
@@ -51,6 +58,23 @@ type OnCommand = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnBind = Rc<dyn Fn(&SharedString, Option<Keystroke>, &mut Window, &mut App)>;
 
 /// Every command with its keys, context and source; a query narrows them, keys that clash are marked, and a double press records new keys.
+///
+/// ```
+/// use ely_editor::{KeySource, Keybinding, KeybindingsEditor};
+///
+/// let keys = KeybindingsEditor::new(
+///     "keys",
+///     [Keybinding {
+///         command: "editor::Save".into(),
+///         title: "Save".into(),
+///         keys: Some("secondary-s".into()),
+///         when: None,
+///         source: KeySource::Default,
+///     }],
+/// )
+/// .query("save")
+/// .on_bind(|_command, _keys, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct KeybindingsEditor {
     id: ElementId,
@@ -62,6 +86,7 @@ pub struct KeybindingsEditor {
 }
 
 impl KeybindingsEditor {
+    /// An editor under `id` of `bindings`.
     pub fn new(id: impl Into<ElementId>, bindings: impl IntoIterator<Item = Keybinding>) -> Self {
         Self {
             id: id.into(),

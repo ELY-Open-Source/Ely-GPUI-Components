@@ -13,13 +13,23 @@ use crate::{
 /// Where a market's day stands: before hours, open, after hours, or closed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Session {
+    /// Before the open.
     Before,
+    /// Trading.
     Open,
+    /// After the close.
     After,
+    /// Not trading.
     Closed,
 }
 
 /// Whether a market trades now, with a dot, and when that next changes.
+///
+/// ```
+/// use ely_finance::{MarketStatus, Session};
+///
+/// let status = MarketStatus::new("NYSE", Session::Open).next("Closes in 2 h 14 min");
+/// ```
 #[derive(IntoElement)]
 pub struct MarketStatus {
     market: SharedString,
@@ -28,6 +38,7 @@ pub struct MarketStatus {
 }
 
 impl MarketStatus {
+    /// A status line for `market` in `session`.
     pub fn new(market: impl Into<SharedString>, session: Session) -> Self {
         Self {
             market: market.into(),
@@ -77,6 +88,14 @@ impl RenderOnce for MarketStatus {
 }
 
 /// The world's trading day on one scale: each market's hours as a band across a day in UTC, those open now lit, and a line at now.
+///
+/// ```
+/// use ely_finance::TradingSessionClock;
+///
+/// let world = TradingSessionClock::new(14.5)
+///     .market("Tokyo", 0.0, 6.0)
+///     .market("New York", 13.5, 20.0);
+/// ```
 #[derive(IntoElement)]
 pub struct TradingSessionClock {
     markets: Vec<(SharedString, f32, f32)>,
@@ -214,6 +233,15 @@ impl RenderOnce for TradingSessionClock {
 }
 
 /// A market at a glance: its session, its indexes as cards in a row, and the day's movers up and down.
+///
+/// ```
+/// use ely_finance::{MarketOverview, MarketStatus, Session};
+///
+/// let market = MarketOverview::new("market")
+///     .status(MarketStatus::new("NYSE", Session::Open))
+///     .index(("SPX", "S&P 500"), (5420.0, 5390.0), [5390.0, 5405.0, 5420.0])
+///     .mover("ELY", 14.2, 12.9);
+/// ```
 #[derive(IntoElement)]
 pub struct MarketOverview {
     id: ElementId,
@@ -224,6 +252,7 @@ pub struct MarketOverview {
 }
 
 impl MarketOverview {
+    /// An overview under `id`, empty until filled.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -234,6 +263,7 @@ impl MarketOverview {
         }
     }
 
+    /// The market's session, read at the top.
     pub fn status(mut self, status: MarketStatus) -> Self {
         self.status = Some(status);
         self
@@ -262,6 +292,7 @@ impl MarketOverview {
         self
     }
 
+    /// Rises in red and falls in green, as markets in China and Japan read them.
     pub fn red_up(mut self) -> Self {
         self.red_up = true;
         self

@@ -19,8 +19,11 @@ type OnRemove = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 /// Copies of one file: its name, its size in bytes, and where each copy lives.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Duplicates {
+    /// The file's name.
     pub name: SharedString,
+    /// Its size in bytes.
     pub size: u64,
+    /// Where each copy lives.
     pub paths: Vec<SharedString>,
 }
 
@@ -40,6 +43,17 @@ pub(crate) fn freed(groups: &[Duplicates], marked: &[SharedString]) -> u64 {
 }
 
 /// Files found more than once, a group each: every copy with a mark to remove it; the one copy a group has left unmarked stays, its mark shut. What the marked copies free sits above, beside Remove.
+///
+/// ```
+/// use ely_files::{DuplicateFinder, Duplicates};
+///
+/// let copies = DuplicateFinder::new(
+///     "copies",
+///     [Duplicates { name: "IMG_1.jpg".into(), size: 2_400_000, paths: vec!["a/IMG_1.jpg".into(), "b/IMG_1.jpg".into()] }],
+/// )
+/// .marked(["b/IMG_1.jpg"])
+/// .on_remove(|_paths, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DuplicateFinder {
     id: ElementId,
@@ -50,6 +64,7 @@ pub struct DuplicateFinder {
 }
 
 impl DuplicateFinder {
+    /// A finder under `id` of `groups` of copies.
     pub fn new(id: impl Into<ElementId>, groups: impl IntoIterator<Item = Duplicates>) -> Self {
         let groups: Vec<Duplicates> = groups.into_iter().collect();
         for group in &groups {

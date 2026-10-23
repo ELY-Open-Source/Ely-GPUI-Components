@@ -13,6 +13,12 @@ enum Shown {
 }
 
 /// A file's icon by its name under the owner's icon theme, or a folder's, open or shut.
+///
+/// ```
+/// use ely_files::FileIcon;
+///
+/// let icon = FileIcon::file("main.rs");
+/// ```
 #[derive(IntoElement)]
 pub struct FileIcon {
     shown: Shown,
@@ -20,6 +26,7 @@ pub struct FileIcon {
 }
 
 impl FileIcon {
+    /// The icon for a file named `name`.
     pub fn file(name: impl AsRef<str>) -> Self {
         Self {
             shown: Shown::File(name.as_ref().to_string().into()),
@@ -27,6 +34,7 @@ impl FileIcon {
         }
     }
 
+    /// A folder's icon, open or shut.
     pub fn folder(open: bool) -> Self {
         Self {
             shown: Shown::Icon(if open {
@@ -46,6 +54,7 @@ impl FileIcon {
         }
     }
 
+    /// Its size, medium unless set.
     pub fn size(mut self, size: IconSize) -> Self {
         self.size = size;
         self

@@ -46,6 +46,16 @@ pub(crate) fn added_words(old: &str, new: &str) -> Vec<Range<usize>> {
 }
 
 /// A prompt and a way to rewrite it: Enhance asks the owner for a fuller prompt, offered with the words it adds washed; Use this takes it, Keep mine lets it go.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_generative::PromptEnhancer;
+/// use gpui::Entity;
+///
+/// fn enhance(field: &Entity<TextInput>) -> PromptEnhancer {
+///     PromptEnhancer::new("enhance", field).on_enhance(|_prompt, _, _| {})
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct PromptEnhancer {
     id: ElementId,

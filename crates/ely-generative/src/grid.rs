@@ -19,12 +19,23 @@ use crate::{
 /// One result of a run: on its way, with its share done when known; a picture; or why it failed.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Outcome {
+    /// On its way, with its share done when known.
     Pending(Option<f32>),
+    /// Done: its picture, a file or a web address.
     Done(SharedString),
+    /// Failed, and why.
     Failed(SharedString),
 }
 
 /// A run's results in columns, each in the run's shape: a breathing placeholder and its percent while it comes, the picture once done, or why it failed with Retry. A done picture is a Tab stop; a press or Enter opens it.
+///
+/// ```
+/// use ely_generative::{GenerationGrid, Outcome};
+///
+/// let results = GenerationGrid::new("results", [Outcome::Done("out/1.png".into()), Outcome::Pending(Some(0.4))], 1.0)
+///     .columns(2)
+///     .on_retry(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct GenerationGrid {
     id: ElementId,
@@ -58,17 +69,20 @@ impl GenerationGrid {
         }
     }
 
+    /// How many pictures to a row, two unless set. Panics on zero.
     pub fn columns(mut self, columns: u16) -> Self {
         assert!(columns > 0, "a grid needs a column");
         self.columns = columns;
         self
     }
 
+    /// Runs with the picture pressed, by place.
     pub fn on_open(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the result to try again, by place.
     pub fn on_retry(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
         self.on_retry = Some(Rc::new(handler));
         self

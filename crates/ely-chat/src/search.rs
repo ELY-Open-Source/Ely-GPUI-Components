@@ -18,9 +18,13 @@ use crate::{
 /// Where a step stands: a search's, a tool call's or an agent's.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum StepState {
+    /// Not started.
     Waiting,
+    /// Running now.
     Working,
+    /// Finished.
     Done,
+    /// Went wrong.
     Failed,
 }
 
@@ -63,6 +67,12 @@ pub fn step_mark(id: ElementId, state: StepState, window: &mut Window, cx: &mut 
 }
 
 /// A search as it runs, step by step: what it looks for, what it reads, each step waiting, working or done.
+///
+/// ```
+/// use ely_chat::{SearchProgress, StepState};
+///
+/// let progress = SearchProgress::new("progress", [("Searching the web", StepState::Done), ("Reading 4 pages", StepState::Working)]);
+/// ```
 #[derive(IntoElement)]
 pub struct SearchProgress {
     id: ElementId,
@@ -70,6 +80,7 @@ pub struct SearchProgress {
 }
 
 impl SearchProgress {
+    /// Progress under `id` through `steps`, each with where it stands.
     pub fn new(
         id: impl Into<ElementId>,
         steps: impl IntoIterator<Item = (impl Into<SharedString>, StepState)>,
@@ -124,6 +135,13 @@ impl RenderOnce for SearchProgress {
 }
 
 /// A search result: its title as a link, where it lives, a line from it and when it was written; a press opens it.
+///
+/// ```
+/// use ely_chat::{Source, WebResultCard};
+///
+/// let source = Source { site: "Ely".into(), title: "Docs".into(), url: "https://ely.dev/docs".into(), snippet: None };
+/// let result = WebResultCard::new("result", source).date("Oct 2026");
+/// ```
 #[derive(IntoElement)]
 pub struct WebResultCard {
     id: ElementId,
@@ -133,6 +151,7 @@ pub struct WebResultCard {
 }
 
 impl WebResultCard {
+    /// A card under `id` for `source`.
     pub fn new(id: impl Into<ElementId>, source: Source) -> Self {
         Self {
             id: id.into(),
@@ -142,11 +161,13 @@ impl WebResultCard {
         }
     }
 
+    /// When the page was published, as it reads.
     pub fn date(mut self, date: impl Into<SharedString>) -> Self {
         self.date = Some(date.into());
         self
     }
 
+    /// Runs when the card is pressed.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -211,6 +232,13 @@ impl RenderOnce for WebResultCard {
 }
 
 /// A passage found in a document for an answer: the document and where in it, the passage with the words that matched washed, and how close a match it was.
+///
+/// ```
+/// use ely_chat::DocumentChunkPreview;
+///
+/// let text = "The boat left at dawn.";
+/// let chunk = DocumentChunkPreview::new("log.md", "page 3", text, vec![4..8]).score(0.82);
+/// ```
 #[derive(IntoElement)]
 pub struct DocumentChunkPreview {
     document: SharedString,

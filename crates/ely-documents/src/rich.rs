@@ -32,6 +32,16 @@ pub(crate) fn bind_keys(cx: &mut App) {
 }
 
 /// Markdown that reads as it is written: styles show as they are typed, the toolbar above and the one over a selection apply them, a link opens its editor, `@` and `:` suggest people and emoji, and the foot counts words and minutes.
+///
+/// ```
+/// use ely_core::forms::TextInput;
+/// use ely_documents::RichTextEditor;
+/// use gpui::Entity;
+///
+/// fn reply(field: &Entity<TextInput>) -> RichTextEditor {
+///     RichTextEditor::new("reply", field).people(["ana", "ben"])
+/// }
+/// ```
 #[derive(IntoElement)]
 pub struct RichTextEditor {
     id: ElementId,

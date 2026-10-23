@@ -66,6 +66,12 @@ fn card(cx: &App) -> Div {
 }
 
 /// A browser an agent drives, as the host shows it: the address, a spinner while a page loads, the frame shown, and the frames so far along the foot; a press on one shows it.
+///
+/// ```
+/// use ely_agent::BrowserPreview;
+///
+/// let browser = BrowserPreview::new("browser", "https://ely.dev", ["shots/1.png", "shots/2.png"], 1).loading(true);
+/// ```
 #[derive(IntoElement)]
 pub struct BrowserPreview {
     id: ElementId,
@@ -110,6 +116,7 @@ impl BrowserPreview {
         self
     }
 
+    /// Marks the page as loading.
     pub fn loading(mut self, loading: bool) -> Self {
         self.loading = loading;
         self
@@ -227,6 +234,13 @@ impl RenderOnce for BrowserPreview {
 }
 
 /// A screen an agent works on, as the host shows it: the frame, where the agent points, and what it does there; each new point rings once.
+///
+/// ```
+/// use ely_agent::ComputerUseViewer;
+/// use gpui::point;
+///
+/// let screen = ComputerUseViewer::new("screen", "shots/desk.png").pointer(point(0.4, 0.6)).action("click Save");
+/// ```
 #[derive(IntoElement)]
 pub struct ComputerUseViewer {
     id: ElementId,
@@ -352,6 +366,13 @@ impl RenderOnce for ComputerUseViewer {
 }
 
 /// A page as it renders while the agent builds it: its address, a spinner while it updates, reload, and the host's element that draws it.
+///
+/// ```
+/// use ely_agent::LivePreview;
+/// use gpui::div;
+///
+/// let live = LivePreview::new("live", "http://localhost:5173", div()).on_reload(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LivePreview {
     id: ElementId,
@@ -362,6 +383,7 @@ pub struct LivePreview {
 }
 
 impl LivePreview {
+    /// A preview under `id` of `url`, showing `content`.
     pub fn new(
         id: impl Into<ElementId>,
         url: impl Into<SharedString>,
@@ -376,11 +398,13 @@ impl LivePreview {
         }
     }
 
+    /// Marks the preview as refreshing.
     pub fn updating(mut self, updating: bool) -> Self {
         self.updating = updating;
         self
     }
 
+    /// Offers to reload the preview.
     pub fn on_reload(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_reload = Some(Rc::new(handler));
         self

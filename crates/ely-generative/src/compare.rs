@@ -15,7 +15,9 @@ use crate::{
 /// Which answer won a comparison, or neither.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Verdict {
+    /// This answer, by place.
     Side(usize),
+    /// Neither.
     Tie,
 }
 
@@ -30,6 +32,17 @@ pub(crate) fn heading(ix: usize, name: &SharedString, blind: bool, decided: bool
 }
 
 /// Answers from two to four models side by side, each under its model's name, with a way to pick the better or call a tie. Blind, the names stay letters until the verdict; after it, the winner takes accent. Narrow, the sides stack.
+///
+/// ```
+/// use ely_generative::ABCompareView;
+/// use gpui::div;
+///
+/// let compare = ABCompareView::new("compare")
+///     .side("Model A", div())
+///     .side("Model B", div())
+///     .blind()
+///     .on_verdict(|_verdict, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ABCompareView {
     id: ElementId,
@@ -40,6 +53,7 @@ pub struct ABCompareView {
 }
 
 impl ABCompareView {
+    /// A comparison under `id`, with no answers yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -62,11 +76,13 @@ impl ABCompareView {
         self
     }
 
+    /// The verdict given.
     pub fn verdict(mut self, verdict: Verdict) -> Self {
         self.verdict = Some(verdict);
         self
     }
 
+    /// Runs with the verdict picked.
     pub fn on_verdict(
         mut self,
         handler: impl Fn(Verdict, &mut Window, &mut App) + 'static,

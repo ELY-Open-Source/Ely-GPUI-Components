@@ -15,11 +15,17 @@ use crate::{
 /// A problem the tools found: where, how bad, what, and which tool said so.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Problem {
+    /// The file.
     pub path: SharedString,
+    /// The line, from one.
     pub line: usize,
+    /// The column, from one.
     pub column: usize,
+    /// How bad it is.
     pub severity: Severity,
+    /// What is wrong.
     pub message: SharedString,
+    /// The tool that found it.
     pub source: Option<SharedString>,
 }
 
@@ -65,6 +71,24 @@ type OnOpen = Rc<dyn Fn(&Problem, &mut Window, &mut App)>;
 type OnShown = Rc<dyn Fn(Vec<Severity>, &mut Window, &mut App)>;
 
 /// Every problem in the workspace, grouped by file: toggles by severity with their counts, and a press opens one.
+///
+/// ```
+/// use ely_core::primitives::Severity;
+/// use ely_editor::{Problem, ProblemsPanel};
+///
+/// let problems = ProblemsPanel::new(
+///     "problems",
+///     [Problem {
+///         path: "src/main.rs".into(),
+///         line: 4,
+///         column: 9,
+///         severity: Severity::Danger,
+///         message: "mismatched types".into(),
+///         source: Some("rustc".into()),
+///     }],
+/// )
+/// .on_open(|_problem, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ProblemsPanel {
     id: ElementId,
@@ -75,6 +99,7 @@ pub struct ProblemsPanel {
 }
 
 impl ProblemsPanel {
+    /// A panel under `id` of `problems`.
     pub fn new(id: impl Into<ElementId>, problems: impl IntoIterator<Item = Problem>) -> Self {
         Self {
             id: id.into(),
@@ -91,11 +116,13 @@ impl ProblemsPanel {
         self
     }
 
+    /// Runs with the problem pressed.
     pub fn on_open(mut self, handler: impl Fn(&Problem, &mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the severities to show after a toggle.
     pub fn on_shown(
         mut self,
         handler: impl Fn(Vec<Severity>, &mut Window, &mut App) + 'static,

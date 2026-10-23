@@ -33,6 +33,14 @@ struct Stage {
 }
 
 /// A picture and a box to crop it by, the picture's shape from the host, inset by half a handle so handles on its edge stay whole. Drag the box to move it and its handles to size it; with an aspect, only its corners size it and it keeps that shape. The arrows move it a hundredth of the picture, a tenth with Shift. The host keeps the crop; `Crop::fitted` gives a box of a new aspect.
+///
+/// ```
+/// use ely_media::{Crop, ImageCropper};
+///
+/// let crop = ImageCropper::new("crop", "photos/desk.png", 1.5, Crop::WHOLE)
+///     .aspect(Some(1.0))
+///     .on_change(|_crop, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ImageCropper {
     id: ElementId,
@@ -67,6 +75,7 @@ impl ImageCropper {
         self
     }
 
+    /// Runs with the crop after each change.
     pub fn on_change(mut self, handler: impl Fn(Crop, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self

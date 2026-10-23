@@ -32,6 +32,7 @@ fn starts(text: &str) -> Vec<usize> {
 }
 
 impl Buffer {
+    /// A buffer holding `text`.
     pub fn new(text: impl Into<String>) -> Self {
         let text = text.into();
         let starts = starts(&text);
@@ -47,14 +48,17 @@ impl Buffer {
         self.stamp
     }
 
+    /// The whole text.
     pub fn text(&self) -> &str {
         &self.text
     }
 
+    /// Its length in bytes.
     pub fn len(&self) -> usize {
         self.text.len()
     }
 
+    /// Whether it holds no text.
     pub fn is_empty(&self) -> bool {
         self.text.is_empty()
     }
@@ -74,6 +78,7 @@ impl Buffer {
         start..end
     }
 
+    /// A line's text, without its line break.
     pub fn line(&self, line: usize) -> &str {
         &self.text[self.line_range(line)]
     }

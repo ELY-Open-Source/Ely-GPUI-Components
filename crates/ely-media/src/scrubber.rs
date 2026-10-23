@@ -88,6 +88,15 @@ struct Track {
 }
 
 /// Where a video or a song stands along its length: what has loaded, how far it has played, its chapters, and the time under the pointer. A press or a drag seeks; with focus the arrows step five seconds, the Page keys fifty, Home and End go to the ends. The host plays it.
+///
+/// ```
+/// use ely_media::Scrubber;
+/// use std::time::Duration;
+///
+/// let track = Scrubber::new("track", Duration::from_secs(90), Duration::from_secs(30))
+///     .chapter(Duration::ZERO, "Intro")
+///     .on_seek(|_at, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct Scrubber {
     id: ElementId,

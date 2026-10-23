@@ -17,9 +17,13 @@ use crate::{
 /// A point of an embedding: its key, its label, its group, and where it sits, each axis from -1 to 1.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Embedded {
+    /// Its key.
     pub key: SharedString,
+    /// Its label.
     pub label: SharedString,
+    /// Its group, by place among the groups.
     pub group: usize,
+    /// Where it sits, each axis from -1 to 1.
     pub at: [f32; 3],
 }
 
@@ -41,6 +45,13 @@ struct View {
 }
 
 /// Points of an embedding scattered by where they sit, colored by group, flat or turned in three dimensions. Turned, a drag or the arrow keys spin it, nearer points drawn larger and stronger. The pointer names the point under it; the legend hides and shows groups.
+///
+/// ```
+/// use ely_generative::{Embedded, EmbeddingVisualizer};
+///
+/// let points = [Embedded { key: "p1".into(), label: "cat".into(), group: 0, at: [0.2, -0.4, 0.1] }];
+/// let map = EmbeddingVisualizer::new("map", points, ["Animals"]).three_dimensions(true);
+/// ```
 #[derive(IntoElement)]
 pub struct EmbeddingVisualizer {
     id: ElementId,

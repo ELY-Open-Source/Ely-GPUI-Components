@@ -67,6 +67,15 @@ struct Strip {
 }
 
 /// A video's frames laid along its length under a playhead, and with a trim, the part kept between two handles. A press seeks and a drag scrubs; a handle's drag moves its end. With focus, the arrows step the playhead a frame's span, and I and O set the trim's ends at the playhead.
+///
+/// ```
+/// use ely_media::VideoThumbnailStrip;
+/// use std::time::Duration;
+///
+/// let strip = VideoThumbnailStrip::new("strip", ["frames/1.png", "frames/2.png"], Duration::from_secs(20), Duration::ZERO)
+///     .trim(Duration::from_secs(2), Duration::from_secs(18))
+///     .on_trim(|_part, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct VideoThumbnailStrip {
     id: ElementId,
@@ -123,11 +132,13 @@ impl VideoThumbnailStrip {
         self
     }
 
+    /// Runs with the time to seek to.
     pub fn on_seek(mut self, handler: impl Fn(Duration, &mut Window, &mut App) + 'static) -> Self {
         self.on_seek = Some(Rc::new(handler));
         self
     }
 
+    /// Runs with the part to keep, its start and end.
     pub fn on_trim(
         mut self,
         handler: impl Fn((Duration, Duration), &mut Window, &mut App) + 'static,

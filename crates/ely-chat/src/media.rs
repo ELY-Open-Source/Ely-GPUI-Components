@@ -30,6 +30,12 @@ pub(crate) fn shaped(width: f32, height: f32, widest: Pixels) -> Div {
 }
 
 /// A picture in a message, in its own shape up to the column's width, a caption under it; a press asks the owner to open it large.
+///
+/// ```
+/// use ely_chat::ImageMessage;
+///
+/// let photo = ImageMessage::new("photo", "https://ely.dev/sea.jpg", 1600.0, 1200.0).caption("At dawn");
+/// ```
 #[derive(IntoElement)]
 pub struct ImageMessage {
     id: ElementId,
@@ -56,11 +62,13 @@ impl ImageMessage {
         }
     }
 
+    /// Words under the picture.
     pub fn caption(mut self, caption: impl Into<SharedString>) -> Self {
         self.caption = Some(caption.into());
         self
     }
 
+    /// Runs when the picture is pressed.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self
@@ -103,6 +111,12 @@ impl RenderOnce for ImageMessage {
 }
 
 /// Pictures sent together as a grid: one fills it, two share a row, three set one large beside two, four make a square; past four, the last tile counts the rest. A press asks to open one.
+///
+/// ```
+/// use ely_chat::ImageGrid;
+///
+/// let photos = ImageGrid::new("photos", ["https://ely.dev/a.jpg", "https://ely.dev/b.jpg"]).on_open(|_ix, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ImageGrid {
     id: ElementId,
@@ -111,6 +125,7 @@ pub struct ImageGrid {
 }
 
 impl ImageGrid {
+    /// A grid under `id` of `sources`, each a file or a web address.
     pub fn new(
         id: impl Into<ElementId>,
         sources: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -209,6 +224,12 @@ impl RenderOnce for ImageGrid {
 }
 
 /// A file in a message: its kind's icon, its name and size, a press to open it and a way to download it.
+///
+/// ```
+/// use ely_chat::FileMessage;
+///
+/// let file = FileMessage::new("file", "report.pdf", 240_000).on_download(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct FileMessage {
     id: ElementId,
@@ -223,6 +244,7 @@ pub struct FileMessage {
 }
 
 impl FileMessage {
+    /// A file under `id` named `name`, `bytes` long.
     pub fn new(id: impl Into<ElementId>, name: impl Into<SharedString>, bytes: u64) -> Self {
         Self {
             id: id.into(),
@@ -253,6 +275,7 @@ impl FileMessage {
         self
     }
 
+    /// Offers to download or save the file.
     pub fn on_download(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_download = Some(Rc::new(handler));
         self
@@ -336,6 +359,12 @@ impl RenderOnce for FileMessage {
 }
 
 /// A link unfolded: the site, the page's title and a line about it, and its picture; a press opens it.
+///
+/// ```
+/// use ely_chat::LinkPreviewCard;
+///
+/// let link = LinkPreviewCard::new("link", "Ely", "Docs").description("Components for GPUI.").on_open(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LinkPreviewCard {
     id: ElementId,
@@ -347,6 +376,7 @@ pub struct LinkPreviewCard {
 }
 
 impl LinkPreviewCard {
+    /// A card under `id` for a page titled `title` on `site`.
     pub fn new(
         id: impl Into<ElementId>,
         site: impl Into<SharedString>,
@@ -362,6 +392,7 @@ impl LinkPreviewCard {
         }
     }
 
+    /// A line from the page.
     pub fn description(mut self, text: impl Into<SharedString>) -> Self {
         self.description = Some(text.into());
         self
@@ -373,6 +404,7 @@ impl LinkPreviewCard {
         self
     }
 
+    /// Runs when the card is pressed.
     pub fn on_open(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_open = Some(Rc::new(handler));
         self

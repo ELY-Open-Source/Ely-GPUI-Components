@@ -17,14 +17,35 @@ use crate::{
 /// Where a command stands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CommandState {
+    /// Still running.
     Running,
-    Done { code: i32, took: Duration },
+    /// Ended.
+    Done {
+        /// Its exit code.
+        code: i32,
+        /// How long it ran.
+        took: Duration,
+    },
 }
 
 type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 type OnFold = Rc<dyn Fn(bool, &mut Window, &mut App)>;
 
 /// One command and what it printed, as a block: where it ran, how it ended and how long it took. Its output folds away; the command and output copy, and it runs again.
+///
+/// ```
+/// use ely_terminal::{CommandBlock, CommandState};
+/// use std::time::Duration;
+///
+/// let build = CommandBlock::new(
+///     "build",
+///     "~/code/ely",
+///     "cargo build",
+///     "\u{1b}[32mFinished\u{1b}[0m dev profile",
+///     CommandState::Done { code: 0, took: Duration::from_secs(4) },
+/// )
+/// .on_rerun(|_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct CommandBlock {
     id: ElementId,
@@ -58,16 +79,19 @@ impl CommandBlock {
         }
     }
 
+    /// Folds its output away.
     pub fn folded(mut self, folded: bool) -> Self {
         self.folded = folded;
         self
     }
 
+    /// Runs with whether the output should fold.
     pub fn on_fold(mut self, handler: impl Fn(bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_fold = Some(Rc::new(handler));
         self
     }
 
+    /// Runs when Run again is pressed.
     pub fn on_rerun(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
         self.on_rerun = Some(Rc::new(handler));
         self

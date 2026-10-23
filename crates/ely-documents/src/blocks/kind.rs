@@ -5,21 +5,28 @@ use crate::primitives::IconName;
 /// Where a picture sits across its column.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Align {
+    /// At the column's start.
     Left,
+    /// In the middle.
     #[default]
     Center,
+    /// At the column's end.
     Right,
 }
 
 /// A picture, clip or page shown in a block: its address, and its width as a share of the column.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Media {
+    /// Its address.
     pub source: SharedString,
+    /// Its width as a share of the column, 0 to 1.
     pub width: f32,
+    /// Where it sits across the column.
     pub align: Align,
 }
 
 impl Media {
+    /// Media at `source`, the column's full width, centered.
     pub fn new(source: impl Into<SharedString>) -> Self {
         Self {
             source: source.into(),
@@ -32,27 +39,42 @@ impl Media {
 /// What a block is. Each holds its text in fields: one for most, a title and a body for a toggle, one per column, a caption for media, one per cell for a table, none for a divider.
 #[derive(Clone, Debug, PartialEq)]
 pub enum BlockKind {
+    /// Prose.
     Paragraph,
+    /// A heading of its level, 1 to 3.
     Heading(u8),
+    /// A bulleted item.
     Bullet,
+    /// A numbered item.
     Numbered,
+    /// A to-do, done or not.
     Todo(bool),
+    /// A quote.
     Quote,
+    /// A callout with an icon.
     Callout,
     /// Open or closed; its body shows while open.
     Toggle(bool),
+    /// Source code.
     Code,
+    /// A TeX formula.
     Math,
     /// Diagram source, such as Mermaid; the host renders the picture.
     Diagram,
+    /// A rule across the column.
     Divider,
     /// Columns across, the header row first; each `merged` cell, as row and column, folds into the cell on its left.
     Table {
+        /// How many columns.
         columns: usize,
+        /// Cells folded into the cell on their left, as row and column.
         merged: Vec<(usize, usize)>,
     },
+    /// A picture with a caption.
     Image(Media),
+    /// A clip with a caption.
     Video(Media),
+    /// An embedded page with a caption.
     Embed(Media),
     /// Side by side, one field each.
     Columns(usize),
@@ -87,6 +109,7 @@ impl BlockKind {
         }
     }
 
+    /// The icon its slash menu row shows.
     pub fn icon(&self) -> IconName {
         match self {
             Self::Paragraph => IconName::Type,

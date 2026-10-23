@@ -27,6 +27,7 @@ pub struct HeldPicture {
 }
 
 impl HeldPicture {
+    /// A picture of `format` from `bytes`, hashed.
     pub fn new(format: ImageFormat, bytes: impl Into<Arc<[u8]>>) -> Self {
         let bytes = bytes.into();
         let mut hasher = DefaultHasher::new();

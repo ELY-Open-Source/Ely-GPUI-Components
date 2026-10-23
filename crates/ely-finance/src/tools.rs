@@ -19,9 +19,13 @@ use crate::{
 /// A tool that draws on a market chart.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Tool {
+    /// A line between two points.
     Trend,
+    /// A level across the chart.
     Level,
+    /// A rectangle between two corners.
     Box,
+    /// Retracement levels across a swing.
     Fib,
 }
 
@@ -80,6 +84,12 @@ const TOOLS: [(Option<Tool>, &str, &str, IconName); 5] = [
 type OnTool = Rc<dyn Fn(Option<Tool>, &mut Window, &mut App)>;
 
 /// The tools that draw on a market chart, and the pointer that draws nothing, one chosen at a time.
+///
+/// ```
+/// use ely_finance::{DrawingToolbar, Tool};
+///
+/// let tools = DrawingToolbar::new("tools", Some(Tool::Trend)).on_change(|_tool, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct DrawingToolbar {
     id: ElementId,
@@ -88,6 +98,7 @@ pub struct DrawingToolbar {
 }
 
 impl DrawingToolbar {
+    /// A toolbar under `id` with `tool` chosen; `None` is the pointer.
     pub fn new(id: impl Into<ElementId>, tool: Option<Tool>) -> Self {
         Self {
             id: id.into(),
@@ -96,6 +107,7 @@ impl DrawingToolbar {
         }
     }
 
+    /// Runs with the tool chosen, `None` for the pointer.
     pub fn on_change(
         mut self,
         handler: impl Fn(Option<Tool>, &mut Window, &mut App) + 'static,
@@ -152,6 +164,13 @@ const STUDIES: [(Study, &str); 4] = [
 type OnIndicators = Rc<dyn Fn(Vec<Overlay>, Vec<Study>, &mut Window, &mut App)>;
 
 /// A menu of indicators, each checked when shown: overlays over the prices, and studies in panes of their own.
+///
+/// ```
+/// use ely_finance::{IndicatorSelector, Overlay, Study};
+///
+/// let indicators = IndicatorSelector::new("indicators", vec![Overlay::Ema(50)], vec![Study::Rsi])
+///     .on_change(|_overlays, _studies, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct IndicatorSelector {
     id: ElementId,
@@ -161,6 +180,7 @@ pub struct IndicatorSelector {
 }
 
 impl IndicatorSelector {
+    /// A menu under `id` with `overlays` and `studies` checked.
     pub fn new(id: impl Into<ElementId>, overlays: Vec<Overlay>, studies: Vec<Study>) -> Self {
         Self {
             id: id.into(),

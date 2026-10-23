@@ -172,6 +172,16 @@ struct Ring {
 }
 
 /// Parts of a whole as slices, clockwise from twelve in the order given; `donut` hollows the middle for a total. Hover lifts a slice and reads its share.
+///
+/// ```
+/// use ely_charts::PieChart;
+///
+/// let share = PieChart::new("share")
+///     .slice("Mac", 52.0)
+///     .slice("Windows", 31.0)
+///     .slice("Linux", 17.0)
+///     .donut("100", "seats");
+/// ```
 #[derive(IntoElement)]
 pub struct PieChart {
     base: Div,
@@ -181,6 +191,7 @@ pub struct PieChart {
 }
 
 impl PieChart {
+    /// A pie under `id`, with no slices yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -190,6 +201,7 @@ impl PieChart {
         }
     }
 
+    /// A slice and its value. Panics on a negative value or one past `LIMIT`.
     pub fn slice(mut self, name: impl Into<SharedString>, value: f64) -> Self {
         assert!(
             drawable(value) && value >= 0.0,

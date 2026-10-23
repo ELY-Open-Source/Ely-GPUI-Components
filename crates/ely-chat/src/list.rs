@@ -32,6 +32,13 @@ pub(crate) fn arrived(before: usize, now: usize, away: bool, fresh: usize) -> us
 }
 
 /// Messages down a column drawn only near the view, held at the newest: scrolled up, it stays put as messages arrive and offers a way back down with how many are new. Give each conversation its own id.
+///
+/// ```
+/// use ely_chat::MessageList;
+/// use gpui::{IntoElement, ParentElement, div};
+///
+/// let messages = MessageList::new("messages", 40, |ix, _, _| div().child(format!("Message {ix}")).into_any_element());
+/// ```
 #[derive(IntoElement)]
 pub struct MessageList {
     id: ElementId,
@@ -169,6 +176,12 @@ impl RenderOnce for MessageList {
 }
 
 /// A way back to the newest message, floating over the list, with how many came in while away.
+///
+/// ```
+/// use ely_chat::ScrollToBottomButton;
+///
+/// let down = ScrollToBottomButton::new("down", 3, |_, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ScrollToBottomButton {
     id: ElementId,
@@ -177,6 +190,7 @@ pub struct ScrollToBottomButton {
 }
 
 impl ScrollToBottomButton {
+    /// A button under `id` with `fresh` messages below; `on_press` scrolls down.
     pub fn new(
         id: impl Into<ElementId>,
         fresh: usize,
@@ -212,6 +226,13 @@ impl RenderOnce for ScrollToBottomButton {
 }
 
 /// A day's line between messages: Today, Yesterday, or the date.
+///
+/// ```
+/// use ely_chat::DateSeparator;
+/// use jiff::civil::date;
+///
+/// let day = DateSeparator::new(date(2026, 10, 22), date(2026, 10, 23));
+/// ```
 #[derive(IntoElement)]
 pub struct DateSeparator {
     day: Date,

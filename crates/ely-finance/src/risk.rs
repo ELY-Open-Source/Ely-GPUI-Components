@@ -30,6 +30,12 @@ fn marks(max: f64) -> Vec<f64> {
 type OnValue = Rc<dyn Fn(f64, &mut Window, &mut App)>;
 
 /// Leverage from one times up to `max`, marked at the common steps, its number turning amber, then red, as the risk climbs.
+///
+/// ```
+/// use ely_finance::LeverageSlider;
+///
+/// let leverage = LeverageSlider::new("leverage", 5.0, 20.0).on_change(|_times, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct LeverageSlider {
     id: ElementId,
@@ -39,6 +45,7 @@ pub struct LeverageSlider {
 }
 
 impl LeverageSlider {
+    /// A slider under `id` at `value` times, up to `max`. Panics on a `max` not whole or under two, or a value not finite.
     pub fn new(id: impl Into<ElementId>, value: f64, max: f64) -> Self {
         assert!(
             max > 1.0 && max.fract() == 0.0 && value.is_finite(),
@@ -52,6 +59,7 @@ impl LeverageSlider {
         }
     }
 
+    /// Runs with each new leverage.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.on_change = Some(Rc::new(handler));
         self
@@ -129,6 +137,12 @@ impl RenderOnce for LeverageSlider {
 }
 
 /// Margin in use against what the account holds, as a bar that turns amber, then red, and what is left.
+///
+/// ```
+/// use ely_finance::MarginIndicator;
+///
+/// let margin = MarginIndicator::new("margin", 4_200.0, 10_000.0);
+/// ```
 #[derive(IntoElement)]
 pub struct MarginIndicator {
     id: ElementId,
@@ -137,6 +151,7 @@ pub struct MarginIndicator {
 }
 
 impl MarginIndicator {
+    /// A bar under `id` of margin `used` against `equity`. Panics on values not finite or a negative use.
     pub fn new(id: impl Into<ElementId>, used: f64, equity: f64) -> Self {
         assert!(
             equity.is_finite() && used.is_finite() && used >= 0.0,
@@ -169,6 +184,12 @@ impl RenderOnce for MarginIndicator {
 }
 
 /// How much risk a position carries, from none to all, on a dial that turns amber, then red.
+///
+/// ```
+/// use ely_finance::RiskMeter;
+///
+/// let risk = RiskMeter::new("risk", 62.0);
+/// ```
 #[derive(IntoElement)]
 pub struct RiskMeter {
     id: ElementId,

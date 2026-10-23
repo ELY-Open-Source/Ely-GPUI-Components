@@ -103,6 +103,17 @@ struct Graph {
 }
 
 /// Nodes and the edges between them, placed by forces: edges pull, nodes push apart, and the layout settles as you watch. Drag a node to move it; hover one to light its neighbors.
+///
+/// ```
+/// use ely_charts::NetworkGraph;
+///
+/// let team = NetworkGraph::new("team")
+///     .node("Ana", 0)
+///     .node("Ben", 0)
+///     .node("Cy", 1)
+///     .edge(0, 1)
+///     .edge(1, 2);
+/// ```
 #[derive(IntoElement)]
 pub struct NetworkGraph {
     base: Div,
@@ -112,6 +123,7 @@ pub struct NetworkGraph {
 }
 
 impl NetworkGraph {
+    /// A graph under `id`, with no nodes yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),

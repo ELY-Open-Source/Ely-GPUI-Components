@@ -149,6 +149,7 @@ macro_rules! category_chart {
         }
 
         impl $name {
+            /// A chart under `id` with a category for each of `labels`.
             pub fn new(
                 id: impl Into<ElementId>,
                 labels: impl IntoIterator<Item = impl Into<SharedString>>,
@@ -233,17 +234,17 @@ macro_rules! category_chart {
 category_chart!(
     LineChart,
     Mark::Line,
-    "Values over categories as lines. Hover for a crosshair and every series' value; a press on a legend name hides it."
+    "Values over categories as lines. Hover for a crosshair and every series' value; a press on a legend name hides it.\n\n```\nuse ely_charts::{LineChart, Series};\n\nlet sales = LineChart::new(\"sales\", [\"Jan\", \"Feb\", \"Mar\"])\n    .series(Series::new(\"2026\", [3.0, 5.0, 4.0]))\n    .rule(4.5, \"Goal\")\n    .smooth();\n```"
 );
 category_chart!(
     AreaChart,
     Mark::Area,
-    "Values over categories as lines with the area beneath lightly filled; `stacked` piles each series on the ones before it."
+    "Values over categories as lines with the area beneath lightly filled; `stacked` piles each series on the ones before it.\n\n```\nuse ely_charts::{AreaChart, Series};\n\nlet traffic = AreaChart::new(\"traffic\", [\"Mon\", \"Tue\", \"Wed\"])\n    .series(Series::new(\"Web\", [3.0, 5.0, 4.0]))\n    .series(Series::new(\"App\", [2.0, 2.5, 3.0]))\n    .stacked();\n```"
 );
 category_chart!(
     BarChart,
     Mark::Bar,
-    "Values over categories as bars: grouped side by side, `stacked`, or `horizontal`."
+    "Values over categories as bars: grouped side by side, `stacked`, or `horizontal`.\n\n```\nuse ely_charts::{BarChart, Series};\n\nlet costs = BarChart::new(\"costs\", [\"Q1\", \"Q2\"])\n    .series(Series::new(\"Cloud\", [12.0, 15.0]))\n    .horizontal();\n```"
 );
 
 impl LineChart {
@@ -255,11 +256,13 @@ impl LineChart {
 }
 
 impl AreaChart {
+    /// Curves through the values that never overshoot them.
     pub fn smooth(mut self) -> Self {
         self.chart.smooth = true;
         self
     }
 
+    /// Piles each series on the ones before it.
     pub fn stacked(mut self) -> Self {
         self.chart.stacked = true;
         self
@@ -267,6 +270,7 @@ impl AreaChart {
 }
 
 impl BarChart {
+    /// Piles each series' bar on the ones before it.
     pub fn stacked(mut self) -> Self {
         self.chart.stacked = true;
         self
@@ -281,6 +285,14 @@ impl BarChart {
 }
 
 /// Points placed by two values; with sizes, bubbles whose areas compare. Hover a point to read it.
+///
+/// ```
+/// use ely_charts::{Points, ScatterChart};
+///
+/// let fit = ScatterChart::new("fit")
+///     .points(Points::new("runs", [(1.0, 2.0), (2.0, 3.5), (3.0, 3.9)]).sizes([1.0, 2.0, 4.0]))
+///     .axes("hours", "score");
+/// ```
 #[derive(IntoElement)]
 pub struct ScatterChart {
     base: Div,
@@ -291,6 +303,7 @@ pub struct ScatterChart {
 }
 
 impl ScatterChart {
+    /// A scatter chart under `id`, with no points yet.
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             base: div(),
@@ -301,6 +314,7 @@ impl ScatterChart {
         }
     }
 
+    /// A named cloud of points; several clouds compare.
     pub fn points(mut self, points: Points) -> Self {
         self.clouds.push(points);
         self
@@ -312,6 +326,7 @@ impl ScatterChart {
         self
     }
 
+    /// How values read on the axes and in the tooltip.
     pub fn format(mut self, format: impl Fn(f64) -> String + 'static) -> Self {
         self.format = Rc::new(format);
         self
@@ -322,6 +337,7 @@ impl ScatterChart {
         points_csv(&self.clouds)
     }
 
+    /// The chart as an SVG drawing of this size, in the theme's colors.
     pub fn svg(&self, width: f32, height: f32, cx: &App) -> String {
         let sheet = Sheet::new((width, height), false, false, cx);
         let (values, hidden) = (Vec::new(), HashSet::new());

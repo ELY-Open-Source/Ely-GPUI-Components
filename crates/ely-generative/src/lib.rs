@@ -1,3 +1,6 @@
+//! Ely's generative AI components for GPUI: prompts, generation grids and queues, masks, models, fine-tuning, voices and video shots.
+#![deny(missing_docs)]
+
 use ely_charts as charts;
 use ely_chat as chat;
 use ely_core::{buttons, data_display, forms, layout, motion, primitives, theme, typography};

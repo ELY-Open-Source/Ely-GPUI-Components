@@ -18,8 +18,11 @@ type OnArchived = Rc<dyn Fn(&ArchiveEntry, &mut Window, &mut App)>;
 /// A file inside an archive: its path there, with `/` between folders, its size and its packed size, in bytes.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ArchiveEntry {
+    /// Its path in the archive, `/` between folders.
     pub path: SharedString,
+    /// Its size in bytes.
     pub size: u64,
+    /// Its packed size in bytes.
     pub packed: u64,
 }
 
@@ -76,6 +79,13 @@ fn nodes(
 }
 
 /// What an archive holds, as a tree of its folders: each folder with its size, each file with its size and how much packing saved; the archive's name, its count, its size and its saving above. Enter or a double press on a file hands it to the host. Give it a height.
+///
+/// ```
+/// use ely_files::{ArchiveEntry, ArchiveViewer};
+///
+/// let zip = ArchiveViewer::new("zip", "site.zip", [ArchiveEntry { path: "css/main.css".into(), size: 12_000, packed: 3_100 }])
+///     .on_open(|_entry, _, _| {});
+/// ```
 #[derive(IntoElement)]
 pub struct ArchiveViewer {
     id: ElementId,
@@ -85,6 +95,7 @@ pub struct ArchiveViewer {
 }
 
 impl ArchiveViewer {
+    /// A viewer under `id` of the archive `name` and its `entries`.
     pub fn new(
         id: impl Into<ElementId>,
         name: impl Into<SharedString>,
@@ -106,6 +117,7 @@ impl ArchiveViewer {
         }
     }
 
+    /// Runs with the file pressed.
     pub fn on_open(
         mut self,
         handler: impl Fn(&ArchiveEntry, &mut Window, &mut App) + 'static,

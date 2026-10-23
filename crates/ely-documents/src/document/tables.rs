@@ -17,15 +17,25 @@ use crate::{
 /// What a table edit does at the caret.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TableEdit {
+    /// A row above the caret's.
     RowAbove,
+    /// A row below the caret's.
     RowBelow,
+    /// A column left of the caret's.
     ColumnLeft,
+    /// A column right of the caret's.
     ColumnRight,
+    /// Delete the caret's row.
     DeleteRow,
+    /// Delete the caret's column.
     DeleteColumn,
+    /// Move the caret's row up.
     MoveRowUp,
+    /// Move the caret's row down.
     MoveRowDown,
+    /// Move the caret's column left.
     MoveColumnLeft,
+    /// Move the caret's column right.
     MoveColumnRight,
     /// Every cell padded to its column, as Typora tidies.
     Tidy,

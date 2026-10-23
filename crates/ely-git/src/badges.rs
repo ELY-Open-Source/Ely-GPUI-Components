@@ -12,6 +12,13 @@ use crate::{
 };
 
 /// A file's git status as its letter in its tone; the word shows on hover.
+///
+/// ```
+/// use ely_core::lists::GitStatus;
+/// use ely_git::GitStatusBadge;
+///
+/// let status = GitStatusBadge::new("status", GitStatus::Modified);
+/// ```
 #[derive(IntoElement)]
 pub struct GitStatusBadge {
     id: ElementId,
@@ -19,6 +26,7 @@ pub struct GitStatusBadge {
 }
 
 impl GitStatusBadge {
+    /// A badge under `id` for `status`.
     pub fn new(id: impl Into<ElementId>, status: GitStatus) -> Self {
         Self {
             id: id.into(),
@@ -46,6 +54,12 @@ pub(crate) fn split(added: usize, removed: usize) -> Option<usize> {
 }
 
 /// Lines added and removed: the two counts, and five dots shared between them.
+///
+/// ```
+/// use ely_git::DiffStat;
+///
+/// let stat = DiffStat::new(42, 7);
+/// ```
 #[derive(IntoElement)]
 pub struct DiffStat {
     added: usize,
@@ -53,6 +67,7 @@ pub struct DiffStat {
 }
 
 impl DiffStat {
+    /// A stat of `added` and `removed` lines.
     pub fn new(added: usize, removed: usize) -> Self {
         Self { added, removed }
     }

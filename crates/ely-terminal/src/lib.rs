@@ -1,3 +1,6 @@
+//! Ely's terminal for GPUI: a pseudo-terminal drawn cell by cell, colored output, command blocks, logs and processes.
+#![deny(missing_docs)]
+
 use ely_core::{buttons, i18n, menus, motion, navigation, primitives, tables, theme, typography};
 #[cfg(not(target_family = "wasm"))]
 use ely_editor as editor;
