@@ -21,8 +21,8 @@ GPUI's `svg()` paints with its own text color alone, so `Icon` always sets one.
 
 From a clone of the repository:
 
-1. `scripts/icons.sh <lucide-name>...` fetches Lucide 1.48.0 with npm and copies each SVG into `assets/icons/`.
-2. Add a line to the `icons!` list in `src/primitives/icon.rs`, such as `Rocket => "rocket",`.
+1. `scripts/icons.sh <lucide-name>...` fetches Lucide 1.48.0 with npm and copies each SVG into `crates/ely-core/assets/icons/`.
+2. Add a line to the `icons!` list in `crates/ely-core/src/primitives/icon.rs`, such as `Rocket => "rocket",`.
 
 ## File icons
 

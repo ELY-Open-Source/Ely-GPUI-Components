@@ -60,7 +60,6 @@ fn render(window: &mut Window, cx: &mut App) -> AnyElement {
         .child(values::copyable(cx))
         .child(values::selectable(cx))
         .child(values::emoji(cx))
-        .child(values::latex(cx))
         .child(motion::animated_number(window, cx))
         .child(motion::typewriter(window, cx))
         .child(motion::gradient(cx))

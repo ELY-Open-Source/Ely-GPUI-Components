@@ -6,10 +6,7 @@ use std::{fs, path::PathBuf};
 use gpui::Hsla;
 
 use super::{OmarchyTheme, colors::hex, palette::wash, parse, read_omarchy_theme};
-use crate::{
-    devtools::{contrast, over},
-    theme::{Mode, Palette},
-};
+use crate::theme::{Mode, Palette, contrast, over};
 
 const THEMES: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/src/settings/omarchy/themes");
 const TOKYO_NIGHT: &str = include_str!("../themes/tokyo-night.toml");

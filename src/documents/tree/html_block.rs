@@ -302,14 +302,14 @@ mod tests {
             ]
         };
         let time = |n| {
-            let started = web_time::Instant::now();
-            for source in sources(n) {
-                parse(&format!(
-                    "<div>
+            crate::documents::clock::spent(|| {
+                for source in sources(n) {
+                    parse(&format!(
+                        "<div>
 {source}"
-                ));
-            }
-            started.elapsed()
+                    ));
+                }
+            })
         };
         let (small, large) = (time(1 << 14), time(1 << 16));
         // Four times the input, at most eight the time.

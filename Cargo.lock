@@ -1593,6 +1593,39 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "252afb9ae5eaa683babdc6a068b3f5726eb19e05070c731f9b2a23a7c3e8ed34"
 
 [[package]]
+name = "ely-core"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "barcoders",
+ "block2 0.6.2",
+ "emojis",
+ "futures",
+ "gpui-pre",
+ "gpui-pre-platform",
+ "image",
+ "iso_currency",
+ "isocountry",
+ "isolang",
+ "jiff",
+ "log",
+ "objc2 0.6.4",
+ "objc2-app-kit 0.3.2",
+ "objc2-foundation 0.3.2",
+ "qrcode",
+ "raw-window-handle",
+ "regex",
+ "rust-embed",
+ "serde",
+ "serde_json",
+ "smallvec",
+ "unicode-segmentation",
+ "web-time",
+ "windows 0.62.2",
+ "zbus",
+]
+
+[[package]]
 name = "ely-gallery"
 version = "0.0.0"
 dependencies = [
@@ -1627,37 +1660,28 @@ version = "0.1.1"
 dependencies = [
  "alacritty_terminal",
  "anyhow",
- "barcoders",
  "base64",
- "block2 0.6.2",
+ "ely-core",
  "emojis",
  "entities",
  "futures",
  "gpui-pre",
- "gpui-pre-platform",
  "image",
  "iso_currency",
  "isocountry",
- "isolang",
  "jiff",
  "log",
  "mermaid-rs-renderer",
  "notify",
- "objc2 0.6.4",
- "objc2-app-kit 0.3.2",
- "objc2-foundation 0.3.2",
  "pulldown-cmark",
  "qrcode",
  "ratex-layout",
  "ratex-parser",
  "ratex-svg",
  "ratex-types",
- "raw-window-handle",
  "regex",
  "rqrr",
- "rust-embed",
  "rustix",
- "serde",
  "serde_json",
  "similar",
  "smallvec",
@@ -1666,9 +1690,7 @@ dependencies = [
  "usvg",
  "vte",
  "web-time",
- "windows 0.62.2",
  "wry",
- "zbus",
 ]
 
 [[package]]

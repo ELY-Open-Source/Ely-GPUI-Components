@@ -25,7 +25,7 @@ GPUI's `TestAppContext` serves no assets, so `ely_gpui_component::init` returns 
 
 ## Tests to read
 
-- [Layers](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/src/primitives/tests.rs): what is raised inside a raise lies over it, and keeps its state.
-- [Feedback](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/src/feedback/tests/mod.rs): toasts and alerts, and focus handed to the root when a focused toast leaves.
-- [Tables](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/src/tables/tests/mod.rs): clicks, double presses, Tab across a grid.
-- [Internationalization](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/src/i18n/tests/mod.rs): catalogs, locales and a mirrored row.
+- [Layers](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/crates/ely-core/src/primitives/tests.rs): what is raised inside a raise lies over it, and keeps its state.
+- [Feedback](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/crates/ely-core/src/feedback/tests/mod.rs): toasts and alerts, and focus handed to the root when a focused toast leaves.
+- [Tables](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/crates/ely-core/src/tables/tests/mod.rs): clicks, double presses, Tab across a grid.
+- [Internationalization](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/crates/ely-core/src/i18n/tests/mod.rs): catalogs, locales and a mirrored row.

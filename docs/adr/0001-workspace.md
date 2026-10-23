@@ -19,7 +19,7 @@ The root manifest holds `[workspace.package]` (edition, Rust version, license, r
 
 ## Steps
 
-B1 moves the gallery and the docs examples; the library stays at the root as `ely-gpui-component`. B2 moves the core chapters, B3–B6 the verticals, B7 the desktop parts. Once the last chapter leaves, the root holds no package.
+B1 moves the gallery and the docs examples; the library stays at the root as `ely-gpui-component`. B2 moves the core chapters; the root re-exports core's modules, so the verticals' `crate::buttons` paths hold until B3–B6 move them out. B7 moves the desktop parts. Once the last chapter leaves, the root holds no package.
 
 ## Consequences
 

@@ -23,19 +23,19 @@ fn packages() -> [Package; 4] {
             "Lucide",
             "1.48.0",
             "ISC",
-            include_str!("../../../../../assets/icons/LICENSE"),
+            include_str!("../../../../ely-core/assets/icons/LICENSE"),
         ),
         Package::new(
             "Inter",
             "4.1",
             "OFL-1.1",
-            include_str!("../../../../../assets/fonts/Inter-LICENSE.txt"),
+            include_str!("../../../../ely-core/assets/fonts/Inter-LICENSE.txt"),
         ),
         Package::new(
             "JetBrains Mono",
             "2.304",
             "OFL-1.1",
-            include_str!("../../../../../assets/fonts/JetBrainsMono-LICENSE.txt"),
+            include_str!("../../../../ely-core/assets/fonts/JetBrainsMono-LICENSE.txt"),
         ),
     ]
 }

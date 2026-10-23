@@ -10,9 +10,11 @@ use gpui::{
 
 use super::{OnLink, drawn_text};
 use crate::{
-    documents::tree::{Inline, Style},
+    documents::{
+        tree::{Inline, Style},
+        typeset,
+    },
     theme::ActiveTheme,
-    typography::typeset,
 };
 
 /// Glue that reserves a formula's width and never breaks.

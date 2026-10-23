@@ -12,7 +12,7 @@ use crate::finance::{
     MultiChartLayout, PayoffDiagram, PerformanceChart, PointFigureChart, QuickTradeButtons,
     RenkoChart, SpreadIndicator, TimeRangeSelector, candles::Candle, stage::Visible,
 };
-use crate::{layout::tests::narrow_width, theme::Theme};
+use crate::{layout::testing::narrow_width, theme::Theme};
 
 fn candles(count: usize) -> Rc<Vec<Candle>> {
     Rc::new(

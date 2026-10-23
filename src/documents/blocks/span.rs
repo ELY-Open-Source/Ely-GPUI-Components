@@ -122,7 +122,7 @@ impl BlockEditor {
             .into_iter()
             .filter_map(|(key, field)| {
                 let block = &self.blocks[self.index(key)?];
-                let bounds = block.fields[field].read(cx).layout.as_ref()?.bounds;
+                let bounds = block.fields[field].read(cx).bounds()?;
                 let dy = outside(bounds.top(), bounds.bottom(), position.y);
                 let dx = outside(bounds.left(), bounds.right(), position.x);
                 Some(((dy, dx), (key, field)))

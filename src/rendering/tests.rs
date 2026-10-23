@@ -7,7 +7,7 @@ use gpui::{
 use image::{Frame, RgbaImage};
 
 use super::RenderSurface;
-use crate::{layout::tests::narrow_width, theme::Theme};
+use crate::{layout::testing::narrow_width, theme::Theme};
 
 type Asked = Rc<RefCell<Vec<Size<DevicePixels>>>>;
 

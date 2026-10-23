@@ -353,7 +353,7 @@ mod tests {
         let root = read_xml("<a>x<b/>y</a>").expect("xml");
         let keys: Vec<_> = nodes(&root, "/a", &mut Vec::new())
             .into_iter()
-            .map(|node| node.key)
+            .map(|node| node.key().clone())
             .collect();
         assert_eq!(keys, ["/a/text()[1]", "/a/b[1]", "/a/text()[2]"]);
     }

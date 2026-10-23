@@ -6,10 +6,10 @@ use gpui::{
 use super::{Block, BlockEditor, BlockKind, media, table, view::Look};
 use crate::{
     buttons::CopyButton,
+    documents::Latex,
     forms::Checkbox,
     primitives::{Disclosure, Icon, IconName},
     theme::IconSize,
-    typography::Latex,
 };
 
 impl BlockEditor {

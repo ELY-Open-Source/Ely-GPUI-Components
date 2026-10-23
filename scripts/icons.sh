@@ -5,7 +5,8 @@ VERSION=1.48.0
 DIR=$(mktemp -d)
 trap 'rm -rf "$DIR"' EXIT
 (cd "$DIR" && npm pack "lucide-static@$VERSION" --silent >/dev/null && tar xzf "lucide-static-$VERSION.tgz")
-cp "$DIR/package/LICENSE" assets/icons/LICENSE
+icons=crates/ely-core/assets/icons
+cp "$DIR/package/LICENSE" "$icons/LICENSE"
 for name in "$@"; do
-  cp "$DIR/package/icons/$name.svg" "assets/icons/$name.svg"
+  cp "$DIR/package/icons/$name.svg" "$icons/$name.svg"
 done

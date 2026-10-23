@@ -219,7 +219,8 @@ mod tests {
         let every = nodes(&datum, "$", "", &mut all);
         assert_eq!(every.len(), 3);
         assert_eq!(
-            every[2].key, "$[\"odd key\"]",
+            every[2].key(),
+            "$[\"odd key\"]",
             "a key beyond letters takes brackets"
         );
         assert!(all.is_empty(), "without a query nothing is opened");

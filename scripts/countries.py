@@ -1,4 +1,4 @@
-"""Writes assets/maps/countries.geojson, Ely's world, from Natural Earth's 110m countries.
+"""Writes crates/ely-core/assets/maps/countries.geojson, Ely's world, from Natural Earth's 110m countries.
 
 Usage: python3 scripts/countries.py <ne_110m_admin_0_countries.geojson>
 Keeps each country's ISO 3166 alpha-2 code and name; positions round to 0.01 degrees.
@@ -8,7 +8,7 @@ import json
 import sys
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parent.parent / "assets/maps/countries.geojson"
+OUT = Path(__file__).resolve().parent.parent / "crates/ely-core/assets/maps/countries.geojson"
 
 
 def ring(points):

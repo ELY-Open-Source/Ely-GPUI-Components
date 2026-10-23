@@ -7,8 +7,10 @@ use gpui::{
 };
 
 use super::{
+    Latex,
     contents::anchor,
     diagram::Diagram,
+    failed,
     picture::{Picture, Pictures},
     tree::{Inline, Node, Style, parse},
 };
@@ -17,7 +19,6 @@ use crate::{
     navigation::{Anchor, Sections},
     primitives::FocusRing as _,
     theme::{ActiveTheme, Radius, TextSize},
-    typography::{Latex, failed},
 };
 
 mod blocks;

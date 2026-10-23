@@ -43,7 +43,7 @@ const RICH: &str = "| Theme | Lift | Reads as |\n| --- | ---: | --- |\n| Light |
 pub fn rich(_: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     section(
         "MathBlock / TableBlock / MermaidRenderer",
-        "Math is typography::Latex and tables are the markdown renderer's, in a message as in a document. A diagram arrives as the picture the host drew from its source.",
+        "Math is documents::Latex and tables are the markdown renderer's, in a message as in a document. A diagram arrives as the picture the host drew from its source.",
         cx,
     )
     .child(

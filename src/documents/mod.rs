@@ -1,4 +1,6 @@
 mod blocks;
+#[cfg(test)]
+mod clock;
 mod contents;
 mod counts;
 mod diagram;
@@ -10,6 +12,7 @@ mod history;
 mod knowledge;
 mod link;
 mod markdown;
+mod math;
 mod modes;
 mod pages;
 mod picture;
@@ -48,6 +51,8 @@ pub use knowledge::{Backlink, Backlinks, Favorite, Favorites, TrashBin, Trashed}
 pub use link::LinkEditor;
 pub use markdown::markdown_highlights;
 pub use markdown::mdast::AlignKind;
+pub use math::{Latex, MathError, formula_svg};
+pub(crate) use math::{failed, typeset};
 pub use modes::{MarkdownEditor, MarkdownMode};
 pub use pages::{PageCover, PageIcon};
 pub use picture::{HeldPicture, Pictures};

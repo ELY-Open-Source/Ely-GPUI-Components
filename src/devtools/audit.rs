@@ -1,7 +1,6 @@
 use gpui::Hsla;
 
-use super::{contrast, over};
-use crate::theme::{HUE_NAMES, Palette, Syntax};
+use crate::theme::{HUE_NAMES, Palette, Syntax, contrast, over};
 
 /// What body text needs on its surface, as WCAG 1.4.3 has it.
 pub const TEXT_CONTRAST: f32 = 4.5;

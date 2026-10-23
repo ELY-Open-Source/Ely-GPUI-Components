@@ -36,7 +36,7 @@ jobs:
       - if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       # Hosted runners test as a plain user, so the file permissions the tests check hold.
-      - run: cargo test --lib --features test-support --quiet
+      - run: cargo test -p ely-core -p ely-gpui-component --lib --features ely-core/test-support,ely-gpui-component/test-support --quiet
       - run: cargo build -p ely-gallery
 
   site:

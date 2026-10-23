@@ -1,5 +1,6 @@
 mod editing;
 mod knowledge;
+mod math;
 mod reading;
 
 use gpui::{AnyElement, App, IntoElement, ParentElement, Window, div};
@@ -86,5 +87,6 @@ fn render(window: &mut Window, cx: &mut App) -> AnyElement {
         .child(editing::editing(window, cx))
         .child(reading::reading(window, cx))
         .child(knowledge::knowledge(window, cx))
+        .child(math::latex(cx))
         .into_any_element()
 }

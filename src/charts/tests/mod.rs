@@ -18,7 +18,7 @@ use super::{
     PieChart, Points, ProgressChart, RadarChart, RealtimeChart, SankeyChart, ScatterChart, Series,
     Slice, Sunburst, Task, Treemap, ViolinPlot, WaterfallChart,
 };
-use crate::{layout::tests::narrow_width, theme::Theme};
+use crate::{layout::testing::narrow_width, theme::Theme};
 
 #[gpui::test]
 fn a_chart_exports_as_svg_and_csv(cx: &mut TestAppContext) {

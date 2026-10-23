@@ -3,8 +3,8 @@ use gpui::{Hsla, Rgba, hsla};
 
 use super::colors::{Colors, HUE_NAMES};
 use crate::{
-    devtools::{MARK_CONTRAST, TEXT_CONTRAST, audit, contrast},
-    theme::{Mix, Mode, Palette},
+    devtools::{MARK_CONTRAST, TEXT_CONTRAST, audit},
+    theme::{Mix, Mode, Palette, contrast},
 };
 
 const BLACK: Hsla = hsla(0.0, 0.0, 0.0, 1.0);

@@ -9,7 +9,7 @@ use super::{press, settle};
 use crate::{
     agent::{ArtifactPanel, BrowserPreview, ComputerUseViewer, LivePreview},
     forms,
-    layout::tests::narrow_width,
+    layout::testing::narrow_width,
     primitives::{FocusNext, IconName},
     theme::{ActiveTheme, AvatarSize, Theme},
 };

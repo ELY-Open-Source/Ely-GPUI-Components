@@ -28,7 +28,7 @@ pub use audit::{Check, MARK_CONTRAST, TEXT_CONTRAST, audit};
 pub use collection::{CollectionTree, Saved, moved};
 pub use connection_form::{ConnectionForm, TestState};
 pub use connections::{Connection, ConnectionManager, ConnectionState, Engine};
-pub use contrast::{ColorContrastChecker, contrast, grades, luminance, over};
+pub use contrast::ColorContrastChecker;
 pub use datum::{Datum, Unread, read_json, read_yaml};
 pub use document::{JsonViewer, YamlViewer};
 pub use encode::{Code, Encoder, base64, hex, unbase64, unhex, unpercent};
