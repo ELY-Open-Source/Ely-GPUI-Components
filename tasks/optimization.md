@@ -25,7 +25,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 ## B. Split
 
 - [x] B1 O-01 Workspace skeleton: `crates/`, shared `[workspace.package]`, `[workspace.dependencies]`, lints; the gallery and docs examples become package `ely-gallery`; ADR for the split.
-- [ ] B2 O-01 `ely-core`: core chapters move; Latex leaves typography for documents; `init` binds core keys alone.
+- [x] B2 O-01 `ely-core`: core chapters move; Latex leaves typography for documents; `init` binds core keys alone.
 - [ ] B3 O-01 Verticals, chapters 15–20: charts, finance, editor, terminal, git, debug.
   - From B2: core's built-in catalogs (`i18n/builtin.rs`) still hold the verticals' strings, and `src/shipped.rs` reads both crates' sources; each vertical crate takes its own.
 - [ ] B4 O-01 Verticals, chapters 21–27: documents, collab, chat, agent, generative, media, files.
