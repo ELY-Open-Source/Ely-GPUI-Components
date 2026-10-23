@@ -26,7 +26,7 @@ fn history() -> Vec<PastCommand> {
         past("git status --short", "~/palette", "5 min ago", Some(0)),
         past("rg lookup src", "~/palette", "12 min ago", Some(0)),
         past(
-            "cargo run --example gallery",
+            "cargo run -p ely-gallery",
             "~/Ely-GPUI-Components",
             "1 h ago",
             None,
@@ -91,7 +91,7 @@ pub fn blocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
             .child(CommandBlock::new(
                 "terminal-block-running",
                 "~/Ely-GPUI-Components",
-                "cargo run --example gallery",
+                "cargo run -p ely-gallery",
                 "",
                 CommandState::Running,
             )),

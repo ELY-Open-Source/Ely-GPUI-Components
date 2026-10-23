@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw
 
 TILE, GRAIN, ZOOMS = 256, 4, range(4)
 LAND, BORDER = (128, 72), (128, 150)
-OUT = Path(__file__).resolve().parent.parent / "examples/gallery/assets/tiles"
+OUT = Path(__file__).resolve().parent.parent / "crates/ely-gallery/assets/tiles"
 
 
 def project(lon, lat):

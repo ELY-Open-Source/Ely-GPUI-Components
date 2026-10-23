@@ -79,7 +79,7 @@ pub fn inline_code(cx: &App) -> impl IntoElement + use<> {
     section("Code", "Monospace on a quiet fill.", cx).child(
         row()
             .child("Run")
-            .child(Code::new("cargo run --example gallery"))
+            .child(Code::new("cargo run -p ely-gallery"))
             .child("to open this window."),
     )
 }

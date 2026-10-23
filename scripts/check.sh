@@ -1,8 +1,8 @@
 #!/bin/sh
 # Pre-review gate: build rules plus house rules.
 set -eu
-cargo fmt --check
-cargo clippy --all-targets --features test-support -- -D warnings
+cargo fmt --all --check
+cargo clippy --workspace --all-targets --features ely-gpui-component/test-support -- -D warnings
 cargo test --lib --features test-support --quiet
 # Ely beside the newest GPUI Kit: a release that moves Kit's gpui pin fails to resolve here.
 kit="--manifest-path compat/kit/Cargo.toml"
@@ -19,7 +19,7 @@ rustup target list --installed | grep -qx wasm32-unknown-unknown || {
 }
 # gpui_web's wasm_thread asks for an unstable feature, as in scripts/web.sh.
 RUSTC_BOOTSTRAP=1 ELY_GALLERY_ASSETS=https://example.invalid/ \
-  cargo clippy --example gallery --target wasm32-unknown-unknown -- -D warnings
+  cargo clippy -p ely-gallery --target wasm32-unknown-unknown -- -D warnings
 python3 scripts/stories.py --check
 fail=0
 files=$(git ls-files -co --exclude-standard '*.rs')
@@ -34,11 +34,12 @@ raw=$(awk '/#\[cfg\(test\)\]/{nextfile} /(^|[^.[:alnum:]_])px\(/{print FILENAME"
 [ -z "$raw" ] || { echo "raw px in components:"; echo "$raw"; fail=1; }
 deferred=$(grep -rn 'deferred(' src --include='*.rs' | grep -v '^src/primitives/layer.rs' || true)
 [ -z "$deferred" ] || { echo "gpui deferred outside primitives::raise:"; echo "$deferred"; fail=1; }
-instant=$(grep -rnE '(^|[^_[:alnum:]])time::(Instant|\{[^}]*Instant)' src examples || true)
+instant=$(grep -rnE '(^|[^_[:alnum:]])time::(Instant|\{[^}]*Instant)' src crates || true)
 [ -z "$instant" ] || { echo "std Instant panics in the browser, use web_time::Instant:"; echo "$instant"; fail=1; }
-for f in examples/docs/*.rs; do
+gallery=crates/ely-gallery
+for f in $gallery/examples/docs/*.rs; do
   [ -e "$f" ] || continue
   n=$(basename "$f" .rs)
-  grep -qx "path = \"$f\"" Cargo.toml && grep -qx "name = \"docs_$n\"" Cargo.toml || { echo "$f needs [[example]] docs_$n in Cargo.toml"; fail=1; }
+  grep -qx "path = \"examples/docs/$n.rs\"" $gallery/Cargo.toml && grep -qx "name = \"docs_$n\"" $gallery/Cargo.toml || { echo "$f needs [[example]] docs_$n in $gallery/Cargo.toml"; fail=1; }
 done
 exit $fail

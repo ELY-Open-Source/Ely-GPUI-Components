@@ -411,3 +411,4 @@
 | T56 A3 | 4 | PASS | 1222 of 1324 spec examples match markdown-rs; 128 KiB one-letter case 20 ms; root 2232/2232 |
 | T56 A4 | 1 | PASS | strum 0.27 gone; bit-set, digest and phf seconds come from RaTeX, isolang and rust-embed at their newest; left open, partial |
 | T56 A5 | 1 | PASS | unsafe in src/platform alone, on objc2; HEAD hung on macOS 27 (AppKit off the main thread in tests) and failed Mac clippy; Mac, Linux root and Windows clean |
+| T56 B1 | 1 | PASS | workspace root keeps the library; gallery and docs examples in crates/ely-gallery; Windows check, Linux root, Mac capture and the web build pass |

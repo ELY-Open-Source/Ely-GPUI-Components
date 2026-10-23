@@ -97,9 +97,9 @@ test("a link to another guide's section lands on it", async ({ page }) => {
 test("a code sample is the compiled example, and Copy copies it", async ({ page, context, browserName, isMobile }) => {
   test.skip(browserName !== "chromium" || isMobile, "clipboard reads need Chromium's permission");
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  const file = readFileSync(new URL("../../examples/docs/hello.rs", import.meta.url), "utf8").trimEnd();
+  const file = readFileSync(new URL("../../crates/ely-gallery/examples/docs/hello.rs", import.meta.url), "utf8").trimEnd();
   await page.goto("/docs/");
-  const block = page.locator(".code", { hasText: "examples/docs/hello.rs" });
+  const block = page.locator(".code", { hasText: "crates/ely-gallery/examples/docs/hello.rs" });
   await expect(block.locator("code")).toHaveText(file, { useInnerText: true });
   await block.getByRole("button", { name: "Copy" }).click();
   await expect(block.getByRole("button", { name: "Copied" })).toBeVisible();

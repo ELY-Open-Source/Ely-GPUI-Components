@@ -48,7 +48,7 @@ Use `Icon::from_path("app-icons/mark.svg")` to draw one of those SVG assets with
 
 Compatible single-color SVGs can come from [Lucide](https://lucide.dev/), [Hugeicons](https://github.com/hugeicons/hugeicons), [Phosphor](https://github.com/phosphor-icons/core), [Remix Icon](https://github.com/Remix-Design/RemixIcon), or [Tabler](https://github.com/tabler/tabler-icons). The app supplies its chosen files and preserves their licenses; Ely does not download or register those catalogs.
 
-The example below includes its asset source. Copy [`examples/assets/mark.svg`](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/examples/assets/mark.svg) with it, or supply your own SVG.
+The example below includes its asset source. Copy [`crates/ely-gallery/examples/assets/mark.svg`](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/crates/ely-gallery/examples/assets/mark.svg) with it, or supply your own SVG.
 
 ## A window of icons
 

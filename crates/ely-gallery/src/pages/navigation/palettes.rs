@@ -132,8 +132,8 @@ const FILES: [&str; 24] = [
     "src/navigation/menu.rs",
     "src/navigation/palette.rs",
     "src/navigation/toc.rs",
-    "examples/gallery/main.rs",
-    "examples/gallery/pages/navigation/palettes.rs",
+    "crates/ely-gallery/src/main.rs",
+    "crates/ely-gallery/src/pages/navigation/palettes.rs",
     "frontend/package.json",
 ];
 

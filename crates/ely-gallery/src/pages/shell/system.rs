@@ -49,7 +49,7 @@ pub fn tray(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                             ];
                             let look = TrayLook {
                                 symbol: "circle.hexagongrid",
-                                png: include_bytes!("../../assets/stickers/olive.png"),
+                                png: include_bytes!("../../../assets/stickers/olive.png"),
                                 name: "Gallery".into(),
                             };
                             let made = TrayIcon::new(

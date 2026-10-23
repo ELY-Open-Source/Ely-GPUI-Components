@@ -41,7 +41,7 @@ WINDOWS = {
 
 def capture(args, into):
     """Runs the native capture; its window must stay in front."""
-    subprocess.run(["cargo", "run", "-q", "--example", "gallery", "--", *args, "--capture", str(into)], cwd=ROOT, check=True)
+    subprocess.run(["cargo", "run", "-q", "-p", "ely-gallery", "--", *args, "--capture", str(into)], cwd=ROOT, check=True)
 
 
 def trimmed(path):

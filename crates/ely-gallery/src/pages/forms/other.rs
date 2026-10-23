@@ -41,7 +41,7 @@ pub fn signature(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> 
 pub fn code(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let line = field("input-code", window, cx, |input| {
         input
-            .placeholder("cargo run --example gallery")
+            .placeholder("cargo run -p ely-gallery")
             .highlighter(code_highlights)
     });
     let json = field("input-json", window, cx, |input| {

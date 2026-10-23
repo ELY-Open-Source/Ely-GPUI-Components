@@ -10,7 +10,7 @@ Ely is a Rust component library for GPUI desktop and web apps. It runs inside th
 
 ## Components that matter most / least
 - Most: parsers and anything that turns external bytes into layout (markdown, JSON/GeoJSON, ANSI, images, QR, archive paths), and the few `unsafe` blocks that call AppKit (`shell::native`, `buttons::share`, `forms::color::dropper`).
-- Less: pure drawing and theme code. `examples/`, `frontend/` (the website), `compat/` and `scripts/` are out of scope.
+- Less: pure drawing and theme code. `crates/ely-gallery/`, `frontend/` (the website), `compat/` and `scripts/` are out of scope.
 
 ## How to exercise it
 `cargo test --lib --features test-support` runs the suite headless on gpui's test platform. Parsers can be driven directly from unit tests.

@@ -78,12 +78,7 @@ pub fn start(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     };
     let task_list = vec![
         task("check", "Build", "cargo check --all-targets", now_tasks[0]),
-        task(
-            "gallery",
-            "Run",
-            "cargo run --example gallery",
-            now_tasks[1],
-        ),
+        task("gallery", "Run", "cargo run -p ely-gallery", now_tasks[1]),
         task(
             "test",
             "Test",

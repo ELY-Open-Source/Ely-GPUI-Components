@@ -24,7 +24,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 ## B. Split
 
-- [ ] B1 O-01 Workspace skeleton: `crates/`, shared `[workspace.package]`, `[workspace.dependencies]`, lints; the gallery and docs examples become package `ely-gallery`; ADR for the split.
+- [x] B1 O-01 Workspace skeleton: `crates/`, shared `[workspace.package]`, `[workspace.dependencies]`, lints; the gallery and docs examples become package `ely-gallery`; ADR for the split.
 - [ ] B2 O-01 `ely-core`: core chapters move; Latex leaves typography for documents; `init` binds core keys alone.
 - [ ] B3 O-01 Verticals, chapters 15–20: charts, finance, editor, terminal, git, debug.
 - [ ] B4 O-01 Verticals, chapters 21–27: documents, collab, chat, agent, generative, media, files.
@@ -35,6 +35,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [ ] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
 - [ ] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.
 - [ ] B11 Gallery, site, check.sh, compat/kit, CI and AGENTS.md follow the new layout; the web gallery builds.
+  - Found in B1: `e2e/docs.spec.ts`'s `GUIDES` lacks `gpui-kit`, added to `ORDER` in `b3985b9`; on Windows the Copy test reads CRLF from the clipboard. CI's site job runs neither.
 
 ## C. Public API
 

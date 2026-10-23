@@ -63,10 +63,10 @@ function read(file: string, files: string[]): Guide {
         let caption = language;
         if (example) {
           if (text.trim()) throw new Error(`docs: ${file}.md puts code under example=${example}`);
-          const path = at(`../../../examples/docs/${example}.rs`);
+          const path = at(`../../../crates/ely-gallery/examples/docs/${example}.rs`);
           files.push(path);
           code = readFileSync(path, "utf8").trimEnd();
-          caption = `examples/docs/${example}.rs · cargo run --example docs_${example}`;
+          caption = `crates/ely-gallery/examples/docs/${example}.rs · cargo run -p ely-gallery --example docs_${example}`;
         }
         const head = caption ? `<figcaption>${escape(caption)}</figcaption>` : "";
         return `<figure class="code">${head}<button class="copy" type="button">Copy</button><pre><code>${escape(code)}</code></pre></figure>`;

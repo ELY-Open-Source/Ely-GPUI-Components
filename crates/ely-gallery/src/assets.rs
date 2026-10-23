@@ -10,7 +10,9 @@ pub struct GalleryAssets;
 impl AssetSource for GalleryAssets {
     fn load(&self, path: &str) -> gpui::Result<Option<Cow<'static, [u8]>>> {
         if path == CUSTOM_ICON {
-            return Ok(Some(Cow::Borrowed(include_bytes!("../assets/mark.svg"))));
+            return Ok(Some(Cow::Borrowed(include_bytes!(
+                "../examples/assets/mark.svg"
+            ))));
         }
         Assets.load(path)
     }

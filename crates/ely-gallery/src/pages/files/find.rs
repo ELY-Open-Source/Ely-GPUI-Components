@@ -284,7 +284,7 @@ pub fn archive(cx: &mut App) -> impl IntoElement + use<> {
 pub fn hex(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let bytes = keep(
         "files-hex",
-        || include_bytes!("../../assets/atrium.jpg")[..512].to_vec(),
+        || include_bytes!("../../../assets/atrium.jpg")[..512].to_vec(),
         window,
         cx,
     );

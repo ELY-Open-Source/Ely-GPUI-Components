@@ -17,25 +17,25 @@ fn packages() -> [Package; 4] {
             "Ely GPUI Component",
             "0.1.0",
             "MIT",
-            include_str!("../../../../LICENSE"),
+            include_str!("../../../../../LICENSE"),
         ),
         Package::new(
             "Lucide",
             "1.48.0",
             "ISC",
-            include_str!("../../../../assets/icons/LICENSE"),
+            include_str!("../../../../../assets/icons/LICENSE"),
         ),
         Package::new(
             "Inter",
             "4.1",
             "OFL-1.1",
-            include_str!("../../../../assets/fonts/Inter-LICENSE.txt"),
+            include_str!("../../../../../assets/fonts/Inter-LICENSE.txt"),
         ),
         Package::new(
             "JetBrains Mono",
             "2.304",
             "OFL-1.1",
-            include_str!("../../../../assets/fonts/JetBrainsMono-LICENSE.txt"),
+            include_str!("../../../../../assets/fonts/JetBrainsMono-LICENSE.txt"),
         ),
     ]
 }

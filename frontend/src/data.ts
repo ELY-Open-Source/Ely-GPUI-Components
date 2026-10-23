@@ -1,4 +1,4 @@
-import manifest from "../../examples/gallery/stories.json";
+import manifest from "../../crates/ely-gallery/stories.json";
 
 export interface Story {
   title: string;

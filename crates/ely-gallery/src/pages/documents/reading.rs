@@ -24,7 +24,7 @@ use crate::{
 
 const PAGES: [&str; 2] = [asset!("pages/lift-1.png"), asset!("pages/lift-2.png")];
 const SLIDES: [&str; 2] = [asset!("pages/slide-1.png"), asset!("pages/slide-2.png")];
-const WORDS: &str = include_str!("../../assets/pages/lift.json");
+const WORDS: &str = include_str!("../../../assets/pages/lift.json");
 
 const GUIDE: &str = "# Lift\n\nA lift blends a color toward white.\n\n## In light\n\nPaper white under ink near black; accents at half a lift.\n\n## In dark\n\nWarm charcoal under off-white text; accents lift further, so they read with the same weight.\n\n### Surfaces\n\nA card sits one lift above the page, a menu one above the card.\n\n## In motion\n\nHover, press and focus are lifts of the accent, eased on one scale of durations.\n\n## Closing\n\nWhatever the hue, a step of lift means the same step of emphasis.";
 

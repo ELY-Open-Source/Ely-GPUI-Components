@@ -35,7 +35,7 @@ Copy the [first window](/docs/#a-first-window) into `src/main.rs` and run it:
 cargo run
 ```
 
-A window opens with a counter and a Press button. From a clone of the repository, `cargo run --example gallery` opens every chapter.
+A window opens with a counter and a Press button. From a clone of the repository, `cargo run -p ely-gallery` opens every chapter.
 
 ## When it fails
 

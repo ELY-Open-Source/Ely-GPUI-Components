@@ -4,11 +4,7 @@
 #[cfg(not(target_family = "wasm"))]
 macro_rules! asset {
     ($name:literal) => {
-        concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/examples/gallery/assets/",
-            $name
-        )
+        concat!(env!("CARGO_MANIFEST_DIR"), "/assets/", $name)
     };
 }
 

@@ -1,4 +1,4 @@
-"""Writes examples/gallery/stories.json: each page's stories and the components they show."""
+"""Writes crates/ely-gallery/stories.json: each page's stories and the components they show."""
 
 import json
 import re
@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGES = ROOT / "examples/gallery/pages"
-OUT = ROOT / "examples/gallery/stories.json"
+PAGES = ROOT / "crates/ely-gallery/src/pages"
+OUT = ROOT / "crates/ely-gallery/stories.json"
 CALL = re.compile(r"(?<![\w.])(?:(\w+)::)?(\w+)\s*\(")
 CHAIN = re.compile(r"\s*\.\s*\w+\s*(?:::<[^>]*>\s*)?\(")
 

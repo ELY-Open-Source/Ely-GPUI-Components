@@ -14,14 +14,14 @@ Thanks for helping. Bugs, component requests and pull requests are all welcome.
 - Development happens on macOS; the capture tool needs it.
 
 ```sh
-cargo run --example gallery              # every chapter, light and dark
-cargo run --example gallery -- --page forms
+cargo run -p ely-gallery              # every chapter, light and dark
+cargo run -p ely-gallery -- --page forms
 ```
 
 ## Where things go
 
 - A component lives in `src/<chapter>/`, one folder per chapter. One component, one home; anything that duplicates another points to it.
-- Its demo is a story on the chapter's page, `examples/gallery/pages/<chapter>.rs`. After adding or renaming a story, run `python3 scripts/stories.py`.
+- Its demo is a story on the chapter's page, `crates/ely-gallery/src/pages/<chapter>.rs`. After adding or renaming a story, run `python3 scripts/stories.py`.
 - `TASKS.md` and `tasks/` track every component; tick its line when it lands.
 - The website is `frontend/`; its README section has the commands.
 

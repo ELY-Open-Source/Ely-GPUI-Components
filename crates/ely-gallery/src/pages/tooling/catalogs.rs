@@ -67,7 +67,7 @@ pub fn sections(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
             cx,
         )
         .child(Code::new(
-            "cargo run --example gallery -- --page tooling --capture shots",
+            "cargo run -p ely-gallery -- --page tooling --capture shots",
         ))
         .into_any_element(),
     ]

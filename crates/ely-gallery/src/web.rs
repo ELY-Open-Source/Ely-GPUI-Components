@@ -19,7 +19,7 @@ use crate::{
 };
 
 /// Hebrew for i18n; browsers lend only emoji and CJK.
-const HEBREW: &[u8] = include_bytes!("fonts/NotoSansHebrew-Regular.ttf");
+const HEBREW: &[u8] = include_bytes!("../fonts/NotoSansHebrew-Regular.ttf");
 
 thread_local! {
     /// The running app and its window, for the host's calls.

@@ -13,7 +13,7 @@ RUSTC_BOOTSTRAP=1 cargo check --lib --target wasm32-unknown-unknown
 
 ## Start an app in the browser
 
-The gallery's [web entry](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/examples/gallery/web.rs) shows the steps:
+The gallery's [web entry](https://github.com/ELY-Open-Source/Ely-GPUI-Components/blob/main/crates/ely-gallery/src/web.rs) shows the steps:
 
 | Step | Why |
 | --- | --- |

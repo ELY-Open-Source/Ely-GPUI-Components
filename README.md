@@ -41,13 +41,13 @@ Ely runs beside Longbridge's [GPUI Kit](https://gpui-kit.com) in one window, on 
 ## Gallery
 
 ```sh
-cargo run --example gallery
-cargo run --example gallery -- --page buttons
-cargo run --example gallery -- --capture shots   # macOS: PNG of every page, light and dark
+cargo run -p ely-gallery
+cargo run -p ely-gallery -- --page buttons
+cargo run -p ely-gallery -- --capture shots   # macOS: PNG of every page, light and dark
 ELY_GALLERY_ASSETS=https://example.com/gallery/assets/ scripts/web.sh dist   # for the browser
 ```
 
-In a browser, `?page=buttons&story=icon-button&theme=dark` draws one section alone; `examples/gallery/stories.json` lists them all.
+In a browser, `?page=buttons&story=icon-button&theme=dark` draws one section alone; `crates/ely-gallery/stories.json` lists them all.
 
 ## Website
 
@@ -70,4 +70,4 @@ pnpm deploy     # Cloudflare, through wrangler
 ## License
 
 MIT. Lucide icons: ISC. Inter, JetBrains Mono, IBM Plex Sans and the gallery's Noto Sans Hebrew: SIL Open Font License 1.1.
-The gallery photos in `examples/gallery/assets` were generated for this project with gpt-image-2.
+The gallery photos in `crates/ely-gallery/assets` were generated for this project with gpt-image-2.

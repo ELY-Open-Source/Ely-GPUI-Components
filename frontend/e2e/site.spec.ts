@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import manifest from "../../examples/gallery/stories.json" with { type: "json" };
+import manifest from "../../crates/ely-gallery/stories.json" with { type: "json" };
 
 /** A story's short name, as `src/data.ts` derives it. */
 const name = (title: string) => title.split(/ \/ | · | → | \(/)[0].trim();

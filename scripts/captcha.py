@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "examples/gallery/assets/captcha"
+OUT = ROOT / "crates/ely-gallery/assets/captcha"
 FONT = ImageFont.truetype(str(ROOT / "assets/fonts/Inter-SemiBold.ttf"), 76)
 ANSWERS = ["W7XK", "Q3NP"]
 SIZE = (480, 160)

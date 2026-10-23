@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import manifest from "../../examples/gallery/stories.json" with { type: "json" };
+import manifest from "../../crates/ely-gallery/stories.json" with { type: "json" };
 
 const STARTS = 45_000;
 
