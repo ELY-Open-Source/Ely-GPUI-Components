@@ -7,7 +7,7 @@ on:
 
 jobs:
   crate:
-    # The Mac mini: its system fonts set the CJK and math tests, and it times the linear-format test steadily.
+    # The Mac mini runs the whole gate: the house rules, the Kit compat crate and the wasm32 lint.
     runs-on: [self-hosted, macos-arm64]
     steps:
       - uses: actions/checkout@v7

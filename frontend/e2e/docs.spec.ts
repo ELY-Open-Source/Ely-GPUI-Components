@@ -6,6 +6,7 @@ const GUIDES: [string, string][] = [
   ["", "Introduction"],
   ["installation", "Installation"],
   ["getting-started", "Getting started"],
+  ["gpui-kit", "GPUI Kit"],
   ["theme", "Theme"],
   ["focus", "Focus and keyboard"],
   ["motion", "Motion"],
@@ -97,13 +98,17 @@ test("a link to another guide's section lands on it", async ({ page }) => {
 test("a code sample is the compiled example, and Copy copies it", async ({ page, context, browserName, isMobile }) => {
   test.skip(browserName !== "chromium" || isMobile, "clipboard reads need Chromium's permission");
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  const file = readFileSync(new URL("../../crates/ely-gallery/examples/docs/hello.rs", import.meta.url), "utf8").trimEnd();
+  const file = readFileSync(new URL("../../crates/ely-gallery/examples/docs/hello.rs", import.meta.url), "utf8")
+    .replace(/\r\n/g, "\n")
+    .trimEnd();
   await page.goto("/docs/");
   const block = page.locator(".code", { hasText: "crates/ely-gallery/examples/docs/hello.rs" });
   await expect(block.locator("code")).toHaveText(file, { useInnerText: true });
   await block.getByRole("button", { name: "Copy" }).click();
   await expect(block.getByRole("button", { name: "Copied" })).toBeVisible();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(file);
+  // Windows and its checkouts use CRLF.
+  const copied = await page.evaluate(() => navigator.clipboard.readText());
+  expect(copied.replace(/\r\n/g, "\n")).toBe(file);
 });
 
 test("an unknown guide says so", async ({ page }) => {
