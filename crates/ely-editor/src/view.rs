@@ -66,6 +66,7 @@ impl CodeEditor {
     }
 
     /// The first line the list shows, after scrolling.
+    #[doc(hidden)]
     pub fn top_line(&self) -> Option<usize> {
         let scrolled = -self.scroll.0.borrow().base_handle.offset().y;
         let first = (scrolled / self.frame.line).floor().max(0.0) as usize;

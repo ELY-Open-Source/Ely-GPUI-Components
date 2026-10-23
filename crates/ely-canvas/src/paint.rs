@@ -12,6 +12,7 @@ pub(crate) fn in_view(view: &Viewport, frame: &Frame) -> Frame {
     Frame::new(x, y, frame.w * view.zoom, frame.h * view.zoom)
 }
 
+#[doc(hidden)]
 pub fn at(origin: Point<Pixels>, (x, y): (f32, f32)) -> Point<Pixels> {
     origin + point(Pixels::from(x), Pixels::from(y))
 }
@@ -23,6 +24,7 @@ pub(crate) fn quad(origin: Point<Pixels>, frame: &Frame) -> Bounds<Pixels> {
     )
 }
 
+#[doc(hidden)]
 pub fn outline(
     points: &[(f32, f32)],
     origin: Point<Pixels>,
@@ -54,6 +56,7 @@ pub(crate) fn solid(points: &[(f32, f32)], origin: Point<Pixels>) -> PathBuilder
     path
 }
 
+#[doc(hidden)]
 pub fn finish(path: PathBuilder, color: Hsla, window: &mut Window) {
     match path.build() {
         Ok(path) => window.paint_path(path, color),

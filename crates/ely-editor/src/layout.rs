@@ -88,6 +88,7 @@ pub(crate) fn around(folds: &[(usize, usize)], line: usize, limit: usize) -> Vec
 }
 
 /// Styles laid over one another in order, later ones on top, as runs that do not overlap.
+#[doc(hidden)]
 pub fn stack(spans: Vec<(Range<usize>, HighlightStyle)>) -> Vec<(Range<usize>, HighlightStyle)> {
     let mut edges: Vec<usize> = spans
         .iter()
@@ -120,7 +121,7 @@ pub(crate) struct Shown {
 
 impl Shown {
     /// `line` with `notes` set in, each at a byte of the line and styled; `styles` color the line's own bytes.
-    pub fn new(
+    pub(crate) fn new(
         line: &str,
         mut notes: Vec<(usize, String, HighlightStyle)>,
         styles: Vec<(Range<usize>, HighlightStyle)>,
@@ -167,7 +168,7 @@ impl Shown {
     }
 
     /// Where a caret at column `column` of `line` draws, in columns; it sits before a note set in at it.
-    pub fn column(&self, line: &str, column: usize) -> usize {
+    pub(crate) fn column(&self, line: &str, column: usize) -> usize {
         let byte = line
             .char_indices()
             .nth(column)
@@ -182,7 +183,7 @@ impl Shown {
     }
 
     /// The column of the line under drawn column `shown`, skipping notes.
-    pub fn back(&self, line: &str, shown: usize) -> usize {
+    pub(crate) fn back(&self, line: &str, shown: usize) -> usize {
         let mut column = shown;
         for (place, _, chars) in &self.inserts {
             let at = line[..*place].chars().count();

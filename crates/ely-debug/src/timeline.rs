@@ -35,6 +35,7 @@ fn tick_label(time: f64, step: f64) -> String {
 const TICKS: usize = 6;
 
 /// The ruler's step and ticks: as many as leave `room` for each label across `width`, each with room before the end.
+#[doc(hidden)]
 pub fn ruler(range: (f64, f64), width: f32, room: f32) -> (f64, Vec<f64>) {
     let length = range.1 - range.0;
     let across = move |span: f64| (span / length) as f32 * width;

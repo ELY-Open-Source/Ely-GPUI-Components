@@ -11,7 +11,7 @@ pub(crate) struct Tag {
 }
 
 impl Tag {
-    pub fn attribute(&self, name: &str) -> Option<&str> {
+    pub(crate) fn attribute(&self, name: &str) -> Option<&str> {
         self.attributes
             .iter()
             .find(|(key, _)| key == name)

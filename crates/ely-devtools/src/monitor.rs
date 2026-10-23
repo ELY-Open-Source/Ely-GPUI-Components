@@ -42,7 +42,7 @@ impl Reading {
 }
 
 /// What a tile says of a reading: its latest value, and of how much when it has a limit.
-pub fn reading_line(reading: &Reading) -> String {
+pub(crate) fn reading_line(reading: &Reading) -> String {
     let latest = *reading.values.last().expect("a reading has values");
     match &reading.limit {
         Some(limit) => format!("{latest:.1} of {limit:.0} {}", reading.unit),

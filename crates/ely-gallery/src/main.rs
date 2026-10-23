@@ -1,4 +1,6 @@
 #![cfg_attr(target_family = "wasm", no_main)]
+// A binary: nothing it holds is reachable from outside.
+#![allow(unreachable_pub)]
 
 /// A file under the gallery's assets, by name.
 #[cfg(not(target_family = "wasm"))]

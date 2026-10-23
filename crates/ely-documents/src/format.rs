@@ -115,7 +115,7 @@ fn own(
 }
 
 /// `text` with `format` applied over `selection`, and where the selection lands. An inline format wraps the selection, or unwraps it when already wrapped; an empty one leaves the caret between its markers. A line format prefixes each touched line, or takes the prefix off when every line has it.
-pub fn apply(text: &str, selection: Range<usize>, format: Format) -> (String, Range<usize>) {
+pub(crate) fn apply(text: &str, selection: Range<usize>, format: Format) -> (String, Range<usize>) {
     assert!(
         selection.start <= selection.end && selection.end <= text.len(),
         "the selection {selection:?} lies outside {} bytes",
@@ -204,7 +204,7 @@ pub fn format(field: &Entity<TextInput>, format: Format, cx: &mut App) {
 }
 
 /// The formats that hold all of `selection`, for a toolbar to show pressed.
-pub fn active(text: &str, selection: Range<usize>) -> Vec<Format> {
+pub(crate) fn active(text: &str, selection: Range<usize>) -> Vec<Format> {
     let mut on: Vec<Format> = marks(text)
         .into_iter()
         .filter(|(range, _)| range.start <= selection.start && selection.end <= range.end)

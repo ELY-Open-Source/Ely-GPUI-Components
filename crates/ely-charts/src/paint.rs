@@ -10,11 +10,13 @@ use super::{
 use crate::theme::Palette;
 
 /// A place in a box's own pixels, moved to where the box sits.
+#[doc(hidden)]
 pub fn at(origin: Point<Pixels>, (x, y): (f32, f32)) -> Point<Pixels> {
     origin + point(Pixels::from(x), Pixels::from(y))
 }
 
 /// A rectangle in a box's own pixels, moved to where the box sits.
+#[doc(hidden)]
 pub fn place(origin: Point<Pixels>, rect: Rect) -> Bounds<Pixels> {
     Bounds::new(
         at(origin, (rect.x, rect.y)),
@@ -23,6 +25,7 @@ pub fn place(origin: Point<Pixels>, rect: Rect) -> Bounds<Pixels> {
 }
 
 /// A canvas over its parent that keeps the parent's bounds in `state` and draws once more when they change.
+#[doc(hidden)]
 pub fn measure<T: 'static>(
     state: Entity<T>,
     slot: fn(&mut T) -> &mut Bounds<Pixels>,
@@ -51,6 +54,7 @@ pub fn measure<T: 'static>(
 }
 
 /// The color series `ix` takes from the chart palette.
+#[doc(hidden)]
 pub fn tint(colors: &Palette, ix: usize) -> Hsla {
     colors.chart[ix % colors.chart.len()]
 }
@@ -108,6 +112,7 @@ pub(crate) fn trace(
 }
 
 /// Paints a path, or logs why it would not build.
+#[doc(hidden)]
 pub fn finish(path: PathBuilder, color: Hsla, window: &mut Window) {
     match path.build() {
         Ok(path) => window.paint_path(path, color),
@@ -116,6 +121,7 @@ pub fn finish(path: PathBuilder, color: Hsla, window: &mut Window) {
 }
 
 /// A round dot filled with one color and edged with another.
+#[doc(hidden)]
 pub fn ring(
     center: Point<Pixels>,
     radius: Pixels,

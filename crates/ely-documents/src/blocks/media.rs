@@ -24,6 +24,7 @@ struct Resize {
 }
 
 /// A web address loads over the network; anything else is a file.
+#[doc(hidden)]
 pub fn source(text: &str) -> ImageSource {
     if text.starts_with("http://") || text.starts_with("https://") {
         SharedUri::from(text.to_string()).into()

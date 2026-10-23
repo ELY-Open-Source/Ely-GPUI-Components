@@ -14,7 +14,7 @@ use crate::{
 
 type OnPick = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// A commit with lines added and removed, if counted.
-pub type Counted = (Commit, Option<(usize, usize)>);
+pub(crate) type Counted = (Commit, Option<(usize, usize)>);
 
 /// A file's commits newest first; draws rows in view.
 #[derive(IntoElement)]

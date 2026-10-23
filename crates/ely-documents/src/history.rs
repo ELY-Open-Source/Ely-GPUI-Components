@@ -19,6 +19,7 @@ use crate::{
 
 /// How a stretch of a prose diff changed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[doc(hidden)]
 pub enum Change {
     Added,
     Removed,

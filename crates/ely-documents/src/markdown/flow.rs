@@ -17,7 +17,7 @@ pub(super) struct Flow {
 
 impl Flow {
     /// The source byte for byte `at` of the new text.
-    pub fn source(&self, at: usize) -> usize {
+    pub(crate) fn source(&self, at: usize) -> usize {
         let ix = self.fences.partition_point(|(run, _)| run.start <= at);
         let Some((run, old)) = ix.checked_sub(1).map(|ix| &self.fences[ix]) else {
             return at;
@@ -27,12 +27,12 @@ impl Flow {
     }
 
     /// `range` of the new text in the source.
-    pub fn span(&self, range: &Range<usize>) -> Range<usize> {
+    pub(crate) fn span(&self, range: &Range<usize>) -> Range<usize> {
         self.source(range.start)..self.source(range.end)
     }
 
     /// Whether a block whose first line is `line`, in the new text, opens math.
-    pub fn opens_math(&self, line: &Range<usize>) -> bool {
+    pub(crate) fn opens_math(&self, line: &Range<usize>) -> bool {
         self.on(line).is_some_and(|ix| self.opens[ix])
     }
 

@@ -27,6 +27,7 @@ pub(crate) fn lit(level: f32) -> usize {
 }
 
 /// A device toggle, such as a microphone's: its icon shows on or off, and a press flips it, logged under `owner`.
+#[doc(hidden)]
 pub fn device_toggle(
     owner: &'static str,
     id: &ElementId,

@@ -45,6 +45,7 @@ pub use repeat::{Ends, Frequency, Recurrence};
 pub use year::YearView;
 
 /// The days a calendar shows: jiff's range less a year at each end, so the weeks around any of them fit.
+#[doc(hidden)]
 pub fn within(day: jiff::civil::Date) -> bool {
     (jiff::civil::date(-9998, 1, 1)..=jiff::civil::date(9998, 12, 31)).contains(&day)
 }

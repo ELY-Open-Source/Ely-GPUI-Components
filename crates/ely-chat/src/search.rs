@@ -25,6 +25,7 @@ pub enum StepState {
 }
 
 /// A step's mark in an icon's box: a dot waiting, a spinner working, a check done, a cross failed. A check or cross that arrives pops in.
+#[doc(hidden)]
 pub fn step_mark(id: ElementId, state: StepState, window: &mut Window, cx: &mut App) -> AnyElement {
     let changes = motion::changes((id.clone(), "changes"), state, window, cx);
     let theme = cx.theme();

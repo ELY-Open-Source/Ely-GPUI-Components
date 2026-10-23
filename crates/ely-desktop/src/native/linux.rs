@@ -232,7 +232,7 @@ impl Menu {
     }
 }
 
-pub struct Tray {
+pub(crate) struct Tray {
     _connection: Connection,
     _picks: Task<()>,
     items: usize,
@@ -240,7 +240,7 @@ pub struct Tray {
 }
 
 impl Tray {
-    pub fn new(
+    pub(crate) fn new(
         look: &Look,
         items: Vec<TrayItem>,
         route: Route,
@@ -291,7 +291,7 @@ impl Tray {
         })
     }
 
-    pub fn pick(&self, index: usize) {
+    pub(crate) fn pick(&self, index: usize) {
         assert!(index < self.items, "tray has no item {index}");
         self.sender.unbounded_send(index).ok();
     }

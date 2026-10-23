@@ -13,6 +13,7 @@ use crate::{
 };
 
 /// A name's chip over a frame's lower corner, light on a dark wash.
+#[doc(hidden)]
 pub fn name_chip(cx: &App) -> Div {
     let theme = cx.theme();
     let colors = &theme.colors;

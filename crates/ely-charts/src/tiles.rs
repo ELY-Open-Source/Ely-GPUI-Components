@@ -23,6 +23,7 @@ use crate::{
 
 /// A chart's own state when the pointer picks one part: its box and the part under the pointer.
 #[derive(Default)]
+#[doc(hidden)]
 pub struct Tiles {
     pub bounds: Bounds<Pixels>,
     pub hover: Option<usize>,
@@ -30,12 +31,14 @@ pub struct Tiles {
 
 impl Tiles {
     /// The part under the pointer, if there are still that many parts.
+    #[doc(hidden)]
     pub fn pointed(&self, count: usize) -> Option<usize> {
         self.hover.filter(|ix| *ix < count)
     }
 }
 
 /// Keeps `tiles` answering the pointer: `find` names the tile at a place in the box.
+#[doc(hidden)]
 pub fn tracked(
     root: Div,
     id: ElementId,

@@ -8,10 +8,13 @@ use super::embed::Embedded;
 /// How far the eye sits from the middle, in the points' own units.
 const EYE: f32 = 4.0;
 /// Where a turned view starts.
+#[doc(hidden)]
 pub const START: (f32, f32) = (0.6, 0.35);
 /// What a key turns the view.
+#[doc(hidden)]
 pub const STEP: f32 = PI / 12.0;
 /// What a drag turns the view for each pixel.
+#[doc(hidden)]
 pub const DRAG: f32 = 0.01;
 /// Farthest the view tips up or down, short of looking straight along the upright axis.
 const TIP: f32 = 1.4;
@@ -76,6 +79,7 @@ pub(crate) fn radius(points: &[Embedded]) -> f32 {
 }
 
 /// A turn moved by `yaw` and `pitch`; the pitch stops short of either pole.
+#[doc(hidden)]
 pub fn turned((yaw, pitch): (f32, f32), by: (f32, f32)) -> (f32, f32) {
     (
         (yaw + by.0).rem_euclid(TAU),

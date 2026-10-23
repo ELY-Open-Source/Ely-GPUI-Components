@@ -14,7 +14,7 @@ mod stack;
 pub use blocks::{AlertKind, DocumentHeading};
 pub(crate) use blocks::{alert, is_toc};
 use html_block::html_block_text;
-pub use sources::Escapes;
+pub(crate) use sources::Escapes;
 pub(crate) use sources::{inside, lines_at};
 use stack::close;
 
@@ -171,7 +171,7 @@ impl Run {
 }
 
 /// `markdown` as blocks.
-pub fn parse(markdown: &str) -> Vec<Node> {
+pub(crate) fn parse(markdown: &str) -> Vec<Node> {
     let root = tree(markdown);
     let (reader, mut out) = (Reader::new(markdown, &root), Vec::new());
     for node in root.children().expect("the root holds the blocks") {
@@ -337,7 +337,7 @@ impl<'a> Reader<'a> {
     }
 
     /// A footnote's number, by its first reference.
-    pub fn note(&self, identifier: &str) -> Option<usize> {
+    pub(crate) fn note(&self, identifier: &str) -> Option<usize> {
         self.notes.get(identifier).copied()
     }
 

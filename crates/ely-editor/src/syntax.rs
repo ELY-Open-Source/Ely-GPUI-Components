@@ -109,11 +109,13 @@ pub(crate) fn matched(brackets: &[Bracket], caret: usize) -> Option<(usize, usiz
 }
 
 /// A line's syntax colors as highlight styles.
+#[doc(hidden)]
 pub fn colors(text: &str, cx: &App) -> Vec<(Range<usize>, HighlightStyle)> {
     styles(crate::forms::code_highlights(text, cx))
 }
 
 /// A line's colors as `lang` reads it.
+#[doc(hidden)]
 pub fn colors_with(text: &str, lang: &Syntax, cx: &App) -> Vec<(Range<usize>, HighlightStyle)> {
     styles(code_highlights_with(text, lang, cx))
 }

@@ -15,7 +15,7 @@ pub(crate) struct Measured {
 
 impl Measured {
     /// `shown` in the code font `family` at `size`.
-    pub fn new(
+    pub(crate) fn new(
         shown: &Shown,
         family: SharedString,
         size: Pixels,
@@ -58,7 +58,7 @@ impl Measured {
     }
 
     /// Where `column` starts; past the end in whole advances.
-    pub fn x(&self, column: usize) -> Pixels {
+    pub(crate) fn x(&self, column: usize) -> Pixels {
         match self.text.char_indices().nth(column) {
             Some((at, _)) => self.layout.x_for_index(at),
             None => {
@@ -69,7 +69,7 @@ impl Measured {
     }
 
     /// The column starting nearest `x`, line end included.
-    pub fn column(&self, x: Pixels) -> usize {
+    pub(crate) fn column(&self, x: Pixels) -> usize {
         let starts = self.layout.runs.iter().flat_map(|run| {
             run.glyphs
                 .iter()

@@ -296,7 +296,7 @@ fn fit(query: &str, project: &Project) -> Option<(i32, Vec<std::ops::Range<usize
 
 /// A way to start from the welcome page: its icon, words and keys.
 #[derive(Clone, Debug, PartialEq)]
-pub struct StartAction {
+pub(crate) struct StartAction {
     pub icon: IconName,
     pub label: SharedString,
     pub keys: Option<SharedString>,

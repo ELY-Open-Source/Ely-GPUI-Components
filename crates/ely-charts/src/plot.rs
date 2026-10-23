@@ -23,12 +23,15 @@ use crate::{
 
 pub(crate) type Format = Rc<dyn Fn(f64) -> String>;
 /// Lays out a plot's marks inside its frame.
+#[doc(hidden)]
 pub type Layout = Rc<dyn Fn(&Scene) -> Geometry>;
 /// A picked index's tooltip: its title, then each row's dot if any, name and value.
+#[doc(hidden)]
 pub type Tips =
     Rc<dyn Fn(usize, &Scene) -> (SharedString, Vec<(Option<Ink>, SharedString, String)>)>;
 
 /// What a layout lays out: the frame, the values at this moment of a glide, the series the legend hid, and the zoomed span.
+#[doc(hidden)]
 pub struct Scene<'a> {
     pub frame: Rect,
     pub values: &'a [Vec<f64>],
@@ -38,6 +41,7 @@ pub struct Scene<'a> {
 
 /// What the pointer picks in a plot.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[doc(hidden)]
 pub enum Pick {
     /// A category's band, as bars take.
     Band,
@@ -48,6 +52,7 @@ pub enum Pick {
 }
 
 /// What a plot draws and how it answers the pointer.
+#[doc(hidden)]
 pub struct Plot {
     pub id: ElementId,
     pub labels: Vec<SharedString>,
@@ -67,6 +72,7 @@ pub struct Plot {
 }
 
 impl Plot {
+    #[doc(hidden)]
     pub fn new(id: ElementId, pick: Pick, layout: Layout, tips: Tips) -> Self {
         Self {
             id,
@@ -99,6 +105,7 @@ pub(crate) struct State {
 }
 
 /// Draws a plot: legend, grid, marks and axes, crosshair and tooltip, rules and notes, and a brush that zooms.
+#[doc(hidden)]
 pub fn plot(plot: Plot, base: Div, window: &mut Window, cx: &mut App) -> Div {
     let id = plot.id.clone();
     let state: Entity<State> =

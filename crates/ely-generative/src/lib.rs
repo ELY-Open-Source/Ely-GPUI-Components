@@ -11,6 +11,7 @@ mod downloads;
 mod embed;
 mod grid;
 mod hardware;
+#[doc(hidden)]
 pub mod lens;
 mod mask;
 mod models;

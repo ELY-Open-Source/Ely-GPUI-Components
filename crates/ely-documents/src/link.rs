@@ -24,7 +24,7 @@ pub(crate) struct Linking {
 
 impl Linking {
     /// The link around the selection, or the selection itself.
-    pub fn at(text: &str, selection: Range<usize>) -> Self {
+    pub(crate) fn at(text: &str, selection: Range<usize>) -> Self {
         match link_at(text, selection.start) {
             Some((range, label, address)) if selection.end <= range.end => Self {
                 range,
@@ -40,7 +40,7 @@ impl Linking {
     }
 
     /// The link written in markdown for `address`; with no words of its own it reads as its address.
-    pub fn written(&self, address: &str) -> String {
+    pub(crate) fn written(&self, address: &str) -> String {
         let label = if self.label.is_empty() {
             address
         } else {

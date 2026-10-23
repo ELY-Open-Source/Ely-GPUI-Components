@@ -17,6 +17,7 @@ pub(crate) enum Mark {
 
 /// What a mark paints with: a series' palette color, a rise or a fall, or the chart's own ink.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[doc(hidden)]
 pub enum Ink {
     Series(usize),
     Rise,
@@ -32,6 +33,7 @@ pub(crate) type Place = (f32, f32);
 
 /// A rectangle in a box's own pixels: left, top, width, height.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[doc(hidden)]
 pub struct Rect {
     pub x: f32,
     pub y: f32,
@@ -40,6 +42,7 @@ pub struct Rect {
 }
 
 impl Rect {
+    #[doc(hidden)]
     pub fn contains(&self, (x, y): (f32, f32)) -> bool {
         x >= self.x && x <= self.x + self.w && y >= self.y && y <= self.y + self.h
     }
@@ -47,6 +50,7 @@ impl Rect {
 
 /// A run of points drawn as a line, filled down to its floor when it is an area.
 #[derive(Clone, Debug, PartialEq)]
+#[doc(hidden)]
 pub struct Line {
     pub ink: Ink,
     pub points: Vec<(f32, f32)>,
@@ -55,6 +59,7 @@ pub struct Line {
 
 /// A dot, and the index its tooltip reads.
 #[derive(Clone, Copy, Debug, PartialEq)]
+#[doc(hidden)]
 pub struct Dot {
     pub ink: Ink,
     pub center: (f32, f32),
@@ -64,6 +69,7 @@ pub struct Dot {
 
 /// What a chart draws, in its box's own pixels, for the canvas and for SVG alike.
 #[derive(Clone, Debug, Default, PartialEq)]
+#[doc(hidden)]
 pub struct Geometry {
     /// Value ticks: where each sits along the value axis, and its value.
     pub ticks: Vec<(f32, f64)>,

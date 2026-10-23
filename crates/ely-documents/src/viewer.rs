@@ -51,6 +51,7 @@ type OnNote = Rc<dyn Fn(usize, Point<f32>, &mut Window, &mut App)>;
 type OnZoom = Rc<dyn Fn(f32, &mut Window, &mut App)>;
 
 /// The zoom step past `zoom` in `direction`, when there is one.
+#[doc(hidden)]
 pub fn step(zoom: f32, up: bool) -> Option<f32> {
     if up {
         STEPS.into_iter().find(|step| *step > zoom + f32::EPSILON)

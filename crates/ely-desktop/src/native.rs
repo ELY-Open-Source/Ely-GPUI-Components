@@ -23,10 +23,10 @@ type Inner = none::Tray;
 /// Elsewhere (the web): no tray.
 #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
 mod none {
-    pub struct Tray;
+    pub(crate) struct Tray;
 
     impl Tray {
-        pub fn new(
+        pub(crate) fn new(
             _: &super::Look,
             _: Vec<super::TrayItem>,
             _: super::Route,
@@ -35,7 +35,7 @@ mod none {
             anyhow::bail!("tray icons need macOS, Windows or Linux")
         }
 
-        pub fn pick(&self, _: usize) {}
+        pub(crate) fn pick(&self, _: usize) {}
     }
 }
 

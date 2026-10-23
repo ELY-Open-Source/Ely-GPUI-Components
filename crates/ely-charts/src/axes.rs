@@ -45,6 +45,7 @@ pub(crate) fn beside(y: f32, gutter: Pixels, label: Div) -> Div {
 }
 
 /// A tooltip beside a place, centered on it, to its right or, flipped, to its left.
+#[doc(hidden)]
 pub fn anchored((x, y): (f32, f32), flip: bool, card: impl IntoElement) -> Div {
     let card = div()
         .flex_none()

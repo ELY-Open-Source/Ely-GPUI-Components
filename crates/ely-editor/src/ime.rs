@@ -131,6 +131,7 @@ impl CodeEditor {
         to_utf16(text, range.start)..to_utf16(text, range.end)
     }
 
+    #[doc(hidden)]
     pub fn byte_range(&self, range: &Range<usize>) -> Range<usize> {
         let text = self.buffer.text();
         from_utf16(text, range.start)..from_utf16(text, range.end)

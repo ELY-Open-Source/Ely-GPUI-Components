@@ -8,7 +8,7 @@ pub(crate) struct Heat {
 }
 
 impl Heat {
-    pub fn at(&self, column: usize, row: usize) -> f32 {
+    pub(crate) fn at(&self, column: usize, row: usize) -> f32 {
         self.values[row * self.columns + column]
     }
 }

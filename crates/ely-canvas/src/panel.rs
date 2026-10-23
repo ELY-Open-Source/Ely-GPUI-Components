@@ -11,9 +11,11 @@ use crate::{
 };
 
 /// A panel's handler for its whole value.
+#[doc(hidden)]
 pub type OnEdit<V> = Rc<dyn Fn(V, &mut Window, &mut App)>;
 
 /// A handler that hands `on_change` a copy of `value` changed by `edit`.
+#[doc(hidden)]
 pub fn editing<V, T>(
     what: &'static str,
     value: &V,
@@ -43,6 +45,7 @@ pub(crate) fn pair(left: impl IntoElement, right: impl IntoElement) -> gpui::Div
 }
 
 /// A quiet line naming what follows.
+#[doc(hidden)]
 pub fn caption(text: impl Into<SharedString>, cx: &App) -> gpui::Div {
     let theme = cx.theme();
     div()
@@ -74,6 +77,7 @@ pub(crate) fn heading(
 }
 
 /// A swatch that opens a color picker.
+#[doc(hidden)]
 pub fn color_well(
     id: ElementId,
     color: Hsla,

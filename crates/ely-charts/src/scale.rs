@@ -3,12 +3,14 @@ const FAR: f64 = 1e4;
 
 /// A linear map from a domain of values onto a range of pixels.
 #[derive(Clone, Copy, Debug, PartialEq)]
+#[doc(hidden)]
 pub struct Linear {
     pub domain: (f64, f64),
     pub range: (f32, f32),
 }
 
 impl Linear {
+    #[doc(hidden)]
     pub fn new(domain: (f64, f64), range: (f32, f32)) -> Self {
         assert!(
             domain.0.is_finite() && domain.1.is_finite(),
@@ -18,6 +20,7 @@ impl Linear {
     }
 
     /// The value at pixel `at`; a flat range reads the middle of the domain.
+    #[doc(hidden)]
     pub fn value(&self, at: f32) -> f64 {
         let span = self.range.1 - self.range.0;
         let share = if span == 0.0 {
@@ -30,6 +33,7 @@ impl Linear {
     }
 
     /// Where `value` lands; a flat domain lands in the middle. Halves keep wide domains finite.
+    #[doc(hidden)]
     pub fn at(&self, value: f64) -> f32 {
         let (low, high) = (self.domain.0 / 2.0, self.domain.1 / 2.0);
         let share = if high == low {
@@ -42,6 +46,7 @@ impl Linear {
 }
 
 /// A round step near `span / count`: 1, 2 or 5 times a power of ten.
+#[doc(hidden)]
 pub fn nice_step(span: f64, count: usize) -> f64 {
     let raw = span / count.max(1) as f64;
     if raw <= 0.0 || !raw.is_finite() {
@@ -67,6 +72,7 @@ pub fn nice_step(span: f64, count: usize) -> f64 {
 }
 
 /// A domain widened to round steps that hold `low..=high`, and the ticks along it.
+#[doc(hidden)]
 pub fn nice(low: f64, high: f64, count: usize) -> ((f64, f64), Vec<f64>) {
     let (low, high) = (low.min(high), low.max(high));
     let (low, high) = if high - low <= high.abs().max(low.abs()) * 1e-12 {
@@ -87,6 +93,7 @@ pub fn nice(low: f64, high: f64, count: usize) -> ((f64, f64), Vec<f64>) {
 }
 
 /// Numbers as a chart reads them: thousands as k, millions as M, billions as B, to two places at most.
+#[doc(hidden)]
 pub fn compact(value: f64) -> String {
     let (scaled, unit) = match value.abs() {
         size if size >= 1e9 => (value / 1e9, "B"),

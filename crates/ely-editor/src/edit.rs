@@ -330,6 +330,7 @@ impl CodeEditor {
         self.shift_lines(edits, kept, cx);
     }
 
+    #[doc(hidden)]
     pub fn undo(&mut self, cx: &mut Context<Self>) {
         if !self.editable() {
             return;
@@ -340,6 +341,7 @@ impl CodeEditor {
         }
     }
 
+    #[doc(hidden)]
     pub fn redo(&mut self, cx: &mut Context<Self>) {
         if !self.editable() {
             return;
@@ -409,9 +411,7 @@ impl CodeEditor {
         };
         self.apply(edits, false, cx);
     }
-}
 
-impl CodeEditor {
     /// The selections from the top of the text down; the primary one is otherwise last.
     fn in_order(&self) -> Vec<Selection> {
         let mut all = self.selections.clone();

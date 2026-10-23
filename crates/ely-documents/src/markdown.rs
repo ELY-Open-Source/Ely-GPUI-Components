@@ -42,7 +42,7 @@ pub(crate) fn span(node: &mdast::Node) -> Range<usize> {
 
 /// How a stretch of markdown prints while it is edited.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Mark {
+pub(crate) enum Mark {
     Strong,
     Emphasis,
     Strike,
@@ -81,7 +81,7 @@ pub(crate) fn walk<'a>(node: &'a mdast::Node, out: &mut Vec<&'a mdast::Node>) {
 }
 
 /// The marks over `text`, with the syntax writing each.
-pub fn marks(text: &str) -> Vec<(Range<usize>, Mark)> {
+pub(crate) fn marks(text: &str) -> Vec<(Range<usize>, Mark)> {
     let root = file_tree(text);
     let mut nodes = Vec::new();
     walk(&root, &mut nodes);
@@ -191,7 +191,7 @@ pub fn markdown_highlights(text: &str, cx: &App) -> Vec<(Range<usize>, Highlight
 }
 
 /// The `[text](address)` link around byte `at`, if any.
-pub fn link_at(text: &str, at: usize) -> Option<(Range<usize>, String, String)> {
+pub(crate) fn link_at(text: &str, at: usize) -> Option<(Range<usize>, String, String)> {
     let root = tree(text);
     let mut nodes = Vec::new();
     walk(&root, &mut nodes);
@@ -210,7 +210,7 @@ pub fn link_at(text: &str, at: usize) -> Option<(Range<usize>, String, String)> 
 }
 
 /// Top-level blocks as source ranges; definitions excluded.
-pub fn block_ranges(text: &str) -> Vec<Range<usize>> {
+pub(crate) fn block_ranges(text: &str) -> Vec<Range<usize>> {
     let root = tree(text);
     root.children()
         .expect("the root holds the blocks")
@@ -225,7 +225,7 @@ pub fn block_ranges(text: &str) -> Vec<Range<usize>> {
 }
 
 /// Words in `text`; each ideograph counts as one.
-pub fn words(text: &str) -> usize {
+pub(crate) fn words(text: &str) -> usize {
     text.unicode_words().count()
 }
 
@@ -233,7 +233,7 @@ pub fn words(text: &str) -> usize {
 const PACE: usize = 238;
 
 /// Minutes to read `words`; at least one if any.
-pub fn reading_minutes(words: usize) -> usize {
+pub(crate) fn reading_minutes(words: usize) -> usize {
     words.div_ceil(PACE)
 }
 

@@ -60,6 +60,7 @@ unicode-segmentation = "1"
 web-time = "1.1"
 
 [workspace.lints.rust]
+unreachable_pub = "warn"
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("cargo-clippy"))'] }
 
 [workspace.lints.clippy]

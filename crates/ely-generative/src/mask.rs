@@ -113,7 +113,7 @@ pub(crate) fn spans(cells: &[bool], columns: usize) -> Vec<(usize, usize, usize,
 type OnStroke = Rc<dyn Fn(MaskStroke, &mut Window, &mut App)>;
 pub(crate) type OnBrush = Rc<dyn Fn(f32, bool, &mut Window, &mut App)>;
 
-/// A picture to repaint in part: the brush masks where it passes and an erasing brush clears, the mask a wash over the picture. A ring follows the pointer at the brush's size. Focused, [ and ] size the brush and X swaps painting for erasing.
+/// A picture to repaint in part: the brush masks where it passes and an erasing brush clears, the mask a wash over the picture. A ring follows the pointer at the brush's size. Focused, `[` and `]` size the brush and X swaps painting for erasing.
 #[derive(IntoElement)]
 pub struct InpaintCanvas {
     id: ElementId,

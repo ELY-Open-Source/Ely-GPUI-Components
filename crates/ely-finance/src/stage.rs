@@ -7,7 +7,7 @@ const CLOSEST: f64 = 10.0;
 
 /// The candles a chart shows: from a first index, which may sit between candles while panning, across `count` of them.
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Visible {
+pub(crate) struct Visible {
     pub(crate) start: f64,
     pub(crate) count: f64,
 }

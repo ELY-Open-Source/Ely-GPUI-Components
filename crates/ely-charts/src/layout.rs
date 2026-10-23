@@ -1,6 +1,7 @@
 use super::geometry::Rect;
 
 /// Rectangles for values inside `frame`, laid in rows that keep each close to square (Bruls, Huizing and van Wijk); values in the order given, larger first reads best.
+#[doc(hidden)]
 pub fn squarify(values: &[f64], frame: Rect) -> Vec<Rect> {
     let total: f64 = values.iter().filter(|value| **value > 0.0).sum();
     let mut out = vec![Rect::default(); values.len()];

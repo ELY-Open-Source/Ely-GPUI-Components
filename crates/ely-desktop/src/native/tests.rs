@@ -131,7 +131,7 @@ mod host {
         children: Vec<OwnedValue>,
     }
 
-    pub struct Host {
+    pub(crate) struct Host {
         connection: Connection,
         items: Arc<Mutex<Vec<String>>>,
     }
@@ -145,7 +145,7 @@ mod host {
         }
     }
 
-    pub async fn serve() -> Host {
+    pub(crate) async fn serve() -> Host {
         let items = Arc::new(Mutex::new(Vec::new()));
         let connection = zbus::connection::Builder::session()
             .expect("a bus")
@@ -169,7 +169,7 @@ mod host {
     }
 
     /// Each item's one property, and the icon.
-    pub async fn inspect(host: &Host) -> (Vec<String>, (i32, i32, Vec<u8>)) {
+    pub(crate) async fn inspect(host: &Host) -> (Vec<String>, (i32, i32, Vec<u8>)) {
         let name = item(host);
         let menu = Proxy::new(
             &host.connection,
@@ -208,7 +208,7 @@ mod host {
     }
 
     /// `Event` clicks menu node `id`; `Activate` clicks the icon.
-    pub async fn click(host: &Host, method: &str, id: i32) {
+    pub(crate) async fn click(host: &Host, method: &str, id: i32) {
         let name = item(host);
         match method {
             "Event" => {
