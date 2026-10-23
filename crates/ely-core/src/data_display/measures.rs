@@ -40,6 +40,7 @@ fn tones(colors: &Palette) -> [Hsla; 3] {
 }
 
 /// A share's color against its limits: plain, amber past the first, red past the second.
+#[doc(hidden)]
 pub fn tone(share: f32, limits: (f32, f32), colors: &Palette) -> Hsla {
     tones(colors)[Level::of(share, thresholds(limits.0, limits.1)) as usize]
 }

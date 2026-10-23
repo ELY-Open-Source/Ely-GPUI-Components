@@ -166,6 +166,7 @@ fn dropped_overlay(window: &Window, cx: &mut App) -> Option<FocusHandle> {
 }
 
 /// Focus an overlay holds while open, and what it held before.
+#[doc(hidden)]
 pub struct Takeover {
     pub focus: FocusHandle,
     previous: Option<FocusHandle>,
@@ -175,6 +176,7 @@ pub struct Takeover {
 }
 
 /// Keyed focus for an overlay; focused on its first render, and again whenever the focused element leaves the tree.
+#[doc(hidden)]
 pub fn take_focus(
     key: impl Into<gpui::ElementId>,
     window: &mut Window,
@@ -211,6 +213,7 @@ pub fn take_focus(
 }
 
 /// Whether an open overlay holds the window's focus.
+#[doc(hidden)]
 pub fn lent(window: &Window, cx: &App) -> bool {
     cx.try_global::<Holders>().is_some_and(|holders| {
         (holders.0.iter())
@@ -219,6 +222,7 @@ pub fn lent(window: &Window, cx: &App) -> bool {
 }
 
 /// Returns focus to whatever held it before the overlay opened.
+#[doc(hidden)]
 pub fn give_back(state: &Entity<Takeover>, window: &mut Window, cx: &mut App) {
     let closed = state.downgrade();
     cx.default_global::<Holders>()
@@ -238,6 +242,7 @@ pub fn give_back(state: &Entity<Takeover>, window: &mut Window, cx: &mut App) {
 }
 
 /// A mode's own focus, where focus was before the mode took it, and whether the mode was on last frame.
+#[doc(hidden)]
 pub struct Held {
     pub focus: FocusHandle,
     previous: Option<FocusHandle>,
@@ -245,6 +250,7 @@ pub struct Held {
 }
 
 /// The focus a mode keyed `key` holds: turned on while focus is elsewhere, it takes focus so Escape reaches it.
+#[doc(hidden)]
 pub fn hold_focus(
     key: impl Into<ElementId>,
     on: bool,
@@ -270,6 +276,7 @@ pub fn hold_focus(
 }
 
 /// Hands focus back to where it was before the mode took it.
+#[doc(hidden)]
 pub fn hand_back(held: &Entity<Held>, window: &mut Window, cx: &mut App) {
     if let Some(previous) = held.update(cx, |held, _| held.previous.take()) {
         log::info!("focus: handed back after a mode");
@@ -278,6 +285,7 @@ pub fn hand_back(held: &Entity<Held>, window: &mut Window, cx: &mut App) {
 }
 
 /// A focus handle kept for `id`, a Tab stop while enabled.
+#[doc(hidden)]
 pub fn tab_stop(id: ElementId, enabled: bool, window: &mut Window, cx: &mut App) -> FocusHandle {
     window
         .use_keyed_state(id, cx, |_, cx| cx.focus_handle())

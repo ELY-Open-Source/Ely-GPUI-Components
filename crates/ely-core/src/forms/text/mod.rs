@@ -12,10 +12,11 @@ use gpui::{
     Subscription, Task, Window, WrappedLine,
 };
 
+#[doc(hidden)]
 pub use actions::{
-    Backspace, Copy, Cut, Delete, DeleteWordLeft, Down, Enter, Paste, Redo, SelectAll, Submit,
-    Undo, Up, bind_keys,
+    Backspace, Delete, DeleteWordLeft, Down, Enter, Redo, Submit, Undo, Up, bind_keys,
 };
+pub use actions::{Copy, Cut, Paste, SelectAll};
 pub(crate) use actions::{Left, Right};
 use edit::Snapshot;
 pub use edit::{History, from_utf16, to_utf16};
@@ -187,6 +188,7 @@ impl TextInput {
     }
 
     /// The text as committed: while an input method composes, the text before it began.
+    #[doc(hidden)]
     pub fn committed(&self) -> &str {
         self.composing
             .as_ref()
@@ -273,6 +275,7 @@ impl TextInput {
     }
 
     /// Reshapes every edit, as a mask does: text, replaced range and typed text in; text and caret out. Undo starts afresh, since earlier text need not fit.
+    #[doc(hidden)]
     pub fn set_fit(&mut self, fit: Fit) {
         self.fit = Some(fit);
         self.history = History::default();
@@ -313,11 +316,13 @@ impl TextInput {
     }
 
     /// The selection the last edit replaced, for an owner's undo to go back to.
+    #[doc(hidden)]
     pub fn edited_from(&self) -> Range<usize> {
         self.edited_from.clone()
     }
 
     /// How many edits it took, and whether an input method is composing.
+    #[doc(hidden)]
     pub fn edits(&self) -> (u64, bool) {
         (self.edits, self.marked.is_some())
     }
@@ -467,6 +472,7 @@ impl TextInput {
         }
     }
 
+    #[doc(hidden)]
     pub fn highlights(&self, cx: &App) -> Vec<(Range<usize>, Highlight)> {
         match (&self.highlighter, self.masked) {
             (Some(highlight), false) => highlight(&self.text, cx),
@@ -486,6 +492,7 @@ impl TextInput {
         self.caret_on
     }
 
+    #[doc(hidden)]
     pub fn focus(&self) -> &FocusHandle {
         &self.focus
     }

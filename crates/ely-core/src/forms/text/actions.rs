@@ -49,6 +49,7 @@ actions!(
 const CONTEXT: &str = "ElyInput";
 
 /// Binds the text keys. `init` calls it.
+#[doc(hidden)]
 pub fn bind_keys(cx: &mut App) {
     let word = if cfg!(target_os = "macos") {
         "alt"

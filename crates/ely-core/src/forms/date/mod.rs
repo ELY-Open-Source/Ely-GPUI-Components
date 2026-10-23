@@ -66,6 +66,7 @@ pub(crate) fn show_time(time: Time) -> String {
 }
 
 /// A span as "Sep 3 – 17, 2026", naming only what differs.
+#[doc(hidden)]
 pub fn show_span(start: Date, end: Date, cx: &App) -> String {
     let day = end.day().to_string();
     if start == end {

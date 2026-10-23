@@ -1,11 +1,13 @@
 use gpui::{App, ElementId, Entity, Window};
 
 /// Local state that restarts from its seed whenever the owner passes a new one.
+#[doc(hidden)]
 pub struct Seeded<T> {
     seed: T,
     pub value: T,
 }
 
+#[doc(hidden)]
 pub fn use_seeded<T: Clone + PartialEq + 'static>(
     id: impl Into<ElementId>,
     seed: T,

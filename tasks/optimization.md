@@ -46,7 +46,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 ## C. Public API
 
-- [ ] C1 O-09 Public surface audit, core: non-essential items to `pub(crate)`.
+- [x] C1 O-09 Public surface audit, core: non-essential items to `pub(crate)`.
 - [ ] C2 O-09 Public surface audit, verticals.
 - [ ] C3 O-11 Capability traits (size, disabled, selected, value change) after GPUI Kit's `Sizable`, `Disableable`, `Selectable`; every component with the capability implements them; a generic test compiles.
 - [ ] C4 O-12 Container list in the repo; every listed component implements `ParentElement`; a test reads the list.

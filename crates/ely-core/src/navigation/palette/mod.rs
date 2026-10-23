@@ -23,6 +23,7 @@ pub use launcher::QuickLauncher;
 
 /// How well a query fits a text, and the byte ranges it covers.
 #[derive(Debug, PartialEq)]
+#[doc(hidden)]
 pub struct Fit {
     pub score: i32,
     pub hits: Vec<Range<usize>>,
@@ -35,6 +36,7 @@ fn fold(c: char) -> char {
 }
 
 /// The query's characters in order within `text`, ignoring case and spaces. Word starts and runs score higher, gaps lower.
+#[doc(hidden)]
 pub fn fuzzy(query: &str, text: &str) -> Option<Fit> {
     let query: Vec<char> = query
         .chars()
@@ -88,6 +90,7 @@ pub fn fuzzy(query: &str, text: &str) -> Option<Fit> {
 }
 
 /// `text` with the letters a query matched drawn in the accent color.
+#[doc(hidden)]
 pub fn marked(text: SharedString, hits: Vec<Range<usize>>, cx: &App) -> AnyElement {
     let mark = HighlightStyle {
         color: Some(cx.theme().colors.accent),
@@ -100,6 +103,7 @@ pub fn marked(text: SharedString, hits: Vec<Range<usize>>, cx: &App) -> AnyEleme
 }
 
 /// One result: the value a pick hands back, then what the row shows.
+#[doc(hidden)]
 pub struct Row {
     pub value: SharedString,
     /// The row's plain name, for assistive technology.
@@ -111,6 +115,7 @@ pub struct Row {
 }
 
 /// Rows under an optional heading.
+#[doc(hidden)]
 pub struct Group {
     pub title: Option<SharedString>,
     pub rows: Vec<Row>,
@@ -125,6 +130,7 @@ struct Cursor {
 }
 
 /// The query field kept for palette `id`.
+#[doc(hidden)]
 pub fn query_field(
     id: &ElementId,
     placeholder: SharedString,
@@ -137,6 +143,7 @@ pub fn query_field(
 }
 
 /// A query field over grouped rows. Arrows move, Enter or a click picks, Escape closes.
+#[doc(hidden)]
 pub struct Palette {
     pub id: ElementId,
     pub input: Entity<TextInput>,
@@ -151,6 +158,7 @@ pub struct Palette {
 
 impl Palette {
     /// Over a scrim; a click on it closes. Tab stays inside, and focus returns on every close.
+    #[doc(hidden)]
     pub fn overlay(mut self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let takeover = take_focus((self.id.clone(), "takeover"), window, cx);
         let scope = takeover.read(cx).focus.clone();

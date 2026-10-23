@@ -2,6 +2,7 @@
 
 /// A language's comments, keywords and constants.
 #[derive(Debug, PartialEq, Eq)]
+#[doc(hidden)]
 pub struct Syntax {
     /// The mark that opens a line comment.
     pub comment: &'static str,
@@ -143,6 +144,7 @@ const BY_EXTENSION: &[(&Syntax, &[&str])] = &[
 ];
 
 /// How code fenced as `name` reads; none for prose.
+#[doc(hidden)]
 pub fn syntax_fenced(name: &str) -> Option<&'static Syntax> {
     let name = name.to_ascii_lowercase();
     let extension = match name.as_str() {
@@ -163,6 +165,7 @@ pub fn syntax_fenced(name: &str) -> Option<&'static Syntax> {
 }
 
 /// How the file at `path` reads; none for prose.
+#[doc(hidden)]
 pub fn syntax_of(path: &str) -> Option<&'static Syntax> {
     let name = path.rsplit_once('/').map_or(path, |(_, name)| name);
     // Named files first: CMakeLists.txt is not prose.

@@ -15,11 +15,13 @@ use crate::theme::ActiveTheme;
 const SHOWN: usize = 6;
 
 /// A character of a one-word handle.
+#[doc(hidden)]
 pub fn one_word(ch: char) -> bool {
     ch.is_alphanumeric() || ch == '_'
 }
 
 /// The trigger that opens the word ending at `caret`, its query all `word` characters: its byte offset and char.
+#[doc(hidden)]
 pub fn active_trigger(
     text: &str,
     caret: usize,
@@ -38,6 +40,7 @@ pub fn active_trigger(
 }
 
 /// Replaces the trigger and its query, `at..caret`, with `text`, as one undo step.
+#[doc(hidden)]
 pub fn replace_trigger(
     field: &Entity<TextInput>,
     at: usize,
@@ -125,6 +128,7 @@ fn move_cursor(picking: &Entity<Picking>, rows: &[Choice], by: isize, cx: &mut A
 }
 
 /// Rows offered at a trigger in a field's text, and what a pick does: arrows choose past disabled rows, the cursor stays in view, Enter or a press picks, Escape dismisses until the trigger ends.
+#[doc(hidden)]
 pub struct Suggestions {
     pub id: ElementId,
     pub state: Entity<TextInput>,
@@ -264,6 +268,7 @@ impl MentionInput {
 }
 
 /// The handles after `trigger` that hold the typed query, a few at most.
+#[doc(hidden)]
 pub fn handles_matching(handles: &[SharedString], query: &str) -> Vec<SharedString> {
     let query = query.to_lowercase();
     handles

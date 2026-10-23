@@ -27,6 +27,7 @@ const RING: Duration = Duration::from_millis(1_600);
 const PACE: f32 = 40.0;
 
 /// How far into its effect a change is, 0 to 1, and whether it still moves; it asks for the next frame while it does.
+#[doc(hidden)]
 pub fn since_change<K: Clone + PartialEq + 'static>(
     id: &ElementId,
     key: K,

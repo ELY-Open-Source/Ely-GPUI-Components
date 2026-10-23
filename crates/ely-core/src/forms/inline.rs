@@ -17,6 +17,7 @@ pub(crate) type OnCommit = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 
 /// A text being edited in place: its field while open, who hears the kept text, and where focus goes back after Enter or Escape. An edit that hands focus back keeps its text on Enter's release, so the release does not open it again.
 #[derive(Default)]
+#[doc(hidden)]
 pub struct Editing {
     field: Option<(Entity<TextInput>, Subscription)>,
     pub on_commit: Option<OnCommit>,
@@ -25,6 +26,7 @@ pub struct Editing {
 
 impl Editing {
     /// Opens a field on `value`, all of it selected and focused; Enter or leaving keeps it.
+    #[doc(hidden)]
     pub fn begin(state: &Entity<Editing>, value: String, window: &mut Window, cx: &mut App) {
         let field = cx.new(|cx| {
             let mut input = TextInput::new(window, cx);
@@ -54,10 +56,12 @@ impl Editing {
     }
 
     /// Focus goes back here after Enter or Escape.
+    #[doc(hidden)]
     pub fn returning(&mut self, back: FocusHandle) {
         self.back = Some(back);
     }
 
+    #[doc(hidden)]
     pub fn give_back(&mut self, window: &mut Window, cx: &mut App) {
         if let Some(back) = self.back.take() {
             log::info!("inline edit: focus handed back");
@@ -65,11 +69,13 @@ impl Editing {
         }
     }
 
+    #[doc(hidden)]
     pub fn field(&self) -> Option<Entity<TextInput>> {
         self.field.as_ref().map(|(field, _)| field.clone())
     }
 
     /// Ends editing; keeps the text unless `cancel`.
+    #[doc(hidden)]
     pub fn finish(&mut self, cancel: bool, window: &mut Window, cx: &mut Context<Self>) {
         let Some((field, _)) = self.field.take() else {
             return;

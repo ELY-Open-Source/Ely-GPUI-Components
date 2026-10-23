@@ -187,6 +187,7 @@ pub fn took(spent: std::time::Duration) -> String {
 const DIGITS: usize = 6;
 
 /// Places after the point that show every multiple of `step` exactly: none for whole steps, four for 0.0025.
+#[doc(hidden)]
 pub fn decimals(step: f64) -> usize {
     assert!(
         step.is_finite() && step > 0.0,
@@ -244,6 +245,7 @@ pub(crate) fn span(then: Timestamp, now: Timestamp) -> Option<(u64, &'static str
 }
 
 /// The system's zone; an unknown one logs once, naming `user`, and reads as jiff's unknown zone.
+#[doc(hidden)]
 pub fn system_zone(user: &str) -> TimeZone {
     TimeZone::try_system().unwrap_or_else(|error| {
         static TOLD: AtomicBool = AtomicBool::new(false);

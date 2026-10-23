@@ -22,6 +22,7 @@ use crate::{
 type OnPaths = Rc<dyn Fn(Vec<PathBuf>, &mut Window, &mut App)>;
 
 /// The files a drop brings, or why it is refused.
+#[doc(hidden)]
 pub fn dropped(paths: &[PathBuf], multiple: bool) -> Result<Vec<PathBuf>, &'static str> {
     if paths.is_empty() {
         return Err("nothing was dropped");
@@ -61,6 +62,7 @@ pub(crate) fn taken(
 }
 
 /// Opens the file dialog; what it brings goes to `then` once `taken` lets it through.
+#[doc(hidden)]
 pub fn browse(
     what: SharedString,
     multiple: bool,

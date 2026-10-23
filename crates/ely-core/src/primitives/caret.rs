@@ -10,6 +10,7 @@ pub(crate) fn caret_width(width: Pixels, scale: f32) -> Pixels {
 }
 
 /// A caret bar at `origin`, `width` wide, snapped whole to device pixels so it keeps one width.
+#[doc(hidden)]
 pub fn caret_bar(
     origin: Point<Pixels>,
     width: Pixels,

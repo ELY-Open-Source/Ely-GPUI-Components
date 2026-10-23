@@ -66,6 +66,7 @@ impl Hsva {
 }
 
 /// Reads `#rgb`, `#rgba`, `#rrggbb` or `#rrggbbaa`, with or without the hash.
+#[doc(hidden)]
 pub fn parse_hex(text: &str) -> Result<Rgba, String> {
     let digits = text.trim().trim_start_matches('#');
     if !digits.bytes().all(|byte| byte.is_ascii_hexdigit()) {
@@ -91,6 +92,7 @@ pub fn parse_hex(text: &str) -> Result<Rgba, String> {
 }
 
 /// `#rrggbb`, with alpha appended when it is not opaque.
+#[doc(hidden)]
 pub fn hex(rgba: Rgba) -> String {
     let byte = |value: f32| (value.clamp(0.0, 1.0) * 255.0).round() as u8;
     let base = format!(

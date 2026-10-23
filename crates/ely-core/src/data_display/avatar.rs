@@ -206,6 +206,7 @@ impl RenderOnce for Avatar {
 }
 
 /// An avatar's slot in a row, tucked under the one before unless `first`.
+#[doc(hidden)]
 pub fn tucked(first: bool, size: AvatarSize) -> Div {
     match (first, size) {
         (true, _) => div(),
@@ -216,6 +217,7 @@ pub fn tucked(first: bool, size: AvatarSize) -> Div {
 }
 
 /// The count that stands for `rest` people past the ones shown.
+#[doc(hidden)]
 pub fn more(rest: usize, size: AvatarSize, cx: &App) -> Div {
     let theme = cx.theme();
     div()

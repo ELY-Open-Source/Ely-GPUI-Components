@@ -23,6 +23,7 @@ impl Render for Narrow {
 }
 
 /// The width of `selector` in that column; a root that fills it takes all 240px.
+#[doc(hidden)]
 pub fn narrow_width(
     cx: &mut TestAppContext,
     selector: &'static str,

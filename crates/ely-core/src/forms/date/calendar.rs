@@ -18,11 +18,13 @@ use crate::{
 };
 
 /// Monday of `date`'s week.
+#[doc(hidden)]
 pub fn week_start(date: Date) -> Date {
     date.saturating_sub(i64::from(date.weekday().to_monday_zero_offset()).days())
 }
 
 /// The 42 days shown for `month`: six weeks, Monday first.
+#[doc(hidden)]
 pub fn month_grid(month: Date) -> Vec<Date> {
     let start = week_start(month.first_of_month());
     (0..42)

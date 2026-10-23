@@ -25,6 +25,7 @@ pub enum GitStatus {
 }
 
 impl GitStatus {
+    #[doc(hidden)]
     pub fn word(self) -> &'static str {
         match self {
             Self::Modified => "Modified",
@@ -36,6 +37,7 @@ impl GitStatus {
         }
     }
 
+    #[doc(hidden)]
     pub fn letter(self) -> &'static str {
         match self {
             Self::Modified => "M",
@@ -47,6 +49,7 @@ impl GitStatus {
         }
     }
 
+    #[doc(hidden)]
     pub fn tone(self) -> Tone {
         match self {
             Self::Modified => Tone::Warning,
@@ -59,6 +62,7 @@ impl GitStatus {
 
 /// A folder of the tree being built: its folders and its files, each by name.
 #[derive(Default)]
+#[doc(hidden)]
 pub struct Folder {
     pub folders: BTreeMap<String, Folder>,
     pub files: Vec<String>,
@@ -66,6 +70,7 @@ pub struct Folder {
 
 impl Folder {
     /// Paths with `/` between folders, gathered into the folders that hold them.
+    #[doc(hidden)]
     pub fn of<'a>(paths: impl IntoIterator<Item = &'a str>) -> Self {
         let mut root = Folder::default();
         for path in paths {

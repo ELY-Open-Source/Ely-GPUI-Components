@@ -17,12 +17,14 @@ use crate::{
 
 /// A row of a glyph grid: a group's title, or a run of glyphs.
 #[derive(Clone, Debug, PartialEq)]
+#[doc(hidden)]
 pub enum Row {
     Title(SharedString),
     Glyphs(Range<usize>),
 }
 
 /// Rows for glyph groups given as (title, count), laid in order, `columns` across.
+#[doc(hidden)]
 pub fn rows(
     groups: impl IntoIterator<Item = (Option<SharedString>, usize)>,
     columns: usize,
@@ -75,6 +77,7 @@ pub(crate) fn stepped(rows: &[Row], at: usize, key: &str) -> Option<usize> {
 }
 
 /// A grid's search field, its cursor, and where its list has scrolled.
+#[doc(hidden)]
 pub struct Finder {
     search: Entity<TextInput>,
     pub query: String,
@@ -82,6 +85,7 @@ pub struct Finder {
     scroll: UniformListScrollHandle,
 }
 
+#[doc(hidden)]
 pub fn finder(
     id: &ElementId,
     hint: &'static str,
@@ -116,6 +120,7 @@ pub(crate) type Pick = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 pub(crate) type Draw = Rc<dyn Fn(usize, &App) -> AnyElement>;
 
 /// What a glyph grid shows: names for tooltips, rows, a painter, what a pick does, and its cells.
+#[doc(hidden)]
 pub struct Grid {
     pub id: ElementId,
     pub names: Rc<Vec<SharedString>>,
@@ -128,6 +133,7 @@ pub struct Grid {
     pub cell: Rems,
 }
 
+#[doc(hidden)]
 pub fn grid(grid: Grid, finder: &Entity<Finder>, window: &mut Window, cx: &mut App) -> AnyElement {
     let focus = tab_stop((grid.id.clone(), "grid").into(), true, window, cx);
     let focused = focus.is_focused(window);

@@ -28,6 +28,7 @@ type OnSpan = Rc<dyn Fn((Date, Date), &mut Window, &mut App)>;
 pub(crate) const CALENDAR_ROWS: usize = 9;
 
 /// A picker's open popup: where it hangs, and the focus its content takes.
+#[doc(hidden)]
 pub struct Dropdown {
     pub open: bool,
     pub anchor: Bounds<Pixels>,
@@ -36,6 +37,7 @@ pub struct Dropdown {
     pub preview: Option<Date>,
 }
 
+#[doc(hidden)]
 pub fn dropdown(id: &ElementId, window: &mut Window, cx: &mut App) -> Entity<Dropdown> {
     window.use_keyed_state((id.clone(), "dropdown"), cx, |_, cx| Dropdown {
         open: false,
@@ -65,6 +67,7 @@ pub(crate) fn toggle(
 }
 
 /// What a picker field shows while closed, and how it sits.
+#[doc(hidden)]
 pub struct Face {
     pub icon: IconName,
     pub shown: Option<SharedString>,
@@ -74,6 +77,7 @@ pub struct Face {
 }
 
 /// The trigger of a date or time picker: an icon, the value, and the popup when open.
+#[doc(hidden)]
 pub fn picker_field(
     id: ElementId,
     face: Face,

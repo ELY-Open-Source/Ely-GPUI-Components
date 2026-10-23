@@ -424,3 +424,4 @@
 | T56 B10 | 1 | PASS | ely-core rechecks in 1.3 s after one edited line, 3.5-4.0 s non-incremental, 2 or 32 CPUs; the old crate 3.4-3.7 s and 11-13 s |
 | T56 B11 | 1 | FAIL | the Copy test folded the clipboard's CRLF but not a CRLF checkout's file |
 | T56 B11 | 2 | PASS | fixtures path, CI comment, docs e2e (GPUI Kit in the rail, CRLF folded); web gallery 23.1 MB; site e2e 45 passed |
+| T56 C1 | 1 | PASS | core's sibling-only items (135 and the text actions) hidden from the API; four unreachable methods pub(crate); unreachable_pub on core |

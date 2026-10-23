@@ -18,7 +18,7 @@ pub(crate) struct TextElement {
 }
 
 impl TextElement {
-    pub fn new(input: Entity<TextInput>) -> Self {
+    pub(crate) fn new(input: Entity<TextInput>) -> Self {
         Self { input }
     }
 }

@@ -197,6 +197,7 @@ impl RenderOnce for CountBadge {
 }
 
 /// A dot in `color` centered in an icon's box, as a label or an event wears its hue in a row.
+#[doc(hidden)]
 pub fn color_mark(color: Hsla, cx: &App) -> gpui::Div {
     let theme = cx.theme();
     div()

@@ -75,6 +75,7 @@ impl TextInput {
     }
 
     /// The content offset nearest a window position.
+    #[doc(hidden)]
     pub fn offset_for_point(&self, point: Point<Pixels>) -> usize {
         let Some(layout) = self.layout.as_ref() else {
             return 0;

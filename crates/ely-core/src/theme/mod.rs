@@ -97,6 +97,7 @@ impl ActiveTheme for App {
 }
 
 impl Theme {
+    #[doc(hidden)]
     pub fn init(cx: &mut App) {
         cx.set_global(Theme {
             mode: Mode::Light,

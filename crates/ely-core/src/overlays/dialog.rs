@@ -82,12 +82,14 @@ impl Dialog {
     }
 
     /// Only its actions and Escape close it; a press on the scrim does not.
+    #[doc(hidden)]
     pub fn held(mut self) -> Self {
         self.scrim_closes = false;
         self
     }
 
     /// Where focus goes when it opens.
+    #[doc(hidden)]
     pub fn focus_first(mut self, handle: FocusHandle) -> Self {
         self.first = Some(handle);
         self

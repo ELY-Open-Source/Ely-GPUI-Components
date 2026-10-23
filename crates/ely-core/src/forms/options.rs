@@ -69,11 +69,17 @@ impl Choice {
     }
 }
 
+#[doc(hidden)]
 pub type Pick = Rc<dyn Fn(usize, &mut Window, &mut App)>;
+#[doc(hidden)]
 pub type Run = Rc<dyn Fn(&mut Window, &mut App)>;
+#[doc(hidden)]
 pub type OnFlag = Rc<dyn Fn(bool, &mut Window, &mut App)>;
+#[doc(hidden)]
 pub type OnNumber = Rc<dyn Fn(f64, &mut Window, &mut App)>;
+#[doc(hidden)]
 pub type OnValue = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
+#[doc(hidden)]
 pub type OnValues = Rc<dyn Fn(&[SharedString], &mut Window, &mut App)>;
 
 /// The next row from `from` that is not disabled, stepping by `by` and wrapping.
@@ -101,6 +107,7 @@ pub(crate) fn option_row(
 }
 
 /// An option row with `mark`, such as a label's color, before the label.
+#[doc(hidden)]
 pub fn marked_row(
     id: impl Into<ElementId>,
     choice: &Choice,
@@ -166,6 +173,7 @@ pub fn marked_row(
 }
 
 /// The card a floating list sits on.
+#[doc(hidden)]
 pub fn surface(id: impl Into<ElementId>, cx: &App) -> Stateful<Div> {
     let theme = cx.theme();
     let colors = &theme.colors;
@@ -180,6 +188,7 @@ pub fn surface(id: impl Into<ElementId>, cx: &App) -> Stateful<Div> {
 }
 
 /// Floats `content` of about `rows` rows under `anchor`, or over it when only above has room; `id` is its owner's.
+#[doc(hidden)]
 pub fn float(
     id: impl Into<ElementId>,
     anchor: Bounds<Pixels>,
@@ -202,6 +211,7 @@ pub(crate) fn opens_up(anchor: Bounds<Pixels>, height: Pixels, viewport: Pixels)
 }
 
 /// Floats `content` of a known `height` under `anchor`, or over it when only above has room; `id` is its owner's.
+#[doc(hidden)]
 pub fn float_height(
     id: impl Into<ElementId>,
     anchor: Bounds<Pixels>,
@@ -241,6 +251,7 @@ pub fn float_height(
 }
 
 /// Scrolls child `ix` of `handle`'s box into view once the box has its bounds, asks one more frame, then runs `done`. Put it inside the box.
+#[doc(hidden)]
 pub fn revealer(handle: &ScrollHandle, ix: usize, done: Run) -> impl IntoElement + use<> {
     let handle = handle.clone();
     canvas(
@@ -255,6 +266,7 @@ pub fn revealer(handle: &ScrollHandle, ix: usize, done: Run) -> impl IntoElement
 }
 
 /// The row a list scrolls into view: `at` while `shown` and not yet revealed there. A hidden list forgets.
+#[doc(hidden)]
 pub fn reveal<T: 'static>(
     state: &Entity<T>,
     revealed: fn(&mut T) -> &mut Option<usize>,
@@ -292,7 +304,7 @@ pub(crate) struct Popup<'a> {
 }
 
 impl Popup<'_> {
-    pub fn render(self, window: &Window, cx: &App) -> AnyElement {
+    pub(crate) fn render(self, window: &Window, cx: &App) -> AnyElement {
         let theme = cx.theme();
         let (anchor, pick) = (self.anchor, self.pick);
         let rows = self.rows.iter().enumerate().map(|(ix, choice)| {

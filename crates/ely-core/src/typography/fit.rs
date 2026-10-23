@@ -9,6 +9,7 @@ use crate::{
     theme::{ActiveTheme, TextSize},
 };
 
+#[doc(hidden)]
 pub const LEADING: f32 = 1.4;
 
 /// Keeps `kept` chars: half from the front, half from the back.
@@ -22,6 +23,7 @@ fn elide(chars: &[char], kept: usize) -> String {
 }
 
 /// How wide `text` sets at `size` in the text style around it.
+#[doc(hidden)]
 pub fn text_width(text: &str, size: Pixels, window: &Window) -> Pixels {
     let style = window.text_style();
     let run = TextRun {

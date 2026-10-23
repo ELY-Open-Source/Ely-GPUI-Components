@@ -13,6 +13,7 @@ use crate::{
 };
 
 /// Gets a section's title and whether it is now folded.
+#[doc(hidden)]
 pub type OnFold = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 
 struct Section {
@@ -24,6 +25,7 @@ struct Section {
 
 /// Lists under titles down a column, each a `SelectableList` keyed by its title under the id: Tab moves between them, and the chosen key is lit wherever it sits. A press or an arrow selects, Enter or a double press activates. Owners check their titles and keys.
 #[derive(IntoElement)]
+#[doc(hidden)]
 pub struct Sections {
     id: ElementId,
     sections: Vec<Section>,
@@ -35,6 +37,7 @@ pub struct Sections {
 }
 
 impl Sections {
+    #[doc(hidden)]
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
@@ -47,6 +50,7 @@ impl Sections {
         }
     }
 
+    #[doc(hidden)]
     pub fn section(mut self, title: SharedString, rows: Vec<(SharedString, ListItem)>) -> Self {
         self.sections.push(Section {
             title,
@@ -58,6 +62,7 @@ impl Sections {
     }
 
     /// Something beside the last section's title.
+    #[doc(hidden)]
     pub fn badge(mut self, badge: AnyElement) -> Self {
         let last = self.sections.last_mut().expect("a badge follows a section");
         last.badge = Some(badge);
@@ -65,6 +70,7 @@ impl Sections {
     }
 
     /// The last section never folds.
+    #[doc(hidden)]
     pub fn fixed(mut self) -> Self {
         let last = self
             .sections
@@ -75,27 +81,32 @@ impl Sections {
     }
 
     /// Shows how many rows each section holds beside its title.
+    #[doc(hidden)]
     pub fn counted(mut self) -> Self {
         self.counted = true;
         self
     }
 
     /// Titles fold; `folded` names those folded now.
+    #[doc(hidden)]
     pub fn foldable(mut self, folded: Vec<SharedString>, on_fold: OnFold) -> Self {
         self.fold = Some((folded, on_fold));
         self
     }
 
+    #[doc(hidden)]
     pub fn selected(mut self, key: Option<SharedString>) -> Self {
         self.selected = key;
         self
     }
 
+    #[doc(hidden)]
     pub fn on_select(mut self, handler: OnValue) -> Self {
         self.on_select = Some(handler);
         self
     }
 
+    #[doc(hidden)]
     pub fn on_activate(mut self, handler: OnValue) -> Self {
         self.on_activate = Some(handler);
         self

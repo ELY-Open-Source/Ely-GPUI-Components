@@ -26,6 +26,7 @@ struct Pen {
 
 /// Where a pad sits, and the stroke under the pen.
 #[derive(Default)]
+#[doc(hidden)]
 pub struct Drawing {
     pub bounds: Bounds<Pixels>,
     pub stroke: Stroke,
@@ -54,6 +55,7 @@ fn local(bounds: Bounds<Pixels>, at: Point<Pixels>) -> Point<Pixels> {
 }
 
 /// A line through `points`, bent through their midpoints so it reads smooth.
+#[doc(hidden)]
 pub fn ink(points: &[Point<Pixels>], origin: Point<Pixels>, width: Pixels) -> Option<Path<Pixels>> {
     let [first, .., last] = points else {
         return None;
@@ -70,6 +72,7 @@ pub fn ink(points: &[Point<Pixels>], origin: Point<Pixels>, width: Pixels) -> Op
 }
 
 /// Turns a press and drag on `pad` into a stroke of points from its corner, kept inside it; `lift` gets the stroke as the pen leaves. The pad's owner keeps `drawing`'s bounds.
+#[doc(hidden)]
 pub fn pen(
     pad: Stateful<Div>,
     drawing: &Entity<Drawing>,

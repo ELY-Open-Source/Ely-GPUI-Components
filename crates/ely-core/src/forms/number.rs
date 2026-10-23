@@ -20,6 +20,7 @@ type OnChange = Rc<dyn Fn(f64, &mut Window, &mut App)>;
 type Nudge = Box<dyn Fn(&mut Window, &mut App)>;
 
 /// Reads a typed number: groups and the typographic minus are allowed.
+#[doc(hidden)]
 pub fn parse(text: &str) -> Option<f64> {
     let plain: String = text
         .chars()

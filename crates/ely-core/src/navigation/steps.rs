@@ -241,6 +241,7 @@ impl Wizard {
     }
 
     /// Leaves out the numbered steps; the owner shows where the flow stands.
+    #[doc(hidden)]
     pub fn headless(mut self) -> Self {
         self.headless = true;
         self

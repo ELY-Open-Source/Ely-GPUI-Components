@@ -54,10 +54,12 @@ pub(crate) fn line_end(text: &str, offset: usize) -> usize {
         .map_or(text.len(), |ix| offset + ix)
 }
 
+#[doc(hidden)]
 pub fn to_utf16(text: &str, offset: usize) -> usize {
     text[..offset].chars().map(char::len_utf16).sum()
 }
 
+#[doc(hidden)]
 pub fn from_utf16(text: &str, offset: usize) -> usize {
     let mut units = 0;
     for (ix, ch) in text.char_indices() {

@@ -184,6 +184,7 @@ impl RelativeTime {
 }
 
 /// Redraws the view each tick while `id` stays on screen.
+#[doc(hidden)]
 pub fn fresh(id: impl Into<ElementId>, window: &mut Window, cx: &mut App) {
     window.use_keyed_state(id, cx, |window, cx| -> Task<()> {
         cx.spawn_in(window, async move |ticker, cx| {

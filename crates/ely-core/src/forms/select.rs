@@ -30,7 +30,7 @@ pub(crate) struct Picker {
 }
 
 impl Picker {
-    pub fn show(state: &Entity<Picker>, open: bool, highlighted: usize, cx: &mut App) {
+    pub(crate) fn show(state: &Entity<Picker>, open: bool, highlighted: usize, cx: &mut App) {
         state.update(cx, |picker, cx| {
             picker.open = open;
             picker.highlighted = highlighted;
@@ -39,7 +39,7 @@ impl Picker {
     }
 
     /// The row to scroll into view while the list shows `highlighted`.
-    pub fn reveal(
+    pub(crate) fn reveal(
         state: &Entity<Picker>,
         shown: bool,
         highlighted: usize,

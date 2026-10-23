@@ -25,6 +25,7 @@ pub(crate) fn value_at(fraction: f32, min: f64, max: f64, step: f64) -> f64 {
 }
 
 /// Where a key moves `value`: arrows step, Page keys jump ten, Home and End go to the ends.
+#[doc(hidden)]
 pub fn keyed(key: &str, value: f64, min: f64, max: f64, step: f64) -> Option<f64> {
     let next = match key {
         "left" | "down" => value - step,

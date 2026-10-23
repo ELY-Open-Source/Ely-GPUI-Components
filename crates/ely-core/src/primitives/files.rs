@@ -37,6 +37,7 @@ impl IconTheme {
         cx.refresh_windows();
     }
 
+    #[doc(hidden)]
     pub fn file(&self, name: &str) -> IconName {
         let name = name.to_lowercase();
         let extension = name.rsplit_once('.').map(|(_, extension)| extension);
@@ -51,11 +52,13 @@ impl IconTheme {
 static ELY: LazyLock<IconTheme> = LazyLock::new(IconTheme::default);
 
 /// The owner's icon theme, or Ely's map alone.
+#[doc(hidden)]
 pub fn icon_theme(cx: &App) -> &IconTheme {
     cx.try_global::<IconTheme>().unwrap_or(&ELY)
 }
 
 /// The icon a file's name suggests, under the owner's icon theme.
+#[doc(hidden)]
 pub fn file_icon(name: &str, cx: &App) -> IconName {
     icon_theme(cx).file(name)
 }

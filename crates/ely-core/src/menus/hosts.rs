@@ -55,6 +55,7 @@ fn host(
 }
 
 /// A menu under a trigger of the caller's making, which runs `click` when pressed.
+#[doc(hidden)]
 pub fn menu_under(
     id: ElementId,
     menu: &Menu,

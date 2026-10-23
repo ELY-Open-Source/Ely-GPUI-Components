@@ -123,6 +123,7 @@ pub(crate) fn keystroke_of(source: &str) {
 }
 
 /// A keystroke in gpui key syntax as `platform` spells it: `⌘S`, or `Ctrl+S`.
+#[doc(hidden)]
 pub fn shortcut_text(source: &str, platform: Platform) -> String {
     let glue = if platform == Platform::Mac { "" } else { "+" };
     keystroke_labels(&keystroke(source, platform), platform).join(glue)

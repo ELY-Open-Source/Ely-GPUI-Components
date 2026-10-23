@@ -71,6 +71,7 @@ impl<A: Asset> Held<A> {
 }
 
 /// `source` as `A` for element `id`; the previous released.
+#[doc(hidden)]
 pub fn hold<A: Asset>(
     id: impl Into<ElementId>,
     source: &A::Source,

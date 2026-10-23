@@ -12,6 +12,7 @@ use crate::primitives::tab_stop;
 
 /// How a press or a key picks rows.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[doc(hidden)]
 pub enum Pick {
     One,
     Toggle,
@@ -374,6 +375,7 @@ impl RenderOnce for SelectableList {
 }
 
 /// A button inside a pressable row: its press and its Space or Enter stay its own, so the row neither selects nor activates.
+#[doc(hidden)]
 pub fn row_action(button: impl IntoElement) -> gpui::Div {
     div()
         .flex_none()

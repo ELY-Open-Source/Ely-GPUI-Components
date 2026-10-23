@@ -71,11 +71,13 @@ enum Column {
 const ROW_CHROME: f32 = 3.75;
 
 /// Entries as a listing first shows them: folders first, then by name.
+#[doc(hidden)]
 pub fn listed(entries: Vec<DirEntry>) -> Vec<DirEntry> {
     sorted(entries, Column::Name, true)
 }
 
 /// A directory's path from the root down as a breadcrumb; a press on a level climbs to it.
+#[doc(hidden)]
 pub fn path_bar(
     id: impl Into<ElementId>,
     path: &[SharedString],
@@ -115,6 +117,7 @@ fn sorted(mut entries: Vec<DirEntry>, column: Column, ascending: bool) -> Vec<Di
 }
 
 type OnEntry = Rc<dyn Fn(&DirEntry, &mut Window, &mut App)>;
+#[doc(hidden)]
 pub type OnClimb = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// A directory's entries in columns: name, size, and when each changed. A header sorts by its column and a second press reverses it; folders stay first. Enter or a double press opens an entry; the path above climbs to an earlier level.

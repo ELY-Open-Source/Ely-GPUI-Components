@@ -1,3 +1,5 @@
+#![warn(unreachable_pub)]
+
 mod assets;
 pub mod buttons;
 pub mod data_display;

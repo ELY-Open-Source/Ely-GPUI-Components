@@ -6,6 +6,7 @@ struct Changes<T> {
 }
 
 /// How often `value` changed since `id` first rendered. Key an animation on it to replay per change.
+#[doc(hidden)]
 pub fn changes<T: Clone + PartialEq + 'static>(
     id: impl Into<ElementId>,
     value: T,

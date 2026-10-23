@@ -33,6 +33,7 @@ impl Slide {
 type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 
 /// A round button drawn for a dark layer over pictures: light icon, a faint fill on hover, dim when it has nowhere to go.
+#[doc(hidden)]
 pub fn media_button(
     id: (ElementId, &'static str),
     icon: IconName,

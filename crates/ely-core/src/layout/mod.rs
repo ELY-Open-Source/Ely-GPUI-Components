@@ -7,6 +7,7 @@ mod page;
 mod panes;
 mod scroll;
 mod scroll_aids;
+#[doc(hidden)]
 pub mod seeded;
 mod sheet;
 mod sidebar;

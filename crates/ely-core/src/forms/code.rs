@@ -10,6 +10,7 @@ use crate::theme::{ActiveTheme, ControlSize, TextSize};
 
 /// What a span of source is.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[doc(hidden)]
 pub enum Kind {
     Comment,
     Text,
@@ -51,6 +52,7 @@ const GENERIC: Syntax = Syntax {
 };
 
 /// Splits source into spans; spaces fall between them.
+#[doc(hidden)]
 pub fn lex(source: &str) -> Vec<(Range<usize>, Kind)> {
     lex_with(source, &GENERIC)
 }
@@ -119,6 +121,7 @@ pub fn code_highlights(source: &str, cx: &App) -> Vec<(Range<usize>, Highlight)>
 }
 
 /// Colors for code as `lang` reads it.
+#[doc(hidden)]
 pub fn code_highlights_with(
     source: &str,
     lang: &Syntax,

@@ -12,6 +12,7 @@ use crate::{
 };
 
 /// Opens the system's file dialog; `then` gets the chosen paths back in the window.
+#[doc(hidden)]
 pub fn choose(
     what: SharedString,
     options: PathPromptOptions,
