@@ -7,347 +7,23 @@ use gpui::{
 
 use crate::theme::{ActiveTheme, IconSize};
 
-macro_rules! icons {
-    ($($variant:ident => $file:literal,)*) => {
-        /// Lucide icons bundled with Ely.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub enum IconName {
-            $($variant,)*
-        }
+mod names;
 
-        impl IconName {
-            pub const ALL: &[IconName] = &[$(IconName::$variant,)*];
+pub use names::IconName;
 
-            pub fn path(self) -> &'static str {
-                match self {
-                    $(IconName::$variant => concat!("icons/", $file, ".svg"),)*
-                }
-            }
-
-            /// Lucide name, such as `chevron-down`.
-            pub fn name(self) -> &'static str {
-                match self {
-                    $(IconName::$variant => $file,)*
-                }
-            }
-        }
-    };
-}
-
-icons! {
-    AArrowDown => "a-arrow-down",
-    AArrowUp => "a-arrow-up",
-    Accessibility => "accessibility",
-    Activity => "activity",
-    AlarmClock => "alarm-clock",
-    AlignCenter => "align-center",
-    AlignCenterHorizontal => "align-center-horizontal",
-    AlignCenterVertical => "align-center-vertical",
-    AlignEndHorizontal => "align-end-horizontal",
-    AlignEndVertical => "align-end-vertical",
-    AlignHorizontalDistributeCenter => "align-horizontal-distribute-center",
-    AlignJustify => "align-justify",
-    AlignLeft => "align-left",
-    AlignRight => "align-right",
-    AlignStartHorizontal => "align-start-horizontal",
-    AlignStartVertical => "align-start-vertical",
-    AlignVerticalDistributeCenter => "align-vertical-distribute-center",
-    AppWindow => "app-window",
-    Archive => "archive",
-    ArrowDownLeft => "arrow-down-left",
-    ArrowDownUp => "arrow-down-up",
-    ArrowDownToDot => "arrow-down-to-dot",
-    ArrowDownToLine => "arrow-down-to-line",
-    ArrowDownWideNarrow => "arrow-down-wide-narrow",
-    ArrowDown => "arrow-down",
-    ArrowLeft => "arrow-left",
-    ArrowRight => "arrow-right",
-    ArrowUpFromDot => "arrow-up-from-dot",
-    ArrowUpNarrowWide => "arrow-up-narrow-wide",
-    ArrowUpRight => "arrow-up-right",
-    ArrowUp => "arrow-up",
-    AtSign => "at-sign",
-    AudioLines => "audio-lines",
-    Ban => "ban",
-    Battery => "battery",
-    Bell => "bell",
-    Bold => "bold",
-    BookOpen => "book-open",
-    Bookmark => "bookmark",
-    Bot => "bot",
-    Box => "box",
-    Braces => "braces",
-    Brush => "brush",
-    Bug => "bug",
-    CalendarDays => "calendar-days",
-    CalendarRange => "calendar-range",
-    Calendar => "calendar",
-    Camera => "camera",
-    Captions => "captions",
-    CaptionsOff => "captions-off",
-    CaseSensitive => "case-sensitive",
-    ChartArea => "chart-area",
-    ChartBar => "chart-bar",
-    ChartCandlestick => "chart-candlestick",
-    ChartColumn => "chart-column",
-    ChartLine => "chart-line",
-    ChartPie => "chart-pie",
-    CheckCheck => "check-check",
-    ChartGantt => "chart-gantt",
-    Check => "check",
-    ChevronDown => "chevron-down",
-    ChevronLeft => "chevron-left",
-    ChevronRight => "chevron-right",
-    ChevronUp => "chevron-up",
-    ChevronsLeft => "chevrons-left",
-    ChevronsLeftRight => "chevrons-left-right",
-    ChevronsRight => "chevrons-right",
-    ChevronsUpDown => "chevrons-up-down",
-    CircleAlert => "circle-alert",
-    CircleCheck => "circle-check",
-    CircleDashed => "circle-dashed",
-    CircleDot => "circle-dot",
-    CircleDotDashed => "circle-dot-dashed",
-    CircleHelp => "circle-help",
-    CirclePause => "circle-pause",
-    CircleStop => "circle-stop",
-    CircleX => "circle-x",
-    Circle => "circle",
-    ClipboardCheck => "clipboard-check",
-    Clipboard => "clipboard",
-    Clock => "clock",
-    CloudAlert => "cloud-alert",
-    CloudCheck => "cloud-check",
-    CloudOff => "cloud-off",
-    Cloud => "cloud",
-    CloudUpload => "cloud-upload",
-    Code => "code",
-    Columns2 => "columns-2",
-    Columns3 => "columns-3",
-    Command => "command",
-    Compass => "compass",
-    Contrast => "contrast",
-    Copy => "copy",
-    CornerDownRight => "corner-down-right",
-    Cpu => "cpu",
-    CreditCard => "credit-card",
-    Crop => "crop",
-    Crosshair => "crosshair",
-    Database => "database",
-    Delete => "delete",
-    Dices => "dices",
-    DollarSign => "dollar-sign",
-    Dot => "dot",
-    Download => "download",
-    EllipsisVertical => "ellipsis-vertical",
-    Ellipsis => "ellipsis",
-    Eraser => "eraser",
-    ExternalLink => "external-link",
-    EyeOff => "eye-off",
-    Eye => "eye",
-    FileArchive => "file-archive",
-    FileAudio => "file-audio",
-    FileCode => "file-code",
-    FileCog => "file-cog",
-    FileImage => "file-image",
-    FileJson => "file-json",
-    FilePlus => "file-plus",
-    FileSpreadsheet => "file-spreadsheet",
-    FileTerminal => "file-terminal",
-    FileText => "file-text",
-    File => "file",
-    FileType => "file-type",
-    FileVideoCamera => "file-video-camera",
-    Filter => "filter",
-    Fingerprint => "fingerprint",
-    Flag => "flag",
-    FolderOpen => "folder-open",
-    FolderPlus => "folder-plus",
-    Folder => "folder",
-    Forward => "forward",
-    Frame => "frame",
-    Frown => "frown",
-    Fullscreen => "fullscreen",
-    Gauge => "gauge",
-    GitBranch => "git-branch",
-    GitCommitHorizontal => "git-commit-horizontal",
-    GitMerge => "git-merge",
-    GitPullRequest => "git-pull-request",
-    GitPullRequestClosed => "git-pull-request-closed",
-    GitPullRequestDraft => "git-pull-request-draft",
-    Globe => "globe",
-    GripHorizontal => "grip-horizontal",
-    GripVertical => "grip-vertical",
-    Hand => "hand",
-    HardDrive => "hard-drive",
-    Hash => "hash",
-    Heading => "heading",
-    Heading1 => "heading-1",
-    Heading2 => "heading-2",
-    Heading3 => "heading-3",
-    Headphones => "headphones",
-    Heart => "heart",
-    Hexagon => "hexagon",
-    History => "history",
-    Hourglass => "hourglass",
-    House => "house",
-    Image => "image",
-    ImageOff => "image-off",
-    Inbox => "inbox",
-    Info => "info",
-    Italic => "italic",
-    Kanban => "kanban",
-    Key => "key",
-    Keyboard => "keyboard",
-    Languages => "languages",
-    Laugh => "laugh",
-    Layers => "layers",
-    LayoutDashboard => "layout-dashboard",
-    LayoutGrid => "layout-grid",
-    Library => "library",
-    Lightbulb => "lightbulb",
-    Link => "link",
-    ListChecks => "list-checks",
-    ListOrdered => "list-ordered",
-    ListTodo => "list-todo",
-    List => "list",
-    LoaderCircle => "loader-circle",
-    LockOpen => "lock-open",
-    Lock => "lock",
-    LogIn => "log-in",
-    LogOut => "log-out",
-    Mail => "mail",
-    MapPin => "map-pin",
-    Map => "map",
-    Maximize2 => "maximize-2",
-    Meh => "meh",
-    MemoryStick => "memory-stick",
-    Menu => "menu",
-    Merge => "merge",
-    MessageSquare => "message-square",
-    MessageSquareDiff => "message-square-diff",
-    MessageSquareWarning => "message-square-warning",
-    MicOff => "mic-off",
-    Mic => "mic",
-    Minimize2 => "minimize-2",
-    Minus => "minus",
-    Monitor => "monitor",
-    Moon => "moon",
-    MousePointer2 => "mouse-pointer-2",
-    Move => "move",
-    MoveUpRight => "move-up-right",
-    Music => "music",
-    Network => "network",
-    NotebookPen => "notebook-pen",
-    OctagonAlert => "octagon-alert",
-    Package => "package",
-    Palette => "palette",
-    PanelBottom => "panel-bottom",
-    PanelLeft => "panel-left",
-    PanelRight => "panel-right",
-    Paperclip => "paperclip",
-    Pause => "pause",
-    PenLine => "pen-line",
-    PenTool => "pen-tool",
-    Pencil => "pencil",
-    PhoneOff => "phone-off",
-    Phone => "phone",
-    PictureInPicture2 => "picture-in-picture-2",
-    Pipette => "pipette",
-    PinOff => "pin-off",
-    Pin => "pin",
-    Play => "play",
-    Plus => "plus",
-    Power => "power",
-    Printer => "printer",
-    Puzzle => "puzzle",
-    Quote => "quote",
-    Redo2 => "redo-2",
-    RedoDot => "redo-dot",
-    RefreshCw => "refresh-cw",
-    Regex => "regex",
-    Repeat => "repeat",
-    Repeat1 => "repeat-1",
-    Reply => "reply",
-    ReplyAll => "reply-all",
-    Rocket => "rocket",
-    RotateCcw => "rotate-ccw",
-    RotateCw => "rotate-cw",
-    Rows2 => "rows-2",
-    Save => "save",
-    Scissors => "scissors",
-    ScreenShare => "screen-share",
-    ScreenShareOff => "screen-share-off",
-    Search => "search",
-    SearchX => "search-x",
-    Send => "send",
-    Server => "server",
-    Settings => "settings",
-    Shapes => "shapes",
-    Share2 => "share-2",
-    Shield => "shield",
-    Shuffle => "shuffle",
-    SkipBack => "skip-back",
-    SkipForward => "skip-forward",
-    Slash => "slash",
-    SlidersHorizontal => "sliders-horizontal",
-    Smartphone => "smartphone",
-    Smile => "smile",
-    SmilePlus => "smile-plus",
-    Sparkles => "sparkles",
-    Spline => "spline",
-    SquareCheck => "square-check",
-    Square => "square",
-    SquareFunction => "square-function",
-    SquarePen => "square-pen",
-    SquareRoundCorner => "square-round-corner",
-    Star => "star",
-    StepForward => "step-forward",
-    StickyNote => "sticky-note",
-    Strikethrough => "strikethrough",
-    Sun => "sun",
-    Table => "table",
-    Tag => "tag",
-    Target => "target",
-    Terminal => "terminal",
-    ThumbsDown => "thumbs-down",
-    ThumbsUp => "thumbs-up",
-    Timer => "timer",
-    Trash2 => "trash-2",
-    TrendingDown => "trending-down",
-    TrendingUp => "trending-up",
-    TriangleAlert => "triangle-alert",
-    Type => "type",
-    Underline => "underline",
-    Undo2 => "undo-2",
-    Upload => "upload",
-    User => "user",
-    UserPlus => "user-plus",
-    Users => "users",
-    Variable => "variable",
-    VideoOff => "video-off",
-    Video => "video",
-    Volume => "volume",
-    Volume1 => "volume-1",
-    Volume2 => "volume-2",
-    VolumeX => "volume-x",
-    Wallet => "wallet",
-    WandSparkles => "wand-sparkles",
-    WholeWord => "whole-word",
-    WifiOff => "wifi-off",
-    Wifi => "wifi",
-    Workflow => "workflow",
-    Wrench => "wrench",
-    X => "x",
-    Zap => "zap",
-    ZoomIn => "zoom-in",
-    ZoomOut => "zoom-out",
+/// A bundled icon, or an app's path with the icon a miss shows.
+#[derive(Clone, Debug, PartialEq)]
+enum Source {
+    Bundled(IconName),
+    App {
+        path: SharedString,
+        broken: IconName,
+    },
 }
 
 #[derive(IntoElement)]
 pub struct Icon {
-    path: SharedString,
-    bundled: bool,
+    source: Source,
     size: IconSize,
     color: Option<Hsla>,
     hover: Option<(SharedString, Hsla)>,
@@ -357,17 +33,20 @@ pub struct Icon {
 
 impl Icon {
     pub fn new(name: IconName) -> Self {
-        Self {
-            bundled: true,
-            ..Self::from_path(name.path())
-        }
+        Self::drawing(Source::Bundled(name))
     }
 
     /// Draws an SVG supplied by the application's asset source; a missing one logs and shows `broken`.
     pub fn from_path(path: impl Into<SharedString>) -> Self {
-        Self {
+        Self::drawing(Source::App {
             path: path.into(),
-            bundled: false,
+            broken: IconName::ImageOff,
+        })
+    }
+
+    fn drawing(source: Source) -> Self {
+        Self {
+            source,
             size: IconSize::Md,
             color: None,
             hover: None,
@@ -437,10 +116,9 @@ fn found(source: &dyn AssetSource, path: &str) -> bool {
 
 impl Icon {
     /// What a missing app icon shows: a broken picture in danger.
-    fn broken(self, cx: &App) -> Self {
+    fn broken(self, mark: IconName, cx: &App) -> Self {
         Self {
-            path: IconName::ImageOff.path().into(),
-            bundled: true,
+            source: Source::Bundled(mark),
             color: Some(cx.theme().colors.danger),
             hover: None,
             ..self
@@ -450,18 +128,26 @@ impl Icon {
 
 impl RenderOnce for Icon {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let source = cx.asset_source().clone();
-        let missing = !self.bundled
-            && !*cx
-                .default_global::<FoundIcons>()
-                .0
-                .entry(self.path.clone())
-                .or_insert_with(|| found(source.as_ref(), &self.path));
-        let icon = if missing { self.broken(cx) } else { self };
+        let assets = cx.asset_source().clone();
+        let icon = match self.source.clone() {
+            Source::App { path, broken }
+                if !*cx
+                    .default_global::<FoundIcons>()
+                    .0
+                    .entry(path.clone())
+                    .or_insert_with(|| found(assets.as_ref(), &path)) =>
+            {
+                self.broken(broken, cx)
+            }
+            _ => self,
+        };
         let theme = cx.theme();
         let color = icon.color.unwrap_or(theme.colors.fg);
-        svg()
-            .path(icon.path)
+        let drawn = match icon.source {
+            Source::Bundled(name) => svg().data(name.svg()),
+            Source::App { path, .. } => svg().path(path),
+        };
+        drawn
             .size(theme.icon_size(icon.size))
             .flex_none()
             .text_color(color)

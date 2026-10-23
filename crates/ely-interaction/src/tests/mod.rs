@@ -166,7 +166,7 @@ fn the_grip_lies_inside_the_box(cx: &mut TestAppContext) {
 fn rotatable(bench: &Bench, owner: Entity<Bench>) -> AnyElement {
     Rotatable::new(
         "dial",
-        "icons/arrow-up.svg",
+        "app-icons/arrow-up.svg",
         px(100.0),
         bench.angle,
         move |next, _, cx| {

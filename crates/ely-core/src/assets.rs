@@ -4,14 +4,41 @@ use anyhow::Context as _;
 use gpui::{App, AssetSource, Result, SharedString};
 use rust_embed::RustEmbed;
 
-/// Icons and fonts. Pass to `Application::with_assets`, alone or through `Assets::before`.
-#[derive(RustEmbed)]
-#[folder = "assets"]
+/// Ely's fonts. Pass to `Application::with_assets`, alone or through `Assets::before`.
 pub struct Assets;
+
+/// IBM Plex Sans, where gpui's svg renderer loads it.
+#[derive(RustEmbed)]
+#[folder = "assets/plex"]
+#[prefix = "fonts/ibm-plex-sans/"]
+struct Plex;
+
+/// Inter and JetBrains Mono, the theme's families.
+#[cfg(feature = "fonts")]
+#[derive(RustEmbed)]
+#[folder = "assets/fonts"]
+#[prefix = "fonts/"]
+struct Fonts;
+
+impl Assets {
+    fn get(path: &str) -> Option<Cow<'static, [u8]>> {
+        let plex = Plex::get(path).map(|file| file.data);
+        #[cfg(feature = "fonts")]
+        let plex = plex.or_else(|| Fonts::get(path).map(|file| file.data));
+        plex
+    }
+
+    fn iter() -> impl Iterator<Item = Cow<'static, str>> {
+        let plex = Plex::iter();
+        #[cfg(feature = "fonts")]
+        let plex = plex.chain(Fonts::iter());
+        plex
+    }
+}
 
 impl AssetSource for Assets {
     fn load(&self, path: &str) -> Result<Option<Cow<'static, [u8]>>> {
-        Ok(Self::get(path).map(|file| file.data))
+        Ok(Self::get(path))
     }
 
     fn list(&self, path: &str) -> Result<Vec<SharedString>> {
@@ -26,9 +53,7 @@ pub(crate) fn load_fonts(cx: &App) -> Result<()> {
     let fonts = Assets::iter()
         .filter(|name| name.ends_with(".ttf"))
         .map(|name| {
-            Assets::get(&name)
-                .map(|file| file.data)
-                .with_context(|| format!("font {name} vanished from the bundle"))
+            Assets::get(&name).with_context(|| format!("font {name} vanished from the bundle"))
         })
         .collect::<Result<Vec<_>>>()?;
     log::info!("assets: registering {} fonts", fonts.len());
@@ -88,11 +113,8 @@ mod tests {
 
     impl AssetSource for IconsOnly {
         fn load(&self, path: &str) -> Result<Option<Cow<'static, [u8]>>> {
-            if path == "icons/kit-only.svg" {
-                return Ok(Some(Cow::Borrowed(b"<svg/>")));
-            }
-            match Assets.load(path)? {
-                Some(data) if path.starts_with("icons/") => Ok(Some(data)),
+            match path {
+                "icons/check.svg" | "icons/kit-only.svg" => Ok(Some(Cow::Borrowed(b"<svg/>"))),
                 _ => Err(anyhow::anyhow!("could not find asset at path {path}")),
             }
         }

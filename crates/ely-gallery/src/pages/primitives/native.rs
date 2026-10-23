@@ -12,6 +12,7 @@ use gpui::{
 };
 
 use crate::{
+    assets::CUSTOM_ICON,
     probe::probe,
     ui::{code, row, section, set},
 };
@@ -63,15 +64,10 @@ pub fn svg_demo(cx: &App) -> impl IntoElement + use<> {
     .child(
         row()
             .gap_6()
+            .child(svg().path(CUSTOM_ICON).size_12().text_color(color))
             .child(
                 svg()
-                    .path(IconName::Compass.path())
-                    .size_12()
-                    .text_color(color),
-            )
-            .child(
-                svg()
-                    .path(IconName::Compass.path())
+                    .path(CUSTOM_ICON)
                     .size_12()
                     .text_color(color)
                     .with_transformation(Transformation::rotate(radians(0.6))),

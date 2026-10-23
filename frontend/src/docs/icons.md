@@ -1,10 +1,10 @@
 # Icons, fonts and assets
 
-`Assets` embeds Ely's icons and fonts in the binary. Pass it to `with_assets`, or `Assets::before(other)` to serve Ely's files first and every other path from another source; `init` checks that each of Ely's files loads through the app's source, then registers the fonts.
+`Assets` embeds Ely's fonts in the binary. Pass it to `with_assets`, or `Assets::before(other)` to serve Ely's files first and every other path from another source; `init` checks that each of Ely's files loads through the app's source, then registers the fonts. Icons travel in the code, not the source.
 
 ## Icons
 
-Ely bundles 306 Lucide 1.48.0 icons, each an `IconName` variant: `IconName::Check` is `icons/check.svg`, and `name()` returns the Lucide name, `check`. `IconName::ALL` lists them all.
+Ely bundles 307 Lucide 1.48.0 icons, each an `IconName` const: `IconName::Check` carries `check.svg`, `svg()` returns its bytes and `name()` the Lucide name, `check`. `IconName::ALL` lists them all. Each SVG sits in a static of its own, so a release binary holds only the icons its code names.
 
 | Call | Does |
 | --- | --- |
@@ -21,8 +21,8 @@ GPUI's `svg()` paints with its own text color alone, so `Icon` always sets one.
 
 From a clone of the repository:
 
-1. `scripts/icons.sh <lucide-name>...` fetches Lucide 1.48.0 with npm and copies each SVG into `crates/ely-core/assets/icons/`.
-2. Add a line to the `icons!` list in `crates/ely-core/src/primitives/icon.rs`, such as `Rocket => "rocket",`.
+1. `scripts/icons.sh <lucide-name>...` fetches Lucide 1.48.0 with npm and copies each SVG into `crates/ely-core/icons/`.
+2. Add a line to the `icons!` list in `crates/ely-core/src/primitives/icon/names.rs`, such as `Rocket => "rocket",`.
 
 ## File icons
 
@@ -38,7 +38,7 @@ A name rule beats an extension rule, and both beat Ely's map.
 
 ## Fonts
 
-`init` registers seven fonts from `Assets`: Inter Regular, Medium, SemiBold and Italic; JetBrains Mono Regular and Medium; IBM Plex Sans Regular. The theme draws text in Inter and code in JetBrains Mono, set by its `font_family` and `mono_family` fields. On the web, GPUI answers the system UI font with IBM Plex Sans, and text inside SVGs falls back to it.
+`init` registers seven fonts from `Assets`: Inter Regular, Medium, SemiBold and Italic; JetBrains Mono Regular and Medium; IBM Plex Sans Regular. The theme draws text in Inter and code in JetBrains Mono, set by its `font_family` and `mono_family` fields. Inter and JetBrains Mono come with `ely-core`'s `fonts` feature, on by default; an app that turns it off registers its own fonts and sets those two fields. IBM Plex Sans always ships. On the web, GPUI answers the system UI font with IBM Plex Sans, and text inside SVGs falls back to it.
 
 ## An app's own assets
 

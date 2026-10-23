@@ -77,7 +77,8 @@ repository.workspace = true
 publish = false
 
 [features]
-default = ["runtime_shaders"]
+default = ["runtime_shaders", "fonts"]
+fonts = ["ely-core/fonts"]
 runtime_shaders = ["ely-core/runtime_shaders"]
 test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
 

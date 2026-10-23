@@ -23,7 +23,7 @@ fn packages() -> [Package; 4] {
             "Lucide",
             "1.48.0",
             "ISC",
-            include_str!("../../../../ely-core/assets/icons/LICENSE"),
+            include_str!("../../../../ely-core/icons/LICENSE"),
         ),
         Package::new(
             "Inter",

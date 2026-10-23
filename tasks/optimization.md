@@ -19,7 +19,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] A3 O-05 One Markdown parser; the 128 KiB one-letter case reads in ≤100 ms in release. Find the quadratic first.
 - [ ] A4 O-07 No duplicate in `cargo tree -d` starts at an Ely direct dependency.
   - Done: `iso_currency` drops its `iterator` feature, so `strum` 0.27 leaves; currencies list by ISO 4217 number.
-  - Open, partial: only third-party crates at their newest releases still bring a second version, and Ely can align none without capping a version (O-06). `bit-set`/`bit-vec` 0.8 (RaTeX 0.1.15), the `digest` 0.11 line (`ratex-svg` 0.1.15, `rust-embed` 8.13), `phf` 0.11 (`isolang` 2.4, RaTeX). B9 may drop `rust-embed`; the rest needs upstream releases.
+  - Open, partial: only third-party crates at their newest releases still bring a second version, and Ely can align none without capping a version (O-06). `bit-set`/`bit-vec` 0.8 (RaTeX 0.1.15), the `digest` 0.11 line (`ratex-svg` 0.1.15, `rust-embed` 8.13), `phf` 0.11 (`isolang` 2.4, RaTeX). B9 keeps `rust-embed` for the fonts; the rest needs upstream releases.
 - [x] A5 O-08 Platform calls live in one platform module, on objc2; every `unsafe` block has a SAFETY line; `undocumented_unsafe_blocks` clean.
 
 ## B. Split
@@ -38,7 +38,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [ ] B8 O-02 Features: heavy dependencies default off where a crate can stand without them; a Button-only program pulls none of zbus, ratex-svg, mermaid-rs-renderer, alacritty_terminal, isolang, rqrr, notify.
   - Done: the split leaves ratex-svg, mermaid-rs-renderer, alacritty_terminal, rqrr and notify out of `ely-core`; `isolang` is optional behind `languages`; check.sh holds all six out.
   - Open, partial: zbus, as in B7. A Button-only program opens its window through `gpui_platform`, whose Linux backend links zbus; no Ely choice removes it.
-- [ ] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
+- [x] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
 - [ ] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.
 - [ ] B11 Gallery, site, check.sh, compat/kit, CI and AGENTS.md follow the new layout; the web gallery builds.
   - Found in B1: `e2e/docs.spec.ts`'s `GUIDES` lacks `gpui-kit`, added to `ORDER` in `b3985b9`; on Windows the Copy test reads CRLF from the clipboard. CI's site job runs neither.

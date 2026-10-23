@@ -9,7 +9,8 @@ repository.workspace = true
 publish = false
 
 [features]
-default = ["runtime_shaders"]
+default = ["runtime_shaders", "fonts"]
+fonts = []
 runtime_shaders = ["gpui_platform/runtime_shaders"]
 languages = ["dep:isolang"]
 test-support = ["gpui/test-support", "gpui/leak-detection"]

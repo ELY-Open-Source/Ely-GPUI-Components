@@ -12,6 +12,7 @@ use gpui::{
 };
 
 use crate::{
+    assets::ARROW_ICON,
     probe::probe,
     ui::{blocked, change, code, keep, section, specimen, specimens},
 };
@@ -227,7 +228,7 @@ pub fn shapes(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 "Rotatable",
                 probe(
                     "interaction-rotatable",
-                    Rotatable::new("interaction-rotatable", "icons/arrow-up.svg", px(120.), angle, move |next, _, cx| change(&turn, cx, |shapes| shapes.angle = next)),
+                    Rotatable::new("interaction-rotatable", ARROW_ICON, px(120.), angle, move |next, _, cx| change(&turn, cx, |shapes| shapes.angle = next)),
                 ),
                 cx,
             )),
