@@ -1,0 +1,26 @@
+[package]
+name = "ely-chat"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's AI chat components for GPUI: messages, the composer, citations and tool calls."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-documents.workspace = true
+ely-editor.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+smallvec.workspace = true
+unicode-segmentation.workspace = true
+web-time.workspace = true
+
+[lints]
+workspace = true

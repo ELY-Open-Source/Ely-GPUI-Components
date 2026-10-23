@@ -1,0 +1,45 @@
+[package]
+name = "ely-documents"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's document components for GPUI: Markdown read and written, block editing, math, diagrams and reading aids."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-editor.workspace = true
+base64 = "0.22"
+emojis.workspace = true
+entities = "1"
+gpui.workspace = true
+image.workspace = true
+jiff.workspace = true
+log.workspace = true
+mermaid-rs-renderer = { version = "0.3.1", default-features = false }
+pulldown-cmark = { version = "0.13", default-features = false }
+ratex-layout = "0.1.14"
+ratex-parser = "0.1.14"
+ratex-svg = { version = "0.1.14", features = ["embed-fonts"] }
+ratex-types = "0.1.14"
+regex.workspace = true
+similar = { version = "3.2", default-features = false, features = ["std", "text", "inline", "unicode"] }
+smallvec.workspace = true
+unicode-segmentation.workspace = true
+unicode-width = "0.2"
+usvg = "0.46"
+web-time.workspace = true
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+similar = { version = "3.2", default-features = false, features = ["wasm32_web_time"] }
+
+[target.'cfg(unix)'.dev-dependencies]
+rustix = { version = "1", default-features = false, features = ["time"] }
+
+[lints]
+workspace = true

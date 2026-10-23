@@ -1,0 +1,27 @@
+[package]
+name = "ely-collab"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Ely's collaboration components for GPUI: presence, comments, cursors and shared editing."
+repository.workspace = true
+publish = false
+
+[features]
+test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
+
+[dependencies]
+ely-core.workspace = true
+ely-documents.workspace = true
+gpui.workspace = true
+jiff.workspace = true
+log.workspace = true
+similar = { version = "3.2", default-features = false, features = ["std", "text", "inline", "unicode"] }
+smallvec.workspace = true
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+similar = { version = "3.2", default-features = false, features = ["wasm32_web_time"] }
+
+[lints]
+workspace = true

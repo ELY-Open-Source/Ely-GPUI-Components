@@ -9,6 +9,13 @@ license = "MIT"
 repository = "https://github.com/ELY-Open-Source/Ely-GPUI-Components"
 
 [workspace.dependencies]
+ely-files = { path = "crates/ely-files", version = "0.1.1" }
+ely-media = { path = "crates/ely-media", version = "0.1.1" }
+ely-generative = { path = "crates/ely-generative", version = "0.1.1" }
+ely-agent = { path = "crates/ely-agent", version = "0.1.1" }
+ely-chat = { path = "crates/ely-chat", version = "0.1.1" }
+ely-collab = { path = "crates/ely-collab", version = "0.1.1" }
+ely-documents = { path = "crates/ely-documents", version = "0.1.1" }
 ely-debug = { path = "crates/ely-debug", version = "0.1.1" }
 ely-git = { path = "crates/ely-git", version = "0.1.1" }
 ely-terminal = { path = "crates/ely-terminal", version = "0.1.1" }
@@ -59,57 +66,39 @@ runtime_shaders = ["ely-core/runtime_shaders"]
 test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
 
 [dependencies]
-anyhow.workspace = true
-ely-debug.workspace = true
-ely-git.workspace = true
-ely-terminal.workspace = true
-ely-editor.workspace = true
-ely-finance.workspace = true
+ely-agent.workspace = true
 ely-charts.workspace = true
-base64 = "0.22"
+ely-chat.workspace = true
+ely-collab.workspace = true
 ely-core.workspace = true
-emojis.workspace = true
-entities = "1"
+ely-debug.workspace = true
+ely-documents.workspace = true
+ely-editor.workspace = true
+ely-files.workspace = true
+ely-finance.workspace = true
+ely-generative.workspace = true
+ely-git.workspace = true
+ely-media.workspace = true
+ely-terminal.workspace = true
+anyhow.workspace = true
 futures.workspace = true
 gpui = { workspace = true, features = ["stacker"] }
 image.workspace = true
-iso_currency.workspace = true
 isocountry.workspace = true
 jiff.workspace = true
 log.workspace = true
-mermaid-rs-renderer = { version = "0.3.1", default-features = false }
-pulldown-cmark = { version = "0.13", default-features = false }
 qrcode.workspace = true
-ratex-layout = "0.1.14"
-ratex-parser = "0.1.14"
-ratex-svg = { version = "0.1.14", features = ["embed-fonts"] }
-ratex-types = "0.1.14"
 regex.workspace = true
 rqrr = { version = "0.11", default-features = false }
 serde_json.workspace = true
-similar = { version = "3.2", default-features = false, features = ["std", "text", "inline", "unicode"] }
 smallvec.workspace = true
-unicode-segmentation.workspace = true
-unicode-width = "0.2"
-usvg = "0.46"
-vte = { version = "0.15", default-features = false, features = ["std", "ansi"] }
 web-time.workspace = true
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
-alacritty_terminal = { version = "0.26", default-features = false }
 notify = "8"
-
-[target.'cfg(target_family = "wasm")'.dependencies]
-similar = { version = "3.2", default-features = false, features = ["wasm32_web_time"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 wry = { version = "0.57", default-features = false }
-
-[target.'cfg(unix)'.dependencies]
-rustix = { version = "1", default-features = false, features = ["std", "fs"] }
-
-[target.'cfg(unix)'.dev-dependencies]
-rustix = { version = "1", default-features = false, features = ["time"] }
 
 [lints]
 workspace = true

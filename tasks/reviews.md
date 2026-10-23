@@ -414,3 +414,4 @@
 | T56 B1 | 1 | PASS | workspace root keeps the library; gallery and docs examples in crates/ely-gallery; Windows check, Linux root, Mac capture and the web build pass |
 | T56 B2 | 1 | PASS | ely-core holds chapters 1-14, theme, motion, i18n; Latex to documents, WCAG math to theme; privacy opened by the compiler's errors; timing tests read thread CPU time |
 | T56 B3 | 1 | PASS | charts, finance, editor, terminal, git, debug in their own crates; CodeEditor readers replace documents' field reads; 2231/2233 tests on Windows, Linux root, Mac |
+| T56 B4 | 1 | PASS | documents, collab, chat, agent, generative, media, files in their own crates; the root's dependencies trimmed to what src/ imports; 2233 on Linux root and Mac |
