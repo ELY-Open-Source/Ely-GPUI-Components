@@ -409,3 +409,5 @@ impl RenderOnce for InvitationList {
             .child(div().flex().flex_col().children(rows))
     }
 }
+
+ely_core::capable!(RoleSelector: disabled);

@@ -266,3 +266,16 @@ mod tests {
         }
     }
 }
+
+crate::capable!(ColorSwatch: size);
+crate::capable!(ColorPalette: change(Hsla));
+
+impl crate::primitives::Selectable for ColorSwatch {
+    fn selected(self, selected: bool) -> Self {
+        ColorSwatch::selected(self, selected)
+    }
+
+    fn is_selected(&self) -> bool {
+        self.selected
+    }
+}

@@ -156,3 +156,5 @@ mod tests {
         );
     }
 }
+
+crate::capable!(TreeSelect: change(&SharedString));

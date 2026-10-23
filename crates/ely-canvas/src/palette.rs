@@ -181,3 +181,6 @@ impl RenderOnce for BrushSettings {
             .child(hues)
     }
 }
+
+ely_core::capable!(ToolPalette: change(Tool));
+ely_core::capable!(BrushSettings: change(Brush));

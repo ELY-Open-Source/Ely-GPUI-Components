@@ -119,3 +119,5 @@ impl RenderOnce for ChoiceChips {
         div().id(self.id).flex().flex_wrap().gap_2().children(chips)
     }
 }
+
+crate::capable!(ChoiceChips: change(&[SharedString]));

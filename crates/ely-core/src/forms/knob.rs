@@ -198,3 +198,5 @@ impl RenderOnce for Knob {
             })
     }
 }
+
+crate::capable!(Knob: disabled, change(f64));

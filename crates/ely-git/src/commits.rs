@@ -308,3 +308,13 @@ impl RenderOnce for CommitList {
         .size_full()
     }
 }
+
+impl ely_core::primitives::Selectable for CommitItem {
+    fn selected(self, selected: bool) -> Self {
+        CommitItem::selected(self, selected)
+    }
+
+    fn is_selected(&self) -> bool {
+        self.selected
+    }
+}

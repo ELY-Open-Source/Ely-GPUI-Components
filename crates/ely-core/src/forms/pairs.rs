@@ -307,3 +307,6 @@ impl RenderOnce for ListInput {
         render_rows(&self.id, state, "Add item", cx)
     }
 }
+
+crate::capable!(KeyValueInput: change(Vec<(String, String)>));
+crate::capable!(ListInput: change(Vec<String>));

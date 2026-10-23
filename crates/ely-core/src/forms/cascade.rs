@@ -397,3 +397,5 @@ mod tests {
         assert_eq!(trail_of(&roots, &["eu".into(), "xx".into()]), [1]);
     }
 }
+
+crate::capable!(Cascader: size, change(&[SharedString]));

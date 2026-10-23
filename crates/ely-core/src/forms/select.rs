@@ -396,3 +396,5 @@ impl RenderOnce for Select {
         )
     }
 }
+
+crate::capable!(Select: size, disabled, change(&SharedString));

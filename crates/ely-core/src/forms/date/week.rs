@@ -112,3 +112,5 @@ mod tests {
         assert_eq!(monday_of((2027, 1)), date(2027, 1, 4));
     }
 }
+
+crate::capable!(WeekPicker: change((i16, i8)));

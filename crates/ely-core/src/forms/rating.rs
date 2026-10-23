@@ -159,3 +159,5 @@ impl RenderOnce for Rating {
             .children(stars)
     }
 }
+
+crate::capable!(Rating: disabled, change(u8));

@@ -108,3 +108,5 @@ impl RenderOnce for HotkeyInput {
             )
     }
 }
+
+crate::capable!(HotkeyInput: change(Option<Keystroke>));

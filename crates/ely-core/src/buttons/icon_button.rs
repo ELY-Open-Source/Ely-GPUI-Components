@@ -108,3 +108,5 @@ impl RenderOnce for IconButton {
             })
     }
 }
+
+crate::capable!(IconButton: size, disabled);

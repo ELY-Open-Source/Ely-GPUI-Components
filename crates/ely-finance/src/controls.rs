@@ -343,3 +343,7 @@ impl RenderOnce for MultiChartLayout {
             )
     }
 }
+
+ely_core::capable!(TimeRangeSelector: change(&SharedString));
+ely_core::capable!(IntervalSelector: change(&SharedString));
+ely_core::capable!(ChartTypeSwitcher: change(ChartKind));

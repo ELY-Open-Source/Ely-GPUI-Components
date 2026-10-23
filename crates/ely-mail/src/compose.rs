@@ -477,3 +477,5 @@ impl RenderOnce for MailComposer {
 
 #[cfg(test)]
 mod tests;
+
+ely_core::capable!(MailComposer: change(&Draft));

@@ -277,3 +277,5 @@ impl RenderOnce for TaskDetailPanel {
             .children(steps)
     }
 }
+
+ely_core::capable!(TaskDetailPanel: change(&Task));

@@ -465,3 +465,7 @@ mod tests {
         assert_eq!(keyed("a", 5.0, 0.0, 100.0, 1.0), None);
     }
 }
+
+crate::capable!(Slider: disabled, change(f64));
+
+crate::capable!(RangeSlider: disabled, change((f64, f64)));

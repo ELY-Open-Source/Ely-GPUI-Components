@@ -103,3 +103,13 @@ impl RenderOnce for ImageThumbnail {
             .child(picture)
     }
 }
+
+impl ely_core::primitives::Selectable for ImageThumbnail {
+    fn selected(self, selected: bool) -> Self {
+        ImageThumbnail::selected(self, selected)
+    }
+
+    fn is_selected(&self) -> bool {
+        self.selected
+    }
+}

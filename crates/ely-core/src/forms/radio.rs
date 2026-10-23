@@ -269,3 +269,6 @@ impl RenderOnce for RadioGroup {
             .children(radios)
     }
 }
+
+crate::capable!(Radio: disabled);
+crate::capable!(RadioGroup: change(&SharedString));

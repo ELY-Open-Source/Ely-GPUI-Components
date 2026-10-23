@@ -371,3 +371,5 @@ mod tests {
         );
     }
 }
+
+ely_core::capable!(SubtitleEditor: change(&[Cue]));

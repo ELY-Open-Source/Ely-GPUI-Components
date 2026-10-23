@@ -207,3 +207,5 @@ mod tests {
         assert_eq!(marks(2.0), [1.0, 2.0]);
     }
 }
+
+ely_core::capable!(LeverageSlider: change(f64));

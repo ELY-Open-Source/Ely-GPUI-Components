@@ -92,3 +92,5 @@ impl RenderOnce for UnitInput {
         self.field.suffix(unit)
     }
 }
+
+crate::capable!(UnitInput: change(f64));

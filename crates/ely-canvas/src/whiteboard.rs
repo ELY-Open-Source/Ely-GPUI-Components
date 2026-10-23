@@ -319,3 +319,5 @@ impl RenderOnce for Whiteboard {
             )
     }
 }
+
+ely_core::capable!(Whiteboard: change(Board));

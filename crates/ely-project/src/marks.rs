@@ -237,3 +237,14 @@ impl RenderOnce for AssigneePicker {
             })
     }
 }
+
+ely_core::capable!(StatusSelect: size, change(Status));
+ely_core::capable!(AssigneePicker: size);
+
+impl ely_core::primitives::Changeable for AssigneePicker {
+    type Value<'a> = Option<&'a Person>;
+
+    fn on_change(self, handler: impl Fn(Option<&Person>, &mut Window, &mut App) + 'static) -> Self {
+        AssigneePicker::on_change(self, handler)
+    }
+}

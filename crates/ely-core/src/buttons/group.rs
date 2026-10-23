@@ -374,3 +374,6 @@ mod tests {
         assert_eq!(pressed(&values(&["b"]), &b, false), values(&[]));
     }
 }
+
+crate::capable!(ToggleButton: size, disabled);
+crate::capable!(ToggleGroup: size, change(&[SharedString]));

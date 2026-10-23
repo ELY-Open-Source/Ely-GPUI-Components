@@ -304,3 +304,5 @@ mod tests {
         assert!(ink(&line, origin, px(2.0)).is_some());
     }
 }
+
+crate::capable!(SignaturePad: change(&[Stroke]));

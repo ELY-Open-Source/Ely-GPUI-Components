@@ -48,7 +48,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 - [x] C1 O-09 Public surface audit, core: non-essential items to `pub(crate)`.
 - [x] C2 O-09 Public surface audit, verticals.
-- [ ] C3 O-11 Capability traits (size, disabled, selected, value change) after GPUI Kit's `Sizable`, `Disableable`, `Selectable`; every component with the capability implements them; a generic test compiles.
+- [x] C3 O-11 Capability traits (size, disabled, selected, value change) after GPUI Kit's `Sizable`, `Disableable`, `Selectable`; every component with the capability implements them; a generic test compiles.
 - [ ] C4 O-12 Container list in the repo; every listed component implements `ParentElement`; a test reads the list.
 - [ ] C5 O-22 Line cap becomes an 800-line warning in check.sh; files under 40 lines merge by responsibility.
 - [ ] C6 O-10 Rustdoc, core chapters 1–14 and theme, i18n: `#![deny(missing_docs)]`, a doctest per component.

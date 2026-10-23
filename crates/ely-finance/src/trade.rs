@@ -376,3 +376,5 @@ impl RenderOnce for OrderConfirmDialog {
         }
     }
 }
+
+ely_core::capable!(OrderEntry: change(Order));

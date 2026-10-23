@@ -118,3 +118,5 @@ impl RenderOnce for InputGroup {
             .children(self.after.into_iter().map(|block| addon(block, false)))
     }
 }
+
+crate::capable!(InputGroup: size);

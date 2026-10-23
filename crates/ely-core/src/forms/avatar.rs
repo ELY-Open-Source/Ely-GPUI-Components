@@ -167,3 +167,5 @@ mod tests {
         assert_eq!(picture(&[]), Err("nothing came"));
     }
 }
+
+crate::capable!(AvatarUpload: change(PathBuf));

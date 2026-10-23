@@ -168,3 +168,5 @@ mod tests {
         checked(&[10, 10]);
     }
 }
+
+ely_core::capable!(ReminderPicker: change(&[u32]));

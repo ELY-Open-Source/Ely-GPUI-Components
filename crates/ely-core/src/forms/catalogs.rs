@@ -218,3 +218,5 @@ mod tests {
         assert_eq!(titled(""), "");
     }
 }
+
+crate::capable!(FontPicker: change(&SharedString));

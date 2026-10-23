@@ -256,3 +256,5 @@ fn natural(
         sum + pad + width + if icon.is_some() { glyph } else { Pixels::ZERO }
     })
 }
+
+crate::capable!(SegmentedControl: size, change(&SharedString));

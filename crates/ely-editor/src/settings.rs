@@ -383,6 +383,19 @@ fn places(value: f64, step: f64) -> usize {
     decimals(step).max(own)
 }
 
+impl ely_core::primitives::Changeable for SettingsEditor {
+    type Value<'a> = (&'a SharedString, SettingValue);
+
+    fn on_change(
+        self,
+        handler: impl Fn((&SharedString, SettingValue), &mut Window, &mut App) + 'static,
+    ) -> Self {
+        SettingsEditor::on_change(self, move |key, value, window, cx| {
+            handler((key, value), window, cx)
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

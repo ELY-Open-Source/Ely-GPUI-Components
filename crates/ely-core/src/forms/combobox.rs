@@ -299,3 +299,5 @@ mod tests {
         assert_eq!(labels("no"), ["Oslo"]);
     }
 }
+
+crate::capable!(Combobox: size, change(&SharedString));

@@ -407,3 +407,5 @@ mod tests {
         assert_eq!(alpha.a, 0.25);
     }
 }
+
+crate::capable!(ColorPicker: change(Hsla));

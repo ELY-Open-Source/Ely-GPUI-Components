@@ -174,3 +174,18 @@ mod tests {
         );
     }
 }
+
+crate::capable!(RelativeDatePicker: size);
+
+impl crate::primitives::Changeable for RelativeDatePicker {
+    type Value<'a> = (RelativeRange, (Date, Date));
+
+    fn on_change(
+        self,
+        handler: impl Fn((RelativeRange, (Date, Date)), &mut Window, &mut App) + 'static,
+    ) -> Self {
+        RelativeDatePicker::on_change(self, move |range, span, window, cx| {
+            handler((range, span), window, cx)
+        })
+    }
+}

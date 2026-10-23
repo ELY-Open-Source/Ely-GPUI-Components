@@ -165,3 +165,5 @@ impl RenderOnce for Switch {
             }))
     }
 }
+
+crate::capable!(Switch: disabled, change(bool));

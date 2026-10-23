@@ -493,3 +493,7 @@ mod tests {
         );
     }
 }
+
+crate::capable!(TimePicker: size, disabled, change(Time));
+crate::capable!(DateTimePicker: size, change(DateTime));
+crate::capable!(DurationPicker: change(Duration));

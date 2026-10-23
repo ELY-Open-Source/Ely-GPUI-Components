@@ -334,3 +334,5 @@ mod tests {
         );
     }
 }
+
+crate::capable!(GradientEditor: change(&[GradientStop]));

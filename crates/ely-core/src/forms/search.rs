@@ -119,3 +119,5 @@ impl RenderOnce for SearchInput {
             })
     }
 }
+
+crate::capable!(SearchInput: size);

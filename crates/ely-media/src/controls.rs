@@ -327,3 +327,5 @@ mod tests {
         assert_eq!(Repeat::One.next(), Repeat::Off);
     }
 }
+
+ely_core::capable!(PlaybackSpeedControl: change(f32));

@@ -335,3 +335,18 @@ mod tests {
         assert_eq!(levels[5], (1.0, 100.0), "all the way back");
     }
 }
+
+ely_core::capable!(DrawingToolbar: change(Option<Tool>));
+
+impl ely_core::primitives::Changeable for IndicatorSelector {
+    type Value<'a> = (Vec<Overlay>, Vec<Study>);
+
+    fn on_change(
+        self,
+        handler: impl Fn((Vec<Overlay>, Vec<Study>), &mut Window, &mut App) + 'static,
+    ) -> Self {
+        IndicatorSelector::on_change(self, move |overlays, studies, window, cx| {
+            handler((overlays, studies), window, cx)
+        })
+    }
+}

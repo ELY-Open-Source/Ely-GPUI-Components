@@ -264,3 +264,5 @@ impl RenderOnce for ImageCropper {
             })
     }
 }
+
+ely_core::capable!(ImageCropper: change(Crop));

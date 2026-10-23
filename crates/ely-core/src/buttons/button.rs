@@ -328,3 +328,5 @@ impl RenderOnce for Button {
             })
     }
 }
+
+crate::capable!(Button: size, disabled);

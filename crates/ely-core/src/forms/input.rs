@@ -221,3 +221,6 @@ impl RenderOnce for PasswordInput {
             )
     }
 }
+
+crate::capable!(Input: size);
+crate::capable!(PasswordInput: size);

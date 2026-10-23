@@ -392,3 +392,6 @@ impl RenderOnce for DateRangePicker {
         )
     }
 }
+
+crate::capable!(DatePicker: size, disabled, change(Date));
+crate::capable!(DateRangePicker: size, change((Date, Date)));

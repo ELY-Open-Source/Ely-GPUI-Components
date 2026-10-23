@@ -185,3 +185,5 @@ mod tests {
         );
     }
 }
+
+ely_core::capable!(ScheduleSend: disabled);

@@ -148,3 +148,6 @@ mod tests {
         assert!(!is_url("https://nodot"));
     }
 }
+
+crate::capable!(EmailInput: size);
+crate::capable!(UrlInput: size);

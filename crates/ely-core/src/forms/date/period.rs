@@ -467,3 +467,7 @@ mod tests {
         assert_eq!(page_of(-5), -12);
     }
 }
+
+crate::capable!(MonthPicker: change((i16, i8)));
+crate::capable!(QuarterPicker: change((i16, i8)));
+crate::capable!(YearPicker: change(i16));

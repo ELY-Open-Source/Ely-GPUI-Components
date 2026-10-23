@@ -455,3 +455,5 @@ mod tests {
         );
     }
 }
+
+crate::capable!(SelectableList: change(&[SharedString]));

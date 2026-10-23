@@ -287,3 +287,5 @@ impl RenderOnce for RecurrenceEditor {
             })
     }
 }
+
+ely_core::capable!(RecurrenceEditor: change(Option<Recurrence>));

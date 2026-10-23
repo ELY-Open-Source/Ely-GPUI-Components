@@ -294,3 +294,5 @@ mod tests {
         assert_eq!(kinds("\"a\n1"), [("\"a", Kind::Text), ("1", Kind::Number)]);
     }
 }
+
+crate::capable!(CodeInput: size);

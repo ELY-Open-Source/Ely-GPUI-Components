@@ -287,3 +287,5 @@ fn let_go(state: &gpui::Entity<Confirm>, cx: &mut App) {
         cx.notify();
     });
 }
+
+crate::capable!(ConfirmButton: size);

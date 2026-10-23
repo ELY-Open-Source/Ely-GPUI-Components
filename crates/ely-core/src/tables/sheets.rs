@@ -164,3 +164,6 @@ impl RenderOnce for Spreadsheet {
         grid(face, self.base, window, cx)
     }
 }
+
+crate::capable!(DataGrid: change(&[(usize, usize, SharedString)]));
+crate::capable!(Spreadsheet: change(&[(usize, usize, SharedString)]));

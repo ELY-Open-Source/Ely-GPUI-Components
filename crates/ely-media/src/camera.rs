@@ -242,3 +242,5 @@ mod tests {
         assert_eq!(selector.chosen("a").chosen("gone").chosen, None);
     }
 }
+
+ely_core::capable!(DeviceSelector: change(&SharedString));

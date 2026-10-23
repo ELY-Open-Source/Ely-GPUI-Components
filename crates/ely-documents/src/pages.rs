@@ -181,3 +181,5 @@ impl RenderOnce for PageIcon {
             .children(picker)
     }
 }
+
+ely_core::capable!(PageIcon: change(&SharedString));

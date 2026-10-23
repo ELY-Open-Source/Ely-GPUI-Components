@@ -435,3 +435,5 @@ impl RenderOnce for ImageAnnotator {
             .child(area)
     }
 }
+
+ely_core::capable!(ImageAnnotator: change(&[Mark]));

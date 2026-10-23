@@ -194,3 +194,5 @@ mod tests {
         assert_eq!(chosen(&rows, &values(&["a", "c"]), 2, true), values(&["a"]));
     }
 }
+
+crate::capable!(ListBox: change(&[SharedString]));

@@ -456,3 +456,18 @@ mod tests {
         assert_eq!(offered("b"), ["b", "c"]);
     }
 }
+
+crate::capable!(SortBuilder: change(&[SortKey]));
+
+impl crate::primitives::Changeable for FilterBuilder {
+    type Value<'a> = (&'a [FilterRule], bool);
+
+    fn on_change(
+        self,
+        handler: impl Fn((&[FilterRule], bool), &mut Window, &mut App) + 'static,
+    ) -> Self {
+        FilterBuilder::on_change(self, move |rules, all, window, cx| {
+            handler((rules, all), window, cx)
+        })
+    }
+}

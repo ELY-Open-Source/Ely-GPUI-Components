@@ -402,3 +402,5 @@ mod tests {
         fs::remove_dir_all(dir).unwrap();
     }
 }
+
+crate::capable!(FileInput: change(Vec<PathBuf>));

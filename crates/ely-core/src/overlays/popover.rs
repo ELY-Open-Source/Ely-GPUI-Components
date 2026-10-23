@@ -237,3 +237,5 @@ impl RenderOnce for Popover {
         ))
     }
 }
+
+crate::capable!(Popover: size);

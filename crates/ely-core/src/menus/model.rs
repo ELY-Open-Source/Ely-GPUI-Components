@@ -221,3 +221,5 @@ impl Menu {
         }
     }
 }
+
+crate::capable!(MenuItem: disabled);

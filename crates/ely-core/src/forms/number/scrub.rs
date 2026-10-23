@@ -43,3 +43,5 @@ impl RenderOnce for ScrubInput {
         self.field
     }
 }
+
+crate::capable!(ScrubInput: change(f64));

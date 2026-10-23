@@ -215,3 +215,6 @@ mod tests {
         assert_eq!(glyphs("").len(), emojis::iter().count());
     }
 }
+
+crate::capable!(IconPicker: change(IconName));
+crate::capable!(EmojiPicker: change(&str));

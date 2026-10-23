@@ -431,6 +431,19 @@ impl RenderOnce for TransactionList {
     }
 }
 
+impl ely_core::primitives::Changeable for CurrencyConverter {
+    type Value<'a> = (f64, SharedString, SharedString);
+
+    fn on_change(
+        self,
+        handler: impl Fn((f64, SharedString, SharedString), &mut Window, &mut App) + 'static,
+    ) -> Self {
+        CurrencyConverter::on_change(self, move |amount, from, to, window, cx| {
+            handler((amount, from, to), window, cx)
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{amount, shortened};

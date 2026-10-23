@@ -182,3 +182,5 @@ mod tests {
         assert_eq!(found[5].0, 8..15);
     }
 }
+
+crate::capable!(RegexInput: size);

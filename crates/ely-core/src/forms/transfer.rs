@@ -215,3 +215,5 @@ mod tests {
         );
     }
 }
+
+crate::capable!(TransferList: change(&[SharedString]));

@@ -232,3 +232,5 @@ impl RenderOnce for MultiSelect {
             })
     }
 }
+
+crate::capable!(MultiSelect: size, change(&[SharedString]));

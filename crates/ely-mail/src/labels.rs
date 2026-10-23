@@ -281,3 +281,5 @@ impl RenderOnce for LabelPicker {
             )
     }
 }
+
+ely_core::capable!(LabelPicker: change(&[SharedString]));

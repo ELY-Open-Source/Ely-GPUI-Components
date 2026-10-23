@@ -357,3 +357,5 @@ mod tests {
         );
     }
 }
+
+crate::capable!(MaskedInput: size);

@@ -132,3 +132,5 @@ impl RenderOnce for SignatureEditor {
             .child(signature_block(&words, cx))
     }
 }
+
+ely_core::capable!(SignatureEditor: change(&SharedString));

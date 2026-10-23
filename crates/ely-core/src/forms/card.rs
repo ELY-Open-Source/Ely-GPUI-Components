@@ -251,3 +251,6 @@ impl RenderOnce for RadioCard {
         card(self.id, self.face, mark, &focus, press, window, cx)
     }
 }
+
+crate::capable!(CheckboxCard: disabled, change(bool));
+crate::capable!(RadioCard: disabled);

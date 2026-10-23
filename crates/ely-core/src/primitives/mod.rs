@@ -1,4 +1,5 @@
 mod backdrop;
+mod capability;
 mod caret;
 mod disclosure;
 mod divider;
@@ -19,6 +20,7 @@ mod tooltip;
 mod tests;
 
 pub use backdrop::{Backdrop, Place};
+pub use capability::{Changeable, Disableable, Selectable, Sizable};
 pub use caret::caret_bar;
 pub(crate) use caret::caret_width;
 pub use disclosure::Disclosure;

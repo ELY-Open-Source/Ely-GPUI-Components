@@ -322,3 +322,5 @@ impl RenderOnce for TagInput {
             .children(popup)
     }
 }
+
+crate::capable!(TagInput: change(Vec<SharedString>));

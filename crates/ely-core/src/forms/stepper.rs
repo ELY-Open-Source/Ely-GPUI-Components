@@ -107,3 +107,5 @@ impl RenderOnce for Stepper {
             )
     }
 }
+
+crate::capable!(Stepper: change(f64));

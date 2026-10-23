@@ -304,3 +304,5 @@ impl RenderOnce for LoadMore {
             })
     }
 }
+
+crate::capable!(Pagination: size, change(usize));

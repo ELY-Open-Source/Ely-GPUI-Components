@@ -304,3 +304,6 @@ mod tests {
         );
     }
 }
+
+crate::capable!(Checkbox: disabled, change(bool));
+crate::capable!(CheckboxGroup: change(&[SharedString]));

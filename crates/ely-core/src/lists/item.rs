@@ -300,3 +300,15 @@ impl RenderOnce for List {
             }))
     }
 }
+
+crate::capable!(ListItem: disabled);
+
+impl crate::primitives::Selectable for ListItem {
+    fn selected(self, selected: bool) -> Self {
+        ListItem::selected(self, selected)
+    }
+
+    fn is_selected(&self) -> bool {
+        self.selected
+    }
+}

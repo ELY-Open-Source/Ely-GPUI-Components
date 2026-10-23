@@ -104,3 +104,5 @@ mod tests {
         assert_eq!(show_offset(Offset::UTC), "UTC+00:00");
     }
 }
+
+crate::capable!(TimezoneSelect: change(&SharedString));

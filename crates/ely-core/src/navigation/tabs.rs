@@ -347,3 +347,5 @@ fn natural(tabs: &[Choice], window: &Window, cx: &App) -> Pixels {
         sum + pad + icon + text(&tab.label) + note + gap
     })
 }
+
+crate::capable!(Tabs: change(&SharedString));
