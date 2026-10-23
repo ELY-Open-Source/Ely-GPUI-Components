@@ -14,16 +14,10 @@ test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detecti
 [dependencies]
 ely-core.workspace = true
 ely-canvas.workspace = true
-ely-devtools.workspace = true
 anyhow.workspace = true
-futures.workspace = true
 gpui.workspace = true
 log.workspace = true
 serde_json.workspace = true
-web-time.workspace = true
-
-[target.'cfg(not(target_family = "wasm"))'.dependencies]
-notify = "8"
 
 [lints]
 workspace = true

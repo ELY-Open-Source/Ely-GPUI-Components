@@ -9,6 +9,7 @@ license = "MIT"
 repository = "https://github.com/ELY-Open-Source/Ely-GPUI-Components"
 
 [workspace.dependencies]
+ely-desktop = { path = "crates/ely-desktop", version = "0.1.1" }
 ely-rendering = { path = "crates/ely-rendering", version = "0.1.1" }
 ely-tooling = { path = "crates/ely-tooling", version = "0.1.1" }
 ely-misc = { path = "crates/ely-misc", version = "0.1.1" }
@@ -91,6 +92,7 @@ ely-collab.workspace = true
 ely-core.workspace = true
 ely-dashboard.workspace = true
 ely-debug.workspace = true
+ely-desktop.workspace = true
 ely-devtools.workspace = true
 ely-documents.workspace = true
 ely-editor.workspace = true

@@ -14,6 +14,7 @@ pub use ely_core::{
 };
 pub use ely_dashboard as dashboard;
 pub use ely_debug as debug;
+pub use ely_desktop as desktop;
 pub use ely_devtools as devtools;
 pub use ely_documents as documents;
 pub use ely_editor as editor;

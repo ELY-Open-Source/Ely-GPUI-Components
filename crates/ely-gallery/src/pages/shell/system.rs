@@ -1,6 +1,6 @@
 use ely_gpui_component::{
     buttons::{Button, ButtonVariant},
-    shell::{TrayIcon, TrayItem, TrayLook, dock_badge, set_dock_badge},
+    desktop::{TrayIcon, TrayItem, TrayLook, dock_badge, set_dock_badge},
     typography::Caption,
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Window};

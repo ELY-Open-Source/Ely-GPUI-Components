@@ -33,6 +33,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] B6 O-01 Verticals, chapters 35–44: settings, account, onboarding, interaction, maps, misc, tooling, rendering.
   - From B2, done in B6: `countries.geojson` leaves core's assets for `crates/ely-maps/assets`, read with `include_str!`.
 - [ ] B7 O-03 `ely-desktop`: tray, Dock badge, Omarchy; `cargo tree -p ely-core -i notify` and `-i zbus` print nothing.
+  - Done: the tray, the Dock badge and Omarchy live in `crates/ely-desktop`; `cargo tree -p ely-core -i notify` prints nothing.
+  - Open, partial: `-i zbus` still prints, through gpui's Linux backend (`gpui-pre-platform` → `gpui-pre-linux` → accesskit, ashpd, oo7, notify-rust). Core takes `gpui_platform` only to turn on `font-kit`, `wayland` and `x11`, as GPUI Kit 0.8.0 does; dropping it would leave an app that relied on core without macOS text or a Linux window, in silence. Owner's call.
 - [ ] B8 O-02 Features: heavy dependencies default off where a crate can stand without them; a Button-only program pulls none of zbus, ratex-svg, mermaid-rs-renderer, alacritty_terminal, isolang, rqrr, notify.
 - [ ] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
 - [ ] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.

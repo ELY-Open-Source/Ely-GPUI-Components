@@ -4,7 +4,7 @@ use gpui::TestAppContext;
 
 use super::{TrayIcon, TrayItem, TrayLook};
 
-const PNG: &[u8] = include_bytes!("../../../../ely-gallery/assets/stickers/olive.png");
+const PNG: &[u8] = include_bytes!("../../../ely-gallery/assets/stickers/olive.png");
 
 fn look(png: &'static [u8]) -> TrayLook {
     TrayLook {

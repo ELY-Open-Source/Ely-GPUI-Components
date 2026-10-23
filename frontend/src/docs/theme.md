@@ -43,7 +43,7 @@ The color calls log at the `info` level, so a theme change shows in the app's lo
 On Omarchy, Linux, an app can wear the system's theme. Every component paints from the palette, so all of them follow.
 
 ```rust
-use ely_gpui_component::settings::{follow_omarchy, omarchy_current_dir};
+use ely_gpui_component::desktop::{follow_omarchy, omarchy_current_dir};
 
 if let Some(current) = omarchy_current_dir() {
     follow_omarchy(current, cx)?;

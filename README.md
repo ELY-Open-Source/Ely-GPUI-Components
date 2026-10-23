@@ -36,7 +36,7 @@ Ely runs beside Longbridge's [GPUI Kit](https://gpui-kit.com) in one window, on 
 
 ## On Omarchy
 
-`settings::follow_omarchy(dir, cx)` dresses every component in Omarchy's current theme and follows each switch; `settings::omarchy_current_dir()` finds the folder, and `stop_omarchy` gives Ely's palettes back. The [theme guide](https://elygpui.com/docs/theme) says how the colors map.
+`desktop::follow_omarchy(dir, cx)` dresses every component in Omarchy's current theme and follows each switch; `desktop::omarchy_current_dir()` finds the folder, and `stop_omarchy` gives Ely's palettes back. The [theme guide](https://elygpui.com/docs/theme) says how the colors map.
 
 ## Gallery
 
