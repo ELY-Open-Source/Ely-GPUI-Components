@@ -88,3 +88,44 @@ fn a_kept_scroll_that_fits_shows_no_thumb(cx: &mut TestAppContext) {
     let (_, cx) = opened(true, cx);
     assert!(cx.debug_bounds("scrollbar-thumb").is_none());
 }
+
+/// A tall area; its renders, bounded so a loop fails.
+struct Tall(usize);
+
+impl Render for Tall {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        self.0 += 1;
+        assert!(self.0 < 100, "the area redraws without end");
+        super::ScrollArea::new("tall")
+            .vertical()
+            .w(px(300.))
+            .h(px(200.))
+            .child(div().h(px(2000.)))
+    }
+}
+
+#[gpui::test]
+fn a_bar_stays_while_the_pointer_rests_on_it(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| Tall(0));
+    cx.simulate_mouse_move(point(px(600.), px(400.)), None, Modifiers::none());
+    assert!(
+        cx.debug_bounds("scrollbar-thumb").is_none(),
+        "hidden outside"
+    );
+    cx.simulate_mouse_move(point(px(150.), px(100.)), None, Modifiers::none());
+    let thumb = cx.debug_bounds("scrollbar-thumb").expect("shown on hover");
+    for step in 0..4 {
+        let at = thumb.center() + point(px(0.), px(step as f32));
+        cx.simulate_mouse_move(at, None, Modifiers::none());
+        assert!(
+            cx.debug_bounds("scrollbar-thumb").is_some(),
+            "gone at move {step}"
+        );
+    }
+    cx.simulate_mouse_move(point(px(600.), px(100.)), None, Modifiers::none());
+    assert!(
+        cx.debug_bounds("scrollbar-thumb").is_none(),
+        "hidden once left"
+    );
+}

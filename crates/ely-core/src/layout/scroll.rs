@@ -88,11 +88,19 @@ struct Activity {
     last: Point<Pixels>,
     active_at: Option<Instant>,
     hovered: bool,
+    /// The pointer is on the area's own bar.
+    on_bar: bool,
+}
+
+impl Activity {
+    fn held(&self) -> bool {
+        self.hovered || self.on_bar
+    }
 }
 
 /// Visibility 0..=1: full while active, fading after `IDLE`.
 fn presence(activity: &Activity, fade: Duration) -> f32 {
-    if activity.hovered {
+    if activity.held() {
         return 1.0;
     }
     let Some(at) = activity.active_at else {
@@ -133,6 +141,8 @@ pub struct Scrollbar {
     handle: ScrollSource,
     axis: Axis,
     shown: Shown,
+    /// The area whose hover its track holds.
+    area: Option<Entity<Activity>>,
 }
 
 impl Scrollbar {
@@ -143,7 +153,14 @@ impl Scrollbar {
             handle: source.into(),
             axis,
             shown: Shown::Given(1.0),
+            area: None,
         }
+    }
+
+    /// Keeps `area` shown while the pointer is on the track.
+    fn within(mut self, area: &Entity<Activity>) -> Self {
+        self.area = Some(area.clone());
+        self
     }
 
     /// Fades the thumb; 0 hides it.
@@ -174,6 +191,7 @@ impl RenderOnce for Scrollbar {
                 last: Point::default(),
                 active_at: None,
                 hovered: false,
+                on_bar: false,
             })
         });
         let given = match self.shown {
@@ -249,6 +267,14 @@ impl RenderOnce for Scrollbar {
                 track.on_hover(move |hovered, _, cx| {
                     state.update(cx, |activity, cx| {
                         activity.hovered = *hovered;
+                        cx.notify();
+                    })
+                })
+            })
+            .when_some(self.area, |track, area| {
+                track.on_hover(move |on, _, cx| {
+                    area.update(cx, |activity, cx| {
+                        activity.on_bar = *on;
                         cx.notify();
                     })
                 })
@@ -348,7 +374,7 @@ fn track_activity(
     }
     let fade = motion::duration(motion::SLOW, cx);
     let presence = presence(state.read(cx), fade);
-    if presence > 0.0 && !state.read(cx).hovered {
+    if presence > 0.0 && !state.read(cx).held() {
         window.request_animation_frame();
     }
     presence
@@ -361,6 +387,7 @@ impl RenderOnce for ScrollArea {
             last: Point::default(),
             active_at: None,
             hovered: false,
+            on_bar: false,
         });
         let handle = match self.handle {
             Some(handle) => handle,
@@ -372,11 +399,14 @@ impl RenderOnce for ScrollArea {
             .relative()
             .overflow_hidden()
             .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
-            .on_hover(move |hovered, _, cx| {
-                state.update(cx, |activity, cx| {
-                    activity.hovered = *hovered;
-                    cx.notify();
-                })
+            .on_hover({
+                let state = state.clone();
+                move |hovered, _, cx| {
+                    state.update(cx, |activity, cx| {
+                        activity.hovered = *hovered;
+                        cx.notify();
+                    })
+                }
             })
             .child(
                 div()
@@ -409,10 +439,16 @@ impl RenderOnce for ScrollArea {
                     }),
             )
             .when(self.shadows, |area| area.child(ScrollShadow::new(&handle)))
-            .child(Scrollbar::new("scrollbar-y", &handle, Axis::Vertical).presence(presence))
+            .child(
+                Scrollbar::new("scrollbar-y", &handle, Axis::Vertical)
+                    .presence(presence)
+                    .within(&state),
+            )
             .when(!self.vertical, |area| {
                 area.child(
-                    Scrollbar::new("scrollbar-x", &handle, Axis::Horizontal).presence(presence),
+                    Scrollbar::new("scrollbar-x", &handle, Axis::Horizontal)
+                        .presence(presence)
+                        .within(&state),
                 )
             })
     }
