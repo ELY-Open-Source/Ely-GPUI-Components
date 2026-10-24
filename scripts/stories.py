@@ -86,7 +86,7 @@ def functions(folder):
     found = {}
     for file in sorted(folder.rglob("*.rs")):
         module = file.stem
-        text = file.read_text()
+        text = file.read_text(encoding="utf-8")
         bare = strip(text)
         for m in re.finditer(r"\bfn\s+(\w+)\b", bare):
             depth, j = 0, bare.index("{", m.end())
@@ -169,7 +169,7 @@ def entries():
     """Component names by key, and ticked entries with a home."""
     names, homed = {}, []
     for file in sorted((ROOT / "tasks").glob("ch*.md")):
-        for line in file.read_text().splitlines():
+        for line in file.read_text(encoding="utf-8").splitlines():
             if m := re.match(r"- \[([ x])\] (.+?)(?: — | → | \(T\d|$)", line):
                 aliases = [re.sub(r"\s*\([^)]*\)", "", name).strip() for name in m.group(2).split(" / ")]
                 for name in aliases:
@@ -202,7 +202,7 @@ def components(title, extra, known):
 
 
 def pages():
-    listing = (PAGES / "mod.rs").read_text()
+    listing = (PAGES / "mod.rs").read_text(encoding="utf-8")
     order = re.findall(r"^\s+(\w+)::PAGE,$", listing, re.M)
     known, homed = entries()
     for (page, lead), extra in SHOWN.items():
@@ -212,7 +212,7 @@ def pages():
     out, shown = [], dict(SHOWN)
     for module in order:
         folder = PAGES / module
-        head = (folder / "mod.rs").read_text()
+        head = (folder / "mod.rs").read_text(encoding="utf-8")
         field = lambda name: re.search(rf"^\s+{name}: (.+),$", head, re.M).group(1)
         page = json.loads(field("slug"))
         titles = sections(folder)
@@ -245,12 +245,12 @@ def main():
     rows = [json.dumps(page, ensure_ascii=False) for page in pages()]
     text = '{"pages": [\n' + ",\n".join(rows) + "\n]}\n"
     if sys.argv[1:] == ["--check"]:
-        if OUT.read_text() != text:
+        if OUT.read_text(encoding="utf-8") != text:
             sys.exit(f"{OUT.relative_to(ROOT)} is stale: run python3 scripts/stories.py")
     elif sys.argv[1:]:
         sys.exit("usage: python3 scripts/stories.py [--check]")
     else:
-        OUT.write_text(text)
+        OUT.write_text(text, encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":

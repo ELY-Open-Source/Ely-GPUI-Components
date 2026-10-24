@@ -31,7 +31,7 @@ def polygon(rings):
 
 def main(source):
     features = []
-    for feature in json.load(open(source))["features"]:
+    for feature in json.load(open(source, encoding="utf-8"))["features"]:
         props, shape = feature["properties"], feature["geometry"]
         polygons = [shape["coordinates"]] if shape["type"] == "Polygon" else shape["coordinates"]
         kept = [each for each in (polygon(rings) for rings in polygons) if each]
@@ -43,7 +43,7 @@ def main(source):
             "geometry": {"type": "MultiPolygon", "coordinates": kept},
         })
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps({"type": "FeatureCollection", "features": features}, separators=(",", ":")))
+    OUT.write_text(json.dumps({"type": "FeatureCollection", "features": features}, separators=(",", ":")), encoding="utf-8")
     print(f"wrote {len(features)} countries, {OUT.stat().st_size} bytes, to {OUT}")
 
 

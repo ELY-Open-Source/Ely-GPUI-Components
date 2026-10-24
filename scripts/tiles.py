@@ -30,7 +30,7 @@ def rings(geometry):
 
 
 def main(source):
-    shapes = [rings(feature["geometry"]) for feature in json.load(open(source))["features"]]
+    shapes = [rings(feature["geometry"]) for feature in json.load(open(source, encoding="utf-8"))["features"]]
     for z in ZOOMS:
         count = 2**z
         side = TILE * GRAIN
