@@ -1,4 +1,4 @@
-use std::{cell::RefCell, path::PathBuf, rc::Rc};
+use std::{cell::RefCell, ffi::OsStr, os::unix::ffi::OsStrExt, path::PathBuf, rc::Rc};
 
 use gpui::{
     AppContext as _, Context, Entity, IntoElement, KeyUpEvent, Keystroke, Render, TestAppContext,
@@ -43,10 +43,8 @@ fn text(field: &Entity<TextInput>, cx: &mut VisualTestContext) -> String {
     field.read_with(cx, |input, _| input.text().to_string())
 }
 
-#[cfg(unix)]
 #[gpui::test]
 fn a_path_not_in_utf_8_never_lands_in_the_field_as_another_s_name(cx: &mut TestAppContext) {
-    use std::{ffi::OsStr, os::unix::ffi::OsStrExt};
     setup(cx);
     let raw = PathBuf::from(OsStr::from_bytes(b"/tmp/chosen-\xff"));
     let (picker, cx) = cx.add_window_view(|window, cx| Picker {
