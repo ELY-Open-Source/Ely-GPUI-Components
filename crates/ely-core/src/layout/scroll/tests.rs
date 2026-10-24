@@ -90,13 +90,14 @@ fn a_kept_scroll_that_fits_shows_no_thumb(cx: &mut TestAppContext) {
 }
 
 /// A tall area; its renders, bounded so a loop fails.
-struct Tall(usize);
+struct Tall(usize, gpui::ScrollHandle);
 
 impl Render for Tall {
     fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
         self.0 += 1;
         assert!(self.0 < 100, "the area redraws without end");
         super::ScrollArea::new("tall")
+            .track_scroll(&self.1)
             .vertical()
             .w(px(300.))
             .h(px(200.))
@@ -104,10 +105,59 @@ impl Render for Tall {
     }
 }
 
+/// A tall area in a window, its thumb shown by hover.
+fn hovered(
+    cx: &mut TestAppContext,
+) -> (
+    gpui::Entity<Tall>,
+    &mut gpui::VisualTestContext,
+    gpui::Bounds<Pixels>,
+) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new()));
+    cx.simulate_mouse_move(point(px(150.), px(100.)), None, Modifiers::none());
+    let thumb = cx.debug_bounds("scrollbar-thumb").expect("shown on hover");
+    (view, cx, thumb)
+}
+
+#[gpui::test]
+fn a_key_with_the_pointer_on_the_bar_keeps_it(cx: &mut TestAppContext) {
+    let (_, cx, thumb) = hovered(cx);
+    cx.simulate_mouse_move(thumb.center(), None, Modifiers::none());
+    cx.simulate_keystrokes("ctrl-s");
+    assert!(
+        cx.debug_bounds("scrollbar-thumb").is_some(),
+        "gone after a key"
+    );
+}
+
+#[gpui::test]
+fn a_thumb_drags_without_a_scroll_first(cx: &mut TestAppContext) {
+    let (view, cx, thumb) = hovered(cx);
+    let grip = thumb.center();
+    cx.simulate_mouse_move(grip, None, Modifiers::none());
+    cx.simulate_mouse_down(grip, MouseButton::Left, Modifiers::none());
+    for down in [10., 20., 80.] {
+        let at = grip + point(px(0.), px(down));
+        cx.simulate_mouse_move(at, MouseButton::Left, Modifiers::none());
+        assert!(
+            cx.debug_bounds("scrollbar-thumb").is_some(),
+            "gone at {down}"
+        );
+    }
+    let offset = cx.update(|_, app| view.read(app).1.offset().y);
+    assert!(offset < px(0.), "the drag scrolled to {offset:?}");
+    cx.simulate_mouse_up(
+        grip + point(px(0.), px(80.)),
+        MouseButton::Left,
+        Modifiers::none(),
+    );
+}
+
 #[gpui::test]
 fn a_bar_stays_while_the_pointer_rests_on_it(cx: &mut TestAppContext) {
     cx.update(Theme::init);
-    let (_, cx) = cx.add_window_view(|_, _| Tall(0));
+    let (_, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new()));
     cx.simulate_mouse_move(point(px(600.), px(400.)), None, Modifiers::none());
     assert!(
         cx.debug_bounds("scrollbar-thumb").is_none(),

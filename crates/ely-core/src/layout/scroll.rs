@@ -178,9 +178,13 @@ impl Scrollbar {
 
 impl RenderOnce for Scrollbar {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let owner = window
-            .use_keyed_state(self.id.clone(), cx, |_, _| ())
-            .entity_id();
+        let grip = window.use_keyed_state(self.id.clone(), cx, |_, _| false);
+        let owner = grip.entity_id();
+        // Its own drag keeps it whole; gpui drops hover then.
+        let held = *grip.read(cx) && cx.has_active_drag();
+        if *grip.read(cx) && !held {
+            grip.update(cx, |grip, _| *grip = false);
+        }
         let theme = cx.theme();
         let rem = window.rem_size();
         let thickness = theme.scrollbar_thickness().to_pixels(rem);
@@ -201,6 +205,7 @@ impl RenderOnce for Scrollbar {
         let presence = activity.as_ref().map_or(given, |state| {
             track_activity(state, self.handle.offset(cx), window, cx)
         });
+        let presence = if held { 1.0 } else { presence };
         let hidden = activity.is_none() && presence <= 0.0;
         let Some(place) = self.handle.place(self.axis, cx).filter(|_| !hidden) else {
             return div().into_any_element();
@@ -230,7 +235,10 @@ impl RenderOnce for Scrollbar {
                     end: self.handle.end(),
                     anchor: Rc::new(Cell::new(None)),
                 },
-                |_, _, _, cx| cx.new(|_| EmptyView),
+                move |_, _, _, cx| {
+                    grip.update(cx, |grip, _| *grip = true);
+                    cx.new(|_| EmptyView)
+                },
             )
             .map(|thumb| match axis {
                 Axis::Vertical => thumb.top(start).left_0().w(thickness).h(length),
@@ -238,6 +246,7 @@ impl RenderOnce for Scrollbar {
             });
         let track = div()
             .id(self.id)
+            .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
             .absolute()
             .opacity(presence)
             // Nothing beneath sees its presses.
