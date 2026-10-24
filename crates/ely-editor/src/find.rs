@@ -189,6 +189,17 @@ pub(crate) fn count(
 
 impl RenderOnce for FindWidget {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let query = i18n::text(cx, "find.query", &[]);
+        if self.find.read(cx).label_text() != &query {
+            self.find
+                .update(cx, |field, cx| field.set_label(query.clone(), cx));
+        }
+        if let Some(field) = &self.replace {
+            let with = i18n::text(cx, "find.with", &[]);
+            if field.read(cx).label_text() != &with {
+                field.update(cx, |field, cx| field.set_label(with.clone(), cx));
+            }
+        }
         let theme = cx.theme();
         let colors = theme.colors.clone();
         let options = self.options;

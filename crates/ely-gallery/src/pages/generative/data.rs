@@ -188,7 +188,9 @@ struct Play {
 
 pub fn playground(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let template = window.use_keyed_state("gen-play-template", cx, |window, cx| {
-        let mut input = TextInput::new(window, cx).multi_line(2, 5);
+        let mut input = TextInput::new(window, cx)
+            .multi_line(2, 5)
+            .label("Template");
         input.set_text("Write three short notes on {topic} in a {tone} voice.", cx);
         input
     });

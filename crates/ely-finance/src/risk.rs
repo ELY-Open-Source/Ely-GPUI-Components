@@ -10,6 +10,7 @@ use crate::{
     charts::nice_step,
     data_display::{Gauge, Meter},
     forms::Slider,
+    i18n,
     theme::{ActiveTheme, TextSize},
     typography::tabular,
 };
@@ -87,6 +88,7 @@ impl RenderOnce for LeverageSlider {
             colors.fg
         };
         let slider = Slider::new(self.id.clone(), self.value)
+            .label(i18n::text(cx, "finance.leverage", &[]))
             .range(1.0, self.max)
             .step(1.0);
         let slider = match self.on_change {

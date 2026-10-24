@@ -6,6 +6,7 @@ use super::{DensitySelector, SettingsRow, SettingsSection};
 use crate::{
     canvas::color_well,
     forms::{Slider, Switch, hex},
+    i18n,
     theme::{ActiveTheme, Density, Palette, TextSize, Theme},
     typography::literal,
 };
@@ -129,6 +130,7 @@ impl RenderOnce for ThemeEditor {
                     .w(theme.label_width())
                     .child(
                         Slider::new((id.clone(), "corners"), draft.radius_scale as f64)
+                            .label(i18n::text(cx, "theme.corners", &[]))
                             .range(0.0, 2.0)
                             .step(0.25)
                             .on_change(move |next, window, cx| {
@@ -147,6 +149,7 @@ impl RenderOnce for ThemeEditor {
                     .w(theme.label_width())
                     .child(
                         Slider::new((id.clone(), "text"), draft.font_scale as f64)
+                            .label(i18n::text(cx, "theme.text", &[]))
                             .range(0.85, 1.3)
                             .step(0.05)
                             .on_change(move |next, window, cx| {
@@ -158,6 +161,7 @@ impl RenderOnce for ThemeEditor {
             .row(row(
                 "High contrast",
                 Switch::new((id.clone(), "contrast"), draft.high_contrast)
+                    .name(i18n::text(cx, "theme.contrast", &[]))
                     .on_change(move |on, window, cx| {
                         contrast(&|d: &mut ThemeDraft| d.high_contrast = on, window, cx)
                     })
@@ -166,6 +170,7 @@ impl RenderOnce for ThemeEditor {
             .row(row(
                 "Reduce motion",
                 Switch::new((id.clone(), "motion"), draft.reduced_motion)
+                    .name(i18n::text(cx, "theme.motion", &[]))
                     .on_change(move |on, window, cx| {
                         motion(&|d: &mut ThemeDraft| d.reduced_motion = on, window, cx)
                     })

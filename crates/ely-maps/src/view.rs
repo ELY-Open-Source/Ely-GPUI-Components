@@ -3,7 +3,7 @@ use std::{collections::HashSet, f64::consts::LOG2_E, rc::Rc};
 use gpui::{
     AnyElement, App, AppContext as _, Bounds, ElementId, EmptyView, Entity, EntityId, FocusHandle,
     ImageSource, InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div,
 };
 
 use super::{
@@ -15,6 +15,7 @@ use super::{
 };
 use crate::{
     buttons::{ButtonVariant, IconButton},
+    i18n,
     layout::seeded::use_seeded,
     primitives::{FocusRing, IconName, Takeover, give_back, tab_stop, take_focus},
     theme::{ActiveTheme, Radius, TextSize},
@@ -318,6 +319,8 @@ impl RenderOnce for MapView {
             (stage.clone(), stage.clone(), stage.clone(), stage);
         div()
             .id(id)
+            .role(Role::Group)
+            .aria_label(i18n::text(cx, "maps.map", &[]))
             .track_focus(&focus)
             .relative()
             .h_full()

@@ -3,12 +3,13 @@ use std::{rc::Rc, time::Duration};
 use gpui::{
     App, Bounds, Div, DragMoveEvent, ElementId, EmptyView, EntityId, HoverListenerMode,
     InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, Rems, RenderOnce,
-    SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*, relative,
-    transparent_black,
+    Role, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*,
+    relative, transparent_black,
 };
 
 use crate::{
     forms::keyed,
+    i18n,
     primitives::{FocusRing, tab_stop},
     theme::{ActiveTheme, Radius, TextSize},
     typography::{
@@ -303,6 +304,11 @@ impl RenderOnce for Scrubber {
                 let (pressed, dragged, keys) = (seek.clone(), seek.clone(), seek);
                 let (pressed_track, dragged_track) = (track.clone(), track.clone());
                 scrubber
+                    .role(Role::Slider)
+                    .aria_label(i18n::text(cx, "media.position", &[]))
+                    .aria_numeric_value(self.at.as_secs_f64().round())
+                    .aria_min_numeric_value(0.0)
+                    .aria_max_numeric_value(self.length.as_secs_f64().round())
                     .track_focus(&focus)
                     .focus_ring(cx)
                     .cursor_pointer()

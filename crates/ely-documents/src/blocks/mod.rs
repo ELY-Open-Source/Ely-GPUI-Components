@@ -178,6 +178,7 @@ impl BlockEditor {
             };
             let field = TextInput::new(window, cx)
                 .multi_line(1, usize::MAX)
+                .label(kind.label())
                 .placeholder(hint);
             match (code, kind.is_source()) {
                 (true, _) => field.highlighter(code_highlights),

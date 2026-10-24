@@ -132,6 +132,7 @@ pub fn gradient(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         "gradient",
         div().w(px(360.0)).child(
             GradientEditor::new("gradient-stops", now)
+                .label("Gradient")
                 .on_change(move |next, _, cx| set(&stops, next.to_vec(), cx)),
         ),
     ))

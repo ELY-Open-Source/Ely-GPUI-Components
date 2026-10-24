@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     transparent_black,
 };
 
@@ -10,6 +10,7 @@ use crate::{
     buttons::{Button, ButtonVariant},
     documents::source,
     forms::Pick,
+    i18n,
     motion::Skeleton,
     primitives::{Icon, IconName, Image, checked_ratio, framed, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
@@ -143,7 +144,13 @@ impl RenderOnce for GenerationGrid {
                         let open = self.on_open.clone();
                         frame
                             .when_some(open, |tile, open| {
-                                tile.track_focus(&focus)
+                                tile.role(Role::Button)
+                                    .aria_label(i18n::text(
+                                        cx,
+                                        "generative.result",
+                                        &[("n", &(ix + 1).to_string())],
+                                    ))
+                                    .track_focus(&focus)
                                     .cursor_pointer()
                                     .on_mouse_down(MouseButton::Left, |_, window, _| {
                                         window.prevent_default()

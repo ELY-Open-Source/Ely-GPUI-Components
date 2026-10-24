@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, App, ElementId, FontWeight, InteractiveElement, IntoElement,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     prelude::*,
 };
 
@@ -107,6 +107,8 @@ impl RenderOnce for ActionSheet {
         let row = |id: ElementId, label: SharedString, fg, strong: bool| {
             div()
                 .id(id)
+                .role(Role::Button)
+                .aria_label(label.clone())
                 .flex()
                 .items_center()
                 .justify_center()

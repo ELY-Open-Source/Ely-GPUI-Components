@@ -2,11 +2,12 @@ use std::{collections::HashMap, rc::Rc};
 
 use gpui::{
     AnyElement, App, AppContext, Bounds, Div, DragMoveEvent, ElementId, EmptyView, EntityId,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, StyleRefinement, Styled, Window, div,
 };
 
 use crate::{
+    i18n,
     primitives::{Measure, tab_stop},
     theme::{ActiveTheme, Radius},
 };
@@ -224,6 +225,8 @@ impl RenderOnce for SelectionArea {
         let (all, adding, now) = (order.clone(), selected.to_vec(), selected.clone());
         self.base
             .id(id.clone())
+            .role(Role::ListBox)
+            .aria_label(i18n::text(cx, "interaction.items", &[]))
             .relative()
             .track_focus(&focus)
             .on_drag(Band { owner, adding }, |_, _, _, cx| cx.new(|_| EmptyView))

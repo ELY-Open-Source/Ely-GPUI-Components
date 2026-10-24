@@ -61,7 +61,7 @@ pub fn rename(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
             .gap_2()
             .child(FileIcon::file(&now))
             .child(div().flex_1().min_w_0().child(
-                InlineEdit::new("files-rename", now).on_commit(move |text, _, cx| {
+                InlineEdit::new("files-rename", now).label("File name").on_commit(move |text, _, cx| {
                     change(&name, cx, |name| *name = text.clone())
                 }),
             )),
@@ -72,13 +72,14 @@ pub fn drop_files(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
     let dropped = keep("files-dropped", Vec::<DirEntry>::new, window, cx);
     let now = dropped.read(cx).clone();
     let take = dropped.clone();
-    let list = now
-        .iter()
-        .fold(SelectableList::new("files-dropped"), |list, entry| {
+    let list = now.iter().fold(
+        SelectableList::new("files-dropped").label("Dropped files"),
+        |list, entry| {
             let key = entry.name().clone();
             let id = SharedString::from(format!("files-dropped-{key}"));
             list.row(key, FileItem::new(id, entry.clone()).into())
-        });
+        },
+    );
     section(
         "DragDropFiles",
         "Files dropped in, as forms::DropZone takes them; each lands in the list below.",

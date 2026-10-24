@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, RenderOnce, StatefulInteractiveElement, Styled, Window, div, prelude::*,
-    relative, rems,
+    ParentElement, Pixels, RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div,
+    prelude::*, relative, rems,
 };
 use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
 
@@ -15,6 +15,7 @@ use super::{
 };
 use crate::{
     forms::OnValue,
+    i18n,
     layout::seeded::use_seeded,
     primitives::{FocusRing, tab_stop},
     theme::{ActiveTheme, Radius, TextSize},
@@ -186,6 +187,8 @@ impl Row<'_> {
             div()
                 .id((self.id.clone(), format!("more-{day}")))
                 .debug_selector(move || format!("more {day}"))
+                .role(Role::Button)
+                .aria_label(i18n::text(cx, "calendar.more", &[("n", &more.to_string())]))
                 .h(sizes.chip)
                 .flex()
                 .items_center()
@@ -201,11 +204,20 @@ impl Row<'_> {
                 .hover(|style| style.bg(colors.hover))
                 .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
                 .on_click(move |_, window, cx| open(day, window, cx))
-                .child(div().min_w_0().child(Ellipsis::new(format!("{more} more"))))
+                .child(div().min_w_0().child(Ellipsis::new(i18n::text(
+                    cx,
+                    "calendar.more",
+                    &[("n", &more.to_string())],
+                ))))
         });
         div()
             .id((self.id.clone(), format!("day-{day}")))
             .debug_selector(move || format!("day {day}"))
+            .role(Role::GridCell)
+            .aria_label(day.to_string())
+            .when(self.cursor == Some(day), |cell| {
+                cell.aria_active_descendant()
+            })
             .absolute()
             .top_0()
             .left(relative(column as f32 / 7.0))
@@ -448,6 +460,7 @@ impl RenderOnce for CalendarMonthView {
                     div()
                         .id((self.id.clone(), "grid"))
                         .debug_selector(|| "month-grid".into())
+                        .role(Role::Grid)
                         .track_focus(&focus)
                         .on_key_down(keys)
                         .border_t_1()

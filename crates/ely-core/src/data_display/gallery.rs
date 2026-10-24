@@ -1,6 +1,6 @@
 use gpui::{
     App, ElementId, InteractiveElement, IntoElement, MouseButton, ObjectFit, ParentElement,
-    RenderOnce, StatefulInteractiveElement, Styled, Window, div,
+    RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div,
 };
 
 use crate::{
@@ -74,6 +74,8 @@ impl RenderOnce for Gallery {
             tiles.push(
                 div()
                     .id((self.id.clone(), format!("tile-{ix}")))
+                    .role(Role::Button)
+                    .aria_label(slide.caption.clone())
                     .border_1()
                     .border_color(gpui::transparent_black())
                     .track_focus(&focus)

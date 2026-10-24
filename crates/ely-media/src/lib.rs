@@ -2,8 +2,8 @@
 #![deny(missing_docs)]
 
 use ely_core::{
-    buttons, data_display, feedback, forms, layout, lists, menus, motion, overlays, primitives,
-    theme, typography,
+    buttons, data_display, feedback, forms, i18n, layout, lists, menus, motion, overlays,
+    primitives, theme, typography,
 };
 use ely_documents as documents;
 use ely_generative as generative;

@@ -35,6 +35,16 @@ fn row(item: &MenuItem, ix: usize, current: bool, cx: &App) -> Stateful<Div> {
     };
     div()
         .id(("row", ix))
+        .map(|row| match &item.kind {
+            Kind::Check(on) => row.role(Role::MenuItemCheckBox).aria_toggled((*on).into()),
+            Kind::Radio(on) => row.role(Role::MenuItemRadio).aria_toggled((*on).into()),
+            _ => row.role(Role::MenuItem),
+        })
+        .aria_label(item.label.clone())
+        .aria_selected(current)
+        .when(item.disabled, |row| {
+            row.aria_description(i18n::text(cx, "state.unavailable", &[]))
+        })
         .relative()
         .flex()
         .items_center()
@@ -118,7 +128,6 @@ pub(super) fn button(
         .border_1()
         .border_color(colors.border)
         .aria_selected(current)
-        .when(current, |button| button.aria_active_descendant())
         .when(current && !item.disabled, |button| button.bg(colors.hover))
         .when(item.disabled, |button| {
             button.aria_description(i18n::text(cx, "state.unavailable", &[]))
@@ -164,6 +173,8 @@ pub(super) fn panel(
     let open = state.read(cx);
     let here = at_depth(menu, &open.levels, depth).expect("settled levels follow submenu rows");
     let at = open.levels[depth].at;
+    // Only the deepest open level's mark is what a reader hears.
+    let deepest = depth + 1 == open.levels.len();
     let theme = cx.theme();
     let colors = &theme.colors;
     let rows = here
@@ -193,7 +204,8 @@ pub(super) fn panel(
                     let press: Run = Rc::new(move |window, cx| {
                         choose(&click, &menu, depth, (ix, column), &close, window, cx)
                     });
-                    let drawn = button(item, (ix, column), current, press, cx);
+                    let drawn = button(item, (ix, column), current, press, cx)
+                        .when(current && deepest, |button| button.aria_active_descendant());
                     let left = state.clone();
                     let here = (depth, (ix, column));
                     drawn.when(!item.disabled, |button| {
@@ -217,6 +229,7 @@ pub(super) fn panel(
                 let hover_menu = menu.clone();
                 let label = item.label.clone();
                 row(item, ix, marked, cx)
+                    .when(marked && deepest, |row| row.aria_active_descendant())
                     .debug_selector(move || format!("menu-row-{label}"))
                     .when(!item.disabled, |row| {
                         let left = state.clone();

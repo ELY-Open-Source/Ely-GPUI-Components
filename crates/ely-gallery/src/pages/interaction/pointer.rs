@@ -284,6 +284,8 @@ pub fn shapes(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 "DoubleClick",
                 div()
                     .id("interaction-double")
+                    .role(gpui::Role::Button)
+                    .aria_label("Double press to open")
                     .px_4()
                     .py_3()
                     .rounded_lg()

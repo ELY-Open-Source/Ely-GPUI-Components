@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, ScrollHandle,
+    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role, ScrollHandle,
     SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
@@ -48,6 +48,7 @@ struct Cursor {
 #[derive(IntoElement)]
 pub struct ListBox {
     id: ElementId,
+    label: Option<SharedString>,
     choices: Vec<Choice>,
     selected: Vec<SharedString>,
     multiple: bool,
@@ -59,11 +60,18 @@ impl ListBox {
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
+            label: None,
             choices: choices.into_iter().collect(),
             selected: Vec::new(),
             multiple: false,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// The values chosen.
@@ -144,6 +152,8 @@ impl RenderOnce for ListBox {
         let keys = choices.clone();
         div()
             .id(self.id)
+            .role(Role::ListBox)
+            .when_some(self.label, |list, label| list.aria_label(label))
             .track_focus(&focus)
             .track_scroll(&scroll)
             .overflow_y_scroll()

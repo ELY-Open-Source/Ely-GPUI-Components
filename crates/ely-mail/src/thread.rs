@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FocusHandle, FontWeight, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled,
     Window, div, prelude::*,
 };
 use jiff::{Timestamp, tz::TimeZone};
@@ -151,6 +151,9 @@ impl RenderOnce for MailThreadView {
                 let open = ix == newest || open_now.contains(&message.key);
                 let part = if open {
                     open_letter(&self.id, &message, body, &zone, &self.asks, cx)
+                        .id((self.id.clone(), format!("letter-{}", message.key)))
+                        .role(Role::Article)
+                        .aria_label(message.from.name.clone())
                         .track_focus(&focus)
                         .into_any_element()
                 } else {
@@ -161,6 +164,9 @@ impl RenderOnce for MailThreadView {
                     };
                     div()
                         .id((self.id.clone(), format!("fold-{}", message.key)))
+                        .role(Role::Button)
+                        .aria_label(message.from.name.clone())
+                        .aria_expanded(false)
                         .debug_selector({
                             let key = message.key.clone();
                             move || format!("fold {key}")

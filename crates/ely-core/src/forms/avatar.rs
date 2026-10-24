@@ -2,12 +2,14 @@ use std::{path::PathBuf, rc::Rc};
 
 use gpui::{
     App, ElementId, ExternalPaths, InteractiveElement, IntoElement, ParentElement,
-    PathPromptOptions, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    PathPromptOptions, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window,
+    div,
 };
 
 use super::{files::hovering, path::choose};
 use crate::{
     data_display::Avatar,
+    i18n,
     primitives::{FocusRing, Icon, IconName, tab_stop},
     theme::{ActiveTheme, IconSize, Radius},
 };
@@ -96,6 +98,8 @@ impl RenderOnce for AvatarUpload {
         let (pick, drop_in, what_drop) = (take.clone(), take, what.clone());
         corner(div(), square)
             .id(self.id)
+            .role(Role::Button)
+            .aria_label(i18n::text(cx, "avatar.change", &[]))
             .group(group.clone())
             .relative()
             .flex_none()

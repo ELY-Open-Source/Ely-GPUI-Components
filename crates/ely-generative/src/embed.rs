@@ -2,7 +2,7 @@ use std::{collections::HashSet, rc::Rc};
 
 use gpui::{
     App, Bounds, DragMoveEvent, ElementId, EmptyView, EntityId, HoverListenerMode,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, fill, point, prelude::*,
     size, transparent_black,
 };
@@ -10,6 +10,7 @@ use gpui::{
 use super::lens::{DRAG, Lens, START, STEP, radius, turned};
 use crate::{
     charts::{ChartLegend, ChartTooltip, anchored},
+    i18n,
     primitives::{FocusRing, checked_ratio, tab_stop},
     theme::{ActiveTheme, Radius},
 };
@@ -202,7 +203,11 @@ impl RenderOnce for EmbeddingVisualizer {
             .border_1()
             .border_color(transparent_black())
             .when(three, |area| {
-                area.track_focus(&focus).focus_ring(cx).cursor_grab()
+                area.role(Role::Group)
+                    .aria_label(i18n::text(cx, "generative.embedding", &[]))
+                    .track_focus(&focus)
+                    .focus_ring(cx)
+                    .cursor_grab()
             })
             .child(
                 canvas(

@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
-    SharedString, Styled, Window, div,
+    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, Role,
+    SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use super::{
@@ -12,6 +12,7 @@ use super::{
 use crate::{
     buttons::SegmentedControl,
     forms::ScrubInput,
+    i18n,
     primitives::{IconName, tab_stop},
     theme::{ActiveTheme, Radius},
 };
@@ -168,6 +169,7 @@ impl RenderOnce for AutoLayoutControls {
         let grid = div()
             .id((id.clone(), "places"))
             .debug_selector(|| "places".into())
+            .role(Role::RadioGroup)
             .track_focus(&focus)
             .flex_none()
             .flex()
@@ -201,6 +203,20 @@ impl RenderOnce for AutoLayoutControls {
                     let press = place.clone();
                     div()
                         .id((id.clone(), format!("place-{across:?}-{down:?}")))
+                        .role(Role::RadioButton)
+                        .aria_label(i18n::text(
+                            cx,
+                            "place.spot",
+                            &[
+                                ("row", &i18n::text(cx, &format!("place.row.{down:?}"), &[])),
+                                (
+                                    "column",
+                                    &i18n::text(cx, &format!("place.column.{across:?}"), &[]),
+                                ),
+                            ],
+                        ))
+                        .aria_toggled(chosen.into())
+                        .when(chosen, |spot| spot.aria_active_descendant())
                         .flex()
                         .items_center()
                         .justify_center()

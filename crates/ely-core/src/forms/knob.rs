@@ -2,8 +2,8 @@ use std::{cell::Cell, f32::consts::PI, rc::Rc};
 
 use gpui::{
     App, DragMoveEvent, ElementId, EmptyView, EntityId, InteractiveElement, IntoElement,
-    ParentElement, Path, PathBuilder, Pixels, Point, RenderOnce, StatefulInteractiveElement,
-    Styled, Window, canvas, div, point, prelude::*,
+    ParentElement, Path, PathBuilder, Pixels, Point, RenderOnce, Role, SharedString,
+    StatefulInteractiveElement, Styled, Window, canvas, div, point, prelude::*,
 };
 
 use super::{
@@ -58,6 +58,7 @@ struct Turn {
 #[derive(IntoElement)]
 pub struct Knob {
     id: ElementId,
+    label: Option<SharedString>,
     value: f64,
     range: (f64, f64, f64),
     disabled: bool,
@@ -69,11 +70,18 @@ impl Knob {
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
+            label: None,
             value,
             range: (0.0, 100.0, 1.0),
             disabled: false,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// Its least and greatest value. Panics on an empty range.
@@ -141,6 +149,12 @@ impl RenderOnce for Knob {
         let (drag, keys) = (commit.clone(), commit);
         div()
             .id(self.id)
+            .role(Role::Slider)
+            .when_some(self.label, |knob, label| knob.aria_label(label))
+            .aria_numeric_value(value)
+            .aria_min_numeric_value(min)
+            .aria_max_numeric_value(max)
+            .aria_numeric_value_step(step)
             .track_focus(&focus)
             .relative()
             .flex_none()

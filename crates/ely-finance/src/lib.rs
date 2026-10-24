@@ -3,7 +3,7 @@
 
 use ely_charts as charts;
 use ely_core::{
-    buttons, data_display, forms, lists, menus, motion, overlays, primitives, tables, theme,
+    buttons, data_display, forms, i18n, lists, menus, motion, overlays, primitives, tables, theme,
     typography,
 };
 

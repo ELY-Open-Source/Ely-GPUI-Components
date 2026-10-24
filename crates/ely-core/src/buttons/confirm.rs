@@ -2,8 +2,8 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     Animation, AnimationExt, App, ElementId, FontWeight, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Task,
-    Window, div, prelude::*, relative,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled,
+    Task, Window, div, prelude::*, relative,
 };
 
 use super::button::{ButtonVariant, label_size, tone};
@@ -180,6 +180,8 @@ impl RenderOnce for ConfirmButton {
         let (hold_handler, click_handler) = (handler.clone(), handler);
         div()
             .id(self.id)
+            .role(Role::Button)
+            .aria_label(label.clone())
             .relative()
             .overflow_hidden()
             .flex()

@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    AnyElement, App, ElementId, FontWeight, IntoElement, ParentElement, RenderOnce, SharedString,
-    Styled, Window, div, prelude::*,
+    AnyElement, App, ElementId, FontWeight, IntoElement, ParentElement, RenderOnce, Role,
+    SharedString, Styled, Window, div, prelude::*,
 };
 use jiff::Timestamp;
 use smallvec::SmallVec;
@@ -88,7 +88,9 @@ impl RenderOnce for MessageThread {
             .border_color(gpui::transparent_black())
             .text_size(theme.text_size(TextSize::Sm))
             .when_some(self.on_open, |row, open| {
-                row.cursor_pointer()
+                row.role(Role::Button)
+                    .aria_label(count.clone())
+                    .cursor_pointer()
                     .tab_index(0)
                     .focus_ring(cx)
                     .hover(|style| style.bg(colors.surface))

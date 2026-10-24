@@ -2,8 +2,9 @@ use std::ops::Range;
 
 use gpui::{
     AnyElement, Bounds, Context, ElementInputHandler, InteractiveElement, IntoElement, MouseButton,
-    MouseDownEvent, MouseMoveEvent, ParentElement, Pixels, Render, ScrollHandle, ScrollStrategy,
-    Styled, StyledText, Window, canvas, div, fill, font, point, size, uniform_list,
+    MouseDownEvent, MouseMoveEvent, ParentElement, Pixels, Render, Role, ScrollHandle,
+    ScrollStrategy, StatefulInteractiveElement, Styled, StyledText, Window, canvas, div, fill,
+    font, point, size, uniform_list,
 };
 
 use super::{
@@ -13,7 +14,10 @@ use super::{
     state::{CodeEditor, EditorEvent},
     syntax::{self, Bracket, brackets, folds},
 };
-use crate::theme::{ActiveTheme, TextSize};
+use crate::{
+    i18n,
+    theme::{ActiveTheme, TextSize},
+};
 
 /// What one render worked out, for the rows the list builds after it.
 #[derive(Default)]
@@ -377,6 +381,8 @@ impl Render for CodeEditor {
             );
         let root = div()
             .id(("code-editor", cx.entity_id().as_u64()))
+            .role(Role::MultilineTextInput)
+            .aria_label(i18n::text(cx, "editor.code", &[]))
             .key_context(CONTEXT)
             .track_focus(&self.focus)
             .size_full()

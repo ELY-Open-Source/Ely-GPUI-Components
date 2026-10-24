@@ -18,7 +18,7 @@ use crate::{
 /// ```
 #[derive(IntoElement)]
 pub struct DashboardCard {
-    title: SharedString,
+    pub(crate) title: SharedString,
     subtitle: Option<SharedString>,
     actions: Vec<AnyElement>,
     children: Vec<AnyElement>,

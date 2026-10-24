@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
+    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
@@ -87,6 +87,13 @@ impl RenderOnce for ChoiceChips {
                 );
                 div()
                     .id(("chip", ix))
+                    .role(if multiple {
+                        Role::CheckBox
+                    } else {
+                        Role::RadioButton
+                    })
+                    .aria_toggled(on.into())
+                    .aria_label(choice.label.clone())
                     .flex()
                     .items_center()
                     .gap_1p5()

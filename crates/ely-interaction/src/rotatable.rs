@@ -2,11 +2,11 @@ use std::rc::Rc;
 
 use gpui::{
     App, AppContext, Bounds, DragMoveEvent, ElementId, EmptyView, EntityId, InteractiveElement,
-    IntoElement, ParentElement, Pixels, Point, RenderOnce, SharedString,
+    IntoElement, ParentElement, Pixels, Point, RenderOnce, Role, SharedString,
     StatefulInteractiveElement, Styled, Transformation, Window, div, radians, relative, svg,
 };
 
-use crate::{layout::seeded::use_seeded, primitives::FocusRing, theme::ActiveTheme};
+use crate::{i18n, layout::seeded::use_seeded, primitives::FocusRing, theme::ActiveTheme};
 
 /// What the arrows and Shift snap to, in degrees.
 const NOTCH: f32 = 15.0;
@@ -92,6 +92,11 @@ impl RenderOnce for Rotatable {
         let (dragged, keyed) = (turn.clone(), turn);
         div()
             .id(id.clone())
+            .role(Role::Slider)
+            .aria_label(i18n::text(cx, "interaction.rotate", &[]))
+            .aria_numeric_value(f64::from(angle.round()))
+            .aria_min_numeric_value(0.0)
+            .aria_max_numeric_value(360.0)
             .relative()
             .flex()
             .flex_none()

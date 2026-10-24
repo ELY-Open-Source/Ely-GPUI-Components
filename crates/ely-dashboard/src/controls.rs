@@ -8,6 +8,7 @@ use jiff::Timestamp;
 use crate::{
     buttons::{Button, ButtonVariant, IconButton},
     forms::{Choice, Select},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, TextSize},
     typography::format,
@@ -108,6 +109,7 @@ impl RenderOnce for RefreshIntervalSelector {
                             .iter()
                             .map(|(seconds, words)| Choice::new(seconds.to_string(), *words)),
                     )
+                    .label(i18n::text(cx, "dashboard.every", &[]))
                     .selected(self.every.unwrap_or(0).to_string())
                     .on_change(move |value, window, cx| {
                         let every = interval(value);
@@ -288,6 +290,7 @@ impl RenderOnce for DashboardFilterBar {
                             .iter()
                             .map(|window| Choice::new(window.words(), window.words())),
                     )
+                    .label(i18n::text(cx, "dashboard.window", &[]))
                     .selected(self.window.words())
                     .on_change(move |value, window, cx| {
                         let chosen = *TimeWindow::ALL

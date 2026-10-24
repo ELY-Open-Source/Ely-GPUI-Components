@@ -2,12 +2,12 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, App, ElementId, FocusHandle, FontWeight, HoverListenerMode,
-    InteractiveElement, IntoElement, ParentElement, RenderOnce, StatefulInteractiveElement, Styled,
-    Window, div, prelude::*, transparent_black,
+    InteractiveElement, IntoElement, ParentElement, RenderOnce, Role, StatefulInteractiveElement,
+    Styled, Window, div, prelude::*, transparent_black,
 };
 use jiff::{ToSpan, civil::Date};
 
-use super::{super::options::Run, show_month, zoned_now};
+use super::{super::options::Run, show_date, show_month, zoned_now};
 use crate::{
     buttons::{ButtonVariant, IconButton},
     i18n::text,
@@ -298,6 +298,13 @@ impl RenderOnce for Calendar {
                 let (pick, hover, on_hover) = (pick.clone(), hover.clone(), self.on_hover.clone());
                 div()
                     .id(("day", ix))
+                    .role(Role::GridCell)
+                    .aria_label(show_date(date, cx))
+                    .aria_selected(chosen)
+                    .when(date == at, |day| day.aria_active_descendant())
+                    .when(!open, |day| {
+                        day.aria_description(text(cx, "state.unavailable", &[]))
+                    })
                     .flex()
                     .items_center()
                     .justify_center()
@@ -376,6 +383,8 @@ impl RenderOnce for Calendar {
         let (keys, on_escape, on_move) = (pick, self.on_escape, self.on_hover);
         div()
             .id(self.id)
+            .role(Role::Grid)
+            .aria_label(show_month(shown, cx))
             .track_focus(&focus)
             .flex()
             .flex_col()

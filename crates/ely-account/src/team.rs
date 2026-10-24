@@ -10,6 +10,7 @@ use crate::{
     buttons::{Button, ButtonVariant, ConfirmButton, ConfirmMode},
     data_display::{Avatar, Badge, Tone},
     forms::{Choice, EmailInput, Enter, Select, is_email},
+    i18n,
     theme::{ActiveTheme, AvatarSize, ControlSize, TextSize},
     typography::Ellipsis,
 };
@@ -85,7 +86,7 @@ impl RoleSelector {
 }
 
 impl RenderOnce for RoleSelector {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let id = self.id;
         let on_change = self.on_change;
         let choices = self
@@ -93,6 +94,7 @@ impl RenderOnce for RoleSelector {
             .into_iter()
             .map(|role| Choice::new(role.key, role.name).note(role.description));
         Select::new(id, choices)
+            .label(i18n::text(cx, "team.role", &[]))
             .selected(self.selected)
             .disabled(self.disabled)
             .size(ControlSize::Sm)

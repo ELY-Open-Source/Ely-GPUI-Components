@@ -10,6 +10,7 @@ use crate::{
     editor::CodeEditor,
     feedback::InlineMessage,
     forms::{Choice, FormField, Input, KeyValueInput, PasswordInput, Select, TextInput},
+    i18n,
     navigation::Tabs,
     primitives::Severity,
     theme::{ActiveTheme, Radius, TextSize},
@@ -186,10 +187,10 @@ struct Draft {
 
 impl Draft {
     fn filled(request: &ApiRequest, window: &mut Window, cx: &mut App) -> Self {
-        let mut field = |text: &str| {
-            let text = text.to_string();
+        let mut field = |text: &str, key: &str| {
+            let (text, name) = (text.to_string(), i18n::text(cx, key, &[]));
             cx.new(|cx| {
-                let mut input = TextInput::new(window, cx);
+                let mut input = TextInput::new(window, cx).label(name);
                 input.set_text(text, cx);
                 input
             })
@@ -200,10 +201,10 @@ impl Draft {
             Auth::Basic { user, password } => ("basic", "", user.as_ref(), password.as_ref()),
         };
         let (url, token, user, password) = (
-            field(&request.url),
-            field(token),
-            field(user),
-            field(password),
+            field(&request.url, "devtools.url"),
+            field(token, "devtools.token"),
+            field(user, "devtools.user"),
+            field(password, "devtools.password"),
         );
         let body = request.body.to_string();
         Self {
@@ -378,6 +379,7 @@ impl RenderOnce for ApiRequestBuilder {
                             Choice::new("basic", "Basic"),
                         ],
                     )
+                    .label(i18n::text(cx, "devtools.auth", &[]))
                     .selected(auth.clone())
                     .on_change(update(|draft, value| draft.auth = value)),
                 )
@@ -415,6 +417,7 @@ impl RenderOnce for ApiRequestBuilder {
                                     .iter()
                                     .map(|method| Choice::new(method.name(), method.name())),
                             )
+                            .label(i18n::text(cx, "devtools.method", &[]))
                             .selected(now.method.name())
                             .on_change(update(|draft, value| draft.method = Method::named(&value))),
                         ),

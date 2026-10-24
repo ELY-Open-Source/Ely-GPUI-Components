@@ -1,6 +1,6 @@
 use gpui::{
     Animation, AnimationExt, AnyElement, App, ElementId, Entity, FontWeight, InteractiveElement,
-    IntoElement, ParentElement, Pixels, RenderOnce, SharedString, StatefulInteractiveElement,
+    IntoElement, ParentElement, Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement,
     Styled, Window, canvas, div,
 };
 use smallvec::SmallVec;
@@ -231,6 +231,9 @@ impl RenderOnce for Accordion {
                     .child(
                         div()
                             .id(ix)
+                            .role(Role::Button)
+                            .aria_label(item.title.clone())
+                            .aria_expanded(open)
                             .flex()
                             .items_center()
                             .justify_between()

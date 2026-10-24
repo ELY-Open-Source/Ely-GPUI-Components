@@ -89,13 +89,15 @@ pub fn pin(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     )
     .child(probe(
         "pin",
-        PinInput::new("otp", 6).on_complete(move |code, _, cx| {
-            let code = SharedString::from(format!("entered {code}"));
-            entered.update(cx, |entered, cx| {
-                *entered = code;
-                cx.notify();
-            })
-        }),
+        PinInput::new("otp", 6)
+            .label("One-time code")
+            .on_complete(move |code, _, cx| {
+                let code = SharedString::from(format!("entered {code}"));
+                entered.update(cx, |entered, cx| {
+                    *entered = code;
+                    cx.notify();
+                })
+            }),
     ))
     .child(Caption::new(format!("Code: {note}")))
 }
@@ -114,12 +116,16 @@ pub fn inline_edit(window: &mut Window, cx: &mut App) -> impl IntoElement + use<
         "inline",
         div()
             .w(px(280.0))
-            .child(InlineEdit::new("title", now).on_commit(move |text, _, cx| {
-                let text = text.clone();
-                title.update(cx, |title, cx| {
-                    *title = text;
-                    cx.notify();
-                })
-            })),
+            .child(
+                InlineEdit::new("title", now)
+                    .label("Title")
+                    .on_commit(move |text, _, cx| {
+                        let text = text.clone();
+                        title.update(cx, |title, cx| {
+                            *title = text;
+                            cx.notify();
+                        })
+                    }),
+            ),
     ))
 }

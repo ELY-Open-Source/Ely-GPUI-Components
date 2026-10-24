@@ -135,7 +135,7 @@ impl RenderOnce for ParameterPanel {
                                     .flex_1()
                                     .min_w_0()
                                     .font_weight(FontWeight::MEDIUM)
-                                    .child(Ellipsis::new(parameter.label)),
+                                    .child(Ellipsis::new(parameter.label.clone())),
                             )
                             .child(
                                 tabular(div().flex_none().text_color(colors.fg_muted))
@@ -145,6 +145,7 @@ impl RenderOnce for ParameterPanel {
                     .child(
                         Slider::new((self.id.clone(), format!("slider-{key}")), parameter.value)
                             .range(parameter.min, parameter.max)
+                            .label(parameter.label)
                             .step(parameter.step)
                             .on_change(move |value, window, cx| {
                                 log::info!("parameters: {key} {value}");

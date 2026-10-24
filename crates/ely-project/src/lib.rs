@@ -3,7 +3,7 @@
 
 use ely_calendar as calendar;
 use ely_core::{
-    buttons, data_display, forms, layout, lists, motion, overlays, primitives, tables, theme,
+    buttons, data_display, forms, i18n, layout, lists, motion, overlays, primitives, tables, theme,
     typography,
 };
 use ely_documents as documents;

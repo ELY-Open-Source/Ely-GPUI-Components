@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, Bounds, Div, ElementId, Entity, FocusHandle, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, Pixels, RenderOnce, SharedString, Stateful, Styled, Window, canvas,
-    prelude::*,
+    MouseButton, ParentElement, Pixels, RenderOnce, Role, SharedString, Stateful, Styled, Window,
+    canvas, prelude::*,
 };
 use jiff::civil::Date;
 
@@ -114,6 +114,12 @@ pub fn picker_field(
     let subtle = cx.theme().colors.fg_subtle;
     let (click, keys, measure, focus) = (state.clone(), state.clone(), state, trigger.clone());
     field_button(id, &trigger, size, disabled, window, cx)
+        .role(Role::ComboBox)
+        .aria_label(placeholder.clone())
+        .when_some(shown.clone(), |field, shown| field.aria_value(shown))
+        .when(disabled, |field| {
+            field.aria_description(text(cx, "state.unavailable", &[]))
+        })
         .when(!disabled, |field| {
             let focus_keys = focus.clone();
             field

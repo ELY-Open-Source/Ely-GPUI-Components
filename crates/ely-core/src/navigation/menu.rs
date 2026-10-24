@@ -2,12 +2,13 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, ElementId, Entity, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window,
-    canvas, div, prelude::*,
+    ParentElement, Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled,
+    Window, canvas, div, prelude::*,
 };
 
 use crate::{
     forms::{Choice, OnValue, float, step, surface},
+    i18n,
     primitives::{Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
 };
@@ -138,6 +139,9 @@ impl RenderOnce for NavigationMenu {
                 (state.clone(), state.clone(), state.clone(), focus.clone());
             div()
                 .id(("entry", ix))
+                .role(Role::MenuItem)
+                .aria_label(label.clone())
+                .aria_expanded(on)
                 .relative()
                 .flex()
                 .items_center()
@@ -198,6 +202,9 @@ impl RenderOnce for NavigationMenu {
                 };
                 div()
                     .id(("link", ix))
+                    .role(Role::MenuItem)
+                    .aria_label(choice.label.clone())
+                    .when(ix == link, |row| row.aria_active_descendant())
                     .flex()
                     .gap_3()
                     .p_2()
@@ -258,6 +265,8 @@ impl RenderOnce for NavigationMenu {
         let (keys, key_entries, enter) = (state.clone(), entries.clone(), pick);
         div()
             .id(self.id)
+            .role(Role::MenuBar)
+            .aria_label(i18n::text(cx, "nav.menu", &[]))
             .track_focus(&focus)
             .flex()
             .items_center()

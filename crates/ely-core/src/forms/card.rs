@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, Div, ElementId, FocusHandle, FontWeight, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, SharedString, Stateful, StatefulInteractiveElement,
-    Styled, Window, div, prelude::*,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, Stateful,
+    StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use super::{
@@ -64,6 +64,8 @@ fn card(
     let strong = colors.border_strong;
     div()
         .id(id)
+        .aria_label(face.title.clone())
+        .aria_toggled(on.into())
         .track_focus(focus)
         .flex()
         .items_start()
@@ -190,7 +192,7 @@ impl RenderOnce for CheckboxCard {
                 on_change(next, window, cx);
             }
         });
-        card(self.id, self.face, mark, &focus, press, window, cx)
+        card(self.id, self.face, mark, &focus, press, window, cx).role(Role::CheckBox)
     }
 }
 
@@ -273,7 +275,7 @@ impl RenderOnce for RadioCard {
                 on_select(window, cx);
             }
         });
-        card(self.id, self.face, mark, &focus, press, window, cx)
+        card(self.id, self.face, mark, &focus, press, window, cx).role(Role::RadioButton)
     }
 }
 

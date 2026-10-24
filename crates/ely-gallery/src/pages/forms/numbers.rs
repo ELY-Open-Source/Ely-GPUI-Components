@@ -31,6 +31,7 @@ pub fn number_input(window: &mut Window, cx: &mut App) -> impl IntoElement + use
         "number",
         div().w(px(220.0)).child(
             NumberInput::new("seats", now)
+                .label("Seats")
                 .range(1.0, 99.0)
                 .on_change(store(seats)),
         ),
@@ -90,6 +91,7 @@ pub fn money(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 "currency",
                 div().w(px(200.0)).child(
                     NumberInput::new("price", price_now)
+                        .label("Price")
                         .currency("USD")
                         .range(0.0, 1_000_000.0)
                         .on_change(store(price)),
@@ -100,6 +102,7 @@ pub fn money(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 "percent",
                 div().w(px(160.0)).child(
                     NumberInput::new("tax", tax_now)
+                        .label("Tax")
                         .percent()
                         .range(0.0, 100.0)
                         .on_change(store(tax)),
@@ -112,6 +115,7 @@ pub fn money(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     "unit",
                     div().w(px(180.0)).child(
                         UnitInput::new("gap", gap_now, ["px", "%", "em"], unit_now)
+                            .label("Gap")
                             .range(0.0, 400.0)
                             .on_change(store(gap))
                             .on_unit(move |next, _, cx| {

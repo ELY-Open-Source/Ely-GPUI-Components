@@ -14,7 +14,10 @@ use super::{
     hex, parse_hex,
     swatch::checker,
 };
-use crate::theme::{ActiveTheme, ControlSize, Elevation, Radius};
+use crate::{
+    i18n,
+    theme::{ActiveTheme, ControlSize, Elevation, Radius},
+};
 
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
@@ -84,7 +87,11 @@ fn picking(id: &ElementId, value: Hsla, window: &mut Window, cx: &mut App) -> En
         (id.clone(), "picking"),
         cx,
         |window, cx: &mut Context<Picking>| {
-            let field = cx.new(|cx| TextInput::new(window, cx).max_len(9));
+            let field = cx.new(|cx| {
+                TextInput::new(window, cx)
+                    .max_len(9)
+                    .label(i18n::text(cx, "color.value", &[]))
+            });
             let events = cx.subscribe_in(&field, window, |picking, field, event, window, cx| {
                 if !matches!(event, InputEvent::Submit | InputEvent::Blur) {
                     return;
@@ -361,7 +368,7 @@ impl RenderOnce for ColorPicker {
             .child(
                 div()
                     .flex_1()
-                    .child(format_select(&self.id, format, set_format)),
+                    .child(format_select(&self.id, format, set_format, cx)),
             )
             .child(EyeDropper::new((self.id.clone(), "dropper")).on_pick(
                 move |picked, window, cx| {

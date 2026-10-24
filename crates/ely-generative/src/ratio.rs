@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use crate::{
@@ -105,6 +105,9 @@ impl RenderOnce for AspectRatioPicker {
                 let pick = self.on_select.clone();
                 div()
                     .id(id)
+                    .role(Role::RadioButton)
+                    .aria_label(format!("{}:{}", ratio.0, ratio.1))
+                    .aria_toggled(chosen.into())
                     .track_focus(&focus)
                     .flex()
                     .items_center()

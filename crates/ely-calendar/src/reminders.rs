@@ -8,6 +8,7 @@ use gpui::{
 use crate::{
     buttons::{Button, ButtonVariant, IconButton},
     forms::{Choice, Select},
+    i18n,
     primitives::IconName,
     theme::ControlSize,
 };
@@ -75,7 +76,7 @@ impl ReminderPicker {
 }
 
 impl RenderOnce for ReminderPicker {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let set: OnMinutes = {
             let (id, on_change) = (self.id.clone(), self.on_change);
             Rc::new(move |next, window, cx| {
@@ -101,6 +102,7 @@ impl RenderOnce for ReminderPicker {
                 .child(
                     div().flex_1().min_w_0().child(
                         Select::new((self.id.clone(), format!("offset-{minute}")), choices)
+                            .label(i18n::text(cx, "calendar.reminder", &[]))
                             .size(ControlSize::Sm)
                             .selected(minute.to_string())
                             .on_change(move |value: &SharedString, window, cx| {

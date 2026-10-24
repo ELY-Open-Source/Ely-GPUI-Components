@@ -59,6 +59,10 @@ jobs:
         env:
           PANICS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       - run: cargo build -p ely-gallery
+      # Tabs every page under a UI Automation client; each stop needs a role and a name.
+      - if: runner.os == 'Windows'
+        shell: bash
+        run: ./target/debug/gallery.exe --audit audit.tsv || { grep -v $'\tok\t' audit.tsv; exit 1; }
 
   bench:
     runs-on: ubuntu-24.04

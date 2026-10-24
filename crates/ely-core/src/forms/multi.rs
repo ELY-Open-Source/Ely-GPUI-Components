@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ClickEvent, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce,
+    App, ClickEvent, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
@@ -29,6 +29,7 @@ use crate::{
 #[derive(IntoElement)]
 pub struct MultiSelect {
     id: ElementId,
+    label: Option<SharedString>,
     choices: Vec<Choice>,
     selected: Vec<SharedString>,
     placeholder: SharedString,
@@ -41,12 +42,19 @@ impl MultiSelect {
     pub fn new(id: impl Into<ElementId>, choices: impl IntoIterator<Item = Choice>) -> Self {
         Self {
             id: id.into(),
+            label: None,
             choices: choices.into_iter().collect(),
             selected: Vec::new(),
             placeholder: SharedString::from("Choose…"),
             size: ControlSize::default(),
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// The values chosen.
@@ -158,8 +166,21 @@ impl RenderOnce for MultiSelect {
             picker.clone(),
         );
         let (enter, last, erase) = (toggle.clone(), selected.clone(), commit);
+        let value = choices
+            .iter()
+            .filter(|choice| selected.contains(&choice.value))
+            .map(|choice| choice.label.to_string())
+            .collect::<Vec<_>>()
+            .join(", ");
         div()
             .id(self.id.clone())
+            .role(Role::ComboBox)
+            .aria_label(
+                self.label
+                    .clone()
+                    .unwrap_or_else(|| self.placeholder.clone()),
+            )
+            .aria_value(value)
             .track_focus(&focus)
             .relative()
             .flex()

@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, App, ElementId, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     transparent_black,
 };
 
@@ -10,7 +10,7 @@ use crate::{
     buttons::{Button, ButtonVariant},
     documents::source,
     forms::{OnFlag, Pick, Run},
-    motion,
+    i18n, motion,
     primitives::{IconName, Image, checked_ratio, framed, tab_stop},
     theme::{ActiveTheme, AvatarSize, ControlSize, Radius},
 };
@@ -148,6 +148,13 @@ impl RenderOnce for VariationPicker {
                         let choose = self.on_choose.clone();
                         div()
                             .id((self.id.clone(), format!("thumb-{ix}")))
+                            .role(Role::RadioButton)
+                            .aria_label(i18n::text(
+                                cx,
+                                "generative.variation",
+                                &[("n", &(ix + 1).to_string())],
+                            ))
+                            .aria_toggled(chosen.into())
                             .track_focus(&focus)
                             .w(thumb)
                             .p_0p5()

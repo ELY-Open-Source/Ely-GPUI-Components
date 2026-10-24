@@ -171,6 +171,16 @@ fn a_long_text_reads_off_the_main_thread(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn a_draw_before_a_long_read_lands_names_blocks_from_the_old_read(cx: &mut TestAppContext) {
+    let (document, cx) = open("# A\n\nB", MarkdownMode::Visual, cx);
+    let long = "界".repeat(AT_ONCE / 3 + 1);
+    document.update(cx, |document, cx| document.set_text(long, cx));
+    assert!(!document.read_with(cx, |document, cx| document.read_now(cx)));
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+}
+
+#[gpui::test]
 fn a_press_past_the_end_adds_a_block(cx: &mut TestAppContext) {
     let (document, cx) = open("# Lift", MarkdownMode::Visual, cx);
     let end = cx.debug_bounds("markdown-block-0").expect("drawn").bottom() + px(12.0);

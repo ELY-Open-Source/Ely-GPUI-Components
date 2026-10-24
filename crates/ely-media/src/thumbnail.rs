@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, ImageSource, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     transparent_black,
 };
 
@@ -26,6 +26,7 @@ pub struct ImageThumbnail {
     source: ImageSource,
     ratio: f32,
     label: Option<SharedString>,
+    name: Option<SharedString>,
     selected: bool,
     on_click: Option<Run>,
 }
@@ -38,6 +39,7 @@ impl ImageThumbnail {
             source: source.into(),
             ratio: checked_ratio(ratio),
             label: None,
+            name: None,
             selected: false,
             on_click: None,
         }
@@ -46,6 +48,12 @@ impl ImageThumbnail {
     /// A few words in the corner, such as "0:42" or "+3".
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
+        self
+    }
+
+    /// What the picture shows, read by assistive technology; nothing is drawn.
+    pub fn name(mut self, name: impl Into<SharedString>) -> Self {
+        self.name = Some(name.into());
         self
     }
 
@@ -67,6 +75,7 @@ impl RenderOnce for ImageThumbnail {
         let theme = cx.theme();
         let colors = &theme.colors;
         let (outer, inner) = (theme.radius(Radius::Md), theme.radius(Radius::Sm));
+        let (name, corner) = (self.name.clone(), self.label.clone());
         let label = self.label.map(|label| {
             tabular(div())
                 .absolute()
@@ -99,6 +108,10 @@ impl RenderOnce for ImageThumbnail {
             .p_0p5()
             .when_some(self.on_click, |thumb, click| {
                 thumb
+                    .role(Role::Button)
+                    .when_some(name, |thumb, name| thumb.aria_label(name))
+                    .when_some(corner, |thumb, corner| thumb.aria_description(corner))
+                    .aria_selected(self.selected)
                     .tab_index(0)
                     .focus_ring(cx)
                     .cursor_pointer()

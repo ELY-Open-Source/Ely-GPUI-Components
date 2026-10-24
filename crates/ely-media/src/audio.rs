@@ -2,7 +2,7 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     App, Bounds, Corners, DragMoveEvent, ElementId, EmptyView, EntityId, HoverListenerMode,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, RenderOnce,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, RenderOnce, Role,
     StatefulInteractiveElement, Styled, Window, canvas, div, fill, point, prelude::*, relative,
     size, transparent_black,
 };
@@ -10,6 +10,7 @@ use gpui::{
 use super::scrubber::{OnTime, along, clock, time_at, time_tip};
 use crate::{
     forms::keyed,
+    i18n,
     layout::fit,
     primitives::{FocusRing, tab_stop},
     theme::{ActiveTheme, Radius},
@@ -180,6 +181,11 @@ impl RenderOnce for AudioWaveform {
                 let (pressed, dragged, keys) = (seek.clone(), seek.clone(), seek);
                 let (pressed_wave, dragged_wave) = (wave.clone(), wave.clone());
                 shown
+                    .role(Role::Slider)
+                    .aria_label(i18n::text(cx, "media.position", &[]))
+                    .aria_numeric_value(self.at.as_secs_f64().round())
+                    .aria_min_numeric_value(0.0)
+                    .aria_max_numeric_value(self.length.as_secs_f64().round())
                     .track_focus(&focus)
                     .focus_ring(cx)
                     .cursor_pointer()

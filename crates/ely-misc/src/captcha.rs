@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, ImageSource, InteractiveElement, IntoElement, ParentElement, RenderOnce,
+    App, ElementId, ImageSource, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
     SharedString, Styled, Window, div, prelude::*,
 };
 
@@ -9,6 +9,7 @@ use crate::{
     buttons::{Button, ButtonVariant, IconButton},
     feedback::InlineMessage,
     forms::{Enter, Input, TextInput},
+    i18n,
     primitives::{FocusRing, Icon, IconName, Image, Severity, checked_ratio, framed, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, Radius},
 };
@@ -124,6 +125,8 @@ impl RenderOnce for Captcha {
                     true => "captcha-verified-focused".into(),
                     false => "captcha-verified".into(),
                 })
+                .role(Role::Status)
+                .aria_label(i18n::text(cx, "misc.verified", &[]))
                 .track_focus(&verify)
                 .flex()
                 .flex_none()
@@ -141,16 +144,19 @@ impl RenderOnce for Captcha {
                         .size(IconSize::Sm)
                         .color(colors.success),
                 )
-                .child("Verified")
+                .child(i18n::text(cx, "misc.verified", &[]))
                 .into_any_element(),
             false => {
                 let answer = answer.clone();
-                Button::new((id.clone(), "verify-button"), "Verify")
-                    .variant(ButtonVariant::Primary)
-                    .focus_handle(&verify)
-                    .loading(checking)
-                    .on_click(move |_, window, cx| answer(window, cx))
-                    .into_any_element()
+                Button::new(
+                    (id.clone(), "verify-button"),
+                    i18n::text(cx, "misc.verify", &[]),
+                )
+                .variant(ButtonVariant::Primary)
+                .focus_handle(&verify)
+                .loading(checking)
+                .on_click(move |_, window, cx| answer(window, cx))
+                .into_any_element()
             }
         };
         let refresh = self.on_refresh.map(|on_refresh| {

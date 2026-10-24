@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, StatefulInteractiveElement, Styled, Window, div, prelude::*, relative,
+    RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div, prelude::*, relative,
 };
 use jiff::tz::TimeZone;
 
@@ -91,7 +91,9 @@ impl RenderOnce for EventCard {
             .line_height(relative(1.25))
             .when_some(self.on_click, |card, on_click| {
                 let key = self.event.key.clone();
-                card.tab_index(0)
+                card.role(Role::Button)
+                    .aria_label(self.event.title.clone())
+                    .tab_index(0)
                     .focus_ring(cx)
                     .cursor_pointer()
                     .on_mouse_down(MouseButton::Left, |_, window, cx| {

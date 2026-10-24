@@ -84,6 +84,7 @@ impl TaskItem {
                     })
                     .child(
                         Checkbox::new((self.id.clone(), "done"), task.status == Status::Done)
+                            .name(task.title.clone())
                             .on_change(move |done, window, cx| {
                                 log::info!("task {key}: {}", if done { "done" } else { "open" });
                                 on_toggle(done, window, cx)

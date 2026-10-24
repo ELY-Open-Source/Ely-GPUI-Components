@@ -3,7 +3,7 @@
 
 use ely_canvas as canvas;
 use ely_core::{
-    buttons, feedback, forms, layout, lists, motion, overlays, primitives, tables, theme,
+    buttons, feedback, forms, i18n, layout, lists, motion, overlays, primitives, tables, theme,
     typography,
 };
 use ely_media as media;

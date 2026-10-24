@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     Anchor, Animation, AnimationExt, AnyElement, App, Bounds, Div, ElementId, Entity,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, ScrollHandle,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Role, ScrollHandle,
     SharedString, Stateful, StatefulInteractiveElement, Styled, Window, anchored, canvas, div,
     prelude::*,
 };
@@ -136,6 +136,13 @@ pub fn marked_row(
     };
     div()
         .id(id.clone())
+        .role(Role::ListBoxOption)
+        .aria_label(choice.label.clone())
+        .aria_selected(checked == Some(true))
+        .when(highlighted, |row| row.aria_active_descendant())
+        .when(choice.disabled, |row| {
+            row.aria_description(crate::i18n::text(cx, "state.unavailable", &[]))
+        })
         .flex()
         .items_center()
         .gap_2()

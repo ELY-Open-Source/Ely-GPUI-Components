@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     transparent_black,
 };
 use smallvec::SmallVec;
@@ -212,6 +212,8 @@ impl RenderOnce for FollowUpSuggestions {
                         let pick = self.on_pick.clone();
                         div()
                             .id((self.id.clone(), format!("question-{ix}")))
+                            .role(Role::Button)
+                            .aria_label(question.clone())
                             .flex()
                             .items_center()
                             .gap_2()
@@ -293,6 +295,8 @@ impl RenderOnce for CapabilityCards {
                         let pick = self.on_pick.clone();
                         div()
                             .id((self.id.clone(), format!("card-{ix}")))
+                            .role(Role::Button)
+                            .aria_label(title.clone())
                             .p_3()
                             .rounded(theme.radius(Radius::Lg))
                             .border_1()

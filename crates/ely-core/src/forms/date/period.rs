@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, Div, ElementId, FocusHandle, FontWeight, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, SharedString, Stateful, StatefulInteractiveElement, Styled, Window, div,
+    RenderOnce, Role, SharedString, Stateful, StatefulInteractiveElement, Styled, Window, div,
     prelude::*,
 };
 use jiff::civil::Date;
@@ -14,6 +14,7 @@ use super::{
 };
 use crate::{
     buttons::{ButtonVariant, IconButton},
+    i18n::text,
     layout::seeded::use_seeded,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
@@ -46,7 +47,13 @@ struct Grid {
 }
 
 /// A page of periods under a header with arrows. Arrow keys move, Page keys turn, Enter picks.
-fn period_grid(id: &ElementId, page: Page, grid: Grid, window: &mut Window, cx: &mut App) -> Div {
+fn period_grid(
+    id: &ElementId,
+    page: Page,
+    grid: Grid,
+    window: &mut Window,
+    cx: &mut App,
+) -> Stateful<Div> {
     let Grid {
         turn,
         pick,
@@ -65,6 +72,15 @@ fn period_grid(id: &ElementId, page: Page, grid: Grid, window: &mut Window, cx: 
         IconButton::new((id.clone(), key), icon)
             .variant(ButtonVariant::Ghost)
             .size(ControlSize::Sm)
+            .tooltip(text(
+                cx,
+                if by < 0 {
+                    "pagination.previous"
+                } else {
+                    "pagination.next"
+                },
+                &[],
+            ))
             .on_click(move |_, window, cx| turn(by, window, cx))
     };
     let cells: Vec<_> = page
@@ -76,6 +92,10 @@ fn period_grid(id: &ElementId, page: Page, grid: Grid, window: &mut Window, cx: 
             let chosen = page.chosen == Some(ix);
             div()
                 .id(("period", ix))
+                .role(Role::GridCell)
+                .aria_label(label.clone())
+                .aria_selected(chosen)
+                .when(ix == at, |cell| cell.aria_active_descendant())
                 .flex()
                 .items_center()
                 .justify_center()
@@ -105,6 +125,9 @@ fn period_grid(id: &ElementId, page: Page, grid: Grid, window: &mut Window, cx: 
     let columns = page.columns;
     let keys = (cursor.clone(), pick.clone(), turn.clone());
     div()
+        .id((id.clone(), "grid"))
+        .role(Role::Grid)
+        .aria_label(page.title.clone())
         .track_focus(focus)
         .flex()
         .flex_col()

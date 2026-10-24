@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, ElementId, Hsla, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    Pixels, RenderOnce, StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*,
-    transparent_black,
+    Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, canvas,
+    div, prelude::*, transparent_black,
 };
 
 use crate::{
@@ -31,6 +31,7 @@ type OnRate = Rc<dyn Fn(u8, &mut Window, &mut App)>;
 #[derive(IntoElement)]
 pub struct Rating {
     id: ElementId,
+    label: Option<SharedString>,
     value: u8,
     max: u8,
     disabled: bool,
@@ -42,11 +43,18 @@ impl Rating {
     pub fn new(id: impl Into<ElementId>, value: u8) -> Self {
         Self {
             id: id.into(),
+            label: None,
             value,
             max: 5,
             disabled: false,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// How many stars. Panics on zero.
@@ -131,6 +139,12 @@ impl RenderOnce for Rating {
         let (leave, keys) = (hover, rate);
         div()
             .id(self.id)
+            .role(Role::Slider)
+            .when_some(self.label.clone(), |row, label| row.aria_label(label))
+            .aria_numeric_value(f64::from(value))
+            .aria_min_numeric_value(0.0)
+            .aria_max_numeric_value(f64::from(max))
+            .aria_numeric_value_step(1.0)
             .track_focus(&focus)
             .flex()
             .gap_0p5()

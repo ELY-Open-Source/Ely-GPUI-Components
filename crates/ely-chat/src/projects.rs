@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     prelude::*, transparent_black,
 };
 use jiff::Timestamp;
@@ -83,6 +83,9 @@ impl RenderOnce for ProjectList {
                 let key = project.key.clone();
                 div()
                     .id((self.id.clone(), format!("project-{key}")))
+                    .role(Role::ListItem)
+                    .aria_label(project.name.clone())
+                    .aria_selected(active)
                     .flex()
                     .items_center()
                     .gap_2()

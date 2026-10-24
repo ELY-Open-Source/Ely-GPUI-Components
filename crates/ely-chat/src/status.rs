@@ -2,7 +2,7 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     App, ElementId, Entity, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     prelude::*, relative, transparent_black,
 };
 use web_time::Instant;
@@ -12,6 +12,7 @@ use crate::{
     buttons::{Button, ButtonVariant},
     feedback::{Alert, Countdown},
     forms::{Choice, ChoiceChips, Input, OnValues, Run, TextInput},
+    i18n,
     primitives::{Disclosure, FocusRing, Icon, IconName, Severity},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
     typography::ShimmerText,
@@ -410,6 +411,9 @@ impl RenderOnce for ThinkingBlock {
             .child(
                 div()
                     .id((self.id.clone(), "header"))
+                    .role(Role::Button)
+                    .aria_label(i18n::text(cx, "chat.reasoning", &[]))
+                    .aria_expanded(opened)
                     .flex()
                     .items_center()
                     .gap_1()

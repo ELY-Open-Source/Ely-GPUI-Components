@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, Hsla, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, StatefulInteractiveElement, Styled, Window, div, prelude::*, relative,
+    RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div, prelude::*, relative,
 };
 use jiff::tz::TimeZone;
 
@@ -100,6 +100,8 @@ impl RenderOnce for EventChip {
         div()
             .id(self.id.clone())
             .debug_selector(move || format!("event-chip {key}"))
+            .role(Role::Button)
+            .aria_label(self.event.title.clone())
             .track_focus(&focus)
             .flex()
             .items_center()

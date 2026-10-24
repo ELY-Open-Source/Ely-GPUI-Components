@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, ClickEvent, ElementId, Entity, InteractiveElement, IntoElement, ParentElement,
-    Pixels, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div,
-    prelude::*,
+    Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, canvas,
+    div, prelude::*,
 };
 
 use super::{
@@ -299,6 +299,11 @@ impl RenderOnce for Cascader {
             )
         });
         field_button(self.id, &focus, self.size, false, window, cx)
+            .role(Role::ComboBox)
+            .aria_label(self.placeholder.clone())
+            .when(!shown.is_empty(), |field| {
+                field.aria_value(shown.join(" / "))
+            })
             .on_click(move |event, _, cx| {
                 if matches!(event, ClickEvent::Mouse(_)) {
                     show(&click, !open, start.clone(), cx)

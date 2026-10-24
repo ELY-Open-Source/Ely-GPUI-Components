@@ -1,11 +1,11 @@
 use gpui::{
     Animation, AnimationExt, App, ElementId, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
 };
 
 use crate::{
     buttons::IconButton,
-    motion,
+    i18n, motion,
     primitives::{FocusRing, IconName, tab_stop},
     theme::{ActiveTheme, Radius, TextSize},
     typography::tabular,
@@ -79,8 +79,8 @@ impl RenderOnce for Flashcards {
         let theme = cx.theme();
         let colors = &theme.colors;
         let (key, caption, words) = match back {
-            false => ("front", "Question", front_words),
-            true => ("back", "Answer", back_words),
+            false => ("front", i18n::text(cx, "misc.question", &[]), front_words),
+            true => ("back", i18n::text(cx, "misc.answer", &[]), back_words),
         };
         let face = div()
             .debug_selector(|| format!("flashcard-{key}-{words}"))
@@ -130,6 +130,8 @@ impl RenderOnce for Flashcards {
             .child(
                 div()
                     .id((id.clone(), "card-face"))
+                    .role(Role::Button)
+                    .aria_label(words.clone())
                     .track_focus(&card)
                     .flex()
                     .flex_col()

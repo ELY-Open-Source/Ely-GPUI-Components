@@ -2,13 +2,14 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, CursorStyle, DragMoveEvent, ElementId, EmptyView, EntityId, ImageSource,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role,
     StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*, relative,
     transparent_black,
 };
 
 use super::crop::{Crop, Grip, dragged, grip_at};
 use crate::{
+    i18n,
     layout::seeded::use_seeded,
     primitives::{FocusRing, Image, checked_ratio, framed, tab_stop},
     theme::ActiveTheme,
@@ -215,7 +216,9 @@ impl RenderOnce for ImageCropper {
             .child(picture)
             .child(lid)
             .when(editable, |area| {
-                area.track_focus(&focus)
+                area.role(Role::Group)
+                    .aria_label(i18n::text(cx, "media.crop", &[]))
+                    .track_focus(&focus)
                     .focus_ring(cx)
                     .on_mouse_down(MouseButton::Left, move |event, _, cx| {
                         let now = pressed_crop.read(cx).value;

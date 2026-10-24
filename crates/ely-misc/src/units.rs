@@ -6,6 +6,7 @@ use gpui::{
 use crate::{
     buttons::IconButton,
     forms::{Choice, Input, Select, TextInput, parse_number},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Radius},
     typography::{
@@ -190,6 +191,7 @@ impl RenderOnce for UnitConverter {
         let desk = window.use_keyed_state((id.clone(), "desk"), cx, |window, cx| Desk {
             input: cx.new(|cx| {
                 let mut input = TextInput::new(window, cx)
+                    .label(i18n::text(cx, "units.value", &[]))
                     .filter(|ch| ch.is_ascii_digit() || matches!(ch, '.' | ',' | '-' | MINUS));
                 input.set_text("1", cx);
                 input
@@ -242,6 +244,7 @@ impl RenderOnce for UnitConverter {
                                 (id.clone(), "kind"),
                                 KINDS.iter().map(|kind| Choice::new(kind.name, kind.name)),
                             )
+                            .label(i18n::text(cx, "units.kind", &[]))
                             .selected(kind.name)
                             .on_change(move |name, _, cx| {
                                 kinds.update(cx, |desk, cx| {
@@ -278,6 +281,7 @@ impl RenderOnce for UnitConverter {
                     .child(
                         half().child(
                             Select::new((id.clone(), "from"), choices())
+                                .label(i18n::text(cx, "units.from", &[]))
                                 .selected(kind.units[from].name)
                                 .on_change(pick(|desk, at| desk.from = at)),
                         ),
@@ -310,6 +314,7 @@ impl RenderOnce for UnitConverter {
                     .child(
                         half().child(
                             Select::new((id, "to"), choices())
+                                .label(i18n::text(cx, "units.to", &[]))
                                 .selected(kind.units[to].name)
                                 .on_change(pick(|desk, at| desk.to = at)),
                         ),

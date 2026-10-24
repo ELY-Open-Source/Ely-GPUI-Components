@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, Div, ElementId, FontWeight, ImageSource, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, SharedString, Stateful, StatefulInteractiveElement,
-    Styled, Window, div, transparent_black,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, Stateful,
+    StatefulInteractiveElement, Styled, Window, div, transparent_black,
 };
 
 use super::login::Run;
@@ -61,11 +61,19 @@ fn named(title: SharedString, detail: SharedString, cx: &App) -> Div {
 }
 
 /// A row that opens a menu: what it shows, then a chevron. A press leaves focus where it was; Tab reaches it.
-fn row(id: impl Into<ElementId>, lead: impl IntoElement, text: Div, cx: &App) -> Stateful<Div> {
+fn row(
+    id: impl Into<ElementId>,
+    name: SharedString,
+    lead: impl IntoElement,
+    text: Div,
+    cx: &App,
+) -> Stateful<Div> {
     let theme = cx.theme();
     let hover = theme.colors.hover;
     div()
         .id(id)
+        .role(Role::Button)
+        .aria_label(name)
         .flex()
         .items_center()
         .gap_2()
@@ -192,7 +200,13 @@ impl RenderOnce for AccountSwitcher {
             avatar = avatar.image(image);
         }
         let email = now.map(|now| now.email).unwrap_or_default();
-        let trigger = row((id.clone(), "trigger"), avatar, named(name, email, cx), cx);
+        let trigger = row(
+            (id.clone(), "trigger"),
+            name.clone(),
+            avatar,
+            named(name, email, cx),
+            cx,
+        );
         opening(id, &menu, trigger, window, cx)
     }
 }
@@ -283,7 +297,13 @@ impl RenderOnce for WorkspaceSwitcher {
             .square()
             .size(AvatarSize::Sm);
         let detail = now.map(|now| now.detail).unwrap_or_default();
-        let trigger = row((id.clone(), "trigger"), mark, named(name, detail, cx), cx);
+        let trigger = row(
+            (id.clone(), "trigger"),
+            name.clone(),
+            mark,
+            named(name, detail, cx),
+            cx,
+        );
         opening(id, &menu, trigger, window, cx)
     }
 }
@@ -358,6 +378,7 @@ impl RenderOnce for UserMenu {
                         sign_out(window, cx);
                     },
                 ));
+        let name = self.name.clone();
         let mut avatar = Avatar::new((id.clone(), "avatar"), self.name).size(AvatarSize::Sm);
         if let Some(image) = self.image {
             avatar = avatar.image(image);
@@ -367,6 +388,8 @@ impl RenderOnce for UserMenu {
         }
         let trigger = div()
             .id((id.clone(), "trigger"))
+            .role(Role::Button)
+            .aria_label(name)
             .rounded_full()
             .border_1()
             .border_color(transparent_black())

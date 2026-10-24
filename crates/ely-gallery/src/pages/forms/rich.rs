@@ -157,16 +157,16 @@ pub fn hotkey(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     )
     .child(probe(
         "hotkey",
-        div()
-            .w(px(260.0))
-            .child(
-                HotkeyInput::new("palette-key", now).on_change(move |next, _, cx| {
+        div().w(px(260.0)).child(
+            HotkeyInput::new("palette-key", now)
+                .label("Command palette shortcut")
+                .on_change(move |next, _, cx| {
                     recorded.update(cx, |recorded, cx| {
                         *recorded = next;
                         cx.notify();
                     })
                 }),
-            ),
+        ),
     ))
     .child(Caption::new(
         "Records any key with its modifiers; Tab still moves focus.",

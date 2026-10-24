@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, RenderOnce, SharedString, Styled, Window, canvas, div, prelude::*,
+    ParentElement, Pixels, RenderOnce, Role, SharedString, Styled, Window, canvas, div, prelude::*,
 };
 
 use super::{
@@ -185,6 +185,10 @@ impl RenderOnce for MindMap {
                 );
                 div()
                     .id((id.clone(), format!("topic-{}", topic.key)))
+                    .role(Role::TreeItem)
+                    .aria_label(topic.text.clone())
+                    .aria_selected(chosen)
+                    .when(chosen, |topic| topic.aria_active_descendant())
                     .absolute()
                     .left(Pixels::from(frame.x))
                     .top(Pixels::from(frame.y))
@@ -270,11 +274,14 @@ impl RenderOnce for MindMap {
             None => plane,
         };
         let (keys, tabbed, parent_of) = (placed.clone(), selected.clone(), self.root.clone());
+        let root_name = parent_of.text.clone();
         let (adding, writing_tab, writing_keys) =
             (on_add.clone(), editing.clone(), editing.clone());
         let back = focus.clone();
         div()
             .id(id)
+            .role(Role::Tree)
+            .aria_label(root_name)
             .track_focus(&focus)
             .relative()
             .size_full()

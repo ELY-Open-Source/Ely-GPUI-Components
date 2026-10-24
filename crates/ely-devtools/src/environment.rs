@@ -8,6 +8,7 @@ use gpui::{
 use crate::{
     buttons::IconButton,
     forms::{Choice, Select},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, TextSize},
     typography::Ellipsis,
@@ -171,6 +172,7 @@ impl RenderOnce for EnvironmentSelector {
                         Choice::new(environment.key.clone(), environment.name.clone())
                     }),
                 )
+                .label(i18n::text(cx, "devtools.environment", &[]))
                 .selected(self.selected.clone())
                 .on_change(move |key, window, cx| {
                     log::info!("environment selector: {key}");

@@ -9,6 +9,7 @@ use super::market::ChartKind;
 use crate::{
     buttons::SegmentedControl,
     forms::{Choice, Select},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize},
 };
@@ -127,6 +128,7 @@ impl RenderOnce for IntervalSelector {
             .iter()
             .map(|(key, words)| Choice::new(*key, *words));
         let select = Select::new(self.id, choices)
+            .label(i18n::text(cx, "finance.interval", &[]))
             .selected(self.selected)
             .size(ControlSize::Sm);
         let select = match self.on_change {
@@ -203,6 +205,7 @@ impl RenderOnce for ChartTypeSwitcher {
             .map(|(_, key, ..)| *key)
             .expect("every kind is listed");
         let select = Select::new(self.id, choices)
+            .label(i18n::text(cx, "finance.chart", &[]))
             .selected(selected)
             .size(ControlSize::Sm);
         let select = match self.on_change {

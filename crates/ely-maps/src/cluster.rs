@@ -1,6 +1,6 @@
 use gpui::{
     AnyElement, App, ElementId, FocusHandle, InteractiveElement, IntoElement, ParentElement,
-    Pixels, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    Pixels, Role, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use super::{
@@ -10,6 +10,7 @@ use super::{
     view::OnMapViewport,
 };
 use crate::{
+    i18n,
     primitives::{FocusRing, tab_stop},
     theme::{ActiveTheme, TextSize},
 };
@@ -152,6 +153,12 @@ fn bubble(
         .child(
             div()
                 .id(id)
+                .role(Role::Button)
+                .aria_label(i18n::text(
+                    cx,
+                    "maps.cluster",
+                    &[("count", &count.to_string())],
+                ))
                 .track_focus(&focus)
                 .flex_none()
                 .size(side)

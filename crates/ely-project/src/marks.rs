@@ -8,6 +8,7 @@ use gpui::{
 use super::work::{IssueId, Person, Priority, Status};
 use crate::{
     forms::{Choice, Select},
+    i18n,
     primitives::{Icon, IconName, Tooltip},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
     typography::tabular,
@@ -163,11 +164,12 @@ impl StatusSelect {
 }
 
 impl RenderOnce for StatusSelect {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let choices =
             Status::ALL.map(|status| Choice::new(status.key(), status.words()).icon(status.icon()));
         let (id, on_change) = (self.id.clone(), self.on_change);
         Select::new(self.id, choices)
+            .label(i18n::text(cx, "project.status", &[]))
             .selected(self.status.key())
             .size(self.size)
             .on_change(move |key: &SharedString, window, cx| {
@@ -238,7 +240,7 @@ impl AssigneePicker {
 }
 
 impl RenderOnce for AssigneePicker {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         if let Some(key) = &self.assignee {
             let known = self.people.iter().any(|person| person.key == *key);
             if !known {
@@ -256,6 +258,7 @@ impl RenderOnce for AssigneePicker {
             .collect();
         let (id, people, on_change) = (self.id.clone(), self.people, self.on_change);
         Select::new(self.id, choices)
+            .label(i18n::text(cx, "project.assignee", &[]))
             .selected(self.assignee.unwrap_or_default())
             .size(self.size)
             .on_change(move |key: &SharedString, window, cx| {

@@ -1,7 +1,7 @@
 //! Ely's file components for GPUI: explorers, grids, previews, archives, searches, duplicates and transfers.
 #![deny(missing_docs)]
 
-use ely_core::{buttons, forms, layout, lists, motion, primitives, theme, typography};
+use ely_core::{buttons, forms, i18n, layout, lists, motion, primitives, theme, typography};
 
 use std::rc::Rc;
 

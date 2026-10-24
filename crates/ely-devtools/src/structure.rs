@@ -11,6 +11,7 @@ use crate::{
     canvas::{OnEdit, caption, editing},
     data_display::{Badge, Tone},
     forms::{Checkbox, Choice, InlineEdit, Input, MultiSelect, Select, Switch, TextInput},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, Radius, TextSize},
     typography::Ellipsis,
@@ -130,10 +131,12 @@ impl RenderOnce for TableStructureEditor {
         let (id, fields, on_change) = (self.id, self.fields, &on_change);
         let room = window.use_keyed_state((id.clone(), "room"), cx, |_, _| Room::default());
         let rem = window.rem_size();
+        let words = ["name", "type", "empty", "key", "default"]
+            .map(|column| i18n::text(cx, &format!("devtools.column.{column}"), &[]));
         let theme = cx.theme();
         let least = rems(theme.label_width().0 * 3.75);
         let wide = room.read(cx).0 >= f32::from(least.to_pixels(rem));
-        let heading = |text: &'static str| {
+        let heading = |text: SharedString| {
             div()
                 .text_size(theme.text_size(TextSize::Xs))
                 .text_color(theme.colors.fg_subtle)
@@ -143,11 +146,11 @@ impl RenderOnce for TableStructureEditor {
         let head = wide.then(|| {
             cells(
                 [
-                    heading("Name"),
-                    heading("Type"),
-                    heading("Empty"),
-                    heading("Key"),
-                    heading("Default"),
+                    heading(words[0].clone()),
+                    heading(words[1].clone()),
+                    heading(words[2].clone()),
+                    heading(words[3].clone()),
+                    heading(words[4].clone()),
                     div().into_any_element(),
                 ],
                 least,
@@ -185,6 +188,13 @@ impl RenderOnce for TableStructureEditor {
                     all.remove(ix);
                 },
             );
+            let cell = |column: usize| {
+                let args = [
+                    ("column", words[column].as_ref()),
+                    ("field", field.name.as_ref()),
+                ];
+                i18n::text(cx, "devtools.cell", &args)
+            };
             let mut types: Vec<Choice> = TYPES.iter().map(|ty| Choice::new(*ty, *ty)).collect();
             if !TYPES.contains(&field.ty.as_ref()) {
                 types.insert(0, Choice::new(field.ty.clone(), field.ty.clone()));
@@ -199,18 +209,22 @@ impl RenderOnce for TableStructureEditor {
                     (id.clone(), format!("primary-{ix}")),
                     *key == Some(FieldKey::Primary),
                 )
+                .name(cell(3))
                 .on_change(move |on, window, cx| primary(on, window, cx))
                 .into_any_element(),
             };
             let parts = [
                 InlineEdit::new((id.clone(), format!("name-{ix}")), field.name.clone())
+                    .label(cell(0))
                     .on_commit(move |name, window, cx| named(name.clone(), window, cx))
                     .into_any_element(),
                 Select::new((id.clone(), format!("type-{ix}")), types)
+                    .label(cell(1))
                     .selected(field.ty.clone())
                     .on_change(move |ty, window, cx| typed(ty.clone(), window, cx))
                     .into_any_element(),
                 Checkbox::new((id.clone(), format!("empty-{ix}")), field.nullable)
+                    .name(cell(2))
                     .on_change(move |on, window, cx| empty(on, window, cx))
                     .into_any_element(),
                 key,
@@ -218,6 +232,7 @@ impl RenderOnce for TableStructureEditor {
                     (id.clone(), format!("default-{ix}")),
                     field.default.clone().unwrap_or_default(),
                 )
+                .label(cell(4))
                 .placeholder("None")
                 .on_commit(move |value, window, cx| defaulted(value.clone(), window, cx))
                 .into_any_element(),
@@ -415,6 +430,7 @@ impl RenderOnce for IndexManager {
             (id.clone(), "method"),
             METHODS.iter().map(|method| Choice::new(*method, *method)),
         )
+        .label(i18n::text(cx, "devtools.method", &[]))
         .selected(method)
         .on_change(move |value, _, cx| {
             pick_method.update(cx, |draft, cx| {

@@ -9,6 +9,7 @@ use super::panel::{OnEdit, editing, pair};
 use crate::{
     buttons::SegmentedControl,
     forms::{Choice, FontPicker, ScrubInput, Select, TextInput},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, Radius},
 };
@@ -161,6 +162,7 @@ impl RenderOnce for TypographyPanel {
                         .iter()
                         .map(|(weight, name)| Choice::new(weight.to_string(), *name)),
                 )
+                .label(i18n::text(cx, "type.weight", &[]))
                 .selected(named.0.to_string())
                 .on_change(move |value, window, cx| {
                     weight(

@@ -8,6 +8,7 @@ use super::panel::{OnEdit, editing, heading, pair};
 use crate::{
     buttons::{Button, ButtonVariant, IconButton},
     forms::{Choice, Select},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, TextSize},
 };
@@ -175,6 +176,7 @@ impl RenderOnce for ExportPanel {
                                 .iter()
                                 .map(|scale| Choice::new(scale.to_string(), format!("{scale}x"))),
                         )
+                        .label(i18n::text(cx, "export.scale", &[]))
                         .selected(setting.scale.to_string())
                         .disabled(setting.format.vector())
                         .on_change(move |value, window, cx| {
@@ -190,6 +192,7 @@ impl RenderOnce for ExportPanel {
                                 Choice::new(format.extension(), format.extension().to_uppercase())
                             }),
                         )
+                        .label(i18n::text(cx, "export.format", &[]))
                         .selected(setting.format.extension())
                         .on_change(move |value, window, cx| {
                             let chosen = *ExportFormat::ALL

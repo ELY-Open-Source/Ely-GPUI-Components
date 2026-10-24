@@ -5,7 +5,7 @@ use std::{
 
 use gpui::{
     App, Div, ElementId, ExternalPaths, InteractiveElement, IntoElement, ParentElement,
-    PathPromptOptions, RenderOnce, SharedString, Stateful, StatefulInteractiveElement,
+    PathPromptOptions, RenderOnce, Role, SharedString, Stateful, StatefulInteractiveElement,
     StyleRefinement, Styled, Window, div, prelude::*,
 };
 
@@ -205,6 +205,9 @@ impl RenderOnce for FileInput {
         let browse_what = what.clone();
         let subtle = cx.theme().colors.fg_subtle;
         let field = field_button(self.id.clone(), &focus, ControlSize::Md, false, window, cx)
+            .role(Role::Button)
+            .aria_label(placeholder)
+            .when_some(text.clone(), |field, text| field.aria_value(text))
             .cursor_pointer()
             .on_click(move |_, window, cx| {
                 let browse = browse.clone();

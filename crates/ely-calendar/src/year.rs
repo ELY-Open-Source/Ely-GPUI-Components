@@ -2,7 +2,7 @@ use std::{collections::BTreeMap, rc::Rc};
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, Hsla, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, Styled, Window, div, prelude::*,
+    ParentElement, RenderOnce, Role, Styled, Window, div, prelude::*,
 };
 use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
 
@@ -136,6 +136,11 @@ impl Mini<'_> {
             div()
                 .id((self.id.clone(), format!("day-{day}")))
                 .debug_selector(move || format!("year-day {day}"))
+                .role(Role::GridCell)
+                .aria_label(day.to_string())
+                .when(self.cursor == Some(day), |cell| {
+                    cell.aria_active_descendant()
+                })
                 .relative()
                 .size(cell)
                 .flex()
@@ -328,6 +333,7 @@ impl RenderOnce for YearView {
                 div()
                     .id((self.id.clone(), "months"))
                     .debug_selector(|| "year-months".into())
+                    .role(Role::Grid)
                     .track_focus(&focus)
                     .on_key_down(keys)
                     .flex()

@@ -1,7 +1,7 @@
 use gpui::{
     Animation, AnimationExt, App, ClickEvent, ElementId, FontWeight, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, RenderOnce, SharedString, StatefulInteractiveElement,
-    Styled, Window, div, prelude::*,
+    IntoElement, MouseButton, ParentElement, RenderOnce, Role, SharedString,
+    StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use super::button::ClickHandler;
@@ -71,6 +71,10 @@ impl RenderOnce for FloatingActionButton {
         let (hover, lifted) = (colors.accent_hover, theme.elevation(Elevation::Modal));
         div()
             .id(self.id)
+            .role(Role::Button)
+            .when_some(self.label.clone().or(self.tooltip.clone()), |fab, name| {
+                fab.aria_label(name)
+            })
             .flex()
             .flex_none()
             .items_center()

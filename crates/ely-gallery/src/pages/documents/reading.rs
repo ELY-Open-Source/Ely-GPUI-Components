@@ -128,7 +128,7 @@ pub fn reading(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let zen = keep("read-zen", || false, window, cx);
     let now_zen = *zen.read(cx);
     let draft = window.use_keyed_state("read-draft", cx, |window, cx| {
-        let mut draft = TextInput::new(window, cx).multi_line(6, 18).highlighter(markdown_highlights);
+        let mut draft = TextInput::new(window, cx).multi_line(6, 18).highlighter(markdown_highlights).label("Draft");
         draft.set_text("# A quiet page\n\nEverything else folds away while you write. Press Escape to come back.", cx);
         draft
     });

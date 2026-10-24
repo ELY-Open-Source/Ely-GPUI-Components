@@ -100,7 +100,9 @@ pub(super) fn order_columns() -> [Column; 7] {
 }
 
 pub fn orders(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let search = window.use_keyed_state("orders-search", cx, TextInput::new);
+    let search = window.use_keyed_state("orders-search", cx, |window, cx| {
+        TextInput::new(window, cx).label("Search orders")
+    });
     let query = search.read(cx).text().to_string();
     let picked = keep("orders-picked", Vec::<SharedString>::new, window, cx);
     let spacing = keep("orders-density", || Density::Standard, window, cx);

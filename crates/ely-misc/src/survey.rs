@@ -2,12 +2,13 @@ use std::rc::Rc;
 
 use gpui::{
     App, AppContext as _, ElementId, Entity, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, SharedString, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, Styled, Window, div, prelude::*,
 };
 
 use crate::{
     buttons::{Button, ButtonVariant},
     forms::{CheckboxGroup, Choice, Input, RadioGroup, TextInput},
+    i18n,
     primitives::{FocusRing, Icon, IconName, tab_stop},
     theme::{ActiveTheme, IconSize, Radius, TextSize},
 };
@@ -117,8 +118,13 @@ fn blank(questions: &[Question], window: &mut Window, cx: &mut App) -> Sheet {
         fields: questions
             .iter()
             .map(|question| {
-                matches!(question, Question::Text(_))
-                    .then(|| cx.new(|cx| TextInput::new(window, cx).multi_line(2, 5)))
+                matches!(question, Question::Text(_)).then(|| {
+                    cx.new(|cx| {
+                        TextInput::new(window, cx)
+                            .multi_line(2, 5)
+                            .label(question.title().clone())
+                    })
+                })
             })
             .collect(),
         sent: false,
@@ -160,6 +166,8 @@ impl RenderOnce for Survey {
             return div()
                 .id((id, "sent"))
                 .debug_selector(|| "survey-sent".into())
+                .role(Role::Status)
+                .aria_label(i18n::text(cx, "misc.sent", &[]))
                 .track_focus(&action)
                 .flex()
                 .items_center()
@@ -180,7 +188,7 @@ impl RenderOnce for Survey {
                         .flex_1()
                         .min_w_0()
                         .text_color(colors.fg)
-                        .child("Thanks. Your answers were sent."),
+                        .child(i18n::text(cx, "misc.sent", &[])),
                 )
                 .into_any_element();
         }

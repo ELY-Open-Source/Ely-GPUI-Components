@@ -54,7 +54,7 @@ pub fn kanban(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     SharedString::from(format!("project-issue-{}", task.key)),
                     task.clone(),
                 );
-                KanbanCard::new(task.key.clone(), face)
+                KanbanCard::new(task.key.clone(), face).label(task.title.clone())
             });
         KanbanColumn::new(key, title).cards(cards)
     });

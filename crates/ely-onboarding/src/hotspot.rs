@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
 };
 
 use crate::{
@@ -18,6 +18,7 @@ use crate::{
 #[derive(IntoElement)]
 struct Dot {
     id: ElementId,
+    name: SharedString,
     toggle: Run,
 }
 
@@ -28,6 +29,8 @@ impl RenderOnce for Dot {
         let toggle = self.toggle;
         div()
             .id(self.id.clone())
+            .role(Role::Button)
+            .aria_label(self.name)
             .flex()
             .flex_none()
             .items_center()
@@ -88,10 +91,12 @@ impl RenderOnce for Hotspot {
         let dismiss = self.on_dismiss;
         let (dot, got_it) = ((id.clone(), "dot"), (id.clone(), "got-it"));
         let (title, body) = (self.title, self.body);
+        let name = title.clone();
         Popover::with_opener(
             id.clone(),
             move |toggle| Dot {
                 id: dot.into(),
+                name: name.clone(),
                 toggle,
             },
             move |close: Run, _: &mut Window, cx: &mut App| {

@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     prelude::*,
 };
 use smallvec::SmallVec;
@@ -86,6 +86,9 @@ impl RenderOnce for NavItem {
         let (id, label) = (self.id.clone(), self.label.clone());
         let item = div()
             .id(self.id)
+            .role(Role::Link)
+            .aria_label(label.clone())
+            .aria_selected(self.active)
             .relative()
             .flex()
             .items_center()
@@ -218,6 +221,9 @@ impl RenderOnce for NavGroup {
             .child(
                 div()
                     .id((self.id.clone(), "title"))
+                    .role(Role::Button)
+                    .aria_label(self.title.clone())
+                    .aria_expanded(open)
                     .flex()
                     .items_center()
                     .gap_1()

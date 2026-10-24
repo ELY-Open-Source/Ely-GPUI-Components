@@ -9,6 +9,7 @@ use crate::{
     buttons::{Button, ButtonVariant},
     data_display::{Avatar, Presence},
     forms::{AvatarUpload, EmailInput, FormField, Input, TextInput, is_email},
+    i18n,
     layout::Card,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, AvatarSize, IconSize, TextSize},
@@ -185,10 +186,10 @@ struct Fields {
 
 impl Fields {
     fn filled(profile: &Profile, window: &mut Window, cx: &mut App) -> Self {
-        let mut field = |text: &SharedString, lines: bool| {
-            let text = text.to_string();
+        let mut field = |text: &SharedString, lines: bool, key: &str| {
+            let (text, name) = (text.to_string(), i18n::text(cx, key, &[]));
             cx.new(|cx| {
-                let input = TextInput::new(window, cx);
+                let input = TextInput::new(window, cx).label(name);
                 let mut input = if lines { input.multi_line(3, 6) } else { input };
                 input.set_text(text, cx);
                 input
@@ -196,11 +197,11 @@ impl Fields {
         };
         Self {
             seed: profile.clone(),
-            name: field(&profile.name, false),
-            username: field(&profile.username, false),
-            email: field(&profile.email, false),
-            bio: field(&profile.bio, true),
-            location: field(&profile.location, false),
+            name: field(&profile.name, false, "profile.name"),
+            username: field(&profile.username, false, "profile.username"),
+            email: field(&profile.email, false, "profile.email"),
+            bio: field(&profile.bio, true, "profile.bio"),
+            location: field(&profile.location, false, "profile.location"),
             picture: profile.picture.clone(),
         }
     }

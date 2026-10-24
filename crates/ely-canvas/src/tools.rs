@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, AppContext as _, Bounds, ElementId, EmptyView, Entity, EntityId, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, SharedString,
+    IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role, SharedString,
     StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*,
 };
 
@@ -19,7 +19,7 @@ use super::{
     view::{Frame, Viewport},
     writing,
 };
-use crate::{forms::Editing, primitives::tab_stop, theme::ActiveTheme};
+use crate::{forms::Editing, i18n, primitives::tab_stop, theme::ActiveTheme};
 
 /// A drag on a tool layer, and whose layer it is.
 struct Tracing {
@@ -331,6 +331,8 @@ impl RenderOnce for ToolLayer {
         let measured = hand.clone();
         div()
             .id(self.id)
+            .role(Role::Canvas)
+            .aria_label(i18n::text(cx, "canvas.board", &[]))
             .track_focus(&focus)
             .absolute()
             .inset_0()

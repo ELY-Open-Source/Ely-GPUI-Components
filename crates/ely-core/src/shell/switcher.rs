@@ -2,13 +2,13 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, AnyWindowHandle, App, ElementId, Entity, InteractiveElement,
-    IntoElement, ParentElement, RenderOnce, StatefulInteractiveElement, Styled, Window, div,
+    IntoElement, ParentElement, RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div,
     prelude::*,
 };
 
 use super::WindowManager;
 use crate::{
-    motion,
+    i18n, motion,
     primitives::{Backdrop, FocusNext, FocusPrev, Icon, IconName, Place, give_back, take_focus},
     theme::{ActiveTheme, ControlSize, Elevation, IconSize, Radius, TextSize},
     typography::Caption,
@@ -83,6 +83,10 @@ impl RenderOnce for WindowSwitcher {
                 let (handle, close) = (*handle, close.clone());
                 div()
                     .id(("switch", ix))
+                    .role(Role::ListBoxOption)
+                    .aria_label(title.clone())
+                    .aria_selected(ix == selected)
+                    .when(ix == selected, |row| row.aria_active_descendant())
                     .flex()
                     .items_center()
                     .gap_3()
@@ -108,6 +112,8 @@ impl RenderOnce for WindowSwitcher {
         let focus = takeover.read(cx).focus.clone();
         let panel = div()
             .id("window-switcher")
+            .role(Role::ListBox)
+            .aria_label(i18n::text(cx, "switcher.windows", &[]))
             .track_focus(&focus)
             .w(theme.sheet_size())
             .p_2()

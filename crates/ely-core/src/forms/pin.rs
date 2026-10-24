@@ -28,6 +28,7 @@ struct Pin {
 #[derive(IntoElement)]
 pub struct PinInput {
     id: ElementId,
+    label: SharedString,
     length: usize,
     letters: bool,
     masked: bool,
@@ -41,12 +42,19 @@ impl PinInput {
         assert!(length > 0, "a pin needs at least one box");
         Self {
             id: id.into(),
+            label: SharedString::default(),
             length,
             letters: false,
             masked: false,
             attempt: 0,
             on_complete: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = text.into();
+        self
     }
 
     /// Clears the boxes whenever `attempt` changes, so a code that failed makes way for the next.
@@ -109,6 +117,10 @@ impl RenderOnce for PinInput {
             }
         });
         let input = state.read(cx).input.clone();
+        if input.read(cx).label_text() != &self.label {
+            let label = self.label.clone();
+            input.update(cx, |field, cx| field.set_label(label, cx));
+        }
         let (code, focused, caret_on) = {
             let field = input.read(cx);
             (

@@ -1,13 +1,14 @@
 use gpui::{
     AnyElement, App, Axis, ClickEvent, Context, Div, ExternalPaths, FontWeight, InteractiveElement,
-    IntoElement, KeyBinding, MouseButton, MouseDownEvent, ParentElement, Render,
-    StatefulInteractiveElement, Styled, StyledText, Window, actions, div, list,
+    IntoElement, KeyBinding, MouseButton, MouseDownEvent, ParentElement, Render, Role,
+    SharedString, StatefulInteractiveElement, Styled, StyledText, Window, actions, div, list,
     prelude::FluentBuilder as _, relative,
 };
 
 use super::{MarkdownDocument, edit::Landing, parse::Block};
 use crate::{
     forms::{self, Down, Up},
+    i18n,
     layout::{ScrollSource, Scrollbar},
     primitives::FocusRing as _,
     theme::{ActiveTheme, Radius, TextSize, Theme},
@@ -235,7 +236,16 @@ impl MarkdownDocument {
         cx: &mut Context<Self>,
     ) -> gpui::Stateful<gpui::Div> {
         let hover = cx.theme().colors.hover.opacity(0.5);
+        let name: SharedString = match ix.and_then(|ix| self.parsed.blocks.get(ix)) {
+            Some(block) => self.parsed.text[block.range.clone()]
+                .trim()
+                .to_string()
+                .into(),
+            None => i18n::text(cx, "documents.append", &[]),
+        };
         element
+            .role(Role::Button)
+            .aria_label(name)
             .tab_index(0)
             .border_1()
             .border_color(gpui::transparent_black())
@@ -339,12 +349,18 @@ impl Render for MarkdownDocument {
                 .child(div().flex_1().min_w_0().h_full().child(blocks))
                 .into_any_element(),
             MarkdownMode::Preview => root
+                .id(("markdown-document", cx.entity_id().as_u64()))
+                .role(Role::Document)
+                .aria_label(i18n::text(cx, "documents.document", &[]))
                 .track_focus(&self.focus)
                 .px_2()
                 .py_3()
                 .child(blocks)
                 .into_any_element(),
             MarkdownMode::Visual => root
+                .id(("markdown-document", cx.entity_id().as_u64()))
+                .role(Role::Document)
+                .aria_label(i18n::text(cx, "documents.document", &[]))
                 .key_context(CONTEXT)
                 .track_focus(&self.focus)
                 .on_action(cx.listener(|document, _: &Undo, window, cx| {

@@ -2,7 +2,7 @@
 #![deny(missing_docs)]
 
 use ely_core::{
-    buttons, data_display, forms, layout, lists, overlays, primitives, theme, typography,
+    buttons, data_display, forms, i18n, layout, lists, overlays, primitives, theme, typography,
 };
 
 mod agenda;

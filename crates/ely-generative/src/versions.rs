@@ -2,7 +2,7 @@ use std::{ops::Range, rc::Rc};
 
 use gpui::{
     App, ElementId, FontWeight, HighlightStyle, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, StrikethroughStyle,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, StrikethroughStyle,
     Styled, StyledText, Window, div, prelude::*, transparent_black,
 };
 use jiff::Timestamp;
@@ -245,7 +245,10 @@ impl RenderOnce for PromptVersionHistory {
                     })
                     .when(on, |row| row.bg(colors.active))
                     .when_some(choose, |row, choose| {
-                        row.track_focus(&focus)
+                        row.role(Role::RadioButton)
+                            .aria_label(version.text.clone())
+                            .aria_toggled(on.into())
+                            .track_focus(&focus)
                             .when(!on, |row| row.hover(|style| style.bg(colors.hover)))
                             .cursor_pointer()
                             .on_mouse_down(MouseButton::Left, |_, window, _| {

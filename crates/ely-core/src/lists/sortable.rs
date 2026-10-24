@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
-    SharedString, Styled, Window, div,
+    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, Role,
+    SharedString, StatefulInteractiveElement, Styled, Window, div,
 };
 
 use super::ListItem;
@@ -122,6 +122,7 @@ impl RenderOnce for SortableList {
         );
         div()
             .id(self.id)
+            .role(Role::List)
             .track_focus(&focus)
             .on_key_down(move |event, window, cx| {
                 let up = match event.keystroke.key.as_str() {

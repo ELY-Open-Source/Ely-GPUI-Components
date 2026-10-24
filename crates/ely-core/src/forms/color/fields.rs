@@ -6,7 +6,10 @@ use super::{
     super::{Choice, Input, ScrubInput, Select, TextInput},
     Hsva,
 };
-use crate::theme::{ActiveTheme, ControlSize};
+use crate::{
+    i18n,
+    theme::{ActiveTheme, ControlSize},
+};
 
 /// How a color picker's typed fields spell the color.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -33,12 +36,13 @@ pub(crate) type Commit = Rc<dyn Fn(Hsva, &mut Window, &mut App)>;
 pub(crate) type SetFormat = Rc<dyn Fn(Format, &mut Window, &mut App)>;
 
 /// A select of the three formats.
-pub(crate) fn format_select(id: &ElementId, format: Format, set: SetFormat) -> Select {
+pub(crate) fn format_select(id: &ElementId, format: Format, set: SetFormat, cx: &App) -> Select {
     Select::new(
         (id.clone(), "format"),
         Format::ALL.map(|format| Choice::new(format.label(), format.label())),
     )
     .selected(format.label())
+    .label(i18n::text(cx, "color.format", &[]))
     .size(ControlSize::Md)
     .on_change(move |label: &SharedString, window, cx| {
         let format = Format::ALL

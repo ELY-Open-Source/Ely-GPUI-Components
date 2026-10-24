@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, Entity, FontWeight, InteractiveElement, IntoElement, ParentElement, RenderOnce,
-    SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use super::button::{keystroke_of, shortcut_text};
@@ -128,6 +128,10 @@ impl RenderOnce for QuickActions {
                 let (hover, action_for_click) = (state.clone(), action.clone());
                 div()
                     .id(("quick", ix))
+                    .role(Role::MenuItem)
+                    .aria_label(action.label.clone())
+                    .aria_selected(ix == selected)
+                    .when(ix == selected, |row| row.aria_active_descendant())
                     .flex()
                     .items_center()
                     .gap_3()
@@ -193,6 +197,7 @@ impl RenderOnce for QuickActions {
         let (keys, actions) = (state, self.actions);
         div()
             .id(self.id)
+            .role(Role::Menu)
             .track_focus(&focus)
             .flex()
             .flex_col()

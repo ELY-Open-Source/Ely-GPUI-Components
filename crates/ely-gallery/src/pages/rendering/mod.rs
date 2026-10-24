@@ -57,6 +57,7 @@ fn surface(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         "surface-slider",
         div().w(px(320.0)).child(
             Slider::new("surface-place", f64::from(at) * 100.0)
+                .label("Place")
                 .step(5.0)
                 .on_change(move |next, _, cx| set(&place, next as f32 / 100.0, cx)),
         ),

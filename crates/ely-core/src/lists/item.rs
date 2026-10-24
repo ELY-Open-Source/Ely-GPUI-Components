@@ -189,6 +189,7 @@ impl RenderOnce for ListItem {
             .role(Role::ListItem)
             .aria_label(self.title.clone())
             .aria_selected(self.selected)
+            .when(self.current, |row| row.aria_active_descendant())
             .when_some(self.description.clone(), |row, text| {
                 row.aria_description(text)
             })

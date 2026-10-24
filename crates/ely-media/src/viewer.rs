@@ -3,14 +3,15 @@ use std::sync::Arc;
 use gpui::{
     App, Bounds, DragMoveEvent, ElementId, EmptyView, EntityId, ImageAssetLoader, ImageSource,
     InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderImage,
-    RenderOnce, Resource, StatefulInteractiveElement, Styled, Window, canvas, div, img, prelude::*,
-    transparent_black,
+    RenderOnce, Resource, Role, StatefulInteractiveElement, Styled, Window, canvas, div, img,
+    prelude::*, transparent_black,
 };
 
 use super::turn::{Turn, Turned};
 use crate::{
     buttons::IconButton,
     documents::zoom_step,
+    i18n,
     motion::Spinner,
     primitives::{FocusRing, Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
@@ -319,7 +320,11 @@ impl RenderOnce for ImageViewer {
             .border_1()
             .border_color(transparent_black())
             .when(pixels.is_some(), |stage| {
-                stage.track_focus(&focus).focus_ring(cx)
+                stage
+                    .role(Role::Group)
+                    .aria_label(i18n::text(cx, "media.image", &[]))
+                    .track_focus(&focus)
+                    .focus_ring(cx)
             })
             .when(overhangs, |stage| stage.cursor_grab())
             .child(

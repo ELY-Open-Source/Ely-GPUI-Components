@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, IntoElement, ParentElement, RenderOnce, SharedString, Window, prelude::*,
+    App, ElementId, IntoElement, ParentElement, RenderOnce, Role, SharedString, Window, prelude::*,
 };
 
 use super::{Shown, TreeNode, rows};
@@ -106,6 +106,11 @@ impl RenderOnce for TreeSelect {
             .cloned();
         let colors = &cx.theme().colors;
         let trigger = field_button(self.id.clone(), &focus, ControlSize::Md, false, window, cx)
+            .role(Role::ComboBox)
+            .aria_label(self.placeholder.clone())
+            .when_some(shown.as_ref(), |trigger, row| {
+                trigger.aria_value(row.label.clone())
+            })
             .when_some(shown.as_ref().and_then(|row| row.icon), |trigger, icon| {
                 trigger.child(Icon::new(icon).size(IconSize::Sm).color(colors.fg_muted))
             })

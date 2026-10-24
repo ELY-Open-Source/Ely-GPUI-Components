@@ -236,6 +236,7 @@ pub fn pickers(
                             Choice { note: Some("Fast for everyday work".into()), ..Choice::new("small", "Ely Small") },
                         ],
                     )
+                    .label("Model")
                     .selected(now_model)
                     .on_change(move |next, _, cx| set(&model, next.clone(), cx)),
                 ),
@@ -272,7 +273,9 @@ pub fn tuning(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let values = keep("chat-params", || (0.7, 0.95, 1024.0), window, cx);
     let (temperature, top_p, longest) = *values.read(cx);
     let system = window.use_keyed_state("chat-system", cx, |window, cx| {
-        let mut input = TextInput::new(window, cx).multi_line(3, 8);
+        let mut input = TextInput::new(window, cx)
+            .multi_line(3, 8)
+            .label("System prompt");
         input.set_text(SYSTEM, cx);
         input
     });

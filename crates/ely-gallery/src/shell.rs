@@ -73,6 +73,12 @@ impl Gallery {
         cx.notify();
     }
 
+    /// Hands focus back to the window's root scope.
+    #[cfg(windows)]
+    pub fn focus_root(&self, window: &mut Window, cx: &mut App) {
+        window.focus(&self.focus, cx);
+    }
+
     /// Viewport height and furthest scroll, in pixels.
     #[cfg(not(target_family = "wasm"))]
     pub fn scroll_extent(&self) -> (Pixels, Pixels) {

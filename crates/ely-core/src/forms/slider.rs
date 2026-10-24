@@ -3,7 +3,7 @@ use std::rc::Rc;
 use gpui::{
     AnyElement, App, Bounds, DragMoveEvent, ElementId, EmptyView, EntityId, InteractiveElement,
     IntoElement, MouseButton, Orientation, ParentElement, Pixels, Point, RenderOnce, Role,
-    StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*, relative,
+    SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*, relative,
 };
 
 use super::options::OnNumber;
@@ -60,6 +60,7 @@ type OnSpan = Rc<dyn Fn((f64, f64), &mut Window, &mut App)>;
 /// A track with one or two thumbs. `commit` gets the thumb and its new value.
 struct Track {
     id: ElementId,
+    label: Option<SharedString>,
     values: Vec<f64>,
     range: (f64, f64, f64),
     vertical: bool,
@@ -146,6 +147,14 @@ impl Track {
                         .h(line)
                 }
             });
+        // A range's two thumbs say which end they hold.
+        let names: Vec<Option<SharedString>> = match (&self.label, self.values.len()) {
+            (Some(name), 2) => ["range.low", "range.high"]
+                .iter()
+                .map(|key| Some(i18n::text(cx, key, &[("name", name)])))
+                .collect(),
+            (name, count) => vec![name.clone(); count],
+        };
         let thumbs: Vec<_> = fractions
             .iter()
             .enumerate()
@@ -160,6 +169,7 @@ impl Track {
                 div()
                     .id(("thumb", k))
                     .role(Role::Slider)
+                    .when_some(names[k].clone(), |thumb, name| thumb.aria_label(name))
                     .aria_numeric_value(value)
                     .aria_min_numeric_value(floor)
                     .aria_max_numeric_value(ceiling)
@@ -292,6 +302,7 @@ impl Track {
 #[derive(IntoElement)]
 pub struct Slider {
     id: ElementId,
+    label: Option<SharedString>,
     value: f64,
     range: (f64, f64, f64),
     vertical: bool,
@@ -304,12 +315,19 @@ impl Slider {
     pub fn new(id: impl Into<ElementId>, value: f64) -> Self {
         Self {
             id: id.into(),
+            label: None,
             value,
             range: (0.0, 100.0, 1.0),
             vertical: false,
             disabled: false,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// Its least and greatest value. Panics on an empty range.
@@ -360,6 +378,7 @@ impl RenderOnce for Slider {
         });
         Track {
             id: self.id,
+            label: self.label,
             values: vec![value],
             range: self.range,
             vertical: self.vertical,
@@ -383,6 +402,7 @@ impl RenderOnce for Slider {
 #[derive(IntoElement)]
 pub struct RangeSlider {
     id: ElementId,
+    label: Option<SharedString>,
     value: (f64, f64),
     range: (f64, f64, f64),
     vertical: bool,
@@ -396,12 +416,19 @@ impl RangeSlider {
         assert!(low <= high, "range {low}..{high} runs backwards");
         Self {
             id: id.into(),
+            label: None,
             value: (low, high),
             range: (0.0, 100.0, 1.0),
             vertical: false,
             disabled: false,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// Its least and greatest value. Panics on an empty range.
@@ -460,6 +487,7 @@ impl RenderOnce for RangeSlider {
         });
         Track {
             id: self.id,
+            label: self.label,
             values: vec![low, high],
             range: self.range,
             vertical: self.vertical,

@@ -133,6 +133,7 @@ pub fn styles(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     .gap_6()
                     .child(
                         GradientEditor::new("canvas-gradient", stops)
+                            .label("Fill gradient")
                             .on_change(move |next, _, cx| change(&graded, cx, |look| look.stops = next.to_vec())),
                     )
                     .child(

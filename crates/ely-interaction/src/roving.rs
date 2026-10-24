@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, Axis, Div, ElementId, FocusHandle, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, SharedString, StatefulInteractiveElement,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement,
     StyleRefinement, Styled, Window, div, prelude::*,
 };
 
@@ -107,6 +107,8 @@ impl RenderOnce for RovingFocus {
                 let (press, held) = (on_press.clone(), stop.clone());
                 div()
                     .id((id.clone(), format!("item-{ix}")))
+                    .role(Role::ListItem)
+                    .aria_label(key.clone())
                     .track_focus(&handle)
                     .rounded(radius)
                     .border_1()

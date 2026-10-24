@@ -175,6 +175,7 @@ fn row(rows: &Rows, ix: usize, window: &mut Window, cx: &mut App) -> AnyElement 
         .aria_label(label.clone())
         .aria_level(item.depth + 1)
         .aria_selected(selected)
+        .when(rows.current == Some(ix), |row| row.aria_active_descendant())
         .when(opens, |row| row.aria_expanded(open))
         .relative()
         .w_full()

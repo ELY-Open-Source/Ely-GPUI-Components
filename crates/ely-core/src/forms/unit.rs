@@ -56,6 +56,12 @@ impl UnitInput {
         self
     }
 
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.field = self.field.label(text);
+        self
+    }
+
     /// Runs with each new value, typed ones included.
     pub fn on_change(mut self, handler: impl Fn(f64, &mut Window, &mut App) + 'static) -> Self {
         self.field = self.field.on_change(handler);

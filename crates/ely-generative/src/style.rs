@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
+    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, div, transparent_black,
 };
 
@@ -120,6 +120,9 @@ impl RenderOnce for StylePresetPicker {
                 };
                 div()
                     .id(id)
+                    .role(Role::RadioButton)
+                    .aria_label(preset.name.clone())
+                    .aria_toggled(chosen.into())
                     .track_focus(&focus)
                     .w(side)
                     .flex()

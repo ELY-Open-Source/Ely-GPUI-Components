@@ -1,13 +1,14 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
+    App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use crate::{
-    buttons::ButtonVariant,
-    forms::{EmojiPicker, OnValue},
+    buttons::{ButtonVariant, IconButton},
+    forms::{EmojiPicker, OnValue, Run},
+    i18n,
     overlays::Popover,
     primitives::{FocusRing, IconName},
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
@@ -85,9 +86,20 @@ impl ReactionPicker {
 }
 
 impl RenderOnce for ReactionPicker {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let (id, on_pick) = (self.id.clone(), self.on_pick);
-        Popover::new(self.id, "", move |_, cx| {
+        let (trigger, tip) = (
+            (self.id.clone(), "trigger"),
+            i18n::text(cx, "reactions.add", &[]),
+        );
+        let opener = move |toggle: Run| {
+            IconButton::new(trigger, IconName::SmilePlus)
+                .variant(ButtonVariant::Ghost)
+                .size(ControlSize::Sm)
+                .tooltip(tip)
+                .on_click(move |_, window, cx| toggle(window, cx))
+        };
+        Popover::with_opener(self.id, opener, move |_, _, cx| {
             let theme = cx.theme();
             let colors = theme.colors.clone();
             let (quick, all) = (on_pick.clone(), on_pick.clone());
@@ -115,9 +127,6 @@ impl RenderOnce for ReactionPicker {
                     }),
                 )
         })
-        .icon(IconName::SmilePlus)
-        .variant(ButtonVariant::Ghost)
-        .size(ControlSize::Sm)
     }
 }
 
@@ -183,6 +192,9 @@ impl RenderOnce for Reactions {
                         colors.border
                     })
                     .when(reaction.mine, |chip| chip.bg(colors.focus.opacity(0.1)))
+                    .role(Role::Button)
+                    .aria_label(format!("{} {}", reaction.emoji, reaction.count))
+                    .aria_toggled(reaction.mine.into())
                     .tab_index(0)
                     .focus_ring(cx)
                     .cursor_pointer()

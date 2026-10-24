@@ -8,6 +8,7 @@ use gpui::{
 use crate::{
     buttons::{ButtonVariant, IconButton, SegmentedControl},
     forms::{Choice, JsonInput, NumberInput, Select, Switch, TextInput},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
     typography::format::decimals,
@@ -194,6 +195,10 @@ impl RenderOnce for SettingsEditor {
         );
         let header = header.child(mode);
         if let Some(field) = self.json {
+            let name = i18n::text(cx, "editor.settings_json", &[]);
+            if field.read(cx).label_text() != &name {
+                field.update(cx, |field, cx| field.set_label(name.clone(), cx));
+            }
             return div()
                 .flex()
                 .flex_col()
@@ -257,6 +262,7 @@ impl RenderOnce for SettingsEditor {
                     SettingValue::Bool(on) => {
                         let tell = tell.clone();
                         Switch::new(id.clone(), *on)
+                            .name(setting.title.clone())
                             .on_change(move |on, window, cx| {
                                 tell(SettingValue::Bool(on), window, cx)
                             })
@@ -273,6 +279,7 @@ impl RenderOnce for SettingsEditor {
                             .w(theme.label_width())
                             .child(
                                 NumberInput::new(id.clone(), *value)
+                                    .label(setting.title.clone())
                                     .range(min, max)
                                     .step(step)
                                     .precision(places(*value, step))
@@ -303,6 +310,7 @@ impl RenderOnce for SettingsEditor {
                                         .iter()
                                         .map(|choice| Choice::new(choice.clone(), choice.clone())),
                                 )
+                                .label(setting.title.clone())
                                 .selected(value.clone())
                                 .size(ControlSize::Sm)
                                 .on_change(

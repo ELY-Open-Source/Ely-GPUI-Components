@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     Action, App, Bounds, ElementId, Entity, InteractiveElement, IntoElement, MouseButton,
-    OwnedMenu, OwnedMenuItem, ParentElement, Pixels, RenderOnce, StatefulInteractiveElement,
+    OwnedMenu, OwnedMenuItem, ParentElement, Pixels, RenderOnce, Role, StatefulInteractiveElement,
     Styled, Window, canvas, div, prelude::*,
 };
 
@@ -129,6 +129,10 @@ impl RenderOnce for MenuBar {
             let here = ix == at;
             div()
                 .id(("title", ix))
+                .role(Role::MenuItem)
+                .aria_label(menu.name.clone())
+                .aria_expanded(open && here)
+                .when(here, |head| head.aria_active_descendant())
                 .relative()
                 .flex()
                 .items_center()
@@ -179,6 +183,7 @@ impl RenderOnce for MenuBar {
         let (keys, key_titles, key_menus) = (state.clone(), titles.clone(), menus.clone());
         div()
             .id(self.id.clone())
+            .role(Role::MenuBar)
             .track_focus(&focus)
             .flex()
             .items_center()

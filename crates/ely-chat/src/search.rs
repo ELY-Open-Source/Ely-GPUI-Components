@@ -2,7 +2,7 @@ use std::{ops::Range, rc::Rc};
 
 use gpui::{
     Animation, AnimationExt, AnyElement, App, ElementId, FontWeight, HighlightStyle, Hsla,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, SharedString,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce, Role, SharedString,
     StatefulInteractiveElement, Styled, StyledText, Window, div, prelude::*, transparent_black,
 };
 
@@ -186,7 +186,9 @@ impl RenderOnce for WebResultCard {
             .gap_0p5()
             .py_2()
             .when_some(open, |card, open| {
-                card.px_1()
+                card.role(Role::Link)
+                    .aria_label(self.source.title.clone())
+                    .px_1()
                     .rounded(theme.radius(Radius::Md))
                     .border_1()
                     .border_color(transparent_black())

@@ -10,6 +10,7 @@ use crate::{
     buttons::{ToggleGroup, ToggleItem},
     feedback::InlineMessage,
     forms::{Highlight, Input, RegexInput, TextInput, regex_highlights},
+    i18n,
     primitives::Severity,
     theme::{ActiveTheme, TextSize},
 };
@@ -143,14 +144,18 @@ impl RenderOnce for RegexTester {
         let bench = window.use_keyed_state((self.id.clone(), "bench"), cx, move |window, cx| {
             let flags = cx.new(|_| Vec::new());
             let pattern = cx.new(|cx| {
-                let mut input = TextInput::new(window, cx).highlighter(regex_highlights);
+                let mut input = TextInput::new(window, cx)
+                    .highlighter(regex_highlights)
+                    .label(i18n::text(cx, "devtools.pattern", &[]));
                 input.set_text(pattern, cx);
                 input
             });
             let (read, read_flags) = (pattern.clone(), flags.clone());
             let sample = cx.new(|cx| {
-                let mut input = TextInput::new(window, cx).multi_line(4, 10).highlighter(
-                    move |text: &str, cx: &App| {
+                let mut input = TextInput::new(window, cx)
+                    .multi_line(4, 10)
+                    .label(i18n::text(cx, "devtools.sample", &[]))
+                    .highlighter(move |text: &str, cx: &App| {
                         let wash = cx.theme().colors.accent.alpha(0.18);
                         let (pattern, flags) = (
                             read.read(cx).text().to_string(),
@@ -165,8 +170,7 @@ impl RenderOnce for RegexTester {
                                 (found.range, highlight)
                             })
                             .collect()
-                    },
-                );
+                    });
                 input.set_text(sample, cx);
                 input
             });

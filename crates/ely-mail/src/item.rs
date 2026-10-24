@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 use jiff::{Timestamp, tz::TimeZone};
 
@@ -225,6 +225,9 @@ impl MailItem {
                     div()
                         .id((self.id.clone(), "star"))
                         .debug_selector(move || format!("star {named}"))
+                        .role(Role::Button)
+                        .aria_label(tip.clone())
+                        .aria_toggled(starred.into())
                         .p_0p5()
                         .rounded(theme.radius(Radius::Sm))
                         .border_1()

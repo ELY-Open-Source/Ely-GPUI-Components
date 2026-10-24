@@ -50,7 +50,9 @@ pub fn sections(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
     let measuring = window.use_keyed_state("fps-measuring", cx, |_, _| false);
     let on = *measuring.read(cx);
     let apart = window.use_keyed_state("renders-apart", cx, |_, _| Apart);
-    let field = window.use_keyed_state("events-field", cx, TextInput::new);
+    let field = window.use_keyed_state("events-field", cx, |window, cx| {
+        TextInput::new(window, cx).label("Try typing")
+    });
     let theme = cx.theme();
     let colors = &theme.colors;
     let boxed = |element: gpui::Div| {

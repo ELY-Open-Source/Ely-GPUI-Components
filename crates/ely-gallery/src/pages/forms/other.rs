@@ -195,6 +195,7 @@ pub fn regional(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         format!("an amount in {money_now}"),
         div().w(px(260.0)).child(
             NumberInput::new("regional-amount", amount_now)
+                .label("Amount")
                 .currency(&money_now)
                 .on_change(move |next, _, cx| set(&amount, next, cx)),
         ),

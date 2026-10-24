@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, IntoElement, MouseButton, ParentElement, RenderOnce, SharedString, Styled,
-    Window, div, prelude::*,
+    App, ElementId, IntoElement, MouseButton, ParentElement, RenderOnce, Role, SharedString,
+    Styled, Window, div, prelude::*,
 };
 use web_time::Instant;
 
@@ -11,6 +11,7 @@ use crate::{
     data_display::{Avatar, AvatarGroup},
     feedback::Timer,
     forms::{OnFlag, Run},
+    i18n,
     media::device_toggle,
     motion::Pulse,
     primitives::{FocusRing, Icon, IconName},
@@ -338,7 +339,9 @@ impl RenderOnce for HuddleIndicator {
             .text_size(theme.text_size(TextSize::Sm))
             .text_color(colors.success)
             .when_some(self.on_join, |chip, join| {
-                chip.cursor_pointer()
+                chip.role(Role::Button)
+                    .aria_label(i18n::text(cx, "messaging.huddle", &[]))
+                    .cursor_pointer()
                     .tab_index(0)
                     .focus_ring(cx)
                     .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())

@@ -11,6 +11,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     data_display::{Badge, QrCode, Tone},
     forms::{Combobox, NumberInput, TextInput},
+    i18n,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, IconSize, Radius, TextSize},
     typography::{
@@ -68,10 +69,10 @@ impl RenderOnce for CurrencyConverter {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let from_field =
             window.use_keyed_state((self.id.clone(), "from-field"), cx, |window, cx| {
-                TextInput::new(window, cx)
+                TextInput::new(window, cx).label(i18n::text(cx, "finance.from", &[]))
             });
         let to_field = window.use_keyed_state((self.id.clone(), "to-field"), cx, |window, cx| {
-            TextInput::new(window, cx)
+            TextInput::new(window, cx).label(i18n::text(cx, "finance.to", &[]))
         });
         let theme = cx.theme();
         let colors = theme.colors.clone();
@@ -103,6 +104,7 @@ impl RenderOnce for CurrencyConverter {
             .child(
                 div().w_full().child(
                     NumberInput::new((self.id.clone(), "amount"), self.amount)
+                        .label(i18n::text(cx, "finance.amount", &[]))
                         .range(0.0, f64::MAX)
                         .precision(2)
                         .on_change({

@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div,
     prelude::*, transparent_black,
 };
 
@@ -147,6 +147,9 @@ impl RenderOnce for FileChangeCard {
             .child(
                 div()
                     .id((self.id.clone(), "header"))
+                    .role(Role::Button)
+                    .aria_label(self.change.path.clone())
+                    .aria_expanded(open)
                     .flex()
                     .flex_wrap()
                     .items_center()

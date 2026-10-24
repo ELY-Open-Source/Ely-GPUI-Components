@@ -2,13 +2,14 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, ElementId, Entity, HoverListenerMode, InteractiveElement, IntoElement,
-    ParentElement, Pixels, Point, RenderOnce, SharedString, StatefulInteractiveElement, Styled,
-    Window, canvas, div, fill, point, prelude::*, size, transparent_black,
+    ParentElement, Pixels, Point, RenderOnce, Role, SharedString, StatefulInteractiveElement,
+    Styled, Window, canvas, div, fill, point, prelude::*, size, transparent_black,
 };
 
 use crate::{
     documents::source,
     forms::{Drawing, pen},
+    i18n,
     primitives::{FocusRing, Image, checked_ratio, framed, tab_stop},
     theme::ActiveTheme,
 };
@@ -309,7 +310,12 @@ impl RenderOnce for InpaintCanvas {
             .id(self.id.clone())
             .border_1()
             .border_color(transparent_black())
-            .when(keyed, |area| area.track_focus(&focus).focus_ring(cx))
+            .when(keyed, |area| {
+                area.role(Role::Canvas)
+                    .aria_label(i18n::text(cx, "generative.mask", &[]))
+                    .track_focus(&focus)
+                    .focus_ring(cx)
+            })
             .when(drawn, |area| area.cursor_crosshair())
             .child(Image::new((self.id.clone(), "picture"), source(&self.picture)).size_full())
             .child(

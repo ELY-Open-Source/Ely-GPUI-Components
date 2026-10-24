@@ -2,7 +2,7 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     App, ElementId, InteractiveElement, IntoElement, MouseButton, ObjectFit, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     relative, transparent_black,
 };
 
@@ -11,6 +11,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     documents::source,
     forms::OnFlag,
+    i18n,
     primitives::{FocusRing, Icon, IconName, Image, tab_stop},
     theme::{ActiveTheme, ContainerSize, ControlSize, IconSize, Radius, TextSize},
     typography::{DurationStyle, format::duration, tabular},
@@ -145,8 +146,14 @@ impl RenderOnce for AudioMessage {
                     .border_1()
                     .border_color(transparent_black())
                     .when_some(focus.zip(self.on_seek.clone()), |wave, (focus, seek)| {
-                        wave.track_focus(&focus).focus_ring(cx).on_key_down(
-                            move |event, window, cx| {
+                        wave.role(Role::Slider)
+                            .aria_label(i18n::text(cx, "chat.position", &[]))
+                            .aria_numeric_value(self.played.as_secs_f64().round())
+                            .aria_min_numeric_value(0.0)
+                            .aria_max_numeric_value(self.length.as_secs_f64().round())
+                            .track_focus(&focus)
+                            .focus_ring(cx)
+                            .on_key_down(move |event, window, cx| {
                                 let step = match event.keystroke.key.as_str() {
                                     "left" => -STEP,
                                     "right" => STEP,
@@ -156,8 +163,7 @@ impl RenderOnce for AudioMessage {
                                 let next = (share + step).clamp(0.0, 1.0);
                                 log::info!("audio message: seek to {next:.2}");
                                 seek(next, window, cx)
-                            },
-                        )
+                            })
                     })
                     .children(self.peaks.iter().enumerate().map(|(ix, peak)| {
                         let seek = self.on_seek.clone();

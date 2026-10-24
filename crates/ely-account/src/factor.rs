@@ -8,6 +8,7 @@ use super::login::Run;
 use crate::{
     feedback::InlineMessage,
     forms::PinInput,
+    i18n,
     primitives::Severity,
     theme::{ActiveTheme, TextSize},
     typography::Link,
@@ -105,6 +106,7 @@ impl RenderOnce for TwoFactorInput {
             )
             .child(
                 PinInput::new((id.clone(), "code"), DIGITS)
+                    .label(i18n::text(cx, "factor.code", &[]))
                     .attempt(self.failed)
                     .on_complete(move |code, window, cx| {
                         log::info!("two-factor input: code entered");

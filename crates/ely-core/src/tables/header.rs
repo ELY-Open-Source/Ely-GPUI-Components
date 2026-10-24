@@ -1,6 +1,6 @@
 use gpui::{
     App, Axis, Bounds, Div, DragMoveEvent, ElementId, Entity, EntityId, FocusHandle, FontWeight,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Rems, SharedString,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Rems, Role, SharedString,
     Stateful, StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*,
     transparent_black,
 };
@@ -129,6 +129,8 @@ pub(crate) fn header(
     let title = column.title.clone();
     let cell = div()
         .id((id.clone(), format!("head-{key}")))
+        .role(Role::ColumnHeader)
+        .aria_label(column.title.clone())
         .relative()
         .h_full()
         .flex()

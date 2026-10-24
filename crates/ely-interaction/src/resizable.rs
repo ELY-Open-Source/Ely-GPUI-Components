@@ -3,11 +3,12 @@ use std::rc::Rc;
 use gpui::{
     AnyElement, App, AppContext, Axis, CursorStyle, DragMoveEvent, ElementId, EmptyView, EntityId,
     InteractiveElement, IntoElement, MouseButton, MouseDownEvent, ParentElement, Pixels, Point,
-    RenderOnce, Size, StatefulInteractiveElement, Styled, Window, div, point, size,
+    RenderOnce, Role, Size, StatefulInteractiveElement, Styled, Window, div, point, size,
 };
 use smallvec::SmallVec;
 
 use crate::{
+    i18n,
     layout::{resize_edge, seeded::use_seeded},
     primitives::FocusRing,
     theme::{ActiveTheme, Radius},
@@ -190,6 +191,8 @@ impl RenderOnce for Resizable {
                 div()
                     .id((id, "corner"))
                     .debug_selector(|| "resizable-grip".into())
+                    .role(Role::Button)
+                    .aria_label(i18n::text(cx, "interaction.resize", &[]))
                     .absolute()
                     .right_0()
                     .bottom_0()

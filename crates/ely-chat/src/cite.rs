@@ -2,12 +2,13 @@ use std::rc::Rc;
 
 use gpui::{
     App, Div, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     transparent_black,
 };
 
 use crate::{
     forms::{Pick, Run},
+    i18n,
     overlays::HoverCard,
     primitives::{Disclosure, FocusRing, Icon, IconName},
     theme::{ActiveTheme, IconSize, Radius, TextSize},
@@ -124,7 +125,9 @@ impl RenderOnce for SourceCard {
             .border_color(colors.border)
             .bg(colors.surface)
             .when_some(open, |card, open| {
-                card.tab_index(0)
+                card.role(Role::Link)
+                    .aria_label(self.source.title.clone())
+                    .tab_index(0)
                     .focus_ring(cx)
                     .cursor_pointer()
                     .hover(|card| card.bg(colors.hover))
@@ -181,6 +184,12 @@ impl RenderOnce for CitationBadge {
         let open = self.on_open.clone();
         let pill = div()
             .id((self.id.clone(), "pill"))
+            .role(Role::Link)
+            .aria_label(i18n::text(
+                cx,
+                "chat.citation",
+                &[("n", &self.number.to_string())],
+            ))
             .px_1p5()
             .rounded_full()
             .border_1()
@@ -257,6 +266,13 @@ impl RenderOnce for SourceList {
             .child(
                 div()
                     .id((self.id.clone(), "toggle"))
+                    .role(Role::Button)
+                    .aria_label(i18n::text(
+                        cx,
+                        "chat.sources",
+                        &[("count", &count.to_string())],
+                    ))
+                    .aria_expanded(opened)
                     .flex()
                     .items_center()
                     .gap_2()

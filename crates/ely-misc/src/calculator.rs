@@ -1,11 +1,12 @@
 use gpui::{
     App, ClickEvent, ElementId, Entity, InteractiveElement, IntoElement, KeyDownEvent, MouseButton,
-    ParentElement, RenderOnce, Styled, Window, div, prelude::*,
+    ParentElement, RenderOnce, Role, Styled, Window, div, prelude::*,
 };
 
 use crate::{
     buttons::{Button, ButtonVariant},
     forms::evaluate,
+    i18n,
     primitives::{FocusRing, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
     typography::{
@@ -242,7 +243,9 @@ impl RenderOnce for Calculator {
         };
         let keys = PAD.iter().map(|&(key, label)| {
             let button = match key {
-                Key::Back => Button::new((id.clone(), "back"), "").icon(IconName::Delete),
+                Key::Back => Button::new((id.clone(), "back"), "")
+                    .icon(IconName::Delete)
+                    .name(i18n::text(cx, "calculator.back", &[])),
                 _ => Button::new((id.clone(), label), label),
             };
             let tape = tape.clone();
@@ -264,6 +267,9 @@ impl RenderOnce for Calculator {
         });
         div()
             .id(id.clone())
+            .role(Role::Group)
+            .aria_label(i18n::text(cx, "misc.calculator", &[]))
+            .aria_value(main.clone())
             .track_focus(&focus)
             .p_3()
             .rounded(theme.radius(Radius::Lg))

@@ -2,12 +2,13 @@ use std::rc::Rc;
 
 use gpui::{
     App, DragMoveEvent, ElementId, EmptyView, EntityId, ImageSource, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, StatefulInteractiveElement,
-    Styled, Window, div, img, prelude::*, transparent_black,
+    IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role,
+    StatefulInteractiveElement, Styled, Window, div, img, prelude::*, transparent_black,
 };
 
 use crate::{
     generative::lens::{DRAG, START, STEP, turned},
+    i18n,
     layout::seeded::use_seeded,
     motion::Spinner,
     overlays::media_button,
@@ -160,6 +161,7 @@ impl RenderOnce for ModelViewer {
             let move_to = move_to.clone();
             media_button(
                 (self.id.clone(), key),
+                i18n::text(cx, &format!("model.{key}"), &[]),
                 icon,
                 ControlSize::Sm,
                 next != now,
@@ -185,6 +187,8 @@ impl RenderOnce for ModelViewer {
             (from.clone(), move_to.clone(), move_to.clone(), move_to);
         let (spun, zoomed, turned_by_key) = (orbit.clone(), orbit.clone(), orbit);
         stage
+            .role(Role::Group)
+            .aria_label(i18n::text(cx, "media.model", &[]))
             .track_focus(&focus)
             .focus_ring(cx)
             .cursor_grab()

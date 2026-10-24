@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, AnyElement, App, ElementId, FontWeight, InteractiveElement,
-    IntoElement, ParentElement, RenderOnce, StatefulInteractiveElement, Styled, Window, div,
+    IntoElement, ParentElement, RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div,
     prelude::*, relative,
 };
 
@@ -143,6 +143,7 @@ impl RenderOnce for Steps {
                             .child((ix + 1).to_string())
                     }
                 });
+            let name = step.label.clone();
             let words = div()
                 .flex()
                 .flex_col()
@@ -167,6 +168,8 @@ impl RenderOnce for Steps {
             let select = self.on_select.clone().filter(|_| done);
             let head = div()
                 .id((id.clone(), format!("step-{ix}")))
+                .role(Role::Button)
+                .aria_label(name)
                 .flex()
                 .items_center()
                 .gap_2()

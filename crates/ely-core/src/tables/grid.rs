@@ -3,7 +3,7 @@ use std::rc::Rc;
 use gpui::{
     AnyElement, App, Bounds, Div, DragMoveEvent, ElementId, Entity, EntityId, FocusHandle,
     InteractiveElement, IntoElement, MouseButton, MouseMoveEvent, ParentElement, Pixels, Point,
-    SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, point, prelude::*,
+    Role, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, point, prelude::*,
 };
 
 use super::gridkeys::{Metrics, across, begin, fill, fit, keys, land};
@@ -314,10 +314,15 @@ pub(crate) fn grid(face: Face, base: Div, window: &mut Window, cx: &mut App) -> 
     let hovered_merges = merges.clone();
     let ahead = (sheet.clone(), editor.clone(), merges.clone());
     let behind = (sheet.clone(), editor.clone(), merges.clone());
+    let address = format!("{}{}", (face.titles)(cursor.1), cursor.0 + 1);
+    let held = (face.shown)(cursor.0, cursor.1);
     let keyed = keys(face, metrics, sheet.clone(), editor.clone());
     let focus_on_press = focus.clone();
     let text_size = theme.text_size(TextSize::Sm);
     base.id(id.clone())
+        .role(Role::Grid)
+        .aria_label(address)
+        .aria_value(held)
         .track_focus(&focus)
         .relative()
         .overflow_hidden()

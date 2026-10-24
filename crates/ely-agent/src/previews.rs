@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, AnyElement, App, Div, ElementId, FocusHandle, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, Point, RenderOnce, ScrollHandle, SharedString,
+    IntoElement, MouseButton, ParentElement, Point, RenderOnce, Role, ScrollHandle, SharedString,
     StatefulInteractiveElement, Styled, Window, div, prelude::*, relative,
 };
 
@@ -10,6 +10,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     documents::source,
     forms::{Pick, Run, reveal, revealer},
+    i18n,
     layout::on_axis,
     motion::{self, Spinner},
     primitives::{FocusRing, Icon, IconName, Image, checked_ratio, framed, tab_stop},
@@ -195,7 +196,14 @@ impl RenderOnce for BrowserPreview {
                         );
                     tile.style().aspect_ratio = Some(self.ratio);
                     tile.when_some(show, |tile, show| {
-                        tile.track_focus(&handles[ix])
+                        tile.role(Role::Button)
+                            .aria_label(i18n::text(
+                                cx,
+                                "preview.frame",
+                                &[("n", &(ix + 1).to_string())],
+                            ))
+                            .aria_selected(shown == Some(ix))
+                            .track_focus(&handles[ix])
                             .focus_ring(cx)
                             .cursor_pointer()
                             .on_mouse_down(MouseButton::Left, |_, window, _| {

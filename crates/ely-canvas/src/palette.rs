@@ -8,6 +8,7 @@ use super::{edit::Tool, gesture::Brush};
 use crate::{
     buttons::{ToggleGroup, ToggleItem},
     forms::{ColorPalette, Slider},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, HUE_NAMES, TextSize},
 };
@@ -144,6 +145,7 @@ impl RenderOnce for BrushSettings {
         let brush = self.brush;
         let (sized, hued) = (self.on_change.clone(), self.on_change);
         let width = Slider::new((self.id.clone(), "size"), f64::from(brush.size))
+            .label(i18n::text(cx, "brush.size", &[]))
             .range(1.0, 24.0)
             .step(1.0)
             .on_change(move |size, window, cx| {

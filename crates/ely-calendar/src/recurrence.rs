@@ -12,6 +12,7 @@ use jiff::{
 use super::repeat::{Ends, Frequency, Recurrence};
 use crate::{
     forms::{Choice, ChoiceChips, DatePicker, NumberInput, RadioGroup, Select},
+    i18n,
     theme::{ActiveTheme, ControlSize, TextSize},
 };
 
@@ -121,6 +122,7 @@ impl RenderOnce for RecurrenceEditor {
         };
         let theme = cx.theme();
         let frequency = Select::new((self.id.clone(), "frequency"), choices)
+            .label(i18n::text(cx, "calendar.repeat", &[]))
             .selected(frequency_key(rule.as_ref().map(|rule| rule.frequency)))
             .on_change(pick);
         let Some(rule) = rule else {
@@ -139,6 +141,7 @@ impl RenderOnce for RecurrenceEditor {
         let every = {
             let (set, rule) = (set.clone(), rule.clone());
             NumberInput::new((self.id.clone(), "interval"), f64::from(rule.interval))
+                .label(i18n::text(cx, "calendar.interval", &[]))
                 .range(1.0, 99.0)
                 .size(ControlSize::Sm)
                 .on_change(move |value, window, cx| {
@@ -242,6 +245,7 @@ impl RenderOnce for RecurrenceEditor {
                 let (set, rule) = (set.clone(), rule.clone());
                 Some(
                     NumberInput::new((self.id.clone(), "count"), f64::from(count))
+                        .label(i18n::text(cx, "calendar.count", &[]))
                         .range(1.0, 999.0)
                         .size(ControlSize::Sm)
                         .on_change(move |value, window, cx| {

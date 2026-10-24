@@ -4,7 +4,8 @@
 use ely_chat as chat;
 use ely_collab as collab;
 use ely_core::{
-    buttons, data_display, forms, layout, lists, motion, overlays, primitives, theme, typography,
+    buttons, data_display, forms, i18n, layout, lists, motion, overlays, primitives, theme,
+    typography,
 };
 use ely_documents as documents;
 use ely_git as git;

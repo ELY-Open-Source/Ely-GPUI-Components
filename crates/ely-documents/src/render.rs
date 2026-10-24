@@ -2,7 +2,7 @@ use std::{ops::Range, path::Path, rc::Rc, sync::Arc};
 
 use gpui::{
     AnyElement, App, ElementId, Entity, FontWeight, HighlightStyle, InteractiveText, IntoElement,
-    ParentElement, RenderOnce, SharedString, Styled, StyledText, TextLayout, Window, div,
+    ParentElement, RenderOnce, Role, SharedString, Styled, StyledText, TextLayout, Window, div,
     prelude::*, relative,
 };
 
@@ -358,6 +358,8 @@ impl Draw<'_> {
                     Some(address) => {
                         let on_link = self.hooks.on_link.clone();
                         picture
+                            .role(Role::Link)
+                            .aria_label(alt.clone())
                             .tab_index(0)
                             .focus_ring(cx)
                             .cursor_pointer()

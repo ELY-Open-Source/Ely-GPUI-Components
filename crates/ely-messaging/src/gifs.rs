@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, Axis, Context, ElementId, Entity, FocusHandle, ImageSource, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, RenderOnce, ScrollHandle, SharedString,
+    IntoElement, MouseButton, ParentElement, RenderOnce, Role, ScrollHandle, SharedString,
     StatefulInteractiveElement, Styled, Subscription, Window, canvas, div, prelude::*, rems,
 };
 
@@ -260,6 +260,8 @@ impl RenderOnce for GifPicker {
                             let key = gif.key.clone();
                             move || format!("gif {key}")
                         })
+                        .role(Role::Button)
+                        .aria_label(gif.title.clone())
                         .rounded(round)
                         .border_1()
                         .border_color(gpui::transparent_black())

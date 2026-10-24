@@ -1,5 +1,5 @@
 use gpui::{
-    App, ElementId, FocusHandle, InteractiveElement, IntoElement, ParentElement, RenderOnce,
+    App, ElementId, FocusHandle, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, anchored, div, prelude::*,
 };
 
@@ -52,6 +52,7 @@ impl RenderOnce for SkipLink {
             window.focus(&target, cx);
         };
         let press = skip.clone();
+        let name = self.label.clone();
         let pill = div()
             .id((self.id.clone(), "pill"))
             .occlude()
@@ -69,6 +70,8 @@ impl RenderOnce for SkipLink {
             .on_click(move |_, window, cx| press(window, cx));
         div()
             .id(self.id.clone())
+            .role(Role::Link)
+            .aria_label(name)
             .track_focus(&handle)
             .on_click(move |_, window, cx| skip(window, cx))
             .when(shown, |link| {

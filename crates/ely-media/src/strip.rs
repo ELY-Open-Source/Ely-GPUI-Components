@@ -3,12 +3,13 @@ use std::{rc::Rc, time::Duration};
 use gpui::{
     App, Bounds, CursorStyle, DragMoveEvent, ElementId, EmptyView, EntityId, ImageSource,
     InteractiveElement, IntoElement, MouseButton, ObjectFit, ParentElement, Pixels, RenderOnce,
-    StatefulInteractiveElement, Styled, Window, canvas, div, img, prelude::*, relative,
+    Role, StatefulInteractiveElement, Styled, Window, canvas, div, img, prelude::*, relative,
     transparent_black,
 };
 
 use super::scrubber::{OnTime, along, clock, time_at};
 use crate::{
+    i18n,
     primitives::{FocusRing, tab_stop},
     theme::ActiveTheme,
 };
@@ -275,6 +276,8 @@ impl RenderOnce for VideoThumbnailStrip {
             .child(row)
             .when(editable, |outer| {
                 outer
+                    .role(Role::Group)
+                    .aria_label(i18n::text(cx, "media.trim", &[]))
                     .track_focus(&focus)
                     .focus_ring(cx)
                     .cursor_pointer()

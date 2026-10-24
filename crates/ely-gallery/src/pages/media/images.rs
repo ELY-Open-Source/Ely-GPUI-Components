@@ -42,13 +42,14 @@ pub fn thumbnails(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
     let thumbs = PICTURES
         .iter()
         .enumerate()
-        .map(|(ix, (path, ratio, _, label))| {
+        .map(|(ix, (path, ratio, caption, label))| {
             let (open, mark) = (shown.clone(), opened.clone());
             let thumb = ImageThumbnail::new(
                 SharedString::from(format!("media-thumb-{ix}")),
                 picture(*path),
                 *ratio,
             )
+            .name(*caption)
             .selected(ix == last)
             .on_click(move |_, cx| {
                 set(&mark, ix, cx);

@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, ParentElement, Pixels, RenderOnce,
+    App, ElementId, InteractiveElement, IntoElement, ParentElement, Pixels, RenderOnce, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*, relative,
     rems, transparent_black,
 };
@@ -9,6 +9,7 @@ use gpui::{
 use super::{FileIcon, OnEntry};
 use crate::{
     forms::OnValue,
+    i18n,
     layout::{columns_for, seeded::use_seeded},
     lists::DirEntry,
     primitives::{FocusRing, tab_stop},
@@ -147,6 +148,10 @@ impl RenderOnce for FileGrid {
             let (pick, open) = (pick.clone(), open.clone());
             div()
                 .id((self.id.clone(), format!("tile-{ix}")))
+                .role(Role::GridCell)
+                .aria_label(entry.name().clone())
+                .aria_selected(at == Some(ix))
+                .when(at == Some(ix), |tile| tile.aria_active_descendant())
                 .flex_none()
                 .w(tile)
                 .flex()
@@ -185,6 +190,8 @@ impl RenderOnce for FileGrid {
         div()
             .id(self.id)
             .debug_selector(|| "file-grid".into())
+            .role(Role::Grid)
+            .aria_label(i18n::text(cx, "files.grid", &[]))
             .relative()
             .flex()
             .flex_wrap()

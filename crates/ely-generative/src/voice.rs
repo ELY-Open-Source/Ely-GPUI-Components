@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     transparent_black,
 };
 
@@ -176,7 +176,10 @@ impl RenderOnce for TTSVoicePicker {
                     })
                     .when(chosen, |row| row.bg(colors.active))
                     .when_some(pick, |row, pick| {
-                        row.track_focus(&focus)
+                        row.role(Role::RadioButton)
+                            .aria_label(voice.name.clone())
+                            .aria_toggled(chosen.into())
+                            .track_focus(&focus)
                             .when(!chosen, |row| row.hover(|style| style.bg(colors.hover)))
                             .cursor_pointer()
                             .on_mouse_down(MouseButton::Left, |_, window, _| {

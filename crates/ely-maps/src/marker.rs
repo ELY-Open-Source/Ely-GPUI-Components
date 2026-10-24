@@ -2,12 +2,13 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FocusHandle, InteractiveElement, IntoElement, ParentElement,
-    Pixels, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    Pixels, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use super::LatLon;
 use crate::{
     buttons::{ButtonVariant, IconButton},
+    i18n,
     primitives::{FocusRing, Icon, IconName},
     theme::{ActiveTheme, Elevation, IconSize, Radius, TextSize},
     typography::Ellipsis,
@@ -63,8 +64,12 @@ impl MapMarker {
             Some(hue) => colors.hue(hue, format_args!("marker {}", self.key)),
             None => colors.accent,
         };
+        let name = (self.label.clone())
+            .unwrap_or_else(|| format!("{:.4}, {:.4}", self.at.lat, self.at.lon).into());
         let pin = div()
             .id((owner.clone(), format!("marker-{}", self.key)))
+            .role(Role::Button)
+            .aria_label(name)
             .flex_none()
             .rounded(theme.radius(Radius::Sm))
             .border_1()
@@ -185,18 +190,20 @@ impl MapPopup {
                     .min_w_0()
                     .text_size(theme.text_size(TextSize::Sm))
                     .text_color(colors.fg)
-                    .child(Ellipsis::new(self.title)),
+                    .child(Ellipsis::new(self.title.clone())),
             )
             .when_some(self.on_close, |head, on_close| {
                 head.child(
                     IconButton::new((owner.clone(), "popup-close"), IconName::X)
                         .variant(ButtonVariant::Ghost)
-                        .tooltip("Close")
+                        .tooltip(i18n::text(cx, "dialog.close", &[]))
                         .on_click(move |_, window, cx| on_close(window, cx)),
                 )
             });
         let card = div()
             .id((owner.clone(), "popup"))
+            .role(Role::Dialog)
+            .aria_label(self.title)
             .track_focus(focus)
             .absolute()
             .left(Pixels::from(spot.left))

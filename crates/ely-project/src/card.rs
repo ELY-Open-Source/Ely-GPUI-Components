@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, Div, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce,
+    App, Div, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
     StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 use jiff::civil::Date;
@@ -147,11 +147,13 @@ impl RenderOnce for IssueCard {
                 div()
                     .text_size(theme.text_size(TextSize::Base))
                     .text_color(colors.fg)
-                    .child(task.title),
+                    .child(task.title.clone()),
             )
             .child(foot)
             .when_some(self.on_open, |card, open| {
-                card.tab_index(0)
+                card.role(Role::Button)
+                    .aria_label(task.title)
+                    .tab_index(0)
                     .focus_ring(cx)
                     .cursor_pointer()
                     .hover(|style| style.border_color(colors.border_strong))

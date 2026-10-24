@@ -11,6 +11,7 @@ use super::{
 };
 use crate::{
     forms::{Choice, Select},
+    i18n,
     theme::{ActiveTheme, Radius},
 };
 
@@ -207,11 +208,20 @@ impl RenderOnce for ConstraintsEditor {
                     if across { c.across = pin } else { c.down = pin }
                 },
             );
+            let words = i18n::text(
+                cx,
+                if across {
+                    "constraints.horizontal"
+                } else {
+                    "constraints.vertical"
+                },
+                &[],
+            );
             div()
                 .flex()
                 .flex_col()
                 .gap_1()
-                .child(caption(if across { "Horizontal" } else { "Vertical" }, cx))
+                .child(caption(words.clone(), cx))
                 .child(
                     Select::new(
                         (id.clone(), if across { "across" } else { "down" }),
@@ -219,6 +229,7 @@ impl RenderOnce for ConstraintsEditor {
                             .iter()
                             .map(|pin| Choice::new(pin.value(), pin.words(across))),
                     )
+                    .label(words)
                     .selected(pinned.value())
                     .on_change(move |value: &SharedString, window, cx| {
                         let pin = *Pin::ALL

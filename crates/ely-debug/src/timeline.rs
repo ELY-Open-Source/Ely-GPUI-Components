@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, ElementId, Entity, FontWeight, Hsla, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, RenderOnce, ScrollWheelEvent, SharedString, StatefulInteractiveElement,
-    Styled, Window, div, prelude::*, relative,
+    ParentElement, Pixels, RenderOnce, Role, ScrollWheelEvent, SharedString,
+    StatefulInteractiveElement, Styled, Window, div, prelude::*, relative,
 };
 
 use super::OnIndex;
@@ -256,7 +256,10 @@ impl RenderOnce for TimelineProfiler {
                                         window.prevent_default()
                                     })
                                     .when_some(pick, |bar, pick| {
-                                        bar.tab_index(0)
+                                        bar.role(Role::Button)
+                                            .aria_label(span.name.clone())
+                                            .aria_selected(lit)
+                                            .tab_index(0)
                                             .focus_ring(cx)
                                             .cursor_pointer()
                                             .on_click(move |_, window, cx| pick(ix, window, cx))

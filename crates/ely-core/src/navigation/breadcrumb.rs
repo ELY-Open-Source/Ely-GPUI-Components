@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, ElementId, FontWeight, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use crate::{
@@ -115,6 +115,8 @@ impl RenderOnce for Breadcrumb {
             };
             let trigger = div()
                 .id(here.clone())
+                .role(Role::Button)
+                .aria_label(crumb.label.clone())
                 .track_focus(&focus)
                 .relative()
                 .flex()

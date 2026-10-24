@@ -100,6 +100,7 @@ pub fn properties(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
                 .row(
                     "Width",
                     NumberInput::new("prop-width", now.width)
+                        .label("Width")
                         .range(40.0, 320.0)
                         .size(ControlSize::Sm)
                         .on_change(edit(&props, |p, v| p.width = v)),
@@ -107,6 +108,7 @@ pub fn properties(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
                 .row(
                     "Height",
                     NumberInput::new("prop-height", now.height)
+                        .label("Height")
                         .range(40.0, 200.0)
                         .size(ControlSize::Sm)
                         .on_change(edit(&props, |p, v| p.height = v)),
@@ -130,6 +132,7 @@ pub fn properties(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
                 .row(
                     "Opacity",
                     Slider::new("prop-opacity", now.opacity)
+                        .label("Opacity")
                         .range(0.0, 1.0)
                         .step(0.01)
                         .on_change(edit(&props, |p, v| p.opacity = v)),
@@ -137,6 +140,7 @@ pub fn properties(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
                 .row(
                     "Visible",
                     Switch::new("prop-visible", now.visible)
+                        .name("Visible")
                         .on_change(edit(&props, |p, v| p.visible = v)),
                 ),
         )

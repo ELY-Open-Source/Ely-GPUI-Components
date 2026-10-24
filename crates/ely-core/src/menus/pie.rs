@@ -2,8 +2,8 @@ use std::{f32::consts::TAU, rc::Rc};
 
 use gpui::{
     Animation, AnimationExt, AnyElement, App, Bounds, ElementId, Entity, FontWeight,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,
-    SharedString, Styled, Window, anchored, canvas, div, point,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role,
+    SharedString, StatefulInteractiveElement, Styled, Window, anchored, canvas, div, point,
 };
 use smallvec::SmallVec;
 
@@ -206,6 +206,7 @@ impl RenderOnce for PieMenu {
                 )
         });
         let label = marked.map_or(SharedString::from("Cancel"), |ix| items[ix].label.clone());
+        let name = label.clone();
         let measure = state.clone();
         let ring = div()
             .relative()
@@ -259,6 +260,8 @@ impl RenderOnce for PieMenu {
         let viewport = window.viewport_size();
         let catcher = div()
             .id((self.id.clone(), "catcher"))
+            .role(Role::Menu)
+            .aria_label(name)
             .track_focus(&focus)
             .w(viewport.width)
             .h(viewport.height)

@@ -183,6 +183,7 @@ impl RenderOnce for Playground {
             let key = (id.clone(), format!("knob-{name}"));
             let control = match knob {
                 Knob::Toggle(..) => Switch::new(key, now.on(&name))
+                    .name(knob.name().clone())
                     .on_change(move |on, _, cx| {
                         set.update(cx, |settings, cx| {
                             settings.value.1.set(&name, Setting::On(on));
@@ -196,6 +197,7 @@ impl RenderOnce for Playground {
                         .iter()
                         .map(|option| Choice::new(option.clone(), option.clone())),
                 )
+                .label(knob.name().clone())
                 .selected(now.picked(&name).clone())
                 .on_change(move |option, _, cx| {
                     set.update(cx, |settings, cx| {
@@ -211,6 +213,7 @@ impl RenderOnce for Playground {
                     .child(
                         div().flex_1().min_w_0().child(
                             Slider::new(key, now.number(&name))
+                                .label(knob.name().clone())
                                 .range(*least, *most)
                                 .step(*step)
                                 .on_change(move |value, _, cx| {

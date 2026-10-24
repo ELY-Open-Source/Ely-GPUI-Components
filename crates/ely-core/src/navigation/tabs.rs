@@ -199,6 +199,7 @@ impl RenderOnce for Tabs {
                     .debug_selector(move || format!("tab-{ix}"))
                     .role(Role::Tab)
                     .aria_selected(on)
+                    .when(on, |item| item.aria_active_descendant())
                     .aria_label(tab.label.clone())
                     .relative()
                     .flex()

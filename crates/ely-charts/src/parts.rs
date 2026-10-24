@@ -2,7 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, Hsla, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
-    SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*, transparent_black,
+    Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    transparent_black,
 };
 
 use crate::{
@@ -78,6 +79,9 @@ impl RenderOnce for ChartLegend {
                             .flex()
                             .when_some(on_toggle, |entry, on_toggle| {
                                 entry
+                                    .role(Role::CheckBox)
+                                    .aria_label(name.clone())
+                                    .aria_toggled((!hidden).into())
                                     .px_1()
                                     .rounded(theme.radius(Radius::Sm))
                                     .border_1()

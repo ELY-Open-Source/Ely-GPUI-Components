@@ -6,6 +6,7 @@ use super::mask::{OnBrush, REACH};
 use crate::{
     buttons::{IconButton, SegmentedControl},
     forms::{Run, Slider},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, TextSize},
     typography::{format::percent, tabular},
@@ -141,6 +142,7 @@ impl RenderOnce for MaskBrush {
                         div().flex_1().min_w_0().child(
                             Slider::new((self.id.clone(), "size"), f64::from(radius))
                                 .range(f64::from(REACH.0), f64::from(REACH.1))
+                                .label(i18n::text(cx, "brush.size", &[]))
                                 .step(0.005)
                                 .on_change(move |value, window, cx| {
                                     if let Some(size) = &size {

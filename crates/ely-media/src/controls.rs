@@ -6,6 +6,7 @@ use super::player::SPEEDS;
 use crate::{
     buttons::{ButtonVariant, IconButton, ToggleButton, ToggleItem},
     forms::{OnFlag, OnNumber, Run, Slider},
+    i18n,
     menus::{DropdownMenu, Menu, MenuItem},
     primitives::IconName,
     theme::ControlSize,
@@ -67,7 +68,7 @@ impl VolumeControl {
 }
 
 impl RenderOnce for VolumeControl {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let muted = self.muted;
         let speaker = IconButton::new((self.id.clone(), "mute"), speaker(self.level, muted))
             .variant(ButtonVariant::Ghost)
@@ -83,6 +84,7 @@ impl RenderOnce for VolumeControl {
         };
         let shown = if muted { 0.0 } else { self.level };
         let slider = Slider::new((self.id.clone(), "level"), f64::from(shown))
+            .label(i18n::text(cx, "media.volume", &[]))
             .range(0.0, 1.0)
             .step(0.05)
             .disabled(self.on_level.is_none());

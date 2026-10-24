@@ -14,6 +14,7 @@ use super::{
 use crate::{
     buttons::{Button, ButtonGroup, ButtonVariant, IconButton},
     forms::TextInput,
+    i18n,
     primitives::IconName,
 };
 
@@ -243,6 +244,7 @@ impl RenderOnce for SplitButton {
                 }
             });
         let more = Button::new((self.id.clone(), "more"), "")
+            .name(i18n::text(cx, "menu.more", &[]))
             .variant(self.variant)
             .icon(IconName::ChevronDown)
             .on_click(move |event, window, cx| click(event, window, cx));

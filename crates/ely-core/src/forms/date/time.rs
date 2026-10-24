@@ -2,8 +2,8 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     App, Div, ElementId, Entity, InteractiveElement, IntoElement, ParentElement, Pixels,
-    RenderOnce, ScrollHandle, SharedString, StatefulInteractiveElement, Styled, Window, div, point,
-    prelude::*,
+    RenderOnce, Role, ScrollHandle, SharedString, Stateful, StatefulInteractiveElement, Styled,
+    Window, div, point, prelude::*,
 };
 use jiff::{
     ToSpan,
@@ -19,6 +19,7 @@ use super::{
     show_date, show_time, zoned_now,
 };
 use crate::{
+    i18n::text,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
 };
@@ -149,14 +150,19 @@ fn time_columns(
 
 /// Arrow keys on a time popup move by `step`; Escape and Enter close it.
 fn time_keys(
+    id: &ElementId,
     state: &Entity<Dropdown>,
     current: Time,
     step: u8,
     commit: OnTime,
     close: Run,
     cx: &App,
-) -> Div {
+) -> Stateful<Div> {
     div()
+        .id((id.clone(), "keys"))
+        .role(Role::SpinButton)
+        .aria_label(text(cx, "date.time", &[]))
+        .aria_value(show_time(current))
         .track_focus(&state.read(cx).inner)
         .on_key_down(move |event, window, cx| {
             let by = match event.keystroke.key.as_str() {
@@ -275,7 +281,9 @@ impl RenderOnce for TimePicker {
                     CALENDAR_ROWS,
                     surface((id.clone(), "popup"), cx)
                         .on_mouse_down_out(move |_, window, cx| out(window, cx))
-                        .child(time_keys(&state, time, step, commit, close, cx).child(columns)),
+                        .child(
+                            time_keys(&id, &state, time, step, commit, close, cx).child(columns),
+                        ),
                     window,
                     cx,
                 )
@@ -494,6 +502,7 @@ impl RenderOnce for DurationPicker {
                 div().w(width).child(
                     NumberInput::new((self.id.clone(), *key), now[ix] as f64)
                         .range(0.0, *max)
+                        .label(text(cx, &format!("duration.{key}"), &[]))
                         .suffix(div().child(*unit))
                         .on_change(move |value, window, cx| {
                             let mut next = now;

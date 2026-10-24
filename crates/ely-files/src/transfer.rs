@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    AnyElement, App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement,
+    AnyElement, App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, Role,
     SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
@@ -161,7 +161,9 @@ pub(super) fn row(id: ElementId, transfer: &Transfer, asks: &Asks, cx: &App) -> 
         .border_color(gpui::transparent_black())
         .when_some(opens, |row, open| {
             let key = key.clone();
-            row.cursor_pointer()
+            row.role(Role::Button)
+                .aria_label(transfer.name.clone())
+                .cursor_pointer()
                 .tab_index(0)
                 .focus_ring(cx)
                 .hover(|style| style.bg(colors.hover))

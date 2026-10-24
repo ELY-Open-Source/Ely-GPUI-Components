@@ -19,6 +19,8 @@ macro_rules! asset {
 }
 
 mod assets;
+#[cfg(windows)]
+mod audit;
 #[cfg(not(target_family = "wasm"))]
 mod capture;
 mod pages;
@@ -153,6 +155,8 @@ struct Args {
     /// The page asked for, which a capture shoots alone.
     page: Option<usize>,
     capture: Option<PathBuf>,
+    /// Where the accessibility audit writes its report.
+    audit: Option<PathBuf>,
 }
 
 #[cfg(not(target_family = "wasm"))]
@@ -161,6 +165,7 @@ fn parse_args() -> Result<Args> {
         start: Start::default(),
         page: None,
         capture: None,
+        audit: None,
     };
     let mut iter = std::env::args().skip(1);
     while let Some(flag) = iter.next() {
@@ -173,6 +178,7 @@ fn parse_args() -> Result<Args> {
             }
             "--story" => args.start.story = Some(value.into()),
             "--capture" => args.capture = Some(PathBuf::from(value)),
+            "--audit" if cfg!(windows) => args.audit = Some(PathBuf::from(value)),
             "--narrow" => {
                 args.start.narrow = Some(
                     value
@@ -197,6 +203,7 @@ fn main() -> Result<()> {
         start,
         page,
         capture,
+        audit,
     } = parse_args()?;
     // A script aims across its page; stories hold part. Its input is posted through AppKit, so only macOS plays one.
     let scripted = start.narrow.is_none() && start.story.is_none() && cfg!(target_os = "macos");
@@ -216,6 +223,12 @@ fn main() -> Result<()> {
             if let Some(dir) = capture {
                 capture::run(window, dir, page, scripted, cx);
             }
+            #[cfg(windows)]
+            if let Some(report) = audit {
+                audit::run(window, report, page, cx);
+            }
+            #[cfg(not(windows))]
+            let _ = audit;
         });
     Ok(())
 }

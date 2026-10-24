@@ -21,8 +21,10 @@ pub struct ScrubInput {
 impl ScrubInput {
     /// A number field under `id` beside `label`; a drag across the label scrubs `value`.
     pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>, value: f64) -> Self {
+        let label = label.into();
         let mut field = NumberInput::new(id, value);
-        field.scrub_label = Some(label.into());
+        field.label = label.clone();
+        field.scrub_label = Some(label);
         Self { field }
     }
 

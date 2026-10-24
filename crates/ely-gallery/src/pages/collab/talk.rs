@@ -275,7 +275,7 @@ pub fn changes(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let base = keep("collab-base", || BASE.to_string(), window, cx);
     let now_base = base.read(cx).clone();
     let draft = window.use_keyed_state("collab-suggesting", cx, |window, cx| {
-        let mut input = TextInput::new(window, cx);
+        let mut input = TextInput::new(window, cx).label("Suggestion");
         input.set_text(
             "A tint blends every color toward white. Half a lift sits midway.",
             cx,

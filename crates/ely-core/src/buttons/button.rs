@@ -151,6 +151,7 @@ pub fn shortcut_text(source: &str, platform: Platform) -> String {
 pub struct Button {
     id: ElementId,
     label: SharedString,
+    name: Option<SharedString>,
     icon: Option<IconName>,
     trailing_icon: Option<IconName>,
     shortcut: Option<SharedString>,
@@ -170,6 +171,7 @@ impl Button {
         Self {
             id: id.into(),
             label: label.into(),
+            name: None,
             icon: None,
             trailing_icon: None,
             shortcut: None,
@@ -204,6 +206,12 @@ impl Button {
     /// An icon before the label.
     pub fn icon(mut self, icon: IconName) -> Self {
         self.icon = Some(icon);
+        self
+    }
+
+    /// The name assistive technology reads for a button that draws no label; nothing is drawn.
+    pub fn name(mut self, name: impl Into<SharedString>) -> Self {
+        self.name = Some(name.into());
         self
     }
 
@@ -265,7 +273,10 @@ impl RenderOnce for Button {
         let platform = cx.theme().platform;
         let hint = self.shortcut.map(|source| shortcut_text(&source, platform));
         let spinner = (self.id.clone(), "spinner");
-        let name = self.label.clone();
+        let name = match (&self.label, &self.name) {
+            (label, Some(name)) if label.is_empty() => name.clone(),
+            (label, _) => label.clone(),
+        };
         let parts = div()
             .flex()
             .min_w_0()

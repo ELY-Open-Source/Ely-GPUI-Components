@@ -76,6 +76,7 @@ pub fn rating(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 probe(
                     "rating",
                     Rating::new("rating-stars", now)
+                        .label("Rating")
                         .on_change(move |next, _, cx| set(&stars, next, cx)),
                 ),
                 cx,
@@ -106,6 +107,7 @@ pub fn sliders(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     "slider",
                     div().w(px(320.0)).child(
                         Slider::new("slider-volume", volume_now)
+                            .label("Volume")
                             .on_change(move |next, _, cx| set(&volume, next, cx)),
                     ),
                 ),
@@ -115,6 +117,7 @@ pub fn sliders(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 format!("price {low:.0} to {high:.0}"),
                 div().w(px(320.0)).child(
                     RangeSlider::new("slider-price", low, high)
+                        .label("Price")
                         .step(5.0)
                         .on_change(move |next, _, cx| set(&price, next, cx)),
                 ),
@@ -124,6 +127,7 @@ pub fn sliders(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 format!("level {level_now:.0}"),
                 div().h(px(140.0)).child(
                     Slider::new("slider-level", level_now)
+                        .label("Level")
                         .vertical()
                         .step(5.0)
                         .on_change(move |next, _, cx| set(&level, next, cx)),
@@ -150,6 +154,7 @@ pub fn dials(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 probe(
                     "knob",
                     Knob::new("knob-gain", gain_now)
+                        .label("Gain")
                         .on_change(move |next, _, cx| set(&gain, next, cx)),
                 ),
                 cx,
@@ -157,6 +162,7 @@ pub fn dials(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
             .child(specimen(
                 format!("pan {pan_now:.0}"),
                 Knob::new("knob-pan", pan_now)
+                    .label("Pan")
                     .range(-50.0, 50.0)
                     .on_change(move |next, _, cx| set(&pan, next, cx)),
                 cx,

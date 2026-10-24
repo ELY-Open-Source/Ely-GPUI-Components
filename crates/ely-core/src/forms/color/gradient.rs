@@ -2,12 +2,14 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, DragMoveEvent, ElementId, EmptyView, Entity, EntityId, Hsla, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, Pixels, RenderOnce, StatefulInteractiveElement,
-    Styled, Window, canvas, div, linear_color_stop, linear_gradient, prelude::*, relative,
+    IntoElement, MouseButton, ParentElement, Pixels, RenderOnce, Role, SharedString,
+    StatefulInteractiveElement, Styled, Window, canvas, div, linear_color_stop, linear_gradient,
+    prelude::*, relative,
 };
 
 use super::{ColorPicker, swatch::checker};
 use crate::{
+    i18n,
     layout::seeded::{Seeded, use_seeded},
     primitives::tab_stop,
     theme::{ActiveTheme, ControlSize, Mix, Radius},
@@ -94,6 +96,7 @@ fn now(live: &Live, chosen: &Entity<usize>, cx: &App) -> (Vec<GradientStop>, usi
 #[derive(IntoElement)]
 pub struct GradientEditor {
     id: ElementId,
+    label: Option<SharedString>,
     stops: Vec<GradientStop>,
     on_change: Option<OnStops>,
 }
@@ -110,9 +113,16 @@ impl GradientEditor {
         );
         Self {
             id: id.into(),
+            label: None,
             stops,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// Runs with the stops after each change.
@@ -257,6 +267,19 @@ impl RenderOnce for GradientEditor {
         let (key_live, key_chosen, keys) = (live.clone(), chosen.clone(), commit.clone());
         let rail = div()
             .id((self.id.clone(), "stops"))
+            .role(Role::Slider)
+            .when_some(self.label.clone(), |rail, label| rail.aria_label(label))
+            .aria_numeric_value(f64::from((stops[at].at * 100.0).round()))
+            .aria_min_numeric_value(0.0)
+            .aria_max_numeric_value(100.0)
+            .aria_description(i18n::text(
+                cx,
+                "gradient.stop",
+                &[
+                    ("n", &(at + 1).to_string()),
+                    ("count", &stops.len().to_string()),
+                ],
+            ))
             .track_focus(&focus)
             .relative()
             .w_full()

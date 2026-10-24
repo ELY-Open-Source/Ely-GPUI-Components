@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, Corners, ElementId, Hsla, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, Rems, RenderOnce, SharedString, StatefulInteractiveElement, Styled,
-    Window, canvas, div, fill, point, prelude::*, rems, size,
+    ParentElement, Pixels, Rems, RenderOnce, Role, SharedString, StatefulInteractiveElement,
+    Styled, Window, canvas, div, fill, point, prelude::*, rems, size,
 };
 
 use super::super::options::Run;
@@ -126,6 +126,7 @@ impl RenderOnce for ColorSwatch {
         let theme = cx.theme();
         let colors = &theme.colors;
         let (see_through, radius) = (self.color.a < 1.0, theme.radius(Radius::Sm));
+        let name = (self.tooltip.clone()).unwrap_or_else(|| super::hex(self.color.to_rgb()).into());
         let patch = div()
             .relative()
             .size_full()
@@ -145,6 +146,9 @@ impl RenderOnce for ColorSwatch {
             .when(self.selected, |swatch| swatch.p_0p5())
             .when_some(self.on_click, |swatch, click| {
                 swatch
+                    .role(Role::Button)
+                    .aria_label(name)
+                    .aria_selected(self.selected)
                     .tab_index(0)
                     .focus_ring(cx)
                     .cursor_pointer()

@@ -113,6 +113,7 @@ pub struct Checkbox {
     id: ElementId,
     state: CheckState,
     label: Option<SharedString>,
+    name: Option<SharedString>,
     disabled: bool,
     on_change: Option<OnFlag>,
 }
@@ -124,6 +125,7 @@ impl Checkbox {
             id: id.into(),
             state: state.into(),
             label: None,
+            name: None,
             disabled: false,
             on_change: None,
         }
@@ -132,6 +134,12 @@ impl Checkbox {
     /// Text beside the box; a press on it toggles too.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
         self.label = Some(label.into());
+        self
+    }
+
+    /// The name assistive technology reads when the box draws no label; nothing is drawn.
+    pub fn name(mut self, name: impl Into<SharedString>) -> Self {
+        self.name = Some(name.into());
         self
     }
 
@@ -175,7 +183,9 @@ impl RenderOnce for Checkbox {
             .id(self.id)
             .role(Role::CheckBox)
             .aria_toggled(toggled)
-            .when_some(self.label.clone(), |row, label| row.aria_label(label))
+            .when_some(self.label.clone().or(self.name.clone()), |row, label| {
+                row.aria_label(label)
+            })
             .when(self.disabled, |row| {
                 row.aria_description(i18n::text(cx, "state.unavailable", &[]))
             })

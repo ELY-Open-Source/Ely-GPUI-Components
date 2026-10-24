@@ -11,7 +11,8 @@ use alacritty_terminal::{
 use futures::StreamExt;
 use gpui::{
     App, ClipboardItem, Context, EventEmitter, FocusHandle, Focusable, IntoElement, ParentElement,
-    Pixels, Point, Render, SharedString, Size, Styled, Task, Window, div, font, prelude::*, size,
+    Pixels, Point, Render, Role, SharedString, Size, Styled, Task, Window, div, font, prelude::*,
+    size,
 };
 use web_time::Instant;
 
@@ -335,6 +336,8 @@ impl Render for Terminal {
         };
         let root = div()
             .id(("terminal", cx.entity_id()))
+            .role(Role::Terminal)
+            .aria_label(self.title.clone())
             .key_context(input::CONTEXT)
             .track_focus(&self.focus)
             .size_full()

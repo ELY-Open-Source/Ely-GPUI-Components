@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, Keystroke, ParentElement, RenderOnce, Styled,
-    Window, div, prelude::*,
+    App, ElementId, InteractiveElement, IntoElement, Keystroke, ParentElement, RenderOnce, Role,
+    SharedString, Styled, Window, div, prelude::*,
 };
 
 use crate::{
@@ -24,6 +24,7 @@ type OnChange = Rc<dyn Fn(Option<Keystroke>, &mut Window, &mut App)>;
 #[derive(IntoElement)]
 pub struct HotkeyInput {
     id: ElementId,
+    label: Option<SharedString>,
     value: Option<Keystroke>,
     on_change: Option<OnChange>,
 }
@@ -33,9 +34,16 @@ impl HotkeyInput {
     pub fn new(id: impl Into<ElementId>, value: Option<Keystroke>) -> Self {
         Self {
             id: id.into(),
+            label: None,
             value,
             on_change: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// Runs with the keystroke recorded, or `None` once Backspace or Delete clears it.
@@ -62,6 +70,11 @@ impl RenderOnce for HotkeyInput {
         let on_change = self.on_change;
         div()
             .id(self.id)
+            .role(Role::TextInput)
+            .when_some(self.label.clone(), |field, label| field.aria_label(label))
+            .when_some(self.value.as_ref(), |field, stroke| {
+                field.aria_value(stroke.unparse())
+            })
             .track_focus(&focus)
             .flex()
             .items_center()

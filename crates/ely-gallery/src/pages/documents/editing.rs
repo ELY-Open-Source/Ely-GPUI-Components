@@ -23,6 +23,7 @@ const ESSAY: &str = "# Lift\n\nA lift blends a color toward white. **Half** a li
 /// A markdown field of several lines, styled as it is typed.
 fn markdown(
     key: &'static str,
+    label: &'static str,
     text: &'static str,
     rows: usize,
     window: &mut Window,
@@ -31,7 +32,8 @@ fn markdown(
     window.use_keyed_state(key, cx, move |window, cx| {
         let mut field = TextInput::new(window, cx)
             .multi_line(rows, rows * 3)
-            .highlighter(markdown_highlights);
+            .highlighter(markdown_highlights)
+            .label(label);
         field.set_text(text, cx);
         field
     })
@@ -146,8 +148,8 @@ fn kinds() -> Vec<BlockData> {
 }
 
 pub fn editing(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let rich = markdown("doc-notes", NOTES, 6, window, cx);
-    let essay = markdown("doc-essay", ESSAY, 24, window, cx);
+    let rich = markdown("doc-notes", "Notes", NOTES, 6, window, cx);
+    let essay = markdown("doc-essay", "Essay", ESSAY, 24, window, cx);
     let mode = keep("doc-mode", || MarkdownMode::Visual, window, cx);
     let now_mode = *mode.read(cx);
     let notes = window.use_keyed_state("doc-blocks", cx, |window, cx| {

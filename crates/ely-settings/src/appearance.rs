@@ -233,6 +233,7 @@ impl RenderOnce for FontSizeControl {
                         div().flex_none().w(theme.label_width()).child(
                             Slider::new((self.id.clone(), "slider"), self.size as f64)
                                 .range(low as f64, high as f64)
+                                .label(i18n::text(cx, "settings.font_size", &[]))
                                 .step(1.0)
                                 .on_change(move |size, window, cx| {
                                     slid(size as f32, window, cx);

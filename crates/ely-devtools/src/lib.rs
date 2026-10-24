@@ -4,8 +4,8 @@
 use ely_canvas as canvas;
 use ely_chat as chat;
 use ely_core::{
-    buttons, data_display, feedback, forms, layout, lists, navigation, primitives, tables, theme,
-    typography,
+    buttons, data_display, feedback, forms, i18n, layout, lists, navigation, primitives, tables,
+    theme, typography,
 };
 use ely_editor as editor;
 

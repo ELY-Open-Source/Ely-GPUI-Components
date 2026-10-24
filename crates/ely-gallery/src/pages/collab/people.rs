@@ -40,7 +40,7 @@ const DRAFT: &str = "A lift blends a color toward white.\nHalf a lift sits midwa
 
 fn draft(window: &mut Window, cx: &mut App) -> Entity<TextInput> {
     window.use_keyed_state("collab-draft", cx, |window, cx| {
-        let mut input = TextInput::new(window, cx).multi_line(3, 6);
+        let mut input = TextInput::new(window, cx).multi_line(3, 6).label("Comment");
         input.set_text(DRAFT, cx);
         input
     })

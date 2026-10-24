@@ -2,14 +2,14 @@ use std::rc::Rc;
 
 use gpui::{
     Animation, AnimationExt, App, Div, ElementId, ImageSource, InteractiveElement, IntoElement,
-    MouseButton, ObjectFit, ParentElement, Pixels, Point, RenderOnce, SharedString, Size, Stateful,
-    StatefulInteractiveElement, Styled, Window, anchored, canvas, div, prelude::*,
+    MouseButton, ObjectFit, ParentElement, Pixels, Point, RenderOnce, Role, SharedString, Size,
+    Stateful, StatefulInteractiveElement, Styled, Window, anchored, canvas, div, prelude::*,
 };
 
 use crate::{
     buttons::label_size,
     forms::Run,
-    motion,
+    i18n, motion,
     primitives::{FocusRing, FocusScope, Icon, IconName, Image, give_back, raise, take_focus},
     theme::{ActiveTheme, ControlSize, TextSize},
 };
@@ -37,6 +37,7 @@ type OnStep = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 #[doc(hidden)]
 pub fn media_button(
     id: (ElementId, &'static str),
+    name: SharedString,
     icon: IconName,
     size: ControlSize,
     enabled: bool,
@@ -48,6 +49,11 @@ pub fn media_button(
     div()
         .debug_selector(|| format!("media-button {}", id.1))
         .id(id)
+        .role(Role::Button)
+        .aria_label(name)
+        .when(!enabled, |button| {
+            button.aria_description(i18n::text(cx, "state.unavailable", &[]))
+        })
         .flex()
         .flex_none()
         .items_center()
@@ -171,6 +177,7 @@ impl RenderOnce for Lightbox {
             let step = step.clone();
             media_button(
                 (self.id.clone(), name),
+                i18n::text(cx, &format!("lightbox.{name}"), &[]),
                 icon,
                 ControlSize::Lg,
                 to.is_some(),
@@ -231,6 +238,7 @@ impl RenderOnce for Lightbox {
                     .flex_col()
                     .child(div().flex().justify_end().p_3().child(media_button(
                         (self.id.clone(), "close"),
+                        i18n::text(cx, "dialog.close", &[]),
                         IconName::X,
                         ControlSize::Lg,
                         true,

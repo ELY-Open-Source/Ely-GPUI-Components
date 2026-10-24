@@ -2,7 +2,7 @@ use std::{collections::HashMap, rc::Rc};
 
 use gpui::{
     AnyElement, App, Axis, Bounds, ElementId, EmptyView, EntityId, FocusHandle, InteractiveElement,
-    IntoElement, ParentElement, Pixels, Point, RenderOnce, ScrollHandle, SharedString,
+    IntoElement, ParentElement, Pixels, Point, RenderOnce, Role, ScrollHandle, SharedString,
     StatefulInteractiveElement, Styled, Window, anchored, canvas, div, prelude::*,
 };
 
@@ -21,6 +21,7 @@ type OnCard = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 /// A card on a board: its key and what it shows.
 pub struct KanbanCard {
     key: SharedString,
+    label: Option<SharedString>,
     content: AnyElement,
 }
 
@@ -29,8 +30,15 @@ impl KanbanCard {
     pub fn new(key: impl Into<SharedString>, content: impl IntoElement) -> Self {
         Self {
             key: key.into(),
+            label: None,
             content: content.into_any_element(),
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 }
 
@@ -258,6 +266,7 @@ impl RenderOnce for KanbanBoard {
             };
             for (ix, card) in column.cards.into_iter().enumerate() {
                 let key = card.key.clone();
+                let name = card.label.clone();
                 if held.as_ref().is_some_and(|held| held.key == key) {
                     lifted = Some(card.content);
                     continue;
@@ -278,6 +287,8 @@ impl RenderOnce for KanbanBoard {
                 let face = div()
                     .id((id.clone(), format!("card-{key}")))
                     .debug_selector(move || format!("card {card_key}"))
+                    .role(Role::ListItem)
+                    .when_some(name, |face, name| face.aria_label(name))
                     .relative()
                     .track_focus(&handle)
                     .rounded(theme.radius(Radius::Md))

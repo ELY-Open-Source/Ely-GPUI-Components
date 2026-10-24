@@ -159,6 +159,7 @@ fn messages(cx: &App) -> impl IntoElement + use<> {
                             "locale",
                             LOCALES.map(|locale| Choice::new(locale.tag, locale.name)),
                         )
+                        .label("Language")
                         .selected(locale.tag)
                         .on_change(|tag, _, cx| I18n::set_locale(tag, cx)),
                     ),

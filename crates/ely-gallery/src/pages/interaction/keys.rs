@@ -72,6 +72,8 @@ pub fn keys(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
             "interaction-keys",
             div()
                 .id("interaction-keys")
+                .role(gpui::Role::Group)
+                .aria_label("Shortcuts")
                 .key_context(KEYS)
                 .w(px(420.))
                 .p_4()

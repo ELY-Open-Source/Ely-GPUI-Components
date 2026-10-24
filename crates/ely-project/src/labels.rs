@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, SharedString,
+    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role, SharedString,
     StatefulInteractiveElement, Styled, Window, div,
 };
 
@@ -9,6 +9,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     data_display::color_mark,
     forms::{ColorPalette, Enter, FormError, InlineEdit, Input, OnValue, Run, TextInput},
+    i18n,
     mail::Label,
     overlays::Popover,
     primitives::{Icon, IconName},
@@ -157,6 +158,7 @@ impl RenderOnce for LabelManager {
                 .colors
                 .hue(label.hue, format_args!("label {}", label.name));
             let swatch_id = (id.clone(), format!("hue-{key}"));
+            let swatch_name = i18n::text(cx, "labels.recolor", &[("name", &label.name)]);
             let palette = {
                 let (id, key, on_recolor) = (id.clone(), key.clone(), self.on_recolor.clone());
                 move |_: Run, _: &mut Window, _: &mut App| {
@@ -186,6 +188,8 @@ impl RenderOnce for LabelManager {
                 move |toggle| {
                     div()
                         .id(swatch_id)
+                        .role(Role::Button)
+                        .aria_label(swatch_name)
                         .flex_none()
                         .p_1()
                         .rounded(radius)
@@ -203,22 +207,24 @@ impl RenderOnce for LabelManager {
             let name = {
                 let (key, labels, refuse) = (key.clone(), labels.clone(), refuse.clone());
                 let on_rename = self.on_rename.clone();
-                InlineEdit::new((id.clone(), format!("name-{key}")), label.name.clone()).on_commit(
-                    move |name, window, cx| match refusal(name, &labels, Some(&key)) {
-                        Some(why) => {
-                            log::info!("label manager: {key} not renamed: {why}");
-                            refuse(Some((key.clone(), why)), cx);
-                        }
-                        None => {
-                            refuse(None, cx);
-                            let name = SharedString::from(name.trim().to_string());
-                            log::info!("label manager: {key} renamed {name}");
-                            if let Some(on_rename) = &on_rename {
-                                on_rename(&key, &name, window, cx);
+                InlineEdit::new((id.clone(), format!("name-{key}")), label.name.clone())
+                    .label(i18n::text(cx, "labels.name", &[("name", &label.name)]))
+                    .on_commit(
+                        move |name, window, cx| match refusal(name, &labels, Some(&key)) {
+                            Some(why) => {
+                                log::info!("label manager: {key} not renamed: {why}");
+                                refuse(Some((key.clone(), why)), cx);
                             }
-                        }
-                    },
-                )
+                            None => {
+                                refuse(None, cx);
+                                let name = SharedString::from(name.trim().to_string());
+                                log::info!("label manager: {key} renamed {name}");
+                                if let Some(on_rename) = &on_rename {
+                                    on_rename(&key, &name, window, cx);
+                                }
+                            }
+                        },
+                    )
             };
             let delete = {
                 let (key, on_delete) = (key.clone(), self.on_delete.clone());

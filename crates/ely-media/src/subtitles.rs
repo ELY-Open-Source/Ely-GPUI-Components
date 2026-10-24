@@ -9,6 +9,7 @@ use super::scrubber::OnTime;
 use crate::{
     buttons::{Button, ButtonVariant, IconButton},
     forms::InlineEdit,
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
 };
@@ -173,7 +174,13 @@ impl RenderOnce for SubtitleEditor {
         let colors = theme.colors.clone();
         let cues = Rc::new(self.cues);
         let at = self.at;
-        let rows = cues.iter().map(|cue| {
+        let rows = cues.iter().enumerate().map(|(ix, cue)| {
+            let n = (ix + 1).to_string();
+            let (start_name, end_name, words_name) = (
+                i18n::text(cx, "subtitles.start", &[("n", &n)]),
+                i18n::text(cx, "subtitles.end", &[("n", &n)]),
+                i18n::text(cx, "subtitles.words", &[("n", &n)]),
+            );
             let lit = cue.start <= at && at < cue.end;
             let key = cue.key.clone();
             let retime = |edge: Edge| {
@@ -229,7 +236,11 @@ impl RenderOnce for SubtitleEditor {
             let editable = self.on_change.is_some();
             let time = |edge: Edge, value: Duration| {
                 let field =
-                    InlineEdit::new((self.id.clone(), format!("{key}-{edge:?}")), stamp(value));
+                    InlineEdit::new((self.id.clone(), format!("{key}-{edge:?}")), stamp(value))
+                        .label(match edge {
+                            Edge::Start => start_name.clone(),
+                            Edge::End => end_name.clone(),
+                        });
                 if editable {
                     field.on_commit(retime(edge))
                 } else {
@@ -267,7 +278,8 @@ impl RenderOnce for SubtitleEditor {
                         .child(reason.clone())
                 });
             let text = InlineEdit::new((self.id.clone(), format!("{key}-words")), cue.text.clone())
-                .placeholder("Words");
+                .placeholder("Words")
+                .label(words_name);
             div()
                 .w_full()
                 .flex()

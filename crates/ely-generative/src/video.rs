@@ -2,7 +2,7 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     App, Axis, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement, RenderOnce,
-    ScrollHandle, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div,
+    Role, ScrollHandle, SharedString, StatefulInteractiveElement, Styled, Window, canvas, div,
     prelude::*, relative, transparent_black,
 };
 
@@ -12,6 +12,7 @@ use crate::{
     debug::ruler,
     documents::source,
     forms::{OnValue, Run},
+    i18n,
     layout::{bring_into_view, on_axis},
     motion::Skeleton,
     primitives::{Icon, IconName, Image, tab_stop},
@@ -273,7 +274,14 @@ impl RenderOnce for VideoGenerationTimeline {
                         )
                     })
                     .when_some(pick, |tile, pick| {
-                        tile.track_focus(&focus)
+                        tile.role(Role::RadioButton)
+                            .aria_label(i18n::text(
+                                cx,
+                                "generative.shot",
+                                &[("n", &(ix + 1).to_string())],
+                            ))
+                            .aria_toggled(chosen.into())
+                            .track_focus(&focus)
                             .cursor_pointer()
                             .on_mouse_down(MouseButton::Left, |_, window, _| {
                                 window.prevent_default()

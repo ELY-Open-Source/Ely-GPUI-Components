@@ -1,10 +1,11 @@
 use gpui::{
     AnyElement, App, Bounds, Div, DragMoveEvent, ElementId, EmptyView, EntityId,
-    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,
+    InteractiveElement, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role,
     StatefulInteractiveElement, StyleRefinement, Styled, Window, canvas, div, prelude::*, relative,
 };
 
 use crate::{
+    i18n,
     primitives::{FocusRing, Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, Elevation, IconSize},
 };
@@ -143,6 +144,11 @@ impl RenderOnce for BeforeAfter {
         });
         self.base
             .id(self.id)
+            .role(Role::Slider)
+            .aria_label(i18n::text(cx, "compare.divider", &[]))
+            .aria_numeric_value(f64::from((share * 100.0).round()))
+            .aria_min_numeric_value(0.0)
+            .aria_max_numeric_value(100.0)
             .relative()
             .overflow_hidden()
             .border_1()

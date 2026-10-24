@@ -2,12 +2,13 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     App, ElementId, Entity, ImageSource, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, SharedString, Styled, Window, div, img, prelude::*, transparent_black,
+    RenderOnce, Role, SharedString, Styled, Window, div, img, prelude::*, transparent_black,
 };
 
 use super::scrubber::{OnTime, Scrubber, clock};
 use crate::{
     forms::{OnFlag, Run},
+    i18n,
     motion::duration as motion_duration,
     overlays::media_button,
     primitives::{FocusRing, IconName, framed, tab_stop},
@@ -216,6 +217,10 @@ impl RenderOnce for VideoPlayer {
             let watch = watch.clone();
             media_button(
                 (self.id.clone(), key),
+                match key {
+                    "play" if playing => i18n::text(cx, "player.pause", &[]),
+                    key => i18n::text(cx, &format!("player.{key}"), &[]),
+                },
                 icon,
                 ControlSize::Sm,
                 true,
@@ -382,6 +387,8 @@ impl RenderOnce for VideoPlayer {
         framed(self.ratio, cx)
             .id(self.id.clone())
             .debug_selector(|| "video-player".into())
+            .role(Role::Group)
+            .aria_label(i18n::text(cx, "media.player", &[]))
             .bg(colors.media_backdrop)
             .border_1()
             .border_color(transparent_black())

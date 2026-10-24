@@ -53,6 +53,7 @@ pub fn select(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                             ],
                         )
                         .selected(now)
+                        .label("View")
                         .on_change(move |value, _, cx| set(&view, value.clone(), cx)),
                     ),
                 ),

@@ -14,6 +14,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     documents::Checklist,
     forms::{Choice, DatePicker, InlineEdit, OnValue, Run, Select},
+    i18n,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
 };
@@ -176,16 +177,16 @@ impl RenderOnce for TaskDetailPanel {
             }));
         let title = {
             let edit = edit.clone();
-            InlineEdit::new((id.clone(), "title"), task.title.clone()).on_commit(
-                move |title, window, cx| {
+            InlineEdit::new((id.clone(), "title"), task.title.clone())
+                .label(i18n::text(cx, "project.title", &[]))
+                .on_commit(move |title, window, cx| {
                     let title = SharedString::from(title.trim().to_string());
                     if title.is_empty() {
                         log::info!("task panel: a blank title is not taken");
                         return;
                     }
                     edit(&move |task| task.title = title.clone(), window, cx)
-                },
-            )
+                })
         };
         let status = {
             let edit = edit.clone();
@@ -200,6 +201,7 @@ impl RenderOnce for TaskDetailPanel {
             let choices =
                 Priority::ALL.map(|priority| Choice::new(priority.key(), priority.words()));
             Select::new((id.clone(), "priority"), choices)
+                .label(i18n::text(cx, "project.priority", &[]))
                 .selected(task.priority.key())
                 .size(ControlSize::Sm)
                 .on_change(move |key: &SharedString, window, cx| {

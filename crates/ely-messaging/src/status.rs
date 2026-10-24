@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, Context, ElementId, Entity, InteractiveElement, IntoElement, ParentElement, RenderOnce,
-    SharedString, Styled, Subscription, Window, div, prelude::*, rems,
+    Role, SharedString, Styled, Subscription, Window, div, prelude::*, rems,
 };
 
 use crate::{
@@ -11,6 +11,7 @@ use crate::{
         Choice, EmojiPicker, Face, Input, InputEvent, Run, Select, TextInput, dropdown,
         float_height, picker_field, surface,
     },
+    i18n,
     lists::{ListItem, SelectableList},
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, TextSize},
@@ -197,7 +198,7 @@ impl RenderOnce for StatusSetter {
             Face {
                 icon: IconName::Smile,
                 shown: now.emoji.clone(),
-                placeholder: "".into(),
+                placeholder: i18n::text(cx, "messaging.emoji", &[]),
                 size: ControlSize::Md,
                 disabled: false,
             },
@@ -223,6 +224,8 @@ impl RenderOnce for StatusSetter {
                     anchor,
                     height,
                     surface((popup_id, "popup"), cx)
+                        .role(Role::Dialog)
+                        .aria_label(i18n::text(cx, "messaging.emoji", &[]))
                         .track_focus(&inner)
                         .p_2()
                         .on_mouse_down_out(move |_, window, cx| close(window, cx))
@@ -239,7 +242,8 @@ impl RenderOnce for StatusSetter {
             },
             window,
             cx,
-        );
+        )
+        .aria_label(i18n::text(cx, "messaging.emoji", &[]));
         let theme = cx.theme();
         let colors = &theme.colors;
         let label = |text: &'static str| {
@@ -291,6 +295,7 @@ impl RenderOnce for StatusSetter {
             (self.id.clone(), "clear"),
             ClearAfter::ALL.map(|clear| Choice::new(clear.label(), clear.label())),
         )
+        .label(i18n::text(cx, "messaging.clear", &[]))
         .selected(now.clear.label())
         .on_change(move |value, _, cx| {
             let clear = ClearAfter::of(value);

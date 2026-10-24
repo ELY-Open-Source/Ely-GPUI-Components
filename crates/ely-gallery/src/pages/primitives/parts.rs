@@ -211,6 +211,8 @@ fn chip(id: &'static str, label: &'static str, cx: &App) -> impl IntoElement + u
     let theme = cx.theme();
     div()
         .id(id)
+        .role(gpui::Role::Button)
+        .aria_label(label)
         .tab_index(0)
         .px_3()
         .py_1p5()

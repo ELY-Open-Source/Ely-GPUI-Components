@@ -2,12 +2,14 @@ use std::{collections::BTreeMap, rc::Rc};
 
 use gpui::{
     AnyElement, App, Bounds, ElementId, FontWeight, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, ScrollHandle, SharedString, Styled, Window, canvas, div, fill, prelude::*, size,
+    RenderOnce, Role, ScrollHandle, SharedString, Styled, Window, canvas, div, fill, prelude::*,
+    size,
 };
 use smallvec::SmallVec;
 
 use crate::{
     forms::Run,
+    i18n,
     layout::Collapsible,
     overlays::HoverCard,
     primitives::{hand_back, hold_focus},
@@ -317,6 +319,8 @@ impl RenderOnce for ZenMode {
         let theme = cx.theme();
         div()
             .id(self.id.clone())
+            .role(Role::Group)
+            .aria_label(i18n::text(cx, "documents.zen", &[]))
             .track_focus(&focus)
             .flex()
             .flex_col()

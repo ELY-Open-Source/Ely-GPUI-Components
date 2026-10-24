@@ -1,6 +1,6 @@
 use gpui::{
-    AnyElement, App, FontWeight, IntoElement, MouseButton, ParentElement, Styled, StyledText, div,
-    prelude::*,
+    AnyElement, App, FontWeight, IntoElement, MouseButton, ParentElement, Role, Styled, StyledText,
+    div, prelude::*,
 };
 
 use super::{Draw, point::point_lines};
@@ -149,6 +149,8 @@ impl Draw<'_> {
                 };
                 let (at, pressed) = (heading.at, reveal.clone());
                 entry
+                    .role(Role::Link)
+                    .aria_label(heading.title.clone())
                     .text_color(colors.link)
                     .tab_index(0)
                     .focus_ring(cx)

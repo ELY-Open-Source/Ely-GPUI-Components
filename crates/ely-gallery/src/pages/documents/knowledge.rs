@@ -307,12 +307,13 @@ pub fn knowledge(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> 
                                         .row(
                                             "Status",
                                             Select::new("know-status", ["Idea", "Drafting", "Review", "Done"].map(|name| Choice::new(name, name)))
+                                                .label("Status")
                                                 .selected(now_status)
                                                 .on_change(move |next, _, cx| set(&status, next.clone(), cx)),
                                         )
                                         .row("Due", DatePicker::new("know-due", Some(now_due)).on_change(move |next, _, cx| set(&due, next, cx)))
                                         .row("Tags", TagInput::new("know-tags", now_tags).on_change(move |next, _, cx| set(&tags, next, cx)))
-                                        .row("Published", Checkbox::new("know-published", now_done).on_change(move |on, _, cx| set(&done, on, cx))),
+                                        .row("Published", Checkbox::new("know-published", now_done).name("Published").on_change(move |on, _, cx| set(&done, on, cx))),
                                 ),
                             ),
                     ),

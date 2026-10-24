@@ -2,8 +2,8 @@ use std::rc::Rc;
 
 use gpui::{
     App, Context, ElementId, Entity, FocusHandle, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Subscription,
-    Window, div, prelude::*,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled,
+    Subscription, Window, div, prelude::*,
 };
 
 use super::{Input, InputEvent, TextInput};
@@ -103,6 +103,7 @@ impl Editing {
 #[derive(IntoElement)]
 pub struct InlineEdit {
     id: ElementId,
+    label: Option<SharedString>,
     value: SharedString,
     placeholder: SharedString,
     on_commit: Option<OnCommit>,
@@ -113,10 +114,17 @@ impl InlineEdit {
     pub fn new(id: impl Into<ElementId>, value: impl Into<SharedString>) -> Self {
         Self {
             id: id.into(),
+            label: None,
             value: value.into(),
             placeholder: "Empty".into(),
             on_commit: None,
         }
+    }
+
+    /// The name assistive technology reads; nothing is drawn.
+    pub fn label(mut self, text: impl Into<SharedString>) -> Self {
+        self.label = Some(text.into());
+        self
     }
 
     /// What it shows while empty; `Empty` unless set.
@@ -141,6 +149,12 @@ impl RenderOnce for InlineEdit {
         let focus = tab_stop((self.id.clone(), "focus").into(), true, window, cx);
         state.update(cx, |editing, _| editing.on_commit = self.on_commit.clone());
         if let Some(field) = state.read(cx).field() {
+            if let Some(label) = self
+                .label
+                .filter(|label| field.read(cx).label_text() != label)
+            {
+                field.update(cx, |input, cx| input.set_label(label, cx));
+            }
             let (escape, enter) = (state.clone(), state.clone());
             return div()
                 .id(self.id)
@@ -181,6 +195,9 @@ impl RenderOnce for InlineEdit {
             }));
         div()
             .id(self.id)
+            .role(Role::TextInput)
+            .when_some(self.label.clone(), |text, label| text.aria_label(label))
+            .aria_value(value.clone())
             .group(group.clone())
             .flex()
             .items_center()

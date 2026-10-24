@@ -1,6 +1,6 @@
 use gpui::{
     App, ClickEvent, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     transparent_black,
 };
 
@@ -48,6 +48,8 @@ impl RenderOnce for Link {
         let color = theme.colors.link;
         div()
             .id(self.id)
+            .role(Role::Link)
+            .aria_label(self.label.clone())
             .flex()
             .items_center()
             .gap_0p5()

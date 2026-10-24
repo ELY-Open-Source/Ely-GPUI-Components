@@ -135,7 +135,9 @@ pub fn problems_and_output(window: &mut Window, cx: &mut App) -> impl IntoElemen
 }
 
 pub fn console_and_extensions(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let field = window.use_keyed_state("panels-console-field", cx, TextInput::new);
+    let field = window.use_keyed_state("panels-console-field", cx, |window, cx| {
+        TextInput::new(window, cx).label("Console input")
+    });
     let entries = keep(
         "panels-console",
         || {

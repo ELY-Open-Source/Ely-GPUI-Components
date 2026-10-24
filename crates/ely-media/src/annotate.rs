@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, Bounds, ElementId, Entity, ImageSource, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, RenderOnce, Styled, Window, canvas, div, prelude::*, relative,
+    ParentElement, Pixels, RenderOnce, Role, Styled, Window, canvas, div, prelude::*, relative,
     transparent_black,
 };
 
@@ -10,6 +10,7 @@ use super::marks::{Look, Mark, Tool, mark_at, paint, pin_numbers};
 use crate::{
     buttons::{IconButton, ToggleGroup, ToggleItem},
     forms::{ColorSwatch, Drawing, History, pen},
+    i18n,
     layout::seeded::{Seeded, use_seeded},
     primitives::{FocusRing, IconName, Image, checked_ratio, framed, tab_stop},
     theme::{ActiveTheme, ControlSize, TextSize},
@@ -407,7 +408,9 @@ impl RenderOnce for ImageAnnotator {
         };
         let keyed = board.clone();
         let area = area.when(editable, |area| {
-            area.track_focus(&focus)
+            area.role(Role::Canvas)
+                .aria_label(i18n::text(cx, "media.annotate", &[]))
+                .track_focus(&focus)
                 .focus_ring(cx)
                 .on_key_down(move |event, window, cx| {
                     let stroke = &event.keystroke;

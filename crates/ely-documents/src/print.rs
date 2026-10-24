@@ -10,6 +10,7 @@ use crate::{
     blocks::source,
     buttons::{Button, ButtonVariant, SegmentedControl},
     forms::{Choice, NumberInput, Run, Select},
+    i18n,
     primitives::Image,
     theme::{ActiveTheme, ControlSize, Elevation, Radius, TextSize},
     typography::{format::plural, tabular},
@@ -144,6 +145,7 @@ impl RenderOnce for PrintPreview {
                 (self.id.clone(), "paper"),
                 PAPERS.map(|(_, name)| Choice::new(name, name)),
             )
+            .label(i18n::text(cx, "print.paper", &[]))
             .selected(
                 PAPERS
                     .iter()
@@ -190,6 +192,7 @@ impl RenderOnce for PrintPreview {
                 (self.id.clone(), "margins"),
                 MARGINS.map(|(_, name)| Choice::new(name, name)),
             )
+            .label(i18n::text(cx, "print.margins", &[]))
             .selected(
                 MARGINS
                     .iter()
@@ -217,6 +220,7 @@ impl RenderOnce for PrintPreview {
             let on_change = self.on_change.clone();
             NumberInput::new((self.id.clone(), "copies"), settings.copies as f64)
                 .range(1.0, MOST_COPIES)
+                .label(i18n::text(cx, "print.copies", &[]))
                 .step(1.0)
                 .size(ControlSize::Sm)
                 .on_change(move |copies, window, cx| {

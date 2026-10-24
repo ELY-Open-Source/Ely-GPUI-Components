@@ -2,8 +2,8 @@ use std::time::Duration;
 
 use gpui::{
     AnyElement, App, Div, ElementId, Entity, FontWeight, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, SharedString, Stateful, StatefulInteractiveElement,
-    Styled, Window, div, prelude::*, transparent_black,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, Stateful,
+    StatefulInteractiveElement, Styled, Window, div, prelude::*, transparent_black,
 };
 use smallvec::SmallVec;
 
@@ -15,10 +15,20 @@ use crate::{
 };
 
 /// A row that opens a body through `toggle`: a Tab stop while it has one.
-fn header(id: ElementId, toggle: Option<Entity<bool>>, cx: &App) -> Stateful<Div> {
+fn header(
+    id: ElementId,
+    name: SharedString,
+    toggle: Option<Entity<bool>>,
+    cx: &App,
+) -> Stateful<Div> {
+    let open = toggle.as_ref().map(|state| *state.read(cx));
     let theme = cx.theme();
     div()
         .id(id.clone())
+        .when(open.is_some(), |row| {
+            row.role(Role::Button).aria_label(name)
+        })
+        .when_some(open, |row, open| row.aria_expanded(open))
         .w_full()
         .flex()
         .items_center()
@@ -130,6 +140,7 @@ impl RenderOnce for ToolCallCard {
             .child(
                 header(
                     (self.id.clone(), "header").into(),
+                    self.name.clone(),
                     opens.then_some(state),
                     cx,
                 )
@@ -245,17 +256,22 @@ impl RenderOnce for ToolCallGroup {
             .gap_2()
             .text_size(theme.text_size(TextSize::Sm))
             .child(
-                header((self.id.clone(), "header").into(), Some(state), cx)
-                    .px_1()
-                    .py_0p5()
-                    .text_color(colors.fg_muted)
-                    .child(
-                        Icon::new(IconName::Wrench)
-                            .size(IconSize::Sm)
-                            .color(colors.fg_subtle),
-                    )
-                    .child(div().flex_1().min_w_0().child(Ellipsis::new(self.label)))
-                    .child(Disclosure::new((self.id.clone(), "chevron"), open).size(IconSize::Sm)),
+                header(
+                    (self.id.clone(), "header").into(),
+                    self.label.clone(),
+                    Some(state),
+                    cx,
+                )
+                .px_1()
+                .py_0p5()
+                .text_color(colors.fg_muted)
+                .child(
+                    Icon::new(IconName::Wrench)
+                        .size(IconSize::Sm)
+                        .color(colors.fg_subtle),
+                )
+                .child(div().flex_1().min_w_0().child(Ellipsis::new(self.label)))
+                .child(Disclosure::new((self.id.clone(), "chevron"), open).size(IconSize::Sm)),
             )
             .when(open, |group| {
                 group.child(div().flex().flex_col().gap_2().pl_3().children(self.calls))

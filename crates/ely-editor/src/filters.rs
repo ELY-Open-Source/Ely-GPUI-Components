@@ -1,10 +1,14 @@
 use std::rc::Rc;
 
-use gpui::{App, ElementId, Entity, IntoElement, ParentElement, RenderOnce, Styled, Window, div};
+use gpui::{
+    App, ElementId, Entity, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Window,
+    div,
+};
 
 use crate::{
     buttons::{ToggleButton, ToggleItem},
     forms::{Input, TextInput},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, TextSize},
 };
@@ -105,9 +109,20 @@ impl SearchFilters {
 
 impl RenderOnce for SearchFilters {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let [include, exclude] = [
+            (&self.include, "search.include"),
+            (&self.exclude, "search.exclude"),
+        ]
+        .map(|(field, key)| {
+            let words = i18n::text(cx, key, &[]);
+            if field.read(cx).label_text() != &words {
+                field.update(cx, |input, cx| input.set_label(words.clone(), cx));
+            }
+            words
+        });
         let theme = cx.theme();
         let colors = theme.colors.clone();
-        let label = |words: &'static str| {
+        let label = |words: SharedString| {
             div()
                 .text_size(theme.text_size(TextSize::Xs))
                 .text_color(colors.fg_subtle)
@@ -129,7 +144,7 @@ impl RenderOnce for SearchFilters {
             .flex()
             .flex_col()
             .gap_1p5()
-            .child(label("Files to include"))
+            .child(label(include))
             .child(
                 div()
                     .flex()
@@ -142,7 +157,7 @@ impl RenderOnce for SearchFilters {
                     )
                     .child(ignore),
             )
-            .child(label("Files to exclude"))
+            .child(label(exclude))
             .child(Input::new(&self.exclude).size(ControlSize::Sm))
     }
 }

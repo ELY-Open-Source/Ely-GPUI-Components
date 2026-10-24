@@ -8,6 +8,7 @@ use gpui::{
 use crate::{
     buttons::{ButtonVariant, IconButton, ToggleButton, ToggleItem},
     forms::{Choice, Enter, Input, Select, TextInput},
+    i18n,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, Palette, Radius, TextSize},
 };
@@ -121,6 +122,7 @@ impl RenderOnce for OutputPanel {
                 .iter()
                 .map(|name| Choice::new(name.clone(), name.clone())),
         )
+        .label(i18n::text(cx, "editor.channel", &[]))
         .selected(self.channel.clone())
         .size(ControlSize::Sm);
         let channel = match self.on_channel {
@@ -247,6 +249,11 @@ impl DebugConsole {
 
 impl RenderOnce for DebugConsole {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let name = i18n::text(cx, "console.input", &[]);
+        if self.field.read(cx).label_text() != &name {
+            self.field
+                .update(cx, |field, cx| field.set_label(name.clone(), cx));
+        }
         let theme = cx.theme();
         let colors = theme.colors.clone();
         let syntax = colors.syntax;

@@ -2,8 +2,9 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     Animation, AnimationExt, AnyElement, App, ElementId, FontWeight, Hsla, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, RenderOnce, SharedString, StatefulInteractiveElement,
-    Styled, Window, div, prelude::*, pulsating_between, transparent_black,
+    IntoElement, MouseButton, ParentElement, RenderOnce, Role, SharedString,
+    StatefulInteractiveElement, Styled, Window, div, prelude::*, pulsating_between,
+    transparent_black,
 };
 use smallvec::SmallVec;
 
@@ -12,6 +13,7 @@ use crate::{
     data_display::{Avatar, more, tucked},
     documents::source,
     forms::{OnValue, Run},
+    i18n,
     overlays::HoverCard,
     primitives::{FocusRing, hand_back, hold_focus},
     theme::{ActiveTheme, AvatarSize, ControlSize, Radius, TextSize},
@@ -134,6 +136,9 @@ impl RenderOnce for PresenceAvatars {
                 let follow = self.on_follow.clone();
                 let face = tucked(ix == 0, size)
                     .id((self.id.clone(), format!("peer-{key}")))
+                    .role(Role::Button)
+                    .aria_label(name.clone())
+                    .aria_toggled(following.into())
                     .rounded_full()
                     .border_1()
                     .border_color(transparent_black())
@@ -317,6 +322,10 @@ impl RenderOnce for FollowMode {
         let color = self.peer.as_ref().map(|peer| peer.color(cx));
         div()
             .id(self.id.clone())
+            .role(Role::Group)
+            .when_some(self.peer.as_ref(), |mode, peer| {
+                mode.aria_label(i18n::text(cx, "collab.following", &[("name", &peer.name)]))
+            })
             .track_focus(&focus)
             .flex()
             .flex_col()

@@ -6,6 +6,7 @@ use super::overflow::list_button;
 use crate::{
     buttons::{ButtonVariant, IconButton},
     forms::Choice,
+    i18n,
     primitives::IconName,
     theme::ControlSize,
 };
@@ -92,7 +93,7 @@ impl RenderOnce for BackForwardNavigation {
         let (back, ahead, listed) = (go.clone(), go.clone(), go);
         let list = list_button(
             &(self.id.clone(), "history").into(),
-            IconName::History,
+            (IconName::History, i18n::text(cx, "nav.history", &[])),
             Rc::new(rows),
             Some(&current.to_string().into()),
             move |value, window, cx| {

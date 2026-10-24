@@ -2,7 +2,7 @@ use std::{ops::Range, rc::Rc};
 
 use gpui::{
     AnyElement, App, Context, ElementId, Entity, InteractiveElement, IntoElement, ParentElement,
-    Rems, ScrollStrategy, SharedString, StatefulInteractiveElement, Styled,
+    Rems, Role, ScrollStrategy, SharedString, StatefulInteractiveElement, Styled,
     UniformListScrollHandle, Window, div, prelude::*, uniform_list,
 };
 
@@ -180,61 +180,71 @@ pub fn grid(grid: Grid, finder: &Entity<Finder>, window: &mut Window, cx: &mut A
         let selected = grid.selected;
         let (moved, key_rows, place) = (finder.clone(), grid.rows, scroll.clone());
         let clicked = finder.clone();
-        let list = uniform_list((grid.id, "rows"), rows.len(), move |range, _, cx| {
-            let theme = cx.theme();
-            rows[range]
-                .iter()
-                .map(|row| match row {
-                    Row::Title(title) => div()
-                        .h(cell)
-                        .flex()
-                        .items_end()
-                        .pb_1()
-                        .text_size(theme.text_size(TextSize::Xs))
-                        .text_color(colors.fg_subtle)
-                        .child(title.clone())
-                        .into_any_element(),
-                    Row::Glyphs(glyphs) => div()
-                        .flex()
-                        .children(glyphs.clone().map(|ix| {
-                            let (pick, name, clicked) =
-                                (pick.clone(), names[ix].clone(), clicked.clone());
-                            let ring = if focused && ix == cursor {
-                                colors.focus
-                            } else if selected == Some(ix) {
-                                colors.accent
-                            } else {
-                                gpui::transparent_black()
-                            };
-                            div()
-                                .id(("glyph", ix))
-                                .flex()
-                                .items_center()
-                                .justify_center()
-                                .size(cell)
-                                .rounded(theme.radius(Radius::Md))
-                                .border_1()
-                                .border_color(ring)
-                                .when(selected == Some(ix), |cell| cell.bg(colors.active))
-                                .cursor_pointer()
-                                .hover(|style| style.bg(colors.hover))
-                                .tooltip(Tooltip::text(name))
-                                .on_click(move |_, window, cx| {
-                                    clicked.update(cx, |finder, cx| {
-                                        finder.cursor = ix;
-                                        cx.notify();
-                                    });
-                                    pick(ix, window, cx);
-                                })
-                                .child(draw(ix, cx))
-                        }))
-                        .into_any_element(),
-                })
-                .collect()
-        })
+        let list = uniform_list(
+            (grid.id.clone(), "rows"),
+            rows.len(),
+            move |range, _, cx| {
+                let theme = cx.theme();
+                rows[range]
+                    .iter()
+                    .map(|row| match row {
+                        Row::Title(title) => div()
+                            .h(cell)
+                            .flex()
+                            .items_end()
+                            .pb_1()
+                            .text_size(theme.text_size(TextSize::Xs))
+                            .text_color(colors.fg_subtle)
+                            .child(title.clone())
+                            .into_any_element(),
+                        Row::Glyphs(glyphs) => div()
+                            .flex()
+                            .children(glyphs.clone().map(|ix| {
+                                let (pick, name, clicked) =
+                                    (pick.clone(), names[ix].clone(), clicked.clone());
+                                let ring = if focused && ix == cursor {
+                                    colors.focus
+                                } else if selected == Some(ix) {
+                                    colors.accent
+                                } else {
+                                    gpui::transparent_black()
+                                };
+                                div()
+                                    .id(("glyph", ix))
+                                    .role(Role::GridCell)
+                                    .aria_label(name.clone())
+                                    .aria_selected(selected == Some(ix))
+                                    .when(ix == cursor, |cell| cell.aria_active_descendant())
+                                    .flex()
+                                    .items_center()
+                                    .justify_center()
+                                    .size(cell)
+                                    .rounded(theme.radius(Radius::Md))
+                                    .border_1()
+                                    .border_color(ring)
+                                    .when(selected == Some(ix), |cell| cell.bg(colors.active))
+                                    .cursor_pointer()
+                                    .hover(|style| style.bg(colors.hover))
+                                    .tooltip(Tooltip::text(name))
+                                    .on_click(move |_, window, cx| {
+                                        clicked.update(cx, |finder, cx| {
+                                            finder.cursor = ix;
+                                            cx.notify();
+                                        });
+                                        pick(ix, window, cx);
+                                    })
+                                    .child(draw(ix, cx))
+                            }))
+                            .into_any_element(),
+                    })
+                    .collect()
+            },
+        )
         .track_scroll(&scroll)
         .h(theme.list_max_height());
         div()
+            .id((grid.id.clone(), "cells"))
+            .role(Role::Grid)
             .track_focus(&focus)
             .on_key_down(move |event, window, cx| {
                 let key = event.keystroke.key.as_str();

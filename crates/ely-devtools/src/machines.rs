@@ -9,6 +9,7 @@ use crate::{
     buttons::IconButton,
     data_display::{Badge, Tone},
     forms::{Choice, Select},
+    i18n,
     lists::{ListItem, SelectableList, row_action},
     primitives::{Icon, IconName},
     tables::{Cell, Column, DataTable, Row},
@@ -404,6 +405,7 @@ impl RenderOnce for PodList {
                                 .map(|space| Choice::new(space.clone(), space.clone())),
                         ),
                     )
+                    .label(i18n::text(cx, "devtools.namespace", &[]))
                     .selected(chosen)
                     .on_change(move |value, _, cx| {
                         space.update(cx, |space, cx| {

@@ -1,32 +1,38 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, Div, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, SharedString,
-    Stateful, Styled, Window, div,
+    App, Div, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
+    SharedString, Stateful, StatefulInteractiveElement, Styled, Window, div, prelude::*,
 };
 
 use crate::{
     forms::{Choice, Listing, OnValue, listing},
+    i18n,
     primitives::{Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, Radius},
 };
 
-/// A small icon button that lists `rows`; picking one runs `on_pick`.
+/// A small icon button, its `face` an icon and a name, that lists `rows`; picking one runs `on_pick`.
 pub(crate) fn list_button(
     id: &ElementId,
-    icon: IconName,
+    face: (IconName, SharedString),
     rows: Rc<Vec<Choice>>,
     selected: Option<&SharedString>,
     on_pick: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
     window: &mut Window,
     cx: &mut App,
 ) -> Stateful<Div> {
+    let (icon, name) = face;
     let focus = tab_stop((id.clone(), "focus").into(), true, window, cx);
     let focused = focus.is_focused(window);
     let theme = cx.theme();
     let colors = &theme.colors;
+    let shown = selected.and_then(|value| rows.iter().find(|row| row.value == *value));
     let trigger = div()
         .id((id.clone(), "button"))
+        .role(Role::Button)
+        .aria_label(name)
+        .when_some(shown, |button, row| button.aria_value(row.label.clone()))
         .track_focus(&focus)
         .relative()
         .flex()
@@ -107,7 +113,7 @@ impl RenderOnce for TabOverflowMenu {
         let (id, on_select) = (self.id.clone(), self.on_select);
         list_button(
             &self.id,
-            IconName::ChevronDown,
+            (IconName::ChevronDown, i18n::text(cx, "tabs.all", &[])),
             Rc::new(self.tabs),
             self.selected.as_ref(),
             move |value, window, cx| {

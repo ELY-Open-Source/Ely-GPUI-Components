@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, FontWeight, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
+    RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::*,
     transparent_black,
 };
 use jiff::{Timestamp, civil::Date, tz::TimeZone};
@@ -192,6 +192,9 @@ impl RenderOnce for ConversationItem {
         let colors = theme.colors.clone();
         div()
             .id(self.id.clone())
+            .role(Role::ListItem)
+            .aria_label(self.conversation.title.clone())
+            .aria_selected(self.active)
             .group(group.clone())
             .track_focus(&focus)
             .flex()

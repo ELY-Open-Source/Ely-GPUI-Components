@@ -1,7 +1,7 @@
 //! Interaction, chapter 38: resizing, turning, roving focus, selection areas and synced scrolling.
 #![deny(missing_docs)]
 
-use ely_core::{layout, primitives, theme};
+use ely_core::{i18n, layout, primitives, theme};
 
 mod resizable;
 mod rotatable;

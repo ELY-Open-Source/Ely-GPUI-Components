@@ -8,6 +8,7 @@ use super::{book::Side, quotes::price};
 use crate::{
     buttons::{Button, ButtonVariant, SegmentedControl},
     forms::NumberInput,
+    i18n,
     overlays::ConfirmDialog,
     theme::{ActiveTheme, ControlSize, TextSize},
     typography::{format, tabular},
@@ -212,6 +213,7 @@ impl RenderOnce for OrderEntry {
                 .into_any_element()
         } else {
             NumberInput::new((self.id.clone(), "price"), order.price)
+                .label(i18n::text(cx, "finance.price", &[]))
                 .step(0.01)
                 .precision(2)
                 .on_change(change(
@@ -222,6 +224,7 @@ impl RenderOnce for OrderEntry {
                 .into_any_element()
         };
         let quantity = NumberInput::new((self.id.clone(), "quantity"), order.quantity)
+            .label(i18n::text(cx, "finance.quantity", &[]))
             .range(0.0, f64::MAX)
             .step(1.0)
             .precision(0)

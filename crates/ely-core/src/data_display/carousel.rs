@@ -2,13 +2,13 @@ use std::{rc::Rc, time::Duration};
 
 use gpui::{
     AnyElement, App, Div, ElementId, HoverListenerMode, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, RenderOnce, StatefulInteractiveElement, StyleRefinement, Styled,
-    Task, Window, div, prelude::*, relative,
+    MouseButton, ParentElement, RenderOnce, Role, StatefulInteractiveElement, StyleRefinement,
+    Styled, Task, Window, div, prelude::*, relative,
 };
 use web_time::Instant;
 
 use crate::{
-    motion,
+    i18n, motion,
     primitives::{FocusRing, Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, Mix},
 };
@@ -220,6 +220,16 @@ impl RenderOnce for Carousel {
         let keys = step.clone();
         let viewport = div()
             .id((self.id.clone(), "viewport"))
+            .role(Role::Group)
+            .aria_label(i18n::text(cx, "carousel.slides", &[]))
+            .aria_description(i18n::text(
+                cx,
+                "carousel.place",
+                &[
+                    ("at", &(current + 1).to_string()),
+                    ("count", &count.to_string()),
+                ],
+            ))
             .relative()
             .flex_1()
             .min_h_0()

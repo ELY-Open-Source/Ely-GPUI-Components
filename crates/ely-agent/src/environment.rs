@@ -290,6 +290,7 @@ impl RenderOnce for McpServerList {
                         (self.id.clone(), format!("switch-{}", server.key)),
                         server.state != ServerState::Off,
                     )
+                    .name(server.name.clone())
                     .on_change(move |on, window, cx| {
                         log::info!("mcp server {key}: {}", if on { "on" } else { "off" });
                         toggle(&key, on, window, cx)

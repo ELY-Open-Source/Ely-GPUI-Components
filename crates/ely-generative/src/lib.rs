@@ -3,7 +3,7 @@
 
 use ely_charts as charts;
 use ely_chat as chat;
-use ely_core::{buttons, data_display, forms, layout, motion, primitives, theme, typography};
+use ely_core::{buttons, data_display, forms, i18n, layout, motion, primitives, theme, typography};
 use ely_debug as debug;
 use ely_documents as documents;
 

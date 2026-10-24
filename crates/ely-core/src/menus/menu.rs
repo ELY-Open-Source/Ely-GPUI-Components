@@ -370,8 +370,45 @@ pub(crate) fn hang(
     let (down_menu, down_state, down_close) = (menu.clone(), state.clone(), close.clone());
     let (left_menu, left_state, left_close) = (menu.clone(), state.clone(), close.clone());
     let (right_menu, right_state, right_close) = (menu.clone(), state.clone(), close.clone());
+    let room = window.viewport_size().width;
+    // Not raised: inside the focused panel, a reader hears a submenu's mark.
+    let subs: Vec<_> = (1..depth)
+        .filter_map(|level| {
+            let open = state.read(cx);
+            let row = open.levels[level - 1].row;
+            let width = match open.levels[level].panel.size.width {
+                width if width > Pixels::ZERO => width,
+                _ => cx.theme().menu_width().to_pixels(window.rem_size()),
+            };
+            // No room on the right: open on the left.
+            let left = row.right() + width > room && row.left() >= width;
+            let (corner, from, slide) = match left {
+                true => (Anchor::TopRight, row.origin, -1.0),
+                false => (Anchor::TopLeft, row.top_right(), 1.0),
+            };
+            (row != Bounds::default()).then(|| {
+                anchored()
+                    .anchor(corner)
+                    .position(from)
+                    .snap_to_window()
+                    .child(
+                        draw::panel(id, menu, state, level, &close, None, cx)
+                            .mt_neg_1()
+                            .with_animation(
+                                (id.clone(), format!("sub-{level}")),
+                                enter.clone(),
+                                move |panel, t| {
+                                    panel.opacity(t).left(motion::NUDGE * (t - 1.0) * slide)
+                                },
+                            ),
+                    )
+                    .into_any_element()
+            })
+        })
+        .collect();
     let root = draw::panel(id, menu, state, 0, &close, head, cx)
         .track_focus(&focus)
+        .children(subs)
         .when(!spaced, |root| {
             root.capture_action(move |_: &Up, window, cx| {
                 cx.stop_propagation();
@@ -454,47 +491,5 @@ pub(crate) fn hang(
         .with_priority(1)
         .into_any_element(),
     };
-    let room = window.viewport_size().width;
-    let subs = (1..depth).filter_map(|level| {
-        let open = state.read(cx);
-        let row = open.levels[level - 1].row;
-        let width = match open.levels[level].panel.size.width {
-            width if width > Pixels::ZERO => width,
-            _ => cx.theme().menu_width().to_pixels(window.rem_size()),
-        };
-        // No room on the right: open on the left.
-        let left = row.right() + width > room && row.left() >= width;
-        let (corner, from, slide) = match left {
-            true => (Anchor::TopRight, row.origin, -1.0),
-            false => (Anchor::TopLeft, row.top_right(), 1.0),
-        };
-        (row != Bounds::default()).then(|| {
-            raise(
-                (id.clone(), format!("level-{level}")),
-                anchored()
-                    .anchor(corner)
-                    .position(from)
-                    .snap_to_window()
-                    .child(
-                        draw::panel(id, menu, state, level, &close, None, cx)
-                            .mt_neg_1()
-                            .with_animation(
-                                (id.clone(), format!("sub-{level}")),
-                                enter.clone(),
-                                move |panel, t| {
-                                    panel.opacity(t).left(motion::NUDGE * (t - 1.0) * slide)
-                                },
-                            ),
-                    ),
-            )
-            .with_priority(2)
-            .into_any_element()
-        })
-    });
-    Some(
-        div()
-            .child(placed)
-            .children(subs.collect::<Vec<_>>())
-            .into_any_element(),
-    )
+    Some(placed)
 }

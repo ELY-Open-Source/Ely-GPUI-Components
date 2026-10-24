@@ -2,8 +2,8 @@ use std::ops::Range;
 
 use gpui::{
     App, ClipboardItem, CursorStyle, ElementId, FocusHandle, HighlightStyle, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, RenderOnce, SharedString, Styled, StyledText,
-    TextLayout, Window, div,
+    IntoElement, MouseButton, ParentElement, RenderOnce, Role, SharedString,
+    StatefulInteractiveElement, Styled, StyledText, TextLayout, Window, div,
 };
 
 use crate::theme::ActiveTheme;
@@ -84,6 +84,8 @@ impl RenderOnce for SelectableText {
 
         div()
             .id(self.id)
+            .role(Role::Paragraph)
+            .aria_label(text.clone())
             .track_focus(&focus)
             .cursor(CursorStyle::IBeam)
             .on_mouse_down(MouseButton::Left, move |event, window, cx| {

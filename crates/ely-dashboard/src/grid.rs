@@ -2,11 +2,14 @@ use std::rc::Rc;
 
 use gpui::{
     AnyElement, App, AppContext as _, ElementId, EmptyView, EntityId, InteractiveElement,
-    IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, SharedString,
+    IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce, Role, SharedString,
     StatefulInteractiveElement, Styled, Window, canvas, div,
 };
 
-use super::tiles::{Tile, arranged, stepped};
+use super::{
+    DashboardCard,
+    tiles::{Tile, arranged, stepped},
+};
 use crate::{
     primitives::{Icon, IconName, tab_stop},
     theme::{ActiveTheme, IconSize, Radius},
@@ -47,9 +50,12 @@ pub struct DashboardGrid {
     id: ElementId,
     columns: u32,
     tiles: Vec<Tile>,
-    cards: Vec<(SharedString, AnyElement)>,
+    cards: Vec<(SharedString, Card)>,
     on_change: OnTiles,
 }
+
+/// A card's title, for its tile's name, and the card.
+type Card = (SharedString, AnyElement);
 
 impl DashboardGrid {
     /// A grid under `id` of `columns` columns placing `tiles`; `on_change` gets every tile after a move.
@@ -70,8 +76,10 @@ impl DashboardGrid {
     }
 
     /// What the tile of `key` shows.
-    pub fn card(mut self, key: impl Into<SharedString>, card: impl IntoElement) -> Self {
-        self.cards.push((key.into(), card.into_any_element()));
+    pub fn card(mut self, key: impl Into<SharedString>, card: DashboardCard) -> Self {
+        let title = card.title.clone();
+        self.cards
+            .push((key.into(), (title, card.into_any_element())));
         self
     }
 }
@@ -117,7 +125,7 @@ fn measure(board: gpui::Entity<Board>) -> impl IntoElement {
 fn stacked(
     id: ElementId,
     mut tiles: Vec<Tile>,
-    mut cards: Vec<(SharedString, AnyElement)>,
+    mut cards: Vec<(SharedString, Card)>,
     board: gpui::Entity<Board>,
     cx: &App,
 ) -> AnyElement {
@@ -133,7 +141,7 @@ fn stacked(
                 );
                 return None;
             };
-            let card = cards.remove(at).1;
+            let (_, card) = cards.remove(at).1;
             let key = tile.key.clone();
             Some(
                 div()
@@ -198,7 +206,7 @@ impl RenderOnce for DashboardGrid {
                     );
                     return None;
                 };
-                let card = cards.remove(at).1;
+                let (title, card) = cards.remove(at).1;
                 let focus = tab_stop(
                     (id.clone(), format!("tile-{}", tile.key)).into(),
                     true,
@@ -226,6 +234,8 @@ impl RenderOnce for DashboardGrid {
                 Some(
                     div()
                         .id((id.clone(), format!("tile-{}", tile.key)))
+                        .role(Role::Group)
+                        .aria_label(title)
                         .track_focus(&focus)
                         .absolute()
                         .left(Pixels::from(tile.x as f32 * cell.0))

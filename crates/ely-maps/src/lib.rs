@@ -2,7 +2,7 @@
 #![deny(missing_docs)]
 
 use ely_canvas as canvas;
-use ely_core::{buttons, layout, primitives, theme, typography};
+use ely_core::{buttons, i18n, layout, primitives, theme, typography};
 
 mod choropleth;
 mod cluster;

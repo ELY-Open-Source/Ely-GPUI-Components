@@ -10,6 +10,7 @@ use crate::{
     buttons::{Button, ButtonVariant},
     feedback::InlineMessage,
     forms::{Choice, FormField, Input, PasswordInput, Select, Switch, TextInput},
+    i18n,
     primitives::Severity,
 };
 
@@ -60,27 +61,28 @@ struct Fields {
 
 impl Fields {
     fn filled(connection: &Connection, window: &mut Window, cx: &mut App) -> Self {
-        let mut field = |text: &SharedString| {
-            let text = text.to_string();
+        let mut field = |text: &SharedString, key: &str| {
+            let (text, name) = (text.to_string(), i18n::text(cx, key, &[]));
             cx.new(|cx| {
-                let mut input = TextInput::new(window, cx);
+                let mut input = TextInput::new(window, cx).label(name);
                 input.set_text(text, cx);
                 input
             })
         };
         Self {
             seed: connection.key.clone(),
-            name: field(&connection.name),
-            host: field(&connection.host),
-            database: field(&connection.database),
-            user: field(&connection.user),
-            password: field(&connection.password),
+            name: field(&connection.name, "devtools.name"),
+            host: field(&connection.host, "devtools.host"),
+            database: field(&connection.database, "devtools.database"),
+            user: field(&connection.user, "devtools.user"),
+            password: field(&connection.password, "devtools.password"),
             port: field(
                 &connection
                     .port
                     .map(|port| port.to_string())
                     .unwrap_or_default()
                     .into(),
+                "devtools.port",
             ),
             engine: connection.engine,
             tls: connection.tls,
@@ -228,6 +230,7 @@ impl RenderOnce for ConnectionForm {
                         .iter()
                         .map(|engine| Choice::new(engine.name(), engine.name())),
                 )
+                .label(i18n::text(cx, "devtools.engine", &[]))
                 .selected(engine.name())
                 .on_change(move |value, _, cx| {
                     chosen.update(cx, |fields, cx| {
