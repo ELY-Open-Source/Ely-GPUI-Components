@@ -9,6 +9,7 @@ use gpui::{
 
 use super::{Icon, IconName, raise};
 use crate::{
+    i18n::I18n,
     motion,
     theme::{ActiveTheme, Elevation, IconSize, Radius, TextSize},
 };
@@ -40,6 +41,13 @@ fn surface(content: AnyElement, cx: &App) -> impl IntoElement + use<> {
 /// Tooltip body for gpui's `.tooltip()`.
 pub struct Tooltip {
     content: Content,
+    /// The locale it opened in: gpui keeps an open tooltip, so in another one it withdraws until hovered again.
+    spoken: Option<&'static str>,
+}
+
+/// The locale the app shows, if it set one.
+fn spoken(cx: &App) -> Option<&'static str> {
+    cx.try_global::<I18n>().map(|i18n| i18n.locale().tag)
 }
 
 impl Tooltip {
@@ -62,14 +70,17 @@ impl Tooltip {
     ) -> impl Fn(&mut Window, &mut App) -> AnyView {
         let content: Content = Rc::new(content);
         move |_, cx| {
-            let content = content.clone();
-            cx.new(|_| Tooltip { content }).into()
+            let (content, spoken) = (content.clone(), spoken(cx));
+            cx.new(|_| Tooltip { content, spoken }).into()
         }
     }
 }
 
 impl Render for Tooltip {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        if spoken(cx) != self.spoken {
+            return div();
+        }
         let content = (self.content)(window, cx);
         div()
             .pt(cx.theme().cursor_offset())

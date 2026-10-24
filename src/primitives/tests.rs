@@ -1,12 +1,13 @@
 use std::{cell::RefCell, rc::Rc};
 
 use gpui::{
-    App, Context, Entity, FocusHandle, IntoElement, KeyBinding, Modifiers, ParentElement, Render,
-    RenderOnce, Styled, TestAppContext, Window, actions, anchored, div, point, prelude::*, px,
+    AnyView, App, Context, Entity, FocusHandle, IntoElement, KeyBinding, Modifiers, ParentElement,
+    Render, RenderOnce, Styled, TestAppContext, Window, actions, anchored, div, point, prelude::*,
+    px,
 };
 
-use super::{FocusScope, raise};
-use crate::theme::Theme;
+use super::{FocusScope, Tooltip, raise};
+use crate::{i18n::I18n, theme::Theme};
 
 /// A raised square holding a raised button, under a cover drawn after it in the same layer.
 struct Stack {
@@ -294,4 +295,44 @@ fn a_retired_image_is_freed_at_the_next_paint(cx: &mut TestAppContext) {
         view.read_with(cx, |painted, _| painted.retired.is_empty()),
         "then it is freed"
     );
+}
+
+/// A view that holds an open tooltip's body, as gpui holds one.
+struct Open {
+    tip: AnyView,
+}
+
+impl Render for Open {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        div().size_full().child(self.tip.clone())
+    }
+}
+
+#[gpui::test]
+fn an_open_tooltip_withdraws_when_the_language_changes(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        cx.set_global(
+            I18n::new("en-US")
+                .catalog("en-US", &[])
+                .catalog("zh-CN", &[]),
+        );
+    });
+    let (_, cx) = cx.add_window_view(|window, cx| {
+        let body = |_: &mut Window, _: &mut App| {
+            let words = div().debug_selector(|| "tip".into()).child("Close");
+            words.into_any_element()
+        };
+        Open {
+            tip: Tooltip::rich(body)(window, cx),
+        }
+    });
+    cx.run_until_parked();
+    assert!(
+        cx.debug_bounds("tip").is_some(),
+        "it shows in its own language"
+    );
+    cx.update(|_, cx| I18n::set_locale("zh-CN", cx));
+    cx.run_until_parked();
+    assert!(cx.debug_bounds("tip").is_none(), "it withdraws in another");
 }
