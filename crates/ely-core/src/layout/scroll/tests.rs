@@ -90,7 +90,7 @@ fn a_kept_scroll_that_fits_shows_no_thumb(cx: &mut TestAppContext) {
 }
 
 /// A tall area; its renders, bounded so a loop fails.
-struct Tall(usize, gpui::ScrollHandle);
+struct Tall(usize, gpui::ScrollHandle, f32);
 
 impl Render for Tall {
     fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
@@ -101,11 +101,11 @@ impl Render for Tall {
             .vertical()
             .w(px(300.))
             .h(px(200.))
-            .child(div().h(px(2000.)))
+            .child(div().h(px(self.2)))
     }
 }
 
-/// A tall area in a window, its thumb shown by hover.
+/// A tall area, its thumb shown by hover.
 fn hovered(
     cx: &mut TestAppContext,
 ) -> (
@@ -114,7 +114,7 @@ fn hovered(
     gpui::Bounds<Pixels>,
 ) {
     cx.update(Theme::init);
-    let (view, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new()));
+    let (view, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new(), 2000.));
     cx.simulate_mouse_move(point(px(150.), px(100.)), None, Modifiers::none());
     let thumb = cx.debug_bounds("scrollbar-thumb").expect("shown on hover");
     (view, cx, thumb)
@@ -155,9 +155,73 @@ fn a_thumb_drags_without_a_scroll_first(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn a_bar_gone_under_the_pointer_lets_go(cx: &mut TestAppContext) {
+    let (view, cx, thumb) = hovered(cx);
+    cx.simulate_mouse_move(thumb.center(), None, Modifiers::none());
+    let tall = |cx: &mut gpui::VisualTestContext, height| {
+        cx.update(|_, app| {
+            view.update(app, |view, cx| {
+                view.2 = height;
+                cx.notify();
+            })
+        });
+        cx.run_until_parked();
+        // The handle measures at paint, a frame late.
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+    };
+    tall(cx, 100.);
+    assert!(
+        cx.debug_bounds("scrollbar-thumb").is_none(),
+        "nothing to scroll"
+    );
+    cx.simulate_mouse_move(point(px(600.), px(400.)), None, Modifiers::none());
+    tall(cx, 2000.);
+    assert!(
+        cx.debug_bounds("scrollbar-thumb").is_none(),
+        "held after it went"
+    );
+}
+
+/// An area scrolling both ways; renders bounded.
+struct Wide(usize, f32);
+
+impl Render for Wide {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        self.0 += 1;
+        assert!(self.0 < 100, "the area redraws without end");
+        super::ScrollArea::new("wide")
+            .w(px(300.))
+            .h(px(200.))
+            .child(div().w(px(self.1)).h(px(2000.)))
+    }
+}
+
+#[gpui::test]
+fn one_bar_going_keeps_the_other_held(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Wide(0, 2000.));
+    cx.simulate_mouse_move(point(px(150.), px(100.)), None, Modifiers::none());
+    cx.simulate_mouse_move(point(px(291.), px(10.)), None, Modifiers::none());
+    cx.update(|_, app| {
+        view.update(app, |view, cx| {
+            view.1 = 100.;
+            cx.notify();
+        })
+    });
+    // Step by step: a frame without it is a flicker.
+    for frame in 0..40 {
+        cx.update(|window, _| window.refresh());
+        cx.executor().tick();
+        let shown = cx.debug_bounds("scrollbar-thumb").is_some();
+        assert!(shown, "the down bar went at frame {frame}");
+    }
+}
+
+#[gpui::test]
 fn a_bar_stays_while_the_pointer_rests_on_it(cx: &mut TestAppContext) {
     cx.update(Theme::init);
-    let (_, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new()));
+    let (_, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new(), 2000.));
     cx.simulate_mouse_move(point(px(600.), px(400.)), None, Modifiers::none());
     assert!(
         cx.debug_bounds("scrollbar-thumb").is_none(),

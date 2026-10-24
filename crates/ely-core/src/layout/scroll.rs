@@ -88,13 +88,20 @@ struct Activity {
     last: Point<Pixels>,
     active_at: Option<Instant>,
     hovered: bool,
-    /// The pointer is on the area's own bar.
-    on_bar: bool,
+    /// The pointer on the area's own bars, by `slot`.
+    on_bar: [bool; 2],
 }
 
 impl Activity {
     fn held(&self) -> bool {
-        self.hovered || self.on_bar
+        self.hovered || self.on_bar.contains(&true)
+    }
+}
+
+fn slot(axis: Axis) -> usize {
+    match axis {
+        Axis::Horizontal => 0,
+        Axis::Vertical => 1,
     }
 }
 
@@ -163,6 +170,20 @@ impl Scrollbar {
         self
     }
 
+    /// An undrawn track gets no leave, so it lets go.
+    fn let_go(&self, cx: &mut App) {
+        let Some(area) = &self.area else {
+            return;
+        };
+        let at = slot(self.axis);
+        if area.read(cx).on_bar[at] {
+            area.update(cx, |activity, cx| {
+                activity.on_bar[at] = false;
+                cx.notify();
+            });
+        }
+    }
+
     /// Fades the thumb; 0 hides it.
     pub fn presence(mut self, presence: f32) -> Self {
         self.shown = Shown::Given(presence.clamp(0.0, 1.0));
@@ -195,7 +216,7 @@ impl RenderOnce for Scrollbar {
                 last: Point::default(),
                 active_at: None,
                 hovered: false,
-                on_bar: false,
+                on_bar: [false; 2],
             })
         });
         let given = match self.shown {
@@ -208,12 +229,14 @@ impl RenderOnce for Scrollbar {
         let presence = if held { 1.0 } else { presence };
         let hidden = activity.is_none() && presence <= 0.0;
         let Some(place) = self.handle.place(self.axis, cx).filter(|_| !hidden) else {
+            self.let_go(cx);
             return div().into_any_element();
         };
         let span = place.span;
         let length = (span * place.shown).max(min_thumb).min(span);
         let travel = span - length;
         if travel <= Pixels::ZERO {
+            self.let_go(cx);
             return div().into_any_element();
         }
         let theme = cx.theme();
@@ -283,7 +306,7 @@ impl RenderOnce for Scrollbar {
             .when_some(self.area, |track, area| {
                 track.on_hover(move |on, _, cx| {
                     area.update(cx, |activity, cx| {
-                        activity.on_bar = *on;
+                        activity.on_bar[slot(axis)] = *on;
                         cx.notify();
                     })
                 })
@@ -396,7 +419,7 @@ impl RenderOnce for ScrollArea {
             last: Point::default(),
             active_at: None,
             hovered: false,
-            on_bar: false,
+            on_bar: [false; 2],
         });
         let handle = match self.handle {
             Some(handle) => handle,
