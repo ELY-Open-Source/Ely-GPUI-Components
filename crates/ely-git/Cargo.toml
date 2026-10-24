@@ -18,6 +18,11 @@ gpui.workspace = true
 log.workspace = true
 similar = { version = "3.2", default-features = false, features = ["std", "text", "inline", "unicode"] }
 
+# The native text system and Ely's own fonts, for the commit footer's Linux test.
+[target.'cfg(target_os = "linux")'.dev-dependencies]
+ely-core = { workspace = true, features = ["fonts"] }
+gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"] }
+
 [target.'cfg(target_family = "wasm")'.dependencies]
 similar = { version = "3.2", default-features = false, features = ["wasm32_web_time"] }
 

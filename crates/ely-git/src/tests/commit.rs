@@ -82,9 +82,24 @@ fn resizing_keeps_amend_readable_and_commit_inside_the_footer(cx: &mut TestAppCo
 #[cfg(target_os = "linux")]
 #[test]
 fn resizing_with_native_inter_font_keeps_amend_readable() {
+    use gpui::AssetSource as _;
     let system = gpui_platform::current_platform(true).text_system();
     let mut cx = TestAppContext::build_with_text_system(gpui::TestDispatcher::new(0), None, system);
-    cx.update(|cx| crate::assets::load_fonts(cx).expect("bundled fonts"));
+    cx.update(|cx| {
+        let fonts = ely_core::Assets
+            .list("fonts/")
+            .expect("bundled fonts")
+            .into_iter()
+            .filter(|name| name.ends_with(".ttf"))
+            .map(|name| {
+                ely_core::Assets
+                    .load(&name)
+                    .expect("bundled font")
+                    .expect("listed font")
+            })
+            .collect();
+        cx.text_system().add_fonts(fonts).expect("bundled fonts");
+    });
     check_resizing(&mut cx);
     cx.quit();
 }

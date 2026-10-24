@@ -1984,6 +1984,7 @@ dependencies = [
  "ely-core",
  "ely-editor",
  "gpui-pre",
+ "gpui-pre-platform",
  "log",
  "similar",
 ]
