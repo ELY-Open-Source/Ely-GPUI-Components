@@ -31,6 +31,10 @@ fail=0
 for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify; do
   [ -z "$(cargo tree -p ely-core -e normal --target all -i $c 2>/dev/null || true)" ] || { echo "ely-core pulls $c"; fail=1; }
 done
+# Each published crate carries Ely's MIT notice, the root's own text.
+for d in $(ls -d crates/*/ | grep -v ely-gallery); do
+  cmp -s LICENSE "${d}LICENSE" || { echo "${d}LICENSE differs from LICENSE"; fail=1; }
+done
 files=$(git ls-files -co --exclude-standard '*.rs')
 multi=$(awk 'FNR==1{prev=0} /^[[:space:]]*\/\/([^\/!]|$|\/\/)/ {if(prev) print FILENAME":"FNR; prev=1; next} {prev=0}' $files)
 [ -z "$multi" ] || { echo "multi-line comments:"; echo "$multi"; fail=1; }

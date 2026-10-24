@@ -6,7 +6,10 @@ rust-version.workspace = true
 license.workspace = true
 description = "Ely's core for GPUI: theme, motion, primitives, typography, layout, shell, controls, overlays, lists and tables."
 repository.workspace = true
-publish = false
+homepage.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
 
 [features]
 default = ["runtime_shaders", "fonts"]

@@ -453,3 +453,6 @@
 | T56 E1 | 2 | FAIL | no feature set read the defaults; a module reached through a re-export was not walked |
 | T56 E1 | 3 | FAIL | a named re-export cycle grew the walked path for ever and crashed the script |
 | T56 E1 | 4 | PASS | scripts/api.py holds 31 library crates to snapshots in api/ through cargo-public-api on a pinned nightly: re-exports name their targets, modules reached through them are walked, cycles stop, and each item not in every feature set (defaults, none, each alone, all) names the sets that have it; CI runs it on Linux |
+| T56 E2 | 1 | FAIL | the semver check read all features alone, failed on a new crate and on a first push; member crates shipped without the MIT notice |
+| T56 E2 | 2 | FAIL | a moved crate read as new, so its break passed; with no crate shared the tool ran without -p |
+| T56 E2 | 3 | PASS | 31 library crates publishable with the workspace metadata and each its MIT notice; CHANGELOG.md; the workspace dry run packages and builds all 31 in dependency order; scripts/semver.py checks each crate the base declares by name, default, none and all features, in CI's semver job; publishing waits for the owner |

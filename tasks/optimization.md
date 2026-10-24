@@ -79,7 +79,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 - [x] E1 O-09 `cargo-public-api` snapshots in the repo; CI fails on an unsnapshotted change.
   - Done: `scripts/api.py` reads each of the 31 library crates through `cargo-public-api` 0.52.0 on nightly-2026-10-24, on Linux, and compares `api/CRATE.txt`; it adds each re-export's target from rustdoc's JSON, walks modules reached through one, and reads the defaults, no features, each feature alone and all, naming the sets an item needs. CI's `api` job runs it; a probe of each gap the review found fails it. Review: 4 rounds.
-- [ ] E2 O-13 Crate metadata, CHANGELOG.md, `cargo publish --dry-run` per crate in DAG order; `cargo-semver-checks` in CI.
+- [x] E2 O-13 Crate metadata, CHANGELOG.md, `cargo publish --dry-run` per crate in DAG order; `cargo-semver-checks` in CI.
+  - Done: the 31 library crates leave `publish = false` and take homepage, readme, keywords and category from the workspace, each with a copy of `LICENSE` that `check.sh` holds to the root's; the root crate packages its sources, tests, bench, README and license alone. `CHANGELOG.md` opens with Unreleased. `cargo publish --workspace --exclude ely-gallery --dry-run` packages and builds all 31 in dependency order, ely-core the largest at 1.7 MiB compressed. `scripts/semver.py` runs cargo-semver-checks 0.51.0 on each crate the base declares by name, with the default features, none and all; CI's `semver` job runs it. Every name was free on crates.io on 2026-10-24; publishing, which crates.io cannot undo, waits for the owner, so O-13's `cargo add ely-core` stays open. Review: 3 rounds.
 - [ ] E3 O-25 `cargo-deny` (licenses, advisories) and MSRV 1.95 jobs; all four O-25 jobs required.
 - [ ] E4 O-24 check.sh on GitHub-hosted Linux, Windows and macOS; the self-hosted runner leaves the gate.
 - [ ] E5 O-18 Pixel baselines on three platforms; each PR gets a diff report; past the threshold it fails.
