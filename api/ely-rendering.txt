@@ -1,0 +1,12 @@
+impl ely_rendering::RenderSurface
+impl gpui::element::IntoElement for ely_rendering::RenderSurface
+impl gpui::element::RenderOnce for ely_rendering::RenderSurface
+pub fn ely_rendering::RenderSurface::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_rendering::RenderSurface::into_element(self) -> Self::Element
+pub fn ely_rendering::RenderSurface::new(impl core::convert::Into<gpui::window::ElementId>, f32, impl core::ops::function::Fn(gpui::geometry::Size<gpui::geometry::DevicePixels>, &mut gpui::app::App) -> gpui::assets::RenderImage + 'static) -> Self
+pub fn ely_rendering::RenderSurface::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_rendering::RenderSurface::revision(self, u64) -> Self
+pub mod ely_rendering
+pub struct ely_rendering::RenderSurface
+pub type ely_rendering::RenderSurface::Element = gpui::view::ViewElement<ely_rendering::RenderSurface>
+pub use ely_rendering::RenderSurface = ely_rendering::surface::RenderSurface

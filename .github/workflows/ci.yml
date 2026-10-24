@@ -64,6 +64,23 @@ jobs:
         shell: bash
         run: ./target/debug/gallery.exe --audit audit.tsv || { grep -v $'\tok\t' audit.tsv; exit 1; }
 
+  api:
+    # Each library's public API matches its snapshot in api/, taken on Linux.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - id: pins
+        run: |
+          echo "nightly=$(python3 scripts/api.py --toolchain)" >> "$GITHUB_OUTPUT"
+          echo "tool=$(python3 scripts/api.py --tool)" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.pins.outputs.nightly }}
+      - uses: Swatinem/rust-cache@v2
+      - run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
+      - run: cargo install --locked cargo-public-api --version ${{ steps.pins.outputs.tool }}
+      - run: python3 scripts/api.py
+
   bench:
     runs-on: ubuntu-24.04
     steps:

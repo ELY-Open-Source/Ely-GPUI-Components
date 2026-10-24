@@ -1,0 +1,403 @@
+impl core::clone::Clone for ely_settings::Appearance
+impl core::clone::Clone for ely_settings::Changed
+impl core::clone::Clone for ely_settings::Flag
+impl core::clone::Clone for ely_settings::Notices
+impl core::clone::Clone for ely_settings::Privacy
+impl core::clone::Clone for ely_settings::Proxy
+impl core::clone::Clone for ely_settings::SettingEntry
+impl core::clone::Clone for ely_settings::Shortcut
+impl core::clone::Clone for ely_settings::Stage
+impl core::clone::Clone for ely_settings::Startup
+impl core::clone::Clone for ely_settings::Store
+impl core::clone::Clone for ely_settings::ThemeDraft
+impl core::clone::Clone for ely_settings::VsCodeTheme
+impl core::cmp::Eq for ely_settings::Appearance
+impl core::cmp::Eq for ely_settings::Privacy
+impl core::cmp::Eq for ely_settings::Stage
+impl core::cmp::PartialEq for ely_settings::Appearance
+impl core::cmp::PartialEq for ely_settings::Changed
+impl core::cmp::PartialEq for ely_settings::Flag
+impl core::cmp::PartialEq for ely_settings::Notices
+impl core::cmp::PartialEq for ely_settings::Privacy
+impl core::cmp::PartialEq for ely_settings::Proxy
+impl core::cmp::PartialEq for ely_settings::SettingEntry
+impl core::cmp::PartialEq for ely_settings::Shortcut
+impl core::cmp::PartialEq for ely_settings::Stage
+impl core::cmp::PartialEq for ely_settings::Startup
+impl core::cmp::PartialEq for ely_settings::Store
+impl core::cmp::PartialEq for ely_settings::ThemeDraft
+impl core::fmt::Debug for ely_settings::Appearance
+impl core::fmt::Debug for ely_settings::Changed
+impl core::fmt::Debug for ely_settings::Flag
+impl core::fmt::Debug for ely_settings::Notices
+impl core::fmt::Debug for ely_settings::Privacy
+impl core::fmt::Debug for ely_settings::Proxy
+impl core::fmt::Debug for ely_settings::SettingEntry
+impl core::fmt::Debug for ely_settings::Shortcut
+impl core::fmt::Debug for ely_settings::Stage
+impl core::fmt::Debug for ely_settings::Startup
+impl core::fmt::Debug for ely_settings::Store
+impl core::fmt::Debug for ely_settings::ThemeDraft
+impl core::fmt::Debug for ely_settings::VsCodeTheme
+impl core::marker::Copy for ely_settings::Appearance
+impl core::marker::Copy for ely_settings::Privacy
+impl core::marker::Copy for ely_settings::Stage
+impl core::marker::StructuralPartialEq for ely_settings::Appearance
+impl core::marker::StructuralPartialEq for ely_settings::Changed
+impl core::marker::StructuralPartialEq for ely_settings::Flag
+impl core::marker::StructuralPartialEq for ely_settings::Notices
+impl core::marker::StructuralPartialEq for ely_settings::Privacy
+impl core::marker::StructuralPartialEq for ely_settings::Proxy
+impl core::marker::StructuralPartialEq for ely_settings::SettingEntry
+impl core::marker::StructuralPartialEq for ely_settings::Shortcut
+impl core::marker::StructuralPartialEq for ely_settings::Stage
+impl core::marker::StructuralPartialEq for ely_settings::Startup
+impl core::marker::StructuralPartialEq for ely_settings::Store
+impl core::marker::StructuralPartialEq for ely_settings::ThemeDraft
+impl ely_settings::AccentColorPicker
+impl ely_settings::Appearance
+impl ely_settings::DensitySelector
+impl ely_settings::DeveloperModeToggle
+impl ely_settings::FeatureFlags
+impl ely_settings::FontSizeControl
+impl ely_settings::ImportExportSettings
+impl ely_settings::KeyboardShortcutsList
+impl ely_settings::NotificationSettings
+impl ely_settings::PrivacySettings
+impl ely_settings::ProxySettings
+impl ely_settings::ResetToDefault
+impl ely_settings::SettingsLayout
+impl ely_settings::SettingsRow
+impl ely_settings::SettingsSearch
+impl ely_settings::SettingsSection
+impl ely_settings::StartupSettings
+impl ely_settings::StorageSettings
+impl ely_settings::SyntaxThemePicker
+impl ely_settings::ThemeDraft
+impl ely_settings::ThemeEditor
+impl ely_settings::ThemeImporter
+impl ely_settings::ThemeSelector
+impl gpui::element::IntoElement for ely_settings::AccentColorPicker
+impl gpui::element::IntoElement for ely_settings::DensitySelector
+impl gpui::element::IntoElement for ely_settings::DeveloperModeToggle
+impl gpui::element::IntoElement for ely_settings::FeatureFlags
+impl gpui::element::IntoElement for ely_settings::FontSizeControl
+impl gpui::element::IntoElement for ely_settings::ImportExportSettings
+impl gpui::element::IntoElement for ely_settings::KeyboardShortcutsList
+impl gpui::element::IntoElement for ely_settings::NotificationSettings
+impl gpui::element::IntoElement for ely_settings::PrivacySettings
+impl gpui::element::IntoElement for ely_settings::ProxySettings
+impl gpui::element::IntoElement for ely_settings::ResetToDefault
+impl gpui::element::IntoElement for ely_settings::SettingsLayout
+impl gpui::element::IntoElement for ely_settings::SettingsRow
+impl gpui::element::IntoElement for ely_settings::SettingsSearch
+impl gpui::element::IntoElement for ely_settings::SettingsSection
+impl gpui::element::IntoElement for ely_settings::StartupSettings
+impl gpui::element::IntoElement for ely_settings::StorageSettings
+impl gpui::element::IntoElement for ely_settings::SyntaxThemePicker
+impl gpui::element::IntoElement for ely_settings::ThemeEditor
+impl gpui::element::IntoElement for ely_settings::ThemeImporter
+impl gpui::element::IntoElement for ely_settings::ThemeSelector
+impl gpui::element::ParentElement for ely_settings::SettingsSection
+impl gpui::element::RenderOnce for ely_settings::AccentColorPicker
+impl gpui::element::RenderOnce for ely_settings::DensitySelector
+impl gpui::element::RenderOnce for ely_settings::DeveloperModeToggle
+impl gpui::element::RenderOnce for ely_settings::FeatureFlags
+impl gpui::element::RenderOnce for ely_settings::FontSizeControl
+impl gpui::element::RenderOnce for ely_settings::ImportExportSettings
+impl gpui::element::RenderOnce for ely_settings::KeyboardShortcutsList
+impl gpui::element::RenderOnce for ely_settings::NotificationSettings
+impl gpui::element::RenderOnce for ely_settings::PrivacySettings
+impl gpui::element::RenderOnce for ely_settings::ProxySettings
+impl gpui::element::RenderOnce for ely_settings::ResetToDefault
+impl gpui::element::RenderOnce for ely_settings::SettingsLayout
+impl gpui::element::RenderOnce for ely_settings::SettingsRow
+impl gpui::element::RenderOnce for ely_settings::SettingsSearch
+impl gpui::element::RenderOnce for ely_settings::SettingsSection
+impl gpui::element::RenderOnce for ely_settings::StartupSettings
+impl gpui::element::RenderOnce for ely_settings::StorageSettings
+impl gpui::element::RenderOnce for ely_settings::SyntaxThemePicker
+impl gpui::element::RenderOnce for ely_settings::ThemeEditor
+impl gpui::element::RenderOnce for ely_settings::ThemeImporter
+impl gpui::element::RenderOnce for ely_settings::ThemeSelector
+pub ely_settings::Appearance::Dark
+pub ely_settings::Appearance::Light
+pub ely_settings::Appearance::System
+pub ely_settings::Changed::default: gpui_shared_string::SharedString
+pub ely_settings::Changed::key: gpui_shared_string::SharedString
+pub ely_settings::Changed::name: gpui_shared_string::SharedString
+pub ely_settings::Changed::now: gpui_shared_string::SharedString
+pub ely_settings::Flag::description: gpui_shared_string::SharedString
+pub ely_settings::Flag::key: gpui_shared_string::SharedString
+pub ely_settings::Flag::name: gpui_shared_string::SharedString
+pub ely_settings::Flag::on: bool
+pub ely_settings::Flag::stage: ely_settings::Stage
+pub ely_settings::Notices::channels: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_settings::Notices::kinds: alloc::vec::Vec<(gpui_shared_string::SharedString, gpui_shared_string::SharedString)>
+pub ely_settings::Notices::on: alloc::vec::Vec<(gpui_shared_string::SharedString, gpui_shared_string::SharedString)>
+pub ely_settings::Notices::quiet: bool
+pub ely_settings::Privacy::crash_reports: bool
+pub ely_settings::Privacy::history: bool
+pub ely_settings::Privacy::personalization: bool
+pub ely_settings::Privacy::telemetry: bool
+pub ely_settings::Proxy::Manual
+pub ely_settings::Proxy::Manual::bypass: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_settings::Proxy::Manual::host: gpui_shared_string::SharedString
+pub ely_settings::Proxy::Manual::port: u16
+pub ely_settings::Proxy::Off
+pub ely_settings::Proxy::System
+pub ely_settings::SettingEntry::key: gpui_shared_string::SharedString
+pub ely_settings::SettingEntry::name: gpui_shared_string::SharedString
+pub ely_settings::SettingEntry::section: gpui_shared_string::SharedString
+pub ely_settings::SettingEntry::words: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_settings::Shortcut::group: gpui_shared_string::SharedString
+pub ely_settings::Shortcut::keys: gpui_shared_string::SharedString
+pub ely_settings::Shortcut::name: gpui_shared_string::SharedString
+pub ely_settings::Stage::Beta
+pub ely_settings::Stage::Experimental
+pub ely_settings::Stage::Stable
+pub ely_settings::Startup::at_login: bool
+pub ely_settings::Startup::opens: gpui_shared_string::SharedString
+pub ely_settings::Startup::restore: bool
+pub ely_settings::Startup::updates: bool
+pub ely_settings::Store::bytes: u64
+pub ely_settings::Store::clearable: bool
+pub ely_settings::Store::key: gpui_shared_string::SharedString
+pub ely_settings::Store::name: gpui_shared_string::SharedString
+pub ely_settings::ThemeDraft::colors: ely_core::theme::palette::Palette
+pub ely_settings::ThemeDraft::density: ely_core::theme::tokens::Density
+pub ely_settings::ThemeDraft::font_scale: f32
+pub ely_settings::ThemeDraft::high_contrast: bool
+pub ely_settings::ThemeDraft::radius_scale: f32
+pub ely_settings::ThemeDraft::reduced_motion: bool
+pub ely_settings::VsCodeTheme::colors: ely_core::theme::palette::Palette
+pub ely_settings::VsCodeTheme::kept: alloc::vec::Vec<&'static str>
+pub ely_settings::VsCodeTheme::mode: ely_core::theme::Mode
+pub ely_settings::VsCodeTheme::name: core::option::Option<alloc::string::String>
+pub ely_settings::VsCodeTheme::named: alloc::vec::Vec<&'static str>
+pub enum ely_settings::Appearance
+pub enum ely_settings::Proxy
+pub enum ely_settings::Stage
+pub fn ely_settings::AccentColorPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::AccentColorPicker::into_element(self) -> Self::Element
+pub fn ely_settings::AccentColorPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui::color::Hsla>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui::color::Hsla>)>, impl core::ops::function::Fn(gpui::color::Hsla, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::AccentColorPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::Appearance::clone(&self) -> Self
+pub fn ely_settings::Appearance::eq(&self, &Self) -> bool
+pub fn ely_settings::Appearance::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::Appearance::mode(self, ely_core::theme::Mode) -> ely_core::theme::Mode
+pub fn ely_settings::Changed::clone(&self) -> Self
+pub fn ely_settings::Changed::eq(&self, &Self) -> bool
+pub fn ely_settings::Changed::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::DensitySelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::DensitySelector::into_element(self) -> Self::Element
+pub fn ely_settings::DensitySelector::new(impl core::convert::Into<gpui::window::ElementId>, ely_core::theme::tokens::Density, impl core::ops::function::Fn(ely_core::theme::tokens::Density, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::DensitySelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::DeveloperModeToggle::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::DeveloperModeToggle::into_element(self) -> Self::Element
+pub fn ely_settings::DeveloperModeToggle::new(impl core::convert::Into<gpui::window::ElementId>, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::DeveloperModeToggle::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::FeatureFlags::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::FeatureFlags::into_element(self) -> Self::Element
+pub fn ely_settings::FeatureFlags::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_settings::Flag>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::FeatureFlags::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::Flag::clone(&self) -> Self
+pub fn ely_settings::Flag::eq(&self, &Self) -> bool
+pub fn ely_settings::Flag::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::FontSizeControl::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::FontSizeControl::into_element(self) -> Self::Element
+pub fn ely_settings::FontSizeControl::new(impl core::convert::Into<gpui::window::ElementId>, f32, f32, (f32, f32), impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::FontSizeControl::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::ImportExportSettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::ImportExportSettings::into_element(self) -> Self::Element
+pub fn ely_settings::ImportExportSettings::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(std::path::PathBuf, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::ImportExportSettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::KeyboardShortcutsList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::KeyboardShortcutsList::into_element(self) -> Self::Element
+pub fn ely_settings::KeyboardShortcutsList::new(impl core::iter::traits::collect::IntoIterator<Item = ely_settings::Shortcut>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_settings::KeyboardShortcutsList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::Notices::clone(&self) -> Self
+pub fn ely_settings::Notices::eq(&self, &Self) -> bool
+pub fn ely_settings::Notices::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::NotificationSettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::NotificationSettings::into_element(self) -> Self::Element
+pub fn ely_settings::NotificationSettings::new(impl core::convert::Into<gpui::window::ElementId>, ely_settings::Notices, impl core::ops::function::Fn(ely_settings::Notices, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::NotificationSettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::Privacy::clone(&self) -> Self
+pub fn ely_settings::Privacy::eq(&self, &Self) -> bool
+pub fn ely_settings::Privacy::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::PrivacySettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::PrivacySettings::into_element(self) -> Self::Element
+pub fn ely_settings::PrivacySettings::new(impl core::convert::Into<gpui::window::ElementId>, ely_settings::Privacy, impl core::ops::function::Fn(ely_settings::Privacy, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::PrivacySettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::Proxy::clone(&self) -> Self
+pub fn ely_settings::Proxy::eq(&self, &Self) -> bool
+pub fn ely_settings::Proxy::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::ProxySettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::ProxySettings::into_element(self) -> Self::Element
+pub fn ely_settings::ProxySettings::new(impl core::convert::Into<gpui::window::ElementId>, ely_settings::Proxy, impl core::ops::function::Fn(ely_settings::Proxy, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::ProxySettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::ResetToDefault::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::ResetToDefault::into_element(self) -> Self::Element
+pub fn ely_settings::ResetToDefault::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_settings::Changed>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::ResetToDefault::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::SettingEntry::clone(&self) -> Self
+pub fn ely_settings::SettingEntry::eq(&self, &Self) -> bool
+pub fn ely_settings::SettingEntry::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::SettingsLayout::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::SettingsLayout::into_element(self) -> Self::Element
+pub fn ely_settings::SettingsLayout::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::primitives::icon::names::IconName)>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::SettingsLayout::page(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_settings::SettingsLayout::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::SettingsRow::control(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_settings::SettingsRow::description(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_settings::SettingsRow::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::SettingsRow::into_element(self) -> Self::Element
+pub fn ely_settings::SettingsRow::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_settings::SettingsRow::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::SettingsSearch::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::SettingsSearch::into_element(self) -> Self::Element
+pub fn ely_settings::SettingsSearch::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_settings::SettingEntry>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::SettingsSearch::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::SettingsSection::description(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_settings::SettingsSection::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_settings::SettingsSection::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::SettingsSection::into_element(self) -> Self::Element
+pub fn ely_settings::SettingsSection::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_settings::SettingsSection::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::SettingsSection::row(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_settings::Shortcut::clone(&self) -> Self
+pub fn ely_settings::Shortcut::eq(&self, &Self) -> bool
+pub fn ely_settings::Shortcut::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::Stage::clone(&self) -> Self
+pub fn ely_settings::Stage::eq(&self, &Self) -> bool
+pub fn ely_settings::Stage::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::Startup::clone(&self) -> Self
+pub fn ely_settings::Startup::eq(&self, &Self) -> bool
+pub fn ely_settings::Startup::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::StartupSettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::StartupSettings::into_element(self) -> Self::Element
+pub fn ely_settings::StartupSettings::new(impl core::convert::Into<gpui::window::ElementId>, ely_settings::Startup, impl core::iter::traits::collect::IntoIterator<Item = ely_core::forms::options::Choice>, impl core::ops::function::Fn(ely_settings::Startup, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::StartupSettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::StorageSettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::StorageSettings::into_element(self) -> Self::Element
+pub fn ely_settings::StorageSettings::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_settings::Store>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::StorageSettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::Store::clone(&self) -> Self
+pub fn ely_settings::Store::eq(&self, &Self) -> bool
+pub fn ely_settings::Store::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::SyntaxThemePicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::SyntaxThemePicker::into_element(self) -> Self::Element
+pub fn ely_settings::SyntaxThemePicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_core::theme::syntax::SyntaxTheme>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&'static str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::SyntaxThemePicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::ThemeDraft::clone(&self) -> Self
+pub fn ely_settings::ThemeDraft::eq(&self, &Self) -> bool
+pub fn ely_settings::ThemeDraft::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::ThemeDraft::of(&ely_core::theme::Theme) -> Self
+pub fn ely_settings::ThemeEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::ThemeEditor::into_element(self) -> Self::Element
+pub fn ely_settings::ThemeEditor::new(impl core::convert::Into<gpui::window::ElementId>, ely_settings::ThemeDraft, impl core::ops::function::Fn(&ely_settings::ThemeDraft, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::ThemeEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::ThemeImporter::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::ThemeImporter::into_element(self) -> Self::Element
+pub fn ely_settings::ThemeImporter::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&ely_settings::VsCodeTheme, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::ThemeImporter::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::ThemeSelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_settings::ThemeSelector::into_element(self) -> Self::Element
+pub fn ely_settings::ThemeSelector::new(impl core::convert::Into<gpui::window::ElementId>, ely_settings::Appearance, impl core::ops::function::Fn(ely_settings::Appearance, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_settings::ThemeSelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_settings::VsCodeTheme::clone(&self) -> Self
+pub fn ely_settings::VsCodeTheme::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_settings::manual(&str, &str, &str) -> core::option::Option<ely_settings::Proxy>
+pub fn ely_settings::matching<'a>(&'a [ely_settings::SettingEntry], &str) -> alloc::vec::Vec<&'a ely_settings::SettingEntry>
+pub fn ely_settings::read_vscode_theme(&str) -> anyhow::Result<ely_settings::VsCodeTheme>
+pub mod ely_settings
+pub struct ely_settings::AccentColorPicker
+pub struct ely_settings::Changed
+pub struct ely_settings::DensitySelector
+pub struct ely_settings::DeveloperModeToggle
+pub struct ely_settings::FeatureFlags
+pub struct ely_settings::Flag
+pub struct ely_settings::FontSizeControl
+pub struct ely_settings::ImportExportSettings
+pub struct ely_settings::KeyboardShortcutsList
+pub struct ely_settings::Notices
+pub struct ely_settings::NotificationSettings
+pub struct ely_settings::Privacy
+pub struct ely_settings::PrivacySettings
+pub struct ely_settings::ProxySettings
+pub struct ely_settings::ResetToDefault
+pub struct ely_settings::SettingEntry
+pub struct ely_settings::SettingsLayout
+pub struct ely_settings::SettingsRow
+pub struct ely_settings::SettingsSearch
+pub struct ely_settings::SettingsSection
+pub struct ely_settings::Shortcut
+pub struct ely_settings::Startup
+pub struct ely_settings::StartupSettings
+pub struct ely_settings::StorageSettings
+pub struct ely_settings::Store
+pub struct ely_settings::SyntaxThemePicker
+pub struct ely_settings::ThemeDraft
+pub struct ely_settings::ThemeEditor
+pub struct ely_settings::ThemeImporter
+pub struct ely_settings::ThemeSelector
+pub struct ely_settings::VsCodeTheme
+pub type ely_settings::AccentColorPicker::Element = gpui::view::ViewElement<ely_settings::AccentColorPicker>
+pub type ely_settings::DensitySelector::Element = gpui::view::ViewElement<ely_settings::DensitySelector>
+pub type ely_settings::DeveloperModeToggle::Element = gpui::view::ViewElement<ely_settings::DeveloperModeToggle>
+pub type ely_settings::FeatureFlags::Element = gpui::view::ViewElement<ely_settings::FeatureFlags>
+pub type ely_settings::FontSizeControl::Element = gpui::view::ViewElement<ely_settings::FontSizeControl>
+pub type ely_settings::ImportExportSettings::Element = gpui::view::ViewElement<ely_settings::ImportExportSettings>
+pub type ely_settings::KeyboardShortcutsList::Element = gpui::view::ViewElement<ely_settings::KeyboardShortcutsList>
+pub type ely_settings::NotificationSettings::Element = gpui::view::ViewElement<ely_settings::NotificationSettings>
+pub type ely_settings::PrivacySettings::Element = gpui::view::ViewElement<ely_settings::PrivacySettings>
+pub type ely_settings::ProxySettings::Element = gpui::view::ViewElement<ely_settings::ProxySettings>
+pub type ely_settings::ResetToDefault::Element = gpui::view::ViewElement<ely_settings::ResetToDefault>
+pub type ely_settings::SettingsLayout::Element = gpui::view::ViewElement<ely_settings::SettingsLayout>
+pub type ely_settings::SettingsRow::Element = gpui::view::ViewElement<ely_settings::SettingsRow>
+pub type ely_settings::SettingsSearch::Element = gpui::view::ViewElement<ely_settings::SettingsSearch>
+pub type ely_settings::SettingsSection::Element = gpui::view::ViewElement<ely_settings::SettingsSection>
+pub type ely_settings::StartupSettings::Element = gpui::view::ViewElement<ely_settings::StartupSettings>
+pub type ely_settings::StorageSettings::Element = gpui::view::ViewElement<ely_settings::StorageSettings>
+pub type ely_settings::SyntaxThemePicker::Element = gpui::view::ViewElement<ely_settings::SyntaxThemePicker>
+pub type ely_settings::ThemeEditor::Element = gpui::view::ViewElement<ely_settings::ThemeEditor>
+pub type ely_settings::ThemeImporter::Element = gpui::view::ViewElement<ely_settings::ThemeImporter>
+pub type ely_settings::ThemeSelector::Element = gpui::view::ViewElement<ely_settings::ThemeSelector>
+pub use ely_settings::AccentColorPicker = ely_settings::appearance::AccentColorPicker
+pub use ely_settings::Appearance = ely_settings::appearance::Appearance
+pub use ely_settings::Changed = ely_settings::storage::Changed
+pub use ely_settings::DensitySelector = ely_settings::appearance::DensitySelector
+pub use ely_settings::DeveloperModeToggle = ely_settings::advanced::DeveloperModeToggle
+pub use ely_settings::FeatureFlags = ely_settings::advanced::FeatureFlags
+pub use ely_settings::Flag = ely_settings::advanced::Flag
+pub use ely_settings::FontSizeControl = ely_settings::appearance::FontSizeControl
+pub use ely_settings::ImportExportSettings = ely_settings::storage::ImportExportSettings
+pub use ely_settings::KeyboardShortcutsList = ely_settings::shortcuts::KeyboardShortcutsList
+pub use ely_settings::Notices = ely_settings::preferences::Notices
+pub use ely_settings::NotificationSettings = ely_settings::preferences::NotificationSettings
+pub use ely_settings::Privacy = ely_settings::preferences::Privacy
+pub use ely_settings::PrivacySettings = ely_settings::preferences::PrivacySettings
+pub use ely_settings::Proxy = ely_settings::network::Proxy
+pub use ely_settings::ProxySettings = ely_settings::network::ProxySettings
+pub use ely_settings::ResetToDefault = ely_settings::storage::ResetToDefault
+pub use ely_settings::SettingEntry = ely_settings::search::SettingEntry
+pub use ely_settings::SettingsLayout = ely_settings::section::SettingsLayout
+pub use ely_settings::SettingsRow = ely_settings::section::SettingsRow
+pub use ely_settings::SettingsSearch = ely_settings::search::SettingsSearch
+pub use ely_settings::SettingsSection = ely_settings::section::SettingsSection
+pub use ely_settings::Shortcut = ely_settings::shortcuts::Shortcut
+pub use ely_settings::Stage = ely_settings::advanced::Stage
+pub use ely_settings::Startup = ely_settings::preferences::Startup
+pub use ely_settings::StartupSettings = ely_settings::preferences::StartupSettings
+pub use ely_settings::StorageSettings = ely_settings::storage::StorageSettings
+pub use ely_settings::Store = ely_settings::storage::Store
+pub use ely_settings::SyntaxThemePicker = ely_settings::syntax::SyntaxThemePicker
+pub use ely_settings::ThemeDraft = ely_settings::editor::ThemeDraft
+pub use ely_settings::ThemeEditor = ely_settings::editor::ThemeEditor
+pub use ely_settings::ThemeImporter = ely_settings::importer::ThemeImporter
+pub use ely_settings::ThemeSelector = ely_settings::appearance::ThemeSelector
+pub use ely_settings::VsCodeTheme = ely_settings::vscode::VsCodeTheme
+pub use ely_settings::manual = ely_settings::network::manual
+pub use ely_settings::matching = ely_settings::search::matching
+pub use ely_settings::read_vscode_theme = ely_settings::vscode::read_vscode_theme

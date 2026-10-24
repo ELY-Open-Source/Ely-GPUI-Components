@@ -1,0 +1,419 @@
+impl core::clone::Clone for ely_project::DatabaseLayout
+impl core::clone::Clone for ely_project::Initiative
+impl core::clone::Clone for ely_project::IssueId
+impl core::clone::Clone for ely_project::Load
+impl core::clone::Clone for ely_project::Person
+impl core::clone::Clone for ely_project::Phase
+impl core::clone::Clone for ely_project::Priority
+impl core::clone::Clone for ely_project::Standing
+impl core::clone::Clone for ely_project::Status
+impl core::clone::Clone for ely_project::Task
+impl core::clone::Clone for ely_project::TimeEntry
+impl core::cmp::Eq for ely_project::DatabaseLayout
+impl core::cmp::Eq for ely_project::IssueId
+impl core::cmp::Eq for ely_project::Phase
+impl core::cmp::Eq for ely_project::Priority
+impl core::cmp::Eq for ely_project::Standing
+impl core::cmp::Eq for ely_project::Status
+impl core::cmp::Ord for ely_project::Priority
+impl core::cmp::PartialEq for ely_project::DatabaseLayout
+impl core::cmp::PartialEq for ely_project::Initiative
+impl core::cmp::PartialEq for ely_project::IssueId
+impl core::cmp::PartialEq for ely_project::Load
+impl core::cmp::PartialEq for ely_project::Person
+impl core::cmp::PartialEq for ely_project::Phase
+impl core::cmp::PartialEq for ely_project::Priority
+impl core::cmp::PartialEq for ely_project::Standing
+impl core::cmp::PartialEq for ely_project::Status
+impl core::cmp::PartialEq for ely_project::Task
+impl core::cmp::PartialEq for ely_project::TimeEntry
+impl core::cmp::PartialOrd for ely_project::Priority
+impl core::fmt::Debug for ely_project::DatabaseLayout
+impl core::fmt::Debug for ely_project::Initiative
+impl core::fmt::Debug for ely_project::IssueId
+impl core::fmt::Debug for ely_project::Load
+impl core::fmt::Debug for ely_project::Person
+impl core::fmt::Debug for ely_project::Phase
+impl core::fmt::Debug for ely_project::Priority
+impl core::fmt::Debug for ely_project::Standing
+impl core::fmt::Debug for ely_project::Status
+impl core::fmt::Debug for ely_project::Task
+impl core::fmt::Debug for ely_project::TimeEntry
+impl core::fmt::Display for ely_project::IssueId
+impl core::marker::Copy for ely_project::DatabaseLayout
+impl core::marker::Copy for ely_project::Phase
+impl core::marker::Copy for ely_project::Priority
+impl core::marker::Copy for ely_project::Standing
+impl core::marker::Copy for ely_project::Status
+impl core::marker::StructuralPartialEq for ely_project::DatabaseLayout
+impl core::marker::StructuralPartialEq for ely_project::Initiative
+impl core::marker::StructuralPartialEq for ely_project::IssueId
+impl core::marker::StructuralPartialEq for ely_project::Load
+impl core::marker::StructuralPartialEq for ely_project::Person
+impl core::marker::StructuralPartialEq for ely_project::Phase
+impl core::marker::StructuralPartialEq for ely_project::Priority
+impl core::marker::StructuralPartialEq for ely_project::Standing
+impl core::marker::StructuralPartialEq for ely_project::Status
+impl core::marker::StructuralPartialEq for ely_project::Task
+impl core::marker::StructuralPartialEq for ely_project::TimeEntry
+impl ely_core::primitives::capability::Changeable for ely_project::AssigneePicker
+impl ely_core::primitives::capability::Changeable for ely_project::StatusSelect
+impl ely_core::primitives::capability::Changeable for ely_project::TaskDetailPanel
+impl ely_core::primitives::capability::Sizable for ely_project::AssigneePicker
+impl ely_core::primitives::capability::Sizable for ely_project::StatusSelect
+impl ely_project::AssigneePicker
+impl ely_project::DatabaseLayout
+impl ely_project::DatabaseView
+impl ely_project::Initiative
+impl ely_project::IssueCard
+impl ely_project::IssueId
+impl ely_project::IssueIdBadge
+impl ely_project::KanbanBoard
+impl ely_project::KanbanCard
+impl ely_project::KanbanColumn
+impl ely_project::LabelManager
+impl ely_project::Load
+impl ely_project::MilestoneProgress
+impl ely_project::Person
+impl ely_project::Phase
+impl ely_project::PomodoroTimer
+impl ely_project::Priority
+impl ely_project::PriorityIndicator
+impl ely_project::Roadmap
+impl ely_project::Standing
+impl ely_project::Status
+impl ely_project::StatusSelect
+impl ely_project::Task
+impl ely_project::TaskDetailPanel
+impl ely_project::TaskItem
+impl ely_project::TaskList
+impl ely_project::TimeEntry
+impl ely_project::TimeTracker
+impl ely_project::WorkloadView
+impl gpui::element::IntoElement for ely_project::AssigneePicker
+impl gpui::element::IntoElement for ely_project::DatabaseView
+impl gpui::element::IntoElement for ely_project::IssueCard
+impl gpui::element::IntoElement for ely_project::IssueIdBadge
+impl gpui::element::IntoElement for ely_project::KanbanBoard
+impl gpui::element::IntoElement for ely_project::LabelManager
+impl gpui::element::IntoElement for ely_project::MilestoneProgress
+impl gpui::element::IntoElement for ely_project::PomodoroTimer
+impl gpui::element::IntoElement for ely_project::PriorityIndicator
+impl gpui::element::IntoElement for ely_project::Roadmap
+impl gpui::element::IntoElement for ely_project::StatusSelect
+impl gpui::element::IntoElement for ely_project::TaskDetailPanel
+impl gpui::element::IntoElement for ely_project::TaskItem
+impl gpui::element::IntoElement for ely_project::TaskList
+impl gpui::element::IntoElement for ely_project::TimeTracker
+impl gpui::element::IntoElement for ely_project::WorkloadView
+impl gpui::element::RenderOnce for ely_project::AssigneePicker
+impl gpui::element::RenderOnce for ely_project::DatabaseView
+impl gpui::element::RenderOnce for ely_project::IssueCard
+impl gpui::element::RenderOnce for ely_project::IssueIdBadge
+impl gpui::element::RenderOnce for ely_project::KanbanBoard
+impl gpui::element::RenderOnce for ely_project::LabelManager
+impl gpui::element::RenderOnce for ely_project::MilestoneProgress
+impl gpui::element::RenderOnce for ely_project::PomodoroTimer
+impl gpui::element::RenderOnce for ely_project::PriorityIndicator
+impl gpui::element::RenderOnce for ely_project::Roadmap
+impl gpui::element::RenderOnce for ely_project::StatusSelect
+impl gpui::element::RenderOnce for ely_project::TaskDetailPanel
+impl gpui::element::RenderOnce for ely_project::TaskItem
+impl gpui::element::RenderOnce for ely_project::TaskList
+impl gpui::element::RenderOnce for ely_project::TimeTracker
+impl gpui::element::RenderOnce for ely_project::WorkloadView
+pub const ely_project::DatabaseLayout::ALL: [ely_project::DatabaseLayout; 5]
+pub const ely_project::Priority::ALL: [ely_project::Priority; 5]
+pub const ely_project::Status::ALL: [ely_project::Status; 6]
+pub ely_project::DatabaseLayout::Board
+pub ely_project::DatabaseLayout::Calendar
+pub ely_project::DatabaseLayout::Gallery
+pub ely_project::DatabaseLayout::Table
+pub ely_project::DatabaseLayout::Timeline
+pub ely_project::Initiative::end: jiff::civil::date::Date
+pub ely_project::Initiative::key: gpui_shared_string::SharedString
+pub ely_project::Initiative::name: gpui_shared_string::SharedString
+pub ely_project::Initiative::progress: f32
+pub ely_project::Initiative::start: jiff::civil::date::Date
+pub ely_project::Load::assigned: f32
+pub ely_project::Load::capacity: f32
+pub ely_project::Load::person: ely_project::Person
+pub ely_project::Person::key: gpui_shared_string::SharedString
+pub ely_project::Person::name: gpui_shared_string::SharedString
+pub ely_project::Phase::Focus
+pub ely_project::Phase::LongBreak
+pub ely_project::Phase::ShortBreak
+pub ely_project::Priority::High
+pub ely_project::Priority::Low
+pub ely_project::Priority::Medium
+pub ely_project::Priority::None
+pub ely_project::Priority::Urgent
+pub ely_project::Standing::AtRisk
+pub ely_project::Standing::Done
+pub ely_project::Standing::Late
+pub ely_project::Standing::OnTrack
+pub ely_project::Status::Backlog
+pub ely_project::Status::Canceled
+pub ely_project::Status::Done
+pub ely_project::Status::InProgress
+pub ely_project::Status::InReview
+pub ely_project::Status::Todo
+pub ely_project::Task::assignee: core::option::Option<ely_project::Person>
+pub ely_project::Task::due: core::option::Option<jiff::civil::date::Date>
+pub ely_project::Task::issue: core::option::Option<ely_project::IssueId>
+pub ely_project::Task::key: gpui_shared_string::SharedString
+pub ely_project::Task::labels: alloc::vec::Vec<ely_mail::labels::Label>
+pub ely_project::Task::priority: ely_project::Priority
+pub ely_project::Task::start: core::option::Option<jiff::civil::date::Date>
+pub ely_project::Task::status: ely_project::Status
+pub ely_project::Task::title: gpui_shared_string::SharedString
+pub ely_project::TimeEntry::key: gpui_shared_string::SharedString
+pub ely_project::TimeEntry::spent: core::time::Duration
+pub ely_project::TimeEntry::task: gpui_shared_string::SharedString
+pub enum ely_project::DatabaseLayout
+pub enum ely_project::Phase
+pub enum ely_project::Priority
+pub enum ely_project::Standing
+pub enum ely_project::Status
+pub fn ely_project::AssigneePicker::assignee(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::AssigneePicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::AssigneePicker::into_element(self) -> Self::Element
+pub fn ely_project::AssigneePicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_project::Person>) -> Self
+pub fn ely_project::AssigneePicker::on_change(self, impl core::ops::function::Fn(core::option::Option<&ely_project::Person>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::AssigneePicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::AssigneePicker::size(self, ely_core::theme::tokens::ControlSize) -> Self
+pub fn ely_project::DatabaseLayout::clone(&self) -> Self
+pub fn ely_project::DatabaseLayout::eq(&self, &Self) -> bool
+pub fn ely_project::DatabaseLayout::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::DatabaseLayout::key(self) -> &'static str
+pub fn ely_project::DatabaseLayout::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_project::DatabaseView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::DatabaseView::into_element(self) -> Self::Element
+pub fn ely_project::DatabaseView::layout(self, ely_project::DatabaseLayout) -> Self
+pub fn ely_project::DatabaseView::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_project::Task>) -> Self
+pub fn ely_project::DatabaseView::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::DatabaseView::on_status(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, ely_project::Status, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::DatabaseView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::DatabaseView::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::Initiative::clone(&self) -> Self
+pub fn ely_project::Initiative::eq(&self, &Self) -> bool
+pub fn ely_project::Initiative::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Initiative::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::civil::date::Date, jiff::civil::date::Date) -> Self
+pub fn ely_project::Initiative::progress(self, f32) -> Self
+pub fn ely_project::IssueCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::IssueCard::into_element(self) -> Self::Element
+pub fn ely_project::IssueCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_project::Task) -> Self
+pub fn ely_project::IssueCard::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::IssueCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::IssueCard::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::IssueId::clone(&self) -> Self
+pub fn ely_project::IssueId::eq(&self, &Self) -> bool
+pub fn ely_project::IssueId::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::IssueId::new(impl core::convert::Into<gpui_shared_string::SharedString>, u32) -> Self
+pub fn ely_project::IssueIdBadge::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::IssueIdBadge::into_element(self) -> Self::Element
+pub fn ely_project::IssueIdBadge::new(ely_project::IssueId) -> Self
+pub fn ely_project::IssueIdBadge::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::KanbanBoard::column(self, ely_project::KanbanColumn) -> Self
+pub fn ely_project::KanbanBoard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::KanbanBoard::into_element(self) -> Self::Element
+pub fn ely_project::KanbanBoard::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_project::KanbanBoard::on_move(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::KanbanBoard::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::KanbanBoard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::KanbanCard::label(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::KanbanCard::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl gpui::element::IntoElement) -> Self
+pub fn ely_project::KanbanColumn::card(self, ely_project::KanbanCard) -> Self
+pub fn ely_project::KanbanColumn::cards(self, impl core::iter::traits::collect::IntoIterator<Item = ely_project::KanbanCard>) -> Self
+pub fn ely_project::KanbanColumn::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::LabelManager::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::LabelManager::into_element(self) -> Self::Element
+pub fn ely_project::LabelManager::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::labels::Label>) -> Self
+pub fn ely_project::LabelManager::on_create(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::LabelManager::on_delete(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::LabelManager::on_recolor(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::LabelManager::on_rename(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::LabelManager::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::Load::clone(&self) -> Self
+pub fn ely_project::Load::eq(&self, &Self) -> bool
+pub fn ely_project::Load::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Load::new(ely_project::Person, f32, f32) -> Self
+pub fn ely_project::Load::over(&self) -> bool
+pub fn ely_project::MilestoneProgress::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::MilestoneProgress::into_element(self) -> Self::Element
+pub fn ely_project::MilestoneProgress::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, (jiff::civil::date::Date, jiff::civil::date::Date), (usize, usize)) -> Self
+pub fn ely_project::MilestoneProgress::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::MilestoneProgress::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::Person::clone(&self) -> Self
+pub fn ely_project::Person::eq(&self, &Self) -> bool
+pub fn ely_project::Person::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Person::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::Phase::clone(&self) -> Self
+pub fn ely_project::Phase::eq(&self, &Self) -> bool
+pub fn ely_project::Phase::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Phase::key(self) -> &'static str
+pub fn ely_project::Phase::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_project::PomodoroTimer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::PomodoroTimer::into_element(self) -> Self::Element
+pub fn ely_project::PomodoroTimer::minutes(self, u64, u64, u64) -> Self
+pub fn ely_project::PomodoroTimer::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_project::PomodoroTimer::on_phase(self, impl core::ops::function::Fn(ely_project::Phase, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::PomodoroTimer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::PomodoroTimer::rounds(self, u8) -> Self
+pub fn ely_project::Priority::clone(&self) -> Self
+pub fn ely_project::Priority::cmp(&self, &Self) -> core::cmp::Ordering
+pub fn ely_project::Priority::eq(&self, &Self) -> bool
+pub fn ely_project::Priority::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Priority::partial_cmp(&self, &Self) -> core::option::Option<core::cmp::Ordering>
+pub fn ely_project::Priority::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_project::PriorityIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::PriorityIndicator::into_element(self) -> Self::Element
+pub fn ely_project::PriorityIndicator::labeled(self) -> Self
+pub fn ely_project::PriorityIndicator::new(impl core::convert::Into<gpui::window::ElementId>, ely_project::Priority) -> Self
+pub fn ely_project::PriorityIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::Roadmap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::Roadmap::into_element(self) -> Self::Element
+pub fn ely_project::Roadmap::lane(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_project::Initiative>) -> Self
+pub fn ely_project::Roadmap::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, i8) -> Self
+pub fn ely_project::Roadmap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::Roadmap::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::Standing::clone(&self) -> Self
+pub fn ely_project::Standing::eq(&self, &Self) -> bool
+pub fn ely_project::Standing::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Standing::key(self) -> &'static str
+pub fn ely_project::Standing::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_project::Status::clone(&self) -> Self
+pub fn ely_project::Status::closed(self) -> bool
+pub fn ely_project::Status::eq(&self, &Self) -> bool
+pub fn ely_project::Status::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Status::icon(self) -> ely_core::primitives::icon::names::IconName
+pub fn ely_project::Status::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_project::StatusSelect::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::StatusSelect::into_element(self) -> Self::Element
+pub fn ely_project::StatusSelect::new(impl core::convert::Into<gpui::window::ElementId>, ely_project::Status) -> Self
+pub fn ely_project::StatusSelect::on_change(self, impl core::ops::function::Fn(ely_project::Status, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::StatusSelect::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::StatusSelect::size(self, ely_core::theme::tokens::ControlSize) -> Self
+pub fn ely_project::Task::assignee(self, ely_project::Person) -> Self
+pub fn ely_project::Task::clone(&self) -> Self
+pub fn ely_project::Task::due(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::Task::eq(&self, &Self) -> bool
+pub fn ely_project::Task::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::Task::issue(self, ely_project::IssueId) -> Self
+pub fn ely_project::Task::label(self, ely_mail::labels::Label) -> Self
+pub fn ely_project::Task::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::Task::overdue(&self, jiff::civil::date::Date) -> bool
+pub fn ely_project::Task::priority(self, ely_project::Priority) -> Self
+pub fn ely_project::Task::starts(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::Task::status(self, ely_project::Status) -> Self
+pub fn ely_project::TaskDetailPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::TaskDetailPanel::into_element(self) -> Self::Element
+pub fn ely_project::TaskDetailPanel::new(impl core::convert::Into<gpui::window::ElementId>, ely_project::Task, impl core::iter::traits::collect::IntoIterator<Item = ely_project::Person>) -> Self
+pub fn ely_project::TaskDetailPanel::notes(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::TaskDetailPanel::on_add_step(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskDetailPanel::on_change(self, impl core::ops::function::Fn(&ely_project::Task, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskDetailPanel::on_close(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskDetailPanel::on_step(self, impl core::ops::function::Fn(usize, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskDetailPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::TaskDetailPanel::steps(self, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, bool)>) -> Self
+pub fn ely_project::TaskItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::TaskItem::into_element(self) -> Self::Element
+pub fn ely_project::TaskItem::new(impl core::convert::Into<gpui::window::ElementId>, ely_project::Task) -> Self
+pub fn ely_project::TaskItem::on_toggle(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::TaskItem::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::TaskList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::TaskList::into_element(self) -> Self::Element
+pub fn ely_project::TaskList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_project::Task>) -> Self
+pub fn ely_project::TaskList::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskList::on_toggle(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TaskList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::TaskList::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_project::TimeEntry::clone(&self) -> Self
+pub fn ely_project::TimeEntry::eq(&self, &Self) -> bool
+pub fn ely_project::TimeEntry::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_project::TimeEntry::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, core::time::Duration) -> Self
+pub fn ely_project::TimeTracker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::TimeTracker::into_element(self) -> Self::Element
+pub fn ely_project::TimeTracker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_project::TimeEntry>) -> Self
+pub fn ely_project::TimeTracker::on_start(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, std::time::Instant, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TimeTracker::on_stop(self, impl core::ops::function::Fn(std::time::Instant, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_project::TimeTracker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_project::TimeTracker::running(self, impl core::convert::Into<gpui_shared_string::SharedString>, std::time::Instant) -> Self
+pub fn ely_project::WorkloadView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_project::WorkloadView::into_element(self) -> Self::Element
+pub fn ely_project::WorkloadView::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_project::Load>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_project::WorkloadView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub mod ely_project
+pub struct ely_project::AssigneePicker
+pub struct ely_project::DatabaseView
+pub struct ely_project::Initiative
+pub struct ely_project::IssueCard
+pub struct ely_project::IssueId
+pub struct ely_project::IssueIdBadge
+pub struct ely_project::KanbanBoard
+pub struct ely_project::KanbanCard
+pub struct ely_project::KanbanColumn
+pub struct ely_project::LabelManager
+pub struct ely_project::Load
+pub struct ely_project::MilestoneProgress
+pub struct ely_project::Person
+pub struct ely_project::PomodoroTimer
+pub struct ely_project::PriorityIndicator
+pub struct ely_project::Roadmap
+pub struct ely_project::StatusSelect
+pub struct ely_project::Task
+pub struct ely_project::TaskDetailPanel
+pub struct ely_project::TaskItem
+pub struct ely_project::TaskList
+pub struct ely_project::TimeEntry
+pub struct ely_project::TimeTracker
+pub struct ely_project::WorkloadView
+pub type ely_project::AssigneePicker::Element = gpui::view::ViewElement<ely_project::AssigneePicker>
+pub type ely_project::AssigneePicker::Value<'a> = core::option::Option<&'a ely_project::Person>
+pub type ely_project::DatabaseView::Element = gpui::view::ViewElement<ely_project::DatabaseView>
+pub type ely_project::IssueCard::Element = gpui::view::ViewElement<ely_project::IssueCard>
+pub type ely_project::IssueIdBadge::Element = gpui::view::ViewElement<ely_project::IssueIdBadge>
+pub type ely_project::KanbanBoard::Element = gpui::view::ViewElement<ely_project::KanbanBoard>
+pub type ely_project::LabelManager::Element = gpui::view::ViewElement<ely_project::LabelManager>
+pub type ely_project::MilestoneProgress::Element = gpui::view::ViewElement<ely_project::MilestoneProgress>
+pub type ely_project::PomodoroTimer::Element = gpui::view::ViewElement<ely_project::PomodoroTimer>
+pub type ely_project::PriorityIndicator::Element = gpui::view::ViewElement<ely_project::PriorityIndicator>
+pub type ely_project::Roadmap::Element = gpui::view::ViewElement<ely_project::Roadmap>
+pub type ely_project::StatusSelect::Element = gpui::view::ViewElement<ely_project::StatusSelect>
+pub type ely_project::StatusSelect::Value<'a> = ely_project::Status
+pub type ely_project::TaskDetailPanel::Element = gpui::view::ViewElement<ely_project::TaskDetailPanel>
+pub type ely_project::TaskDetailPanel::Value<'a> = &'a ely_project::Task
+pub type ely_project::TaskItem::Element = gpui::view::ViewElement<ely_project::TaskItem>
+pub type ely_project::TaskList::Element = gpui::view::ViewElement<ely_project::TaskList>
+pub type ely_project::TimeTracker::Element = gpui::view::ViewElement<ely_project::TimeTracker>
+pub type ely_project::WorkloadView::Element = gpui::view::ViewElement<ely_project::WorkloadView>
+pub use ely_project::AssigneePicker = ely_project::marks::AssigneePicker
+pub use ely_project::DatabaseLayout = ely_project::database::DatabaseLayout
+pub use ely_project::DatabaseView = ely_project::database::DatabaseView
+pub use ely_project::Initiative = ely_project::roadmap::Initiative
+pub use ely_project::IssueCard = ely_project::card::IssueCard
+pub use ely_project::IssueId = ely_project::work::IssueId
+pub use ely_project::IssueIdBadge = ely_project::marks::IssueIdBadge
+pub use ely_project::KanbanBoard = ely_project::board::KanbanBoard
+pub use ely_project::KanbanCard = ely_project::board::KanbanCard
+pub use ely_project::KanbanColumn = ely_project::board::KanbanColumn
+pub use ely_project::LabelManager = ely_project::labels::LabelManager
+pub use ely_project::Load = ely_project::workload::Load
+pub use ely_project::MilestoneProgress = ely_project::milestone::MilestoneProgress
+pub use ely_project::Person = ely_project::work::Person
+pub use ely_project::Phase = ely_project::pomodoro::Phase
+pub use ely_project::PomodoroTimer = ely_project::pomodoro::PomodoroTimer
+pub use ely_project::Priority = ely_project::work::Priority
+pub use ely_project::PriorityIndicator = ely_project::marks::PriorityIndicator
+pub use ely_project::Roadmap = ely_project::roadmap::Roadmap
+pub use ely_project::Standing = ely_project::milestone::Standing
+pub use ely_project::Status = ely_project::work::Status
+pub use ely_project::StatusSelect = ely_project::marks::StatusSelect
+pub use ely_project::Task = ely_project::work::Task
+pub use ely_project::TaskDetailPanel = ely_project::panel::TaskDetailPanel
+pub use ely_project::TaskItem = ely_project::tasks::TaskItem
+pub use ely_project::TaskList = ely_project::tasks::TaskList
+pub use ely_project::TimeEntry = ely_project::tracker::TimeEntry
+pub use ely_project::TimeTracker = ely_project::tracker::TimeTracker
+pub use ely_project::WorkloadView = ely_project::workload::WorkloadView

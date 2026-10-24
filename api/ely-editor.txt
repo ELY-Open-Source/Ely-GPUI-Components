@@ -1,0 +1,1107 @@
+impl core::clone::Clone for ely_editor::ActionKind
+impl core::clone::Clone for ely_editor::Buffer
+impl core::clone::Clone for ely_editor::Call
+impl core::clone::Clone for ely_editor::CodeAction
+impl core::clone::Clone for ely_editor::CodeLens
+impl core::clone::Clone for ely_editor::CompletionItem
+impl core::clone::Clone for ely_editor::ConsoleEntry
+impl core::clone::Clone for ely_editor::CursorShape
+impl core::clone::Clone for ely_editor::Diagnostic
+impl core::clone::Clone for ely_editor::DiffHunk
+impl core::clone::Clone for ely_editor::EditorEvent
+impl core::clone::Clone for ely_editor::Extension
+impl core::clone::Clone for ely_editor::ExtensionAction
+impl core::clone::Clone for ely_editor::ExtensionState
+impl core::clone::Clone for ely_editor::FileHits
+impl core::clone::Clone for ely_editor::FindOptions
+impl core::clone::Clone for ely_editor::GhostText
+impl core::clone::Clone for ely_editor::GitMark
+impl core::clone::Clone for ely_editor::Hit
+impl core::clone::Clone for ely_editor::InlayHint
+impl core::clone::Clone for ely_editor::KeySource
+impl core::clone::Clone for ely_editor::Keybinding
+impl core::clone::Clone for ely_editor::LineNumbers
+impl core::clone::Clone for ely_editor::LspState
+impl core::clone::Clone for ely_editor::Metrics
+impl core::clone::Clone for ely_editor::Newline
+impl core::clone::Clone for ely_editor::Paste
+impl core::clone::Clone for ely_editor::Problem
+impl core::clone::Clone for ely_editor::Project
+impl core::clone::Clone for ely_editor::Selection
+impl core::clone::Clone for ely_editor::Setting
+impl core::clone::Clone for ely_editor::SettingValue
+impl core::clone::Clone for ely_editor::Signature
+impl core::clone::Clone for ely_editor::Symbol
+impl core::clone::Clone for ely_editor::SymbolKind
+impl core::clone::Clone for ely_editor::Task
+impl core::clone::Clone for ely_editor::TaskState
+impl core::clone::Clone for ely_editor::VimMode
+impl core::cmp::Eq for ely_editor::ActionKind
+impl core::cmp::Eq for ely_editor::Buffer
+impl core::cmp::Eq for ely_editor::CursorShape
+impl core::cmp::Eq for ely_editor::EditorEvent
+impl core::cmp::Eq for ely_editor::ExtensionAction
+impl core::cmp::Eq for ely_editor::ExtensionState
+impl core::cmp::Eq for ely_editor::FindOptions
+impl core::cmp::Eq for ely_editor::GitMark
+impl core::cmp::Eq for ely_editor::KeySource
+impl core::cmp::Eq for ely_editor::LineNumbers
+impl core::cmp::Eq for ely_editor::LspState
+impl core::cmp::Eq for ely_editor::Selection
+impl core::cmp::Eq for ely_editor::SymbolKind
+impl core::cmp::Eq for ely_editor::TaskState
+impl core::cmp::Eq for ely_editor::VimMode
+impl core::cmp::PartialEq for ely_editor::ActionKind
+impl core::cmp::PartialEq for ely_editor::Buffer
+impl core::cmp::PartialEq for ely_editor::Call
+impl core::cmp::PartialEq for ely_editor::CodeAction
+impl core::cmp::PartialEq for ely_editor::CodeLens
+impl core::cmp::PartialEq for ely_editor::CompletionItem
+impl core::cmp::PartialEq for ely_editor::ConsoleEntry
+impl core::cmp::PartialEq for ely_editor::CursorShape
+impl core::cmp::PartialEq for ely_editor::Diagnostic
+impl core::cmp::PartialEq for ely_editor::DiffHunk
+impl core::cmp::PartialEq for ely_editor::EditorEvent
+impl core::cmp::PartialEq for ely_editor::Extension
+impl core::cmp::PartialEq for ely_editor::ExtensionAction
+impl core::cmp::PartialEq for ely_editor::ExtensionState
+impl core::cmp::PartialEq for ely_editor::FileHits
+impl core::cmp::PartialEq for ely_editor::FindOptions
+impl core::cmp::PartialEq for ely_editor::GhostText
+impl core::cmp::PartialEq for ely_editor::GitMark
+impl core::cmp::PartialEq for ely_editor::Hit
+impl core::cmp::PartialEq for ely_editor::InlayHint
+impl core::cmp::PartialEq for ely_editor::KeySource
+impl core::cmp::PartialEq for ely_editor::Keybinding
+impl core::cmp::PartialEq for ely_editor::LineNumbers
+impl core::cmp::PartialEq for ely_editor::LspState
+impl core::cmp::PartialEq for ely_editor::Metrics
+impl core::cmp::PartialEq for ely_editor::Newline
+impl core::cmp::PartialEq for ely_editor::Paste
+impl core::cmp::PartialEq for ely_editor::Problem
+impl core::cmp::PartialEq for ely_editor::Project
+impl core::cmp::PartialEq for ely_editor::Selection
+impl core::cmp::PartialEq for ely_editor::Setting
+impl core::cmp::PartialEq for ely_editor::SettingValue
+impl core::cmp::PartialEq for ely_editor::Signature
+impl core::cmp::PartialEq for ely_editor::Symbol
+impl core::cmp::PartialEq for ely_editor::SymbolKind
+impl core::cmp::PartialEq for ely_editor::Task
+impl core::cmp::PartialEq for ely_editor::TaskState
+impl core::cmp::PartialEq for ely_editor::VimMode
+impl core::default::Default for ely_editor::CursorShape
+impl core::default::Default for ely_editor::FindOptions
+impl core::default::Default for ely_editor::LineNumbers
+impl core::default::Default for ely_editor::Metrics
+impl core::default::Default for ely_editor::Newline
+impl core::default::Default for ely_editor::Paste
+impl core::default::Default for ely_editor::VimMode
+impl core::fmt::Debug for ely_editor::ActionKind
+impl core::fmt::Debug for ely_editor::Buffer
+impl core::fmt::Debug for ely_editor::Call
+impl core::fmt::Debug for ely_editor::CodeAction
+impl core::fmt::Debug for ely_editor::CodeLens
+impl core::fmt::Debug for ely_editor::CompletionItem
+impl core::fmt::Debug for ely_editor::ConsoleEntry
+impl core::fmt::Debug for ely_editor::CursorShape
+impl core::fmt::Debug for ely_editor::Diagnostic
+impl core::fmt::Debug for ely_editor::DiffHunk
+impl core::fmt::Debug for ely_editor::EditorEvent
+impl core::fmt::Debug for ely_editor::Extension
+impl core::fmt::Debug for ely_editor::ExtensionAction
+impl core::fmt::Debug for ely_editor::ExtensionState
+impl core::fmt::Debug for ely_editor::FileHits
+impl core::fmt::Debug for ely_editor::FindOptions
+impl core::fmt::Debug for ely_editor::GhostText
+impl core::fmt::Debug for ely_editor::GitMark
+impl core::fmt::Debug for ely_editor::Hit
+impl core::fmt::Debug for ely_editor::InlayHint
+impl core::fmt::Debug for ely_editor::KeySource
+impl core::fmt::Debug for ely_editor::Keybinding
+impl core::fmt::Debug for ely_editor::LineNumbers
+impl core::fmt::Debug for ely_editor::LspState
+impl core::fmt::Debug for ely_editor::Metrics
+impl core::fmt::Debug for ely_editor::Newline
+impl core::fmt::Debug for ely_editor::Paste
+impl core::fmt::Debug for ely_editor::Problem
+impl core::fmt::Debug for ely_editor::Project
+impl core::fmt::Debug for ely_editor::Selection
+impl core::fmt::Debug for ely_editor::Setting
+impl core::fmt::Debug for ely_editor::SettingValue
+impl core::fmt::Debug for ely_editor::Signature
+impl core::fmt::Debug for ely_editor::Symbol
+impl core::fmt::Debug for ely_editor::SymbolKind
+impl core::fmt::Debug for ely_editor::Task
+impl core::fmt::Debug for ely_editor::TaskState
+impl core::fmt::Debug for ely_editor::VimMode
+impl core::marker::Copy for ely_editor::ActionKind
+impl core::marker::Copy for ely_editor::CursorShape
+impl core::marker::Copy for ely_editor::ExtensionAction
+impl core::marker::Copy for ely_editor::ExtensionState
+impl core::marker::Copy for ely_editor::FindOptions
+impl core::marker::Copy for ely_editor::GitMark
+impl core::marker::Copy for ely_editor::KeySource
+impl core::marker::Copy for ely_editor::LineNumbers
+impl core::marker::Copy for ely_editor::Metrics
+impl core::marker::Copy for ely_editor::Selection
+impl core::marker::Copy for ely_editor::SymbolKind
+impl core::marker::Copy for ely_editor::TaskState
+impl core::marker::Copy for ely_editor::VimMode
+impl core::marker::StructuralPartialEq for ely_editor::ActionKind
+impl core::marker::StructuralPartialEq for ely_editor::Call
+impl core::marker::StructuralPartialEq for ely_editor::CodeAction
+impl core::marker::StructuralPartialEq for ely_editor::CodeLens
+impl core::marker::StructuralPartialEq for ely_editor::CompletionItem
+impl core::marker::StructuralPartialEq for ely_editor::ConsoleEntry
+impl core::marker::StructuralPartialEq for ely_editor::CursorShape
+impl core::marker::StructuralPartialEq for ely_editor::Diagnostic
+impl core::marker::StructuralPartialEq for ely_editor::DiffHunk
+impl core::marker::StructuralPartialEq for ely_editor::EditorEvent
+impl core::marker::StructuralPartialEq for ely_editor::Extension
+impl core::marker::StructuralPartialEq for ely_editor::ExtensionAction
+impl core::marker::StructuralPartialEq for ely_editor::ExtensionState
+impl core::marker::StructuralPartialEq for ely_editor::FileHits
+impl core::marker::StructuralPartialEq for ely_editor::FindOptions
+impl core::marker::StructuralPartialEq for ely_editor::GhostText
+impl core::marker::StructuralPartialEq for ely_editor::GitMark
+impl core::marker::StructuralPartialEq for ely_editor::Hit
+impl core::marker::StructuralPartialEq for ely_editor::InlayHint
+impl core::marker::StructuralPartialEq for ely_editor::KeySource
+impl core::marker::StructuralPartialEq for ely_editor::Keybinding
+impl core::marker::StructuralPartialEq for ely_editor::LineNumbers
+impl core::marker::StructuralPartialEq for ely_editor::LspState
+impl core::marker::StructuralPartialEq for ely_editor::Metrics
+impl core::marker::StructuralPartialEq for ely_editor::Newline
+impl core::marker::StructuralPartialEq for ely_editor::Paste
+impl core::marker::StructuralPartialEq for ely_editor::Problem
+impl core::marker::StructuralPartialEq for ely_editor::Project
+impl core::marker::StructuralPartialEq for ely_editor::Selection
+impl core::marker::StructuralPartialEq for ely_editor::Setting
+impl core::marker::StructuralPartialEq for ely_editor::SettingValue
+impl core::marker::StructuralPartialEq for ely_editor::Signature
+impl core::marker::StructuralPartialEq for ely_editor::Symbol
+impl core::marker::StructuralPartialEq for ely_editor::SymbolKind
+impl core::marker::StructuralPartialEq for ely_editor::Task
+impl core::marker::StructuralPartialEq for ely_editor::TaskState
+impl core::marker::StructuralPartialEq for ely_editor::VimMode
+impl ely_core::primitives::capability::Changeable for ely_editor::SettingsEditor
+impl ely_core::primitives::capability::Selectable for ely_editor::ThemePreview
+impl ely_editor::BranchIndicator
+impl ely_editor::Buffer
+impl ely_editor::CallHierarchy
+impl ely_editor::CodeAction
+impl ely_editor::CodeActionMenu
+impl ely_editor::CodeEditor
+impl ely_editor::CompletionItem
+impl ely_editor::CompletionMenu
+impl ely_editor::CursorPosition
+impl ely_editor::DebugConsole
+impl ely_editor::Encoding
+impl ely_editor::ExtensionsPanel
+impl ely_editor::FindWidget
+impl ely_editor::GoToSymbol
+impl ely_editor::HoverInfo
+impl ely_editor::IndentSettings
+impl ely_editor::InlineChat
+impl ely_editor::KeybindingsEditor
+impl ely_editor::LanguageMode
+impl ely_editor::LineEnding
+impl ely_editor::LspStatus
+impl ely_editor::NotificationBell
+impl ely_editor::OutputPanel
+impl ely_editor::ProblemsPanel
+impl ely_editor::ProjectSwitcher
+impl ely_editor::ReadOnlyBanner
+impl ely_editor::RecentProjects
+impl ely_editor::ReferencesPanel
+impl ely_editor::RenameInput
+impl ely_editor::SearchFilters
+impl ely_editor::SearchPanel
+impl ely_editor::SearchResultItem
+impl ely_editor::Selection
+impl ely_editor::Setting
+impl ely_editor::SettingsEditor
+impl ely_editor::SignatureHelp
+impl ely_editor::Symbol
+impl ely_editor::SymbolKind
+impl ely_editor::SymbolOutline
+impl ely_editor::TaskRunner
+impl ely_editor::ThemePreview
+impl ely_editor::VimModeIndicator
+impl ely_editor::WelcomePage
+impl gpui::EventEmitter<ely_editor::EditorEvent> for ely_editor::CodeEditor
+impl gpui::action::Action for ely_editor::Newline
+impl gpui::action::Action for ely_editor::Paste
+impl gpui::element::IntoElement for ely_editor::BranchIndicator
+impl gpui::element::IntoElement for ely_editor::CallHierarchy
+impl gpui::element::IntoElement for ely_editor::CodeActionMenu
+impl gpui::element::IntoElement for ely_editor::CompletionMenu
+impl gpui::element::IntoElement for ely_editor::CursorPosition
+impl gpui::element::IntoElement for ely_editor::DebugConsole
+impl gpui::element::IntoElement for ely_editor::Encoding
+impl gpui::element::IntoElement for ely_editor::ExtensionsPanel
+impl gpui::element::IntoElement for ely_editor::FindWidget
+impl gpui::element::IntoElement for ely_editor::GoToSymbol
+impl gpui::element::IntoElement for ely_editor::HoverInfo
+impl gpui::element::IntoElement for ely_editor::IndentSettings
+impl gpui::element::IntoElement for ely_editor::InlineChat
+impl gpui::element::IntoElement for ely_editor::KeybindingsEditor
+impl gpui::element::IntoElement for ely_editor::LanguageMode
+impl gpui::element::IntoElement for ely_editor::LineEnding
+impl gpui::element::IntoElement for ely_editor::LspStatus
+impl gpui::element::IntoElement for ely_editor::NotificationBell
+impl gpui::element::IntoElement for ely_editor::OutputPanel
+impl gpui::element::IntoElement for ely_editor::ProblemsPanel
+impl gpui::element::IntoElement for ely_editor::ProjectSwitcher
+impl gpui::element::IntoElement for ely_editor::ReadOnlyBanner
+impl gpui::element::IntoElement for ely_editor::RecentProjects
+impl gpui::element::IntoElement for ely_editor::ReferencesPanel
+impl gpui::element::IntoElement for ely_editor::RenameInput
+impl gpui::element::IntoElement for ely_editor::SearchFilters
+impl gpui::element::IntoElement for ely_editor::SearchPanel
+impl gpui::element::IntoElement for ely_editor::SearchResultItem
+impl gpui::element::IntoElement for ely_editor::SettingsEditor
+impl gpui::element::IntoElement for ely_editor::SignatureHelp
+impl gpui::element::IntoElement for ely_editor::SymbolOutline
+impl gpui::element::IntoElement for ely_editor::TaskRunner
+impl gpui::element::IntoElement for ely_editor::ThemePreview
+impl gpui::element::IntoElement for ely_editor::VimModeIndicator
+impl gpui::element::IntoElement for ely_editor::WelcomePage
+impl gpui::element::Render for ely_editor::CodeEditor
+impl gpui::element::RenderOnce for ely_editor::BranchIndicator
+impl gpui::element::RenderOnce for ely_editor::CallHierarchy
+impl gpui::element::RenderOnce for ely_editor::CodeActionMenu
+impl gpui::element::RenderOnce for ely_editor::CompletionMenu
+impl gpui::element::RenderOnce for ely_editor::CursorPosition
+impl gpui::element::RenderOnce for ely_editor::DebugConsole
+impl gpui::element::RenderOnce for ely_editor::Encoding
+impl gpui::element::RenderOnce for ely_editor::ExtensionsPanel
+impl gpui::element::RenderOnce for ely_editor::FindWidget
+impl gpui::element::RenderOnce for ely_editor::GoToSymbol
+impl gpui::element::RenderOnce for ely_editor::HoverInfo
+impl gpui::element::RenderOnce for ely_editor::IndentSettings
+impl gpui::element::RenderOnce for ely_editor::InlineChat
+impl gpui::element::RenderOnce for ely_editor::KeybindingsEditor
+impl gpui::element::RenderOnce for ely_editor::LanguageMode
+impl gpui::element::RenderOnce for ely_editor::LineEnding
+impl gpui::element::RenderOnce for ely_editor::LspStatus
+impl gpui::element::RenderOnce for ely_editor::NotificationBell
+impl gpui::element::RenderOnce for ely_editor::OutputPanel
+impl gpui::element::RenderOnce for ely_editor::ProblemsPanel
+impl gpui::element::RenderOnce for ely_editor::ProjectSwitcher
+impl gpui::element::RenderOnce for ely_editor::ReadOnlyBanner
+impl gpui::element::RenderOnce for ely_editor::RecentProjects
+impl gpui::element::RenderOnce for ely_editor::ReferencesPanel
+impl gpui::element::RenderOnce for ely_editor::RenameInput
+impl gpui::element::RenderOnce for ely_editor::SearchFilters
+impl gpui::element::RenderOnce for ely_editor::SearchPanel
+impl gpui::element::RenderOnce for ely_editor::SearchResultItem
+impl gpui::element::RenderOnce for ely_editor::SettingsEditor
+impl gpui::element::RenderOnce for ely_editor::SignatureHelp
+impl gpui::element::RenderOnce for ely_editor::SymbolOutline
+impl gpui::element::RenderOnce for ely_editor::TaskRunner
+impl gpui::element::RenderOnce for ely_editor::ThemePreview
+impl gpui::element::RenderOnce for ely_editor::VimModeIndicator
+impl gpui::element::RenderOnce for ely_editor::WelcomePage
+impl gpui::input::EntityInputHandler for ely_editor::CodeEditor
+impl gpui::styled::Styled for ely_editor::InlineChat
+impl gpui::window::Focusable for ely_editor::CodeEditor
+pub ely_editor::ActionKind::QuickFix
+pub ely_editor::ActionKind::Refactor
+pub ely_editor::ActionKind::Source
+pub ely_editor::Call::calls: alloc::vec::Vec<ely_editor::Call>
+pub ely_editor::Call::kind: ely_editor::SymbolKind
+pub ely_editor::Call::name: gpui_shared_string::SharedString
+pub ely_editor::Call::place: gpui_shared_string::SharedString
+pub ely_editor::CodeAction::kind: ely_editor::ActionKind
+pub ely_editor::CodeAction::preferred: bool
+pub ely_editor::CodeAction::title: gpui_shared_string::SharedString
+pub ely_editor::CodeLens::items: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_editor::CodeLens::line: usize
+pub ely_editor::CompletionItem::detail: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::CompletionItem::docs: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::CompletionItem::kind: ely_editor::SymbolKind
+pub ely_editor::CompletionItem::label: gpui_shared_string::SharedString
+pub ely_editor::ConsoleEntry::Error(gpui_shared_string::SharedString)
+pub ely_editor::ConsoleEntry::Input(gpui_shared_string::SharedString)
+pub ely_editor::ConsoleEntry::Output(gpui_shared_string::SharedString)
+pub ely_editor::ConsoleEntry::Value(gpui_shared_string::SharedString, gpui_shared_string::SharedString)
+pub ely_editor::CursorShape::Block
+pub ely_editor::CursorShape::Line
+pub ely_editor::CursorShape::Underline
+pub ely_editor::Diagnostic::message: gpui_shared_string::SharedString
+pub ely_editor::Diagnostic::range: core::ops::range::Range<usize>
+pub ely_editor::Diagnostic::severity: ely_core::primitives::severity::Severity
+pub ely_editor::DiffHunk::added: usize
+pub ely_editor::DiffHunk::line: usize
+pub ely_editor::DiffHunk::removed: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_editor::EditorEvent::Asked(gpui_shared_string::SharedString)
+pub ely_editor::EditorEvent::Changed
+pub ely_editor::EditorEvent::ChatClosed
+pub ely_editor::EditorEvent::Lens(usize, usize)
+pub ely_editor::EditorEvent::Unlock
+pub ely_editor::Extension::description: gpui_shared_string::SharedString
+pub ely_editor::Extension::id: gpui_shared_string::SharedString
+pub ely_editor::Extension::installs: u64
+pub ely_editor::Extension::name: gpui_shared_string::SharedString
+pub ely_editor::Extension::publisher: gpui_shared_string::SharedString
+pub ely_editor::Extension::rating: f32
+pub ely_editor::Extension::state: ely_editor::ExtensionState
+pub ely_editor::Extension::version: gpui_shared_string::SharedString
+pub ely_editor::ExtensionAction::Enable
+pub ely_editor::ExtensionAction::Install
+pub ely_editor::ExtensionAction::Uninstall
+pub ely_editor::ExtensionAction::Update
+pub ely_editor::ExtensionState::Available
+pub ely_editor::ExtensionState::Disabled
+pub ely_editor::ExtensionState::Installed
+pub ely_editor::ExtensionState::Installing
+pub ely_editor::ExtensionState::Outdated
+pub ely_editor::FileHits::hits: alloc::vec::Vec<ely_editor::Hit>
+pub ely_editor::FileHits::path: gpui_shared_string::SharedString
+pub ely_editor::FindOptions::case: bool
+pub ely_editor::FindOptions::regex: bool
+pub ely_editor::FindOptions::word: bool
+pub ely_editor::GhostText::offset: usize
+pub ely_editor::GhostText::text: gpui_shared_string::SharedString
+pub ely_editor::GitMark::Added
+pub ely_editor::GitMark::Deleted
+pub ely_editor::GitMark::Modified
+pub ely_editor::Hit::line: usize
+pub ely_editor::Hit::ranges: alloc::vec::Vec<core::ops::range::Range<usize>>
+pub ely_editor::Hit::text: gpui_shared_string::SharedString
+pub ely_editor::InlayHint::offset: usize
+pub ely_editor::InlayHint::text: gpui_shared_string::SharedString
+pub ely_editor::KeySource::Default
+pub ely_editor::KeySource::User
+pub ely_editor::Keybinding::command: gpui_shared_string::SharedString
+pub ely_editor::Keybinding::keys: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::Keybinding::source: ely_editor::KeySource
+pub ely_editor::Keybinding::title: gpui_shared_string::SharedString
+pub ely_editor::Keybinding::when: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::LineNumbers::Absolute
+pub ely_editor::LineNumbers::Hidden
+pub ely_editor::LineNumbers::Relative
+pub ely_editor::LspState::Busy(gpui_shared_string::SharedString)
+pub ely_editor::LspState::Failed(gpui_shared_string::SharedString)
+pub ely_editor::LspState::Ready
+pub ely_editor::LspState::Starting
+pub ely_editor::Metrics::advance: gpui::geometry::Pixels
+pub ely_editor::Metrics::height: gpui::geometry::Pixels
+pub ely_editor::Metrics::left: gpui::geometry::Pixels
+pub ely_editor::Metrics::line: gpui::geometry::Pixels
+pub ely_editor::Metrics::size: gpui::geometry::Pixels
+pub ely_editor::Metrics::top: gpui::geometry::Pixels
+pub ely_editor::Problem::column: usize
+pub ely_editor::Problem::line: usize
+pub ely_editor::Problem::message: gpui_shared_string::SharedString
+pub ely_editor::Problem::path: gpui_shared_string::SharedString
+pub ely_editor::Problem::severity: ely_core::primitives::severity::Severity
+pub ely_editor::Problem::source: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::Project::branch: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::Project::name: gpui_shared_string::SharedString
+pub ely_editor::Project::opened: gpui_shared_string::SharedString
+pub ely_editor::Project::path: gpui_shared_string::SharedString
+pub ely_editor::Project::pinned: bool
+pub ely_editor::Selection::anchor: usize
+pub ely_editor::Selection::goal: core::option::Option<usize>
+pub ely_editor::Selection::head: usize
+pub ely_editor::Setting::default: ely_editor::SettingValue
+pub ely_editor::Setting::description: gpui_shared_string::SharedString
+pub ely_editor::Setting::key: gpui_shared_string::SharedString
+pub ely_editor::Setting::title: gpui_shared_string::SharedString
+pub ely_editor::Setting::value: ely_editor::SettingValue
+pub ely_editor::SettingValue::Bool(bool)
+pub ely_editor::SettingValue::Choice
+pub ely_editor::SettingValue::Choice::choices: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_editor::SettingValue::Choice::value: gpui_shared_string::SharedString
+pub ely_editor::SettingValue::Number
+pub ely_editor::SettingValue::Number::max: f64
+pub ely_editor::SettingValue::Number::min: f64
+pub ely_editor::SettingValue::Number::step: f64
+pub ely_editor::SettingValue::Number::value: f64
+pub ely_editor::Signature::docs: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::Signature::label: gpui_shared_string::SharedString
+pub ely_editor::Signature::params: alloc::vec::Vec<core::ops::range::Range<usize>>
+pub ely_editor::Symbol::children: alloc::vec::Vec<ely_editor::Symbol>
+pub ely_editor::Symbol::detail: core::option::Option<gpui_shared_string::SharedString>
+pub ely_editor::Symbol::kind: ely_editor::SymbolKind
+pub ely_editor::Symbol::line: usize
+pub ely_editor::Symbol::name: gpui_shared_string::SharedString
+pub ely_editor::SymbolKind::Constant
+pub ely_editor::SymbolKind::Enum
+pub ely_editor::SymbolKind::Field
+pub ely_editor::SymbolKind::Function
+pub ely_editor::SymbolKind::Keyword
+pub ely_editor::SymbolKind::Method
+pub ely_editor::SymbolKind::Module
+pub ely_editor::SymbolKind::Snippet
+pub ely_editor::SymbolKind::Struct
+pub ely_editor::SymbolKind::Trait
+pub ely_editor::SymbolKind::Variable
+pub ely_editor::Task::command: gpui_shared_string::SharedString
+pub ely_editor::Task::cwd: gpui_shared_string::SharedString
+pub ely_editor::Task::env: alloc::vec::Vec<(gpui_shared_string::SharedString, gpui_shared_string::SharedString)>
+pub ely_editor::Task::group: gpui_shared_string::SharedString
+pub ely_editor::Task::name: gpui_shared_string::SharedString
+pub ely_editor::Task::state: ely_editor::TaskState
+pub ely_editor::TaskState::Failed(i32)
+pub ely_editor::TaskState::Idle
+pub ely_editor::TaskState::Passed(core::time::Duration)
+pub ely_editor::TaskState::Running
+pub ely_editor::VimMode::Insert
+pub ely_editor::VimMode::Normal
+pub ely_editor::VimMode::Replace
+pub ely_editor::VimMode::Visual
+pub enum ely_editor::ActionKind
+pub enum ely_editor::ConsoleEntry
+pub enum ely_editor::CursorShape
+pub enum ely_editor::EditorEvent
+pub enum ely_editor::ExtensionAction
+pub enum ely_editor::ExtensionState
+pub enum ely_editor::GitMark
+pub enum ely_editor::KeySource
+pub enum ely_editor::LineNumbers
+pub enum ely_editor::LspState
+pub enum ely_editor::SettingValue
+pub enum ely_editor::SymbolKind
+pub enum ely_editor::TaskState
+pub enum ely_editor::VimMode
+pub fn ely_editor::ActionKind::clone(&self) -> Self
+pub fn ely_editor::ActionKind::eq(&self, &Self) -> bool
+pub fn ely_editor::ActionKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::BranchIndicator::dirty(self, bool) -> Self
+pub fn ely_editor::BranchIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::BranchIndicator::into_element(self) -> Self::Element
+pub fn ely_editor::BranchIndicator::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::BranchIndicator::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::BranchIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::BranchIndicator::sync(self, usize, usize) -> Self
+pub fn ely_editor::Buffer::clone(&self) -> Self
+pub fn ely_editor::Buffer::eq(&self, &Self) -> bool
+pub fn ely_editor::Buffer::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Buffer::indent(&self, usize) -> usize
+pub fn ely_editor::Buffer::is_empty(&self) -> bool
+pub fn ely_editor::Buffer::len(&self) -> usize
+pub fn ely_editor::Buffer::line(&self, usize) -> &str
+pub fn ely_editor::Buffer::line_of(&self, usize) -> usize
+pub fn ely_editor::Buffer::line_range(&self, usize) -> core::ops::range::Range<usize>
+pub fn ely_editor::Buffer::lines(&self) -> usize
+pub fn ely_editor::Buffer::new(impl core::convert::Into<alloc::string::String>) -> Self
+pub fn ely_editor::Buffer::next(&self, usize) -> usize
+pub fn ely_editor::Buffer::offset(&self, usize, usize) -> usize
+pub fn ely_editor::Buffer::point(&self, usize) -> (usize, usize)
+pub fn ely_editor::Buffer::previous(&self, usize) -> usize
+pub fn ely_editor::Buffer::text(&self) -> &str
+pub fn ely_editor::Buffer::word_at(&self, usize) -> core::ops::range::Range<usize>
+pub fn ely_editor::Buffer::word_end(&self, usize) -> usize
+pub fn ely_editor::Buffer::word_start(&self, usize) -> usize
+pub fn ely_editor::Call::clone(&self) -> Self
+pub fn ely_editor::Call::eq(&self, &Self) -> bool
+pub fn ely_editor::Call::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::CallHierarchy::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::CallHierarchy::into_element(self) -> Self::Element
+pub fn ely_editor::CallHierarchy::new(impl core::convert::Into<gpui::window::ElementId>, ely_editor::Call, bool) -> Self
+pub fn ely_editor::CallHierarchy::on_flip(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::CallHierarchy::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::CallHierarchy::types(self) -> Self
+pub fn ely_editor::CodeAction::clone(&self) -> Self
+pub fn ely_editor::CodeAction::eq(&self, &Self) -> bool
+pub fn ely_editor::CodeAction::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::CodeAction::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_editor::ActionKind) -> Self
+pub fn ely_editor::CodeAction::preferred(self) -> Self
+pub fn ely_editor::CodeActionMenu::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::CodeActionMenu::into_element(self) -> Self::Element
+pub fn ely_editor::CodeActionMenu::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::CodeAction>) -> Self
+pub fn ely_editor::CodeActionMenu::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::CodeActionMenu::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::CodeEditor::anchors(&self) -> &[core::option::Option<usize>]
+pub fn ely_editor::CodeEditor::bounds_for_range(&mut self, core::ops::range::Range<usize>, gpui::geometry::Bounds<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<gpui::geometry::Bounds<gpui::geometry::Pixels>>
+pub fn ely_editor::CodeEditor::breakpoints(&self) -> &alloc::collections::btree::set::BTreeSet<usize>
+pub fn ely_editor::CodeEditor::buffer(&self) -> &ely_editor::Buffer
+pub fn ely_editor::CodeEditor::can_undo(&self) -> bool
+pub fn ely_editor::CodeEditor::center_again(&mut self)
+pub fn ely_editor::CodeEditor::character_index_for_point(&mut self, gpui::geometry::Point<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<usize>
+pub fn ely_editor::CodeEditor::chat_line(&self) -> core::option::Option<usize>
+pub fn ely_editor::CodeEditor::cursor_shape(self, ely_editor::CursorShape) -> Self
+pub fn ely_editor::CodeEditor::edit(&mut self, impl core::iter::traits::collect::IntoIterator<Item = (core::ops::range::Range<usize>, alloc::string::String)>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::focus_handle(&self, &gpui::app::App) -> gpui::window::FocusHandle
+pub fn ely_editor::CodeEditor::hide_indent_guides(self) -> Self
+pub fn ely_editor::CodeEditor::highlighter(self, impl core::ops::function::Fn(&str, &gpui::app::App) -> alloc::vec::Vec<(core::ops::range::Range<usize>, ely_core::forms::text::highlight::Highlight)> + 'static) -> Self
+pub fn ely_editor::CodeEditor::is_read_only(&self) -> bool
+pub fn ely_editor::CodeEditor::language(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::CodeEditor::language_name(&self) -> &gpui_shared_string::SharedString
+pub fn ely_editor::CodeEditor::line_numbers(self, ely_editor::LineNumbers) -> Self
+pub fn ely_editor::CodeEditor::marked_text_range(&self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<core::ops::range::Range<usize>>
+pub fn ely_editor::CodeEditor::metrics(&self) -> ely_editor::Metrics
+pub fn ely_editor::CodeEditor::minimap(self) -> Self
+pub fn ely_editor::CodeEditor::new(impl core::convert::Into<alloc::string::String>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> Self
+pub fn ely_editor::CodeEditor::numbers(&self) -> ely_editor::LineNumbers
+pub fn ely_editor::CodeEditor::paste(&mut self, gpui::platform::ClipboardItem, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::position(&self) -> (usize, usize)
+pub fn ely_editor::CodeEditor::primary(&self) -> ely_editor::Selection
+pub fn ely_editor::CodeEditor::rainbow_brackets(self) -> Self
+pub fn ely_editor::CodeEditor::read_only(self) -> Self
+pub fn ely_editor::CodeEditor::render(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> impl gpui::element::IntoElement
+pub fn ely_editor::CodeEditor::replace_and_mark_text_in_range(&mut self, core::option::Option<core::ops::range::Range<usize>>, &str, core::option::Option<core::ops::range::Range<usize>>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::replace_text_in_range(&mut self, core::option::Option<core::ops::range::Range<usize>>, &str, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::reset(&mut self, impl core::convert::Into<alloc::string::String>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::rulers(self, impl core::iter::traits::collect::IntoIterator<Item = usize>) -> Self
+pub fn ely_editor::CodeEditor::scroll_handle(&self) -> gpui::elements::div::ScrollHandle
+pub fn ely_editor::CodeEditor::scroll_line_to_top(&self, usize)
+pub fn ely_editor::CodeEditor::select(&mut self, impl core::iter::traits::collect::IntoIterator<Item = core::ops::range::Range<usize>>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::selected_text_range(&mut self, bool, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<gpui::platform::UTF16Selection>
+pub fn ely_editor::CodeEditor::selections(&self) -> &[ely_editor::Selection]
+pub fn ely_editor::CodeEditor::set_anchors(&mut self, impl core::iter::traits::collect::IntoIterator<Item = usize>)
+pub fn ely_editor::CodeEditor::set_backgrounds(&mut self, alloc::vec::Vec<(core::ops::range::Range<usize>, gpui::color::Hsla)>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_chat(&mut self, core::option::Option<usize>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_code_lenses(&mut self, alloc::vec::Vec<ely_editor::CodeLens>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_cursor_shape(&mut self, ely_editor::CursorShape, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_diagnostics(&mut self, alloc::vec::Vec<ely_editor::Diagnostic>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_diff(&mut self, alloc::vec::Vec<ely_editor::DiffHunk>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_focus_line(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_ghost_text(&mut self, core::option::Option<ely_editor::GhostText>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_git_marks(&mut self, alloc::vec::Vec<(usize, ely_editor::GitMark)>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_inlay_hints(&mut self, alloc::vec::Vec<ely_editor::InlayHint>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_line_numbers(&mut self, ely_editor::LineNumbers, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_read_only(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_scale(&mut self, f32, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_text(&mut self, impl core::convert::Into<alloc::string::String>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_typewriter(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::show_whitespace(self) -> Self
+pub fn ely_editor::CodeEditor::sticky_scroll(self) -> Self
+pub fn ely_editor::CodeEditor::tab_size(self, usize) -> Self
+pub fn ely_editor::CodeEditor::text(&self) -> &str
+pub fn ely_editor::CodeEditor::text_for_range(&mut self, core::ops::range::Range<usize>, &mut core::option::Option<core::ops::range::Range<usize>>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<alloc::string::String>
+pub fn ely_editor::CodeEditor::toggle_breakpoint(&mut self, usize, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::unmark_text(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeLens::clone(&self) -> Self
+pub fn ely_editor::CodeLens::eq(&self, &Self) -> bool
+pub fn ely_editor::CodeLens::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::CompletionItem::clone(&self) -> Self
+pub fn ely_editor::CompletionItem::detail(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::CompletionItem::docs(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::CompletionItem::eq(&self, &Self) -> bool
+pub fn ely_editor::CompletionItem::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::CompletionItem::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_editor::SymbolKind) -> Self
+pub fn ely_editor::CompletionMenu::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::CompletionMenu::into_element(self) -> Self::Element
+pub fn ely_editor::CompletionMenu::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::CompletionItem>) -> Self
+pub fn ely_editor::CompletionMenu::on_pick(self, impl core::ops::function::Fn(&ely_editor::CompletionItem, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::CompletionMenu::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::CompletionMenu::selected(self, usize) -> Self
+pub fn ely_editor::CompletionMenu::typed(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::ConsoleEntry::clone(&self) -> Self
+pub fn ely_editor::ConsoleEntry::eq(&self, &Self) -> bool
+pub fn ely_editor::ConsoleEntry::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::CursorPosition::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::CursorPosition::into_element(self) -> Self::Element
+pub fn ely_editor::CursorPosition::new(impl core::convert::Into<gpui::window::ElementId>, usize, usize) -> Self
+pub fn ely_editor::CursorPosition::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::CursorPosition::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::CursorPosition::selected(self, usize) -> Self
+pub fn ely_editor::CursorShape::clone(&self) -> Self
+pub fn ely_editor::CursorShape::default() -> Self
+pub fn ely_editor::CursorShape::eq(&self, &Self) -> bool
+pub fn ely_editor::CursorShape::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::DebugConsole::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::DebugConsole::into_element(self) -> Self::Element
+pub fn ely_editor::DebugConsole::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::ConsoleEntry>) -> Self
+pub fn ely_editor::DebugConsole::on_eval(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::DebugConsole::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Diagnostic::clone(&self) -> Self
+pub fn ely_editor::Diagnostic::eq(&self, &Self) -> bool
+pub fn ely_editor::Diagnostic::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::DiffHunk::clone(&self) -> Self
+pub fn ely_editor::DiffHunk::eq(&self, &Self) -> bool
+pub fn ely_editor::DiffHunk::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::EditorEvent::clone(&self) -> Self
+pub fn ely_editor::EditorEvent::eq(&self, &Self) -> bool
+pub fn ely_editor::EditorEvent::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Encoding::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::Encoding::into_element(self) -> Self::Element
+pub fn ely_editor::Encoding::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::Encoding::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::Encoding::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Extension::clone(&self) -> Self
+pub fn ely_editor::Extension::eq(&self, &Self) -> bool
+pub fn ely_editor::Extension::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::ExtensionAction::clone(&self) -> Self
+pub fn ely_editor::ExtensionAction::eq(&self, &Self) -> bool
+pub fn ely_editor::ExtensionAction::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::ExtensionState::clone(&self) -> Self
+pub fn ely_editor::ExtensionState::eq(&self, &Self) -> bool
+pub fn ely_editor::ExtensionState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::ExtensionsPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::ExtensionsPanel::into_element(self) -> Self::Element
+pub fn ely_editor::ExtensionsPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Extension>) -> Self
+pub fn ely_editor::ExtensionsPanel::on_action(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, ely_editor::ExtensionAction, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ExtensionsPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::FileHits::clone(&self) -> Self
+pub fn ely_editor::FileHits::eq(&self, &Self) -> bool
+pub fn ely_editor::FileHits::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::FindOptions::clone(&self) -> Self
+pub fn ely_editor::FindOptions::default() -> Self
+pub fn ely_editor::FindOptions::eq(&self, &Self) -> bool
+pub fn ely_editor::FindOptions::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::FindWidget::error(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::FindWidget::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::FindWidget::into_element(self) -> Self::Element
+pub fn ely_editor::FindWidget::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, core::option::Option<usize>, usize) -> Self
+pub fn ely_editor::FindWidget::on_close(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::FindWidget::on_options(self, impl core::ops::function::Fn(ely_editor::FindOptions, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::FindWidget::on_replace(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::FindWidget::on_step(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::FindWidget::on_toggle_replace(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::FindWidget::options(self, ely_editor::FindOptions) -> Self
+pub fn ely_editor::FindWidget::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::FindWidget::replace(self, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_editor::GhostText::clone(&self) -> Self
+pub fn ely_editor::GhostText::eq(&self, &Self) -> bool
+pub fn ely_editor::GhostText::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::GitMark::clone(&self) -> Self
+pub fn ely_editor::GitMark::eq(&self, &Self) -> bool
+pub fn ely_editor::GitMark::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::GoToSymbol::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::GoToSymbol::into_element(self) -> Self::Element
+pub fn ely_editor::GoToSymbol::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Symbol>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::GoToSymbol::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::GoToSymbol::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Hit::clone(&self) -> Self
+pub fn ely_editor::Hit::eq(&self, &Self) -> bool
+pub fn ely_editor::Hit::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::HoverInfo::docs(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::HoverInfo::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::HoverInfo::into_element(self) -> Self::Element
+pub fn ely_editor::HoverInfo::link(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::HoverInfo::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::HoverInfo::problem(self, ely_core::primitives::severity::Severity, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::HoverInfo::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::IndentSettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::IndentSettings::into_element(self) -> Self::Element
+pub fn ely_editor::IndentSettings::new(impl core::convert::Into<gpui::window::ElementId>, bool, usize) -> Self
+pub fn ely_editor::IndentSettings::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::IndentSettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::InlayHint::clone(&self) -> Self
+pub fn ely_editor::InlayHint::eq(&self, &Self) -> bool
+pub fn ely_editor::InlayHint::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::InlineChat::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::InlineChat::into_element(self) -> Self::Element
+pub fn ely_editor::InlineChat::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_editor::InlineChat::on_ask(self, impl core::ops::function::Fn(gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::InlineChat::on_close(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::InlineChat::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::InlineChat::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_editor::InlineChat::working(self, bool) -> Self
+pub fn ely_editor::KeySource::clone(&self) -> Self
+pub fn ely_editor::KeySource::eq(&self, &Self) -> bool
+pub fn ely_editor::KeySource::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Keybinding::clone(&self) -> Self
+pub fn ely_editor::Keybinding::eq(&self, &Self) -> bool
+pub fn ely_editor::Keybinding::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::KeybindingsEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::KeybindingsEditor::into_element(self) -> Self::Element
+pub fn ely_editor::KeybindingsEditor::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Keybinding>) -> Self
+pub fn ely_editor::KeybindingsEditor::on_bind(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, core::option::Option<gpui::platform::keystroke::Keystroke>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::KeybindingsEditor::on_record(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::KeybindingsEditor::query(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::KeybindingsEditor::recording(self, core::option::Option<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::KeybindingsEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::LanguageMode::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::LanguageMode::into_element(self) -> Self::Element
+pub fn ely_editor::LanguageMode::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::LanguageMode::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::LanguageMode::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::LineEnding::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::LineEnding::into_element(self) -> Self::Element
+pub fn ely_editor::LineEnding::new(impl core::convert::Into<gpui::window::ElementId>, bool) -> Self
+pub fn ely_editor::LineEnding::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::LineEnding::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::LineNumbers::clone(&self) -> Self
+pub fn ely_editor::LineNumbers::default() -> Self
+pub fn ely_editor::LineNumbers::eq(&self, &Self) -> bool
+pub fn ely_editor::LineNumbers::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::LspState::clone(&self) -> Self
+pub fn ely_editor::LspState::eq(&self, &Self) -> bool
+pub fn ely_editor::LspState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::LspStatus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::LspStatus::into_element(self) -> Self::Element
+pub fn ely_editor::LspStatus::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_editor::LspState) -> Self
+pub fn ely_editor::LspStatus::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::LspStatus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Metrics::clone(&self) -> Self
+pub fn ely_editor::Metrics::default() -> Self
+pub fn ely_editor::Metrics::eq(&self, &Self) -> bool
+pub fn ely_editor::Metrics::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Newline::action_json_schema(&mut schemars::generate::SchemaGenerator) -> core::option::Option<schemars::schema::Schema>
+pub fn ely_editor::Newline::boxed_clone(&self) -> alloc::boxed::Box<dyn gpui::action::Action>
+pub fn ely_editor::Newline::build(serde_json::value::Value) -> anyhow::Result<alloc::boxed::Box<dyn gpui::action::Action>>
+pub fn ely_editor::Newline::clone(&self) -> Self
+pub fn ely_editor::Newline::default() -> Self
+pub fn ely_editor::Newline::deprecated_aliases() -> &'static [&'static str]
+pub fn ely_editor::Newline::deprecation_message() -> core::option::Option<&'static str>
+pub fn ely_editor::Newline::documentation() -> core::option::Option<&'static str>
+pub fn ely_editor::Newline::eq(&self, &Self) -> bool
+pub fn ely_editor::Newline::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Newline::name(&self) -> &'static str
+pub fn ely_editor::Newline::name_for_type() -> &'static str where Self: core::marker::Sized
+pub fn ely_editor::Newline::partial_eq(&self, &dyn gpui::action::Action) -> bool
+pub fn ely_editor::NotificationBell::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::NotificationBell::into_element(self) -> Self::Element
+pub fn ely_editor::NotificationBell::new(impl core::convert::Into<gpui::window::ElementId>, usize) -> Self
+pub fn ely_editor::NotificationBell::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::NotificationBell::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::OutputPanel::follow(self, bool) -> Self
+pub fn ely_editor::OutputPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::OutputPanel::into_element(self) -> Self::Element
+pub fn ely_editor::OutputPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_editor::OutputPanel::on_channel(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::OutputPanel::on_clear(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::OutputPanel::on_follow(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::OutputPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Paste::action_json_schema(&mut schemars::generate::SchemaGenerator) -> core::option::Option<schemars::schema::Schema>
+pub fn ely_editor::Paste::boxed_clone(&self) -> alloc::boxed::Box<dyn gpui::action::Action>
+pub fn ely_editor::Paste::build(serde_json::value::Value) -> anyhow::Result<alloc::boxed::Box<dyn gpui::action::Action>>
+pub fn ely_editor::Paste::clone(&self) -> Self
+pub fn ely_editor::Paste::default() -> Self
+pub fn ely_editor::Paste::deprecated_aliases() -> &'static [&'static str]
+pub fn ely_editor::Paste::deprecation_message() -> core::option::Option<&'static str>
+pub fn ely_editor::Paste::documentation() -> core::option::Option<&'static str>
+pub fn ely_editor::Paste::eq(&self, &Self) -> bool
+pub fn ely_editor::Paste::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Paste::name(&self) -> &'static str
+pub fn ely_editor::Paste::name_for_type() -> &'static str where Self: core::marker::Sized
+pub fn ely_editor::Paste::partial_eq(&self, &dyn gpui::action::Action) -> bool
+pub fn ely_editor::Problem::clone(&self) -> Self
+pub fn ely_editor::Problem::eq(&self, &Self) -> bool
+pub fn ely_editor::Problem::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::ProblemsPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::ProblemsPanel::into_element(self) -> Self::Element
+pub fn ely_editor::ProblemsPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Problem>) -> Self
+pub fn ely_editor::ProblemsPanel::on_open(self, impl core::ops::function::Fn(&ely_editor::Problem, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ProblemsPanel::on_shown(self, impl core::ops::function::Fn(alloc::vec::Vec<ely_core::primitives::severity::Severity>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ProblemsPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::ProblemsPanel::shown(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::primitives::severity::Severity>) -> Self
+pub fn ely_editor::Project::clone(&self) -> Self
+pub fn ely_editor::Project::eq(&self, &Self) -> bool
+pub fn ely_editor::Project::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::ProjectSwitcher::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::ProjectSwitcher::into_element(self) -> Self::Element
+pub fn ely_editor::ProjectSwitcher::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Project>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ProjectSwitcher::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ProjectSwitcher::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::ReadOnlyBanner::action(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ReadOnlyBanner::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::ReadOnlyBanner::into_element(self) -> Self::Element
+pub fn ely_editor::ReadOnlyBanner::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::ReadOnlyBanner::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::RecentProjects::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::RecentProjects::into_element(self) -> Self::Element
+pub fn ely_editor::RecentProjects::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Project>) -> Self
+pub fn ely_editor::RecentProjects::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::RecentProjects::on_pin(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::RecentProjects::on_remove(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::RecentProjects::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::ReferencesPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::ReferencesPanel::into_element(self) -> Self::Element
+pub fn ely_editor::ReferencesPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::FileHits>) -> Self
+pub fn ely_editor::ReferencesPanel::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ReferencesPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::RenameInput::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::RenameInput::into_element(self) -> Self::Element
+pub fn ely_editor::RenameInput::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_editor::RenameInput::on_cancel(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::RenameInput::on_rename(self, impl core::ops::function::Fn(gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::RenameInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::SearchFilters::ignore(self, bool) -> Self
+pub fn ely_editor::SearchFilters::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::SearchFilters::into_element(self) -> Self::Element
+pub fn ely_editor::SearchFilters::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_editor::SearchFilters::on_ignore(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SearchFilters::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::SearchPanel::folded(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_editor::SearchPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::SearchPanel::into_element(self) -> Self::Element
+pub fn ely_editor::SearchPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::FileHits>) -> Self
+pub fn ely_editor::SearchPanel::on_fold(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SearchPanel::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SearchPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::SearchPanel::replacement(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::SearchResultItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::SearchResultItem::into_element(self) -> Self::Element
+pub fn ely_editor::SearchResultItem::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_editor::Hit) -> Self
+pub fn ely_editor::SearchResultItem::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SearchResultItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::SearchResultItem::replacement(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::Selection::caret(usize) -> Self
+pub fn ely_editor::Selection::clone(&self) -> Self
+pub fn ely_editor::Selection::eq(&self, &Self) -> bool
+pub fn ely_editor::Selection::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Selection::is_empty(&self) -> bool
+pub fn ely_editor::Selection::range(&self) -> core::ops::range::Range<usize>
+pub fn ely_editor::Setting::clone(&self) -> Self
+pub fn ely_editor::Setting::eq(&self, &Self) -> bool
+pub fn ely_editor::Setting::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Setting::modified(&self) -> bool
+pub fn ely_editor::SettingValue::clone(&self) -> Self
+pub fn ely_editor::SettingValue::eq(&self, &Self) -> bool
+pub fn ely_editor::SettingValue::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::SettingsEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::SettingsEditor::into_element(self) -> Self::Element
+pub fn ely_editor::SettingsEditor::json(self, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_editor::SettingsEditor::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, alloc::vec::Vec<ely_editor::Setting>)>) -> Self
+pub fn ely_editor::SettingsEditor::on_change(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, ely_editor::SettingValue, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SettingsEditor::on_change(self, impl core::ops::function::Fn((&gpui_shared_string::SharedString, ely_editor::SettingValue), &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SettingsEditor::on_json(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SettingsEditor::on_section(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SettingsEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::SettingsEditor::section(self, usize) -> Self
+pub fn ely_editor::Signature::clone(&self) -> Self
+pub fn ely_editor::Signature::eq(&self, &Self) -> bool
+pub fn ely_editor::Signature::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::SignatureHelp::at(self, usize, usize) -> Self
+pub fn ely_editor::SignatureHelp::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::SignatureHelp::into_element(self) -> Self::Element
+pub fn ely_editor::SignatureHelp::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Signature>) -> Self
+pub fn ely_editor::SignatureHelp::on_step(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SignatureHelp::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Symbol::children(self, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Symbol>) -> Self
+pub fn ely_editor::Symbol::clone(&self) -> Self
+pub fn ely_editor::Symbol::detail(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::Symbol::eq(&self, &Self) -> bool
+pub fn ely_editor::Symbol::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::Symbol::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_editor::SymbolKind, usize) -> Self
+pub fn ely_editor::SymbolKind::clone(&self) -> Self
+pub fn ely_editor::SymbolKind::color(self, &ely_core::theme::palette::Palette) -> gpui::color::Hsla
+pub fn ely_editor::SymbolKind::eq(&self, &Self) -> bool
+pub fn ely_editor::SymbolKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::SymbolKind::icon(self) -> ely_core::primitives::icon::names::IconName
+pub fn ely_editor::SymbolKind::word(self) -> &'static str
+pub fn ely_editor::SymbolOutline::cursor(self, usize) -> Self
+pub fn ely_editor::SymbolOutline::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::SymbolOutline::into_element(self) -> Self::Element
+pub fn ely_editor::SymbolOutline::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Symbol>) -> Self
+pub fn ely_editor::SymbolOutline::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::SymbolOutline::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::Task::clone(&self) -> Self
+pub fn ely_editor::Task::eq(&self, &Self) -> bool
+pub fn ely_editor::Task::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::TaskRunner::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::TaskRunner::into_element(self) -> Self::Element
+pub fn ely_editor::TaskRunner::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_editor::Task>) -> Self
+pub fn ely_editor::TaskRunner::on_open(self, impl core::ops::function::Fn(core::option::Option<usize>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::TaskRunner::on_run(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::TaskRunner::on_stop(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::TaskRunner::open(self, core::option::Option<usize>) -> Self
+pub fn ely_editor::TaskRunner::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::TaskState::clone(&self) -> Self
+pub fn ely_editor::TaskState::eq(&self, &Self) -> bool
+pub fn ely_editor::TaskState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::ThemePreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::ThemePreview::into_element(self) -> Self::Element
+pub fn ely_editor::ThemePreview::is_selected(&self) -> bool
+pub fn ely_editor::ThemePreview::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::theme::palette::Palette) -> Self
+pub fn ely_editor::ThemePreview::on_pick(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::ThemePreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::ThemePreview::selected(self, bool) -> Self
+pub fn ely_editor::VimMode::clone(&self) -> Self
+pub fn ely_editor::VimMode::default() -> Self
+pub fn ely_editor::VimMode::eq(&self, &Self) -> bool
+pub fn ely_editor::VimMode::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_editor::VimModeIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::VimModeIndicator::into_element(self) -> Self::Element
+pub fn ely_editor::VimModeIndicator::new(ely_editor::VimMode) -> Self
+pub fn ely_editor::VimModeIndicator::pending(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::VimModeIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::WelcomePage::action(self, ely_core::primitives::icon::names::IconName, impl core::convert::Into<gpui_shared_string::SharedString>, core::option::Option<&str>) -> Self
+pub fn ely_editor::WelcomePage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_editor::WelcomePage::into_element(self) -> Self::Element
+pub fn ely_editor::WelcomePage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_editor::WelcomePage::on_action(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::WelcomePage::on_show(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_editor::WelcomePage::recent(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_editor::WelcomePage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_editor::WelcomePage::show_at_start(self, bool) -> Self
+pub fn ely_editor::bind_keys(&mut gpui::app::App)
+pub fn ely_editor::completions(&[ely_editor::CompletionItem], &str) -> alloc::vec::Vec<(ely_editor::CompletionItem, alloc::vec::Vec<core::ops::range::Range<usize>>)>
+pub fn ely_editor::conflicts(&[ely_editor::Keybinding], &ely_editor::Keybinding) -> alloc::vec::Vec<gpui_shared_string::SharedString>
+pub fn ely_editor::find_all(&str, &str, ely_editor::FindOptions) -> core::result::Result<alloc::vec::Vec<core::ops::range::Range<usize>>, alloc::string::String>
+pub fn ely_editor::passes(&str, &str, &str) -> bool
+pub fn ely_editor::settings_json(&[(gpui_shared_string::SharedString, alloc::vec::Vec<ely_editor::Setting>)]) -> alloc::string::String
+pub mod ely_editor
+pub struct ely_editor::BranchIndicator
+pub struct ely_editor::Buffer
+pub struct ely_editor::Call
+pub struct ely_editor::CallHierarchy
+pub struct ely_editor::CodeAction
+pub struct ely_editor::CodeActionMenu
+pub struct ely_editor::CodeEditor
+pub struct ely_editor::CodeLens
+pub struct ely_editor::CompletionItem
+pub struct ely_editor::CompletionMenu
+pub struct ely_editor::CursorPosition
+pub struct ely_editor::DebugConsole
+pub struct ely_editor::Diagnostic
+pub struct ely_editor::DiffHunk
+pub struct ely_editor::Encoding
+pub struct ely_editor::Extension
+pub struct ely_editor::ExtensionsPanel
+pub struct ely_editor::FileHits
+pub struct ely_editor::FindOptions
+pub struct ely_editor::FindWidget
+pub struct ely_editor::GhostText
+pub struct ely_editor::GoToSymbol
+pub struct ely_editor::Hit
+pub struct ely_editor::HoverInfo
+pub struct ely_editor::IndentSettings
+pub struct ely_editor::InlayHint
+pub struct ely_editor::InlineChat
+pub struct ely_editor::Keybinding
+pub struct ely_editor::KeybindingsEditor
+pub struct ely_editor::LanguageMode
+pub struct ely_editor::LineEnding
+pub struct ely_editor::LspStatus
+pub struct ely_editor::Metrics
+pub struct ely_editor::Newline
+pub struct ely_editor::NotificationBell
+pub struct ely_editor::OutputPanel
+pub struct ely_editor::Paste
+pub struct ely_editor::Problem
+pub struct ely_editor::ProblemsPanel
+pub struct ely_editor::Project
+pub struct ely_editor::ProjectSwitcher
+pub struct ely_editor::ReadOnlyBanner
+pub struct ely_editor::RecentProjects
+pub struct ely_editor::ReferencesPanel
+pub struct ely_editor::RenameInput
+pub struct ely_editor::SearchFilters
+pub struct ely_editor::SearchPanel
+pub struct ely_editor::SearchResultItem
+pub struct ely_editor::Selection
+pub struct ely_editor::Setting
+pub struct ely_editor::SettingsEditor
+pub struct ely_editor::Signature
+pub struct ely_editor::SignatureHelp
+pub struct ely_editor::Symbol
+pub struct ely_editor::SymbolOutline
+pub struct ely_editor::Task
+pub struct ely_editor::TaskRunner
+pub struct ely_editor::ThemePreview
+pub struct ely_editor::VimModeIndicator
+pub struct ely_editor::WelcomePage
+pub type ely_editor::BranchIndicator::Element = gpui::view::ViewElement<ely_editor::BranchIndicator>
+pub type ely_editor::CallHierarchy::Element = gpui::view::ViewElement<ely_editor::CallHierarchy>
+pub type ely_editor::CodeActionMenu::Element = gpui::view::ViewElement<ely_editor::CodeActionMenu>
+pub type ely_editor::CompletionMenu::Element = gpui::view::ViewElement<ely_editor::CompletionMenu>
+pub type ely_editor::CursorPosition::Element = gpui::view::ViewElement<ely_editor::CursorPosition>
+pub type ely_editor::DebugConsole::Element = gpui::view::ViewElement<ely_editor::DebugConsole>
+pub type ely_editor::Encoding::Element = gpui::view::ViewElement<ely_editor::Encoding>
+pub type ely_editor::ExtensionsPanel::Element = gpui::view::ViewElement<ely_editor::ExtensionsPanel>
+pub type ely_editor::FindWidget::Element = gpui::view::ViewElement<ely_editor::FindWidget>
+pub type ely_editor::GoToSymbol::Element = gpui::view::ViewElement<ely_editor::GoToSymbol>
+pub type ely_editor::HoverInfo::Element = gpui::view::ViewElement<ely_editor::HoverInfo>
+pub type ely_editor::IndentSettings::Element = gpui::view::ViewElement<ely_editor::IndentSettings>
+pub type ely_editor::InlineChat::Element = gpui::view::ViewElement<ely_editor::InlineChat>
+pub type ely_editor::KeybindingsEditor::Element = gpui::view::ViewElement<ely_editor::KeybindingsEditor>
+pub type ely_editor::LanguageMode::Element = gpui::view::ViewElement<ely_editor::LanguageMode>
+pub type ely_editor::LineEnding::Element = gpui::view::ViewElement<ely_editor::LineEnding>
+pub type ely_editor::LspStatus::Element = gpui::view::ViewElement<ely_editor::LspStatus>
+pub type ely_editor::NotificationBell::Element = gpui::view::ViewElement<ely_editor::NotificationBell>
+pub type ely_editor::OutputPanel::Element = gpui::view::ViewElement<ely_editor::OutputPanel>
+pub type ely_editor::ProblemsPanel::Element = gpui::view::ViewElement<ely_editor::ProblemsPanel>
+pub type ely_editor::ProjectSwitcher::Element = gpui::view::ViewElement<ely_editor::ProjectSwitcher>
+pub type ely_editor::ReadOnlyBanner::Element = gpui::view::ViewElement<ely_editor::ReadOnlyBanner>
+pub type ely_editor::RecentProjects::Element = gpui::view::ViewElement<ely_editor::RecentProjects>
+pub type ely_editor::ReferencesPanel::Element = gpui::view::ViewElement<ely_editor::ReferencesPanel>
+pub type ely_editor::RenameInput::Element = gpui::view::ViewElement<ely_editor::RenameInput>
+pub type ely_editor::SearchFilters::Element = gpui::view::ViewElement<ely_editor::SearchFilters>
+pub type ely_editor::SearchPanel::Element = gpui::view::ViewElement<ely_editor::SearchPanel>
+pub type ely_editor::SearchResultItem::Element = gpui::view::ViewElement<ely_editor::SearchResultItem>
+pub type ely_editor::SettingsEditor::Element = gpui::view::ViewElement<ely_editor::SettingsEditor>
+pub type ely_editor::SettingsEditor::Value<'a> = (&'a gpui_shared_string::SharedString, ely_editor::SettingValue)
+pub type ely_editor::SignatureHelp::Element = gpui::view::ViewElement<ely_editor::SignatureHelp>
+pub type ely_editor::SymbolOutline::Element = gpui::view::ViewElement<ely_editor::SymbolOutline>
+pub type ely_editor::TaskRunner::Element = gpui::view::ViewElement<ely_editor::TaskRunner>
+pub type ely_editor::ThemePreview::Element = gpui::view::ViewElement<ely_editor::ThemePreview>
+pub type ely_editor::VimModeIndicator::Element = gpui::view::ViewElement<ely_editor::VimModeIndicator>
+pub type ely_editor::WelcomePage::Element = gpui::view::ViewElement<ely_editor::WelcomePage>
+pub use ely_editor::ActionKind = ely_editor::refactor::ActionKind
+pub use ely_editor::BranchIndicator = ely_editor::status::BranchIndicator
+pub use ely_editor::Buffer = ely_editor::buffer::Buffer
+pub use ely_editor::Call = ely_editor::symbols::Call
+pub use ely_editor::CallHierarchy = ely_editor::symbols::CallHierarchy
+pub use ely_editor::CodeAction = ely_editor::refactor::CodeAction
+pub use ely_editor::CodeActionMenu = ely_editor::refactor::CodeActionMenu
+pub use ely_editor::CodeEditor = ely_editor::state::CodeEditor
+pub use ely_editor::CodeLens = ely_editor::decor::CodeLens
+pub use ely_editor::CompletionItem = ely_editor::hints::CompletionItem
+pub use ely_editor::CompletionMenu = ely_editor::hints::CompletionMenu
+pub use ely_editor::ConsoleEntry = ely_editor::console::ConsoleEntry
+pub use ely_editor::CursorPosition = ely_editor::status::CursorPosition
+pub use ely_editor::CursorShape = ely_editor::state::CursorShape
+pub use ely_editor::DebugConsole = ely_editor::console::DebugConsole
+pub use ely_editor::Diagnostic = ely_editor::decor::Diagnostic
+pub use ely_editor::DiffHunk = ely_editor::decor::DiffHunk
+pub use ely_editor::EditorEvent = ely_editor::state::EditorEvent
+pub use ely_editor::Encoding = ely_editor::status::Encoding
+pub use ely_editor::Extension = ely_editor::extensions::Extension
+pub use ely_editor::ExtensionAction = ely_editor::extensions::ExtensionAction
+pub use ely_editor::ExtensionState = ely_editor::extensions::ExtensionState
+pub use ely_editor::ExtensionsPanel = ely_editor::extensions::ExtensionsPanel
+pub use ely_editor::FileHits = ely_editor::search::FileHits
+pub use ely_editor::FindOptions = ely_editor::find::FindOptions
+pub use ely_editor::FindWidget = ely_editor::find::FindWidget
+pub use ely_editor::GhostText = ely_editor::decor::GhostText
+pub use ely_editor::GitMark = ely_editor::decor::GitMark
+pub use ely_editor::GoToSymbol = ely_editor::symbols::GoToSymbol
+pub use ely_editor::Hit = ely_editor::search::Hit
+pub use ely_editor::HoverInfo = ely_editor::hover::HoverInfo
+pub use ely_editor::IndentSettings = ely_editor::status::IndentSettings
+pub use ely_editor::InlayHint = ely_editor::decor::InlayHint
+pub use ely_editor::InlineChat = ely_editor::chat::InlineChat
+pub use ely_editor::KeySource = ely_editor::keybindings::KeySource
+pub use ely_editor::Keybinding = ely_editor::keybindings::Keybinding
+pub use ely_editor::KeybindingsEditor = ely_editor::keybindings::KeybindingsEditor
+pub use ely_editor::LanguageMode = ely_editor::status::LanguageMode
+pub use ely_editor::LineEnding = ely_editor::status::LineEnding
+pub use ely_editor::LineNumbers = ely_editor::state::LineNumbers
+pub use ely_editor::LspState = ely_editor::status::LspState
+pub use ely_editor::LspStatus = ely_editor::status::LspStatus
+pub use ely_editor::Metrics = ely_editor::state::Metrics
+pub use ely_editor::Newline = ely_editor::keys::Newline
+pub use ely_editor::NotificationBell = ely_editor::status::NotificationBell
+pub use ely_editor::OutputPanel = ely_editor::console::OutputPanel
+pub use ely_editor::Paste = ely_editor::keys::Paste
+pub use ely_editor::Problem = ely_editor::problems::Problem
+pub use ely_editor::ProblemsPanel = ely_editor::problems::ProblemsPanel
+pub use ely_editor::Project = ely_editor::welcome::Project
+pub use ely_editor::ProjectSwitcher = ely_editor::welcome::ProjectSwitcher
+pub use ely_editor::ReadOnlyBanner = ely_editor::decor::ReadOnlyBanner
+pub use ely_editor::RecentProjects = ely_editor::welcome::RecentProjects
+pub use ely_editor::ReferencesPanel = ely_editor::search::ReferencesPanel
+pub use ely_editor::RenameInput = ely_editor::refactor::RenameInput
+pub use ely_editor::SearchFilters = ely_editor::filters::SearchFilters
+pub use ely_editor::SearchPanel = ely_editor::search::SearchPanel
+pub use ely_editor::SearchResultItem = ely_editor::search::SearchResultItem
+pub use ely_editor::Selection = ely_editor::cursor::Selection
+pub use ely_editor::Setting = ely_editor::settings::Setting
+pub use ely_editor::SettingValue = ely_editor::settings::SettingValue
+pub use ely_editor::SettingsEditor = ely_editor::settings::SettingsEditor
+pub use ely_editor::Signature = ely_editor::hints::Signature
+pub use ely_editor::SignatureHelp = ely_editor::hints::SignatureHelp
+pub use ely_editor::Symbol = ely_editor::symbols::Symbol
+pub use ely_editor::SymbolKind = ely_editor::symbols::SymbolKind
+pub use ely_editor::SymbolOutline = ely_editor::symbols::SymbolOutline
+pub use ely_editor::Task = ely_editor::tasks::Task
+pub use ely_editor::TaskRunner = ely_editor::tasks::TaskRunner
+pub use ely_editor::TaskState = ely_editor::tasks::TaskState
+pub use ely_editor::ThemePreview = ely_editor::preview::ThemePreview
+pub use ely_editor::VimMode = ely_editor::decor::VimMode
+pub use ely_editor::VimModeIndicator = ely_editor::decor::VimModeIndicator
+pub use ely_editor::WelcomePage = ely_editor::welcome::WelcomePage
+pub use ely_editor::bind_keys = ely_editor::keys::bind_keys
+pub use ely_editor::completions = ely_editor::hints::completions
+pub use ely_editor::conflicts = ely_editor::keybindings::conflicts
+pub use ely_editor::find_all = ely_editor::find::find_all
+pub use ely_editor::passes = ely_editor::filters::passes
+pub use ely_editor::settings_json = ely_editor::settings::settings_json

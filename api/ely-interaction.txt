@@ -1,0 +1,65 @@
+impl ely_interaction::Resizable
+impl ely_interaction::Rotatable
+impl ely_interaction::RovingFocus
+impl ely_interaction::ScrollSync
+impl ely_interaction::SelectionArea
+impl gpui::element::IntoElement for ely_interaction::Resizable
+impl gpui::element::IntoElement for ely_interaction::Rotatable
+impl gpui::element::IntoElement for ely_interaction::RovingFocus
+impl gpui::element::IntoElement for ely_interaction::ScrollSync
+impl gpui::element::IntoElement for ely_interaction::SelectionArea
+impl gpui::element::ParentElement for ely_interaction::Resizable
+impl gpui::element::ParentElement for ely_interaction::ScrollSync
+impl gpui::element::RenderOnce for ely_interaction::Resizable
+impl gpui::element::RenderOnce for ely_interaction::Rotatable
+impl gpui::element::RenderOnce for ely_interaction::RovingFocus
+impl gpui::element::RenderOnce for ely_interaction::ScrollSync
+impl gpui::element::RenderOnce for ely_interaction::SelectionArea
+impl gpui::styled::Styled for ely_interaction::RovingFocus
+impl gpui::styled::Styled for ely_interaction::ScrollSync
+impl gpui::styled::Styled for ely_interaction::SelectionArea
+pub fn ely_interaction::Resizable::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_interaction::Resizable::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_interaction::Resizable::into_element(self) -> Self::Element
+pub fn ely_interaction::Resizable::new(impl core::convert::Into<gpui::window::ElementId>, gpui::geometry::Size<gpui::geometry::Pixels>, gpui::geometry::Size<gpui::geometry::Pixels>, gpui::geometry::Size<gpui::geometry::Pixels>, impl core::ops::function::Fn(gpui::geometry::Size<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_interaction::Resizable::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_interaction::Rotatable::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_interaction::Rotatable::into_element(self) -> Self::Element
+pub fn ely_interaction::Rotatable::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, gpui::geometry::Pixels, f32, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_interaction::Rotatable::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_interaction::RovingFocus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_interaction::RovingFocus::into_element(self) -> Self::Element
+pub fn ely_interaction::RovingFocus::item(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl gpui::element::IntoElement) -> Self
+pub fn ely_interaction::RovingFocus::new(impl core::convert::Into<gpui::window::ElementId>, gpui::geometry::Axis, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_interaction::RovingFocus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_interaction::RovingFocus::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_interaction::ScrollSync::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_interaction::ScrollSync::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_interaction::ScrollSync::into_element(self) -> Self::Element
+pub fn ely_interaction::ScrollSync::new(impl core::convert::Into<gpui::window::ElementId>, gpui::geometry::Axis) -> Self
+pub fn ely_interaction::ScrollSync::pane(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_interaction::ScrollSync::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_interaction::ScrollSync::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_interaction::SelectionArea::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_interaction::SelectionArea::into_element(self) -> Self::Element
+pub fn ely_interaction::SelectionArea::item(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl gpui::element::IntoElement) -> Self
+pub fn ely_interaction::SelectionArea::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_interaction::SelectionArea::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_interaction::SelectionArea::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_interaction::SelectionArea::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub mod ely_interaction
+pub struct ely_interaction::Resizable
+pub struct ely_interaction::Rotatable
+pub struct ely_interaction::RovingFocus
+pub struct ely_interaction::ScrollSync
+pub struct ely_interaction::SelectionArea
+pub type ely_interaction::Resizable::Element = gpui::view::ViewElement<ely_interaction::Resizable>
+pub type ely_interaction::Rotatable::Element = gpui::view::ViewElement<ely_interaction::Rotatable>
+pub type ely_interaction::RovingFocus::Element = gpui::view::ViewElement<ely_interaction::RovingFocus>
+pub type ely_interaction::ScrollSync::Element = gpui::view::ViewElement<ely_interaction::ScrollSync>
+pub type ely_interaction::SelectionArea::Element = gpui::view::ViewElement<ely_interaction::SelectionArea>
+pub use ely_interaction::Resizable = ely_interaction::resizable::Resizable
+pub use ely_interaction::Rotatable = ely_interaction::rotatable::Rotatable
+pub use ely_interaction::RovingFocus = ely_interaction::roving::RovingFocus
+pub use ely_interaction::ScrollSync = ely_interaction::sync::ScrollSync
+pub use ely_interaction::SelectionArea = ely_interaction::selection::SelectionArea

@@ -1,0 +1,346 @@
+impl core::clone::Clone for ely_calendar::Answer
+impl core::clone::Clone for ely_calendar::Attendee
+impl core::clone::Clone for ely_calendar::Ends
+impl core::clone::Clone for ely_calendar::Event
+impl core::clone::Clone for ely_calendar::EventDraft
+impl core::clone::Clone for ely_calendar::Frequency
+impl core::clone::Clone for ely_calendar::Recurrence
+impl core::clone::Clone for ely_calendar::TimezoneOverlay
+impl core::clone::Clone for ely_calendar::When
+impl core::cmp::Eq for ely_calendar::Ends
+impl core::cmp::Eq for ely_calendar::Frequency
+impl core::cmp::Eq for ely_calendar::Recurrence
+impl core::cmp::PartialEq for ely_calendar::Answer
+impl core::cmp::PartialEq for ely_calendar::Attendee
+impl core::cmp::PartialEq for ely_calendar::Ends
+impl core::cmp::PartialEq for ely_calendar::Event
+impl core::cmp::PartialEq for ely_calendar::EventDraft
+impl core::cmp::PartialEq for ely_calendar::Frequency
+impl core::cmp::PartialEq for ely_calendar::Recurrence
+impl core::cmp::PartialEq for ely_calendar::When
+impl core::fmt::Debug for ely_calendar::Answer
+impl core::fmt::Debug for ely_calendar::Attendee
+impl core::fmt::Debug for ely_calendar::Ends
+impl core::fmt::Debug for ely_calendar::Event
+impl core::fmt::Debug for ely_calendar::EventDraft
+impl core::fmt::Debug for ely_calendar::Frequency
+impl core::fmt::Debug for ely_calendar::Recurrence
+impl core::fmt::Debug for ely_calendar::TimezoneOverlay
+impl core::fmt::Debug for ely_calendar::When
+impl core::marker::Copy for ely_calendar::Answer
+impl core::marker::Copy for ely_calendar::Ends
+impl core::marker::Copy for ely_calendar::Frequency
+impl core::marker::Copy for ely_calendar::When
+impl core::marker::StructuralPartialEq for ely_calendar::Answer
+impl core::marker::StructuralPartialEq for ely_calendar::Attendee
+impl core::marker::StructuralPartialEq for ely_calendar::Ends
+impl core::marker::StructuralPartialEq for ely_calendar::Event
+impl core::marker::StructuralPartialEq for ely_calendar::EventDraft
+impl core::marker::StructuralPartialEq for ely_calendar::Frequency
+impl core::marker::StructuralPartialEq for ely_calendar::Recurrence
+impl core::marker::StructuralPartialEq for ely_calendar::When
+impl ely_calendar::AgendaView
+impl ely_calendar::AllDayRow
+impl ely_calendar::Attendee
+impl ely_calendar::AttendeeList
+impl ely_calendar::AvailabilityPicker
+impl ely_calendar::CalendarMonthView
+impl ely_calendar::CurrentTimeIndicator
+impl ely_calendar::Event
+impl ely_calendar::EventCard
+impl ely_calendar::EventChip
+impl ely_calendar::EventDraft
+impl ely_calendar::EventEditor
+impl ely_calendar::EventPopover
+impl ely_calendar::Recurrence
+impl ely_calendar::RecurrenceEditor
+impl ely_calendar::ReminderPicker
+impl ely_calendar::TimeGrid
+impl ely_calendar::TimezoneOverlay
+impl ely_calendar::YearView
+impl ely_core::primitives::capability::Changeable for ely_calendar::RecurrenceEditor
+impl ely_core::primitives::capability::Changeable for ely_calendar::ReminderPicker
+impl gpui::element::IntoElement for ely_calendar::AgendaView
+impl gpui::element::IntoElement for ely_calendar::AllDayRow
+impl gpui::element::IntoElement for ely_calendar::AttendeeList
+impl gpui::element::IntoElement for ely_calendar::AvailabilityPicker
+impl gpui::element::IntoElement for ely_calendar::CalendarMonthView
+impl gpui::element::IntoElement for ely_calendar::CurrentTimeIndicator
+impl gpui::element::IntoElement for ely_calendar::EventCard
+impl gpui::element::IntoElement for ely_calendar::EventChip
+impl gpui::element::IntoElement for ely_calendar::EventEditor
+impl gpui::element::IntoElement for ely_calendar::EventPopover
+impl gpui::element::IntoElement for ely_calendar::RecurrenceEditor
+impl gpui::element::IntoElement for ely_calendar::ReminderPicker
+impl gpui::element::IntoElement for ely_calendar::TimeGrid
+impl gpui::element::IntoElement for ely_calendar::YearView
+impl gpui::element::RenderOnce for ely_calendar::AgendaView
+impl gpui::element::RenderOnce for ely_calendar::AllDayRow
+impl gpui::element::RenderOnce for ely_calendar::AttendeeList
+impl gpui::element::RenderOnce for ely_calendar::AvailabilityPicker
+impl gpui::element::RenderOnce for ely_calendar::CalendarMonthView
+impl gpui::element::RenderOnce for ely_calendar::CurrentTimeIndicator
+impl gpui::element::RenderOnce for ely_calendar::EventCard
+impl gpui::element::RenderOnce for ely_calendar::EventChip
+impl gpui::element::RenderOnce for ely_calendar::EventEditor
+impl gpui::element::RenderOnce for ely_calendar::EventPopover
+impl gpui::element::RenderOnce for ely_calendar::RecurrenceEditor
+impl gpui::element::RenderOnce for ely_calendar::ReminderPicker
+impl gpui::element::RenderOnce for ely_calendar::TimeGrid
+impl gpui::element::RenderOnce for ely_calendar::YearView
+impl<const DAYS: usize> ely_calendar::CalendarDays<DAYS>
+impl<const DAYS: usize> gpui::element::IntoElement for ely_calendar::CalendarDays<DAYS>
+impl<const DAYS: usize> gpui::element::RenderOnce for ely_calendar::CalendarDays<DAYS>
+pub ely_calendar::Answer::Declined
+pub ely_calendar::Answer::Going
+pub ely_calendar::Answer::Maybe
+pub ely_calendar::Answer::Waiting
+pub ely_calendar::Attendee::answer: ely_calendar::Answer
+pub ely_calendar::Attendee::email: gpui_shared_string::SharedString
+pub ely_calendar::Attendee::name: gpui_shared_string::SharedString
+pub ely_calendar::Attendee::organizer: bool
+pub ely_calendar::Ends::After(u16)
+pub ely_calendar::Ends::Never
+pub ely_calendar::Ends::On(jiff::civil::date::Date)
+pub ely_calendar::Event::hue: usize
+pub ely_calendar::Event::key: gpui_shared_string::SharedString
+pub ely_calendar::Event::place: core::option::Option<gpui_shared_string::SharedString>
+pub ely_calendar::Event::title: gpui_shared_string::SharedString
+pub ely_calendar::Event::when: ely_calendar::When
+pub ely_calendar::EventDraft::hue: usize
+pub ely_calendar::EventDraft::notes: gpui_shared_string::SharedString
+pub ely_calendar::EventDraft::place: gpui_shared_string::SharedString
+pub ely_calendar::EventDraft::reminders: alloc::vec::Vec<u32>
+pub ely_calendar::EventDraft::repeat: core::option::Option<ely_calendar::Recurrence>
+pub ely_calendar::EventDraft::title: gpui_shared_string::SharedString
+pub ely_calendar::EventDraft::when: ely_calendar::When
+pub ely_calendar::Frequency::Daily
+pub ely_calendar::Frequency::Monthly
+pub ely_calendar::Frequency::Weekly
+pub ely_calendar::Frequency::Yearly
+pub ely_calendar::Recurrence::ends: ely_calendar::Ends
+pub ely_calendar::Recurrence::frequency: ely_calendar::Frequency
+pub ely_calendar::Recurrence::interval: u16
+pub ely_calendar::Recurrence::weekdays: alloc::vec::Vec<jiff::civil::weekday::Weekday>
+pub ely_calendar::When::AllDay
+pub ely_calendar::When::AllDay::first: jiff::civil::date::Date
+pub ely_calendar::When::AllDay::last: jiff::civil::date::Date
+pub ely_calendar::When::Timed
+pub ely_calendar::When::Timed::end: jiff::timestamp::Timestamp
+pub ely_calendar::When::Timed::start: jiff::timestamp::Timestamp
+pub enum ely_calendar::Answer
+pub enum ely_calendar::Ends
+pub enum ely_calendar::Frequency
+pub enum ely_calendar::When
+pub fn ely_calendar::AgendaView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::AgendaView::into_element(self) -> Self::Element
+pub fn ely_calendar::AgendaView::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, usize, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Event>) -> Self
+pub fn ely_calendar::AgendaView::on_event(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::AgendaView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::AgendaView::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_calendar::AgendaView::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::AllDayRow::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::AllDayRow::into_element(self) -> Self::Element
+pub fn ely_calendar::AllDayRow::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = jiff::civil::date::Date>, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Event>) -> Self
+pub fn ely_calendar::AllDayRow::on_event(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::AllDayRow::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::AllDayRow::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::Answer::clone(&self) -> Self
+pub fn ely_calendar::Answer::eq(&self, &Self) -> bool
+pub fn ely_calendar::Answer::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::Attendee::clone(&self) -> Self
+pub fn ely_calendar::Attendee::eq(&self, &Self) -> bool
+pub fn ely_calendar::Attendee::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::Attendee::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_calendar::Answer) -> Self
+pub fn ely_calendar::Attendee::organizer(self) -> Self
+pub fn ely_calendar::AttendeeList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::AttendeeList::into_element(self) -> Self::Element
+pub fn ely_calendar::AttendeeList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Attendee>) -> Self
+pub fn ely_calendar::AttendeeList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::AvailabilityPicker::busy(self, impl core::iter::traits::collect::IntoIterator<Item = (jiff::timestamp::Timestamp, jiff::timestamp::Timestamp)>) -> Self
+pub fn ely_calendar::AvailabilityPicker::hours(self, i8, i8) -> Self
+pub fn ely_calendar::AvailabilityPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::AvailabilityPicker::into_element(self) -> Self::Element
+pub fn ely_calendar::AvailabilityPicker::length(self, u16) -> Self
+pub fn ely_calendar::AvailabilityPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = jiff::civil::date::Date>) -> Self
+pub fn ely_calendar::AvailabilityPicker::now(self, jiff::timestamp::Timestamp) -> Self
+pub fn ely_calendar::AvailabilityPicker::on_pick(self, impl core::ops::function::Fn(jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::AvailabilityPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::AvailabilityPicker::selected(self, jiff::timestamp::Timestamp) -> Self
+pub fn ely_calendar::AvailabilityPicker::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::CalendarDays<DAYS>::into_element(self) -> Self::Element
+pub fn ely_calendar::CalendarDays<DAYS>::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Event>) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::now(self, jiff::timestamp::Timestamp) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::on_create(self, impl core::ops::function::Fn(jiff::timestamp::Timestamp, jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::on_event(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::on_resize(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::on_step(self, impl core::ops::function::Fn(jiff::civil::date::Date, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::overlay(self, ely_calendar::TimezoneOverlay) -> Self
+pub fn ely_calendar::CalendarDays<DAYS>::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::CalendarDays<DAYS>::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::CalendarMonthView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::CalendarMonthView::into_element(self) -> Self::Element
+pub fn ely_calendar::CalendarMonthView::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Event>) -> Self
+pub fn ely_calendar::CalendarMonthView::on_day(self, impl core::ops::function::Fn(jiff::civil::date::Date, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarMonthView::on_event(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarMonthView::on_month(self, impl core::ops::function::Fn(jiff::civil::date::Date, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::CalendarMonthView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::CalendarMonthView::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_calendar::CalendarMonthView::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::CurrentTimeIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::CurrentTimeIndicator::into_element(self) -> Self::Element
+pub fn ely_calendar::CurrentTimeIndicator::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_calendar::CurrentTimeIndicator::now(self, jiff::timestamp::Timestamp) -> Self
+pub fn ely_calendar::CurrentTimeIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::CurrentTimeIndicator::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::Ends::clone(&self) -> Self
+pub fn ely_calendar::Ends::eq(&self, &Self) -> bool
+pub fn ely_calendar::Ends::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::Event::all_day(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::civil::date::Date, jiff::civil::date::Date, usize) -> Self
+pub fn ely_calendar::Event::clone(&self) -> Self
+pub fn ely_calendar::Event::eq(&self, &Self) -> bool
+pub fn ely_calendar::Event::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::Event::place(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_calendar::Event::timed(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::timestamp::Timestamp, jiff::timestamp::Timestamp, usize) -> Self
+pub fn ely_calendar::EventCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::EventCard::into_element(self) -> Self::Element
+pub fn ely_calendar::EventCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_calendar::Event) -> Self
+pub fn ely_calendar::EventCard::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::EventCard::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::EventChip::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::EventChip::into_element(self) -> Self::Element
+pub fn ely_calendar::EventChip::new(impl core::convert::Into<gpui::window::ElementId>, ely_calendar::Event) -> Self
+pub fn ely_calendar::EventChip::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventChip::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::EventChip::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::EventDraft::clone(&self) -> Self
+pub fn ely_calendar::EventDraft::eq(&self, &Self) -> bool
+pub fn ely_calendar::EventDraft::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::EventDraft::of(&ely_calendar::Event) -> Self
+pub fn ely_calendar::EventEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::EventEditor::into_element(self) -> Self::Element
+pub fn ely_calendar::EventEditor::new(impl core::convert::Into<gpui::window::ElementId>, ely_calendar::EventDraft) -> Self
+pub fn ely_calendar::EventEditor::on_cancel(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventEditor::on_delete(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventEditor::on_save(self, impl core::ops::function::Fn(&ely_calendar::EventDraft, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::EventEditor::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::EventPopover::attendees(self, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Attendee>) -> Self
+pub fn ely_calendar::EventPopover::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::EventPopover::into_element(self) -> Self::Element
+pub fn ely_calendar::EventPopover::new(impl core::convert::Into<gpui::window::ElementId>, ely_calendar::Event) -> Self
+pub fn ely_calendar::EventPopover::on_delete(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventPopover::on_edit(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::EventPopover::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::EventPopover::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::Frequency::clone(&self) -> Self
+pub fn ely_calendar::Frequency::eq(&self, &Self) -> bool
+pub fn ely_calendar::Frequency::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::Recurrence::clone(&self) -> Self
+pub fn ely_calendar::Recurrence::days(&self, jiff::civil::date::Date, usize) -> alloc::vec::Vec<jiff::civil::date::Date>
+pub fn ely_calendar::Recurrence::describe(&self, jiff::civil::date::Date) -> alloc::string::String
+pub fn ely_calendar::Recurrence::eq(&self, &Self) -> bool
+pub fn ely_calendar::Recurrence::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::Recurrence::new(ely_calendar::Frequency) -> Self
+pub fn ely_calendar::RecurrenceEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::RecurrenceEditor::into_element(self) -> Self::Element
+pub fn ely_calendar::RecurrenceEditor::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, core::option::Option<ely_calendar::Recurrence>) -> Self
+pub fn ely_calendar::RecurrenceEditor::on_change(self, impl core::ops::function::Fn(core::option::Option<ely_calendar::Recurrence>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::RecurrenceEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::ReminderPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::ReminderPicker::into_element(self) -> Self::Element
+pub fn ely_calendar::ReminderPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = u32>) -> Self
+pub fn ely_calendar::ReminderPicker::on_change(self, impl core::ops::function::Fn(&[u32], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::ReminderPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::TimeGrid::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::TimeGrid::into_element(self) -> Self::Element
+pub fn ely_calendar::TimeGrid::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = jiff::civil::date::Date>, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Event>) -> Self
+pub fn ely_calendar::TimeGrid::now(self, jiff::timestamp::Timestamp) -> Self
+pub fn ely_calendar::TimeGrid::on_create(self, impl core::ops::function::Fn(jiff::timestamp::Timestamp, jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::TimeGrid::on_event(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::TimeGrid::on_resize(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::TimeGrid::overlay(self, ely_calendar::TimezoneOverlay) -> Self
+pub fn ely_calendar::TimeGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::TimeGrid::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::TimezoneOverlay::clone(&self) -> Self
+pub fn ely_calendar::TimezoneOverlay::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::TimezoneOverlay::new(jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_calendar::When::clone(&self) -> Self
+pub fn ely_calendar::When::eq(&self, &Self) -> bool
+pub fn ely_calendar::When::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_calendar::YearView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_calendar::YearView::into_element(self) -> Self::Element
+pub fn ely_calendar::YearView::new(impl core::convert::Into<gpui::window::ElementId>, i16, impl core::iter::traits::collect::IntoIterator<Item = ely_calendar::Event>) -> Self
+pub fn ely_calendar::YearView::on_day(self, impl core::ops::function::Fn(jiff::civil::date::Date, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::YearView::on_year(self, impl core::ops::function::Fn(i16, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_calendar::YearView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_calendar::YearView::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_calendar::YearView::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub mod ely_calendar
+pub struct ely_calendar::AgendaView
+pub struct ely_calendar::AllDayRow
+pub struct ely_calendar::Attendee
+pub struct ely_calendar::AttendeeList
+pub struct ely_calendar::AvailabilityPicker
+pub struct ely_calendar::CalendarDays<const DAYS: usize>
+pub struct ely_calendar::CalendarMonthView
+pub struct ely_calendar::CurrentTimeIndicator
+pub struct ely_calendar::Event
+pub struct ely_calendar::EventCard
+pub struct ely_calendar::EventChip
+pub struct ely_calendar::EventDraft
+pub struct ely_calendar::EventEditor
+pub struct ely_calendar::EventPopover
+pub struct ely_calendar::Recurrence
+pub struct ely_calendar::RecurrenceEditor
+pub struct ely_calendar::ReminderPicker
+pub struct ely_calendar::TimeGrid
+pub struct ely_calendar::TimezoneOverlay
+pub struct ely_calendar::YearView
+pub type ely_calendar::AgendaView::Element = gpui::view::ViewElement<ely_calendar::AgendaView>
+pub type ely_calendar::AllDayRow::Element = gpui::view::ViewElement<ely_calendar::AllDayRow>
+pub type ely_calendar::AttendeeList::Element = gpui::view::ViewElement<ely_calendar::AttendeeList>
+pub type ely_calendar::AvailabilityPicker::Element = gpui::view::ViewElement<ely_calendar::AvailabilityPicker>
+pub type ely_calendar::CalendarDayView = ely_calendar::CalendarDays<1>
+pub type ely_calendar::CalendarDays<DAYS>::Element = gpui::view::ViewElement<ely_calendar::CalendarDays<DAYS>>
+pub type ely_calendar::CalendarMonthView::Element = gpui::view::ViewElement<ely_calendar::CalendarMonthView>
+pub type ely_calendar::CalendarWeekView = ely_calendar::CalendarDays<7>
+pub type ely_calendar::CurrentTimeIndicator::Element = gpui::view::ViewElement<ely_calendar::CurrentTimeIndicator>
+pub type ely_calendar::EventCard::Element = gpui::view::ViewElement<ely_calendar::EventCard>
+pub type ely_calendar::EventChip::Element = gpui::view::ViewElement<ely_calendar::EventChip>
+pub type ely_calendar::EventEditor::Element = gpui::view::ViewElement<ely_calendar::EventEditor>
+pub type ely_calendar::EventPopover::Element = gpui::view::ViewElement<ely_calendar::EventPopover>
+pub type ely_calendar::RecurrenceEditor::Element = gpui::view::ViewElement<ely_calendar::RecurrenceEditor>
+pub type ely_calendar::RecurrenceEditor::Value<'a> = core::option::Option<ely_calendar::Recurrence>
+pub type ely_calendar::ReminderPicker::Element = gpui::view::ViewElement<ely_calendar::ReminderPicker>
+pub type ely_calendar::ReminderPicker::Value<'a> = &'a [u32]
+pub type ely_calendar::TimeGrid::Element = gpui::view::ViewElement<ely_calendar::TimeGrid>
+pub type ely_calendar::YearView::Element = gpui::view::ViewElement<ely_calendar::YearView>
+pub use ely_calendar::AgendaView = ely_calendar::agenda::AgendaView
+pub use ely_calendar::AllDayRow = ely_calendar::allday::AllDayRow
+pub use ely_calendar::Answer = ely_calendar::people::Answer
+pub use ely_calendar::Attendee = ely_calendar::people::Attendee
+pub use ely_calendar::AttendeeList = ely_calendar::people::AttendeeList
+pub use ely_calendar::AvailabilityPicker = ely_calendar::availability::AvailabilityPicker
+pub use ely_calendar::CalendarDayView = ely_calendar::days::CalendarDayView
+pub use ely_calendar::CalendarDays = ely_calendar::days::CalendarDays
+pub use ely_calendar::CalendarMonthView = ely_calendar::month::CalendarMonthView
+pub use ely_calendar::CalendarWeekView = ely_calendar::days::CalendarWeekView
+pub use ely_calendar::CurrentTimeIndicator = ely_calendar::now::CurrentTimeIndicator
+pub use ely_calendar::Ends = ely_calendar::repeat::Ends
+pub use ely_calendar::Event = ely_calendar::event::Event
+pub use ely_calendar::EventCard = ely_calendar::card::EventCard
+pub use ely_calendar::EventChip = ely_calendar::chip::EventChip
+pub use ely_calendar::EventDraft = ely_calendar::editor::EventDraft
+pub use ely_calendar::EventEditor = ely_calendar::editor::EventEditor
+pub use ely_calendar::EventPopover = ely_calendar::popover::EventPopover
+pub use ely_calendar::Frequency = ely_calendar::repeat::Frequency
+pub use ely_calendar::Recurrence = ely_calendar::repeat::Recurrence
+pub use ely_calendar::RecurrenceEditor = ely_calendar::recurrence::RecurrenceEditor
+pub use ely_calendar::ReminderPicker = ely_calendar::reminders::ReminderPicker
+pub use ely_calendar::TimeGrid = ely_calendar::grid::TimeGrid
+pub use ely_calendar::TimezoneOverlay = ely_calendar::grid::TimezoneOverlay
+pub use ely_calendar::When = ely_calendar::event::When
+pub use ely_calendar::YearView = ely_calendar::year::YearView

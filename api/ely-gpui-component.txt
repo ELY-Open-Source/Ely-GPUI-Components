@@ -1,0 +1,97 @@
+pub fn ely_gpui_component::init(&mut gpui::app::App) -> anyhow::Result<()>
+pub fn ely_gpui_component::init_for_tests(&mut gpui::app::App)  [with: test-support, all]
+pub mod ely_gpui_component
+pub use ely_gpui_component::Assets
+pub use ely_gpui_component::Assets = ely_core::assets::Assets
+pub use ely_gpui_component::Before
+pub use ely_gpui_component::Before = ely_core::assets::Before
+pub use ely_gpui_component::account
+pub use ely_gpui_component::account = ely_account
+pub use ely_gpui_component::agent
+pub use ely_gpui_component::agent = ely_agent
+pub use ely_gpui_component::buttons
+pub use ely_gpui_component::buttons = ely_core::buttons
+pub use ely_gpui_component::calendar
+pub use ely_gpui_component::calendar = ely_calendar
+pub use ely_gpui_component::canvas
+pub use ely_gpui_component::canvas = ely_canvas
+pub use ely_gpui_component::charts
+pub use ely_gpui_component::charts = ely_charts
+pub use ely_gpui_component::chat
+pub use ely_gpui_component::chat = ely_chat
+pub use ely_gpui_component::collab
+pub use ely_gpui_component::collab = ely_collab
+pub use ely_gpui_component::dashboard
+pub use ely_gpui_component::dashboard = ely_dashboard
+pub use ely_gpui_component::data_display
+pub use ely_gpui_component::data_display = ely_core::data_display
+pub use ely_gpui_component::debug
+pub use ely_gpui_component::debug = ely_debug
+pub use ely_gpui_component::desktop
+pub use ely_gpui_component::desktop = ely_desktop
+pub use ely_gpui_component::devtools
+pub use ely_gpui_component::devtools = ely_devtools
+pub use ely_gpui_component::documents
+pub use ely_gpui_component::documents = ely_documents
+pub use ely_gpui_component::editor
+pub use ely_gpui_component::editor = ely_editor
+pub use ely_gpui_component::feedback
+pub use ely_gpui_component::feedback = ely_core::feedback
+pub use ely_gpui_component::files
+pub use ely_gpui_component::files = ely_files
+pub use ely_gpui_component::finance
+pub use ely_gpui_component::finance = ely_finance
+pub use ely_gpui_component::forms
+pub use ely_gpui_component::forms = ely_core::forms
+pub use ely_gpui_component::generative
+pub use ely_gpui_component::generative = ely_generative
+pub use ely_gpui_component::git
+pub use ely_gpui_component::git = ely_git
+pub use ely_gpui_component::i18n
+pub use ely_gpui_component::i18n = ely_core::i18n
+pub use ely_gpui_component::interaction
+pub use ely_gpui_component::interaction = ely_interaction
+pub use ely_gpui_component::layout
+pub use ely_gpui_component::layout = ely_core::layout
+pub use ely_gpui_component::lists
+pub use ely_gpui_component::lists = ely_core::lists
+pub use ely_gpui_component::mail
+pub use ely_gpui_component::mail = ely_mail
+pub use ely_gpui_component::maps
+pub use ely_gpui_component::maps = ely_maps
+pub use ely_gpui_component::media
+pub use ely_gpui_component::media = ely_media
+pub use ely_gpui_component::menus
+pub use ely_gpui_component::menus = ely_core::menus
+pub use ely_gpui_component::messaging
+pub use ely_gpui_component::messaging = ely_messaging
+pub use ely_gpui_component::misc
+pub use ely_gpui_component::misc = ely_misc
+pub use ely_gpui_component::motion
+pub use ely_gpui_component::motion = ely_core::motion
+pub use ely_gpui_component::navigation
+pub use ely_gpui_component::navigation = ely_core::navigation
+pub use ely_gpui_component::onboarding
+pub use ely_gpui_component::onboarding = ely_onboarding
+pub use ely_gpui_component::overlays
+pub use ely_gpui_component::overlays = ely_core::overlays
+pub use ely_gpui_component::primitives
+pub use ely_gpui_component::primitives = ely_core::primitives
+pub use ely_gpui_component::project
+pub use ely_gpui_component::project = ely_project
+pub use ely_gpui_component::rendering
+pub use ely_gpui_component::rendering = ely_rendering
+pub use ely_gpui_component::settings
+pub use ely_gpui_component::settings = ely_settings
+pub use ely_gpui_component::shell
+pub use ely_gpui_component::shell = ely_core::shell
+pub use ely_gpui_component::tables
+pub use ely_gpui_component::tables = ely_core::tables
+pub use ely_gpui_component::terminal
+pub use ely_gpui_component::terminal = ely_terminal
+pub use ely_gpui_component::theme
+pub use ely_gpui_component::theme = ely_core::theme
+pub use ely_gpui_component::tooling
+pub use ely_gpui_component::tooling = ely_tooling
+pub use ely_gpui_component::typography
+pub use ely_gpui_component::typography = ely_core::typography

@@ -1,0 +1,475 @@
+impl core::clone::Clone for ely_generative::Download
+impl core::clone::Clone for ely_generative::DownloadState
+impl core::clone::Clone for ely_generative::Embedded
+impl core::clone::Clone for ely_generative::Job
+impl core::clone::Clone for ely_generative::JobState
+impl core::clone::Clone for ely_generative::MaskStroke
+impl core::clone::Clone for ely_generative::ModelState
+impl core::clone::Clone for ely_generative::Outcome
+impl core::clone::Clone for ely_generative::PromptVersion
+impl core::clone::Clone for ely_generative::Reading
+impl core::clone::Clone for ely_generative::Shot
+impl core::clone::Clone for ely_generative::StylePreset
+impl core::clone::Clone for ely_generative::TunePhase
+impl core::clone::Clone for ely_generative::Verdict
+impl core::clone::Clone for ely_generative::Voice
+impl core::cmp::Eq for ely_generative::Verdict
+impl core::cmp::PartialEq for ely_generative::Download
+impl core::cmp::PartialEq for ely_generative::DownloadState
+impl core::cmp::PartialEq for ely_generative::Embedded
+impl core::cmp::PartialEq for ely_generative::Job
+impl core::cmp::PartialEq for ely_generative::JobState
+impl core::cmp::PartialEq for ely_generative::MaskStroke
+impl core::cmp::PartialEq for ely_generative::ModelState
+impl core::cmp::PartialEq for ely_generative::Outcome
+impl core::cmp::PartialEq for ely_generative::PromptVersion
+impl core::cmp::PartialEq for ely_generative::Reading
+impl core::cmp::PartialEq for ely_generative::Shot
+impl core::cmp::PartialEq for ely_generative::StylePreset
+impl core::cmp::PartialEq for ely_generative::TunePhase
+impl core::cmp::PartialEq for ely_generative::Verdict
+impl core::cmp::PartialEq for ely_generative::Voice
+impl core::fmt::Debug for ely_generative::Download
+impl core::fmt::Debug for ely_generative::DownloadState
+impl core::fmt::Debug for ely_generative::Embedded
+impl core::fmt::Debug for ely_generative::Job
+impl core::fmt::Debug for ely_generative::JobState
+impl core::fmt::Debug for ely_generative::MaskStroke
+impl core::fmt::Debug for ely_generative::ModelState
+impl core::fmt::Debug for ely_generative::Outcome
+impl core::fmt::Debug for ely_generative::PromptVersion
+impl core::fmt::Debug for ely_generative::Reading
+impl core::fmt::Debug for ely_generative::Shot
+impl core::fmt::Debug for ely_generative::StylePreset
+impl core::fmt::Debug for ely_generative::TunePhase
+impl core::fmt::Debug for ely_generative::Verdict
+impl core::fmt::Debug for ely_generative::Voice
+impl core::marker::Copy for ely_generative::Verdict
+impl core::marker::StructuralPartialEq for ely_generative::Download
+impl core::marker::StructuralPartialEq for ely_generative::DownloadState
+impl core::marker::StructuralPartialEq for ely_generative::Embedded
+impl core::marker::StructuralPartialEq for ely_generative::Job
+impl core::marker::StructuralPartialEq for ely_generative::JobState
+impl core::marker::StructuralPartialEq for ely_generative::MaskStroke
+impl core::marker::StructuralPartialEq for ely_generative::ModelState
+impl core::marker::StructuralPartialEq for ely_generative::Outcome
+impl core::marker::StructuralPartialEq for ely_generative::PromptVersion
+impl core::marker::StructuralPartialEq for ely_generative::Reading
+impl core::marker::StructuralPartialEq for ely_generative::Shot
+impl core::marker::StructuralPartialEq for ely_generative::StylePreset
+impl core::marker::StructuralPartialEq for ely_generative::TunePhase
+impl core::marker::StructuralPartialEq for ely_generative::Verdict
+impl core::marker::StructuralPartialEq for ely_generative::Voice
+impl ely_generative::ABCompareView
+impl ely_generative::AspectRatioPicker
+impl ely_generative::AudioGenerationPlayer
+impl ely_generative::EmbeddingVisualizer
+impl ely_generative::FineTuneJobCard
+impl ely_generative::GenerationGrid
+impl ely_generative::GenerationQueue
+impl ely_generative::HardwareMonitor
+impl ely_generative::InpaintCanvas
+impl ely_generative::MaskBrush
+impl ely_generative::ModelCard
+impl ely_generative::ModelDownloadManager
+impl ely_generative::ModelStatus
+impl ely_generative::PromptDiff
+impl ely_generative::PromptEnhancer
+impl ely_generative::PromptPlayground
+impl ely_generative::PromptVersionHistory
+impl ely_generative::SeedInput
+impl ely_generative::StylePresetPicker
+impl ely_generative::TTSVoicePicker
+impl ely_generative::VariationPicker
+impl ely_generative::VideoGenerationTimeline
+impl gpui::element::IntoElement for ely_generative::ABCompareView
+impl gpui::element::IntoElement for ely_generative::AspectRatioPicker
+impl gpui::element::IntoElement for ely_generative::AudioGenerationPlayer
+impl gpui::element::IntoElement for ely_generative::EmbeddingVisualizer
+impl gpui::element::IntoElement for ely_generative::FineTuneJobCard
+impl gpui::element::IntoElement for ely_generative::GenerationGrid
+impl gpui::element::IntoElement for ely_generative::GenerationQueue
+impl gpui::element::IntoElement for ely_generative::HardwareMonitor
+impl gpui::element::IntoElement for ely_generative::InpaintCanvas
+impl gpui::element::IntoElement for ely_generative::MaskBrush
+impl gpui::element::IntoElement for ely_generative::ModelCard
+impl gpui::element::IntoElement for ely_generative::ModelDownloadManager
+impl gpui::element::IntoElement for ely_generative::ModelStatus
+impl gpui::element::IntoElement for ely_generative::PromptDiff
+impl gpui::element::IntoElement for ely_generative::PromptEnhancer
+impl gpui::element::IntoElement for ely_generative::PromptPlayground
+impl gpui::element::IntoElement for ely_generative::PromptVersionHistory
+impl gpui::element::IntoElement for ely_generative::SeedInput
+impl gpui::element::IntoElement for ely_generative::StylePresetPicker
+impl gpui::element::IntoElement for ely_generative::TTSVoicePicker
+impl gpui::element::IntoElement for ely_generative::VariationPicker
+impl gpui::element::IntoElement for ely_generative::VideoGenerationTimeline
+impl gpui::element::RenderOnce for ely_generative::ABCompareView
+impl gpui::element::RenderOnce for ely_generative::AspectRatioPicker
+impl gpui::element::RenderOnce for ely_generative::AudioGenerationPlayer
+impl gpui::element::RenderOnce for ely_generative::EmbeddingVisualizer
+impl gpui::element::RenderOnce for ely_generative::FineTuneJobCard
+impl gpui::element::RenderOnce for ely_generative::GenerationGrid
+impl gpui::element::RenderOnce for ely_generative::GenerationQueue
+impl gpui::element::RenderOnce for ely_generative::HardwareMonitor
+impl gpui::element::RenderOnce for ely_generative::InpaintCanvas
+impl gpui::element::RenderOnce for ely_generative::MaskBrush
+impl gpui::element::RenderOnce for ely_generative::ModelCard
+impl gpui::element::RenderOnce for ely_generative::ModelDownloadManager
+impl gpui::element::RenderOnce for ely_generative::ModelStatus
+impl gpui::element::RenderOnce for ely_generative::PromptDiff
+impl gpui::element::RenderOnce for ely_generative::PromptEnhancer
+impl gpui::element::RenderOnce for ely_generative::PromptPlayground
+impl gpui::element::RenderOnce for ely_generative::PromptVersionHistory
+impl gpui::element::RenderOnce for ely_generative::SeedInput
+impl gpui::element::RenderOnce for ely_generative::StylePresetPicker
+impl gpui::element::RenderOnce for ely_generative::TTSVoicePicker
+impl gpui::element::RenderOnce for ely_generative::VariationPicker
+impl gpui::element::RenderOnce for ely_generative::VideoGenerationTimeline
+pub ely_generative::Download::bytes: u64
+pub ely_generative::Download::key: gpui_shared_string::SharedString
+pub ely_generative::Download::name: gpui_shared_string::SharedString
+pub ely_generative::Download::state: ely_generative::DownloadState
+pub ely_generative::DownloadState::Done
+pub ely_generative::DownloadState::Failed(gpui_shared_string::SharedString)
+pub ely_generative::DownloadState::Fetching(f32, u64)
+pub ely_generative::DownloadState::Paused(f32)
+pub ely_generative::DownloadState::Queued
+pub ely_generative::Embedded::at: [f32; 3]
+pub ely_generative::Embedded::group: usize
+pub ely_generative::Embedded::key: gpui_shared_string::SharedString
+pub ely_generative::Embedded::label: gpui_shared_string::SharedString
+pub ely_generative::Job::key: gpui_shared_string::SharedString
+pub ely_generative::Job::picture: core::option::Option<gpui_shared_string::SharedString>
+pub ely_generative::Job::prompt: gpui_shared_string::SharedString
+pub ely_generative::Job::state: ely_generative::JobState
+pub ely_generative::JobState::Done(core::time::Duration)
+pub ely_generative::JobState::Failed(gpui_shared_string::SharedString)
+pub ely_generative::JobState::Queued(usize)
+pub ely_generative::JobState::Running(f32, core::option::Option<core::time::Duration>)
+pub ely_generative::MaskStroke::erase: bool
+pub ely_generative::MaskStroke::points: alloc::vec::Vec<(f32, f32)>
+pub ely_generative::MaskStroke::radius: f32
+pub ely_generative::ModelState::Failed(gpui_shared_string::SharedString)
+pub ely_generative::ModelState::Idle
+pub ely_generative::ModelState::Loading(f32)
+pub ely_generative::ModelState::Ready
+pub ely_generative::Outcome::Done(gpui_shared_string::SharedString)
+pub ely_generative::Outcome::Failed(gpui_shared_string::SharedString)
+pub ely_generative::Outcome::Pending(core::option::Option<f32>)
+pub ely_generative::PromptVersion::at: jiff::timestamp::Timestamp
+pub ely_generative::PromptVersion::author: gpui_shared_string::SharedString
+pub ely_generative::PromptVersion::key: gpui_shared_string::SharedString
+pub ely_generative::PromptVersion::note: gpui_shared_string::SharedString
+pub ely_generative::PromptVersion::text: gpui_shared_string::SharedString
+pub ely_generative::Reading::detail: gpui_shared_string::SharedString
+pub ely_generative::Reading::history: alloc::vec::Vec<f32>
+pub ely_generative::Reading::name: gpui_shared_string::SharedString
+pub ely_generative::Reading::share: f32
+pub ely_generative::Shot::key: gpui_shared_string::SharedString
+pub ely_generative::Shot::length: core::time::Duration
+pub ely_generative::Shot::outcome: ely_generative::Outcome
+pub ely_generative::Shot::prompt: gpui_shared_string::SharedString
+pub ely_generative::StylePreset::key: gpui_shared_string::SharedString
+pub ely_generative::StylePreset::name: gpui_shared_string::SharedString
+pub ely_generative::StylePreset::picture: core::option::Option<gpui_shared_string::SharedString>
+pub ely_generative::TunePhase::Canceled
+pub ely_generative::TunePhase::Done
+pub ely_generative::TunePhase::Failed(gpui_shared_string::SharedString)
+pub ely_generative::TunePhase::Queued(usize)
+pub ely_generative::TunePhase::Running(usize, usize, f32)
+pub ely_generative::Verdict::Side(usize)
+pub ely_generative::Verdict::Tie
+pub ely_generative::Voice::about: gpui_shared_string::SharedString
+pub ely_generative::Voice::key: gpui_shared_string::SharedString
+pub ely_generative::Voice::name: gpui_shared_string::SharedString
+pub ely_generative::Voice::tags: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub enum ely_generative::DownloadState
+pub enum ely_generative::JobState
+pub enum ely_generative::ModelState
+pub enum ely_generative::Outcome
+pub enum ely_generative::TunePhase
+pub enum ely_generative::Verdict
+pub fn ely_generative::ABCompareView::blind(self) -> Self
+pub fn ely_generative::ABCompareView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::ABCompareView::into_element(self) -> Self::Element
+pub fn ely_generative::ABCompareView::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_generative::ABCompareView::on_verdict(self, impl core::ops::function::Fn(ely_generative::Verdict, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ABCompareView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::ABCompareView::side(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl gpui::element::IntoElement) -> Self
+pub fn ely_generative::ABCompareView::verdict(self, ely_generative::Verdict) -> Self
+pub fn ely_generative::AspectRatioPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::AspectRatioPicker::into_element(self) -> Self::Element
+pub fn ely_generative::AspectRatioPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (u32, u32)>, (u32, u32)) -> Self
+pub fn ely_generative::AspectRatioPicker::on_select(self, impl core::ops::function::Fn((u32, u32), &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::AspectRatioPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::AudioGenerationPlayer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::AudioGenerationPlayer::into_element(self) -> Self::Element
+pub fn ely_generative::AudioGenerationPlayer::making(self, f32) -> Self
+pub fn ely_generative::AudioGenerationPlayer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<alloc::vec::Vec<f32>>, core::time::Duration) -> Self
+pub fn ely_generative::AudioGenerationPlayer::on_download(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::AudioGenerationPlayer::on_regenerate(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::AudioGenerationPlayer::on_seek(self, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::AudioGenerationPlayer::on_toggle(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::AudioGenerationPlayer::played(self, core::time::Duration, bool) -> Self
+pub fn ely_generative::AudioGenerationPlayer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::Download::clone(&self) -> Self
+pub fn ely_generative::Download::eq(&self, &Self) -> bool
+pub fn ely_generative::Download::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::DownloadState::clone(&self) -> Self
+pub fn ely_generative::DownloadState::eq(&self, &Self) -> bool
+pub fn ely_generative::DownloadState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::Embedded::clone(&self) -> Self
+pub fn ely_generative::Embedded::eq(&self, &Self) -> bool
+pub fn ely_generative::Embedded::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::EmbeddingVisualizer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::EmbeddingVisualizer::into_element(self) -> Self::Element
+pub fn ely_generative::EmbeddingVisualizer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Embedded>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_generative::EmbeddingVisualizer::ratio(self, f32) -> Self
+pub fn ely_generative::EmbeddingVisualizer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::EmbeddingVisualizer::three_dimensions(self, bool) -> Self
+pub fn ely_generative::FineTuneJobCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::FineTuneJobCard::into_element(self) -> Self::Element
+pub fn ely_generative::FineTuneJobCard::loss(self, impl core::convert::Into<alloc::vec::Vec<f64>>, impl core::convert::Into<alloc::vec::Vec<f64>>) -> Self
+pub fn ely_generative::FineTuneJobCard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_generative::TunePhase) -> Self
+pub fn ely_generative::FineTuneJobCard::on_cancel(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::FineTuneJobCard::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::FineTuneJobCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::GenerationGrid::columns(self, u16) -> Self
+pub fn ely_generative::GenerationGrid::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::GenerationGrid::into_element(self) -> Self::Element
+pub fn ely_generative::GenerationGrid::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Outcome>, f32) -> Self
+pub fn ely_generative::GenerationGrid::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::GenerationGrid::on_retry(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::GenerationGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::GenerationQueue::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::GenerationQueue::into_element(self) -> Self::Element
+pub fn ely_generative::GenerationQueue::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Job>) -> Self
+pub fn ely_generative::GenerationQueue::on_cancel(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::GenerationQueue::on_remove(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::GenerationQueue::on_retry(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::GenerationQueue::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::HardwareMonitor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::HardwareMonitor::into_element(self) -> Self::Element
+pub fn ely_generative::HardwareMonitor::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Reading>) -> Self
+pub fn ely_generative::HardwareMonitor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::InpaintCanvas::brush(self, f32, bool) -> Self
+pub fn ely_generative::InpaintCanvas::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::InpaintCanvas::into_element(self) -> Self::Element
+pub fn ely_generative::InpaintCanvas::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, f32, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::MaskStroke>) -> Self
+pub fn ely_generative::InpaintCanvas::on_brush(self, impl core::ops::function::Fn(f32, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::InpaintCanvas::on_stroke(self, impl core::ops::function::Fn(ely_generative::MaskStroke, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::InpaintCanvas::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::Job::clone(&self) -> Self
+pub fn ely_generative::Job::eq(&self, &Self) -> bool
+pub fn ely_generative::Job::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::JobState::clone(&self) -> Self
+pub fn ely_generative::JobState::eq(&self, &Self) -> bool
+pub fn ely_generative::JobState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::MaskBrush::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::MaskBrush::into_element(self) -> Self::Element
+pub fn ely_generative::MaskBrush::new(impl core::convert::Into<gpui::window::ElementId>, f32, bool, usize) -> Self
+pub fn ely_generative::MaskBrush::on_brush(self, impl core::ops::function::Fn(f32, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::MaskBrush::on_clear(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::MaskBrush::on_undo(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::MaskBrush::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::MaskStroke::clone(&self) -> Self
+pub fn ely_generative::MaskStroke::eq(&self, &Self) -> bool
+pub fn ely_generative::MaskStroke::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::ModelCard::fact(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::ModelCard::in_use(self, bool) -> Self
+pub fn ely_generative::ModelCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::ModelCard::into_element(self) -> Self::Element
+pub fn ely_generative::ModelCard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::ModelCard::on_use(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ModelCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::ModelCard::tag(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::ModelDownloadManager::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::ModelDownloadManager::into_element(self) -> Self::Element
+pub fn ely_generative::ModelDownloadManager::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Download>) -> Self
+pub fn ely_generative::ModelDownloadManager::on_cancel(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ModelDownloadManager::on_delete(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ModelDownloadManager::on_pause(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ModelDownloadManager::on_resume(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ModelDownloadManager::on_retry(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::ModelDownloadManager::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::ModelState::clone(&self) -> Self
+pub fn ely_generative::ModelState::eq(&self, &Self) -> bool
+pub fn ely_generative::ModelState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::ModelStatus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::ModelStatus::into_element(self) -> Self::Element
+pub fn ely_generative::ModelStatus::memory(self, u64, u64) -> Self
+pub fn ely_generative::ModelStatus::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_generative::ModelState) -> Self
+pub fn ely_generative::ModelStatus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::Outcome::clone(&self) -> Self
+pub fn ely_generative::Outcome::eq(&self, &Self) -> bool
+pub fn ely_generative::Outcome::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::PromptDiff::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::PromptDiff::into_element(self) -> Self::Element
+pub fn ely_generative::PromptDiff::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::PromptDiff::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::PromptEnhancer::enhancing(self, bool) -> Self
+pub fn ely_generative::PromptEnhancer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::PromptEnhancer::into_element(self) -> Self::Element
+pub fn ely_generative::PromptEnhancer::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_generative::PromptEnhancer::on_enhance(self, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::PromptEnhancer::on_resolve(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::PromptEnhancer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::PromptEnhancer::suggestion(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::PromptPlayground::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::PromptPlayground::into_element(self) -> Self::Element
+pub fn ely_generative::PromptPlayground::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_generative::PromptPlayground::on_run(self, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::PromptPlayground::output(self, impl core::convert::Into<gpui_shared_string::SharedString>, usize, core::time::Duration) -> Self
+pub fn ely_generative::PromptPlayground::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::PromptPlayground::running(self, bool) -> Self
+pub fn ely_generative::PromptVersion::clone(&self) -> Self
+pub fn ely_generative::PromptVersion::eq(&self, &Self) -> bool
+pub fn ely_generative::PromptVersion::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::PromptVersionHistory::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::PromptVersionHistory::into_element(self) -> Self::Element
+pub fn ely_generative::PromptVersionHistory::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::PromptVersion>, usize) -> Self
+pub fn ely_generative::PromptVersionHistory::on_choose(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::PromptVersionHistory::on_restore(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::PromptVersionHistory::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::Reading::clone(&self) -> Self
+pub fn ely_generative::Reading::eq(&self, &Self) -> bool
+pub fn ely_generative::Reading::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::SeedInput::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::SeedInput::into_element(self) -> Self::Element
+pub fn ely_generative::SeedInput::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_generative::SeedInput::read(&gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, &gpui::app::App) -> core::option::Option<u32>
+pub fn ely_generative::SeedInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::Shot::clone(&self) -> Self
+pub fn ely_generative::Shot::eq(&self, &Self) -> bool
+pub fn ely_generative::Shot::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::StylePreset::clone(&self) -> Self
+pub fn ely_generative::StylePreset::eq(&self, &Self) -> bool
+pub fn ely_generative::StylePreset::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::StylePresetPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::StylePresetPicker::into_element(self) -> Self::Element
+pub fn ely_generative::StylePresetPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::StylePreset>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::StylePresetPicker::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::StylePresetPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::TTSVoicePicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::TTSVoicePicker::into_element(self) -> Self::Element
+pub fn ely_generative::TTSVoicePicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Voice>) -> Self
+pub fn ely_generative::TTSVoicePicker::on_play(self, impl core::ops::function::Fn(core::option::Option<gpui_shared_string::SharedString>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::TTSVoicePicker::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::TTSVoicePicker::playing(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::TTSVoicePicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::TTSVoicePicker::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::TunePhase::clone(&self) -> Self
+pub fn ely_generative::TunePhase::eq(&self, &Self) -> bool
+pub fn ely_generative::TunePhase::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::VariationPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::VariationPicker::into_element(self) -> Self::Element
+pub fn ely_generative::VariationPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, f32, usize) -> Self
+pub fn ely_generative::VariationPicker::on_choose(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::VariationPicker::on_upscale(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::VariationPicker::on_vary(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::VariationPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::Verdict::clone(&self) -> Self
+pub fn ely_generative::Verdict::eq(&self, &Self) -> bool
+pub fn ely_generative::Verdict::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_generative::VideoGenerationTimeline::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_generative::VideoGenerationTimeline::into_element(self) -> Self::Element
+pub fn ely_generative::VideoGenerationTimeline::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_generative::Shot>, core::time::Duration) -> Self
+pub fn ely_generative::VideoGenerationTimeline::on_extend(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::VideoGenerationTimeline::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_generative::VideoGenerationTimeline::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_generative::VideoGenerationTimeline::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_generative::Voice::clone(&self) -> Self
+pub fn ely_generative::Voice::eq(&self, &Self) -> bool
+pub fn ely_generative::Voice::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub mod ely_generative
+pub struct ely_generative::ABCompareView
+pub struct ely_generative::AspectRatioPicker
+pub struct ely_generative::AudioGenerationPlayer
+pub struct ely_generative::Download
+pub struct ely_generative::Embedded
+pub struct ely_generative::EmbeddingVisualizer
+pub struct ely_generative::FineTuneJobCard
+pub struct ely_generative::GenerationGrid
+pub struct ely_generative::GenerationQueue
+pub struct ely_generative::HardwareMonitor
+pub struct ely_generative::InpaintCanvas
+pub struct ely_generative::Job
+pub struct ely_generative::MaskBrush
+pub struct ely_generative::MaskStroke
+pub struct ely_generative::ModelCard
+pub struct ely_generative::ModelDownloadManager
+pub struct ely_generative::ModelStatus
+pub struct ely_generative::PromptDiff
+pub struct ely_generative::PromptEnhancer
+pub struct ely_generative::PromptPlayground
+pub struct ely_generative::PromptVersion
+pub struct ely_generative::PromptVersionHistory
+pub struct ely_generative::Reading
+pub struct ely_generative::SeedInput
+pub struct ely_generative::Shot
+pub struct ely_generative::StylePreset
+pub struct ely_generative::StylePresetPicker
+pub struct ely_generative::TTSVoicePicker
+pub struct ely_generative::VariationPicker
+pub struct ely_generative::VideoGenerationTimeline
+pub struct ely_generative::Voice
+pub type ely_generative::ABCompareView::Element = gpui::view::ViewElement<ely_generative::ABCompareView>
+pub type ely_generative::AspectRatioPicker::Element = gpui::view::ViewElement<ely_generative::AspectRatioPicker>
+pub type ely_generative::AudioGenerationPlayer::Element = gpui::view::ViewElement<ely_generative::AudioGenerationPlayer>
+pub type ely_generative::EmbeddingVisualizer::Element = gpui::view::ViewElement<ely_generative::EmbeddingVisualizer>
+pub type ely_generative::FineTuneJobCard::Element = gpui::view::ViewElement<ely_generative::FineTuneJobCard>
+pub type ely_generative::GenerationGrid::Element = gpui::view::ViewElement<ely_generative::GenerationGrid>
+pub type ely_generative::GenerationQueue::Element = gpui::view::ViewElement<ely_generative::GenerationQueue>
+pub type ely_generative::HardwareMonitor::Element = gpui::view::ViewElement<ely_generative::HardwareMonitor>
+pub type ely_generative::InpaintCanvas::Element = gpui::view::ViewElement<ely_generative::InpaintCanvas>
+pub type ely_generative::MaskBrush::Element = gpui::view::ViewElement<ely_generative::MaskBrush>
+pub type ely_generative::ModelCard::Element = gpui::view::ViewElement<ely_generative::ModelCard>
+pub type ely_generative::ModelDownloadManager::Element = gpui::view::ViewElement<ely_generative::ModelDownloadManager>
+pub type ely_generative::ModelStatus::Element = gpui::view::ViewElement<ely_generative::ModelStatus>
+pub type ely_generative::PromptDiff::Element = gpui::view::ViewElement<ely_generative::PromptDiff>
+pub type ely_generative::PromptEnhancer::Element = gpui::view::ViewElement<ely_generative::PromptEnhancer>
+pub type ely_generative::PromptPlayground::Element = gpui::view::ViewElement<ely_generative::PromptPlayground>
+pub type ely_generative::PromptVersionHistory::Element = gpui::view::ViewElement<ely_generative::PromptVersionHistory>
+pub type ely_generative::SeedInput::Element = gpui::view::ViewElement<ely_generative::SeedInput>
+pub type ely_generative::StylePresetPicker::Element = gpui::view::ViewElement<ely_generative::StylePresetPicker>
+pub type ely_generative::TTSVoicePicker::Element = gpui::view::ViewElement<ely_generative::TTSVoicePicker>
+pub type ely_generative::VariationPicker::Element = gpui::view::ViewElement<ely_generative::VariationPicker>
+pub type ely_generative::VideoGenerationTimeline::Element = gpui::view::ViewElement<ely_generative::VideoGenerationTimeline>
+pub use ely_generative::ABCompareView = ely_generative::compare::ABCompareView
+pub use ely_generative::AspectRatioPicker = ely_generative::ratio::AspectRatioPicker
+pub use ely_generative::AudioGenerationPlayer = ely_generative::audio::AudioGenerationPlayer
+pub use ely_generative::Download = ely_generative::downloads::Download
+pub use ely_generative::DownloadState = ely_generative::downloads::DownloadState
+pub use ely_generative::Embedded = ely_generative::embed::Embedded
+pub use ely_generative::EmbeddingVisualizer = ely_generative::embed::EmbeddingVisualizer
+pub use ely_generative::FineTuneJobCard = ely_generative::tuning::FineTuneJobCard
+pub use ely_generative::GenerationGrid = ely_generative::grid::GenerationGrid
+pub use ely_generative::GenerationQueue = ely_generative::queue::GenerationQueue
+pub use ely_generative::HardwareMonitor = ely_generative::hardware::HardwareMonitor
+pub use ely_generative::InpaintCanvas = ely_generative::mask::InpaintCanvas
+pub use ely_generative::Job = ely_generative::queue::Job
+pub use ely_generative::JobState = ely_generative::queue::JobState
+pub use ely_generative::MaskBrush = ely_generative::brush::MaskBrush
+pub use ely_generative::MaskStroke = ely_generative::mask::MaskStroke
+pub use ely_generative::ModelCard = ely_generative::models::ModelCard
+pub use ely_generative::ModelDownloadManager = ely_generative::downloads::ModelDownloadManager
+pub use ely_generative::ModelState = ely_generative::models::ModelState
+pub use ely_generative::ModelStatus = ely_generative::models::ModelStatus
+pub use ely_generative::Outcome = ely_generative::grid::Outcome
+pub use ely_generative::PromptDiff = ely_generative::versions::PromptDiff
+pub use ely_generative::PromptEnhancer = ely_generative::prompt::PromptEnhancer
+pub use ely_generative::PromptPlayground = ely_generative::playground::PromptPlayground
+pub use ely_generative::PromptVersion = ely_generative::versions::PromptVersion
+pub use ely_generative::PromptVersionHistory = ely_generative::versions::PromptVersionHistory
+pub use ely_generative::Reading = ely_generative::hardware::Reading
+pub use ely_generative::SeedInput = ely_generative::seed::SeedInput
+pub use ely_generative::Shot = ely_generative::video::Shot
+pub use ely_generative::StylePreset = ely_generative::style::StylePreset
+pub use ely_generative::StylePresetPicker = ely_generative::style::StylePresetPicker
+pub use ely_generative::TTSVoicePicker = ely_generative::voice::TTSVoicePicker
+pub use ely_generative::TunePhase = ely_generative::tuning::TunePhase
+pub use ely_generative::VariationPicker = ely_generative::variation::VariationPicker
+pub use ely_generative::Verdict = ely_generative::compare::Verdict
+pub use ely_generative::VideoGenerationTimeline = ely_generative::video::VideoGenerationTimeline
+pub use ely_generative::Voice = ely_generative::voice::Voice

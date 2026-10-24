@@ -1,0 +1,347 @@
+impl core::clone::Clone for ely_debug::Breakpoint
+impl core::clone::Clone for ely_debug::DebugCommand
+impl core::clone::Clone for ely_debug::DebugState
+impl core::clone::Clone for ely_debug::Instruction
+impl core::clone::Clone for ely_debug::Placed
+impl core::clone::Clone for ely_debug::ProfileFrame
+impl core::clone::Clone for ely_debug::Request
+impl core::clone::Clone for ely_debug::Span
+impl core::clone::Clone for ely_debug::StackFrame
+impl core::clone::Clone for ely_debug::Thread
+impl core::clone::Clone for ely_debug::ThreadState
+impl core::clone::Clone for ely_debug::ValueKind
+impl core::clone::Clone for ely_debug::Variable
+impl core::clone::Clone for ely_debug::Watch
+impl core::cmp::Eq for ely_debug::DebugCommand
+impl core::cmp::Eq for ely_debug::DebugState
+impl core::cmp::Eq for ely_debug::ThreadState
+impl core::cmp::Eq for ely_debug::ValueKind
+impl core::cmp::PartialEq for ely_debug::Breakpoint
+impl core::cmp::PartialEq for ely_debug::DebugCommand
+impl core::cmp::PartialEq for ely_debug::DebugState
+impl core::cmp::PartialEq for ely_debug::Instruction
+impl core::cmp::PartialEq for ely_debug::Placed
+impl core::cmp::PartialEq for ely_debug::ProfileFrame
+impl core::cmp::PartialEq for ely_debug::Request
+impl core::cmp::PartialEq for ely_debug::Span
+impl core::cmp::PartialEq for ely_debug::StackFrame
+impl core::cmp::PartialEq for ely_debug::Thread
+impl core::cmp::PartialEq for ely_debug::ThreadState
+impl core::cmp::PartialEq for ely_debug::ValueKind
+impl core::cmp::PartialEq for ely_debug::Variable
+impl core::cmp::PartialEq for ely_debug::Watch
+impl core::fmt::Debug for ely_debug::Breakpoint
+impl core::fmt::Debug for ely_debug::DebugCommand
+impl core::fmt::Debug for ely_debug::DebugState
+impl core::fmt::Debug for ely_debug::Instruction
+impl core::fmt::Debug for ely_debug::Placed
+impl core::fmt::Debug for ely_debug::ProfileFrame
+impl core::fmt::Debug for ely_debug::Request
+impl core::fmt::Debug for ely_debug::Span
+impl core::fmt::Debug for ely_debug::StackFrame
+impl core::fmt::Debug for ely_debug::Thread
+impl core::fmt::Debug for ely_debug::ThreadState
+impl core::fmt::Debug for ely_debug::ValueKind
+impl core::fmt::Debug for ely_debug::Variable
+impl core::fmt::Debug for ely_debug::Watch
+impl core::marker::Copy for ely_debug::DebugCommand
+impl core::marker::Copy for ely_debug::DebugState
+impl core::marker::Copy for ely_debug::ThreadState
+impl core::marker::Copy for ely_debug::ValueKind
+impl core::marker::StructuralPartialEq for ely_debug::Breakpoint
+impl core::marker::StructuralPartialEq for ely_debug::DebugCommand
+impl core::marker::StructuralPartialEq for ely_debug::DebugState
+impl core::marker::StructuralPartialEq for ely_debug::Instruction
+impl core::marker::StructuralPartialEq for ely_debug::Placed
+impl core::marker::StructuralPartialEq for ely_debug::ProfileFrame
+impl core::marker::StructuralPartialEq for ely_debug::Request
+impl core::marker::StructuralPartialEq for ely_debug::Span
+impl core::marker::StructuralPartialEq for ely_debug::StackFrame
+impl core::marker::StructuralPartialEq for ely_debug::Thread
+impl core::marker::StructuralPartialEq for ely_debug::ThreadState
+impl core::marker::StructuralPartialEq for ely_debug::ValueKind
+impl core::marker::StructuralPartialEq for ely_debug::Variable
+impl core::marker::StructuralPartialEq for ely_debug::Watch
+impl ely_debug::BreakpointList
+impl ely_debug::CallStack
+impl ely_debug::DebugToolbar
+impl ely_debug::Disassembly
+impl ely_debug::Flamegraph
+impl ely_debug::HexViewer
+impl ely_debug::NetworkInspector
+impl ely_debug::ProfileFrame
+impl ely_debug::ThreadList
+impl ely_debug::TimelineProfiler
+impl ely_debug::VariablesPanel
+impl ely_debug::WatchPanel
+impl gpui::element::IntoElement for ely_debug::BreakpointList
+impl gpui::element::IntoElement for ely_debug::CallStack
+impl gpui::element::IntoElement for ely_debug::DebugToolbar
+impl gpui::element::IntoElement for ely_debug::Disassembly
+impl gpui::element::IntoElement for ely_debug::Flamegraph
+impl gpui::element::IntoElement for ely_debug::HexViewer
+impl gpui::element::IntoElement for ely_debug::NetworkInspector
+impl gpui::element::IntoElement for ely_debug::ThreadList
+impl gpui::element::IntoElement for ely_debug::TimelineProfiler
+impl gpui::element::IntoElement for ely_debug::VariablesPanel
+impl gpui::element::IntoElement for ely_debug::WatchPanel
+impl gpui::element::RenderOnce for ely_debug::BreakpointList
+impl gpui::element::RenderOnce for ely_debug::CallStack
+impl gpui::element::RenderOnce for ely_debug::DebugToolbar
+impl gpui::element::RenderOnce for ely_debug::Disassembly
+impl gpui::element::RenderOnce for ely_debug::Flamegraph
+impl gpui::element::RenderOnce for ely_debug::HexViewer
+impl gpui::element::RenderOnce for ely_debug::NetworkInspector
+impl gpui::element::RenderOnce for ely_debug::ThreadList
+impl gpui::element::RenderOnce for ely_debug::TimelineProfiler
+impl gpui::element::RenderOnce for ely_debug::VariablesPanel
+impl gpui::element::RenderOnce for ely_debug::WatchPanel
+pub ely_debug::Breakpoint::condition: core::option::Option<gpui_shared_string::SharedString>
+pub ely_debug::Breakpoint::enabled: bool
+pub ely_debug::Breakpoint::hits: usize
+pub ely_debug::Breakpoint::line: usize
+pub ely_debug::Breakpoint::path: gpui_shared_string::SharedString
+pub ely_debug::DebugCommand::Continue
+pub ely_debug::DebugCommand::Pause
+pub ely_debug::DebugCommand::Restart
+pub ely_debug::DebugCommand::StepInto
+pub ely_debug::DebugCommand::StepOut
+pub ely_debug::DebugCommand::StepOver
+pub ely_debug::DebugCommand::Stop
+pub ely_debug::DebugState::Paused
+pub ely_debug::DebugState::Running
+pub ely_debug::Instruction::address: u64
+pub ely_debug::Instruction::bytes: alloc::vec::Vec<u8>
+pub ely_debug::Instruction::comment: core::option::Option<gpui_shared_string::SharedString>
+pub ely_debug::Instruction::mnemonic: gpui_shared_string::SharedString
+pub ely_debug::Instruction::operands: gpui_shared_string::SharedString
+pub ely_debug::Instruction::source: core::option::Option<gpui_shared_string::SharedString>
+pub ely_debug::Placed::depth: usize
+pub ely_debug::Placed::end: f32
+pub ely_debug::Placed::name: gpui_shared_string::SharedString
+pub ely_debug::Placed::path: alloc::vec::Vec<usize>
+pub ely_debug::Placed::samples: u64
+pub ely_debug::Placed::start: f32
+pub ely_debug::ProfileFrame::calls: alloc::vec::Vec<ely_debug::ProfileFrame>
+pub ely_debug::ProfileFrame::name: gpui_shared_string::SharedString
+pub ely_debug::ProfileFrame::own: u64
+pub ely_debug::Request::body: core::option::Option<gpui_shared_string::SharedString>
+pub ely_debug::Request::duration: f64
+pub ely_debug::Request::headers: alloc::vec::Vec<(gpui_shared_string::SharedString, gpui_shared_string::SharedString)>
+pub ely_debug::Request::kind: gpui_shared_string::SharedString
+pub ely_debug::Request::method: gpui_shared_string::SharedString
+pub ely_debug::Request::size: u64
+pub ely_debug::Request::start: f64
+pub ely_debug::Request::status: core::option::Option<u16>
+pub ely_debug::Request::url: gpui_shared_string::SharedString
+pub ely_debug::Span::end: f64
+pub ely_debug::Span::name: gpui_shared_string::SharedString
+pub ely_debug::Span::start: f64
+pub ely_debug::Span::track: usize
+pub ely_debug::StackFrame::function: gpui_shared_string::SharedString
+pub ely_debug::StackFrame::library: bool
+pub ely_debug::StackFrame::line: usize
+pub ely_debug::StackFrame::path: gpui_shared_string::SharedString
+pub ely_debug::Thread::id: u64
+pub ely_debug::Thread::name: gpui_shared_string::SharedString
+pub ely_debug::Thread::state: ely_debug::ThreadState
+pub ely_debug::ThreadState::Paused
+pub ely_debug::ThreadState::Running
+pub ely_debug::ThreadState::Stopped
+pub ely_debug::ValueKind::Bool
+pub ely_debug::ValueKind::Function
+pub ely_debug::ValueKind::List
+pub ely_debug::ValueKind::Null
+pub ely_debug::ValueKind::Number
+pub ely_debug::ValueKind::Object
+pub ely_debug::ValueKind::Text
+pub ely_debug::Variable::children: alloc::vec::Vec<ely_debug::Variable>
+pub ely_debug::Variable::kind: ely_debug::ValueKind
+pub ely_debug::Variable::name: gpui_shared_string::SharedString
+pub ely_debug::Variable::type_name: core::option::Option<gpui_shared_string::SharedString>
+pub ely_debug::Variable::value: gpui_shared_string::SharedString
+pub ely_debug::Watch::expression: gpui_shared_string::SharedString
+pub ely_debug::Watch::value: core::result::Result<(gpui_shared_string::SharedString, ely_debug::ValueKind), gpui_shared_string::SharedString>
+pub enum ely_debug::DebugCommand
+pub enum ely_debug::DebugState
+pub enum ely_debug::ThreadState
+pub enum ely_debug::ValueKind
+pub fn ely_debug::Breakpoint::clone(&self) -> Self
+pub fn ely_debug::Breakpoint::eq(&self, &Self) -> bool
+pub fn ely_debug::Breakpoint::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::BreakpointList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::BreakpointList::into_element(self) -> Self::Element
+pub fn ely_debug::BreakpointList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_debug::Breakpoint>) -> Self
+pub fn ely_debug::BreakpointList::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::BreakpointList::on_remove(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::BreakpointList::on_toggle(self, impl core::ops::function::Fn(usize, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::BreakpointList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::CallStack::current(self, usize) -> Self
+pub fn ely_debug::CallStack::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::CallStack::into_element(self) -> Self::Element
+pub fn ely_debug::CallStack::libraries(self, bool) -> Self
+pub fn ely_debug::CallStack::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_debug::StackFrame>) -> Self
+pub fn ely_debug::CallStack::on_libraries(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::CallStack::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::CallStack::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::DebugCommand::clone(&self) -> Self
+pub fn ely_debug::DebugCommand::eq(&self, &Self) -> bool
+pub fn ely_debug::DebugCommand::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::DebugState::clone(&self) -> Self
+pub fn ely_debug::DebugState::eq(&self, &Self) -> bool
+pub fn ely_debug::DebugState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::DebugToolbar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::DebugToolbar::into_element(self) -> Self::Element
+pub fn ely_debug::DebugToolbar::new(impl core::convert::Into<gpui::window::ElementId>, ely_debug::DebugState) -> Self
+pub fn ely_debug::DebugToolbar::on_command(self, impl core::ops::function::Fn(ely_debug::DebugCommand, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::DebugToolbar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::Disassembly::breakpoints(self, impl core::iter::traits::collect::IntoIterator<Item = usize>) -> Self
+pub fn ely_debug::Disassembly::current(self, usize) -> Self
+pub fn ely_debug::Disassembly::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::Disassembly::into_element(self) -> Self::Element
+pub fn ely_debug::Disassembly::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_debug::Instruction>>>) -> Self
+pub fn ely_debug::Disassembly::on_breakpoint(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::Disassembly::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::Flamegraph::focus(self, alloc::vec::Vec<usize>) -> Self
+pub fn ely_debug::Flamegraph::hovered(self, core::option::Option<alloc::vec::Vec<usize>>) -> Self
+pub fn ely_debug::Flamegraph::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::Flamegraph::into_element(self) -> Self::Element
+pub fn ely_debug::Flamegraph::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<ely_debug::ProfileFrame>>) -> Self
+pub fn ely_debug::Flamegraph::on_focus(self, impl core::ops::function::Fn(alloc::vec::Vec<usize>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::Flamegraph::on_hover(self, impl core::ops::function::Fn(core::option::Option<alloc::vec::Vec<usize>>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::Flamegraph::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::HexViewer::base(self, u64) -> Self
+pub fn ely_debug::HexViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::HexViewer::into_element(self) -> Self::Element
+pub fn ely_debug::HexViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<u8>>>) -> Self
+pub fn ely_debug::HexViewer::on_select(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::HexViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::HexViewer::selected(self, core::ops::range::Range<usize>) -> Self
+pub fn ely_debug::Instruction::clone(&self) -> Self
+pub fn ely_debug::Instruction::eq(&self, &Self) -> bool
+pub fn ely_debug::Instruction::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::NetworkInspector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::NetworkInspector::into_element(self) -> Self::Element
+pub fn ely_debug::NetworkInspector::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_debug::Request>) -> Self
+pub fn ely_debug::NetworkInspector::on_select(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::NetworkInspector::query(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_debug::NetworkInspector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::NetworkInspector::selected(self, usize) -> Self
+pub fn ely_debug::Placed::clone(&self) -> Self
+pub fn ely_debug::Placed::eq(&self, &Self) -> bool
+pub fn ely_debug::Placed::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::ProfileFrame::clone(&self) -> Self
+pub fn ely_debug::ProfileFrame::eq(&self, &Self) -> bool
+pub fn ely_debug::ProfileFrame::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::ProfileFrame::total(&self) -> u64
+pub fn ely_debug::Request::clone(&self) -> Self
+pub fn ely_debug::Request::eq(&self, &Self) -> bool
+pub fn ely_debug::Request::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::Span::clone(&self) -> Self
+pub fn ely_debug::Span::eq(&self, &Self) -> bool
+pub fn ely_debug::Span::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::StackFrame::clone(&self) -> Self
+pub fn ely_debug::StackFrame::eq(&self, &Self) -> bool
+pub fn ely_debug::StackFrame::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::Thread::clone(&self) -> Self
+pub fn ely_debug::Thread::eq(&self, &Self) -> bool
+pub fn ely_debug::Thread::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::ThreadList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::ThreadList::into_element(self) -> Self::Element
+pub fn ely_debug::ThreadList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_debug::Thread>) -> Self
+pub fn ely_debug::ThreadList::on_pick(self, impl core::ops::function::Fn(u64, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::ThreadList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::ThreadList::selected(self, u64) -> Self
+pub fn ely_debug::ThreadState::clone(&self) -> Self
+pub fn ely_debug::ThreadState::eq(&self, &Self) -> bool
+pub fn ely_debug::ThreadState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::TimelineProfiler::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::TimelineProfiler::into_element(self) -> Self::Element
+pub fn ely_debug::TimelineProfiler::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_debug::Span>>>, (f64, f64)) -> Self
+pub fn ely_debug::TimelineProfiler::on_range(self, impl core::ops::function::Fn((f64, f64), &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::TimelineProfiler::on_select(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::TimelineProfiler::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::TimelineProfiler::selected(self, usize) -> Self
+pub fn ely_debug::ValueKind::clone(&self) -> Self
+pub fn ely_debug::ValueKind::eq(&self, &Self) -> bool
+pub fn ely_debug::ValueKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::Variable::clone(&self) -> Self
+pub fn ely_debug::Variable::eq(&self, &Self) -> bool
+pub fn ely_debug::Variable::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::VariablesPanel::changed(self, impl core::iter::traits::collect::IntoIterator<Item = gpui_shared_string::SharedString>) -> Self
+pub fn ely_debug::VariablesPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::VariablesPanel::into_element(self) -> Self::Element
+pub fn ely_debug::VariablesPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (gpui_shared_string::SharedString, alloc::vec::Vec<ely_debug::Variable>)>) -> Self
+pub fn ely_debug::VariablesPanel::on_toggle(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::VariablesPanel::open(self, impl core::iter::traits::collect::IntoIterator<Item = gpui_shared_string::SharedString>) -> Self
+pub fn ely_debug::VariablesPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::Watch::clone(&self) -> Self
+pub fn ely_debug::Watch::eq(&self, &Self) -> bool
+pub fn ely_debug::Watch::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_debug::WatchPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_debug::WatchPanel::into_element(self) -> Self::Element
+pub fn ely_debug::WatchPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_debug::Watch>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_debug::WatchPanel::on_remove(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_debug::WatchPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_debug::place(&ely_debug::ProfileFrame, &[usize]) -> alloc::vec::Vec<ely_debug::Placed>
+pub fn ely_debug::zoomed((f64, f64), f64, f64) -> (f64, f64)
+pub mod ely_debug
+pub struct ely_debug::Breakpoint
+pub struct ely_debug::BreakpointList
+pub struct ely_debug::CallStack
+pub struct ely_debug::DebugToolbar
+pub struct ely_debug::Disassembly
+pub struct ely_debug::Flamegraph
+pub struct ely_debug::HexViewer
+pub struct ely_debug::Instruction
+pub struct ely_debug::NetworkInspector
+pub struct ely_debug::Placed
+pub struct ely_debug::ProfileFrame
+pub struct ely_debug::Request
+pub struct ely_debug::Span
+pub struct ely_debug::StackFrame
+pub struct ely_debug::Thread
+pub struct ely_debug::ThreadList
+pub struct ely_debug::TimelineProfiler
+pub struct ely_debug::Variable
+pub struct ely_debug::VariablesPanel
+pub struct ely_debug::Watch
+pub struct ely_debug::WatchPanel
+pub type ely_debug::BreakpointList::Element = gpui::view::ViewElement<ely_debug::BreakpointList>
+pub type ely_debug::CallStack::Element = gpui::view::ViewElement<ely_debug::CallStack>
+pub type ely_debug::DebugToolbar::Element = gpui::view::ViewElement<ely_debug::DebugToolbar>
+pub type ely_debug::Disassembly::Element = gpui::view::ViewElement<ely_debug::Disassembly>
+pub type ely_debug::Flamegraph::Element = gpui::view::ViewElement<ely_debug::Flamegraph>
+pub type ely_debug::HexViewer::Element = gpui::view::ViewElement<ely_debug::HexViewer>
+pub type ely_debug::NetworkInspector::Element = gpui::view::ViewElement<ely_debug::NetworkInspector>
+pub type ely_debug::ThreadList::Element = gpui::view::ViewElement<ely_debug::ThreadList>
+pub type ely_debug::TimelineProfiler::Element = gpui::view::ViewElement<ely_debug::TimelineProfiler>
+pub type ely_debug::VariablesPanel::Element = gpui::view::ViewElement<ely_debug::VariablesPanel>
+pub type ely_debug::WatchPanel::Element = gpui::view::ViewElement<ely_debug::WatchPanel>
+pub use ely_debug::Breakpoint = ely_debug::session::Breakpoint
+pub use ely_debug::BreakpointList = ely_debug::session::BreakpointList
+pub use ely_debug::CallStack = ely_debug::stack::CallStack
+pub use ely_debug::DebugCommand = ely_debug::session::DebugCommand
+pub use ely_debug::DebugState = ely_debug::session::DebugState
+pub use ely_debug::DebugToolbar = ely_debug::session::DebugToolbar
+pub use ely_debug::Disassembly = ely_debug::disasm::Disassembly
+pub use ely_debug::Flamegraph = ely_debug::flame::Flamegraph
+pub use ely_debug::HexViewer = ely_debug::hex::HexViewer
+pub use ely_debug::Instruction = ely_debug::disasm::Instruction
+pub use ely_debug::NetworkInspector = ely_debug::network::NetworkInspector
+pub use ely_debug::Placed = ely_debug::flame::Placed
+pub use ely_debug::ProfileFrame = ely_debug::flame::ProfileFrame
+pub use ely_debug::Request = ely_debug::network::Request
+pub use ely_debug::Span = ely_debug::timeline::Span
+pub use ely_debug::StackFrame = ely_debug::stack::StackFrame
+pub use ely_debug::Thread = ely_debug::stack::Thread
+pub use ely_debug::ThreadList = ely_debug::stack::ThreadList
+pub use ely_debug::ThreadState = ely_debug::stack::ThreadState
+pub use ely_debug::TimelineProfiler = ely_debug::timeline::TimelineProfiler
+pub use ely_debug::ValueKind = ely_debug::variables::ValueKind
+pub use ely_debug::Variable = ely_debug::variables::Variable
+pub use ely_debug::VariablesPanel = ely_debug::variables::VariablesPanel
+pub use ely_debug::Watch = ely_debug::variables::Watch
+pub use ely_debug::WatchPanel = ely_debug::variables::WatchPanel
+pub use ely_debug::place = ely_debug::flame::place
+pub use ely_debug::zoomed = ely_debug::timeline::zoomed

@@ -1,0 +1,356 @@
+impl core::clone::Clone for ely_collab::Annotation
+impl core::clone::Clone for ely_collab::Comment
+impl core::clone::Clone for ely_collab::Decision
+impl core::clone::Clone for ely_collab::EditMode
+impl core::clone::Clone for ely_collab::Member
+impl core::clone::Clone for ely_collab::Peer
+impl core::clone::Clone for ely_collab::Reaction
+impl core::clone::Clone for ely_collab::Role
+impl core::clone::Clone for ely_collab::Suggestion
+impl core::clone::Clone for ely_collab::Thread
+impl core::cmp::Eq for ely_collab::Decision
+impl core::cmp::Eq for ely_collab::EditMode
+impl core::cmp::Eq for ely_collab::Role
+impl core::cmp::PartialEq for ely_collab::Annotation
+impl core::cmp::PartialEq for ely_collab::Comment
+impl core::cmp::PartialEq for ely_collab::Decision
+impl core::cmp::PartialEq for ely_collab::EditMode
+impl core::cmp::PartialEq for ely_collab::Member
+impl core::cmp::PartialEq for ely_collab::Peer
+impl core::cmp::PartialEq for ely_collab::Reaction
+impl core::cmp::PartialEq for ely_collab::Role
+impl core::cmp::PartialEq for ely_collab::Suggestion
+impl core::cmp::PartialEq for ely_collab::Thread
+impl core::fmt::Debug for ely_collab::Annotation
+impl core::fmt::Debug for ely_collab::Comment
+impl core::fmt::Debug for ely_collab::Decision
+impl core::fmt::Debug for ely_collab::EditMode
+impl core::fmt::Debug for ely_collab::Member
+impl core::fmt::Debug for ely_collab::Peer
+impl core::fmt::Debug for ely_collab::Reaction
+impl core::fmt::Debug for ely_collab::Role
+impl core::fmt::Debug for ely_collab::Suggestion
+impl core::fmt::Debug for ely_collab::Thread
+impl core::marker::Copy for ely_collab::Decision
+impl core::marker::Copy for ely_collab::EditMode
+impl core::marker::Copy for ely_collab::Role
+impl core::marker::StructuralPartialEq for ely_collab::Annotation
+impl core::marker::StructuralPartialEq for ely_collab::Comment
+impl core::marker::StructuralPartialEq for ely_collab::Decision
+impl core::marker::StructuralPartialEq for ely_collab::EditMode
+impl core::marker::StructuralPartialEq for ely_collab::Member
+impl core::marker::StructuralPartialEq for ely_collab::Peer
+impl core::marker::StructuralPartialEq for ely_collab::Reaction
+impl core::marker::StructuralPartialEq for ely_collab::Role
+impl core::marker::StructuralPartialEq for ely_collab::Suggestion
+impl core::marker::StructuralPartialEq for ely_collab::Thread
+impl ely_collab::AccessList
+impl ely_collab::AnnotatedText
+impl ely_collab::CommentMarker
+impl ely_collab::CommentSidebar
+impl ely_collab::CommentThread
+impl ely_collab::FollowMode
+impl ely_collab::InviteInput
+impl ely_collab::LinkAccess
+impl ely_collab::LiveIndicator
+impl ely_collab::Peer
+impl ely_collab::PermissionSelect
+impl ely_collab::PresenceAvatars
+impl ely_collab::ReactionPicker
+impl ely_collab::Reactions
+impl ely_collab::RemoteCursor
+impl ely_collab::RemoteSelection
+impl ely_collab::Reply
+impl ely_collab::ShareDialog
+impl ely_collab::SuggestionMode
+impl ely_collab::TrackChanges
+impl gpui::element::IntoElement for ely_collab::AccessList
+impl gpui::element::IntoElement for ely_collab::AnnotatedText
+impl gpui::element::IntoElement for ely_collab::CommentMarker
+impl gpui::element::IntoElement for ely_collab::CommentSidebar
+impl gpui::element::IntoElement for ely_collab::CommentThread
+impl gpui::element::IntoElement for ely_collab::FollowMode
+impl gpui::element::IntoElement for ely_collab::InviteInput
+impl gpui::element::IntoElement for ely_collab::LinkAccess
+impl gpui::element::IntoElement for ely_collab::LiveIndicator
+impl gpui::element::IntoElement for ely_collab::PermissionSelect
+impl gpui::element::IntoElement for ely_collab::PresenceAvatars
+impl gpui::element::IntoElement for ely_collab::ReactionPicker
+impl gpui::element::IntoElement for ely_collab::Reactions
+impl gpui::element::IntoElement for ely_collab::RemoteCursor
+impl gpui::element::IntoElement for ely_collab::RemoteSelection
+impl gpui::element::IntoElement for ely_collab::Reply
+impl gpui::element::IntoElement for ely_collab::ShareDialog
+impl gpui::element::IntoElement for ely_collab::SuggestionMode
+impl gpui::element::IntoElement for ely_collab::TrackChanges
+impl gpui::element::ParentElement for ely_collab::FollowMode
+impl gpui::element::RenderOnce for ely_collab::AccessList
+impl gpui::element::RenderOnce for ely_collab::AnnotatedText
+impl gpui::element::RenderOnce for ely_collab::CommentMarker
+impl gpui::element::RenderOnce for ely_collab::CommentSidebar
+impl gpui::element::RenderOnce for ely_collab::CommentThread
+impl gpui::element::RenderOnce for ely_collab::FollowMode
+impl gpui::element::RenderOnce for ely_collab::InviteInput
+impl gpui::element::RenderOnce for ely_collab::LinkAccess
+impl gpui::element::RenderOnce for ely_collab::LiveIndicator
+impl gpui::element::RenderOnce for ely_collab::PermissionSelect
+impl gpui::element::RenderOnce for ely_collab::PresenceAvatars
+impl gpui::element::RenderOnce for ely_collab::ReactionPicker
+impl gpui::element::RenderOnce for ely_collab::Reactions
+impl gpui::element::RenderOnce for ely_collab::RemoteCursor
+impl gpui::element::RenderOnce for ely_collab::RemoteSelection
+impl gpui::element::RenderOnce for ely_collab::Reply
+impl gpui::element::RenderOnce for ely_collab::ShareDialog
+impl gpui::element::RenderOnce for ely_collab::SuggestionMode
+impl gpui::element::RenderOnce for ely_collab::TrackChanges
+pub ely_collab::Annotation::author: ely_collab::Peer
+pub ely_collab::Annotation::note: core::option::Option<gpui_shared_string::SharedString>
+pub ely_collab::Annotation::range: core::ops::range::Range<usize>
+pub ely_collab::Comment::at: jiff::timestamp::Timestamp
+pub ely_collab::Comment::author: ely_collab::Peer
+pub ely_collab::Comment::body: gpui_shared_string::SharedString
+pub ely_collab::Comment::reactions: alloc::vec::Vec<ely_collab::Reaction>
+pub ely_collab::Decision::Accept(usize)
+pub ely_collab::Decision::AcceptAll
+pub ely_collab::Decision::Reject(usize)
+pub ely_collab::Decision::RejectAll
+pub ely_collab::EditMode::Editing
+pub ely_collab::EditMode::Suggesting
+pub ely_collab::EditMode::Viewing
+pub ely_collab::Member::email: gpui_shared_string::SharedString
+pub ely_collab::Member::name: gpui_shared_string::SharedString
+pub ely_collab::Member::owner: bool
+pub ely_collab::Member::picture: core::option::Option<gpui_shared_string::SharedString>
+pub ely_collab::Member::role: ely_collab::Role
+pub ely_collab::Peer::hue: usize
+pub ely_collab::Peer::key: gpui_shared_string::SharedString
+pub ely_collab::Peer::name: gpui_shared_string::SharedString
+pub ely_collab::Peer::picture: core::option::Option<gpui_shared_string::SharedString>
+pub ely_collab::Peer::place: core::option::Option<gpui_shared_string::SharedString>
+pub ely_collab::Reaction::count: usize
+pub ely_collab::Reaction::emoji: gpui_shared_string::SharedString
+pub ely_collab::Reaction::mine: bool
+pub ely_collab::Role::Comment
+pub ely_collab::Role::Edit
+pub ely_collab::Role::View
+pub ely_collab::Suggestion::author: ely_collab::Peer
+pub ely_collab::Suggestion::range: core::ops::range::Range<usize>
+pub ely_collab::Suggestion::text: gpui_shared_string::SharedString
+pub ely_collab::Thread::comments: alloc::vec::Vec<ely_collab::Comment>
+pub ely_collab::Thread::key: gpui_shared_string::SharedString
+pub ely_collab::Thread::quote: core::option::Option<gpui_shared_string::SharedString>
+pub ely_collab::Thread::resolved: bool
+pub enum ely_collab::Decision
+pub enum ely_collab::EditMode
+pub enum ely_collab::Role
+pub fn ely_collab::AccessList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::AccessList::into_element(self) -> Self::Element
+pub fn ely_collab::AccessList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_collab::Member>) -> Self
+pub fn ely_collab::AccessList::on_remove(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::AccessList::on_role(self, impl core::ops::function::Fn(usize, ely_collab::Role, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::AccessList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::AnnotatedText::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::AnnotatedText::into_element(self) -> Self::Element
+pub fn ely_collab::AnnotatedText::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_collab::Annotation>) -> Self
+pub fn ely_collab::AnnotatedText::picked(self, core::option::Option<usize>, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::AnnotatedText::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Annotation::clone(&self) -> Self
+pub fn ely_collab::Annotation::eq(&self, &Self) -> bool
+pub fn ely_collab::Annotation::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::Comment::clone(&self) -> Self
+pub fn ely_collab::Comment::eq(&self, &Self) -> bool
+pub fn ely_collab::Comment::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::CommentMarker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::CommentMarker::into_element(self) -> Self::Element
+pub fn ely_collab::CommentMarker::new(impl core::convert::Into<gpui::window::ElementId>, ely_collab::Thread) -> Self
+pub fn ely_collab::CommentMarker::on_resolve(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentMarker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::CommentMarker::reply(self, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentSidebar::active(self, core::option::Option<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentSidebar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::CommentSidebar::into_element(self) -> Self::Element
+pub fn ely_collab::CommentSidebar::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_collab::Thread>) -> Self
+pub fn ely_collab::CommentSidebar::on_react(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentSidebar::on_resolve(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentSidebar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::CommentSidebar::reply(self, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentThread::active(self, bool) -> Self
+pub fn ely_collab::CommentThread::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::CommentThread::into_element(self) -> Self::Element
+pub fn ely_collab::CommentThread::new(impl core::convert::Into<gpui::window::ElementId>, ely_collab::Thread) -> Self
+pub fn ely_collab::CommentThread::on_react(self, impl core::ops::function::Fn(usize, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentThread::on_resolve(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::CommentThread::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::CommentThread::reply(self, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::Decision::clone(&self) -> Self
+pub fn ely_collab::Decision::eq(&self, &Self) -> bool
+pub fn ely_collab::Decision::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::EditMode::clone(&self) -> Self
+pub fn ely_collab::EditMode::eq(&self, &Self) -> bool
+pub fn ely_collab::EditMode::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::FollowMode::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_collab::FollowMode::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::FollowMode::into_element(self) -> Self::Element
+pub fn ely_collab::FollowMode::new(impl core::convert::Into<gpui::window::ElementId>, core::option::Option<ely_collab::Peer>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::FollowMode::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::InviteInput::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::InviteInput::into_element(self) -> Self::Element
+pub fn ely_collab::InviteInput::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::InviteInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::InviteInput::role(self, ely_collab::Role, impl core::ops::function::Fn(ely_collab::Role, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::LinkAccess::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::LinkAccess::into_element(self) -> Self::Element
+pub fn ely_collab::LinkAccess::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, core::option::Option<ely_collab::Role>, impl core::ops::function::Fn(core::option::Option<ely_collab::Role>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::LinkAccess::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::LiveIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::LiveIndicator::into_element(self) -> Self::Element
+pub fn ely_collab::LiveIndicator::new(impl core::convert::Into<gpui::window::ElementId>, usize) -> Self
+pub fn ely_collab::LiveIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Member::clone(&self) -> Self
+pub fn ely_collab::Member::eq(&self, &Self) -> bool
+pub fn ely_collab::Member::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::Peer::clone(&self) -> Self
+pub fn ely_collab::Peer::color(&self, &gpui::app::App) -> gpui::color::Hsla
+pub fn ely_collab::Peer::eq(&self, &Self) -> bool
+pub fn ely_collab::Peer::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::Peer::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, usize) -> Self
+pub fn ely_collab::PermissionSelect::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::PermissionSelect::into_element(self) -> Self::Element
+pub fn ely_collab::PermissionSelect::new(impl core::convert::Into<gpui::window::ElementId>, ely_collab::Role, impl core::ops::function::Fn(ely_collab::Role, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::PermissionSelect::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::PresenceAvatars::follow(self, core::option::Option<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::PresenceAvatars::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::PresenceAvatars::into_element(self) -> Self::Element
+pub fn ely_collab::PresenceAvatars::max(self, usize) -> Self
+pub fn ely_collab::PresenceAvatars::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_collab::Peer>) -> Self
+pub fn ely_collab::PresenceAvatars::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Reaction::clone(&self) -> Self
+pub fn ely_collab::Reaction::eq(&self, &Self) -> bool
+pub fn ely_collab::Reaction::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::ReactionPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::ReactionPicker::into_element(self) -> Self::Element
+pub fn ely_collab::ReactionPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::ReactionPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Reactions::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::Reactions::into_element(self) -> Self::Element
+pub fn ely_collab::Reactions::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_collab::Reaction>) -> Self
+pub fn ely_collab::Reactions::on_toggle(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::Reactions::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::RemoteCursor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::RemoteCursor::into_element(self) -> Self::Element
+pub fn ely_collab::RemoteCursor::new(&ely_collab::Peer, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, usize) -> Self
+pub fn ely_collab::RemoteCursor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::RemoteSelection::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::RemoteSelection::into_element(self) -> Self::Element
+pub fn ely_collab::RemoteSelection::new(&ely_collab::Peer, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, core::ops::range::Range<usize>) -> Self
+pub fn ely_collab::RemoteSelection::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Reply::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::Reply::into_element(self) -> Self::Element
+pub fn ely_collab::Reply::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::Reply::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Role::clone(&self) -> Self
+pub fn ely_collab::Role::eq(&self, &Self) -> bool
+pub fn ely_collab::Role::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::ShareDialog::access(self, ely_collab::AccessList) -> Self
+pub fn ely_collab::ShareDialog::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::ShareDialog::into_element(self) -> Self::Element
+pub fn ely_collab::ShareDialog::invite(self, ely_collab::InviteInput) -> Self
+pub fn ely_collab::ShareDialog::link(self, ely_collab::LinkAccess) -> Self
+pub fn ely_collab::ShareDialog::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::ShareDialog::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Suggestion::clone(&self) -> Self
+pub fn ely_collab::Suggestion::eq(&self, &Self) -> bool
+pub fn ely_collab::Suggestion::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::SuggestionMode::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::SuggestionMode::into_element(self) -> Self::Element
+pub fn ely_collab::SuggestionMode::new(impl core::convert::Into<gpui::window::ElementId>, ely_collab::EditMode, impl core::ops::function::Fn(ely_collab::EditMode, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::SuggestionMode::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::Thread::clone(&self) -> Self
+pub fn ely_collab::Thread::eq(&self, &Self) -> bool
+pub fn ely_collab::Thread::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_collab::TrackChanges::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_collab::TrackChanges::into_element(self) -> Self::Element
+pub fn ely_collab::TrackChanges::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_collab::Suggestion>) -> Self
+pub fn ely_collab::TrackChanges::on_decide(self, impl core::ops::function::Fn(ely_collab::Decision, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_collab::TrackChanges::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_collab::accept(&str, &[ely_collab::Suggestion], usize) -> core::option::Option<(alloc::string::String, alloc::vec::Vec<ely_collab::Suggestion>)>
+pub fn ely_collab::suggested(&str, &str, &ely_collab::Peer) -> alloc::vec::Vec<ely_collab::Suggestion>
+pub fn ely_collab::toggled(&[ely_collab::Reaction], &str) -> alloc::vec::Vec<ely_collab::Reaction>
+pub mod ely_collab
+pub struct ely_collab::AccessList
+pub struct ely_collab::AnnotatedText
+pub struct ely_collab::Annotation
+pub struct ely_collab::Comment
+pub struct ely_collab::CommentMarker
+pub struct ely_collab::CommentSidebar
+pub struct ely_collab::CommentThread
+pub struct ely_collab::FollowMode
+pub struct ely_collab::InviteInput
+pub struct ely_collab::LinkAccess
+pub struct ely_collab::LiveIndicator
+pub struct ely_collab::Member
+pub struct ely_collab::Peer
+pub struct ely_collab::PermissionSelect
+pub struct ely_collab::PresenceAvatars
+pub struct ely_collab::Reaction
+pub struct ely_collab::ReactionPicker
+pub struct ely_collab::Reactions
+pub struct ely_collab::RemoteCursor
+pub struct ely_collab::RemoteSelection
+pub struct ely_collab::Reply
+pub struct ely_collab::ShareDialog
+pub struct ely_collab::Suggestion
+pub struct ely_collab::SuggestionMode
+pub struct ely_collab::Thread
+pub struct ely_collab::TrackChanges
+pub type ely_collab::AccessList::Element = gpui::view::ViewElement<ely_collab::AccessList>
+pub type ely_collab::AnnotatedText::Element = gpui::view::ViewElement<ely_collab::AnnotatedText>
+pub type ely_collab::CommentMarker::Element = gpui::view::ViewElement<ely_collab::CommentMarker>
+pub type ely_collab::CommentSidebar::Element = gpui::view::ViewElement<ely_collab::CommentSidebar>
+pub type ely_collab::CommentThread::Element = gpui::view::ViewElement<ely_collab::CommentThread>
+pub type ely_collab::FollowMode::Element = gpui::view::ViewElement<ely_collab::FollowMode>
+pub type ely_collab::InviteInput::Element = gpui::view::ViewElement<ely_collab::InviteInput>
+pub type ely_collab::LinkAccess::Element = gpui::view::ViewElement<ely_collab::LinkAccess>
+pub type ely_collab::LiveIndicator::Element = gpui::view::ViewElement<ely_collab::LiveIndicator>
+pub type ely_collab::PermissionSelect::Element = gpui::view::ViewElement<ely_collab::PermissionSelect>
+pub type ely_collab::PresenceAvatars::Element = gpui::view::ViewElement<ely_collab::PresenceAvatars>
+pub type ely_collab::ReactionPicker::Element = gpui::view::ViewElement<ely_collab::ReactionPicker>
+pub type ely_collab::Reactions::Element = gpui::view::ViewElement<ely_collab::Reactions>
+pub type ely_collab::RemoteCursor::Element = gpui::view::ViewElement<ely_collab::RemoteCursor>
+pub type ely_collab::RemoteSelection::Element = gpui::view::ViewElement<ely_collab::RemoteSelection>
+pub type ely_collab::Reply::Element = gpui::view::ViewElement<ely_collab::Reply>
+pub type ely_collab::ShareDialog::Element = gpui::view::ViewElement<ely_collab::ShareDialog>
+pub type ely_collab::SuggestionMode::Element = gpui::view::ViewElement<ely_collab::SuggestionMode>
+pub type ely_collab::TrackChanges::Element = gpui::view::ViewElement<ely_collab::TrackChanges>
+pub use ely_collab::AccessList = ely_collab::share::AccessList
+pub use ely_collab::AnnotatedText = ely_collab::annotate::AnnotatedText
+pub use ely_collab::Annotation = ely_collab::annotate::Annotation
+pub use ely_collab::Comment = ely_collab::comments::Comment
+pub use ely_collab::CommentMarker = ely_collab::comments::CommentMarker
+pub use ely_collab::CommentSidebar = ely_collab::sidebar::CommentSidebar
+pub use ely_collab::CommentThread = ely_collab::comments::CommentThread
+pub use ely_collab::Decision = ely_collab::track::Decision
+pub use ely_collab::EditMode = ely_collab::track::EditMode
+pub use ely_collab::FollowMode = ely_collab::peers::FollowMode
+pub use ely_collab::InviteInput = ely_collab::share::InviteInput
+pub use ely_collab::LinkAccess = ely_collab::share::LinkAccess
+pub use ely_collab::LiveIndicator = ely_collab::peers::LiveIndicator
+pub use ely_collab::Member = ely_collab::share::Member
+pub use ely_collab::Peer = ely_collab::peers::Peer
+pub use ely_collab::PermissionSelect = ely_collab::share::PermissionSelect
+pub use ely_collab::PresenceAvatars = ely_collab::peers::PresenceAvatars
+pub use ely_collab::Reaction = ely_collab::reactions::Reaction
+pub use ely_collab::ReactionPicker = ely_collab::reactions::ReactionPicker
+pub use ely_collab::Reactions = ely_collab::reactions::Reactions
+pub use ely_collab::RemoteCursor = ely_collab::remote::RemoteCursor
+pub use ely_collab::RemoteSelection = ely_collab::remote::RemoteSelection
+pub use ely_collab::Reply = ely_collab::comments::Reply
+pub use ely_collab::Role = ely_collab::share::Role
+pub use ely_collab::ShareDialog = ely_collab::share::ShareDialog
+pub use ely_collab::Suggestion = ely_collab::track::Suggestion
+pub use ely_collab::SuggestionMode = ely_collab::track::SuggestionMode
+pub use ely_collab::Thread = ely_collab::comments::Thread
+pub use ely_collab::TrackChanges = ely_collab::track::TrackChanges
+pub use ely_collab::accept = ely_collab::track::accept
+pub use ely_collab::suggested = ely_collab::track::suggested
+pub use ely_collab::toggled = ely_collab::reactions::toggled

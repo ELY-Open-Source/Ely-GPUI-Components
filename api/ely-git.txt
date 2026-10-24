@@ -1,0 +1,581 @@
+impl core::clone::Clone for ely_git::Blame
+impl core::clone::Clone for ely_git::Branch
+impl core::clone::Clone for ely_git::ChangeAction
+impl core::clone::Clone for ely_git::ChangeSection
+impl core::clone::Clone for ely_git::Changed
+impl core::clone::Clone for ely_git::Commit
+impl core::clone::Clone for ely_git::Conflict
+impl core::clone::Clone for ely_git::DiffLayout
+impl core::clone::Clone for ely_git::DiffLine
+impl core::clone::Clone for ely_git::GitTag
+impl core::clone::Clone for ely_git::GraphRow
+impl core::clone::Clone for ely_git::Half
+impl core::clone::Clone for ely_git::LineKind
+impl core::clone::Clone for ely_git::PullRequest
+impl core::clone::Clone for ely_git::PullState
+impl core::clone::Clone for ely_git::Region
+impl core::clone::Clone for ely_git::RegionKind
+impl core::clone::Clone for ely_git::ReviewNote
+impl core::clone::Clone for ely_git::Stash
+impl core::clone::Clone for ely_git::StashAction
+impl core::clone::Clone for ely_git::Stretch
+impl core::clone::Clone for ely_git::Stroke
+impl core::clone::Clone for ely_git::Take
+impl core::cmp::Eq for ely_git::ChangeAction
+impl core::cmp::Eq for ely_git::ChangeSection
+impl core::cmp::Eq for ely_git::Conflict
+impl core::cmp::Eq for ely_git::DiffLayout
+impl core::cmp::Eq for ely_git::GraphRow
+impl core::cmp::Eq for ely_git::Half
+impl core::cmp::Eq for ely_git::LineKind
+impl core::cmp::Eq for ely_git::PullState
+impl core::cmp::Eq for ely_git::RegionKind
+impl core::cmp::Eq for ely_git::StashAction
+impl core::cmp::Eq for ely_git::Stroke
+impl core::cmp::Eq for ely_git::Take
+impl core::cmp::PartialEq for ely_git::Blame
+impl core::cmp::PartialEq for ely_git::Branch
+impl core::cmp::PartialEq for ely_git::ChangeAction
+impl core::cmp::PartialEq for ely_git::ChangeSection
+impl core::cmp::PartialEq for ely_git::Changed
+impl core::cmp::PartialEq for ely_git::Commit
+impl core::cmp::PartialEq for ely_git::Conflict
+impl core::cmp::PartialEq for ely_git::DiffLayout
+impl core::cmp::PartialEq for ely_git::DiffLine
+impl core::cmp::PartialEq for ely_git::GitTag
+impl core::cmp::PartialEq for ely_git::GraphRow
+impl core::cmp::PartialEq for ely_git::Half
+impl core::cmp::PartialEq for ely_git::LineKind
+impl core::cmp::PartialEq for ely_git::PullRequest
+impl core::cmp::PartialEq for ely_git::PullState
+impl core::cmp::PartialEq for ely_git::Region
+impl core::cmp::PartialEq for ely_git::RegionKind
+impl core::cmp::PartialEq for ely_git::ReviewNote
+impl core::cmp::PartialEq for ely_git::Stash
+impl core::cmp::PartialEq for ely_git::StashAction
+impl core::cmp::PartialEq for ely_git::Stretch
+impl core::cmp::PartialEq for ely_git::Stroke
+impl core::cmp::PartialEq for ely_git::Take
+impl core::fmt::Debug for ely_git::Blame
+impl core::fmt::Debug for ely_git::Branch
+impl core::fmt::Debug for ely_git::ChangeAction
+impl core::fmt::Debug for ely_git::ChangeSection
+impl core::fmt::Debug for ely_git::Changed
+impl core::fmt::Debug for ely_git::Commit
+impl core::fmt::Debug for ely_git::Conflict
+impl core::fmt::Debug for ely_git::DiffLayout
+impl core::fmt::Debug for ely_git::DiffLine
+impl core::fmt::Debug for ely_git::GitTag
+impl core::fmt::Debug for ely_git::GraphRow
+impl core::fmt::Debug for ely_git::Half
+impl core::fmt::Debug for ely_git::LineKind
+impl core::fmt::Debug for ely_git::PullRequest
+impl core::fmt::Debug for ely_git::PullState
+impl core::fmt::Debug for ely_git::Region
+impl core::fmt::Debug for ely_git::RegionKind
+impl core::fmt::Debug for ely_git::ReviewNote
+impl core::fmt::Debug for ely_git::Stash
+impl core::fmt::Debug for ely_git::StashAction
+impl core::fmt::Debug for ely_git::Stretch
+impl core::fmt::Debug for ely_git::Stroke
+impl core::fmt::Debug for ely_git::Take
+impl core::marker::Copy for ely_git::ChangeAction
+impl core::marker::Copy for ely_git::ChangeSection
+impl core::marker::Copy for ely_git::Conflict
+impl core::marker::Copy for ely_git::DiffLayout
+impl core::marker::Copy for ely_git::Half
+impl core::marker::Copy for ely_git::LineKind
+impl core::marker::Copy for ely_git::PullState
+impl core::marker::Copy for ely_git::RegionKind
+impl core::marker::Copy for ely_git::StashAction
+impl core::marker::Copy for ely_git::Stroke
+impl core::marker::Copy for ely_git::Take
+impl core::marker::StructuralPartialEq for ely_git::Blame
+impl core::marker::StructuralPartialEq for ely_git::Branch
+impl core::marker::StructuralPartialEq for ely_git::ChangeAction
+impl core::marker::StructuralPartialEq for ely_git::ChangeSection
+impl core::marker::StructuralPartialEq for ely_git::Changed
+impl core::marker::StructuralPartialEq for ely_git::Commit
+impl core::marker::StructuralPartialEq for ely_git::Conflict
+impl core::marker::StructuralPartialEq for ely_git::DiffLayout
+impl core::marker::StructuralPartialEq for ely_git::DiffLine
+impl core::marker::StructuralPartialEq for ely_git::GitTag
+impl core::marker::StructuralPartialEq for ely_git::GraphRow
+impl core::marker::StructuralPartialEq for ely_git::Half
+impl core::marker::StructuralPartialEq for ely_git::LineKind
+impl core::marker::StructuralPartialEq for ely_git::PullRequest
+impl core::marker::StructuralPartialEq for ely_git::PullState
+impl core::marker::StructuralPartialEq for ely_git::Region
+impl core::marker::StructuralPartialEq for ely_git::RegionKind
+impl core::marker::StructuralPartialEq for ely_git::ReviewNote
+impl core::marker::StructuralPartialEq for ely_git::Stash
+impl core::marker::StructuralPartialEq for ely_git::StashAction
+impl core::marker::StructuralPartialEq for ely_git::Stretch
+impl core::marker::StructuralPartialEq for ely_git::Stroke
+impl core::marker::StructuralPartialEq for ely_git::Take
+impl ely_core::primitives::capability::Selectable for ely_git::CommitItem
+impl ely_git::BlameView
+impl ely_git::BranchList
+impl ely_git::BranchSelector
+impl ely_git::ChangesList
+impl ely_git::CommitInput
+impl ely_git::CommitItem
+impl ely_git::CommitList
+impl ely_git::ConflictResolver
+impl ely_git::DiffStat
+impl ely_git::DiffViewer
+impl ely_git::FileHistory
+impl ely_git::GitBlameAnnotation
+impl ely_git::GitStatusBadge
+impl ely_git::PullRequestCard
+impl ely_git::ReviewComment
+impl ely_git::StashList
+impl ely_git::TagList
+impl ely_git::ThreeWayMerge
+impl gpui::element::IntoElement for ely_git::BlameView
+impl gpui::element::IntoElement for ely_git::BranchList
+impl gpui::element::IntoElement for ely_git::BranchSelector
+impl gpui::element::IntoElement for ely_git::ChangesList
+impl gpui::element::IntoElement for ely_git::CommitInput
+impl gpui::element::IntoElement for ely_git::CommitItem
+impl gpui::element::IntoElement for ely_git::CommitList
+impl gpui::element::IntoElement for ely_git::ConflictResolver
+impl gpui::element::IntoElement for ely_git::DiffStat
+impl gpui::element::IntoElement for ely_git::DiffViewer
+impl gpui::element::IntoElement for ely_git::FileHistory
+impl gpui::element::IntoElement for ely_git::GitBlameAnnotation
+impl gpui::element::IntoElement for ely_git::GitStatusBadge
+impl gpui::element::IntoElement for ely_git::PullRequestCard
+impl gpui::element::IntoElement for ely_git::ReviewComment
+impl gpui::element::IntoElement for ely_git::StashList
+impl gpui::element::IntoElement for ely_git::TagList
+impl gpui::element::IntoElement for ely_git::ThreeWayMerge
+impl gpui::element::RenderOnce for ely_git::BlameView
+impl gpui::element::RenderOnce for ely_git::BranchList
+impl gpui::element::RenderOnce for ely_git::BranchSelector
+impl gpui::element::RenderOnce for ely_git::ChangesList
+impl gpui::element::RenderOnce for ely_git::CommitInput
+impl gpui::element::RenderOnce for ely_git::CommitItem
+impl gpui::element::RenderOnce for ely_git::CommitList
+impl gpui::element::RenderOnce for ely_git::ConflictResolver
+impl gpui::element::RenderOnce for ely_git::DiffStat
+impl gpui::element::RenderOnce for ely_git::DiffViewer
+impl gpui::element::RenderOnce for ely_git::FileHistory
+impl gpui::element::RenderOnce for ely_git::GitBlameAnnotation
+impl gpui::element::RenderOnce for ely_git::GitStatusBadge
+impl gpui::element::RenderOnce for ely_git::PullRequestCard
+impl gpui::element::RenderOnce for ely_git::ReviewComment
+impl gpui::element::RenderOnce for ely_git::StashList
+impl gpui::element::RenderOnce for ely_git::TagList
+impl gpui::element::RenderOnce for ely_git::ThreeWayMerge
+pub const ely_git::MARKER: usize
+pub ely_git::Blame::age: f32
+pub ely_git::Blame::author: gpui_shared_string::SharedString
+pub ely_git::Blame::commit: gpui_shared_string::SharedString
+pub ely_git::Blame::subject: gpui_shared_string::SharedString
+pub ely_git::Blame::when: gpui_shared_string::SharedString
+pub ely_git::Branch::ahead: usize
+pub ely_git::Branch::behind: usize
+pub ely_git::Branch::current: bool
+pub ely_git::Branch::name: gpui_shared_string::SharedString
+pub ely_git::Branch::remote: bool
+pub ely_git::Branch::subject: gpui_shared_string::SharedString
+pub ely_git::Branch::when: gpui_shared_string::SharedString
+pub ely_git::ChangeAction::Discard
+pub ely_git::ChangeAction::Open
+pub ely_git::ChangeAction::Stage
+pub ely_git::ChangeAction::Unstage
+pub ely_git::ChangeSection::Conflicted
+pub ely_git::ChangeSection::Ignored
+pub ely_git::ChangeSection::Staged
+pub ely_git::ChangeSection::Unstaged
+pub ely_git::ChangeSection::Untracked
+pub ely_git::Changed::lines: core::option::Option<(usize, usize)>
+pub ely_git::Changed::path: gpui_shared_string::SharedString
+pub ely_git::Changed::status: ely_core::lists::files::GitStatus
+pub ely_git::Commit::author: gpui_shared_string::SharedString
+pub ely_git::Commit::id: gpui_shared_string::SharedString
+pub ely_git::Commit::parents: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_git::Commit::refs: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_git::Commit::subject: gpui_shared_string::SharedString
+pub ely_git::Commit::when: gpui_shared_string::SharedString
+pub ely_git::Conflict::base: core::option::Option<usize>
+pub ely_git::Conflict::end: usize
+pub ely_git::Conflict::middle: usize
+pub ely_git::Conflict::start: usize
+pub ely_git::DiffLayout::Split
+pub ely_git::DiffLayout::Unified
+pub ely_git::DiffLine::kind: ely_git::LineKind
+pub ely_git::DiffLine::new: core::option::Option<usize>
+pub ely_git::DiffLine::old: core::option::Option<usize>
+pub ely_git::DiffLine::text: gpui_shared_string::SharedString
+pub ely_git::DiffLine::words: alloc::vec::Vec<core::ops::range::Range<usize>>
+pub ely_git::GitTag::commit: gpui_shared_string::SharedString
+pub ely_git::GitTag::message: core::option::Option<gpui_shared_string::SharedString>
+pub ely_git::GitTag::name: gpui_shared_string::SharedString
+pub ely_git::GitTag::when: gpui_shared_string::SharedString
+pub ely_git::GraphRow::lane: usize
+pub ely_git::GraphRow::strokes: alloc::vec::Vec<ely_git::Stroke>
+pub ely_git::GraphRow::width: usize
+pub ely_git::Half::Bottom
+pub ely_git::Half::Through
+pub ely_git::Half::Top
+pub ely_git::LineKind::Added
+pub ely_git::LineKind::Removed
+pub ely_git::LineKind::Same
+pub ely_git::PullRequest::added: usize
+pub ely_git::PullRequest::author: gpui_shared_string::SharedString
+pub ely_git::PullRequest::base: gpui_shared_string::SharedString
+pub ely_git::PullRequest::checks: (usize, usize, usize)
+pub ely_git::PullRequest::comments: usize
+pub ely_git::PullRequest::head: gpui_shared_string::SharedString
+pub ely_git::PullRequest::number: u32
+pub ely_git::PullRequest::removed: usize
+pub ely_git::PullRequest::reviewers: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_git::PullRequest::state: ely_git::PullState
+pub ely_git::PullRequest::title: gpui_shared_string::SharedString
+pub ely_git::PullRequest::when: gpui_shared_string::SharedString
+pub ely_git::PullState::Closed
+pub ely_git::PullState::Draft
+pub ely_git::PullState::Merged
+pub ely_git::PullState::Open
+pub ely_git::Region::base: alloc::vec::Vec<alloc::string::String>
+pub ely_git::Region::kind: ely_git::RegionKind
+pub ely_git::Region::ours: alloc::vec::Vec<alloc::string::String>
+pub ely_git::Region::theirs: alloc::vec::Vec<alloc::string::String>
+pub ely_git::RegionKind::Both
+pub ely_git::RegionKind::Conflict
+pub ely_git::RegionKind::Ours
+pub ely_git::RegionKind::Theirs
+pub ely_git::RegionKind::Unchanged
+pub ely_git::ReviewNote::author: gpui_shared_string::SharedString
+pub ely_git::ReviewNote::body: gpui_shared_string::SharedString
+pub ely_git::ReviewNote::when: gpui_shared_string::SharedString
+pub ely_git::Stash::branch: gpui_shared_string::SharedString
+pub ely_git::Stash::message: gpui_shared_string::SharedString
+pub ely_git::Stash::when: gpui_shared_string::SharedString
+pub ely_git::StashAction::Apply
+pub ely_git::StashAction::Drop
+pub ely_git::StashAction::Pop
+pub ely_git::Stretch::Folded(alloc::vec::Vec<ely_git::DiffLine>)
+pub ely_git::Stretch::Hunk
+pub ely_git::Stretch::Hunk::header: gpui_shared_string::SharedString
+pub ely_git::Stretch::Hunk::lines: alloc::vec::Vec<ely_git::DiffLine>
+pub ely_git::Stroke::from: usize
+pub ely_git::Stroke::half: ely_git::Half
+pub ely_git::Stroke::to: usize
+pub ely_git::Take::Both
+pub ely_git::Take::Ours
+pub ely_git::Take::Theirs
+pub enum ely_git::ChangeAction
+pub enum ely_git::ChangeSection
+pub enum ely_git::DiffLayout
+pub enum ely_git::Half
+pub enum ely_git::LineKind
+pub enum ely_git::PullState
+pub enum ely_git::RegionKind
+pub enum ely_git::StashAction
+pub enum ely_git::Stretch
+pub enum ely_git::Take
+pub fn ely_git::Blame::clone(&self) -> Self
+pub fn ely_git::Blame::eq(&self, &Self) -> bool
+pub fn ely_git::Blame::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::BlameView::current(self, usize) -> Self
+pub fn ely_git::BlameView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::BlameView::into_element(self) -> Self::Element
+pub fn ely_git::BlameView::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = usize>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Blame>) -> Self
+pub fn ely_git::BlameView::on_commit(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BlameView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::Branch::clone(&self) -> Self
+pub fn ely_git::Branch::eq(&self, &Self) -> bool
+pub fn ely_git::Branch::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::BranchList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::BranchList::into_element(self) -> Self::Element
+pub fn ely_git::BranchList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Branch>) -> Self
+pub fn ely_git::BranchList::on_delete(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BranchList::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BranchList::on_switch(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BranchList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::BranchList::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_git::BranchSelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::BranchSelector::into_element(self) -> Self::Element
+pub fn ely_git::BranchSelector::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Branch>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BranchSelector::on_create(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BranchSelector::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::BranchSelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::ChangeAction::clone(&self) -> Self
+pub fn ely_git::ChangeAction::eq(&self, &Self) -> bool
+pub fn ely_git::ChangeAction::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::ChangeSection::clone(&self) -> Self
+pub fn ely_git::ChangeSection::eq(&self, &Self) -> bool
+pub fn ely_git::ChangeSection::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::Changed::clone(&self) -> Self
+pub fn ely_git::Changed::eq(&self, &Self) -> bool
+pub fn ely_git::Changed::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::ChangesList::conflicted(self, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Changed>) -> Self
+pub fn ely_git::ChangesList::ignored(self, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Changed>) -> Self
+pub fn ely_git::ChangesList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::ChangesList::into_element(self) -> Self::Element
+pub fn ely_git::ChangesList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Changed>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Changed>) -> Self
+pub fn ely_git::ChangesList::on_action(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, ely_git::ChangeSection, ely_git::ChangeAction, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::ChangesList::on_all(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::ChangesList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::ChangesList::selected(self, ely_git::ChangeSection, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_git::ChangesList::untracked(self, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Changed>) -> Self
+pub fn ely_git::Commit::clone(&self) -> Self
+pub fn ely_git::Commit::eq(&self, &Self) -> bool
+pub fn ely_git::Commit::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::CommitInput::amend(self, bool) -> Self
+pub fn ely_git::CommitInput::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::CommitInput::into_element(self) -> Self::Element
+pub fn ely_git::CommitInput::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::convert::Into<gpui_shared_string::SharedString>, usize) -> Self
+pub fn ely_git::CommitInput::on_amend(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::CommitInput::on_commit(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::CommitInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::CommitItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::CommitItem::into_element(self) -> Self::Element
+pub fn ely_git::CommitItem::is_selected(&self) -> bool
+pub fn ely_git::CommitItem::new(impl core::convert::Into<gpui::window::ElementId>, ely_git::Commit) -> Self
+pub fn ely_git::CommitItem::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::CommitItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::CommitItem::selected(self, bool) -> Self
+pub fn ely_git::CommitList::graph(self, alloc::rcs::rc::Rc<alloc::vec::Vec<ely_git::GraphRow>>) -> Self
+pub fn ely_git::CommitList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::CommitList::into_element(self) -> Self::Element
+pub fn ely_git::CommitList::new(impl core::convert::Into<gpui::window::ElementId>, alloc::rcs::rc::Rc<alloc::vec::Vec<ely_git::Commit>>) -> Self
+pub fn ely_git::CommitList::on_end(self, impl core::ops::function::Fn(&mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::CommitList::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::CommitList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::CommitList::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_git::Conflict::clone(&self) -> Self
+pub fn ely_git::Conflict::eq(&self, &Self) -> bool
+pub fn ely_git::Conflict::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::ConflictResolver::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::ConflictResolver::into_element(self) -> Self::Element
+pub fn ely_git::ConflictResolver::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_git::ConflictResolver::on_resolve(self, impl core::ops::function::Fn(alloc::string::String, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::ConflictResolver::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::DiffLayout::clone(&self) -> Self
+pub fn ely_git::DiffLayout::eq(&self, &Self) -> bool
+pub fn ely_git::DiffLayout::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::DiffLine::clone(&self) -> Self
+pub fn ely_git::DiffLine::eq(&self, &Self) -> bool
+pub fn ely_git::DiffLine::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::DiffStat::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::DiffStat::into_element(self) -> Self::Element
+pub fn ely_git::DiffStat::new(usize, usize) -> Self
+pub fn ely_git::DiffStat::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::DiffViewer::from_stretches(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, alloc::rcs::rc::Rc<alloc::vec::Vec<ely_git::Stretch>>) -> Self
+pub fn ely_git::DiffViewer::headless(self) -> Self
+pub fn ely_git::DiffViewer::hunk_action(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::DiffViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::DiffViewer::into_element(self) -> Self::Element
+pub fn ely_git::DiffViewer::layout(self, ely_git::DiffLayout) -> Self
+pub fn ely_git::DiffViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, &str, &str) -> Self
+pub fn ely_git::DiffViewer::on_layout(self, impl core::ops::function::Fn(ely_git::DiffLayout, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::DiffViewer::on_line(self, impl core::ops::function::Fn(ely_git::Place, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::DiffViewer::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::DiffViewer::open(self, impl core::iter::traits::collect::IntoIterator<Item = usize>) -> Self
+pub fn ely_git::DiffViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::DiffViewer::selected(self, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Place>) -> Self
+pub fn ely_git::FileHistory::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::FileHistory::into_element(self) -> Self::Element
+pub fn ely_git::FileHistory::new(impl core::convert::Into<gpui::window::ElementId>, alloc::rcs::rc::Rc<alloc::vec::Vec<(ely_git::Commit, core::option::Option<(usize, usize)>)>>) -> Self
+pub fn ely_git::FileHistory::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::FileHistory::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::FileHistory::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_git::GitBlameAnnotation::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::GitBlameAnnotation::into_element(self) -> Self::Element
+pub fn ely_git::GitBlameAnnotation::new(ely_git::Blame) -> Self
+pub fn ely_git::GitBlameAnnotation::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::GitStatusBadge::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::GitStatusBadge::into_element(self) -> Self::Element
+pub fn ely_git::GitStatusBadge::new(impl core::convert::Into<gpui::window::ElementId>, ely_core::lists::files::GitStatus) -> Self
+pub fn ely_git::GitStatusBadge::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::GitTag::clone(&self) -> Self
+pub fn ely_git::GitTag::eq(&self, &Self) -> bool
+pub fn ely_git::GitTag::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::GraphRow::clone(&self) -> Self
+pub fn ely_git::GraphRow::eq(&self, &Self) -> bool
+pub fn ely_git::GraphRow::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::Half::clone(&self) -> Self
+pub fn ely_git::Half::eq(&self, &Self) -> bool
+pub fn ely_git::Half::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::LineKind::clone(&self) -> Self
+pub fn ely_git::LineKind::eq(&self, &Self) -> bool
+pub fn ely_git::LineKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::PullRequest::clone(&self) -> Self
+pub fn ely_git::PullRequest::eq(&self, &Self) -> bool
+pub fn ely_git::PullRequest::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::PullRequestCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::PullRequestCard::into_element(self) -> Self::Element
+pub fn ely_git::PullRequestCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_git::PullRequest) -> Self
+pub fn ely_git::PullRequestCard::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::PullRequestCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::PullState::clone(&self) -> Self
+pub fn ely_git::PullState::eq(&self, &Self) -> bool
+pub fn ely_git::PullState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::Region::clone(&self) -> Self
+pub fn ely_git::Region::eq(&self, &Self) -> bool
+pub fn ely_git::Region::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::RegionKind::clone(&self) -> Self
+pub fn ely_git::RegionKind::eq(&self, &Self) -> bool
+pub fn ely_git::RegionKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::ReviewComment::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::ReviewComment::into_element(self) -> Self::Element
+pub fn ely_git::ReviewComment::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, usize, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::ReviewNote>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_git::ReviewComment::on_reply(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::ReviewComment::on_resolve(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::ReviewComment::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::ReviewComment::resolved(self, bool) -> Self
+pub fn ely_git::ReviewNote::clone(&self) -> Self
+pub fn ely_git::ReviewNote::eq(&self, &Self) -> bool
+pub fn ely_git::ReviewNote::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::Stash::clone(&self) -> Self
+pub fn ely_git::Stash::eq(&self, &Self) -> bool
+pub fn ely_git::Stash::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::StashAction::clone(&self) -> Self
+pub fn ely_git::StashAction::eq(&self, &Self) -> bool
+pub fn ely_git::StashAction::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::StashList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::StashList::into_element(self) -> Self::Element
+pub fn ely_git::StashList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::Stash>) -> Self
+pub fn ely_git::StashList::on_action(self, impl core::ops::function::Fn(usize, ely_git::StashAction, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::StashList::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::StashList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::StashList::selected(self, usize) -> Self
+pub fn ely_git::Stretch::clone(&self) -> Self
+pub fn ely_git::Stretch::eq(&self, &Self) -> bool
+pub fn ely_git::Stretch::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::Stroke::clone(&self) -> Self
+pub fn ely_git::Stroke::eq(&self, &Self) -> bool
+pub fn ely_git::Stroke::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::TagList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::TagList::into_element(self) -> Self::Element
+pub fn ely_git::TagList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_git::GitTag>) -> Self
+pub fn ely_git::TagList::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::TagList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::TagList::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_git::Take::clone(&self) -> Self
+pub fn ely_git::Take::eq(&self, &Self) -> bool
+pub fn ely_git::Take::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_git::ThreeWayMerge::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_git::ThreeWayMerge::into_element(self) -> Self::Element
+pub fn ely_git::ThreeWayMerge::new(impl core::convert::Into<gpui::window::ElementId>, [&str; 3], alloc::rcs::rc::Rc<alloc::vec::Vec<ely_git::Region>>) -> Self
+pub fn ely_git::ThreeWayMerge::on_take(self, impl core::ops::function::Fn(usize, ely_git::Take, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_git::ThreeWayMerge::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_git::ThreeWayMerge::takes(self, impl core::iter::traits::collect::IntoIterator<Item = core::option::Option<ely_git::Take>>) -> Self
+pub fn ely_git::conflicts(&str, usize) -> alloc::vec::Vec<ely_git::Conflict>
+pub fn ely_git::diff(&str, &str, usize) -> alloc::vec::Vec<ely_git::Stretch>
+pub fn ely_git::lanes<'a>(impl core::iter::traits::collect::IntoIterator<Item = (&'a str, &'a [&'a str])>) -> alloc::vec::Vec<ely_git::GraphRow>
+pub fn ely_git::mark_words(&mut [ely_git::DiffLine])
+pub fn ely_git::marked(&str, usize) -> alloc::vec::Vec<ely_git::Region>
+pub fn ely_git::pairs(&[ely_git::DiffLine]) -> alloc::vec::Vec<(core::option::Option<&ely_git::DiffLine>, core::option::Option<&ely_git::DiffLine>)>
+pub fn ely_git::regions(&str, &str, &str) -> alloc::vec::Vec<ely_git::Region>
+pub fn ely_git::resolve(&str, usize, ely_git::Take, usize) -> core::option::Option<alloc::string::String>
+pub fn ely_git::result(&[ely_git::Region], &[core::option::Option<ely_git::Take>]) -> (alloc::string::String, usize)
+pub fn ely_git::stat(&str, &str) -> (usize, usize)
+pub mod ely_git
+pub struct ely_git::Blame
+pub struct ely_git::BlameView
+pub struct ely_git::Branch
+pub struct ely_git::BranchList
+pub struct ely_git::BranchSelector
+pub struct ely_git::Changed
+pub struct ely_git::ChangesList
+pub struct ely_git::Commit
+pub struct ely_git::CommitInput
+pub struct ely_git::CommitItem
+pub struct ely_git::CommitList
+pub struct ely_git::Conflict
+pub struct ely_git::ConflictResolver
+pub struct ely_git::DiffLine
+pub struct ely_git::DiffStat
+pub struct ely_git::DiffViewer
+pub struct ely_git::FileHistory
+pub struct ely_git::GitBlameAnnotation
+pub struct ely_git::GitStatusBadge
+pub struct ely_git::GitTag
+pub struct ely_git::GraphRow
+pub struct ely_git::PullRequest
+pub struct ely_git::PullRequestCard
+pub struct ely_git::Region
+pub struct ely_git::ReviewComment
+pub struct ely_git::ReviewNote
+pub struct ely_git::Stash
+pub struct ely_git::StashList
+pub struct ely_git::Stroke
+pub struct ely_git::TagList
+pub struct ely_git::ThreeWayMerge
+pub type ely_git::BlameView::Element = gpui::view::ViewElement<ely_git::BlameView>
+pub type ely_git::BranchList::Element = gpui::view::ViewElement<ely_git::BranchList>
+pub type ely_git::BranchSelector::Element = gpui::view::ViewElement<ely_git::BranchSelector>
+pub type ely_git::ChangesList::Element = gpui::view::ViewElement<ely_git::ChangesList>
+pub type ely_git::CommitInput::Element = gpui::view::ViewElement<ely_git::CommitInput>
+pub type ely_git::CommitItem::Element = gpui::view::ViewElement<ely_git::CommitItem>
+pub type ely_git::CommitList::Element = gpui::view::ViewElement<ely_git::CommitList>
+pub type ely_git::ConflictResolver::Element = gpui::view::ViewElement<ely_git::ConflictResolver>
+pub type ely_git::DiffStat::Element = gpui::view::ViewElement<ely_git::DiffStat>
+pub type ely_git::DiffViewer::Element = gpui::view::ViewElement<ely_git::DiffViewer>
+pub type ely_git::FileHistory::Element = gpui::view::ViewElement<ely_git::FileHistory>
+pub type ely_git::GitBlameAnnotation::Element = gpui::view::ViewElement<ely_git::GitBlameAnnotation>
+pub type ely_git::GitStatusBadge::Element = gpui::view::ViewElement<ely_git::GitStatusBadge>
+pub type ely_git::Place = (usize, usize)
+pub type ely_git::PullRequestCard::Element = gpui::view::ViewElement<ely_git::PullRequestCard>
+pub type ely_git::ReviewComment::Element = gpui::view::ViewElement<ely_git::ReviewComment>
+pub type ely_git::StashList::Element = gpui::view::ViewElement<ely_git::StashList>
+pub type ely_git::TagList::Element = gpui::view::ViewElement<ely_git::TagList>
+pub type ely_git::ThreeWayMerge::Element = gpui::view::ViewElement<ely_git::ThreeWayMerge>
+pub use ely_git::Blame = ely_git::blame::Blame
+pub use ely_git::BlameView = ely_git::blame::BlameView
+pub use ely_git::Branch = ely_git::refs::Branch
+pub use ely_git::BranchList = ely_git::refs::BranchList
+pub use ely_git::BranchSelector = ely_git::refs::BranchSelector
+pub use ely_git::ChangeAction = ely_git::changes::ChangeAction
+pub use ely_git::ChangeSection = ely_git::changes::ChangeSection
+pub use ely_git::Changed = ely_git::changes::Changed
+pub use ely_git::ChangesList = ely_git::changes::ChangesList
+pub use ely_git::Commit = ely_git::commits::Commit
+pub use ely_git::CommitInput = ely_git::changes::CommitInput
+pub use ely_git::CommitItem = ely_git::commits::CommitItem
+pub use ely_git::CommitList = ely_git::commits::CommitList
+pub use ely_git::Conflict = ely_git::merging::Conflict
+pub use ely_git::ConflictResolver = ely_git::merge::ConflictResolver
+pub use ely_git::DiffLayout = ely_git::viewer::DiffLayout
+pub use ely_git::DiffLine = ely_git::diff::DiffLine
+pub use ely_git::DiffStat = ely_git::badges::DiffStat
+pub use ely_git::DiffViewer = ely_git::viewer::DiffViewer
+pub use ely_git::FileHistory = ely_git::history::FileHistory
+pub use ely_git::GitBlameAnnotation = ely_git::blame::GitBlameAnnotation
+pub use ely_git::GitStatusBadge = ely_git::badges::GitStatusBadge
+pub use ely_git::GitTag = ely_git::tags::GitTag
+pub use ely_git::GraphRow = ely_git::graph::GraphRow
+pub use ely_git::Half = ely_git::graph::Half
+pub use ely_git::LineKind = ely_git::diff::LineKind
+pub use ely_git::MARKER = ely_git::merging::MARKER
+pub use ely_git::Place = ely_git::rows::Place
+pub use ely_git::PullRequest = ely_git::review::PullRequest
+pub use ely_git::PullRequestCard = ely_git::review::PullRequestCard
+pub use ely_git::PullState = ely_git::review::PullState
+pub use ely_git::Region = ely_git::merging::Region
+pub use ely_git::RegionKind = ely_git::merging::RegionKind
+pub use ely_git::ReviewComment = ely_git::review::ReviewComment
+pub use ely_git::ReviewNote = ely_git::review::ReviewNote
+pub use ely_git::Stash = ely_git::tags::Stash
+pub use ely_git::StashAction = ely_git::tags::StashAction
+pub use ely_git::StashList = ely_git::tags::StashList
+pub use ely_git::Stretch = ely_git::diff::Stretch
+pub use ely_git::Stroke = ely_git::graph::Stroke
+pub use ely_git::TagList = ely_git::tags::TagList
+pub use ely_git::Take = ely_git::merging::Take
+pub use ely_git::ThreeWayMerge = ely_git::merge::ThreeWayMerge
+pub use ely_git::conflicts = ely_git::merging::conflicts
+pub use ely_git::diff = ely_git::diff::diff
+pub use ely_git::lanes = ely_git::graph::lanes
+pub use ely_git::mark_words = ely_git::diff::mark_words
+pub use ely_git::marked = ely_git::merging::marked
+pub use ely_git::pairs = ely_git::diff::pairs
+pub use ely_git::regions = ely_git::merging::regions
+pub use ely_git::resolve = ely_git::merging::resolve
+pub use ely_git::result = ely_git::merging::result
+pub use ely_git::stat = ely_git::diff::stat

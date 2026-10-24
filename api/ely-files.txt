@@ -1,0 +1,262 @@
+impl core::clone::Clone for ely_files::ArchiveEntry
+impl core::clone::Clone for ely_files::Duplicates
+impl core::clone::Clone for ely_files::FileOperation
+impl core::clone::Clone for ely_files::FileView
+impl core::clone::Clone for ely_files::FoundFile
+impl core::clone::Clone for ely_files::RecentFile
+impl core::clone::Clone for ely_files::Transfer
+impl core::clone::Clone for ely_files::TransferState
+impl core::cmp::Eq for ely_files::FileOperation
+impl core::cmp::Eq for ely_files::FileView
+impl core::cmp::PartialEq for ely_files::ArchiveEntry
+impl core::cmp::PartialEq for ely_files::Duplicates
+impl core::cmp::PartialEq for ely_files::FileOperation
+impl core::cmp::PartialEq for ely_files::FileView
+impl core::cmp::PartialEq for ely_files::FoundFile
+impl core::cmp::PartialEq for ely_files::RecentFile
+impl core::cmp::PartialEq for ely_files::Transfer
+impl core::cmp::PartialEq for ely_files::TransferState
+impl core::convert::From<ely_files::FileItem> for ely_core::lists::item::ListItem
+impl core::fmt::Debug for ely_files::ArchiveEntry
+impl core::fmt::Debug for ely_files::Duplicates
+impl core::fmt::Debug for ely_files::FileOperation
+impl core::fmt::Debug for ely_files::FileView
+impl core::fmt::Debug for ely_files::FoundFile
+impl core::fmt::Debug for ely_files::RecentFile
+impl core::fmt::Debug for ely_files::Transfer
+impl core::fmt::Debug for ely_files::TransferState
+impl core::marker::Copy for ely_files::FileOperation
+impl core::marker::Copy for ely_files::FileView
+impl core::marker::StructuralPartialEq for ely_files::ArchiveEntry
+impl core::marker::StructuralPartialEq for ely_files::Duplicates
+impl core::marker::StructuralPartialEq for ely_files::FileOperation
+impl core::marker::StructuralPartialEq for ely_files::FileView
+impl core::marker::StructuralPartialEq for ely_files::FoundFile
+impl core::marker::StructuralPartialEq for ely_files::RecentFile
+impl core::marker::StructuralPartialEq for ely_files::Transfer
+impl core::marker::StructuralPartialEq for ely_files::TransferState
+impl ely_files::ArchiveViewer
+impl ely_files::DownloadManager
+impl ely_files::DuplicateFinder
+impl ely_files::FileExplorer
+impl ely_files::FileGrid
+impl ely_files::FileIcon
+impl ely_files::FileItem
+impl ely_files::FileOperationProgress
+impl ely_files::FilePreview
+impl ely_files::FileSearch
+impl ely_files::RecentFiles
+impl ely_files::TransferQueue
+impl gpui::element::IntoElement for ely_files::ArchiveViewer
+impl gpui::element::IntoElement for ely_files::DownloadManager
+impl gpui::element::IntoElement for ely_files::DuplicateFinder
+impl gpui::element::IntoElement for ely_files::FileExplorer
+impl gpui::element::IntoElement for ely_files::FileGrid
+impl gpui::element::IntoElement for ely_files::FileIcon
+impl gpui::element::IntoElement for ely_files::FileItem
+impl gpui::element::IntoElement for ely_files::FileOperationProgress
+impl gpui::element::IntoElement for ely_files::FilePreview
+impl gpui::element::IntoElement for ely_files::FileSearch
+impl gpui::element::IntoElement for ely_files::RecentFiles
+impl gpui::element::IntoElement for ely_files::TransferQueue
+impl gpui::element::RenderOnce for ely_files::ArchiveViewer
+impl gpui::element::RenderOnce for ely_files::DownloadManager
+impl gpui::element::RenderOnce for ely_files::DuplicateFinder
+impl gpui::element::RenderOnce for ely_files::FileExplorer
+impl gpui::element::RenderOnce for ely_files::FileGrid
+impl gpui::element::RenderOnce for ely_files::FileIcon
+impl gpui::element::RenderOnce for ely_files::FileItem
+impl gpui::element::RenderOnce for ely_files::FileOperationProgress
+impl gpui::element::RenderOnce for ely_files::FilePreview
+impl gpui::element::RenderOnce for ely_files::FileSearch
+impl gpui::element::RenderOnce for ely_files::RecentFiles
+impl gpui::element::RenderOnce for ely_files::TransferQueue
+pub ely_files::ArchiveEntry::packed: u64
+pub ely_files::ArchiveEntry::path: gpui_shared_string::SharedString
+pub ely_files::ArchiveEntry::size: u64
+pub ely_files::Duplicates::name: gpui_shared_string::SharedString
+pub ely_files::Duplicates::paths: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_files::Duplicates::size: u64
+pub ely_files::FileOperation::Copy
+pub ely_files::FileOperation::Move
+pub ely_files::FileView::Columns
+pub ely_files::FileView::Icons
+pub ely_files::FileView::List
+pub ely_files::FoundFile::folder: gpui_shared_string::SharedString
+pub ely_files::FoundFile::name: gpui_shared_string::SharedString
+pub ely_files::RecentFile::folder: gpui_shared_string::SharedString
+pub ely_files::RecentFile::name: gpui_shared_string::SharedString
+pub ely_files::RecentFile::opened: jiff::timestamp::Timestamp
+pub ely_files::Transfer::key: gpui_shared_string::SharedString
+pub ely_files::Transfer::moved: u64
+pub ely_files::Transfer::name: gpui_shared_string::SharedString
+pub ely_files::Transfer::state: ely_files::TransferState
+pub ely_files::Transfer::total: u64
+pub ely_files::Transfer::upload: bool
+pub ely_files::TransferState::Done
+pub ely_files::TransferState::Failed(gpui_shared_string::SharedString)
+pub ely_files::TransferState::Moving
+pub ely_files::TransferState::Moving::rate: u64
+pub ely_files::TransferState::Paused
+pub ely_files::TransferState::Queued
+pub enum ely_files::FileOperation
+pub enum ely_files::FileView
+pub enum ely_files::TransferState
+pub fn ely_core::lists::item::ListItem::from(ely_files::FileItem) -> Self
+pub fn ely_files::ArchiveEntry::clone(&self) -> Self
+pub fn ely_files::ArchiveEntry::eq(&self, &Self) -> bool
+pub fn ely_files::ArchiveEntry::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::ArchiveViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::ArchiveViewer::into_element(self) -> Self::Element
+pub fn ely_files::ArchiveViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_files::ArchiveEntry>) -> Self
+pub fn ely_files::ArchiveViewer::on_open(self, impl core::ops::function::Fn(&ely_files::ArchiveEntry, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::ArchiveViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::DownloadManager::cancel(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DownloadManager::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::DownloadManager::into_element(self) -> Self::Element
+pub fn ely_files::DownloadManager::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_files::Transfer>) -> Self
+pub fn ely_files::DownloadManager::on_clear(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DownloadManager::open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DownloadManager::pause(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DownloadManager::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::DownloadManager::resume(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DownloadManager::retry(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DownloadManager::show(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DuplicateFinder::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::DuplicateFinder::into_element(self) -> Self::Element
+pub fn ely_files::DuplicateFinder::marked(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_files::DuplicateFinder::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_files::Duplicates>) -> Self
+pub fn ely_files::DuplicateFinder::on_mark(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DuplicateFinder::on_remove(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::DuplicateFinder::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::Duplicates::clone(&self) -> Self
+pub fn ely_files::Duplicates::eq(&self, &Self) -> bool
+pub fn ely_files::Duplicates::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::FileExplorer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FileExplorer::into_element(self) -> Self::Element
+pub fn ely_files::FileExplorer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::iter::traits::collect::IntoIterator<Item = alloc::vec::Vec<ely_core::lists::directory::DirEntry>>, ely_files::FileView) -> Self
+pub fn ely_files::FileExplorer::on_navigate(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileExplorer::on_open(self, impl core::ops::function::Fn(&ely_core::lists::directory::DirEntry, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileExplorer::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileExplorer::on_view(self, impl core::ops::function::Fn(ely_files::FileView, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileExplorer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FileExplorer::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_files::FileGrid::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FileGrid::into_element(self) -> Self::Element
+pub fn ely_files::FileGrid::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_core::lists::directory::DirEntry>) -> Self
+pub fn ely_files::FileGrid::on_open(self, impl core::ops::function::Fn(&ely_core::lists::directory::DirEntry, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileGrid::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FileGrid::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_files::FileIcon::entry(&ely_core::lists::directory::DirEntry) -> Self
+pub fn ely_files::FileIcon::file(impl core::convert::AsRef<str>) -> Self
+pub fn ely_files::FileIcon::folder(bool) -> Self
+pub fn ely_files::FileIcon::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FileIcon::into_element(self) -> Self::Element
+pub fn ely_files::FileIcon::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FileIcon::size(self, ely_core::theme::tokens::IconSize) -> Self
+pub fn ely_files::FileItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FileItem::into_element(self) -> Self::Element
+pub fn ely_files::FileItem::new(impl core::convert::Into<gpui::window::ElementId>, ely_core::lists::directory::DirEntry) -> Self
+pub fn ely_files::FileItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FileOperation::clone(&self) -> Self
+pub fn ely_files::FileOperation::eq(&self, &Self) -> bool
+pub fn ely_files::FileOperation::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::FileOperationProgress::current(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_files::FileOperationProgress::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FileOperationProgress::into_element(self) -> Self::Element
+pub fn ely_files::FileOperationProgress::new(impl core::convert::Into<gpui::window::ElementId>, ely_files::FileOperation, usize, impl core::convert::Into<gpui_shared_string::SharedString>, (u64, u64), ely_files::TransferState) -> Self
+pub fn ely_files::FileOperationProgress::on_cancel(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileOperationProgress::on_pause(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileOperationProgress::on_resume(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileOperationProgress::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FilePreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FilePreview::into_element(self) -> Self::Element
+pub fn ely_files::FilePreview::new(impl core::convert::Into<gpui::window::ElementId>, ely_core::lists::directory::DirEntry) -> Self
+pub fn ely_files::FilePreview::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>, f32) -> Self
+pub fn ely_files::FilePreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FilePreview::text(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_files::FileSearch::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::FileSearch::into_element(self) -> Self::Element
+pub fn ely_files::FileSearch::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::iter::traits::collect::IntoIterator<Item = ely_files::FoundFile>) -> Self
+pub fn ely_files::FileSearch::on_open(self, impl core::ops::function::Fn(&ely_files::FoundFile, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::FileSearch::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::FileView::clone(&self) -> Self
+pub fn ely_files::FileView::eq(&self, &Self) -> bool
+pub fn ely_files::FileView::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::FoundFile::clone(&self) -> Self
+pub fn ely_files::FoundFile::eq(&self, &Self) -> bool
+pub fn ely_files::FoundFile::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::RecentFile::clone(&self) -> Self
+pub fn ely_files::RecentFile::eq(&self, &Self) -> bool
+pub fn ely_files::RecentFile::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::RecentFiles::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::RecentFiles::into_element(self) -> Self::Element
+pub fn ely_files::RecentFiles::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_files::RecentFile>) -> Self
+pub fn ely_files::RecentFiles::on_open(self, impl core::ops::function::Fn(&ely_files::RecentFile, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::RecentFiles::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::RecentFiles::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_files::Transfer::clone(&self) -> Self
+pub fn ely_files::Transfer::eq(&self, &Self) -> bool
+pub fn ely_files::Transfer::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_files::TransferQueue::cancel(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::TransferQueue::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_files::TransferQueue::into_element(self) -> Self::Element
+pub fn ely_files::TransferQueue::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_files::Transfer>) -> Self
+pub fn ely_files::TransferQueue::pause(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::TransferQueue::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_files::TransferQueue::resume(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::TransferQueue::retry(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_files::TransferState::clone(&self) -> Self
+pub fn ely_files::TransferState::eq(&self, &Self) -> bool
+pub fn ely_files::TransferState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub mod ely_files
+pub struct ely_files::ArchiveEntry
+pub struct ely_files::ArchiveViewer
+pub struct ely_files::DownloadManager
+pub struct ely_files::DuplicateFinder
+pub struct ely_files::Duplicates
+pub struct ely_files::FileExplorer
+pub struct ely_files::FileGrid
+pub struct ely_files::FileIcon
+pub struct ely_files::FileItem
+pub struct ely_files::FileOperationProgress
+pub struct ely_files::FilePreview
+pub struct ely_files::FileSearch
+pub struct ely_files::FoundFile
+pub struct ely_files::RecentFile
+pub struct ely_files::RecentFiles
+pub struct ely_files::Transfer
+pub struct ely_files::TransferQueue
+pub type ely_files::ArchiveViewer::Element = gpui::view::ViewElement<ely_files::ArchiveViewer>
+pub type ely_files::DownloadManager::Element = gpui::view::ViewElement<ely_files::DownloadManager>
+pub type ely_files::DuplicateFinder::Element = gpui::view::ViewElement<ely_files::DuplicateFinder>
+pub type ely_files::FileExplorer::Element = gpui::view::ViewElement<ely_files::FileExplorer>
+pub type ely_files::FileGrid::Element = gpui::view::ViewElement<ely_files::FileGrid>
+pub type ely_files::FileIcon::Element = gpui::view::ViewElement<ely_files::FileIcon>
+pub type ely_files::FileItem::Element = gpui::view::ViewElement<ely_files::FileItem>
+pub type ely_files::FileOperationProgress::Element = gpui::view::ViewElement<ely_files::FileOperationProgress>
+pub type ely_files::FilePreview::Element = gpui::view::ViewElement<ely_files::FilePreview>
+pub type ely_files::FileSearch::Element = gpui::view::ViewElement<ely_files::FileSearch>
+pub type ely_files::RecentFiles::Element = gpui::view::ViewElement<ely_files::RecentFiles>
+pub type ely_files::TransferQueue::Element = gpui::view::ViewElement<ely_files::TransferQueue>
+pub use ely_files::ArchiveEntry = ely_files::archive::ArchiveEntry
+pub use ely_files::ArchiveViewer = ely_files::archive::ArchiveViewer
+pub use ely_files::DownloadManager = ely_files::transfers::DownloadManager
+pub use ely_files::DuplicateFinder = ely_files::duplicates::DuplicateFinder
+pub use ely_files::Duplicates = ely_files::duplicates::Duplicates
+pub use ely_files::FileExplorer = ely_files::explorer::FileExplorer
+pub use ely_files::FileGrid = ely_files::grid::FileGrid
+pub use ely_files::FileIcon = ely_files::icon::FileIcon
+pub use ely_files::FileItem = ely_files::item::FileItem
+pub use ely_files::FileOperation = ely_files::operation::FileOperation
+pub use ely_files::FileOperationProgress = ely_files::operation::FileOperationProgress
+pub use ely_files::FilePreview = ely_files::preview::FilePreview
+pub use ely_files::FileSearch = ely_files::search::FileSearch
+pub use ely_files::FileView = ely_files::explorer::FileView
+pub use ely_files::FoundFile = ely_files::search::FoundFile
+pub use ely_files::RecentFile = ely_files::recent::RecentFile
+pub use ely_files::RecentFiles = ely_files::recent::RecentFiles
+pub use ely_files::Transfer = ely_files::transfer::Transfer
+pub use ely_files::TransferQueue = ely_files::transfers::TransferQueue
+pub use ely_files::TransferState = ely_files::transfer::TransferState

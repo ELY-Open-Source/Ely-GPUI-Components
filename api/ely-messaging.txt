@@ -1,0 +1,419 @@
+impl core::clone::Clone for ely_messaging::ClearAfter
+impl core::clone::Clone for ely_messaging::Delivery
+impl core::clone::Clone for ely_messaging::Gif
+impl core::clone::Clone for ely_messaging::Gifs
+impl core::clone::Clone for ely_messaging::Member
+impl core::clone::Clone for ely_messaging::PinnedMessage
+impl core::clone::Clone for ely_messaging::Status
+impl core::clone::Clone for ely_messaging::Sticker
+impl core::clone::Clone for ely_messaging::StickerPack
+impl core::cmp::Eq for ely_messaging::ClearAfter
+impl core::cmp::Eq for ely_messaging::Delivery
+impl core::cmp::PartialEq for ely_messaging::ClearAfter
+impl core::cmp::PartialEq for ely_messaging::Delivery
+impl core::cmp::PartialEq for ely_messaging::PinnedMessage
+impl core::cmp::PartialEq for ely_messaging::Status
+impl core::convert::From<ely_messaging::ChannelItem> for ely_messaging::ChatRow
+impl core::convert::From<ely_messaging::DirectMessageItem> for ely_messaging::ChatRow
+impl core::default::Default for ely_messaging::UnreadDivider
+impl core::fmt::Debug for ely_messaging::ClearAfter
+impl core::fmt::Debug for ely_messaging::Delivery
+impl core::fmt::Debug for ely_messaging::PinnedMessage
+impl core::fmt::Debug for ely_messaging::Status
+impl core::marker::Copy for ely_messaging::ClearAfter
+impl core::marker::Copy for ely_messaging::Delivery
+impl core::marker::StructuralPartialEq for ely_messaging::ClearAfter
+impl core::marker::StructuralPartialEq for ely_messaging::Delivery
+impl core::marker::StructuralPartialEq for ely_messaging::PinnedMessage
+impl core::marker::StructuralPartialEq for ely_messaging::Status
+impl ely_messaging::CallControls
+impl ely_messaging::ChannelHeader
+impl ely_messaging::ChannelItem
+impl ely_messaging::ChannelList
+impl ely_messaging::ChatMessage
+impl ely_messaging::ClearAfter
+impl ely_messaging::Delivery
+impl ely_messaging::DirectMessageItem
+impl ely_messaging::Gif
+impl ely_messaging::GifPicker
+impl ely_messaging::HuddleIndicator
+impl ely_messaging::IncomingCallDialog
+impl ely_messaging::Member
+impl ely_messaging::MemberList
+impl ely_messaging::MessageThread
+impl ely_messaging::OnlineStatus
+impl ely_messaging::ParticipantTile
+impl ely_messaging::PinnedMessages
+impl ely_messaging::ReadReceipt
+impl ely_messaging::ScreenShareView
+impl ely_messaging::StatusSetter
+impl ely_messaging::Sticker
+impl ely_messaging::StickerPack
+impl ely_messaging::StickerPicker
+impl ely_messaging::ThreadPanel
+impl ely_messaging::UnreadDivider
+impl ely_messaging::UserProfileCard
+impl ely_messaging::VideoCallGrid
+impl ely_messaging::VoiceCallBar
+impl gpui::element::IntoElement for ely_messaging::CallControls
+impl gpui::element::IntoElement for ely_messaging::ChannelHeader
+impl gpui::element::IntoElement for ely_messaging::ChannelItem
+impl gpui::element::IntoElement for ely_messaging::ChannelList
+impl gpui::element::IntoElement for ely_messaging::ChatMessage
+impl gpui::element::IntoElement for ely_messaging::DirectMessageItem
+impl gpui::element::IntoElement for ely_messaging::GifPicker
+impl gpui::element::IntoElement for ely_messaging::HuddleIndicator
+impl gpui::element::IntoElement for ely_messaging::IncomingCallDialog
+impl gpui::element::IntoElement for ely_messaging::MemberList
+impl gpui::element::IntoElement for ely_messaging::MessageThread
+impl gpui::element::IntoElement for ely_messaging::OnlineStatus
+impl gpui::element::IntoElement for ely_messaging::ParticipantTile
+impl gpui::element::IntoElement for ely_messaging::PinnedMessages
+impl gpui::element::IntoElement for ely_messaging::ReadReceipt
+impl gpui::element::IntoElement for ely_messaging::ScreenShareView
+impl gpui::element::IntoElement for ely_messaging::StatusSetter
+impl gpui::element::IntoElement for ely_messaging::StickerPicker
+impl gpui::element::IntoElement for ely_messaging::ThreadPanel
+impl gpui::element::IntoElement for ely_messaging::UnreadDivider
+impl gpui::element::IntoElement for ely_messaging::UserProfileCard
+impl gpui::element::IntoElement for ely_messaging::VideoCallGrid
+impl gpui::element::IntoElement for ely_messaging::VoiceCallBar
+impl gpui::element::ParentElement for ely_messaging::ChatMessage
+impl gpui::element::ParentElement for ely_messaging::ScreenShareView
+impl gpui::element::ParentElement for ely_messaging::ThreadPanel
+impl gpui::element::ParentElement for ely_messaging::VideoCallGrid
+impl gpui::element::RenderOnce for ely_messaging::CallControls
+impl gpui::element::RenderOnce for ely_messaging::ChannelHeader
+impl gpui::element::RenderOnce for ely_messaging::ChannelItem
+impl gpui::element::RenderOnce for ely_messaging::ChannelList
+impl gpui::element::RenderOnce for ely_messaging::ChatMessage
+impl gpui::element::RenderOnce for ely_messaging::DirectMessageItem
+impl gpui::element::RenderOnce for ely_messaging::GifPicker
+impl gpui::element::RenderOnce for ely_messaging::HuddleIndicator
+impl gpui::element::RenderOnce for ely_messaging::IncomingCallDialog
+impl gpui::element::RenderOnce for ely_messaging::MemberList
+impl gpui::element::RenderOnce for ely_messaging::MessageThread
+impl gpui::element::RenderOnce for ely_messaging::OnlineStatus
+impl gpui::element::RenderOnce for ely_messaging::ParticipantTile
+impl gpui::element::RenderOnce for ely_messaging::PinnedMessages
+impl gpui::element::RenderOnce for ely_messaging::ReadReceipt
+impl gpui::element::RenderOnce for ely_messaging::ScreenShareView
+impl gpui::element::RenderOnce for ely_messaging::StatusSetter
+impl gpui::element::RenderOnce for ely_messaging::StickerPicker
+impl gpui::element::RenderOnce for ely_messaging::ThreadPanel
+impl gpui::element::RenderOnce for ely_messaging::UnreadDivider
+impl gpui::element::RenderOnce for ely_messaging::UserProfileCard
+impl gpui::element::RenderOnce for ely_messaging::VideoCallGrid
+impl gpui::element::RenderOnce for ely_messaging::VoiceCallBar
+pub const ely_messaging::ClearAfter::ALL: [Self; 6]
+pub ely_messaging::ChatRow::Channel(ely_messaging::ChannelItem)
+pub ely_messaging::ChatRow::Direct(ely_messaging::DirectMessageItem)
+pub ely_messaging::ClearAfter::FourHours
+pub ely_messaging::ClearAfter::Never
+pub ely_messaging::ClearAfter::OneHour
+pub ely_messaging::ClearAfter::ThirtyMinutes
+pub ely_messaging::ClearAfter::ThisWeek
+pub ely_messaging::ClearAfter::Today
+pub ely_messaging::Delivery::Delivered
+pub ely_messaging::Delivery::Read
+pub ely_messaging::Delivery::Sending
+pub ely_messaging::Delivery::Sent
+pub ely_messaging::Gif::key: gpui_shared_string::SharedString
+pub ely_messaging::Gif::picture: gpui::elements::img::ImageSource
+pub ely_messaging::Gif::ratio: f32
+pub ely_messaging::Gif::title: gpui_shared_string::SharedString
+pub ely_messaging::Gifs::Found(alloc::vec::Vec<ely_messaging::Gif>)
+pub ely_messaging::Gifs::Loading
+pub ely_messaging::Member::key: gpui_shared_string::SharedString
+pub ely_messaging::Member::name: gpui_shared_string::SharedString
+pub ely_messaging::Member::picture: core::option::Option<gpui::elements::img::ImageSource>
+pub ely_messaging::Member::presence: ely_core::data_display::avatar::Presence
+pub ely_messaging::Member::role: core::option::Option<gpui_shared_string::SharedString>
+pub ely_messaging::Member::status: core::option::Option<gpui_shared_string::SharedString>
+pub ely_messaging::PinnedMessage::at: jiff::timestamp::Timestamp
+pub ely_messaging::PinnedMessage::author: gpui_shared_string::SharedString
+pub ely_messaging::PinnedMessage::key: gpui_shared_string::SharedString
+pub ely_messaging::PinnedMessage::text: gpui_shared_string::SharedString
+pub ely_messaging::Status::clear: ely_messaging::ClearAfter
+pub ely_messaging::Status::emoji: core::option::Option<gpui_shared_string::SharedString>
+pub ely_messaging::Status::text: gpui_shared_string::SharedString
+pub ely_messaging::Sticker::key: gpui_shared_string::SharedString
+pub ely_messaging::Sticker::name: gpui_shared_string::SharedString
+pub ely_messaging::Sticker::picture: gpui::elements::img::ImageSource
+pub ely_messaging::StickerPack::name: gpui_shared_string::SharedString
+pub ely_messaging::StickerPack::stickers: alloc::vec::Vec<ely_messaging::Sticker>
+pub enum ely_messaging::ChatRow
+pub enum ely_messaging::ClearAfter
+pub enum ely_messaging::Delivery
+pub enum ely_messaging::Gifs
+pub fn ely_messaging::CallControls::camera(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::CallControls::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::CallControls::into_element(self) -> Self::Element
+pub fn ely_messaging::CallControls::mic(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::CallControls::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_messaging::CallControls::on_leave(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::CallControls::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::CallControls::share(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ChannelHeader::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ChannelHeader::into_element(self) -> Self::Element
+pub fn ely_messaging::ChannelHeader::members(self, usize, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ChannelHeader::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::ChannelHeader::on_call(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ChannelHeader::pins(self, usize, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ChannelHeader::private(self) -> Self
+pub fn ely_messaging::ChannelHeader::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ChannelHeader::topic(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::ChannelItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ChannelItem::into_element(self) -> Self::Element
+pub fn ely_messaging::ChannelItem::muted(self, bool) -> Self
+pub fn ely_messaging::ChannelItem::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::ChannelItem::pinned(self, bool) -> Self
+pub fn ely_messaging::ChannelItem::private(self) -> Self
+pub fn ely_messaging::ChannelItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ChannelItem::unread(self, u32) -> Self
+pub fn ely_messaging::ChannelList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ChannelList::into_element(self) -> Self::Element
+pub fn ely_messaging::ChannelList::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_messaging::ChannelList::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ChannelList::open(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::ChannelList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ChannelList::section(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<ely_messaging::ChatRow>)>) -> Self
+pub fn ely_messaging::ChatMessage::after(self, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::timestamp::Timestamp) -> Self
+pub fn ely_messaging::ChatMessage::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_messaging::ChatMessage::footer(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_messaging::ChatMessage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ChatMessage::into_element(self) -> Self::Element
+pub fn ely_messaging::ChatMessage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::timestamp::Timestamp) -> Self
+pub fn ely_messaging::ChatMessage::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::ChatMessage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ChatMessage::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_messaging::ChatRow::from(ely_messaging::ChannelItem) -> Self
+pub fn ely_messaging::ChatRow::from(ely_messaging::DirectMessageItem) -> Self
+pub fn ely_messaging::ClearAfter::clone(&self) -> Self
+pub fn ely_messaging::ClearAfter::eq(&self, &Self) -> bool
+pub fn ely_messaging::ClearAfter::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_messaging::ClearAfter::key(self) -> &'static str
+pub fn ely_messaging::ClearAfter::label(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_messaging::Delivery::clone(&self) -> Self
+pub fn ely_messaging::Delivery::eq(&self, &Self) -> bool
+pub fn ely_messaging::Delivery::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_messaging::Delivery::label(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_messaging::DirectMessageItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::DirectMessageItem::into_element(self) -> Self::Element
+pub fn ely_messaging::DirectMessageItem::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::data_display::avatar::Presence) -> Self
+pub fn ely_messaging::DirectMessageItem::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::DirectMessageItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::DirectMessageItem::unread(self, u32) -> Self
+pub fn ely_messaging::Gif::clone(&self) -> Self
+pub fn ely_messaging::Gif::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui::elements::img::ImageSource>, f32) -> Self
+pub fn ely_messaging::GifPicker::categories(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_messaging::GifPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::GifPicker::into_element(self) -> Self::Element
+pub fn ely_messaging::GifPicker::new(impl core::convert::Into<gpui::window::ElementId>, ely_messaging::Gifs) -> Self
+pub fn ely_messaging::GifPicker::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::GifPicker::on_query(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::GifPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::Gifs::clone(&self) -> Self
+pub fn ely_messaging::HuddleIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::HuddleIndicator::into_element(self) -> Self::Element
+pub fn ely_messaging::HuddleIndicator::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_core::data_display::avatar::Avatar>) -> Self
+pub fn ely_messaging::HuddleIndicator::on_join(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::HuddleIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::IncomingCallDialog::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::IncomingCallDialog::into_element(self) -> Self::Element
+pub fn ely_messaging::IncomingCallDialog::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::IncomingCallDialog::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::IncomingCallDialog::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::IncomingCallDialog::video(self) -> Self
+pub fn ely_messaging::Member::clone(&self) -> Self
+pub fn ely_messaging::Member::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::data_display::avatar::Presence) -> Self
+pub fn ely_messaging::Member::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::Member::role(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::Member::status(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::MemberList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::MemberList::into_element(self) -> Self::Element
+pub fn ely_messaging::MemberList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_messaging::Member>) -> Self
+pub fn ely_messaging::MemberList::on_activate(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::MemberList::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::MemberList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::MemberList::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::MessageThread::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::MessageThread::into_element(self) -> Self::Element
+pub fn ely_messaging::MessageThread::new(impl core::convert::Into<gpui::window::ElementId>, usize, jiff::timestamp::Timestamp) -> Self
+pub fn ely_messaging::MessageThread::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::MessageThread::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::MessageThread::repliers(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::data_display::avatar::Avatar>) -> Self
+pub fn ely_messaging::OnlineStatus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::OnlineStatus::into_element(self) -> Self::Element
+pub fn ely_messaging::OnlineStatus::new(ely_core::data_display::avatar::Presence) -> Self
+pub fn ely_messaging::OnlineStatus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ParticipantTile::frame(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::ParticipantTile::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ParticipantTile::into_element(self) -> Self::Element
+pub fn ely_messaging::ParticipantTile::muted(self, bool) -> Self
+pub fn ely_messaging::ParticipantTile::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, f32) -> Self
+pub fn ely_messaging::ParticipantTile::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::ParticipantTile::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ParticipantTile::speaking(self, bool) -> Self
+pub fn ely_messaging::PinnedMessage::clone(&self) -> Self
+pub fn ely_messaging::PinnedMessage::eq(&self, &Self) -> bool
+pub fn ely_messaging::PinnedMessage::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_messaging::PinnedMessages::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::PinnedMessages::into_element(self) -> Self::Element
+pub fn ely_messaging::PinnedMessages::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_messaging::PinnedMessage>) -> Self
+pub fn ely_messaging::PinnedMessages::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::PinnedMessages::on_unpin(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::PinnedMessages::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ReadReceipt::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ReadReceipt::into_element(self) -> Self::Element
+pub fn ely_messaging::ReadReceipt::new(ely_messaging::Delivery) -> Self
+pub fn ely_messaging::ReadReceipt::readers(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::data_display::avatar::Avatar>) -> Self
+pub fn ely_messaging::ReadReceipt::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ScreenShareView::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_messaging::ScreenShareView::frame(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::ScreenShareView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ScreenShareView::into_element(self) -> Self::Element
+pub fn ely_messaging::ScreenShareView::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, f32) -> Self
+pub fn ely_messaging::ScreenShareView::on_stop(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ScreenShareView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::Status::clone(&self) -> Self
+pub fn ely_messaging::Status::eq(&self, &Self) -> bool
+pub fn ely_messaging::Status::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_messaging::StatusSetter::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::StatusSetter::into_element(self) -> Self::Element
+pub fn ely_messaging::StatusSetter::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_messaging::StatusSetter::on_clear(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::StatusSetter::on_save(self, impl core::ops::function::Fn(&ely_messaging::Status, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::StatusSetter::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::StatusSetter::status(self, ely_messaging::Status) -> Self
+pub fn ely_messaging::StatusSetter::suggestions(self, impl core::iter::traits::collect::IntoIterator<Item = ely_messaging::Status>) -> Self
+pub fn ely_messaging::Sticker::clone(&self) -> Self
+pub fn ely_messaging::Sticker::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::StickerPack::clone(&self) -> Self
+pub fn ely_messaging::StickerPack::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_messaging::Sticker>) -> Self
+pub fn ely_messaging::StickerPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::StickerPicker::into_element(self) -> Self::Element
+pub fn ely_messaging::StickerPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_messaging::StickerPack>) -> Self
+pub fn ely_messaging::StickerPicker::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::StickerPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::ThreadPanel::chat(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::ThreadPanel::composer(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_messaging::ThreadPanel::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_messaging::ThreadPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::ThreadPanel::into_element(self) -> Self::Element
+pub fn ely_messaging::ThreadPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl gpui::element::IntoElement) -> Self
+pub fn ely_messaging::ThreadPanel::on_close(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::ThreadPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::UnreadDivider::default() -> Self
+pub fn ely_messaging::UnreadDivider::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::UnreadDivider::into_element(self) -> Self::Element
+pub fn ely_messaging::UnreadDivider::new() -> Self
+pub fn ely_messaging::UnreadDivider::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::UserProfileCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::UserProfileCard::into_element(self) -> Self::Element
+pub fn ely_messaging::UserProfileCard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::data_display::avatar::Presence) -> Self
+pub fn ely_messaging::UserProfileCard::on_call(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::UserProfileCard::on_message(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::UserProfileCard::picture(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_messaging::UserProfileCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::UserProfileCard::status(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::UserProfileCard::title(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_messaging::UserProfileCard::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_messaging::VideoCallGrid::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_messaging::VideoCallGrid::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::VideoCallGrid::into_element(self) -> Self::Element
+pub fn ely_messaging::VideoCallGrid::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_messaging::VideoCallGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_messaging::VoiceCallBar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_messaging::VoiceCallBar::into_element(self) -> Self::Element
+pub fn ely_messaging::VoiceCallBar::mic(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::VoiceCallBar::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, std::time::Instant) -> Self
+pub fn ely_messaging::VoiceCallBar::on_leave(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_messaging::VoiceCallBar::people(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::data_display::avatar::Avatar>) -> Self
+pub fn ely_messaging::VoiceCallBar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub mod ely_messaging
+pub struct ely_messaging::CallControls
+pub struct ely_messaging::ChannelHeader
+pub struct ely_messaging::ChannelItem
+pub struct ely_messaging::ChannelList
+pub struct ely_messaging::ChatMessage
+pub struct ely_messaging::DirectMessageItem
+pub struct ely_messaging::Gif
+pub struct ely_messaging::GifPicker
+pub struct ely_messaging::HuddleIndicator
+pub struct ely_messaging::IncomingCallDialog
+pub struct ely_messaging::Member
+pub struct ely_messaging::MemberList
+pub struct ely_messaging::MessageThread
+pub struct ely_messaging::OnlineStatus
+pub struct ely_messaging::ParticipantTile
+pub struct ely_messaging::PinnedMessage
+pub struct ely_messaging::PinnedMessages
+pub struct ely_messaging::ReadReceipt
+pub struct ely_messaging::ScreenShareView
+pub struct ely_messaging::Status
+pub struct ely_messaging::StatusSetter
+pub struct ely_messaging::Sticker
+pub struct ely_messaging::StickerPack
+pub struct ely_messaging::StickerPicker
+pub struct ely_messaging::ThreadPanel
+pub struct ely_messaging::UnreadDivider
+pub struct ely_messaging::UserProfileCard
+pub struct ely_messaging::VideoCallGrid
+pub struct ely_messaging::VoiceCallBar
+pub type ely_messaging::CallControls::Element = gpui::view::ViewElement<ely_messaging::CallControls>
+pub type ely_messaging::ChannelHeader::Element = gpui::view::ViewElement<ely_messaging::ChannelHeader>
+pub type ely_messaging::ChannelItem::Element = gpui::view::ViewElement<ely_messaging::ChannelItem>
+pub type ely_messaging::ChannelList::Element = gpui::view::ViewElement<ely_messaging::ChannelList>
+pub type ely_messaging::ChatMessage::Element = gpui::view::ViewElement<ely_messaging::ChatMessage>
+pub type ely_messaging::DirectMessageItem::Element = gpui::view::ViewElement<ely_messaging::DirectMessageItem>
+pub type ely_messaging::GifPicker::Element = gpui::view::ViewElement<ely_messaging::GifPicker>
+pub type ely_messaging::HuddleIndicator::Element = gpui::view::ViewElement<ely_messaging::HuddleIndicator>
+pub type ely_messaging::IncomingCallDialog::Element = gpui::view::ViewElement<ely_messaging::IncomingCallDialog>
+pub type ely_messaging::MemberList::Element = gpui::view::ViewElement<ely_messaging::MemberList>
+pub type ely_messaging::MessageThread::Element = gpui::view::ViewElement<ely_messaging::MessageThread>
+pub type ely_messaging::OnlineStatus::Element = gpui::view::ViewElement<ely_messaging::OnlineStatus>
+pub type ely_messaging::ParticipantTile::Element = gpui::view::ViewElement<ely_messaging::ParticipantTile>
+pub type ely_messaging::PinnedMessages::Element = gpui::view::ViewElement<ely_messaging::PinnedMessages>
+pub type ely_messaging::ReadReceipt::Element = gpui::view::ViewElement<ely_messaging::ReadReceipt>
+pub type ely_messaging::ScreenShareView::Element = gpui::view::ViewElement<ely_messaging::ScreenShareView>
+pub type ely_messaging::StatusSetter::Element = gpui::view::ViewElement<ely_messaging::StatusSetter>
+pub type ely_messaging::StickerPicker::Element = gpui::view::ViewElement<ely_messaging::StickerPicker>
+pub type ely_messaging::ThreadPanel::Element = gpui::view::ViewElement<ely_messaging::ThreadPanel>
+pub type ely_messaging::UnreadDivider::Element = gpui::view::ViewElement<ely_messaging::UnreadDivider>
+pub type ely_messaging::UserProfileCard::Element = gpui::view::ViewElement<ely_messaging::UserProfileCard>
+pub type ely_messaging::VideoCallGrid::Element = gpui::view::ViewElement<ely_messaging::VideoCallGrid>
+pub type ely_messaging::VoiceCallBar::Element = gpui::view::ViewElement<ely_messaging::VoiceCallBar>
+pub use ely_messaging::CallControls = ely_messaging::call::CallControls
+pub use ely_messaging::ChannelHeader = ely_messaging::header::ChannelHeader
+pub use ely_messaging::ChannelItem = ely_messaging::channels::ChannelItem
+pub use ely_messaging::ChannelList = ely_messaging::channels::ChannelList
+pub use ely_messaging::ChatMessage = ely_messaging::messages::ChatMessage
+pub use ely_messaging::ChatRow = ely_messaging::channels::ChatRow
+pub use ely_messaging::ClearAfter = ely_messaging::status::ClearAfter
+pub use ely_messaging::Delivery = ely_messaging::receipt::Delivery
+pub use ely_messaging::DirectMessageItem = ely_messaging::channels::DirectMessageItem
+pub use ely_messaging::Gif = ely_messaging::gifs::Gif
+pub use ely_messaging::GifPicker = ely_messaging::gifs::GifPicker
+pub use ely_messaging::Gifs = ely_messaging::gifs::Gifs
+pub use ely_messaging::HuddleIndicator = ely_messaging::call::HuddleIndicator
+pub use ely_messaging::IncomingCallDialog = ely_messaging::incoming::IncomingCallDialog
+pub use ely_messaging::Member = ely_messaging::members::Member
+pub use ely_messaging::MemberList = ely_messaging::members::MemberList
+pub use ely_messaging::MessageThread = ely_messaging::thread::MessageThread
+pub use ely_messaging::OnlineStatus = ely_messaging::people::OnlineStatus
+pub use ely_messaging::ParticipantTile = ely_messaging::tiles::ParticipantTile
+pub use ely_messaging::PinnedMessage = ely_messaging::pins::PinnedMessage
+pub use ely_messaging::PinnedMessages = ely_messaging::pins::PinnedMessages
+pub use ely_messaging::ReadReceipt = ely_messaging::receipt::ReadReceipt
+pub use ely_messaging::ScreenShareView = ely_messaging::tiles::ScreenShareView
+pub use ely_messaging::Status = ely_messaging::status::Status
+pub use ely_messaging::StatusSetter = ely_messaging::status::StatusSetter
+pub use ely_messaging::Sticker = ely_messaging::stickers::Sticker
+pub use ely_messaging::StickerPack = ely_messaging::stickers::StickerPack
+pub use ely_messaging::StickerPicker = ely_messaging::stickers::StickerPicker
+pub use ely_messaging::ThreadPanel = ely_messaging::thread::ThreadPanel
+pub use ely_messaging::UnreadDivider = ely_messaging::messages::UnreadDivider
+pub use ely_messaging::UserProfileCard = ely_messaging::people::UserProfileCard
+pub use ely_messaging::VideoCallGrid = ely_messaging::tiles::VideoCallGrid
+pub use ely_messaging::VoiceCallBar = ely_messaging::call::VoiceCallBar

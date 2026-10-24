@@ -449,3 +449,7 @@
 | T56 D4 | 3 | PASS | every focus stop has a role and a name: gallery --audit walks 2,272 stops on 44 pages with none failing and runs in CI's Windows leg; a list a typed filter drives announces its field, a gpui 0.3.9 limit recorded at the owner's word; D4 stays unticked while the VoiceOver walk is open |
 | T56 D5 | 1 | FAIL | a block field kept the label and placeholder of the locale it was built in |
 | T56 D5 | 2 | PASS | seven locale tables, 581 keys, no English fallback, a test walks every locale; the listed English moved into the catalog, words used as values split into keys; a field built once reads its catalog keys at each render and BlockEditor relabels on a locale change |
+| T56 E1 | 1 | FAIL | a re-export showed its name, not what it named; snapshots of all features alone missed an item moved behind a feature |
+| T56 E1 | 2 | FAIL | no feature set read the defaults; a module reached through a re-export was not walked |
+| T56 E1 | 3 | FAIL | a named re-export cycle grew the walked path for ever and crashed the script |
+| T56 E1 | 4 | PASS | scripts/api.py holds 31 library crates to snapshots in api/ through cargo-public-api on a pinned nightly: re-exports name their targets, modules reached through them are walked, cycles stop, and each item not in every feature set (defaults, none, each alone, all) names the sets that have it; CI runs it on Linux |

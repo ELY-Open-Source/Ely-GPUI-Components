@@ -1,0 +1,512 @@
+impl core::clone::Clone for ely_account::Account
+impl core::clone::Clone for ely_account::ApiKey
+impl core::clone::Clone for ely_account::CardBrand
+impl core::clone::Clone for ely_account::CardDetails
+impl core::clone::Clone for ely_account::ExpiryError
+impl core::clone::Clone for ely_account::Invitation
+impl core::clone::Clone for ely_account::Invoice
+impl core::clone::Clone for ely_account::InvoiceState
+impl core::clone::Clone for ely_account::Login
+impl core::clone::Clone for ely_account::Member
+impl core::clone::Clone for ely_account::Profile
+impl core::clone::Clone for ely_account::Quota
+impl core::clone::Clone for ely_account::Role
+impl core::clone::Clone for ely_account::Session
+impl core::clone::Clone for ely_account::Signup
+impl core::clone::Clone for ely_account::Standing
+impl core::clone::Clone for ely_account::Subscription
+impl core::clone::Clone for ely_account::Workspace
+impl core::cmp::Eq for ely_account::CardBrand
+impl core::cmp::Eq for ely_account::ExpiryError
+impl core::cmp::Eq for ely_account::InvoiceState
+impl core::cmp::PartialEq for ely_account::ApiKey
+impl core::cmp::PartialEq for ely_account::CardBrand
+impl core::cmp::PartialEq for ely_account::CardDetails
+impl core::cmp::PartialEq for ely_account::ExpiryError
+impl core::cmp::PartialEq for ely_account::Invitation
+impl core::cmp::PartialEq for ely_account::Invoice
+impl core::cmp::PartialEq for ely_account::InvoiceState
+impl core::cmp::PartialEq for ely_account::Login
+impl core::cmp::PartialEq for ely_account::Profile
+impl core::cmp::PartialEq for ely_account::Quota
+impl core::cmp::PartialEq for ely_account::Role
+impl core::cmp::PartialEq for ely_account::Session
+impl core::cmp::PartialEq for ely_account::Signup
+impl core::cmp::PartialEq for ely_account::Standing
+impl core::cmp::PartialEq for ely_account::Subscription
+impl core::cmp::PartialEq for ely_account::Workspace
+impl core::default::Default for ely_account::Profile
+impl core::fmt::Debug for ely_account::ApiKey
+impl core::fmt::Debug for ely_account::CardBrand
+impl core::fmt::Debug for ely_account::CardDetails
+impl core::fmt::Debug for ely_account::ExpiryError
+impl core::fmt::Debug for ely_account::Invitation
+impl core::fmt::Debug for ely_account::Invoice
+impl core::fmt::Debug for ely_account::InvoiceState
+impl core::fmt::Debug for ely_account::Login
+impl core::fmt::Debug for ely_account::Profile
+impl core::fmt::Debug for ely_account::Quota
+impl core::fmt::Debug for ely_account::Role
+impl core::fmt::Debug for ely_account::Session
+impl core::fmt::Debug for ely_account::Signup
+impl core::fmt::Debug for ely_account::Standing
+impl core::fmt::Debug for ely_account::Subscription
+impl core::fmt::Debug for ely_account::Workspace
+impl core::marker::Copy for ely_account::CardBrand
+impl core::marker::Copy for ely_account::ExpiryError
+impl core::marker::Copy for ely_account::InvoiceState
+impl core::marker::StructuralPartialEq for ely_account::ApiKey
+impl core::marker::StructuralPartialEq for ely_account::CardBrand
+impl core::marker::StructuralPartialEq for ely_account::CardDetails
+impl core::marker::StructuralPartialEq for ely_account::ExpiryError
+impl core::marker::StructuralPartialEq for ely_account::Invitation
+impl core::marker::StructuralPartialEq for ely_account::Invoice
+impl core::marker::StructuralPartialEq for ely_account::InvoiceState
+impl core::marker::StructuralPartialEq for ely_account::Login
+impl core::marker::StructuralPartialEq for ely_account::Profile
+impl core::marker::StructuralPartialEq for ely_account::Quota
+impl core::marker::StructuralPartialEq for ely_account::Role
+impl core::marker::StructuralPartialEq for ely_account::Session
+impl core::marker::StructuralPartialEq for ely_account::Signup
+impl core::marker::StructuralPartialEq for ely_account::Standing
+impl core::marker::StructuralPartialEq for ely_account::Subscription
+impl core::marker::StructuralPartialEq for ely_account::Workspace
+impl ely_account::AccountSwitcher
+impl ely_account::ApiKeyManager
+impl ely_account::BillingHistory
+impl ely_account::CardBrand
+impl ely_account::ForgotPassword
+impl ely_account::InvitationList
+impl ely_account::LoginForm
+impl ely_account::MagicLinkForm
+impl ely_account::OAuthButtons
+impl ely_account::PaymentMethodForm
+impl ely_account::ProfileCard
+impl ely_account::ProfileEditor
+impl ely_account::RoleSelector
+impl ely_account::SessionList
+impl ely_account::SignupForm
+impl ely_account::SubscriptionCard
+impl ely_account::TeamMemberTable
+impl ely_account::TwoFactorInput
+impl ely_account::UpgradePrompt
+impl ely_account::UsageQuota
+impl ely_account::UserMenu
+impl ely_account::WorkspaceSwitcher
+impl ely_core::primitives::capability::Disableable for ely_account::RoleSelector
+impl gpui::element::IntoElement for ely_account::AccountSwitcher
+impl gpui::element::IntoElement for ely_account::ApiKeyManager
+impl gpui::element::IntoElement for ely_account::BillingHistory
+impl gpui::element::IntoElement for ely_account::ForgotPassword
+impl gpui::element::IntoElement for ely_account::InvitationList
+impl gpui::element::IntoElement for ely_account::LoginForm
+impl gpui::element::IntoElement for ely_account::MagicLinkForm
+impl gpui::element::IntoElement for ely_account::OAuthButtons
+impl gpui::element::IntoElement for ely_account::PaymentMethodForm
+impl gpui::element::IntoElement for ely_account::ProfileCard
+impl gpui::element::IntoElement for ely_account::ProfileEditor
+impl gpui::element::IntoElement for ely_account::RoleSelector
+impl gpui::element::IntoElement for ely_account::SessionList
+impl gpui::element::IntoElement for ely_account::SignupForm
+impl gpui::element::IntoElement for ely_account::SubscriptionCard
+impl gpui::element::IntoElement for ely_account::TeamMemberTable
+impl gpui::element::IntoElement for ely_account::TwoFactorInput
+impl gpui::element::IntoElement for ely_account::UpgradePrompt
+impl gpui::element::IntoElement for ely_account::UsageQuota
+impl gpui::element::IntoElement for ely_account::UserMenu
+impl gpui::element::IntoElement for ely_account::WorkspaceSwitcher
+impl gpui::element::RenderOnce for ely_account::AccountSwitcher
+impl gpui::element::RenderOnce for ely_account::ApiKeyManager
+impl gpui::element::RenderOnce for ely_account::BillingHistory
+impl gpui::element::RenderOnce for ely_account::ForgotPassword
+impl gpui::element::RenderOnce for ely_account::InvitationList
+impl gpui::element::RenderOnce for ely_account::LoginForm
+impl gpui::element::RenderOnce for ely_account::MagicLinkForm
+impl gpui::element::RenderOnce for ely_account::OAuthButtons
+impl gpui::element::RenderOnce for ely_account::PaymentMethodForm
+impl gpui::element::RenderOnce for ely_account::ProfileCard
+impl gpui::element::RenderOnce for ely_account::ProfileEditor
+impl gpui::element::RenderOnce for ely_account::RoleSelector
+impl gpui::element::RenderOnce for ely_account::SessionList
+impl gpui::element::RenderOnce for ely_account::SignupForm
+impl gpui::element::RenderOnce for ely_account::SubscriptionCard
+impl gpui::element::RenderOnce for ely_account::TeamMemberTable
+impl gpui::element::RenderOnce for ely_account::TwoFactorInput
+impl gpui::element::RenderOnce for ely_account::UpgradePrompt
+impl gpui::element::RenderOnce for ely_account::UsageQuota
+impl gpui::element::RenderOnce for ely_account::UserMenu
+impl gpui::element::RenderOnce for ely_account::WorkspaceSwitcher
+pub ely_account::Account::email: gpui_shared_string::SharedString
+pub ely_account::Account::image: core::option::Option<gpui::elements::img::ImageSource>
+pub ely_account::Account::key: gpui_shared_string::SharedString
+pub ely_account::Account::name: gpui_shared_string::SharedString
+pub ely_account::ApiKey::created: gpui_shared_string::SharedString
+pub ely_account::ApiKey::hint: gpui_shared_string::SharedString
+pub ely_account::ApiKey::key: gpui_shared_string::SharedString
+pub ely_account::ApiKey::name: gpui_shared_string::SharedString
+pub ely_account::ApiKey::used: gpui_shared_string::SharedString
+pub ely_account::CardBrand::Amex
+pub ely_account::CardBrand::Discover
+pub ely_account::CardBrand::Mastercard
+pub ely_account::CardBrand::Other
+pub ely_account::CardBrand::Visa
+pub ely_account::CardDetails::brand: ely_account::CardBrand
+pub ely_account::CardDetails::cvc: gpui_shared_string::SharedString
+pub ely_account::CardDetails::month: i8
+pub ely_account::CardDetails::name: gpui_shared_string::SharedString
+pub ely_account::CardDetails::number: gpui_shared_string::SharedString
+pub ely_account::CardDetails::year: i32
+pub ely_account::ExpiryError::NoMonth(i8)
+pub ely_account::ExpiryError::Passed
+pub ely_account::ExpiryError::Unread
+pub ely_account::Invitation::email: gpui_shared_string::SharedString
+pub ely_account::Invitation::expired: bool
+pub ely_account::Invitation::key: gpui_shared_string::SharedString
+pub ely_account::Invitation::role: gpui_shared_string::SharedString
+pub ely_account::Invitation::sent: gpui_shared_string::SharedString
+pub ely_account::Invoice::amount: f64
+pub ely_account::Invoice::currency: gpui_shared_string::SharedString
+pub ely_account::Invoice::date: gpui_shared_string::SharedString
+pub ely_account::Invoice::description: gpui_shared_string::SharedString
+pub ely_account::Invoice::key: gpui_shared_string::SharedString
+pub ely_account::Invoice::state: ely_account::InvoiceState
+pub ely_account::InvoiceState::Due
+pub ely_account::InvoiceState::Failed
+pub ely_account::InvoiceState::Paid
+pub ely_account::InvoiceState::Refunded
+pub ely_account::Login::email: gpui_shared_string::SharedString
+pub ely_account::Login::password: gpui_shared_string::SharedString
+pub ely_account::Login::remember: bool
+pub ely_account::Member::email: gpui_shared_string::SharedString
+pub ely_account::Member::image: core::option::Option<gpui::elements::img::ImageSource>
+pub ely_account::Member::key: gpui_shared_string::SharedString
+pub ely_account::Member::name: gpui_shared_string::SharedString
+pub ely_account::Member::owner: bool
+pub ely_account::Member::role: gpui_shared_string::SharedString
+pub ely_account::Member::seen: gpui_shared_string::SharedString
+pub ely_account::Profile::bio: gpui_shared_string::SharedString
+pub ely_account::Profile::email: gpui_shared_string::SharedString
+pub ely_account::Profile::location: gpui_shared_string::SharedString
+pub ely_account::Profile::name: gpui_shared_string::SharedString
+pub ely_account::Profile::picture: core::option::Option<std::path::PathBuf>
+pub ely_account::Profile::username: gpui_shared_string::SharedString
+pub ely_account::Quota::key: gpui_shared_string::SharedString
+pub ely_account::Quota::limit: f64
+pub ely_account::Quota::name: gpui_shared_string::SharedString
+pub ely_account::Quota::unit: gpui_shared_string::SharedString
+pub ely_account::Quota::used: f64
+pub ely_account::Role::description: gpui_shared_string::SharedString
+pub ely_account::Role::key: gpui_shared_string::SharedString
+pub ely_account::Role::name: gpui_shared_string::SharedString
+pub ely_account::Session::client: gpui_shared_string::SharedString
+pub ely_account::Session::current: bool
+pub ely_account::Session::device: gpui_shared_string::SharedString
+pub ely_account::Session::icon: ely_core::primitives::icon::names::IconName
+pub ely_account::Session::key: gpui_shared_string::SharedString
+pub ely_account::Session::place: gpui_shared_string::SharedString
+pub ely_account::Session::seen: gpui_shared_string::SharedString
+pub ely_account::Signup::email: gpui_shared_string::SharedString
+pub ely_account::Signup::name: gpui_shared_string::SharedString
+pub ely_account::Signup::password: gpui_shared_string::SharedString
+pub ely_account::Standing::Active
+pub ely_account::Standing::Active::renews: gpui_shared_string::SharedString
+pub ely_account::Standing::Canceled
+pub ely_account::Standing::Canceled::ends: gpui_shared_string::SharedString
+pub ely_account::Standing::PastDue
+pub ely_account::Standing::Trial
+pub ely_account::Standing::Trial::ends: gpui_shared_string::SharedString
+pub ely_account::Subscription::currency: gpui_shared_string::SharedString
+pub ely_account::Subscription::plan: gpui_shared_string::SharedString
+pub ely_account::Subscription::price: f64
+pub ely_account::Subscription::standing: ely_account::Standing
+pub ely_account::Subscription::yearly: bool
+pub ely_account::Workspace::detail: gpui_shared_string::SharedString
+pub ely_account::Workspace::key: gpui_shared_string::SharedString
+pub ely_account::Workspace::name: gpui_shared_string::SharedString
+pub enum ely_account::CardBrand
+pub enum ely_account::ExpiryError
+pub enum ely_account::InvoiceState
+pub enum ely_account::Standing
+pub fn ely_account::Account::clone(&self) -> Self
+pub fn ely_account::AccountSwitcher::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::AccountSwitcher::into_element(self) -> Self::Element
+pub fn ely_account::AccountSwitcher::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Account>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::AccountSwitcher::on_add(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::AccountSwitcher::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::ApiKey::clone(&self) -> Self
+pub fn ely_account::ApiKey::eq(&self, &Self) -> bool
+pub fn ely_account::ApiKey::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::ApiKeyManager::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::ApiKeyManager::into_element(self) -> Self::Element
+pub fn ely_account::ApiKeyManager::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::ApiKey>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::ApiKeyManager::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::ApiKeyManager::secret(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::BillingHistory::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::BillingHistory::into_element(self) -> Self::Element
+pub fn ely_account::BillingHistory::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Invoice>) -> Self
+pub fn ely_account::BillingHistory::on_download(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::BillingHistory::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::CardBrand::clone(&self) -> Self
+pub fn ely_account::CardBrand::eq(&self, &Self) -> bool
+pub fn ely_account::CardBrand::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::CardBrand::name(self) -> &'static str
+pub fn ely_account::CardBrand::of(&str) -> Self
+pub fn ely_account::CardDetails::clone(&self) -> Self
+pub fn ely_account::CardDetails::eq(&self, &Self) -> bool
+pub fn ely_account::CardDetails::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::ExpiryError::clone(&self) -> Self
+pub fn ely_account::ExpiryError::eq(&self, &Self) -> bool
+pub fn ely_account::ExpiryError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::ForgotPassword::busy(self, bool) -> Self
+pub fn ely_account::ForgotPassword::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::ForgotPassword::into_element(self) -> Self::Element
+pub fn ely_account::ForgotPassword::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::ForgotPassword::on_back(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::ForgotPassword::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::ForgotPassword::sent(self, bool) -> Self
+pub fn ely_account::Invitation::clone(&self) -> Self
+pub fn ely_account::Invitation::eq(&self, &Self) -> bool
+pub fn ely_account::Invitation::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::InvitationList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::InvitationList::into_element(self) -> Self::Element
+pub fn ely_account::InvitationList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Invitation>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Role>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::InvitationList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::Invoice::clone(&self) -> Self
+pub fn ely_account::Invoice::eq(&self, &Self) -> bool
+pub fn ely_account::Invoice::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::InvoiceState::clone(&self) -> Self
+pub fn ely_account::InvoiceState::eq(&self, &Self) -> bool
+pub fn ely_account::InvoiceState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::Login::clone(&self) -> Self
+pub fn ely_account::Login::eq(&self, &Self) -> bool
+pub fn ely_account::Login::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::LoginForm::busy(self, bool) -> Self
+pub fn ely_account::LoginForm::error(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::LoginForm::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::LoginForm::into_element(self) -> Self::Element
+pub fn ely_account::LoginForm::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&ely_account::Login, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::LoginForm::on_forgot(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::LoginForm::on_sign_up(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::LoginForm::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::MagicLinkForm::busy(self, bool) -> Self
+pub fn ely_account::MagicLinkForm::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::MagicLinkForm::into_element(self) -> Self::Element
+pub fn ely_account::MagicLinkForm::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::MagicLinkForm::on_other(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::MagicLinkForm::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::MagicLinkForm::sent(self, bool) -> Self
+pub fn ely_account::Member::clone(&self) -> Self
+pub fn ely_account::OAuthButtons::busy(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::OAuthButtons::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::OAuthButtons::into_element(self) -> Self::Element
+pub fn ely_account::OAuthButtons::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>)>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::OAuthButtons::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::PaymentMethodForm::busy(self, bool) -> Self
+pub fn ely_account::PaymentMethodForm::error(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::PaymentMethodForm::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::PaymentMethodForm::into_element(self) -> Self::Element
+pub fn ely_account::PaymentMethodForm::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&ely_account::CardDetails, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::PaymentMethodForm::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::Profile::clone(&self) -> Self
+pub fn ely_account::Profile::default() -> Self
+pub fn ely_account::Profile::eq(&self, &Self) -> bool
+pub fn ely_account::Profile::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::ProfileCard::action(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_account::ProfileCard::bio(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::ProfileCard::detail(self, ely_core::primitives::icon::names::IconName, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::ProfileCard::image(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_account::ProfileCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::ProfileCard::into_element(self) -> Self::Element
+pub fn ely_account::ProfileCard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::ProfileCard::presence(self, ely_core::data_display::avatar::Presence) -> Self
+pub fn ely_account::ProfileCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::ProfileCard::title(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::ProfileEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::ProfileEditor::into_element(self) -> Self::Element
+pub fn ely_account::ProfileEditor::new(impl core::convert::Into<gpui::window::ElementId>, ely_account::Profile, impl core::ops::function::Fn(&ely_account::Profile, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::ProfileEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::Quota::clone(&self) -> Self
+pub fn ely_account::Quota::eq(&self, &Self) -> bool
+pub fn ely_account::Quota::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::Role::clone(&self) -> Self
+pub fn ely_account::Role::eq(&self, &Self) -> bool
+pub fn ely_account::Role::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::RoleSelector::disabled(self, bool) -> Self
+pub fn ely_account::RoleSelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::RoleSelector::into_element(self) -> Self::Element
+pub fn ely_account::RoleSelector::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Role>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::RoleSelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::Session::clone(&self) -> Self
+pub fn ely_account::Session::eq(&self, &Self) -> bool
+pub fn ely_account::Session::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::SessionList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::SessionList::into_element(self) -> Self::Element
+pub fn ely_account::SessionList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Session>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SessionList::on_sign_out_others(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SessionList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::Signup::clone(&self) -> Self
+pub fn ely_account::Signup::eq(&self, &Self) -> bool
+pub fn ely_account::Signup::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::SignupForm::busy(self, bool) -> Self
+pub fn ely_account::SignupForm::error(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::SignupForm::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::SignupForm::into_element(self) -> Self::Element
+pub fn ely_account::SignupForm::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&ely_account::Signup, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SignupForm::on_sign_in(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SignupForm::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::SignupForm::terms(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::Standing::clone(&self) -> Self
+pub fn ely_account::Standing::eq(&self, &Self) -> bool
+pub fn ely_account::Standing::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::Subscription::clone(&self) -> Self
+pub fn ely_account::Subscription::eq(&self, &Self) -> bool
+pub fn ely_account::Subscription::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::SubscriptionCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::SubscriptionCard::into_element(self) -> Self::Element
+pub fn ely_account::SubscriptionCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_account::Subscription) -> Self
+pub fn ely_account::SubscriptionCard::on_cancel(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SubscriptionCard::on_change(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SubscriptionCard::on_resume(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::SubscriptionCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::TeamMemberTable::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::TeamMemberTable::into_element(self) -> Self::Element
+pub fn ely_account::TeamMemberTable::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Member>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Role>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::TeamMemberTable::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::TwoFactorInput::busy(self, bool) -> Self
+pub fn ely_account::TwoFactorInput::failed(self, usize) -> Self
+pub fn ely_account::TwoFactorInput::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::TwoFactorInput::into_element(self) -> Self::Element
+pub fn ely_account::TwoFactorInput::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::TwoFactorInput::on_recovery(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::TwoFactorInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::UpgradePrompt::benefit(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::UpgradePrompt::body(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::UpgradePrompt::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::UpgradePrompt::into_element(self) -> Self::Element
+pub fn ely_account::UpgradePrompt::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::UpgradePrompt::on_dismiss(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::UpgradePrompt::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::UsageQuota::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::UsageQuota::into_element(self) -> Self::Element
+pub fn ely_account::UsageQuota::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Quota>) -> Self
+pub fn ely_account::UsageQuota::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::UsageQuota::resets(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_account::UserMenu::image(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_account::UserMenu::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::UserMenu::into_element(self) -> Self::Element
+pub fn ely_account::UserMenu::item(self, ely_core::menus::model::MenuItem) -> Self
+pub fn ely_account::UserMenu::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::UserMenu::presence(self, ely_core::data_display::avatar::Presence) -> Self
+pub fn ely_account::UserMenu::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::Workspace::clone(&self) -> Self
+pub fn ely_account::Workspace::eq(&self, &Self) -> bool
+pub fn ely_account::Workspace::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_account::WorkspaceSwitcher::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_account::WorkspaceSwitcher::into_element(self) -> Self::Element
+pub fn ely_account::WorkspaceSwitcher::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_account::Workspace>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::WorkspaceSwitcher::on_create(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_account::WorkspaceSwitcher::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_account::expiry(&str, (i32, i8)) -> core::result::Result<(i8, i32), ely_account::ExpiryError>
+pub fn ely_account::luhn(&str) -> bool
+pub fn ely_account::password_rules(&str) -> [(&'static str, bool); 3]
+pub fn ely_account::quota_line(&ely_account::Quota) -> alloc::string::String
+pub mod ely_account
+pub struct ely_account::Account
+pub struct ely_account::AccountSwitcher
+pub struct ely_account::ApiKey
+pub struct ely_account::ApiKeyManager
+pub struct ely_account::BillingHistory
+pub struct ely_account::CardDetails
+pub struct ely_account::ForgotPassword
+pub struct ely_account::Invitation
+pub struct ely_account::InvitationList
+pub struct ely_account::Invoice
+pub struct ely_account::Login
+pub struct ely_account::LoginForm
+pub struct ely_account::MagicLinkForm
+pub struct ely_account::Member
+pub struct ely_account::OAuthButtons
+pub struct ely_account::PaymentMethodForm
+pub struct ely_account::Profile
+pub struct ely_account::ProfileCard
+pub struct ely_account::ProfileEditor
+pub struct ely_account::Quota
+pub struct ely_account::Role
+pub struct ely_account::RoleSelector
+pub struct ely_account::Session
+pub struct ely_account::SessionList
+pub struct ely_account::Signup
+pub struct ely_account::SignupForm
+pub struct ely_account::Subscription
+pub struct ely_account::SubscriptionCard
+pub struct ely_account::TeamMemberTable
+pub struct ely_account::TwoFactorInput
+pub struct ely_account::UpgradePrompt
+pub struct ely_account::UsageQuota
+pub struct ely_account::UserMenu
+pub struct ely_account::Workspace
+pub struct ely_account::WorkspaceSwitcher
+pub type ely_account::AccountSwitcher::Element = gpui::view::ViewElement<ely_account::AccountSwitcher>
+pub type ely_account::ApiKeyManager::Element = gpui::view::ViewElement<ely_account::ApiKeyManager>
+pub type ely_account::BillingHistory::Element = gpui::view::ViewElement<ely_account::BillingHistory>
+pub type ely_account::ForgotPassword::Element = gpui::view::ViewElement<ely_account::ForgotPassword>
+pub type ely_account::InvitationList::Element = gpui::view::ViewElement<ely_account::InvitationList>
+pub type ely_account::LoginForm::Element = gpui::view::ViewElement<ely_account::LoginForm>
+pub type ely_account::MagicLinkForm::Element = gpui::view::ViewElement<ely_account::MagicLinkForm>
+pub type ely_account::OAuthButtons::Element = gpui::view::ViewElement<ely_account::OAuthButtons>
+pub type ely_account::PaymentMethodForm::Element = gpui::view::ViewElement<ely_account::PaymentMethodForm>
+pub type ely_account::ProfileCard::Element = gpui::view::ViewElement<ely_account::ProfileCard>
+pub type ely_account::ProfileEditor::Element = gpui::view::ViewElement<ely_account::ProfileEditor>
+pub type ely_account::RoleSelector::Element = gpui::view::ViewElement<ely_account::RoleSelector>
+pub type ely_account::SessionList::Element = gpui::view::ViewElement<ely_account::SessionList>
+pub type ely_account::SignupForm::Element = gpui::view::ViewElement<ely_account::SignupForm>
+pub type ely_account::SubscriptionCard::Element = gpui::view::ViewElement<ely_account::SubscriptionCard>
+pub type ely_account::TeamMemberTable::Element = gpui::view::ViewElement<ely_account::TeamMemberTable>
+pub type ely_account::TwoFactorInput::Element = gpui::view::ViewElement<ely_account::TwoFactorInput>
+pub type ely_account::UpgradePrompt::Element = gpui::view::ViewElement<ely_account::UpgradePrompt>
+pub type ely_account::UsageQuota::Element = gpui::view::ViewElement<ely_account::UsageQuota>
+pub type ely_account::UserMenu::Element = gpui::view::ViewElement<ely_account::UserMenu>
+pub type ely_account::WorkspaceSwitcher::Element = gpui::view::ViewElement<ely_account::WorkspaceSwitcher>
+pub use ely_account::Account = ely_account::switcher::Account
+pub use ely_account::AccountSwitcher = ely_account::switcher::AccountSwitcher
+pub use ely_account::ApiKey = ely_account::keys::ApiKey
+pub use ely_account::ApiKeyManager = ely_account::keys::ApiKeyManager
+pub use ely_account::BillingHistory = ely_account::billing::BillingHistory
+pub use ely_account::CardBrand = ely_account::payment::CardBrand
+pub use ely_account::CardDetails = ely_account::payment::CardDetails
+pub use ely_account::ExpiryError = ely_account::payment::ExpiryError
+pub use ely_account::ForgotPassword = ely_account::mail::ForgotPassword
+pub use ely_account::Invitation = ely_account::team::Invitation
+pub use ely_account::InvitationList = ely_account::team::InvitationList
+pub use ely_account::Invoice = ely_account::billing::Invoice
+pub use ely_account::InvoiceState = ely_account::billing::InvoiceState
+pub use ely_account::Login = ely_account::login::Login
+pub use ely_account::LoginForm = ely_account::login::LoginForm
+pub use ely_account::MagicLinkForm = ely_account::mail::MagicLinkForm
+pub use ely_account::Member = ely_account::team::Member
+pub use ely_account::OAuthButtons = ely_account::oauth::OAuthButtons
+pub use ely_account::PaymentMethodForm = ely_account::payment::PaymentMethodForm
+pub use ely_account::Profile = ely_account::profile::Profile
+pub use ely_account::ProfileCard = ely_account::profile::ProfileCard
+pub use ely_account::ProfileEditor = ely_account::profile::ProfileEditor
+pub use ely_account::Quota = ely_account::billing::Quota
+pub use ely_account::Role = ely_account::team::Role
+pub use ely_account::RoleSelector = ely_account::team::RoleSelector
+pub use ely_account::Session = ely_account::sessions::Session
+pub use ely_account::SessionList = ely_account::sessions::SessionList
+pub use ely_account::Signup = ely_account::signup::Signup
+pub use ely_account::SignupForm = ely_account::signup::SignupForm
+pub use ely_account::Standing = ely_account::billing::Standing
+pub use ely_account::Subscription = ely_account::billing::Subscription
+pub use ely_account::SubscriptionCard = ely_account::billing::SubscriptionCard
+pub use ely_account::TeamMemberTable = ely_account::team::TeamMemberTable
+pub use ely_account::TwoFactorInput = ely_account::factor::TwoFactorInput
+pub use ely_account::UpgradePrompt = ely_account::upgrade::UpgradePrompt
+pub use ely_account::UsageQuota = ely_account::billing::UsageQuota
+pub use ely_account::UserMenu = ely_account::switcher::UserMenu
+pub use ely_account::Workspace = ely_account::switcher::Workspace
+pub use ely_account::WorkspaceSwitcher = ely_account::switcher::WorkspaceSwitcher
+pub use ely_account::expiry = ely_account::payment::expiry
+pub use ely_account::luhn = ely_account::payment::luhn
+pub use ely_account::password_rules = ely_account::signup::password_rules
+pub use ely_account::quota_line = ely_account::billing::quota_line

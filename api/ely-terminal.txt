@@ -1,0 +1,251 @@
+impl core::clone::Clone for ely_terminal::CommandState
+impl core::clone::Clone for ely_terminal::Launch
+impl core::clone::Clone for ely_terminal::LogLevel
+impl core::clone::Clone for ely_terminal::LogLine
+impl core::clone::Clone for ely_terminal::PastCommand
+impl core::clone::Clone for ely_terminal::Process
+impl core::clone::Clone for ely_terminal::ShellChoice
+impl core::clone::Clone for ely_terminal::Target
+impl core::clone::Clone for ely_terminal::TerminalEvent
+impl core::cmp::Eq for ely_terminal::CommandState
+impl core::cmp::Eq for ely_terminal::LogLevel
+impl core::cmp::Eq for ely_terminal::ShellChoice
+impl core::cmp::Eq for ely_terminal::Target
+impl core::cmp::Ord for ely_terminal::LogLevel
+impl core::cmp::PartialEq for ely_terminal::CommandState
+impl core::cmp::PartialEq for ely_terminal::LogLevel
+impl core::cmp::PartialEq for ely_terminal::LogLine
+impl core::cmp::PartialEq for ely_terminal::PastCommand
+impl core::cmp::PartialEq for ely_terminal::Process
+impl core::cmp::PartialEq for ely_terminal::ShellChoice
+impl core::cmp::PartialEq for ely_terminal::Target
+impl core::cmp::PartialEq for ely_terminal::TerminalEvent
+impl core::cmp::PartialOrd for ely_terminal::LogLevel
+impl core::default::Default for ely_terminal::Launch
+impl core::fmt::Debug for ely_terminal::CommandState
+impl core::fmt::Debug for ely_terminal::Launch
+impl core::fmt::Debug for ely_terminal::LogLevel
+impl core::fmt::Debug for ely_terminal::LogLine
+impl core::fmt::Debug for ely_terminal::PastCommand
+impl core::fmt::Debug for ely_terminal::Process
+impl core::fmt::Debug for ely_terminal::ShellChoice
+impl core::fmt::Debug for ely_terminal::Target
+impl core::fmt::Debug for ely_terminal::TerminalEvent
+impl core::marker::Copy for ely_terminal::CommandState
+impl core::marker::Copy for ely_terminal::LogLevel
+impl core::marker::StructuralPartialEq for ely_terminal::CommandState
+impl core::marker::StructuralPartialEq for ely_terminal::LogLevel
+impl core::marker::StructuralPartialEq for ely_terminal::LogLine
+impl core::marker::StructuralPartialEq for ely_terminal::PastCommand
+impl core::marker::StructuralPartialEq for ely_terminal::Process
+impl core::marker::StructuralPartialEq for ely_terminal::ShellChoice
+impl core::marker::StructuralPartialEq for ely_terminal::Target
+impl core::marker::StructuralPartialEq for ely_terminal::TerminalEvent
+impl core::ops::drop::Drop for ely_terminal::Terminal
+impl ely_terminal::AnsiText
+impl ely_terminal::CommandBlock
+impl ely_terminal::CommandHistory
+impl ely_terminal::LogViewer
+impl ely_terminal::ProcessList
+impl ely_terminal::ShellSelector
+impl ely_terminal::Terminal
+impl ely_terminal::TerminalToolbar
+impl gpui::EventEmitter<ely_terminal::TerminalEvent> for ely_terminal::Terminal
+impl gpui::element::IntoElement for ely_terminal::AnsiText
+impl gpui::element::IntoElement for ely_terminal::CommandBlock
+impl gpui::element::IntoElement for ely_terminal::CommandHistory
+impl gpui::element::IntoElement for ely_terminal::LogViewer
+impl gpui::element::IntoElement for ely_terminal::ProcessList
+impl gpui::element::IntoElement for ely_terminal::ShellSelector
+impl gpui::element::IntoElement for ely_terminal::TerminalToolbar
+impl gpui::element::Render for ely_terminal::Terminal
+impl gpui::element::RenderOnce for ely_terminal::AnsiText
+impl gpui::element::RenderOnce for ely_terminal::CommandBlock
+impl gpui::element::RenderOnce for ely_terminal::CommandHistory
+impl gpui::element::RenderOnce for ely_terminal::LogViewer
+impl gpui::element::RenderOnce for ely_terminal::ProcessList
+impl gpui::element::RenderOnce for ely_terminal::ShellSelector
+impl gpui::element::RenderOnce for ely_terminal::TerminalToolbar
+impl gpui::input::EntityInputHandler for ely_terminal::Terminal
+impl gpui::window::Focusable for ely_terminal::Terminal
+pub ely_terminal::CommandState::Done
+pub ely_terminal::CommandState::Done::code: i32
+pub ely_terminal::CommandState::Done::took: core::time::Duration
+pub ely_terminal::CommandState::Running
+pub ely_terminal::Launch::cwd: core::option::Option<std::path::PathBuf>
+pub ely_terminal::Launch::env: alloc::vec::Vec<(alloc::string::String, alloc::string::String)>
+pub ely_terminal::Launch::program: core::option::Option<(alloc::string::String, alloc::vec::Vec<alloc::string::String>)>
+pub ely_terminal::LogLevel::Debug
+pub ely_terminal::LogLevel::Error
+pub ely_terminal::LogLevel::Info
+pub ely_terminal::LogLevel::Trace
+pub ely_terminal::LogLevel::Warn
+pub ely_terminal::LogLine::at: gpui_shared_string::SharedString
+pub ely_terminal::LogLine::level: ely_terminal::LogLevel
+pub ely_terminal::LogLine::message: gpui_shared_string::SharedString
+pub ely_terminal::LogLine::target: gpui_shared_string::SharedString
+pub ely_terminal::PastCommand::code: core::option::Option<i32>
+pub ely_terminal::PastCommand::command: gpui_shared_string::SharedString
+pub ely_terminal::PastCommand::cwd: gpui_shared_string::SharedString
+pub ely_terminal::PastCommand::when: gpui_shared_string::SharedString
+pub ely_terminal::Process::cpu: f32
+pub ely_terminal::Process::memory: u64
+pub ely_terminal::Process::name: gpui_shared_string::SharedString
+pub ely_terminal::Process::pid: u32
+pub ely_terminal::Process::user: gpui_shared_string::SharedString
+pub ely_terminal::ShellChoice::name: gpui_shared_string::SharedString
+pub ely_terminal::ShellChoice::program: gpui_shared_string::SharedString
+pub ely_terminal::Target::Path
+pub ely_terminal::Target::Path::column: core::option::Option<u32>
+pub ely_terminal::Target::Path::line: core::option::Option<u32>
+pub ely_terminal::Target::Path::path: gpui_shared_string::SharedString
+pub ely_terminal::Target::Url(gpui_shared_string::SharedString)
+pub ely_terminal::TerminalEvent::Bell
+pub ely_terminal::TerminalEvent::Exited(std::process::ExitStatus)
+pub ely_terminal::TerminalEvent::Find
+pub ely_terminal::TerminalEvent::Open(ely_terminal::Target)
+pub ely_terminal::TerminalEvent::Title(gpui_shared_string::SharedString)
+pub enum ely_terminal::CommandState
+pub enum ely_terminal::LogLevel
+pub enum ely_terminal::Target
+pub enum ely_terminal::TerminalEvent
+pub fn ely_terminal::AnsiText::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::AnsiText::into_element(self) -> Self::Element
+pub fn ely_terminal::AnsiText::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_terminal::AnsiText::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::CommandBlock::folded(self, bool) -> Self
+pub fn ely_terminal::CommandBlock::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::CommandBlock::into_element(self) -> Self::Element
+pub fn ely_terminal::CommandBlock::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_terminal::CommandState) -> Self
+pub fn ely_terminal::CommandBlock::on_fold(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::CommandBlock::on_rerun(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::CommandBlock::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::CommandHistory::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::CommandHistory::into_element(self) -> Self::Element
+pub fn ely_terminal::CommandHistory::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_terminal::PastCommand>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::CommandHistory::on_pick(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::CommandHistory::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::CommandState::clone(&self) -> Self
+pub fn ely_terminal::CommandState::eq(&self, &Self) -> bool
+pub fn ely_terminal::CommandState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::Launch::clone(&self) -> Self
+pub fn ely_terminal::Launch::default() -> Self
+pub fn ely_terminal::Launch::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::LogLevel::clone(&self) -> Self
+pub fn ely_terminal::LogLevel::cmp(&self, &Self) -> core::cmp::Ordering
+pub fn ely_terminal::LogLevel::eq(&self, &Self) -> bool
+pub fn ely_terminal::LogLevel::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::LogLevel::partial_cmp(&self, &Self) -> core::option::Option<core::cmp::Ordering>
+pub fn ely_terminal::LogLine::clone(&self) -> Self
+pub fn ely_terminal::LogLine::eq(&self, &Self) -> bool
+pub fn ely_terminal::LogLine::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::LogViewer::follow(self, bool) -> Self
+pub fn ely_terminal::LogViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::LogViewer::into_element(self) -> Self::Element
+pub fn ely_terminal::LogViewer::least(self, ely_terminal::LogLevel) -> Self
+pub fn ely_terminal::LogViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_terminal::LogLine>>>) -> Self
+pub fn ely_terminal::LogViewer::on_follow(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::LogViewer::on_least(self, impl core::ops::function::Fn(ely_terminal::LogLevel, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::LogViewer::query(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_terminal::LogViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::PastCommand::clone(&self) -> Self
+pub fn ely_terminal::PastCommand::eq(&self, &Self) -> bool
+pub fn ely_terminal::PastCommand::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::Process::clone(&self) -> Self
+pub fn ely_terminal::Process::eq(&self, &Self) -> bool
+pub fn ely_terminal::Process::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::ProcessList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::ProcessList::into_element(self) -> Self::Element
+pub fn ely_terminal::ProcessList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_terminal::Process>) -> Self
+pub fn ely_terminal::ProcessList::on_end(self, impl core::ops::function::Fn(alloc::vec::Vec<u32>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::ProcessList::on_select(self, impl core::ops::function::Fn(alloc::vec::Vec<u32>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::ProcessList::query(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_terminal::ProcessList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::ProcessList::selected(self, impl core::iter::traits::collect::IntoIterator<Item = u32>) -> Self
+pub fn ely_terminal::ShellChoice::clone(&self) -> Self
+pub fn ely_terminal::ShellChoice::eq(&self, &Self) -> bool
+pub fn ely_terminal::ShellChoice::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::ShellSelector::default_shell(self, usize) -> Self
+pub fn ely_terminal::ShellSelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::ShellSelector::into_element(self) -> Self::Element
+pub fn ely_terminal::ShellSelector::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_terminal::ShellChoice>) -> Self
+pub fn ely_terminal::ShellSelector::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::ShellSelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::Target::clone(&self) -> Self
+pub fn ely_terminal::Target::eq(&self, &Self) -> bool
+pub fn ely_terminal::Target::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::Terminal::bounds_for_range(&mut self, core::ops::range::Range<usize>, gpui::geometry::Bounds<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<gpui::geometry::Bounds<gpui::geometry::Pixels>>
+pub fn ely_terminal::Terminal::character_index_for_point(&mut self, gpui::geometry::Point<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<usize>
+pub fn ely_terminal::Terminal::clear(&mut self, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_terminal::Terminal::drop(&mut self)
+pub fn ely_terminal::Terminal::exit_status(&self) -> core::option::Option<std::process::ExitStatus>
+pub fn ely_terminal::Terminal::find(&mut self, &str, ely_editor::find::FindOptions, &mut gpui::app::context::Context<'_, Self>) -> core::result::Result<usize, alloc::string::String>
+pub fn ely_terminal::Terminal::focus_handle(&self, &gpui::app::App) -> gpui::window::FocusHandle
+pub fn ely_terminal::Terminal::marked_text_range(&self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<core::ops::range::Range<usize>>
+pub fn ely_terminal::Terminal::matches(&self) -> (usize, core::option::Option<usize>)
+pub fn ely_terminal::Terminal::render(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> impl gpui::element::IntoElement
+pub fn ely_terminal::Terminal::replace_and_mark_text_in_range(&mut self, core::option::Option<core::ops::range::Range<usize>>, &str, core::option::Option<core::ops::range::Range<usize>>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_terminal::Terminal::replace_text_in_range(&mut self, core::option::Option<core::ops::range::Range<usize>>, &str, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_terminal::Terminal::replay(&[u8], usize, usize, &mut gpui::app::context::Context<'_, Self>) -> Self
+pub fn ely_terminal::Terminal::selected_text_range(&mut self, bool, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<gpui::platform::UTF16Selection>
+pub fn ely_terminal::Terminal::spawn(ely_terminal::Launch, &mut gpui::app::context::Context<'_, Self>) -> anyhow::Result<Self>
+pub fn ely_terminal::Terminal::step(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_terminal::Terminal::text(&self) -> alloc::string::String
+pub fn ely_terminal::Terminal::text_for_range(&mut self, core::ops::range::Range<usize>, &mut core::option::Option<core::ops::range::Range<usize>>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<alloc::string::String>
+pub fn ely_terminal::Terminal::title(&self) -> &gpui_shared_string::SharedString
+pub fn ely_terminal::Terminal::unmark_text(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_terminal::Terminal::write(&mut self, impl core::convert::Into<alloc::borrow::Cow<'static, [u8]>>)
+pub fn ely_terminal::TerminalEvent::clone(&self) -> Self
+pub fn ely_terminal::TerminalEvent::eq(&self, &Self) -> bool
+pub fn ely_terminal::TerminalEvent::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_terminal::TerminalToolbar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_terminal::TerminalToolbar::into_element(self) -> Self::Element
+pub fn ely_terminal::TerminalToolbar::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, core::option::Option<i32>) -> Self
+pub fn ely_terminal::TerminalToolbar::on_clear(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::TerminalToolbar::on_maximize(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::TerminalToolbar::on_split(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::TerminalToolbar::on_stop(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_terminal::TerminalToolbar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_terminal::TerminalToolbar::shells(self, ely_terminal::ShellSelector) -> Self
+pub fn ely_terminal::bind_keys(&mut gpui::app::App)
+pub fn ely_terminal::links(&str) -> alloc::vec::Vec<(core::ops::range::Range<usize>, ely_terminal::Target)>
+pub mod ely_terminal
+pub struct ely_terminal::AnsiText
+pub struct ely_terminal::CommandBlock
+pub struct ely_terminal::CommandHistory
+pub struct ely_terminal::Launch
+pub struct ely_terminal::LogLine
+pub struct ely_terminal::LogViewer
+pub struct ely_terminal::PastCommand
+pub struct ely_terminal::Process
+pub struct ely_terminal::ProcessList
+pub struct ely_terminal::ShellChoice
+pub struct ely_terminal::ShellSelector
+pub struct ely_terminal::Terminal
+pub struct ely_terminal::TerminalToolbar
+pub type ely_terminal::AnsiText::Element = gpui::view::ViewElement<ely_terminal::AnsiText>
+pub type ely_terminal::CommandBlock::Element = gpui::view::ViewElement<ely_terminal::CommandBlock>
+pub type ely_terminal::CommandHistory::Element = gpui::view::ViewElement<ely_terminal::CommandHistory>
+pub type ely_terminal::LogViewer::Element = gpui::view::ViewElement<ely_terminal::LogViewer>
+pub type ely_terminal::ProcessList::Element = gpui::view::ViewElement<ely_terminal::ProcessList>
+pub type ely_terminal::ShellSelector::Element = gpui::view::ViewElement<ely_terminal::ShellSelector>
+pub type ely_terminal::TerminalToolbar::Element = gpui::view::ViewElement<ely_terminal::TerminalToolbar>
+pub use ely_terminal::AnsiText = ely_terminal::ansi::AnsiText
+pub use ely_terminal::CommandBlock = ely_terminal::block::CommandBlock
+pub use ely_terminal::CommandHistory = ely_terminal::history::CommandHistory
+pub use ely_terminal::CommandState = ely_terminal::block::CommandState
+pub use ely_terminal::Launch = ely_terminal::pty::Launch
+pub use ely_terminal::LogLevel = ely_terminal::logs::LogLevel
+pub use ely_terminal::LogLine = ely_terminal::logs::LogLine
+pub use ely_terminal::LogViewer = ely_terminal::logs::LogViewer
+pub use ely_terminal::PastCommand = ely_terminal::history::PastCommand
+pub use ely_terminal::Process = ely_terminal::processes::Process
+pub use ely_terminal::ProcessList = ely_terminal::processes::ProcessList
+pub use ely_terminal::ShellChoice = ely_terminal::shells::ShellChoice
+pub use ely_terminal::ShellSelector = ely_terminal::shells::ShellSelector
+pub use ely_terminal::Target = ely_terminal::links::Target
+pub use ely_terminal::Terminal = ely_terminal::view::Terminal
+pub use ely_terminal::TerminalEvent = ely_terminal::view::TerminalEvent
+pub use ely_terminal::TerminalToolbar = ely_terminal::shells::TerminalToolbar
+pub use ely_terminal::bind_keys = ely_terminal::input::bind_keys
+pub use ely_terminal::links = ely_terminal::links::links

@@ -1,0 +1,436 @@
+impl core::clone::Clone for ely_charts::Bullet
+impl core::clone::Clone for ely_charts::Points
+impl core::clone::Clone for ely_charts::Series
+impl core::clone::Clone for ely_charts::Slice
+impl core::clone::Clone for ely_charts::Task
+impl core::cmp::PartialEq for ely_charts::Bullet
+impl core::cmp::PartialEq for ely_charts::Points
+impl core::cmp::PartialEq for ely_charts::Series
+impl core::cmp::PartialEq for ely_charts::Slice
+impl core::cmp::PartialEq for ely_charts::Task
+impl core::fmt::Debug for ely_charts::Bullet
+impl core::fmt::Debug for ely_charts::Points
+impl core::fmt::Debug for ely_charts::Series
+impl core::fmt::Debug for ely_charts::Slice
+impl core::fmt::Debug for ely_charts::Task
+impl core::marker::StructuralPartialEq for ely_charts::Bullet
+impl core::marker::StructuralPartialEq for ely_charts::Points
+impl core::marker::StructuralPartialEq for ely_charts::Series
+impl core::marker::StructuralPartialEq for ely_charts::Slice
+impl core::marker::StructuralPartialEq for ely_charts::Task
+impl ely_charts::AreaChart
+impl ely_charts::BarChart
+impl ely_charts::BoxPlot
+impl ely_charts::Bullet
+impl ely_charts::BulletChart
+impl ely_charts::BurndownChart
+impl ely_charts::CalendarHeatmap
+impl ely_charts::ChartLegend
+impl ely_charts::ChartTooltip
+impl ely_charts::ChordDiagram
+impl ely_charts::FunnelChart
+impl ely_charts::GanttChart
+impl ely_charts::HeatmapChart
+impl ely_charts::Histogram
+impl ely_charts::LineChart
+impl ely_charts::NetworkGraph
+impl ely_charts::ParallelCoordinates
+impl ely_charts::PieChart
+impl ely_charts::Points
+impl ely_charts::ProgressChart
+impl ely_charts::RadarChart
+impl ely_charts::RealtimeChart
+impl ely_charts::SankeyChart
+impl ely_charts::ScatterChart
+impl ely_charts::Series
+impl ely_charts::Slice
+impl ely_charts::Sunburst
+impl ely_charts::Task
+impl ely_charts::Treemap
+impl ely_charts::ViolinPlot
+impl ely_charts::WaterfallChart
+impl gpui::element::IntoElement for ely_charts::AreaChart
+impl gpui::element::IntoElement for ely_charts::BarChart
+impl gpui::element::IntoElement for ely_charts::BoxPlot
+impl gpui::element::IntoElement for ely_charts::BulletChart
+impl gpui::element::IntoElement for ely_charts::BurndownChart
+impl gpui::element::IntoElement for ely_charts::CalendarHeatmap
+impl gpui::element::IntoElement for ely_charts::ChartLegend
+impl gpui::element::IntoElement for ely_charts::ChartTooltip
+impl gpui::element::IntoElement for ely_charts::ChordDiagram
+impl gpui::element::IntoElement for ely_charts::FunnelChart
+impl gpui::element::IntoElement for ely_charts::GanttChart
+impl gpui::element::IntoElement for ely_charts::HeatmapChart
+impl gpui::element::IntoElement for ely_charts::Histogram
+impl gpui::element::IntoElement for ely_charts::LineChart
+impl gpui::element::IntoElement for ely_charts::NetworkGraph
+impl gpui::element::IntoElement for ely_charts::ParallelCoordinates
+impl gpui::element::IntoElement for ely_charts::PieChart
+impl gpui::element::IntoElement for ely_charts::ProgressChart
+impl gpui::element::IntoElement for ely_charts::RadarChart
+impl gpui::element::IntoElement for ely_charts::RealtimeChart
+impl gpui::element::IntoElement for ely_charts::SankeyChart
+impl gpui::element::IntoElement for ely_charts::ScatterChart
+impl gpui::element::IntoElement for ely_charts::Sunburst
+impl gpui::element::IntoElement for ely_charts::Treemap
+impl gpui::element::IntoElement for ely_charts::ViolinPlot
+impl gpui::element::IntoElement for ely_charts::WaterfallChart
+impl gpui::element::RenderOnce for ely_charts::AreaChart
+impl gpui::element::RenderOnce for ely_charts::BarChart
+impl gpui::element::RenderOnce for ely_charts::BoxPlot
+impl gpui::element::RenderOnce for ely_charts::BulletChart
+impl gpui::element::RenderOnce for ely_charts::BurndownChart
+impl gpui::element::RenderOnce for ely_charts::CalendarHeatmap
+impl gpui::element::RenderOnce for ely_charts::ChartLegend
+impl gpui::element::RenderOnce for ely_charts::ChartTooltip
+impl gpui::element::RenderOnce for ely_charts::ChordDiagram
+impl gpui::element::RenderOnce for ely_charts::FunnelChart
+impl gpui::element::RenderOnce for ely_charts::GanttChart
+impl gpui::element::RenderOnce for ely_charts::HeatmapChart
+impl gpui::element::RenderOnce for ely_charts::Histogram
+impl gpui::element::RenderOnce for ely_charts::LineChart
+impl gpui::element::RenderOnce for ely_charts::NetworkGraph
+impl gpui::element::RenderOnce for ely_charts::ParallelCoordinates
+impl gpui::element::RenderOnce for ely_charts::PieChart
+impl gpui::element::RenderOnce for ely_charts::ProgressChart
+impl gpui::element::RenderOnce for ely_charts::RadarChart
+impl gpui::element::RenderOnce for ely_charts::RealtimeChart
+impl gpui::element::RenderOnce for ely_charts::SankeyChart
+impl gpui::element::RenderOnce for ely_charts::ScatterChart
+impl gpui::element::RenderOnce for ely_charts::Sunburst
+impl gpui::element::RenderOnce for ely_charts::Treemap
+impl gpui::element::RenderOnce for ely_charts::ViolinPlot
+impl gpui::element::RenderOnce for ely_charts::WaterfallChart
+impl gpui::styled::Styled for ely_charts::AreaChart
+impl gpui::styled::Styled for ely_charts::BarChart
+impl gpui::styled::Styled for ely_charts::BoxPlot
+impl gpui::styled::Styled for ely_charts::BulletChart
+impl gpui::styled::Styled for ely_charts::BurndownChart
+impl gpui::styled::Styled for ely_charts::CalendarHeatmap
+impl gpui::styled::Styled for ely_charts::ChordDiagram
+impl gpui::styled::Styled for ely_charts::FunnelChart
+impl gpui::styled::Styled for ely_charts::GanttChart
+impl gpui::styled::Styled for ely_charts::HeatmapChart
+impl gpui::styled::Styled for ely_charts::Histogram
+impl gpui::styled::Styled for ely_charts::LineChart
+impl gpui::styled::Styled for ely_charts::NetworkGraph
+impl gpui::styled::Styled for ely_charts::ParallelCoordinates
+impl gpui::styled::Styled for ely_charts::PieChart
+impl gpui::styled::Styled for ely_charts::ProgressChart
+impl gpui::styled::Styled for ely_charts::RadarChart
+impl gpui::styled::Styled for ely_charts::RealtimeChart
+impl gpui::styled::Styled for ely_charts::SankeyChart
+impl gpui::styled::Styled for ely_charts::ScatterChart
+impl gpui::styled::Styled for ely_charts::Sunburst
+impl gpui::styled::Styled for ely_charts::Treemap
+impl gpui::styled::Styled for ely_charts::ViolinPlot
+impl gpui::styled::Styled for ely_charts::WaterfallChart
+pub const ely_charts::LIMIT: f64
+pub fn ely_charts::AreaChart::csv(&self) -> alloc::string::String
+pub fn ely_charts::AreaChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::AreaChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::AreaChart::into_element(self) -> Self::Element
+pub fn ely_charts::AreaChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::AreaChart::note(self, usize, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::AreaChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::AreaChart::rule(self, f64, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::AreaChart::series(self, ely_charts::Series) -> Self
+pub fn ely_charts::AreaChart::smooth(self) -> Self
+pub fn ely_charts::AreaChart::stacked(self) -> Self
+pub fn ely_charts::AreaChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::AreaChart::svg(&self, f32, f32, &gpui::app::App) -> alloc::string::String
+pub fn ely_charts::AreaChart::zoom(self) -> Self
+pub fn ely_charts::BarChart::csv(&self) -> alloc::string::String
+pub fn ely_charts::BarChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::BarChart::horizontal(self) -> Self
+pub fn ely_charts::BarChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::BarChart::into_element(self) -> Self::Element
+pub fn ely_charts::BarChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::BarChart::note(self, usize, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::BarChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::BarChart::rule(self, f64, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::BarChart::series(self, ely_charts::Series) -> Self
+pub fn ely_charts::BarChart::stacked(self) -> Self
+pub fn ely_charts::BarChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::BarChart::svg(&self, f32, f32, &gpui::app::App) -> alloc::string::String
+pub fn ely_charts::BarChart::zoom(self) -> Self
+pub fn ely_charts::BoxPlot::group(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::BoxPlot::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::BoxPlot::into_element(self) -> Self::Element
+pub fn ely_charts::BoxPlot::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::BoxPlot::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::BoxPlot::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::Bullet::bands(self, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::Bullet::clone(&self) -> Self
+pub fn ely_charts::Bullet::eq(&self, &Self) -> bool
+pub fn ely_charts::Bullet::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_charts::Bullet::new(impl core::convert::Into<gpui_shared_string::SharedString>, f64, f64) -> Self
+pub fn ely_charts::BulletChart::bullet(self, ely_charts::Bullet) -> Self
+pub fn ely_charts::BulletChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::BulletChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::BulletChart::into_element(self) -> Self::Element
+pub fn ely_charts::BulletChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::BulletChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::BulletChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::BurndownChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::BurndownChart::into_element(self) -> Self::Element
+pub fn ely_charts::BurndownChart::left(self, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::BurndownChart::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, jiff::civil::date::Date, f64) -> Self
+pub fn ely_charts::BurndownChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::BurndownChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::BurndownChart::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_charts::CalendarHeatmap::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::CalendarHeatmap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::CalendarHeatmap::into_element(self) -> Self::Element
+pub fn ely_charts::CalendarHeatmap::new(impl core::convert::Into<gpui::window::ElementId>, jiff::civil::date::Date, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::CalendarHeatmap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::CalendarHeatmap::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::ChartLegend::entry(self, gpui::color::Hsla, impl core::convert::Into<gpui_shared_string::SharedString>, bool) -> Self
+pub fn ely_charts::ChartLegend::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ChartLegend::into_element(self) -> Self::Element
+pub fn ely_charts::ChartLegend::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::ChartLegend::on_toggle(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_charts::ChartLegend::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ChartTooltip::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ChartTooltip::into_element(self) -> Self::Element
+pub fn ely_charts::ChartTooltip::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::ChartTooltip::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ChartTooltip::row(self, core::option::Option<gpui::color::Hsla>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::ChordDiagram::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::ChordDiagram::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ChordDiagram::into_element(self) -> Self::Element
+pub fn ely_charts::ChordDiagram::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, alloc::vec::Vec<alloc::vec::Vec<f64>>) -> Self
+pub fn ely_charts::ChordDiagram::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ChordDiagram::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::FunnelChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::FunnelChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::FunnelChart::into_element(self) -> Self::Element
+pub fn ely_charts::FunnelChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::FunnelChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::FunnelChart::stage(self, impl core::convert::Into<gpui_shared_string::SharedString>, f64) -> Self
+pub fn ely_charts::FunnelChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::GanttChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::GanttChart::into_element(self) -> Self::Element
+pub fn ely_charts::GanttChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::GanttChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::GanttChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::GanttChart::task(self, ely_charts::Task) -> Self
+pub fn ely_charts::GanttChart::today(self, jiff::civil::date::Date) -> Self
+pub fn ely_charts::HeatmapChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::HeatmapChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::HeatmapChart::into_element(self) -> Self::Element
+pub fn ely_charts::HeatmapChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::HeatmapChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::HeatmapChart::row(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::HeatmapChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::Histogram::bins(self, usize) -> Self
+pub fn ely_charts::Histogram::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::Histogram::into_element(self) -> Self::Element
+pub fn ely_charts::Histogram::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::Histogram::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::Histogram::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::LineChart::csv(&self) -> alloc::string::String
+pub fn ely_charts::LineChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::LineChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::LineChart::into_element(self) -> Self::Element
+pub fn ely_charts::LineChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::LineChart::note(self, usize, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::LineChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::LineChart::rule(self, f64, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::LineChart::series(self, ely_charts::Series) -> Self
+pub fn ely_charts::LineChart::smooth(self) -> Self
+pub fn ely_charts::LineChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::LineChart::svg(&self, f32, f32, &gpui::app::App) -> alloc::string::String
+pub fn ely_charts::LineChart::zoom(self) -> Self
+pub fn ely_charts::NetworkGraph::edge(self, usize, usize) -> Self
+pub fn ely_charts::NetworkGraph::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::NetworkGraph::into_element(self) -> Self::Element
+pub fn ely_charts::NetworkGraph::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::NetworkGraph::node(self, impl core::convert::Into<gpui_shared_string::SharedString>, usize) -> Self
+pub fn ely_charts::NetworkGraph::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::NetworkGraph::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::ParallelCoordinates::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::ParallelCoordinates::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ParallelCoordinates::into_element(self) -> Self::Element
+pub fn ely_charts::ParallelCoordinates::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::ParallelCoordinates::record(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::ParallelCoordinates::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ParallelCoordinates::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::PieChart::donut(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::PieChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::PieChart::into_element(self) -> Self::Element
+pub fn ely_charts::PieChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::PieChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::PieChart::slice(self, impl core::convert::Into<gpui_shared_string::SharedString>, f64) -> Self
+pub fn ely_charts::PieChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::Points::clone(&self) -> Self
+pub fn ely_charts::Points::eq(&self, &Self) -> bool
+pub fn ely_charts::Points::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_charts::Points::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = (f64, f64)>) -> Self
+pub fn ely_charts::Points::sizes(self, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::ProgressChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::ProgressChart::goal(self, impl core::convert::Into<gpui_shared_string::SharedString>, f64, f64) -> Self
+pub fn ely_charts::ProgressChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ProgressChart::into_element(self) -> Self::Element
+pub fn ely_charts::ProgressChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::ProgressChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ProgressChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::RadarChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::RadarChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::RadarChart::into_element(self) -> Self::Element
+pub fn ely_charts::RadarChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::RadarChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::RadarChart::series(self, ely_charts::Series) -> Self
+pub fn ely_charts::RadarChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::RealtimeChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::RealtimeChart::into_element(self) -> Self::Element
+pub fn ely_charts::RealtimeChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = f64>, u64) -> Self
+pub fn ely_charts::RealtimeChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::RealtimeChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::SankeyChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::SankeyChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::SankeyChart::into_element(self) -> Self::Element
+pub fn ely_charts::SankeyChart::link(self, usize, usize, f64) -> Self
+pub fn ely_charts::SankeyChart::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_charts::SankeyChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::SankeyChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::ScatterChart::axes(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_charts::ScatterChart::csv(&self) -> alloc::string::String
+pub fn ely_charts::ScatterChart::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::ScatterChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ScatterChart::into_element(self) -> Self::Element
+pub fn ely_charts::ScatterChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::ScatterChart::points(self, ely_charts::Points) -> Self
+pub fn ely_charts::ScatterChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ScatterChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::ScatterChart::svg(&self, f32, f32, &gpui::app::App) -> alloc::string::String
+pub fn ely_charts::Series::clone(&self) -> Self
+pub fn ely_charts::Series::eq(&self, &Self) -> bool
+pub fn ely_charts::Series::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_charts::Series::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::Slice::children(self, impl core::iter::traits::collect::IntoIterator<Item = ely_charts::Slice>) -> Self
+pub fn ely_charts::Slice::clone(&self) -> Self
+pub fn ely_charts::Slice::eq(&self, &Self) -> bool
+pub fn ely_charts::Slice::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_charts::Slice::new(impl core::convert::Into<gpui_shared_string::SharedString>, f64) -> Self
+pub fn ely_charts::Sunburst::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::Sunburst::into_element(self) -> Self::Element
+pub fn ely_charts::Sunburst::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_charts::Slice>) -> Self
+pub fn ely_charts::Sunburst::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::Sunburst::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::Task::after(self, usize) -> Self
+pub fn ely_charts::Task::clone(&self) -> Self
+pub fn ely_charts::Task::done(self, f32) -> Self
+pub fn ely_charts::Task::eq(&self, &Self) -> bool
+pub fn ely_charts::Task::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_charts::Task::new(impl core::convert::Into<gpui_shared_string::SharedString>, jiff::civil::date::Date, jiff::civil::date::Date) -> Self
+pub fn ely_charts::Treemap::format(self, impl core::ops::function::Fn(f64) -> alloc::string::String + 'static) -> Self
+pub fn ely_charts::Treemap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::Treemap::into_element(self) -> Self::Element
+pub fn ely_charts::Treemap::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::Treemap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::Treemap::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::Treemap::tile(self, impl core::convert::Into<gpui_shared_string::SharedString>, f64) -> Self
+pub fn ely_charts::ViolinPlot::group(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = f64>) -> Self
+pub fn ely_charts::ViolinPlot::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::ViolinPlot::into_element(self) -> Self::Element
+pub fn ely_charts::ViolinPlot::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::ViolinPlot::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::ViolinPlot::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::WaterfallChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_charts::WaterfallChart::into_element(self) -> Self::Element
+pub fn ely_charts::WaterfallChart::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_charts::WaterfallChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_charts::WaterfallChart::step(self, impl core::convert::Into<gpui_shared_string::SharedString>, f64) -> Self
+pub fn ely_charts::WaterfallChart::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_charts::WaterfallChart::total(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub mod ely_charts
+pub struct ely_charts::AreaChart
+pub struct ely_charts::BarChart
+pub struct ely_charts::BoxPlot
+pub struct ely_charts::Bullet
+pub struct ely_charts::BulletChart
+pub struct ely_charts::BurndownChart
+pub struct ely_charts::CalendarHeatmap
+pub struct ely_charts::ChartLegend
+pub struct ely_charts::ChartTooltip
+pub struct ely_charts::ChordDiagram
+pub struct ely_charts::FunnelChart
+pub struct ely_charts::GanttChart
+pub struct ely_charts::HeatmapChart
+pub struct ely_charts::Histogram
+pub struct ely_charts::LineChart
+pub struct ely_charts::NetworkGraph
+pub struct ely_charts::ParallelCoordinates
+pub struct ely_charts::PieChart
+pub struct ely_charts::Points
+pub struct ely_charts::ProgressChart
+pub struct ely_charts::RadarChart
+pub struct ely_charts::RealtimeChart
+pub struct ely_charts::SankeyChart
+pub struct ely_charts::ScatterChart
+pub struct ely_charts::Series
+pub struct ely_charts::Slice
+pub struct ely_charts::Sunburst
+pub struct ely_charts::Task
+pub struct ely_charts::Treemap
+pub struct ely_charts::ViolinPlot
+pub struct ely_charts::WaterfallChart
+pub type ely_charts::AreaChart::Element = gpui::view::ViewElement<ely_charts::AreaChart>
+pub type ely_charts::BarChart::Element = gpui::view::ViewElement<ely_charts::BarChart>
+pub type ely_charts::BoxPlot::Element = gpui::view::ViewElement<ely_charts::BoxPlot>
+pub type ely_charts::BulletChart::Element = gpui::view::ViewElement<ely_charts::BulletChart>
+pub type ely_charts::BurndownChart::Element = gpui::view::ViewElement<ely_charts::BurndownChart>
+pub type ely_charts::CalendarHeatmap::Element = gpui::view::ViewElement<ely_charts::CalendarHeatmap>
+pub type ely_charts::ChartLegend::Element = gpui::view::ViewElement<ely_charts::ChartLegend>
+pub type ely_charts::ChartTooltip::Element = gpui::view::ViewElement<ely_charts::ChartTooltip>
+pub type ely_charts::ChordDiagram::Element = gpui::view::ViewElement<ely_charts::ChordDiagram>
+pub type ely_charts::FunnelChart::Element = gpui::view::ViewElement<ely_charts::FunnelChart>
+pub type ely_charts::GanttChart::Element = gpui::view::ViewElement<ely_charts::GanttChart>
+pub type ely_charts::HeatmapChart::Element = gpui::view::ViewElement<ely_charts::HeatmapChart>
+pub type ely_charts::Histogram::Element = gpui::view::ViewElement<ely_charts::Histogram>
+pub type ely_charts::LineChart::Element = gpui::view::ViewElement<ely_charts::LineChart>
+pub type ely_charts::NetworkGraph::Element = gpui::view::ViewElement<ely_charts::NetworkGraph>
+pub type ely_charts::ParallelCoordinates::Element = gpui::view::ViewElement<ely_charts::ParallelCoordinates>
+pub type ely_charts::PieChart::Element = gpui::view::ViewElement<ely_charts::PieChart>
+pub type ely_charts::ProgressChart::Element = gpui::view::ViewElement<ely_charts::ProgressChart>
+pub type ely_charts::RadarChart::Element = gpui::view::ViewElement<ely_charts::RadarChart>
+pub type ely_charts::RealtimeChart::Element = gpui::view::ViewElement<ely_charts::RealtimeChart>
+pub type ely_charts::SankeyChart::Element = gpui::view::ViewElement<ely_charts::SankeyChart>
+pub type ely_charts::ScatterChart::Element = gpui::view::ViewElement<ely_charts::ScatterChart>
+pub type ely_charts::Sunburst::Element = gpui::view::ViewElement<ely_charts::Sunburst>
+pub type ely_charts::Treemap::Element = gpui::view::ViewElement<ely_charts::Treemap>
+pub type ely_charts::ViolinPlot::Element = gpui::view::ViewElement<ely_charts::ViolinPlot>
+pub type ely_charts::WaterfallChart::Element = gpui::view::ViewElement<ely_charts::WaterfallChart>
+pub use ely_charts::AreaChart = ely_charts::cartesian::AreaChart
+pub use ely_charts::BarChart = ely_charts::cartesian::BarChart
+pub use ely_charts::BoxPlot = ely_charts::distribution::BoxPlot
+pub use ely_charts::Bullet = ely_charts::targets::Bullet
+pub use ely_charts::BulletChart = ely_charts::targets::BulletChart
+pub use ely_charts::BurndownChart = ely_charts::burndown::BurndownChart
+pub use ely_charts::CalendarHeatmap = ely_charts::calendar::CalendarHeatmap
+pub use ely_charts::ChartLegend = ely_charts::parts::ChartLegend
+pub use ely_charts::ChartTooltip = ely_charts::parts::ChartTooltip
+pub use ely_charts::ChordDiagram = ely_charts::relations::ChordDiagram
+pub use ely_charts::FunnelChart = ely_charts::funnel::FunnelChart
+pub use ely_charts::GanttChart = ely_charts::schedule::GanttChart
+pub use ely_charts::HeatmapChart = ely_charts::tiles::HeatmapChart
+pub use ely_charts::Histogram = ely_charts::distribution::Histogram
+pub use ely_charts::LIMIT = ely_charts::series::LIMIT
+pub use ely_charts::LineChart = ely_charts::cartesian::LineChart
+pub use ely_charts::NetworkGraph = ely_charts::network::NetworkGraph
+pub use ely_charts::ParallelCoordinates = ely_charts::parallel::ParallelCoordinates
+pub use ely_charts::PieChart = ely_charts::pie::PieChart
+pub use ely_charts::Points = ely_charts::series::Points
+pub use ely_charts::ProgressChart = ely_charts::targets::ProgressChart
+pub use ely_charts::RadarChart = ely_charts::radar::RadarChart
+pub use ely_charts::RealtimeChart = ely_charts::realtime::RealtimeChart
+pub use ely_charts::SankeyChart = ely_charts::flow::SankeyChart
+pub use ely_charts::ScatterChart = ely_charts::cartesian::ScatterChart
+pub use ely_charts::Series = ely_charts::series::Series
+pub use ely_charts::Slice = ely_charts::sunburst::Slice
+pub use ely_charts::Sunburst = ely_charts::sunburst::Sunburst
+pub use ely_charts::Task = ely_charts::schedule::Task
+pub use ely_charts::Treemap = ely_charts::tiles::Treemap
+pub use ely_charts::ViolinPlot = ely_charts::distribution::ViolinPlot
+pub use ely_charts::WaterfallChart = ely_charts::distribution::WaterfallChart

@@ -1,0 +1,750 @@
+impl core::clone::Clone for ely_chat::Attachment
+impl core::clone::Clone for ely_chat::Conversation
+impl core::clone::Clone for ely_chat::Parameter
+impl core::clone::Clone for ely_chat::Project
+impl core::clone::Clone for ely_chat::Role
+impl core::clone::Clone for ely_chat::Source
+impl core::clone::Clone for ely_chat::StepState
+impl core::cmp::Eq for ely_chat::Role
+impl core::cmp::Eq for ely_chat::StepState
+impl core::cmp::PartialEq for ely_chat::Attachment
+impl core::cmp::PartialEq for ely_chat::Conversation
+impl core::cmp::PartialEq for ely_chat::Parameter
+impl core::cmp::PartialEq for ely_chat::Project
+impl core::cmp::PartialEq for ely_chat::Role
+impl core::cmp::PartialEq for ely_chat::Source
+impl core::cmp::PartialEq for ely_chat::StepState
+impl core::default::Default for ely_chat::MessageFooter
+impl core::fmt::Debug for ely_chat::Attachment
+impl core::fmt::Debug for ely_chat::Conversation
+impl core::fmt::Debug for ely_chat::Parameter
+impl core::fmt::Debug for ely_chat::Project
+impl core::fmt::Debug for ely_chat::Role
+impl core::fmt::Debug for ely_chat::Source
+impl core::fmt::Debug for ely_chat::StepState
+impl core::marker::Copy for ely_chat::Role
+impl core::marker::Copy for ely_chat::StepState
+impl core::marker::StructuralPartialEq for ely_chat::Attachment
+impl core::marker::StructuralPartialEq for ely_chat::Conversation
+impl core::marker::StructuralPartialEq for ely_chat::Parameter
+impl core::marker::StructuralPartialEq for ely_chat::Project
+impl core::marker::StructuralPartialEq for ely_chat::Role
+impl core::marker::StructuralPartialEq for ely_chat::Source
+impl core::marker::StructuralPartialEq for ely_chat::StepState
+impl ely_chat::AttachmentButton
+impl ely_chat::AttachmentChip
+impl ely_chat::AudioMessage
+impl ely_chat::BranchNavigator
+impl ely_chat::CapabilityCards
+impl ely_chat::ChatContainer
+impl ely_chat::CitationBadge
+impl ely_chat::CodeBlock
+impl ely_chat::ContextChips
+impl ely_chat::ConversationExport
+impl ely_chat::ConversationItem
+impl ely_chat::ConversationList
+impl ely_chat::CostEstimator
+impl ely_chat::DateSeparator
+impl ely_chat::DocumentChunkPreview
+impl ely_chat::DragDropOverlay
+impl ely_chat::ErrorMessage
+impl ely_chat::FeedbackForm
+impl ely_chat::FileMessage
+impl ely_chat::FollowUpSuggestions
+impl ely_chat::ImageGrid
+impl ely_chat::ImageMessage
+impl ely_chat::LinkPreviewCard
+impl ely_chat::MessageActions
+impl ely_chat::MessageAvatar
+impl ely_chat::MessageBubble
+impl ely_chat::MessageEditor
+impl ely_chat::MessageFooter
+impl ely_chat::MessageHeader
+impl ely_chat::MessageList
+impl ely_chat::ParameterPanel
+impl ely_chat::ProjectKnowledgePanel
+impl ely_chat::ProjectList
+impl ely_chat::PromptInput
+impl ely_chat::QuoteReply
+impl ely_chat::RateLimitNotice
+impl ely_chat::ScrollToBottomButton
+impl ely_chat::SearchProgress
+impl ely_chat::SendButton
+impl ely_chat::SharedConversationView
+impl ely_chat::SourceCard
+impl ely_chat::SourceList
+impl ely_chat::StreamingCursor
+impl ely_chat::StreamingMarkdown
+impl ely_chat::StreamingText
+impl ely_chat::SuggestionChips
+impl ely_chat::SystemPromptEditor
+impl ely_chat::ThinkingBlock
+impl ely_chat::ThinkingDuration
+impl ely_chat::ThinkingIndicator
+impl ely_chat::TokenCounter
+impl ely_chat::VideoMessage
+impl ely_chat::VoiceInputButton
+impl ely_chat::VoiceWaveform
+impl ely_chat::WebResultCard
+impl ely_chat::WelcomeScreen
+impl gpui::element::IntoElement for ely_chat::AttachmentButton
+impl gpui::element::IntoElement for ely_chat::AttachmentChip
+impl gpui::element::IntoElement for ely_chat::AudioMessage
+impl gpui::element::IntoElement for ely_chat::BranchNavigator
+impl gpui::element::IntoElement for ely_chat::CapabilityCards
+impl gpui::element::IntoElement for ely_chat::ChatContainer
+impl gpui::element::IntoElement for ely_chat::CitationBadge
+impl gpui::element::IntoElement for ely_chat::CodeBlock
+impl gpui::element::IntoElement for ely_chat::ContextChips
+impl gpui::element::IntoElement for ely_chat::ConversationExport
+impl gpui::element::IntoElement for ely_chat::ConversationItem
+impl gpui::element::IntoElement for ely_chat::ConversationList
+impl gpui::element::IntoElement for ely_chat::CostEstimator
+impl gpui::element::IntoElement for ely_chat::DateSeparator
+impl gpui::element::IntoElement for ely_chat::DocumentChunkPreview
+impl gpui::element::IntoElement for ely_chat::DragDropOverlay
+impl gpui::element::IntoElement for ely_chat::ErrorMessage
+impl gpui::element::IntoElement for ely_chat::FeedbackForm
+impl gpui::element::IntoElement for ely_chat::FileMessage
+impl gpui::element::IntoElement for ely_chat::FollowUpSuggestions
+impl gpui::element::IntoElement for ely_chat::ImageGrid
+impl gpui::element::IntoElement for ely_chat::ImageMessage
+impl gpui::element::IntoElement for ely_chat::InputHint
+impl gpui::element::IntoElement for ely_chat::LinkPreviewCard
+impl gpui::element::IntoElement for ely_chat::MessageActions
+impl gpui::element::IntoElement for ely_chat::MessageAvatar
+impl gpui::element::IntoElement for ely_chat::MessageBubble
+impl gpui::element::IntoElement for ely_chat::MessageEditor
+impl gpui::element::IntoElement for ely_chat::MessageFooter
+impl gpui::element::IntoElement for ely_chat::MessageHeader
+impl gpui::element::IntoElement for ely_chat::MessageList
+impl gpui::element::IntoElement for ely_chat::ParameterPanel
+impl gpui::element::IntoElement for ely_chat::ProjectKnowledgePanel
+impl gpui::element::IntoElement for ely_chat::ProjectList
+impl gpui::element::IntoElement for ely_chat::PromptInput
+impl gpui::element::IntoElement for ely_chat::QuoteReply
+impl gpui::element::IntoElement for ely_chat::RateLimitNotice
+impl gpui::element::IntoElement for ely_chat::ScrollToBottomButton
+impl gpui::element::IntoElement for ely_chat::SearchProgress
+impl gpui::element::IntoElement for ely_chat::SendButton
+impl gpui::element::IntoElement for ely_chat::SharedConversationView
+impl gpui::element::IntoElement for ely_chat::SourceCard
+impl gpui::element::IntoElement for ely_chat::SourceList
+impl gpui::element::IntoElement for ely_chat::StreamingCursor
+impl gpui::element::IntoElement for ely_chat::StreamingMarkdown
+impl gpui::element::IntoElement for ely_chat::StreamingText
+impl gpui::element::IntoElement for ely_chat::SuggestionChips
+impl gpui::element::IntoElement for ely_chat::SystemPromptEditor
+impl gpui::element::IntoElement for ely_chat::ThinkingBlock
+impl gpui::element::IntoElement for ely_chat::ThinkingDuration
+impl gpui::element::IntoElement for ely_chat::ThinkingIndicator
+impl gpui::element::IntoElement for ely_chat::TokenCounter
+impl gpui::element::IntoElement for ely_chat::VideoMessage
+impl gpui::element::IntoElement for ely_chat::VoiceInputButton
+impl gpui::element::IntoElement for ely_chat::VoiceWaveform
+impl gpui::element::IntoElement for ely_chat::WebResultCard
+impl gpui::element::IntoElement for ely_chat::WelcomeScreen
+impl gpui::element::ParentElement for ely_chat::MessageBubble
+impl gpui::element::ParentElement for ely_chat::MessageFooter
+impl gpui::element::ParentElement for ely_chat::WelcomeScreen
+impl gpui::element::RenderOnce for ely_chat::AttachmentButton
+impl gpui::element::RenderOnce for ely_chat::AttachmentChip
+impl gpui::element::RenderOnce for ely_chat::AudioMessage
+impl gpui::element::RenderOnce for ely_chat::BranchNavigator
+impl gpui::element::RenderOnce for ely_chat::CapabilityCards
+impl gpui::element::RenderOnce for ely_chat::ChatContainer
+impl gpui::element::RenderOnce for ely_chat::CitationBadge
+impl gpui::element::RenderOnce for ely_chat::CodeBlock
+impl gpui::element::RenderOnce for ely_chat::ContextChips
+impl gpui::element::RenderOnce for ely_chat::ConversationExport
+impl gpui::element::RenderOnce for ely_chat::ConversationItem
+impl gpui::element::RenderOnce for ely_chat::ConversationList
+impl gpui::element::RenderOnce for ely_chat::CostEstimator
+impl gpui::element::RenderOnce for ely_chat::DateSeparator
+impl gpui::element::RenderOnce for ely_chat::DocumentChunkPreview
+impl gpui::element::RenderOnce for ely_chat::DragDropOverlay
+impl gpui::element::RenderOnce for ely_chat::ErrorMessage
+impl gpui::element::RenderOnce for ely_chat::FeedbackForm
+impl gpui::element::RenderOnce for ely_chat::FileMessage
+impl gpui::element::RenderOnce for ely_chat::FollowUpSuggestions
+impl gpui::element::RenderOnce for ely_chat::ImageGrid
+impl gpui::element::RenderOnce for ely_chat::ImageMessage
+impl gpui::element::RenderOnce for ely_chat::InputHint
+impl gpui::element::RenderOnce for ely_chat::LinkPreviewCard
+impl gpui::element::RenderOnce for ely_chat::MessageActions
+impl gpui::element::RenderOnce for ely_chat::MessageAvatar
+impl gpui::element::RenderOnce for ely_chat::MessageBubble
+impl gpui::element::RenderOnce for ely_chat::MessageEditor
+impl gpui::element::RenderOnce for ely_chat::MessageFooter
+impl gpui::element::RenderOnce for ely_chat::MessageHeader
+impl gpui::element::RenderOnce for ely_chat::MessageList
+impl gpui::element::RenderOnce for ely_chat::ParameterPanel
+impl gpui::element::RenderOnce for ely_chat::ProjectKnowledgePanel
+impl gpui::element::RenderOnce for ely_chat::ProjectList
+impl gpui::element::RenderOnce for ely_chat::PromptInput
+impl gpui::element::RenderOnce for ely_chat::QuoteReply
+impl gpui::element::RenderOnce for ely_chat::RateLimitNotice
+impl gpui::element::RenderOnce for ely_chat::ScrollToBottomButton
+impl gpui::element::RenderOnce for ely_chat::SearchProgress
+impl gpui::element::RenderOnce for ely_chat::SendButton
+impl gpui::element::RenderOnce for ely_chat::SharedConversationView
+impl gpui::element::RenderOnce for ely_chat::SourceCard
+impl gpui::element::RenderOnce for ely_chat::SourceList
+impl gpui::element::RenderOnce for ely_chat::StreamingCursor
+impl gpui::element::RenderOnce for ely_chat::StreamingMarkdown
+impl gpui::element::RenderOnce for ely_chat::StreamingText
+impl gpui::element::RenderOnce for ely_chat::SuggestionChips
+impl gpui::element::RenderOnce for ely_chat::SystemPromptEditor
+impl gpui::element::RenderOnce for ely_chat::ThinkingBlock
+impl gpui::element::RenderOnce for ely_chat::ThinkingDuration
+impl gpui::element::RenderOnce for ely_chat::ThinkingIndicator
+impl gpui::element::RenderOnce for ely_chat::TokenCounter
+impl gpui::element::RenderOnce for ely_chat::VideoMessage
+impl gpui::element::RenderOnce for ely_chat::VoiceInputButton
+impl gpui::element::RenderOnce for ely_chat::VoiceWaveform
+impl gpui::element::RenderOnce for ely_chat::WebResultCard
+impl gpui::element::RenderOnce for ely_chat::WelcomeScreen
+pub ely_chat::Attachment::bytes: u64
+pub ely_chat::Attachment::key: gpui_shared_string::SharedString
+pub ely_chat::Attachment::name: gpui_shared_string::SharedString
+pub ely_chat::Attachment::preview: core::option::Option<gpui_shared_string::SharedString>
+pub ely_chat::Attachment::progress: core::option::Option<f32>
+pub ely_chat::Conversation::at: jiff::timestamp::Timestamp
+pub ely_chat::Conversation::key: gpui_shared_string::SharedString
+pub ely_chat::Conversation::pinned: bool
+pub ely_chat::Conversation::title: gpui_shared_string::SharedString
+pub ely_chat::Parameter::hint: core::option::Option<gpui_shared_string::SharedString>
+pub ely_chat::Parameter::key: gpui_shared_string::SharedString
+pub ely_chat::Parameter::label: gpui_shared_string::SharedString
+pub ely_chat::Parameter::max: f64
+pub ely_chat::Parameter::min: f64
+pub ely_chat::Parameter::step: f64
+pub ely_chat::Parameter::value: f64
+pub ely_chat::Project::count: usize
+pub ely_chat::Project::key: gpui_shared_string::SharedString
+pub ely_chat::Project::name: gpui_shared_string::SharedString
+pub ely_chat::Role::Assistant
+pub ely_chat::Role::Error
+pub ely_chat::Role::System
+pub ely_chat::Role::User
+pub ely_chat::Source::site: gpui_shared_string::SharedString
+pub ely_chat::Source::snippet: core::option::Option<gpui_shared_string::SharedString>
+pub ely_chat::Source::title: gpui_shared_string::SharedString
+pub ely_chat::Source::url: gpui_shared_string::SharedString
+pub ely_chat::StepState::Done
+pub ely_chat::StepState::Failed
+pub ely_chat::StepState::Waiting
+pub ely_chat::StepState::Working
+pub enum ely_chat::Role
+pub enum ely_chat::StepState
+pub fn ely_chat::Attachment::clone(&self) -> Self
+pub fn ely_chat::Attachment::eq(&self, &Self) -> bool
+pub fn ely_chat::Attachment::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::AttachmentButton::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::AttachmentButton::into_element(self) -> Self::Element
+pub fn ely_chat::AttachmentButton::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(alloc::vec::Vec<std::path::PathBuf>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::AttachmentButton::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::AttachmentChip::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::AttachmentChip::into_element(self) -> Self::Element
+pub fn ely_chat::AttachmentChip::new(impl core::convert::Into<gpui::window::ElementId>, ely_chat::Attachment) -> Self
+pub fn ely_chat::AttachmentChip::on_remove(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::AttachmentChip::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::AudioMessage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::AudioMessage::into_element(self) -> Self::Element
+pub fn ely_chat::AudioMessage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::vec::Vec<f32>>, core::time::Duration) -> Self
+pub fn ely_chat::AudioMessage::on_seek(self, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::AudioMessage::on_toggle(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::AudioMessage::played(self, core::time::Duration, bool) -> Self
+pub fn ely_chat::AudioMessage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::BranchNavigator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::BranchNavigator::into_element(self) -> Self::Element
+pub fn ely_chat::BranchNavigator::new(impl core::convert::Into<gpui::window::ElementId>, usize, usize, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::BranchNavigator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::CapabilityCards::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::CapabilityCards::into_element(self) -> Self::Element
+pub fn ely_chat::CapabilityCards::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (ely_core::primitives::icon::names::IconName, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>)>, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::CapabilityCards::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ChatContainer::composer(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_chat::ChatContainer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ChatContainer::into_element(self) -> Self::Element
+pub fn ely_chat::ChatContainer::new(impl gpui::element::IntoElement) -> Self
+pub fn ely_chat::ChatContainer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::CitationBadge::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::CitationBadge::into_element(self) -> Self::Element
+pub fn ely_chat::CitationBadge::new(impl core::convert::Into<gpui::window::ElementId>, usize, ely_chat::Source) -> Self
+pub fn ely_chat::CitationBadge::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::CitationBadge::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::CodeBlock::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::CodeBlock::into_element(self) -> Self::Element
+pub fn ely_chat::CodeBlock::language(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::CodeBlock::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::CodeBlock::on_apply(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::CodeBlock::on_download(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::CodeBlock::on_run(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::CodeBlock::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ContextChips::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ContextChips::into_element(self) -> Self::Element
+pub fn ely_chat::ContextChips::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::primitives::icon::names::IconName)>) -> Self
+pub fn ely_chat::ContextChips::on_remove(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ContextChips::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::Conversation::clone(&self) -> Self
+pub fn ely_chat::Conversation::eq(&self, &Self) -> bool
+pub fn ely_chat::Conversation::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::ConversationExport::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ConversationExport::into_element(self) -> Self::Element
+pub fn ely_chat::ConversationExport::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ConversationExport::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ConversationExport::thinking(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ConversationItem::actions(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ConversationItem::active(self, bool) -> Self
+pub fn ely_chat::ConversationItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ConversationItem::into_element(self) -> Self::Element
+pub fn ely_chat::ConversationItem::new(impl core::convert::Into<gpui::window::ElementId>, ely_chat::Conversation) -> Self
+pub fn ely_chat::ConversationItem::on_select(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ConversationItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ConversationList::actions(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ConversationList::active(self, core::option::Option<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ConversationList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ConversationList::into_element(self) -> Self::Element
+pub fn ely_chat::ConversationList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_chat::Conversation>, jiff::civil::date::Date) -> Self
+pub fn ely_chat::ConversationList::query(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::ConversationList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::CostEstimator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::CostEstimator::into_element(self) -> Self::Element
+pub fn ely_chat::CostEstimator::new(impl core::convert::Into<gpui::window::ElementId>, usize, usize, (f64, f64)) -> Self
+pub fn ely_chat::CostEstimator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::DateSeparator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::DateSeparator::into_element(self) -> Self::Element
+pub fn ely_chat::DateSeparator::new(jiff::civil::date::Date, jiff::civil::date::Date) -> Self
+pub fn ely_chat::DateSeparator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::DocumentChunkPreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::DocumentChunkPreview::into_element(self) -> Self::Element
+pub fn ely_chat::DocumentChunkPreview::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, alloc::vec::Vec<core::ops::range::Range<usize>>) -> Self
+pub fn ely_chat::DocumentChunkPreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::DocumentChunkPreview::score(self, f32) -> Self
+pub fn ely_chat::DragDropOverlay::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::DragDropOverlay::into_element(self) -> Self::Element
+pub fn ely_chat::DragDropOverlay::new(impl core::ops::function::Fn(alloc::vec::Vec<std::path::PathBuf>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::DragDropOverlay::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ErrorMessage::detail(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::ErrorMessage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ErrorMessage::into_element(self) -> Self::Element
+pub fn ely_chat::ErrorMessage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::ErrorMessage::on_retry(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ErrorMessage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::FeedbackForm::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::FeedbackForm::into_element(self) -> Self::Element
+pub fn ely_chat::FeedbackForm::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::FeedbackForm::on_cancel(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::FeedbackForm::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::FileMessage::detail(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::FileMessage::download_tip(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::FileMessage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::FileMessage::into_element(self) -> Self::Element
+pub fn ely_chat::FileMessage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, u64) -> Self
+pub fn ely_chat::FileMessage::on_download(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::FileMessage::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::FileMessage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::FollowUpSuggestions::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::FollowUpSuggestions::into_element(self) -> Self::Element
+pub fn ely_chat::FollowUpSuggestions::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::FollowUpSuggestions::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ImageGrid::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ImageGrid::into_element(self) -> Self::Element
+pub fn ely_chat::ImageGrid::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_chat::ImageGrid::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ImageGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ImageMessage::caption(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::ImageMessage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ImageMessage::into_element(self) -> Self::Element
+pub fn ely_chat::ImageMessage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, f32, f32) -> Self
+pub fn ely_chat::ImageMessage::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ImageMessage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::InputHint::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::InputHint::into_element(self) -> Self::Element
+pub fn ely_chat::InputHint::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::LinkPreviewCard::description(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::LinkPreviewCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::LinkPreviewCard::into_element(self) -> Self::Element
+pub fn ely_chat::LinkPreviewCard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::LinkPreviewCard::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::LinkPreviewCard::picture(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::LinkPreviewCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageActions::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageActions::into_element(self) -> Self::Element
+pub fn ely_chat::MessageActions::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::MessageActions::on_edit(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::MessageActions::on_regenerate(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::MessageActions::rating(self, core::option::Option<bool>, impl core::ops::function::Fn(core::option::Option<bool>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::MessageActions::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageAvatar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageAvatar::into_element(self) -> Self::Element
+pub fn ely_chat::MessageAvatar::new(impl core::convert::Into<gpui::window::ElementId>, ely_chat::Role, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::MessageAvatar::picture(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::MessageAvatar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageBubble::avatar(self, ely_chat::MessageAvatar) -> Self
+pub fn ely_chat::MessageBubble::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_chat::MessageBubble::footer(self, ely_chat::MessageFooter) -> Self
+pub fn ely_chat::MessageBubble::header(self, ely_chat::MessageHeader) -> Self
+pub fn ely_chat::MessageBubble::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageBubble::into_element(self) -> Self::Element
+pub fn ely_chat::MessageBubble::new(ely_chat::Role) -> Self
+pub fn ely_chat::MessageBubble::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageEditor::into_element(self) -> Self::Element
+pub fn ely_chat::MessageEditor::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::MessageEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageFooter::default() -> Self
+pub fn ely_chat::MessageFooter::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_chat::MessageFooter::fact(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::MessageFooter::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageFooter::into_element(self) -> Self::Element
+pub fn ely_chat::MessageFooter::new() -> Self
+pub fn ely_chat::MessageFooter::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageHeader::at(self, jiff::timestamp::Timestamp) -> Self
+pub fn ely_chat::MessageHeader::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageHeader::into_element(self) -> Self::Element
+pub fn ely_chat::MessageHeader::model(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::MessageHeader::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::MessageHeader::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::MessageList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::MessageList::into_element(self) -> Self::Element
+pub fn ely_chat::MessageList::new(impl core::convert::Into<gpui::window::ElementId>, usize, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) -> gpui::element::AnyElement + 'static) -> Self
+pub fn ely_chat::MessageList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::Parameter::clone(&self) -> Self
+pub fn ely_chat::Parameter::eq(&self, &Self) -> bool
+pub fn ely_chat::Parameter::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::ParameterPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ParameterPanel::into_element(self) -> Self::Element
+pub fn ely_chat::ParameterPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_chat::Parameter>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, f64, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ParameterPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::Project::clone(&self) -> Self
+pub fn ely_chat::Project::eq(&self, &Self) -> bool
+pub fn ely_chat::Project::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::ProjectKnowledgePanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ProjectKnowledgePanel::into_element(self) -> Self::Element
+pub fn ely_chat::ProjectKnowledgePanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, u64)>, u64) -> Self
+pub fn ely_chat::ProjectKnowledgePanel::on_add(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ProjectKnowledgePanel::on_remove(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ProjectKnowledgePanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ProjectList::active(self, core::option::Option<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ProjectList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ProjectList::into_element(self) -> Self::Element
+pub fn ely_chat::ProjectList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_chat::Project>) -> Self
+pub fn ely_chat::ProjectList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::PromptInput::above(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_chat::PromptInput::busy(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::PromptInput::commands(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::forms::options::Choice>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::PromptInput::context(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::forms::options::Choice>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::PromptInput::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::PromptInput::into_element(self) -> Self::Element
+pub fn ely_chat::PromptInput::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::PromptInput::on_drop(self, impl core::ops::function::Fn(alloc::vec::Vec<std::path::PathBuf>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::PromptInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::PromptInput::tool(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_chat::QuoteReply::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::QuoteReply::into_element(self) -> Self::Element
+pub fn ely_chat::QuoteReply::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::QuoteReply::on_remove(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::QuoteReply::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::RateLimitNotice::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::RateLimitNotice::into_element(self) -> Self::Element
+pub fn ely_chat::RateLimitNotice::new(impl core::convert::Into<gpui::window::ElementId>, std::time::Instant) -> Self
+pub fn ely_chat::RateLimitNotice::on_done(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::RateLimitNotice::on_upgrade(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::RateLimitNotice::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::Role::clone(&self) -> Self
+pub fn ely_chat::Role::eq(&self, &Self) -> bool
+pub fn ely_chat::Role::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::ScrollToBottomButton::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ScrollToBottomButton::into_element(self) -> Self::Element
+pub fn ely_chat::ScrollToBottomButton::new(impl core::convert::Into<gpui::window::ElementId>, usize, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::ScrollToBottomButton::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::SearchProgress::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SearchProgress::into_element(self) -> Self::Element
+pub fn ely_chat::SearchProgress::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, ely_chat::StepState)>) -> Self
+pub fn ely_chat::SearchProgress::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::SendButton::busy(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SendButton::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SendButton::into_element(self) -> Self::Element
+pub fn ely_chat::SendButton::new(impl core::convert::Into<gpui::window::ElementId>, bool, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SendButton::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::SharedConversationView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SharedConversationView::into_element(self) -> Self::Element
+pub fn ely_chat::SharedConversationView::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::timestamp::Timestamp, impl gpui::element::IntoElement) -> Self
+pub fn ely_chat::SharedConversationView::on_continue(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SharedConversationView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::Source::clone(&self) -> Self
+pub fn ely_chat::Source::eq(&self, &Self) -> bool
+pub fn ely_chat::Source::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::SourceCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SourceCard::into_element(self) -> Self::Element
+pub fn ely_chat::SourceCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_chat::Source) -> Self
+pub fn ely_chat::SourceCard::number(self, usize) -> Self
+pub fn ely_chat::SourceCard::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SourceCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::SourceList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SourceList::into_element(self) -> Self::Element
+pub fn ely_chat::SourceList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_chat::Source>) -> Self
+pub fn ely_chat::SourceList::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SourceList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::StepState::clone(&self) -> Self
+pub fn ely_chat::StepState::eq(&self, &Self) -> bool
+pub fn ely_chat::StepState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_chat::StreamingCursor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::StreamingCursor::into_element(self) -> Self::Element
+pub fn ely_chat::StreamingCursor::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_chat::StreamingCursor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::StreamingMarkdown::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::StreamingMarkdown::into_element(self) -> Self::Element
+pub fn ely_chat::StreamingMarkdown::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, bool) -> Self
+pub fn ely_chat::StreamingMarkdown::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::StreamingText::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::StreamingText::into_element(self) -> Self::Element
+pub fn ely_chat::StreamingText::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, bool) -> Self
+pub fn ely_chat::StreamingText::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::SuggestionChips::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SuggestionChips::into_element(self) -> Self::Element
+pub fn ely_chat::SuggestionChips::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::primitives::icon::names::IconName)>, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SuggestionChips::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::SystemPromptEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::SystemPromptEditor::into_element(self) -> Self::Element
+pub fn ely_chat::SystemPromptEditor::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, usize, usize) -> Self
+pub fn ely_chat::SystemPromptEditor::on_reset(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::SystemPromptEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ThinkingBlock::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ThinkingBlock::into_element(self) -> Self::Element
+pub fn ely_chat::ThinkingBlock::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, bool, core::time::Duration) -> Self
+pub fn ely_chat::ThinkingBlock::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ThinkingDuration::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ThinkingDuration::into_element(self) -> Self::Element
+pub fn ely_chat::ThinkingDuration::new(core::time::Duration) -> Self
+pub fn ely_chat::ThinkingDuration::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::ThinkingIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::ThinkingIndicator::into_element(self) -> Self::Element
+pub fn ely_chat::ThinkingIndicator::label(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::ThinkingIndicator::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_chat::ThinkingIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::TokenCounter::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::TokenCounter::into_element(self) -> Self::Element
+pub fn ely_chat::TokenCounter::limit(self, usize) -> Self
+pub fn ely_chat::TokenCounter::new(usize) -> Self
+pub fn ely_chat::TokenCounter::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::VideoMessage::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::VideoMessage::into_element(self) -> Self::Element
+pub fn ely_chat::VideoMessage::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, f32, f32, core::time::Duration) -> Self
+pub fn ely_chat::VideoMessage::on_toggle(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::VideoMessage::played(self, core::time::Duration, bool) -> Self
+pub fn ely_chat::VideoMessage::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::VoiceInputButton::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::VoiceInputButton::into_element(self) -> Self::Element
+pub fn ely_chat::VoiceInputButton::new(impl core::convert::Into<gpui::window::ElementId>, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::VoiceInputButton::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::VoiceWaveform::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::VoiceWaveform::into_element(self) -> Self::Element
+pub fn ely_chat::VoiceWaveform::new(impl core::convert::Into<gpui::window::ElementId>, std::time::Instant, impl core::convert::Into<alloc::vec::Vec<f32>>) -> Self
+pub fn ely_chat::VoiceWaveform::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::WebResultCard::date(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::WebResultCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::WebResultCard::into_element(self) -> Self::Element
+pub fn ely_chat::WebResultCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_chat::Source) -> Self
+pub fn ely_chat::WebResultCard::on_open(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_chat::WebResultCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::WelcomeScreen::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_chat::WelcomeScreen::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_chat::WelcomeScreen::into_element(self) -> Self::Element
+pub fn ely_chat::WelcomeScreen::name(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_chat::WelcomeScreen::new(impl core::convert::Into<gpui::window::ElementId>, u8) -> Self
+pub fn ely_chat::WelcomeScreen::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_chat::continue_button(impl core::convert::Into<gpui::window::ElementId>) -> ely_core::buttons::button::Button
+pub fn ely_chat::new_chat_button(impl core::convert::Into<gpui::window::ElementId>) -> ely_core::buttons::button::Button
+pub fn ely_chat::regenerate_button(impl core::convert::Into<gpui::window::ElementId>) -> ely_core::buttons::button::Button
+pub fn ely_chat::stop_button(impl core::convert::Into<gpui::window::ElementId>) -> ely_core::buttons::button::Button
+pub mod ely_chat
+pub struct ely_chat::Attachment
+pub struct ely_chat::AttachmentButton
+pub struct ely_chat::AttachmentChip
+pub struct ely_chat::AudioMessage
+pub struct ely_chat::BranchNavigator
+pub struct ely_chat::CapabilityCards
+pub struct ely_chat::ChatContainer
+pub struct ely_chat::CitationBadge
+pub struct ely_chat::CodeBlock
+pub struct ely_chat::ContextChips
+pub struct ely_chat::Conversation
+pub struct ely_chat::ConversationExport
+pub struct ely_chat::ConversationItem
+pub struct ely_chat::ConversationList
+pub struct ely_chat::CostEstimator
+pub struct ely_chat::DateSeparator
+pub struct ely_chat::DocumentChunkPreview
+pub struct ely_chat::DragDropOverlay
+pub struct ely_chat::ErrorMessage
+pub struct ely_chat::FeedbackForm
+pub struct ely_chat::FileMessage
+pub struct ely_chat::FollowUpSuggestions
+pub struct ely_chat::ImageGrid
+pub struct ely_chat::ImageMessage
+pub struct ely_chat::InputHint
+pub struct ely_chat::LinkPreviewCard
+pub struct ely_chat::MessageActions
+pub struct ely_chat::MessageAvatar
+pub struct ely_chat::MessageBubble
+pub struct ely_chat::MessageEditor
+pub struct ely_chat::MessageFooter
+pub struct ely_chat::MessageHeader
+pub struct ely_chat::MessageList
+pub struct ely_chat::Parameter
+pub struct ely_chat::ParameterPanel
+pub struct ely_chat::Project
+pub struct ely_chat::ProjectKnowledgePanel
+pub struct ely_chat::ProjectList
+pub struct ely_chat::PromptInput
+pub struct ely_chat::QuoteReply
+pub struct ely_chat::RateLimitNotice
+pub struct ely_chat::ScrollToBottomButton
+pub struct ely_chat::SearchProgress
+pub struct ely_chat::SendButton
+pub struct ely_chat::SharedConversationView
+pub struct ely_chat::Source
+pub struct ely_chat::SourceCard
+pub struct ely_chat::SourceList
+pub struct ely_chat::StreamingCursor
+pub struct ely_chat::StreamingMarkdown
+pub struct ely_chat::StreamingText
+pub struct ely_chat::SuggestionChips
+pub struct ely_chat::SystemPromptEditor
+pub struct ely_chat::ThinkingBlock
+pub struct ely_chat::ThinkingDuration
+pub struct ely_chat::ThinkingIndicator
+pub struct ely_chat::TokenCounter
+pub struct ely_chat::VideoMessage
+pub struct ely_chat::VoiceInputButton
+pub struct ely_chat::VoiceWaveform
+pub struct ely_chat::WebResultCard
+pub struct ely_chat::WelcomeScreen
+pub type ely_chat::AttachmentButton::Element = gpui::view::ViewElement<ely_chat::AttachmentButton>
+pub type ely_chat::AttachmentChip::Element = gpui::view::ViewElement<ely_chat::AttachmentChip>
+pub type ely_chat::AudioMessage::Element = gpui::view::ViewElement<ely_chat::AudioMessage>
+pub type ely_chat::BranchNavigator::Element = gpui::view::ViewElement<ely_chat::BranchNavigator>
+pub type ely_chat::CapabilityCards::Element = gpui::view::ViewElement<ely_chat::CapabilityCards>
+pub type ely_chat::ChatContainer::Element = gpui::view::ViewElement<ely_chat::ChatContainer>
+pub type ely_chat::CitationBadge::Element = gpui::view::ViewElement<ely_chat::CitationBadge>
+pub type ely_chat::CodeBlock::Element = gpui::view::ViewElement<ely_chat::CodeBlock>
+pub type ely_chat::ContextChips::Element = gpui::view::ViewElement<ely_chat::ContextChips>
+pub type ely_chat::ConversationExport::Element = gpui::view::ViewElement<ely_chat::ConversationExport>
+pub type ely_chat::ConversationItem::Element = gpui::view::ViewElement<ely_chat::ConversationItem>
+pub type ely_chat::ConversationList::Element = gpui::view::ViewElement<ely_chat::ConversationList>
+pub type ely_chat::CostEstimator::Element = gpui::view::ViewElement<ely_chat::CostEstimator>
+pub type ely_chat::DateSeparator::Element = gpui::view::ViewElement<ely_chat::DateSeparator>
+pub type ely_chat::DocumentChunkPreview::Element = gpui::view::ViewElement<ely_chat::DocumentChunkPreview>
+pub type ely_chat::DragDropOverlay::Element = gpui::view::ViewElement<ely_chat::DragDropOverlay>
+pub type ely_chat::ErrorMessage::Element = gpui::view::ViewElement<ely_chat::ErrorMessage>
+pub type ely_chat::FeedbackForm::Element = gpui::view::ViewElement<ely_chat::FeedbackForm>
+pub type ely_chat::FileMessage::Element = gpui::view::ViewElement<ely_chat::FileMessage>
+pub type ely_chat::FollowUpSuggestions::Element = gpui::view::ViewElement<ely_chat::FollowUpSuggestions>
+pub type ely_chat::ImageGrid::Element = gpui::view::ViewElement<ely_chat::ImageGrid>
+pub type ely_chat::ImageMessage::Element = gpui::view::ViewElement<ely_chat::ImageMessage>
+pub type ely_chat::InputHint::Element = gpui::view::ViewElement<ely_chat::InputHint>
+pub type ely_chat::LinkPreviewCard::Element = gpui::view::ViewElement<ely_chat::LinkPreviewCard>
+pub type ely_chat::MessageActions::Element = gpui::view::ViewElement<ely_chat::MessageActions>
+pub type ely_chat::MessageAvatar::Element = gpui::view::ViewElement<ely_chat::MessageAvatar>
+pub type ely_chat::MessageBubble::Element = gpui::view::ViewElement<ely_chat::MessageBubble>
+pub type ely_chat::MessageEditor::Element = gpui::view::ViewElement<ely_chat::MessageEditor>
+pub type ely_chat::MessageFooter::Element = gpui::view::ViewElement<ely_chat::MessageFooter>
+pub type ely_chat::MessageHeader::Element = gpui::view::ViewElement<ely_chat::MessageHeader>
+pub type ely_chat::MessageList::Element = gpui::view::ViewElement<ely_chat::MessageList>
+pub type ely_chat::ParameterPanel::Element = gpui::view::ViewElement<ely_chat::ParameterPanel>
+pub type ely_chat::ProjectKnowledgePanel::Element = gpui::view::ViewElement<ely_chat::ProjectKnowledgePanel>
+pub type ely_chat::ProjectList::Element = gpui::view::ViewElement<ely_chat::ProjectList>
+pub type ely_chat::PromptInput::Element = gpui::view::ViewElement<ely_chat::PromptInput>
+pub type ely_chat::QuoteReply::Element = gpui::view::ViewElement<ely_chat::QuoteReply>
+pub type ely_chat::RateLimitNotice::Element = gpui::view::ViewElement<ely_chat::RateLimitNotice>
+pub type ely_chat::ScrollToBottomButton::Element = gpui::view::ViewElement<ely_chat::ScrollToBottomButton>
+pub type ely_chat::SearchProgress::Element = gpui::view::ViewElement<ely_chat::SearchProgress>
+pub type ely_chat::SendButton::Element = gpui::view::ViewElement<ely_chat::SendButton>
+pub type ely_chat::SharedConversationView::Element = gpui::view::ViewElement<ely_chat::SharedConversationView>
+pub type ely_chat::SourceCard::Element = gpui::view::ViewElement<ely_chat::SourceCard>
+pub type ely_chat::SourceList::Element = gpui::view::ViewElement<ely_chat::SourceList>
+pub type ely_chat::StreamingCursor::Element = gpui::view::ViewElement<ely_chat::StreamingCursor>
+pub type ely_chat::StreamingMarkdown::Element = gpui::view::ViewElement<ely_chat::StreamingMarkdown>
+pub type ely_chat::StreamingText::Element = gpui::view::ViewElement<ely_chat::StreamingText>
+pub type ely_chat::SuggestionChips::Element = gpui::view::ViewElement<ely_chat::SuggestionChips>
+pub type ely_chat::SystemPromptEditor::Element = gpui::view::ViewElement<ely_chat::SystemPromptEditor>
+pub type ely_chat::ThinkingBlock::Element = gpui::view::ViewElement<ely_chat::ThinkingBlock>
+pub type ely_chat::ThinkingDuration::Element = gpui::view::ViewElement<ely_chat::ThinkingDuration>
+pub type ely_chat::ThinkingIndicator::Element = gpui::view::ViewElement<ely_chat::ThinkingIndicator>
+pub type ely_chat::TokenCounter::Element = gpui::view::ViewElement<ely_chat::TokenCounter>
+pub type ely_chat::VideoMessage::Element = gpui::view::ViewElement<ely_chat::VideoMessage>
+pub type ely_chat::VoiceInputButton::Element = gpui::view::ViewElement<ely_chat::VoiceInputButton>
+pub type ely_chat::VoiceWaveform::Element = gpui::view::ViewElement<ely_chat::VoiceWaveform>
+pub type ely_chat::WebResultCard::Element = gpui::view::ViewElement<ely_chat::WebResultCard>
+pub type ely_chat::WelcomeScreen::Element = gpui::view::ViewElement<ely_chat::WelcomeScreen>
+pub use ely_chat::Attachment = ely_chat::attach::Attachment
+pub use ely_chat::AttachmentButton = ely_chat::composer::AttachmentButton
+pub use ely_chat::AttachmentChip = ely_chat::attach::AttachmentChip
+pub use ely_chat::AudioMessage = ely_chat::play::AudioMessage
+pub use ely_chat::BranchNavigator = ely_chat::actions::BranchNavigator
+pub use ely_chat::CapabilityCards = ely_chat::welcome::CapabilityCards
+pub use ely_chat::ChatContainer = ely_chat::message::ChatContainer
+pub use ely_chat::CitationBadge = ely_chat::cite::CitationBadge
+pub use ely_chat::CodeBlock = ely_chat::code::CodeBlock
+pub use ely_chat::ContextChips = ely_chat::attach::ContextChips
+pub use ely_chat::Conversation = ely_chat::conversations::Conversation
+pub use ely_chat::ConversationExport = ely_chat::projects::ConversationExport
+pub use ely_chat::ConversationItem = ely_chat::conversations::ConversationItem
+pub use ely_chat::ConversationList = ely_chat::conversations::ConversationList
+pub use ely_chat::CostEstimator = ely_chat::params::CostEstimator
+pub use ely_chat::DateSeparator = ely_chat::list::DateSeparator
+pub use ely_chat::DocumentChunkPreview = ely_chat::search::DocumentChunkPreview
+pub use ely_chat::DragDropOverlay = ely_chat::composer::DragDropOverlay
+pub use ely_chat::ErrorMessage = ely_chat::status::ErrorMessage
+pub use ely_chat::FeedbackForm = ely_chat::status::FeedbackForm
+pub use ely_chat::FileMessage = ely_chat::media::FileMessage
+pub use ely_chat::FollowUpSuggestions = ely_chat::welcome::FollowUpSuggestions
+pub use ely_chat::ImageGrid = ely_chat::media::ImageGrid
+pub use ely_chat::ImageMessage = ely_chat::media::ImageMessage
+pub use ely_chat::InputHint = ely_chat::composer::InputHint
+pub use ely_chat::LinkPreviewCard = ely_chat::media::LinkPreviewCard
+pub use ely_chat::MessageActions = ely_chat::actions::MessageActions
+pub use ely_chat::MessageAvatar = ely_chat::message::MessageAvatar
+pub use ely_chat::MessageBubble = ely_chat::message::MessageBubble
+pub use ely_chat::MessageEditor = ely_chat::actions::MessageEditor
+pub use ely_chat::MessageFooter = ely_chat::message::MessageFooter
+pub use ely_chat::MessageHeader = ely_chat::message::MessageHeader
+pub use ely_chat::MessageList = ely_chat::list::MessageList
+pub use ely_chat::Parameter = ely_chat::params::Parameter
+pub use ely_chat::ParameterPanel = ely_chat::params::ParameterPanel
+pub use ely_chat::Project = ely_chat::projects::Project
+pub use ely_chat::ProjectKnowledgePanel = ely_chat::projects::ProjectKnowledgePanel
+pub use ely_chat::ProjectList = ely_chat::projects::ProjectList
+pub use ely_chat::PromptInput = ely_chat::composer::PromptInput
+pub use ely_chat::QuoteReply = ely_chat::actions::QuoteReply
+pub use ely_chat::RateLimitNotice = ely_chat::status::RateLimitNotice
+pub use ely_chat::Role = ely_chat::message::Role
+pub use ely_chat::ScrollToBottomButton = ely_chat::list::ScrollToBottomButton
+pub use ely_chat::SearchProgress = ely_chat::search::SearchProgress
+pub use ely_chat::SendButton = ely_chat::composer::SendButton
+pub use ely_chat::SharedConversationView = ely_chat::projects::SharedConversationView
+pub use ely_chat::Source = ely_chat::cite::Source
+pub use ely_chat::SourceCard = ely_chat::cite::SourceCard
+pub use ely_chat::SourceList = ely_chat::cite::SourceList
+pub use ely_chat::StepState = ely_chat::search::StepState
+pub use ely_chat::StreamingCursor = ely_chat::stream::StreamingCursor
+pub use ely_chat::StreamingMarkdown = ely_chat::stream::StreamingMarkdown
+pub use ely_chat::StreamingText = ely_chat::stream::StreamingText
+pub use ely_chat::SuggestionChips = ely_chat::welcome::SuggestionChips
+pub use ely_chat::SystemPromptEditor = ely_chat::params::SystemPromptEditor
+pub use ely_chat::ThinkingBlock = ely_chat::status::ThinkingBlock
+pub use ely_chat::ThinkingDuration = ely_chat::status::ThinkingDuration
+pub use ely_chat::ThinkingIndicator = ely_chat::status::ThinkingIndicator
+pub use ely_chat::TokenCounter = ely_chat::params::TokenCounter
+pub use ely_chat::VideoMessage = ely_chat::play::VideoMessage
+pub use ely_chat::VoiceInputButton = ely_chat::voice::VoiceInputButton
+pub use ely_chat::VoiceWaveform = ely_chat::voice::VoiceWaveform
+pub use ely_chat::WebResultCard = ely_chat::search::WebResultCard
+pub use ely_chat::WelcomeScreen = ely_chat::welcome::WelcomeScreen
+pub use ely_chat::continue_button = ely_chat::actions::continue_button
+pub use ely_chat::new_chat_button = ely_chat::conversations::new_chat_button
+pub use ely_chat::regenerate_button = ely_chat::actions::regenerate_button
+pub use ely_chat::stop_button = ely_chat::actions::stop_button

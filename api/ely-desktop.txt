@@ -1,0 +1,44 @@
+impl core::clone::Clone for ely_desktop::OmarchyTheme
+impl core::clone::Clone for ely_desktop::TrayItem
+impl core::cmp::PartialEq for ely_desktop::OmarchyTheme
+impl core::fmt::Debug for ely_desktop::OmarchyTheme
+impl core::fmt::Debug for ely_desktop::TrayItem
+impl core::marker::StructuralPartialEq for ely_desktop::OmarchyTheme
+impl ely_desktop::TrayIcon
+pub ely_desktop::OmarchyTheme::colors: ely_core::theme::palette::Palette
+pub ely_desktop::OmarchyTheme::missing: alloc::vec::Vec<&'static str>
+pub ely_desktop::OmarchyTheme::mode: ely_core::theme::Mode
+pub ely_desktop::OmarchyTheme::name: core::option::Option<alloc::string::String>
+pub ely_desktop::TrayItem::Action(gpui_shared_string::SharedString)
+pub ely_desktop::TrayItem::Separator
+pub ely_desktop::TrayLook::name: gpui_shared_string::SharedString
+pub ely_desktop::TrayLook::png: &'static [u8]
+pub ely_desktop::TrayLook::symbol: &'static str
+pub enum ely_desktop::TrayItem
+pub fn ely_desktop::OmarchyTheme::clone(&self) -> Self
+pub fn ely_desktop::OmarchyTheme::eq(&self, &Self) -> bool
+pub fn ely_desktop::OmarchyTheme::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_desktop::TrayIcon::new(ely_desktop::TrayLook, alloc::vec::Vec<ely_desktop::TrayItem>, impl core::ops::function::Fn(usize, &mut gpui::app::App) + 'static, &mut gpui::app::App) -> anyhow::Result<Self>
+pub fn ely_desktop::TrayIcon::pick(&self, usize)
+pub fn ely_desktop::TrayItem::clone(&self) -> Self
+pub fn ely_desktop::TrayItem::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_desktop::dock_badge() -> anyhow::Result<core::option::Option<alloc::string::String>>
+pub fn ely_desktop::follow_omarchy(std::path::PathBuf, &mut gpui::app::App) -> anyhow::Result<()>
+pub fn ely_desktop::omarchy_current_dir() -> core::option::Option<std::path::PathBuf>
+pub fn ely_desktop::read_omarchy_theme(&std::path::Path) -> anyhow::Result<core::option::Option<ely_desktop::OmarchyTheme>>
+pub fn ely_desktop::set_dock_badge(core::option::Option<&str>) -> anyhow::Result<()>
+pub fn ely_desktop::stop_omarchy(&mut gpui::app::App)
+pub mod ely_desktop
+pub struct ely_desktop::OmarchyTheme
+pub struct ely_desktop::TrayIcon
+pub struct ely_desktop::TrayLook
+pub use ely_desktop::OmarchyTheme = ely_desktop::omarchy::OmarchyTheme
+pub use ely_desktop::TrayIcon = ely_desktop::native::TrayIcon
+pub use ely_desktop::TrayItem = ely_desktop::native::TrayItem
+pub use ely_desktop::TrayLook = ely_desktop::native::TrayLook
+pub use ely_desktop::dock_badge = ely_desktop::native::dock_badge
+pub use ely_desktop::follow_omarchy = ely_desktop::omarchy::follow::follow_omarchy
+pub use ely_desktop::omarchy_current_dir = ely_desktop::omarchy::omarchy_current_dir
+pub use ely_desktop::read_omarchy_theme = ely_desktop::omarchy::read_omarchy_theme
+pub use ely_desktop::set_dock_badge = ely_desktop::native::set_dock_badge
+pub use ely_desktop::stop_omarchy = ely_desktop::omarchy::follow::stop_omarchy

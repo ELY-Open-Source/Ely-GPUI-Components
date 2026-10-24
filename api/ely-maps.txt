@@ -1,0 +1,227 @@
+impl core::clone::Clone for ely_maps::ChoroplethKey
+impl core::clone::Clone for ely_maps::ChoroplethLayer
+impl core::clone::Clone for ely_maps::CoordFormat
+impl core::clone::Clone for ely_maps::Feature
+impl core::clone::Clone for ely_maps::GeoHeatmap
+impl core::clone::Clone for ely_maps::GeoJsonLayer
+impl core::clone::Clone for ely_maps::Geometry
+impl core::clone::Clone for ely_maps::LatLon
+impl core::clone::Clone for ely_maps::MapLayer
+impl core::clone::Clone for ely_maps::MapMarker
+impl core::clone::Clone for ely_maps::MapViewport
+impl core::clone::Clone for ely_maps::RouteLine
+impl core::clone::Clone for ely_maps::Tile
+impl core::cmp::Eq for ely_maps::CoordFormat
+impl core::cmp::Eq for ely_maps::Tile
+impl core::cmp::PartialEq for ely_maps::ChoroplethKey
+impl core::cmp::PartialEq for ely_maps::CoordFormat
+impl core::cmp::PartialEq for ely_maps::Feature
+impl core::cmp::PartialEq for ely_maps::Geometry
+impl core::cmp::PartialEq for ely_maps::LatLon
+impl core::cmp::PartialEq for ely_maps::MapViewport
+impl core::cmp::PartialEq for ely_maps::Tile
+impl core::convert::From<ely_maps::ChoroplethLayer> for ely_maps::MapLayer
+impl core::convert::From<ely_maps::GeoHeatmap> for ely_maps::MapLayer
+impl core::convert::From<ely_maps::GeoJsonLayer> for ely_maps::MapLayer
+impl core::convert::From<ely_maps::RouteLine> for ely_maps::MapLayer
+impl core::default::Default for ely_maps::CoordFormat
+impl core::fmt::Debug for ely_maps::ChoroplethKey
+impl core::fmt::Debug for ely_maps::CoordFormat
+impl core::fmt::Debug for ely_maps::Feature
+impl core::fmt::Debug for ely_maps::Geometry
+impl core::fmt::Debug for ely_maps::LatLon
+impl core::fmt::Debug for ely_maps::MapViewport
+impl core::fmt::Debug for ely_maps::Tile
+impl core::hash::Hash for ely_maps::Tile
+impl core::marker::Copy for ely_maps::CoordFormat
+impl core::marker::Copy for ely_maps::LatLon
+impl core::marker::Copy for ely_maps::MapViewport
+impl core::marker::Copy for ely_maps::Tile
+impl core::marker::StructuralPartialEq for ely_maps::ChoroplethKey
+impl core::marker::StructuralPartialEq for ely_maps::CoordFormat
+impl core::marker::StructuralPartialEq for ely_maps::Feature
+impl core::marker::StructuralPartialEq for ely_maps::Geometry
+impl core::marker::StructuralPartialEq for ely_maps::LatLon
+impl core::marker::StructuralPartialEq for ely_maps::MapViewport
+impl core::marker::StructuralPartialEq for ely_maps::Tile
+impl ely_maps::ChoroplethLayer
+impl ely_maps::ChoroplethMap
+impl ely_maps::CoordinateDisplay
+impl ely_maps::GeoHeatmap
+impl ely_maps::GeoJsonLayer
+impl ely_maps::LatLon
+impl ely_maps::LocationPicker
+impl ely_maps::MapMarker
+impl ely_maps::MapPopup
+impl ely_maps::MapView
+impl ely_maps::MapViewport
+impl ely_maps::RouteLine
+impl ely_maps::WorldMap
+impl gpui::element::IntoElement for ely_maps::ChoroplethMap
+impl gpui::element::IntoElement for ely_maps::CoordinateDisplay
+impl gpui::element::IntoElement for ely_maps::LocationPicker
+impl gpui::element::IntoElement for ely_maps::MapView
+impl gpui::element::IntoElement for ely_maps::WorldMap
+impl gpui::element::ParentElement for ely_maps::MapPopup
+impl gpui::element::RenderOnce for ely_maps::ChoroplethMap
+impl gpui::element::RenderOnce for ely_maps::CoordinateDisplay
+impl gpui::element::RenderOnce for ely_maps::LocationPicker
+impl gpui::element::RenderOnce for ely_maps::MapView
+impl gpui::element::RenderOnce for ely_maps::WorldMap
+pub const ely_maps::MAX_LAT: f64
+pub const ely_maps::MapViewport::ZOOMS: (f64, f64)
+pub ely_maps::ChoroplethKey::Id
+pub ely_maps::ChoroplethKey::Property(gpui_shared_string::SharedString)
+pub ely_maps::CoordFormat::Decimal
+pub ely_maps::CoordFormat::Dms
+pub ely_maps::Feature::geometry: core::option::Option<ely_maps::Geometry>
+pub ely_maps::Feature::id: core::option::Option<alloc::string::String>
+pub ely_maps::Feature::properties: serde_json::map::Map<alloc::string::String, serde_json::value::Value>
+pub ely_maps::Geometry::Collection(alloc::vec::Vec<ely_maps::Geometry>)
+pub ely_maps::Geometry::LineString(alloc::vec::Vec<ely_maps::LatLon>)
+pub ely_maps::Geometry::MultiLineString(alloc::vec::Vec<alloc::vec::Vec<ely_maps::LatLon>>)
+pub ely_maps::Geometry::MultiPoint(alloc::vec::Vec<ely_maps::LatLon>)
+pub ely_maps::Geometry::MultiPolygon(alloc::vec::Vec<alloc::vec::Vec<alloc::vec::Vec<ely_maps::LatLon>>>)
+pub ely_maps::Geometry::Point(ely_maps::LatLon)
+pub ely_maps::Geometry::Polygon(alloc::vec::Vec<alloc::vec::Vec<ely_maps::LatLon>>)
+pub ely_maps::LatLon::lat: f64
+pub ely_maps::LatLon::lon: f64
+pub ely_maps::MapLayer::Choropleth(ely_maps::ChoroplethLayer)
+pub ely_maps::MapLayer::Features(ely_maps::GeoJsonLayer)
+pub ely_maps::MapLayer::Heat(ely_maps::GeoHeatmap)
+pub ely_maps::MapLayer::Route(ely_maps::RouteLine)
+pub ely_maps::MapViewport::center: ely_maps::LatLon
+pub ely_maps::MapViewport::zoom: f64
+pub ely_maps::Tile::x: u32
+pub ely_maps::Tile::y: u32
+pub ely_maps::Tile::z: u8
+pub enum ely_maps::ChoroplethKey
+pub enum ely_maps::CoordFormat
+pub enum ely_maps::Geometry
+pub enum ely_maps::MapLayer
+pub fn ely_maps::ChoroplethKey::clone(&self) -> Self
+pub fn ely_maps::ChoroplethKey::eq(&self, &Self) -> bool
+pub fn ely_maps::ChoroplethKey::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::ChoroplethLayer::clone(&self) -> Self
+pub fn ely_maps::ChoroplethLayer::hue(self, usize) -> Self
+pub fn ely_maps::ChoroplethLayer::key_by(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_maps::ChoroplethLayer::new(impl core::convert::Into<alloc::rcs::arc::Arc<[ely_maps::Feature]>>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<alloc::string::String>, f64)>) -> Self
+pub fn ely_maps::ChoroplethMap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_maps::ChoroplethMap::into_element(self) -> Self::Element
+pub fn ely_maps::ChoroplethMap::new(impl core::convert::Into<gpui::window::ElementId>, ely_maps::MapView, ely_maps::ChoroplethLayer) -> Self
+pub fn ely_maps::ChoroplethMap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_maps::CoordFormat::clone(&self) -> Self
+pub fn ely_maps::CoordFormat::default() -> Self
+pub fn ely_maps::CoordFormat::eq(&self, &Self) -> bool
+pub fn ely_maps::CoordFormat::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::CoordinateDisplay::format(self, ely_maps::CoordFormat) -> Self
+pub fn ely_maps::CoordinateDisplay::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_maps::CoordinateDisplay::into_element(self) -> Self::Element
+pub fn ely_maps::CoordinateDisplay::new(impl core::convert::Into<gpui::window::ElementId>, ely_maps::LatLon) -> Self
+pub fn ely_maps::CoordinateDisplay::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_maps::Feature::clone(&self) -> Self
+pub fn ely_maps::Feature::eq(&self, &Self) -> bool
+pub fn ely_maps::Feature::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::GeoHeatmap::clone(&self) -> Self
+pub fn ely_maps::GeoHeatmap::hue(self, usize) -> Self
+pub fn ely_maps::GeoHeatmap::new(impl core::convert::Into<alloc::rcs::rc::Rc<[(ely_maps::LatLon, f32)]>>) -> Self
+pub fn ely_maps::GeoJsonLayer::clone(&self) -> Self
+pub fn ely_maps::GeoJsonLayer::hue(self, usize) -> Self
+pub fn ely_maps::GeoJsonLayer::new(impl core::convert::Into<alloc::rcs::arc::Arc<[ely_maps::Feature]>>) -> Self
+pub fn ely_maps::Geometry::clone(&self) -> Self
+pub fn ely_maps::Geometry::eq(&self, &Self) -> bool
+pub fn ely_maps::Geometry::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::LatLon::clone(&self) -> Self
+pub fn ely_maps::LatLon::eq(&self, &Self) -> bool
+pub fn ely_maps::LatLon::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::LatLon::new(f64, f64) -> Self
+pub fn ely_maps::LocationPicker::format(self, ely_maps::CoordFormat) -> Self
+pub fn ely_maps::LocationPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_maps::LocationPicker::into_element(self) -> Self::Element
+pub fn ely_maps::LocationPicker::new(impl core::convert::Into<gpui::window::ElementId>, ely_maps::MapView) -> Self
+pub fn ely_maps::LocationPicker::on_pick(self, impl core::ops::function::Fn(ely_maps::LatLon, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_maps::LocationPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_maps::MapLayer::clone(&self) -> Self
+pub fn ely_maps::MapLayer::from(ely_maps::ChoroplethLayer) -> Self
+pub fn ely_maps::MapLayer::from(ely_maps::GeoHeatmap) -> Self
+pub fn ely_maps::MapLayer::from(ely_maps::GeoJsonLayer) -> Self
+pub fn ely_maps::MapLayer::from(ely_maps::RouteLine) -> Self
+pub fn ely_maps::MapMarker::clone(&self) -> Self
+pub fn ely_maps::MapMarker::hue(self, usize) -> Self
+pub fn ely_maps::MapMarker::label(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_maps::MapMarker::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_maps::LatLon) -> Self
+pub fn ely_maps::MapPopup::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_maps::MapPopup::new(ely_maps::LatLon, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_maps::MapPopup::on_close(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_maps::MapView::attribution(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_maps::MapView::cluster_markers(self) -> Self
+pub fn ely_maps::MapView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_maps::MapView::into_element(self) -> Self::Element
+pub fn ely_maps::MapView::layer(self, impl core::convert::Into<ely_maps::MapLayer>) -> Self
+pub fn ely_maps::MapView::markers(self, impl core::iter::traits::collect::IntoIterator<Item = ely_maps::MapMarker>) -> Self
+pub fn ely_maps::MapView::new(impl core::convert::Into<gpui::window::ElementId>, ely_maps::MapViewport) -> Self
+pub fn ely_maps::MapView::on_marker(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_maps::MapView::on_viewport(self, impl core::ops::function::Fn(ely_maps::MapViewport, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_maps::MapView::popup(self, ely_maps::MapPopup) -> Self
+pub fn ely_maps::MapView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_maps::MapView::tile_zooms(self, u8, u8) -> Self
+pub fn ely_maps::MapView::tiles(self, impl core::ops::function::Fn(ely_maps::Tile) -> gpui::elements::img::ImageSource + 'static) -> Self
+pub fn ely_maps::MapViewport::clone(&self) -> Self
+pub fn ely_maps::MapViewport::eq(&self, &Self) -> bool
+pub fn ely_maps::MapViewport::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::MapViewport::new(ely_maps::LatLon, f64) -> Self
+pub fn ely_maps::RouteLine::clone(&self) -> Self
+pub fn ely_maps::RouteLine::hue(self, usize) -> Self
+pub fn ely_maps::RouteLine::new(impl core::iter::traits::collect::IntoIterator<Item = ely_maps::LatLon>) -> Self
+pub fn ely_maps::Tile::clone(&self) -> Self
+pub fn ely_maps::Tile::eq(&self, &Self) -> bool
+pub fn ely_maps::Tile::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_maps::Tile::hash<__H: core::hash::Hasher>(&self, &mut __H)
+pub fn ely_maps::WorldMap::hue(self, usize) -> Self
+pub fn ely_maps::WorldMap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_maps::WorldMap::into_element(self) -> Self::Element
+pub fn ely_maps::WorldMap::new(impl core::convert::Into<gpui::window::ElementId>, ely_maps::MapView, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<alloc::string::String>, f64)>) -> Self
+pub fn ely_maps::WorldMap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_maps::read_geojson(&str) -> anyhow::Result<alloc::vec::Vec<ely_maps::Feature>>
+pub mod ely_maps
+pub struct ely_maps::ChoroplethLayer
+pub struct ely_maps::ChoroplethMap
+pub struct ely_maps::CoordinateDisplay
+pub struct ely_maps::Feature
+pub struct ely_maps::GeoHeatmap
+pub struct ely_maps::GeoJsonLayer
+pub struct ely_maps::LatLon
+pub struct ely_maps::LocationPicker
+pub struct ely_maps::MapMarker
+pub struct ely_maps::MapPopup
+pub struct ely_maps::MapView
+pub struct ely_maps::MapViewport
+pub struct ely_maps::RouteLine
+pub struct ely_maps::Tile
+pub struct ely_maps::WorldMap
+pub type ely_maps::ChoroplethMap::Element = gpui::view::ViewElement<ely_maps::ChoroplethMap>
+pub type ely_maps::CoordinateDisplay::Element = gpui::view::ViewElement<ely_maps::CoordinateDisplay>
+pub type ely_maps::LocationPicker::Element = gpui::view::ViewElement<ely_maps::LocationPicker>
+pub type ely_maps::MapView::Element = gpui::view::ViewElement<ely_maps::MapView>
+pub type ely_maps::WorldMap::Element = gpui::view::ViewElement<ely_maps::WorldMap>
+pub use ely_maps::ChoroplethKey = ely_maps::choropleth::ChoroplethKey
+pub use ely_maps::ChoroplethLayer = ely_maps::choropleth::ChoroplethLayer
+pub use ely_maps::ChoroplethMap = ely_maps::choropleth::ChoroplethMap
+pub use ely_maps::CoordFormat = ely_maps::coords::CoordFormat
+pub use ely_maps::CoordinateDisplay = ely_maps::coords::CoordinateDisplay
+pub use ely_maps::Feature = ely_maps::geojson::Feature
+pub use ely_maps::GeoHeatmap = ely_maps::layer::GeoHeatmap
+pub use ely_maps::GeoJsonLayer = ely_maps::layer::GeoJsonLayer
+pub use ely_maps::Geometry = ely_maps::geojson::Geometry
+pub use ely_maps::LatLon = ely_maps::geo::LatLon
+pub use ely_maps::LocationPicker = ely_maps::picker::LocationPicker
+pub use ely_maps::MAX_LAT = ely_maps::geo::MAX_LAT
+pub use ely_maps::MapLayer = ely_maps::layer::MapLayer
+pub use ely_maps::MapMarker = ely_maps::marker::MapMarker
+pub use ely_maps::MapPopup = ely_maps::marker::MapPopup
+pub use ely_maps::MapView = ely_maps::view::MapView
+pub use ely_maps::MapViewport = ely_maps::geo::MapViewport
+pub use ely_maps::RouteLine = ely_maps::layer::RouteLine
+pub use ely_maps::Tile = ely_maps::geo::Tile
+pub use ely_maps::WorldMap = ely_maps::world::WorldMap
+pub use ely_maps::read_geojson = ely_maps::geojson::read_geojson

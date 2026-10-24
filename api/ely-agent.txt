@@ -1,0 +1,417 @@
+impl core::clone::Clone for ely_agent::AgentState
+impl core::clone::Clone for ely_agent::AgentStep
+impl core::clone::Clone for ely_agent::ChangeState
+impl core::clone::Clone for ely_agent::Checkpoint
+impl core::clone::Clone for ely_agent::FileChange
+impl core::clone::Clone for ely_agent::McpServer
+impl core::clone::Clone for ely_agent::Memory
+impl core::clone::Clone for ely_agent::Permission
+impl core::clone::Clone for ely_agent::RegisteredTool
+impl core::clone::Clone for ely_agent::SandboxState
+impl core::clone::Clone for ely_agent::ServerState
+impl core::clone::Clone for ely_agent::ToolAccess
+impl core::cmp::Eq for ely_agent::AgentState
+impl core::cmp::Eq for ely_agent::ChangeState
+impl core::cmp::Eq for ely_agent::Permission
+impl core::cmp::Eq for ely_agent::SandboxState
+impl core::cmp::Eq for ely_agent::ServerState
+impl core::cmp::Eq for ely_agent::ToolAccess
+impl core::cmp::PartialEq for ely_agent::AgentState
+impl core::cmp::PartialEq for ely_agent::AgentStep
+impl core::cmp::PartialEq for ely_agent::ChangeState
+impl core::cmp::PartialEq for ely_agent::Checkpoint
+impl core::cmp::PartialEq for ely_agent::FileChange
+impl core::cmp::PartialEq for ely_agent::McpServer
+impl core::cmp::PartialEq for ely_agent::Memory
+impl core::cmp::PartialEq for ely_agent::Permission
+impl core::cmp::PartialEq for ely_agent::RegisteredTool
+impl core::cmp::PartialEq for ely_agent::SandboxState
+impl core::cmp::PartialEq for ely_agent::ServerState
+impl core::cmp::PartialEq for ely_agent::ToolAccess
+impl core::fmt::Debug for ely_agent::AgentState
+impl core::fmt::Debug for ely_agent::AgentStep
+impl core::fmt::Debug for ely_agent::ChangeState
+impl core::fmt::Debug for ely_agent::Checkpoint
+impl core::fmt::Debug for ely_agent::FileChange
+impl core::fmt::Debug for ely_agent::McpServer
+impl core::fmt::Debug for ely_agent::Memory
+impl core::fmt::Debug for ely_agent::Permission
+impl core::fmt::Debug for ely_agent::RegisteredTool
+impl core::fmt::Debug for ely_agent::SandboxState
+impl core::fmt::Debug for ely_agent::ServerState
+impl core::fmt::Debug for ely_agent::ToolAccess
+impl core::marker::Copy for ely_agent::AgentState
+impl core::marker::Copy for ely_agent::ChangeState
+impl core::marker::Copy for ely_agent::Permission
+impl core::marker::Copy for ely_agent::SandboxState
+impl core::marker::Copy for ely_agent::ServerState
+impl core::marker::Copy for ely_agent::ToolAccess
+impl core::marker::StructuralPartialEq for ely_agent::AgentState
+impl core::marker::StructuralPartialEq for ely_agent::AgentStep
+impl core::marker::StructuralPartialEq for ely_agent::ChangeState
+impl core::marker::StructuralPartialEq for ely_agent::Checkpoint
+impl core::marker::StructuralPartialEq for ely_agent::FileChange
+impl core::marker::StructuralPartialEq for ely_agent::McpServer
+impl core::marker::StructuralPartialEq for ely_agent::Memory
+impl core::marker::StructuralPartialEq for ely_agent::Permission
+impl core::marker::StructuralPartialEq for ely_agent::RegisteredTool
+impl core::marker::StructuralPartialEq for ely_agent::SandboxState
+impl core::marker::StructuralPartialEq for ely_agent::ServerState
+impl core::marker::StructuralPartialEq for ely_agent::ToolAccess
+impl ely_agent::AgentPlan
+impl ely_agent::AgentProgress
+impl ely_agent::AgentState
+impl ely_agent::AgentStatus
+impl ely_agent::AgentStepList
+impl ely_agent::ArtifactPanel
+impl ely_agent::BrowserPreview
+impl ely_agent::CheckpointList
+impl ely_agent::ComputerUseViewer
+impl ely_agent::CostBreakdown
+impl ely_agent::FileChangeCard
+impl ely_agent::HumanInputRequest
+impl ely_agent::LivePreview
+impl ely_agent::McpServerList
+impl ely_agent::MemoryPanel
+impl ely_agent::MultiFileDiffReview
+impl ely_agent::PermissionPrompt
+impl ely_agent::SandboxStatus
+impl ely_agent::ToolApprovalDialog
+impl ely_agent::ToolCallCard
+impl ely_agent::ToolCallGroup
+impl ely_agent::ToolRegistry
+impl gpui::element::IntoElement for ely_agent::AgentPlan
+impl gpui::element::IntoElement for ely_agent::AgentProgress
+impl gpui::element::IntoElement for ely_agent::AgentStatus
+impl gpui::element::IntoElement for ely_agent::AgentStepList
+impl gpui::element::IntoElement for ely_agent::ArtifactPanel
+impl gpui::element::IntoElement for ely_agent::BrowserPreview
+impl gpui::element::IntoElement for ely_agent::CheckpointList
+impl gpui::element::IntoElement for ely_agent::ComputerUseViewer
+impl gpui::element::IntoElement for ely_agent::CostBreakdown
+impl gpui::element::IntoElement for ely_agent::FileChangeCard
+impl gpui::element::IntoElement for ely_agent::HumanInputRequest
+impl gpui::element::IntoElement for ely_agent::LivePreview
+impl gpui::element::IntoElement for ely_agent::McpServerList
+impl gpui::element::IntoElement for ely_agent::MemoryPanel
+impl gpui::element::IntoElement for ely_agent::MultiFileDiffReview
+impl gpui::element::IntoElement for ely_agent::PermissionPrompt
+impl gpui::element::IntoElement for ely_agent::SandboxStatus
+impl gpui::element::IntoElement for ely_agent::ToolApprovalDialog
+impl gpui::element::IntoElement for ely_agent::ToolCallCard
+impl gpui::element::IntoElement for ely_agent::ToolCallGroup
+impl gpui::element::IntoElement for ely_agent::ToolRegistry
+impl gpui::element::ParentElement for ely_agent::ToolCallGroup
+impl gpui::element::RenderOnce for ely_agent::AgentPlan
+impl gpui::element::RenderOnce for ely_agent::AgentProgress
+impl gpui::element::RenderOnce for ely_agent::AgentStatus
+impl gpui::element::RenderOnce for ely_agent::AgentStepList
+impl gpui::element::RenderOnce for ely_agent::ArtifactPanel
+impl gpui::element::RenderOnce for ely_agent::BrowserPreview
+impl gpui::element::RenderOnce for ely_agent::CheckpointList
+impl gpui::element::RenderOnce for ely_agent::ComputerUseViewer
+impl gpui::element::RenderOnce for ely_agent::CostBreakdown
+impl gpui::element::RenderOnce for ely_agent::FileChangeCard
+impl gpui::element::RenderOnce for ely_agent::HumanInputRequest
+impl gpui::element::RenderOnce for ely_agent::LivePreview
+impl gpui::element::RenderOnce for ely_agent::McpServerList
+impl gpui::element::RenderOnce for ely_agent::MemoryPanel
+impl gpui::element::RenderOnce for ely_agent::MultiFileDiffReview
+impl gpui::element::RenderOnce for ely_agent::PermissionPrompt
+impl gpui::element::RenderOnce for ely_agent::SandboxStatus
+impl gpui::element::RenderOnce for ely_agent::ToolApprovalDialog
+impl gpui::element::RenderOnce for ely_agent::ToolCallCard
+impl gpui::element::RenderOnce for ely_agent::ToolCallGroup
+impl gpui::element::RenderOnce for ely_agent::ToolRegistry
+pub ely_agent::AgentState::Done
+pub ely_agent::AgentState::Failed
+pub ely_agent::AgentState::Planning
+pub ely_agent::AgentState::Waiting
+pub ely_agent::AgentState::Working
+pub ely_agent::AgentStep::detail: core::option::Option<gpui_shared_string::SharedString>
+pub ely_agent::AgentStep::state: ely_chat::search::StepState
+pub ely_agent::AgentStep::title: gpui_shared_string::SharedString
+pub ely_agent::AgentStep::took: core::option::Option<core::time::Duration>
+pub ely_agent::ChangeState::Accepted
+pub ely_agent::ChangeState::Proposed
+pub ely_agent::ChangeState::Rejected
+pub ely_agent::Checkpoint::at: jiff::timestamp::Timestamp
+pub ely_agent::Checkpoint::files: usize
+pub ely_agent::Checkpoint::key: gpui_shared_string::SharedString
+pub ely_agent::Checkpoint::label: gpui_shared_string::SharedString
+pub ely_agent::FileChange::new: gpui_shared_string::SharedString
+pub ely_agent::FileChange::old: gpui_shared_string::SharedString
+pub ely_agent::FileChange::path: gpui_shared_string::SharedString
+pub ely_agent::FileChange::state: ely_agent::ChangeState
+pub ely_agent::McpServer::detail: gpui_shared_string::SharedString
+pub ely_agent::McpServer::key: gpui_shared_string::SharedString
+pub ely_agent::McpServer::name: gpui_shared_string::SharedString
+pub ely_agent::McpServer::state: ely_agent::ServerState
+pub ely_agent::McpServer::tools: usize
+pub ely_agent::Memory::at: jiff::timestamp::Timestamp
+pub ely_agent::Memory::key: gpui_shared_string::SharedString
+pub ely_agent::Memory::source: core::option::Option<gpui_shared_string::SharedString>
+pub ely_agent::Memory::text: gpui_shared_string::SharedString
+pub ely_agent::Permission::Always
+pub ely_agent::Permission::Deny
+pub ely_agent::Permission::Once
+pub ely_agent::RegisteredTool::access: ely_agent::ToolAccess
+pub ely_agent::RegisteredTool::description: gpui_shared_string::SharedString
+pub ely_agent::RegisteredTool::name: gpui_shared_string::SharedString
+pub ely_agent::RegisteredTool::source: gpui_shared_string::SharedString
+pub ely_agent::SandboxState::Busy
+pub ely_agent::SandboxState::Failed
+pub ely_agent::SandboxState::Ready
+pub ely_agent::SandboxState::Starting
+pub ely_agent::SandboxState::Stopped
+pub ely_agent::ServerState::Connected
+pub ely_agent::ServerState::Connecting
+pub ely_agent::ServerState::Failed
+pub ely_agent::ServerState::Off
+pub ely_agent::ToolAccess::Allow
+pub ely_agent::ToolAccess::Ask
+pub ely_agent::ToolAccess::Deny
+pub enum ely_agent::AgentState
+pub enum ely_agent::ChangeState
+pub enum ely_agent::Permission
+pub enum ely_agent::SandboxState
+pub enum ely_agent::ServerState
+pub enum ely_agent::ToolAccess
+pub fn ely_agent::AgentPlan::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::AgentPlan::into_element(self) -> Self::Element
+pub fn ely_agent::AgentPlan::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, ely_chat::search::StepState)>) -> Self
+pub fn ely_agent::AgentPlan::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::AgentProgress::elapsed(self, core::time::Duration) -> Self
+pub fn ely_agent::AgentProgress::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::AgentProgress::into_element(self) -> Self::Element
+pub fn ely_agent::AgentProgress::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, usize, usize) -> Self
+pub fn ely_agent::AgentProgress::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::AgentState::clone(&self) -> Self
+pub fn ely_agent::AgentState::eq(&self, &Self) -> bool
+pub fn ely_agent::AgentState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::AgentState::label(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_agent::AgentStatus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::AgentStatus::into_element(self) -> Self::Element
+pub fn ely_agent::AgentStatus::new(impl core::convert::Into<gpui::window::ElementId>, ely_agent::AgentState) -> Self
+pub fn ely_agent::AgentStatus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::AgentStep::clone(&self) -> Self
+pub fn ely_agent::AgentStep::eq(&self, &Self) -> bool
+pub fn ely_agent::AgentStep::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::AgentStepList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::AgentStepList::into_element(self) -> Self::Element
+pub fn ely_agent::AgentStepList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_agent::AgentStep>) -> Self
+pub fn ely_agent::AgentStepList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ArtifactPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::ArtifactPanel::into_element(self) -> Self::Element
+pub fn ely_agent::ArtifactPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::primitives::icon::names::IconName) -> Self
+pub fn ely_agent::ArtifactPanel::on_copy(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::ArtifactPanel::on_download(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::ArtifactPanel::preview(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_agent::ArtifactPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ArtifactPanel::source(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_agent::ArtifactPanel::version(self, usize, usize, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::BrowserPreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::BrowserPreview::into_element(self) -> Self::Element
+pub fn ely_agent::BrowserPreview::loading(self, bool) -> Self
+pub fn ely_agent::BrowserPreview::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, usize) -> Self
+pub fn ely_agent::BrowserPreview::on_show(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::BrowserPreview::ratio(self, f32) -> Self
+pub fn ely_agent::BrowserPreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ChangeState::clone(&self) -> Self
+pub fn ely_agent::ChangeState::eq(&self, &Self) -> bool
+pub fn ely_agent::ChangeState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::Checkpoint::clone(&self) -> Self
+pub fn ely_agent::Checkpoint::eq(&self, &Self) -> bool
+pub fn ely_agent::Checkpoint::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::CheckpointList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::CheckpointList::into_element(self) -> Self::Element
+pub fn ely_agent::CheckpointList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_agent::Checkpoint>, usize) -> Self
+pub fn ely_agent::CheckpointList::on_rewind(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::CheckpointList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ComputerUseViewer::action(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ComputerUseViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::ComputerUseViewer::into_element(self) -> Self::Element
+pub fn ely_agent::ComputerUseViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ComputerUseViewer::pointer(self, gpui::geometry::Point<f32>) -> Self
+pub fn ely_agent::ComputerUseViewer::ratio(self, f32) -> Self
+pub fn ely_agent::ComputerUseViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::CostBreakdown::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::CostBreakdown::into_element(self) -> Self::Element
+pub fn ely_agent::CostBreakdown::new(impl core::convert::Into<gpui_shared_string::SharedString>, &'static str) -> Self
+pub fn ely_agent::CostBreakdown::part(self, impl core::convert::Into<gpui_shared_string::SharedString>, f64) -> Self
+pub fn ely_agent::CostBreakdown::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::FileChange::clone(&self) -> Self
+pub fn ely_agent::FileChange::eq(&self, &Self) -> bool
+pub fn ely_agent::FileChange::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::FileChangeCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::FileChangeCard::into_element(self) -> Self::Element
+pub fn ely_agent::FileChangeCard::new(impl core::convert::Into<gpui::window::ElementId>, ely_agent::FileChange) -> Self
+pub fn ely_agent::FileChangeCard::on_decide(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::FileChangeCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::HumanInputRequest::answered(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::HumanInputRequest::choices(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_agent::HumanInputRequest::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::HumanInputRequest::into_element(self) -> Self::Element
+pub fn ely_agent::HumanInputRequest::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::HumanInputRequest::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::LivePreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::LivePreview::into_element(self) -> Self::Element
+pub fn ely_agent::LivePreview::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl gpui::element::IntoElement) -> Self
+pub fn ely_agent::LivePreview::on_reload(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::LivePreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::LivePreview::updating(self, bool) -> Self
+pub fn ely_agent::McpServer::clone(&self) -> Self
+pub fn ely_agent::McpServer::eq(&self, &Self) -> bool
+pub fn ely_agent::McpServer::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::McpServerList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::McpServerList::into_element(self) -> Self::Element
+pub fn ely_agent::McpServerList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_agent::McpServer>) -> Self
+pub fn ely_agent::McpServerList::on_toggle(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::McpServerList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::Memory::clone(&self) -> Self
+pub fn ely_agent::Memory::eq(&self, &Self) -> bool
+pub fn ely_agent::Memory::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::MemoryPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::MemoryPanel::into_element(self) -> Self::Element
+pub fn ely_agent::MemoryPanel::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::iter::traits::collect::IntoIterator<Item = ely_agent::Memory>) -> Self
+pub fn ely_agent::MemoryPanel::on_add(self, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::MemoryPanel::on_forget(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::MemoryPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::MultiFileDiffReview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::MultiFileDiffReview::into_element(self) -> Self::Element
+pub fn ely_agent::MultiFileDiffReview::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_agent::FileChange>) -> Self
+pub fn ely_agent::MultiFileDiffReview::on_decide(self, impl core::ops::function::Fn(ely_collab::track::Decision, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::MultiFileDiffReview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::Permission::clone(&self) -> Self
+pub fn ely_agent::Permission::eq(&self, &Self) -> bool
+pub fn ely_agent::Permission::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::PermissionPrompt::detail(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::PermissionPrompt::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::PermissionPrompt::into_element(self) -> Self::Element
+pub fn ely_agent::PermissionPrompt::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(ely_agent::Permission, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::PermissionPrompt::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::RegisteredTool::clone(&self) -> Self
+pub fn ely_agent::RegisteredTool::eq(&self, &Self) -> bool
+pub fn ely_agent::RegisteredTool::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::SandboxState::clone(&self) -> Self
+pub fn ely_agent::SandboxState::eq(&self, &Self) -> bool
+pub fn ely_agent::SandboxState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::SandboxStatus::cpu(self, f32) -> Self
+pub fn ely_agent::SandboxStatus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::SandboxStatus::into_element(self) -> Self::Element
+pub fn ely_agent::SandboxStatus::memory(self, u64, u64) -> Self
+pub fn ely_agent::SandboxStatus::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_agent::SandboxState) -> Self
+pub fn ely_agent::SandboxStatus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::SandboxStatus::uptime(self, core::time::Duration) -> Self
+pub fn ely_agent::ServerState::clone(&self) -> Self
+pub fn ely_agent::ServerState::eq(&self, &Self) -> bool
+pub fn ely_agent::ServerState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::ToolAccess::clone(&self) -> Self
+pub fn ely_agent::ToolAccess::eq(&self, &Self) -> bool
+pub fn ely_agent::ToolAccess::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_agent::ToolApprovalDialog::detail(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ToolApprovalDialog::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::ToolApprovalDialog::into_element(self) -> Self::Element
+pub fn ely_agent::ToolApprovalDialog::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::ToolApprovalDialog::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ToolCallCard::arguments(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ToolCallCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::ToolCallCard::into_element(self) -> Self::Element
+pub fn ely_agent::ToolCallCard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_chat::search::StepState) -> Self
+pub fn ely_agent::ToolCallCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ToolCallCard::result(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ToolCallCard::summary(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ToolCallCard::took(self, core::time::Duration) -> Self
+pub fn ely_agent::ToolCallGroup::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_agent::ToolCallGroup::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::ToolCallGroup::into_element(self) -> Self::Element
+pub fn ely_agent::ToolCallGroup::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ToolCallGroup::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_agent::ToolRegistry::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_agent::ToolRegistry::into_element(self) -> Self::Element
+pub fn ely_agent::ToolRegistry::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_agent::RegisteredTool>) -> Self
+pub fn ely_agent::ToolRegistry::on_access(self, impl core::ops::function::Fn(usize, ely_agent::ToolAccess, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_agent::ToolRegistry::query(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_agent::ToolRegistry::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub mod ely_agent
+pub struct ely_agent::AgentPlan
+pub struct ely_agent::AgentProgress
+pub struct ely_agent::AgentStatus
+pub struct ely_agent::AgentStep
+pub struct ely_agent::AgentStepList
+pub struct ely_agent::ArtifactPanel
+pub struct ely_agent::BrowserPreview
+pub struct ely_agent::Checkpoint
+pub struct ely_agent::CheckpointList
+pub struct ely_agent::ComputerUseViewer
+pub struct ely_agent::CostBreakdown
+pub struct ely_agent::FileChange
+pub struct ely_agent::FileChangeCard
+pub struct ely_agent::HumanInputRequest
+pub struct ely_agent::LivePreview
+pub struct ely_agent::McpServer
+pub struct ely_agent::McpServerList
+pub struct ely_agent::Memory
+pub struct ely_agent::MemoryPanel
+pub struct ely_agent::MultiFileDiffReview
+pub struct ely_agent::PermissionPrompt
+pub struct ely_agent::RegisteredTool
+pub struct ely_agent::SandboxStatus
+pub struct ely_agent::ToolApprovalDialog
+pub struct ely_agent::ToolCallCard
+pub struct ely_agent::ToolCallGroup
+pub struct ely_agent::ToolRegistry
+pub type ely_agent::AgentPlan::Element = gpui::view::ViewElement<ely_agent::AgentPlan>
+pub type ely_agent::AgentProgress::Element = gpui::view::ViewElement<ely_agent::AgentProgress>
+pub type ely_agent::AgentStatus::Element = gpui::view::ViewElement<ely_agent::AgentStatus>
+pub type ely_agent::AgentStepList::Element = gpui::view::ViewElement<ely_agent::AgentStepList>
+pub type ely_agent::ArtifactPanel::Element = gpui::view::ViewElement<ely_agent::ArtifactPanel>
+pub type ely_agent::BrowserPreview::Element = gpui::view::ViewElement<ely_agent::BrowserPreview>
+pub type ely_agent::CheckpointList::Element = gpui::view::ViewElement<ely_agent::CheckpointList>
+pub type ely_agent::ComputerUseViewer::Element = gpui::view::ViewElement<ely_agent::ComputerUseViewer>
+pub type ely_agent::CostBreakdown::Element = gpui::view::ViewElement<ely_agent::CostBreakdown>
+pub type ely_agent::FileChangeCard::Element = gpui::view::ViewElement<ely_agent::FileChangeCard>
+pub type ely_agent::HumanInputRequest::Element = gpui::view::ViewElement<ely_agent::HumanInputRequest>
+pub type ely_agent::LivePreview::Element = gpui::view::ViewElement<ely_agent::LivePreview>
+pub type ely_agent::McpServerList::Element = gpui::view::ViewElement<ely_agent::McpServerList>
+pub type ely_agent::MemoryPanel::Element = gpui::view::ViewElement<ely_agent::MemoryPanel>
+pub type ely_agent::MultiFileDiffReview::Element = gpui::view::ViewElement<ely_agent::MultiFileDiffReview>
+pub type ely_agent::PermissionPrompt::Element = gpui::view::ViewElement<ely_agent::PermissionPrompt>
+pub type ely_agent::SandboxStatus::Element = gpui::view::ViewElement<ely_agent::SandboxStatus>
+pub type ely_agent::ToolApprovalDialog::Element = gpui::view::ViewElement<ely_agent::ToolApprovalDialog>
+pub type ely_agent::ToolCallCard::Element = gpui::view::ViewElement<ely_agent::ToolCallCard>
+pub type ely_agent::ToolCallGroup::Element = gpui::view::ViewElement<ely_agent::ToolCallGroup>
+pub type ely_agent::ToolRegistry::Element = gpui::view::ViewElement<ely_agent::ToolRegistry>
+pub use ely_agent::AgentPlan = ely_agent::progress::AgentPlan
+pub use ely_agent::AgentProgress = ely_agent::progress::AgentProgress
+pub use ely_agent::AgentState = ely_agent::progress::AgentState
+pub use ely_agent::AgentStatus = ely_agent::progress::AgentStatus
+pub use ely_agent::AgentStep = ely_agent::progress::AgentStep
+pub use ely_agent::AgentStepList = ely_agent::progress::AgentStepList
+pub use ely_agent::ArtifactPanel = ely_agent::artifact::ArtifactPanel
+pub use ely_agent::BrowserPreview = ely_agent::previews::BrowserPreview
+pub use ely_agent::ChangeState = ely_agent::changes::ChangeState
+pub use ely_agent::Checkpoint = ely_agent::memory::Checkpoint
+pub use ely_agent::CheckpointList = ely_agent::memory::CheckpointList
+pub use ely_agent::ComputerUseViewer = ely_agent::previews::ComputerUseViewer
+pub use ely_agent::CostBreakdown = ely_agent::control::CostBreakdown
+pub use ely_agent::FileChange = ely_agent::changes::FileChange
+pub use ely_agent::FileChangeCard = ely_agent::changes::FileChangeCard
+pub use ely_agent::HumanInputRequest = ely_agent::control::HumanInputRequest
+pub use ely_agent::LivePreview = ely_agent::previews::LivePreview
+pub use ely_agent::McpServer = ely_agent::environment::McpServer
+pub use ely_agent::McpServerList = ely_agent::environment::McpServerList
+pub use ely_agent::Memory = ely_agent::memory::Memory
+pub use ely_agent::MemoryPanel = ely_agent::memory::MemoryPanel
+pub use ely_agent::MultiFileDiffReview = ely_agent::changes::MultiFileDiffReview
+pub use ely_agent::Permission = ely_agent::permission::Permission
+pub use ely_agent::PermissionPrompt = ely_agent::permission::PermissionPrompt
+pub use ely_agent::RegisteredTool = ely_agent::registry::RegisteredTool
+pub use ely_agent::SandboxState = ely_agent::environment::SandboxState
+pub use ely_agent::SandboxStatus = ely_agent::environment::SandboxStatus
+pub use ely_agent::ServerState = ely_agent::environment::ServerState
+pub use ely_agent::ToolAccess = ely_agent::registry::ToolAccess
+pub use ely_agent::ToolApprovalDialog = ely_agent::permission::ToolApprovalDialog
+pub use ely_agent::ToolCallCard = ely_agent::tools::ToolCallCard
+pub use ely_agent::ToolCallGroup = ely_agent::tools::ToolCallGroup
+pub use ely_agent::ToolRegistry = ely_agent::registry::ToolRegistry

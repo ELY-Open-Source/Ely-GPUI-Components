@@ -1,0 +1,279 @@
+impl core::clone::Clone for ely_mail::Contact
+impl core::clone::Clone for ely_mail::Draft
+impl core::clone::Clone for ely_mail::Label
+impl core::clone::Clone for ely_mail::Mail
+impl core::clone::Clone for ely_mail::Mailbox
+impl core::clone::Clone for ely_mail::Message
+impl core::cmp::PartialEq for ely_mail::Contact
+impl core::cmp::PartialEq for ely_mail::Draft
+impl core::cmp::PartialEq for ely_mail::Label
+impl core::cmp::PartialEq for ely_mail::Mail
+impl core::cmp::PartialEq for ely_mail::Mailbox
+impl core::cmp::PartialEq for ely_mail::Message
+impl core::fmt::Debug for ely_mail::Contact
+impl core::fmt::Debug for ely_mail::Draft
+impl core::fmt::Debug for ely_mail::Label
+impl core::fmt::Debug for ely_mail::Mail
+impl core::fmt::Debug for ely_mail::Mailbox
+impl core::fmt::Debug for ely_mail::Message
+impl core::marker::StructuralPartialEq for ely_mail::Contact
+impl core::marker::StructuralPartialEq for ely_mail::Draft
+impl core::marker::StructuralPartialEq for ely_mail::Label
+impl core::marker::StructuralPartialEq for ely_mail::Mail
+impl core::marker::StructuralPartialEq for ely_mail::Mailbox
+impl core::marker::StructuralPartialEq for ely_mail::Message
+impl ely_core::primitives::capability::Changeable for ely_mail::LabelPicker
+impl ely_core::primitives::capability::Changeable for ely_mail::MailComposer
+impl ely_core::primitives::capability::Changeable for ely_mail::SignatureEditor
+impl ely_core::primitives::capability::Disableable for ely_mail::ScheduleSend
+impl ely_mail::Contact
+impl ely_mail::Label
+impl ely_mail::LabelPicker
+impl ely_mail::Mail
+impl ely_mail::MailComposer
+impl ely_mail::MailItem
+impl ely_mail::MailList
+impl ely_mail::MailReader
+impl ely_mail::MailThreadView
+impl ely_mail::Mailbox
+impl ely_mail::MailboxList
+impl ely_mail::Message
+impl ely_mail::QuotedText
+impl ely_mail::ScheduleSend
+impl ely_mail::SignatureEditor
+impl ely_mail::SnoozePicker
+impl gpui::element::IntoElement for ely_mail::LabelPicker
+impl gpui::element::IntoElement for ely_mail::MailComposer
+impl gpui::element::IntoElement for ely_mail::MailItem
+impl gpui::element::IntoElement for ely_mail::MailList
+impl gpui::element::IntoElement for ely_mail::MailReader
+impl gpui::element::IntoElement for ely_mail::MailThreadView
+impl gpui::element::IntoElement for ely_mail::MailboxList
+impl gpui::element::IntoElement for ely_mail::QuotedText
+impl gpui::element::IntoElement for ely_mail::ScheduleSend
+impl gpui::element::IntoElement for ely_mail::SignatureEditor
+impl gpui::element::IntoElement for ely_mail::SnoozePicker
+impl gpui::element::ParentElement for ely_mail::MailReader
+impl gpui::element::ParentElement for ely_mail::QuotedText
+impl gpui::element::RenderOnce for ely_mail::LabelPicker
+impl gpui::element::RenderOnce for ely_mail::MailComposer
+impl gpui::element::RenderOnce for ely_mail::MailItem
+impl gpui::element::RenderOnce for ely_mail::MailList
+impl gpui::element::RenderOnce for ely_mail::MailReader
+impl gpui::element::RenderOnce for ely_mail::MailThreadView
+impl gpui::element::RenderOnce for ely_mail::MailboxList
+impl gpui::element::RenderOnce for ely_mail::QuotedText
+impl gpui::element::RenderOnce for ely_mail::ScheduleSend
+impl gpui::element::RenderOnce for ely_mail::SignatureEditor
+impl gpui::element::RenderOnce for ely_mail::SnoozePicker
+pub ely_mail::Contact::address: gpui_shared_string::SharedString
+pub ely_mail::Contact::name: gpui_shared_string::SharedString
+pub ely_mail::Draft::bcc: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_mail::Draft::cc: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_mail::Draft::subject: gpui_shared_string::SharedString
+pub ely_mail::Draft::to: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_mail::Label::hue: usize
+pub ely_mail::Label::key: gpui_shared_string::SharedString
+pub ely_mail::Label::name: gpui_shared_string::SharedString
+pub ely_mail::Mail::at: core::option::Option<jiff::timestamp::Timestamp>
+pub ely_mail::Mail::attachments: usize
+pub ely_mail::Mail::from: gpui_shared_string::SharedString
+pub ely_mail::Mail::key: gpui_shared_string::SharedString
+pub ely_mail::Mail::snippet: core::option::Option<gpui_shared_string::SharedString>
+pub ely_mail::Mail::starred: bool
+pub ely_mail::Mail::subject: gpui_shared_string::SharedString
+pub ely_mail::Mail::unread: bool
+pub ely_mail::Mailbox::key: gpui_shared_string::SharedString
+pub ely_mail::Mailbox::name: gpui_shared_string::SharedString
+pub ely_mail::Mailbox::unread: u32
+pub ely_mail::Message::at: core::option::Option<jiff::timestamp::Timestamp>
+pub ely_mail::Message::cc: alloc::vec::Vec<ely_mail::Contact>
+pub ely_mail::Message::files: alloc::vec::Vec<(gpui_shared_string::SharedString, core::option::Option<u64>)>
+pub ely_mail::Message::from: ely_mail::Contact
+pub ely_mail::Message::key: gpui_shared_string::SharedString
+pub ely_mail::Message::snippet: gpui_shared_string::SharedString
+pub ely_mail::Message::to: alloc::vec::Vec<ely_mail::Contact>
+pub fn ely_mail::Contact::clone(&self) -> Self
+pub fn ely_mail::Contact::eq(&self, &Self) -> bool
+pub fn ely_mail::Contact::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_mail::Contact::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::Draft::clone(&self) -> Self
+pub fn ely_mail::Draft::eq(&self, &Self) -> bool
+pub fn ely_mail::Draft::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_mail::Label::clone(&self) -> Self
+pub fn ely_mail::Label::eq(&self, &Self) -> bool
+pub fn ely_mail::Label::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_mail::Label::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, usize) -> Self
+pub fn ely_mail::LabelPicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::LabelPicker::into_element(self) -> Self::Element
+pub fn ely_mail::LabelPicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::Label>) -> Self
+pub fn ely_mail::LabelPicker::on_change(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::LabelPicker::on_create(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::LabelPicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::LabelPicker::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_mail::Mail::attachments(self, usize) -> Self
+pub fn ely_mail::Mail::clone(&self) -> Self
+pub fn ely_mail::Mail::eq(&self, &Self) -> bool
+pub fn ely_mail::Mail::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_mail::Mail::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::timestamp::Timestamp) -> Self
+pub fn ely_mail::Mail::snippet(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::Mail::starred(self, bool) -> Self
+pub fn ely_mail::Mail::undated(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::Mail::unread(self, bool) -> Self
+pub fn ely_mail::MailComposer::bcc(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_mail::MailComposer::busy(self, bool) -> Self
+pub fn ely_mail::MailComposer::cc(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_mail::MailComposer::check(self, fn(&str) -> bool) -> Self
+pub fn ely_mail::MailComposer::contacts(self, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::Contact>) -> Self
+pub fn ely_mail::MailComposer::files(self, impl core::iter::traits::collect::IntoIterator<Item = ely_chat::attach::Attachment>) -> Self
+pub fn ely_mail::MailComposer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::MailComposer::into_element(self) -> Self::Element
+pub fn ely_mail::MailComposer::new(impl core::convert::Into<gpui::window::ElementId>, impl gpui::element::IntoElement) -> Self
+pub fn ely_mail::MailComposer::on_attach(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailComposer::on_change(self, impl core::ops::function::Fn(&ely_mail::Draft, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailComposer::on_discard(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailComposer::on_remove(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailComposer::on_schedule(self, impl core::ops::function::Fn(&ely_mail::Draft, jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailComposer::on_send(self, impl core::ops::function::Fn(&ely_mail::Draft, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailComposer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::MailComposer::signature(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::MailComposer::subject(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::MailComposer::to(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_mail::MailComposer::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_mail::MailItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::MailItem::into_element(self) -> Self::Element
+pub fn ely_mail::MailItem::new(impl core::convert::Into<gpui::window::ElementId>, ely_mail::Mail) -> Self
+pub fn ely_mail::MailItem::on_star(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::MailItem::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_mail::MailList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::MailList::into_element(self) -> Self::Element
+pub fn ely_mail::MailList::new(impl core::convert::Into<gpui::window::ElementId>, alloc::rcs::rc::Rc<alloc::vec::Vec<ely_mail::Mail>>) -> Self
+pub fn ely_mail::MailList::on_select(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailList::on_star(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::MailList::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_mail::MailList::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_mail::MailReader::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_mail::MailReader::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::MailReader::into_element(self) -> Self::Element
+pub fn ely_mail::MailReader::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_mail::Message) -> Self
+pub fn ely_mail::MailReader::on_download(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailReader::on_forward(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailReader::on_open_file(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailReader::on_reply(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailReader::on_reply_all(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailReader::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::MailReader::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_mail::MailThreadView::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::MailThreadView::into_element(self) -> Self::Element
+pub fn ely_mail::MailThreadView::message(self, ely_mail::Message, impl gpui::element::IntoElement) -> Self
+pub fn ely_mail::MailThreadView::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::MailThreadView::on_download(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailThreadView::on_forward(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailThreadView::on_open_file(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailThreadView::on_reply(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailThreadView::on_reply_all(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailThreadView::picked(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::MailThreadView::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::MailThreadView::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_mail::Mailbox::clone(&self) -> Self
+pub fn ely_mail::Mailbox::eq(&self, &Self) -> bool
+pub fn ely_mail::Mailbox::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_mail::Mailbox::label(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, usize) -> Self
+pub fn ely_mail::Mailbox::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::primitives::icon::names::IconName) -> Self
+pub fn ely_mail::Mailbox::unread(self, u32) -> Self
+pub fn ely_mail::MailboxList::fixed_section(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::Mailbox>) -> Self
+pub fn ely_mail::MailboxList::folded(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_mail::MailboxList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::MailboxList::into_element(self) -> Self::Element
+pub fn ely_mail::MailboxList::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_mail::MailboxList::on_fold(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailboxList::on_menu(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, gpui::geometry::Point<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailboxList::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::MailboxList::open(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::MailboxList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::MailboxList::section(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::Mailbox>) -> Self
+pub fn ely_mail::Message::cc(self, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::Contact>) -> Self
+pub fn ely_mail::Message::clone(&self) -> Self
+pub fn ely_mail::Message::eq(&self, &Self) -> bool
+pub fn ely_mail::Message::file(self, impl core::convert::Into<gpui_shared_string::SharedString>, u64) -> Self
+pub fn ely_mail::Message::file_waiting(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::Message::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_mail::Message::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_mail::Contact, jiff::timestamp::Timestamp) -> Self
+pub fn ely_mail::Message::snippet(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::Message::to(self, impl core::iter::traits::collect::IntoIterator<Item = ely_mail::Contact>) -> Self
+pub fn ely_mail::Message::undated(impl core::convert::Into<gpui_shared_string::SharedString>, ely_mail::Contact) -> Self
+pub fn ely_mail::QuotedText::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_mail::QuotedText::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::QuotedText::into_element(self) -> Self::Element
+pub fn ely_mail::QuotedText::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_mail::QuotedText::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::ScheduleSend::disabled(self, bool) -> Self
+pub fn ely_mail::ScheduleSend::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::ScheduleSend::into_element(self) -> Self::Element
+pub fn ely_mail::ScheduleSend::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_mail::ScheduleSend::on_schedule(self, impl core::ops::function::Fn(jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::ScheduleSend::on_send(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::ScheduleSend::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::ScheduleSend::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub fn ely_mail::SignatureEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::SignatureEditor::into_element(self) -> Self::Element
+pub fn ely_mail::SignatureEditor::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_mail::SignatureEditor::on_change(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::SignatureEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::SnoozePicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_mail::SnoozePicker::into_element(self) -> Self::Element
+pub fn ely_mail::SnoozePicker::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_mail::SnoozePicker::on_snooze(self, impl core::ops::function::Fn(jiff::timestamp::Timestamp, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_mail::SnoozePicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_mail::SnoozePicker::zone(self, jiff::tz::timezone::TimeZone) -> Self
+pub mod ely_mail
+pub struct ely_mail::Contact
+pub struct ely_mail::Draft
+pub struct ely_mail::Label
+pub struct ely_mail::LabelPicker
+pub struct ely_mail::Mail
+pub struct ely_mail::MailComposer
+pub struct ely_mail::MailItem
+pub struct ely_mail::MailList
+pub struct ely_mail::MailReader
+pub struct ely_mail::MailThreadView
+pub struct ely_mail::Mailbox
+pub struct ely_mail::MailboxList
+pub struct ely_mail::Message
+pub struct ely_mail::QuotedText
+pub struct ely_mail::ScheduleSend
+pub struct ely_mail::SignatureEditor
+pub struct ely_mail::SnoozePicker
+pub type ely_mail::LabelPicker::Element = gpui::view::ViewElement<ely_mail::LabelPicker>
+pub type ely_mail::LabelPicker::Value<'a> = &'a [gpui_shared_string::SharedString]
+pub type ely_mail::MailComposer::Element = gpui::view::ViewElement<ely_mail::MailComposer>
+pub type ely_mail::MailComposer::Value<'a> = &'a ely_mail::Draft
+pub type ely_mail::MailItem::Element = gpui::view::ViewElement<ely_mail::MailItem>
+pub type ely_mail::MailList::Element = gpui::view::ViewElement<ely_mail::MailList>
+pub type ely_mail::MailReader::Element = gpui::view::ViewElement<ely_mail::MailReader>
+pub type ely_mail::MailThreadView::Element = gpui::view::ViewElement<ely_mail::MailThreadView>
+pub type ely_mail::MailboxList::Element = gpui::view::ViewElement<ely_mail::MailboxList>
+pub type ely_mail::QuotedText::Element = gpui::view::ViewElement<ely_mail::QuotedText>
+pub type ely_mail::ScheduleSend::Element = gpui::view::ViewElement<ely_mail::ScheduleSend>
+pub type ely_mail::SignatureEditor::Element = gpui::view::ViewElement<ely_mail::SignatureEditor>
+pub type ely_mail::SignatureEditor::Value<'a> = &'a gpui_shared_string::SharedString
+pub type ely_mail::SnoozePicker::Element = gpui::view::ViewElement<ely_mail::SnoozePicker>
+pub use ely_mail::Contact = ely_mail::reader::Contact
+pub use ely_mail::Draft = ely_mail::compose::Draft
+pub use ely_mail::Label = ely_mail::labels::Label
+pub use ely_mail::LabelPicker = ely_mail::labels::LabelPicker
+pub use ely_mail::Mail = ely_mail::item::Mail
+pub use ely_mail::MailComposer = ely_mail::compose::MailComposer
+pub use ely_mail::MailItem = ely_mail::item::MailItem
+pub use ely_mail::MailList = ely_mail::list::MailList
+pub use ely_mail::MailReader = ely_mail::reader::MailReader
+pub use ely_mail::MailThreadView = ely_mail::thread::MailThreadView
+pub use ely_mail::Mailbox = ely_mail::boxes::Mailbox
+pub use ely_mail::MailboxList = ely_mail::boxes::MailboxList
+pub use ely_mail::Message = ely_mail::reader::Message
+pub use ely_mail::QuotedText = ely_mail::quoted::QuotedText
+pub use ely_mail::ScheduleSend = ely_mail::send::ScheduleSend
+pub use ely_mail::SignatureEditor = ely_mail::signature::SignatureEditor
+pub use ely_mail::SnoozePicker = ely_mail::snooze::SnoozePicker

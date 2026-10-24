@@ -1,0 +1,437 @@
+impl core::clone::Clone for ely_media::Crop
+impl core::clone::Clone for ely_media::Cue
+impl core::clone::Clone for ely_media::Device
+impl core::clone::Clone for ely_media::DeviceKind
+impl core::clone::Clone for ely_media::Mark
+impl core::clone::Clone for ely_media::Orbit
+impl core::clone::Clone for ely_media::Recording
+impl core::clone::Clone for ely_media::Repeat
+impl core::clone::Clone for ely_media::Tool
+impl core::clone::Clone for ely_media::Track
+impl core::cmp::Eq for ely_media::DeviceKind
+impl core::cmp::Eq for ely_media::Recording
+impl core::cmp::Eq for ely_media::Repeat
+impl core::cmp::Eq for ely_media::Tool
+impl core::cmp::PartialEq for ely_media::Crop
+impl core::cmp::PartialEq for ely_media::Cue
+impl core::cmp::PartialEq for ely_media::Device
+impl core::cmp::PartialEq for ely_media::DeviceKind
+impl core::cmp::PartialEq for ely_media::Mark
+impl core::cmp::PartialEq for ely_media::Orbit
+impl core::cmp::PartialEq for ely_media::Recording
+impl core::cmp::PartialEq for ely_media::Repeat
+impl core::cmp::PartialEq for ely_media::Tool
+impl core::cmp::PartialEq for ely_media::Track
+impl core::fmt::Debug for ely_media::Crop
+impl core::fmt::Debug for ely_media::Cue
+impl core::fmt::Debug for ely_media::Device
+impl core::fmt::Debug for ely_media::DeviceKind
+impl core::fmt::Debug for ely_media::Mark
+impl core::fmt::Debug for ely_media::Orbit
+impl core::fmt::Debug for ely_media::Recording
+impl core::fmt::Debug for ely_media::Repeat
+impl core::fmt::Debug for ely_media::Tool
+impl core::fmt::Debug for ely_media::Track
+impl core::marker::Copy for ely_media::Crop
+impl core::marker::Copy for ely_media::DeviceKind
+impl core::marker::Copy for ely_media::Orbit
+impl core::marker::Copy for ely_media::Recording
+impl core::marker::Copy for ely_media::Repeat
+impl core::marker::Copy for ely_media::Tool
+impl core::marker::StructuralPartialEq for ely_media::Crop
+impl core::marker::StructuralPartialEq for ely_media::Cue
+impl core::marker::StructuralPartialEq for ely_media::Device
+impl core::marker::StructuralPartialEq for ely_media::DeviceKind
+impl core::marker::StructuralPartialEq for ely_media::Mark
+impl core::marker::StructuralPartialEq for ely_media::Orbit
+impl core::marker::StructuralPartialEq for ely_media::Recording
+impl core::marker::StructuralPartialEq for ely_media::Repeat
+impl core::marker::StructuralPartialEq for ely_media::Tool
+impl core::marker::StructuralPartialEq for ely_media::Track
+impl ely_core::primitives::capability::Changeable for ely_media::DeviceSelector
+impl ely_core::primitives::capability::Changeable for ely_media::ImageAnnotator
+impl ely_core::primitives::capability::Changeable for ely_media::ImageCropper
+impl ely_core::primitives::capability::Changeable for ely_media::PlaybackSpeedControl
+impl ely_core::primitives::capability::Changeable for ely_media::SubtitleEditor
+impl ely_core::primitives::capability::Selectable for ely_media::ImageThumbnail
+impl ely_media::AudioPlayer
+impl ely_media::AudioSpectrum
+impl ely_media::AudioWaveform
+impl ely_media::CameraPreview
+impl ely_media::Crop
+impl ely_media::DeviceSelector
+impl ely_media::ImageAnnotator
+impl ely_media::ImageCropper
+impl ely_media::ImageThumbnail
+impl ely_media::ImageUpload
+impl ely_media::ImageViewer
+impl ely_media::MediaControls
+impl ely_media::MicLevelMeter
+impl ely_media::ModelViewer
+impl ely_media::Orbit
+impl ely_media::PlaybackSpeedControl
+impl ely_media::Playlist
+impl ely_media::Repeat
+impl ely_media::ScreenRecorderControls
+impl ely_media::Scrubber
+impl ely_media::SubtitleEditor
+impl ely_media::VideoPlayer
+impl ely_media::VideoThumbnailStrip
+impl ely_media::VolumeControl
+impl gpui::element::IntoElement for ely_media::AudioPlayer
+impl gpui::element::IntoElement for ely_media::AudioSpectrum
+impl gpui::element::IntoElement for ely_media::AudioWaveform
+impl gpui::element::IntoElement for ely_media::CameraPreview
+impl gpui::element::IntoElement for ely_media::DeviceSelector
+impl gpui::element::IntoElement for ely_media::ImageAnnotator
+impl gpui::element::IntoElement for ely_media::ImageCropper
+impl gpui::element::IntoElement for ely_media::ImageThumbnail
+impl gpui::element::IntoElement for ely_media::ImageUpload
+impl gpui::element::IntoElement for ely_media::ImageViewer
+impl gpui::element::IntoElement for ely_media::MediaControls
+impl gpui::element::IntoElement for ely_media::MicLevelMeter
+impl gpui::element::IntoElement for ely_media::ModelViewer
+impl gpui::element::IntoElement for ely_media::PlaybackSpeedControl
+impl gpui::element::IntoElement for ely_media::Playlist
+impl gpui::element::IntoElement for ely_media::ScreenRecorderControls
+impl gpui::element::IntoElement for ely_media::Scrubber
+impl gpui::element::IntoElement for ely_media::SubtitleEditor
+impl gpui::element::IntoElement for ely_media::VideoPlayer
+impl gpui::element::IntoElement for ely_media::VideoThumbnailStrip
+impl gpui::element::IntoElement for ely_media::VolumeControl
+impl gpui::element::RenderOnce for ely_media::AudioPlayer
+impl gpui::element::RenderOnce for ely_media::AudioSpectrum
+impl gpui::element::RenderOnce for ely_media::AudioWaveform
+impl gpui::element::RenderOnce for ely_media::CameraPreview
+impl gpui::element::RenderOnce for ely_media::DeviceSelector
+impl gpui::element::RenderOnce for ely_media::ImageAnnotator
+impl gpui::element::RenderOnce for ely_media::ImageCropper
+impl gpui::element::RenderOnce for ely_media::ImageThumbnail
+impl gpui::element::RenderOnce for ely_media::ImageUpload
+impl gpui::element::RenderOnce for ely_media::ImageViewer
+impl gpui::element::RenderOnce for ely_media::MediaControls
+impl gpui::element::RenderOnce for ely_media::MicLevelMeter
+impl gpui::element::RenderOnce for ely_media::ModelViewer
+impl gpui::element::RenderOnce for ely_media::PlaybackSpeedControl
+impl gpui::element::RenderOnce for ely_media::Playlist
+impl gpui::element::RenderOnce for ely_media::ScreenRecorderControls
+impl gpui::element::RenderOnce for ely_media::Scrubber
+impl gpui::element::RenderOnce for ely_media::SubtitleEditor
+impl gpui::element::RenderOnce for ely_media::VideoPlayer
+impl gpui::element::RenderOnce for ely_media::VideoThumbnailStrip
+impl gpui::element::RenderOnce for ely_media::VolumeControl
+pub const ely_media::Crop::WHOLE: Self
+pub const ely_media::Orbit::START: Self
+pub const ely_media::SPEEDS: [f32; 6]
+pub ely_media::Crop::h: f32
+pub ely_media::Crop::w: f32
+pub ely_media::Crop::x: f32
+pub ely_media::Crop::y: f32
+pub ely_media::Cue::end: core::time::Duration
+pub ely_media::Cue::key: gpui_shared_string::SharedString
+pub ely_media::Cue::start: core::time::Duration
+pub ely_media::Cue::text: gpui_shared_string::SharedString
+pub ely_media::Device::key: gpui_shared_string::SharedString
+pub ely_media::Device::name: gpui_shared_string::SharedString
+pub ely_media::DeviceKind::Camera
+pub ely_media::DeviceKind::Microphone
+pub ely_media::DeviceKind::Speaker
+pub ely_media::Mark::Arrow
+pub ely_media::Mark::Arrow::color: usize
+pub ely_media::Mark::Arrow::from: (f32, f32)
+pub ely_media::Mark::Arrow::to: (f32, f32)
+pub ely_media::Mark::Box
+pub ely_media::Mark::Box::color: usize
+pub ely_media::Mark::Box::from: (f32, f32)
+pub ely_media::Mark::Box::to: (f32, f32)
+pub ely_media::Mark::Pen
+pub ely_media::Mark::Pen::color: usize
+pub ely_media::Mark::Pen::points: alloc::vec::Vec<(f32, f32)>
+pub ely_media::Mark::Pin
+pub ely_media::Mark::Pin::at: (f32, f32)
+pub ely_media::Mark::Pin::color: usize
+pub ely_media::Orbit::distance: f32
+pub ely_media::Orbit::pitch: f32
+pub ely_media::Orbit::yaw: f32
+pub ely_media::Recording::Idle
+pub ely_media::Recording::Paused
+pub ely_media::Recording::Paused::at: std::time::Instant
+pub ely_media::Recording::Paused::since: std::time::Instant
+pub ely_media::Recording::Running
+pub ely_media::Recording::Running::since: std::time::Instant
+pub ely_media::Repeat::All
+pub ely_media::Repeat::Off
+pub ely_media::Repeat::One
+pub ely_media::Tool::Arrow
+pub ely_media::Tool::Box
+pub ely_media::Tool::Pen
+pub ely_media::Tool::Pin
+pub ely_media::Tool::Select
+pub ely_media::Track::artist: gpui_shared_string::SharedString
+pub ely_media::Track::key: gpui_shared_string::SharedString
+pub ely_media::Track::length: core::time::Duration
+pub ely_media::Track::title: gpui_shared_string::SharedString
+pub enum ely_media::DeviceKind
+pub enum ely_media::Mark
+pub enum ely_media::Recording
+pub enum ely_media::Repeat
+pub enum ely_media::Tool
+pub fn ely_media::AudioPlayer::artwork(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_media::AudioPlayer::controls(self, ely_media::MediaControls) -> Self
+pub fn ely_media::AudioPlayer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::AudioPlayer::into_element(self) -> Self::Element
+pub fn ely_media::AudioPlayer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, core::time::Duration, core::time::Duration) -> Self
+pub fn ely_media::AudioPlayer::on_seek(self, impl core::ops::function::Fn(core::time::Duration, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::AudioPlayer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::AudioPlayer::volume(self, ely_media::VolumeControl) -> Self
+pub fn ely_media::AudioSpectrum::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::AudioSpectrum::into_element(self) -> Self::Element
+pub fn ely_media::AudioSpectrum::new(impl core::convert::Into<alloc::vec::Vec<f32>>) -> Self
+pub fn ely_media::AudioSpectrum::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::AudioWaveform::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::AudioWaveform::into_element(self) -> Self::Element
+pub fn ely_media::AudioWaveform::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::vec::Vec<f32>>, core::time::Duration, core::time::Duration) -> Self
+pub fn ely_media::AudioWaveform::on_seek(self, impl core::ops::function::Fn(core::time::Duration, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::AudioWaveform::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::CameraPreview::frame(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_media::CameraPreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::CameraPreview::into_element(self) -> Self::Element
+pub fn ely_media::CameraPreview::name(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_media::CameraPreview::new(impl core::convert::Into<gpui::window::ElementId>, f32) -> Self
+pub fn ely_media::CameraPreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Crop::clone(&self) -> Self
+pub fn ely_media::Crop::eq(&self, &Self) -> bool
+pub fn ely_media::Crop::fitted(self, f32, f32) -> Self
+pub fn ely_media::Crop::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::Cue::clone(&self) -> Self
+pub fn ely_media::Cue::eq(&self, &Self) -> bool
+pub fn ely_media::Cue::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::Device::clone(&self) -> Self
+pub fn ely_media::Device::eq(&self, &Self) -> bool
+pub fn ely_media::Device::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::DeviceKind::clone(&self) -> Self
+pub fn ely_media::DeviceKind::eq(&self, &Self) -> bool
+pub fn ely_media::DeviceKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::DeviceSelector::chosen(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_media::DeviceSelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::DeviceSelector::into_element(self) -> Self::Element
+pub fn ely_media::DeviceSelector::new(impl core::convert::Into<gpui::window::ElementId>, ely_media::DeviceKind, impl core::iter::traits::collect::IntoIterator<Item = ely_media::Device>) -> Self
+pub fn ely_media::DeviceSelector::on_change(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::DeviceSelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::ImageAnnotator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ImageAnnotator::into_element(self) -> Self::Element
+pub fn ely_media::ImageAnnotator::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui::elements::img::ImageSource>, f32, impl core::iter::traits::collect::IntoIterator<Item = ely_media::Mark>) -> Self
+pub fn ely_media::ImageAnnotator::on_change(self, impl core::ops::function::Fn(&[ely_media::Mark], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ImageAnnotator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::ImageCropper::aspect(self, core::option::Option<f32>) -> Self
+pub fn ely_media::ImageCropper::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ImageCropper::into_element(self) -> Self::Element
+pub fn ely_media::ImageCropper::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui::elements::img::ImageSource>, f32, ely_media::Crop) -> Self
+pub fn ely_media::ImageCropper::on_change(self, impl core::ops::function::Fn(ely_media::Crop, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ImageCropper::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::ImageThumbnail::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ImageThumbnail::into_element(self) -> Self::Element
+pub fn ely_media::ImageThumbnail::is_selected(&self) -> bool
+pub fn ely_media::ImageThumbnail::label(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_media::ImageThumbnail::name(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_media::ImageThumbnail::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui::elements::img::ImageSource>, f32) -> Self
+pub fn ely_media::ImageThumbnail::on_click(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ImageThumbnail::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::ImageThumbnail::selected(self, bool) -> Self
+pub fn ely_media::ImageUpload::aspect(self, core::option::Option<f32>) -> Self
+pub fn ely_media::ImageUpload::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ImageUpload::into_element(self) -> Self::Element
+pub fn ely_media::ImageUpload::new(impl core::convert::Into<gpui::window::ElementId>, core::option::Option<std::path::PathBuf>, core::option::Option<ely_media::Crop>) -> Self
+pub fn ely_media::ImageUpload::on_crop(self, impl core::ops::function::Fn(ely_media::Crop, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ImageUpload::on_pick(self, impl core::ops::function::Fn(std::path::PathBuf, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ImageUpload::on_remove(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ImageUpload::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::ImageViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ImageViewer::into_element(self) -> Self::Element
+pub fn ely_media::ImageViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui::asset_cache::Resource>) -> Self
+pub fn ely_media::ImageViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Mark::clone(&self) -> Self
+pub fn ely_media::Mark::eq(&self, &Self) -> bool
+pub fn ely_media::Mark::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::MediaControls::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::MediaControls::into_element(self) -> Self::Element
+pub fn ely_media::MediaControls::new(impl core::convert::Into<gpui::window::ElementId>, bool) -> Self
+pub fn ely_media::MediaControls::on_back(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::MediaControls::on_forward(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::MediaControls::on_play(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::MediaControls::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::MediaControls::repeat(self, ely_media::Repeat, impl core::ops::function::Fn(ely_media::Repeat, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::MediaControls::shuffle(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::MicLevelMeter::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::MicLevelMeter::into_element(self) -> Self::Element
+pub fn ely_media::MicLevelMeter::new(f32) -> Self
+pub fn ely_media::MicLevelMeter::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::ModelViewer::frame(self, impl core::convert::Into<gpui::elements::img::ImageSource>) -> Self
+pub fn ely_media::ModelViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ModelViewer::into_element(self) -> Self::Element
+pub fn ely_media::ModelViewer::new(impl core::convert::Into<gpui::window::ElementId>, f32, ely_media::Orbit) -> Self
+pub fn ely_media::ModelViewer::on_orbit(self, impl core::ops::function::Fn(ely_media::Orbit, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ModelViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Orbit::clone(&self) -> Self
+pub fn ely_media::Orbit::eq(&self, &Self) -> bool
+pub fn ely_media::Orbit::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::PlaybackSpeedControl::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::PlaybackSpeedControl::into_element(self) -> Self::Element
+pub fn ely_media::PlaybackSpeedControl::new(impl core::convert::Into<gpui::window::ElementId>, f32) -> Self
+pub fn ely_media::PlaybackSpeedControl::on_change(self, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::PlaybackSpeedControl::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Playlist::current(self, impl core::convert::Into<gpui_shared_string::SharedString>, bool) -> Self
+pub fn ely_media::Playlist::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::Playlist::into_element(self) -> Self::Element
+pub fn ely_media::Playlist::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_media::Track>) -> Self
+pub fn ely_media::Playlist::on_play(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::Playlist::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Recording::clone(&self) -> Self
+pub fn ely_media::Recording::eq(&self, &Self) -> bool
+pub fn ely_media::Recording::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::Repeat::clone(&self) -> Self
+pub fn ely_media::Repeat::eq(&self, &Self) -> bool
+pub fn ely_media::Repeat::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::Repeat::next(self) -> Self
+pub fn ely_media::ScreenRecorderControls::camera(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ScreenRecorderControls::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::ScreenRecorderControls::into_element(self) -> Self::Element
+pub fn ely_media::ScreenRecorderControls::mic(self, bool, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ScreenRecorderControls::new(impl core::convert::Into<gpui::window::ElementId>, ely_media::Recording) -> Self
+pub fn ely_media::ScreenRecorderControls::on_pause(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ScreenRecorderControls::on_record(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ScreenRecorderControls::on_resume(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ScreenRecorderControls::on_stop(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::ScreenRecorderControls::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Scrubber::chapter(self, core::time::Duration, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_media::Scrubber::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::Scrubber::into_element(self) -> Self::Element
+pub fn ely_media::Scrubber::loaded(self, core::time::Duration) -> Self
+pub fn ely_media::Scrubber::new(impl core::convert::Into<gpui::window::ElementId>, core::time::Duration, core::time::Duration) -> Self
+pub fn ely_media::Scrubber::on_seek(self, impl core::ops::function::Fn(core::time::Duration, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::Scrubber::over_media(self) -> Self
+pub fn ely_media::Scrubber::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::SubtitleEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::SubtitleEditor::into_element(self) -> Self::Element
+pub fn ely_media::SubtitleEditor::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_media::Cue>, core::time::Duration) -> Self
+pub fn ely_media::SubtitleEditor::on_change(self, impl core::ops::function::Fn(&[ely_media::Cue], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::SubtitleEditor::on_seek(self, impl core::ops::function::Fn(core::time::Duration, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::SubtitleEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::Tool::clone(&self) -> Self
+pub fn ely_media::Tool::eq(&self, &Self) -> bool
+pub fn ely_media::Tool::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::Track::clone(&self) -> Self
+pub fn ely_media::Track::eq(&self, &Self) -> bool
+pub fn ely_media::Track::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_media::VideoPlayer::captions(self, bool, core::option::Option<gpui_shared_string::SharedString>) -> Self
+pub fn ely_media::VideoPlayer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::VideoPlayer::into_element(self) -> Self::Element
+pub fn ely_media::VideoPlayer::loaded(self, core::time::Duration) -> Self
+pub fn ely_media::VideoPlayer::new(impl core::convert::Into<gpui::window::ElementId>, core::option::Option<gpui::elements::img::ImageSource>, f32, core::time::Duration, core::time::Duration) -> Self
+pub fn ely_media::VideoPlayer::on_captions(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoPlayer::on_fullscreen(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoPlayer::on_picture(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoPlayer::on_play(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoPlayer::on_seek(self, impl core::ops::function::Fn(core::time::Duration, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoPlayer::on_speed(self, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoPlayer::playing(self, bool) -> Self
+pub fn ely_media::VideoPlayer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::VideoPlayer::speed(self, f32) -> Self
+pub fn ely_media::VideoThumbnailStrip::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::VideoThumbnailStrip::into_element(self) -> Self::Element
+pub fn ely_media::VideoThumbnailStrip::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui::elements::img::ImageSource>>, core::time::Duration, core::time::Duration) -> Self
+pub fn ely_media::VideoThumbnailStrip::on_seek(self, impl core::ops::function::Fn(core::time::Duration, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoThumbnailStrip::on_trim(self, impl core::ops::function::Fn((core::time::Duration, core::time::Duration), &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VideoThumbnailStrip::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_media::VideoThumbnailStrip::trim(self, core::time::Duration, core::time::Duration) -> Self
+pub fn ely_media::VolumeControl::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_media::VolumeControl::into_element(self) -> Self::Element
+pub fn ely_media::VolumeControl::new(impl core::convert::Into<gpui::window::ElementId>, f32, bool) -> Self
+pub fn ely_media::VolumeControl::on_level(self, impl core::ops::function::Fn(f64, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VolumeControl::on_mute(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_media::VolumeControl::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub mod ely_media
+pub struct ely_media::AudioPlayer
+pub struct ely_media::AudioSpectrum
+pub struct ely_media::AudioWaveform
+pub struct ely_media::CameraPreview
+pub struct ely_media::Crop
+pub struct ely_media::Cue
+pub struct ely_media::Device
+pub struct ely_media::DeviceSelector
+pub struct ely_media::ImageAnnotator
+pub struct ely_media::ImageCropper
+pub struct ely_media::ImageThumbnail
+pub struct ely_media::ImageUpload
+pub struct ely_media::ImageViewer
+pub struct ely_media::MediaControls
+pub struct ely_media::MicLevelMeter
+pub struct ely_media::ModelViewer
+pub struct ely_media::Orbit
+pub struct ely_media::PlaybackSpeedControl
+pub struct ely_media::Playlist
+pub struct ely_media::ScreenRecorderControls
+pub struct ely_media::Scrubber
+pub struct ely_media::SubtitleEditor
+pub struct ely_media::Track
+pub struct ely_media::VideoPlayer
+pub struct ely_media::VideoThumbnailStrip
+pub struct ely_media::VolumeControl
+pub type ely_media::AudioPlayer::Element = gpui::view::ViewElement<ely_media::AudioPlayer>
+pub type ely_media::AudioSpectrum::Element = gpui::view::ViewElement<ely_media::AudioSpectrum>
+pub type ely_media::AudioWaveform::Element = gpui::view::ViewElement<ely_media::AudioWaveform>
+pub type ely_media::CameraPreview::Element = gpui::view::ViewElement<ely_media::CameraPreview>
+pub type ely_media::DeviceSelector::Element = gpui::view::ViewElement<ely_media::DeviceSelector>
+pub type ely_media::DeviceSelector::Value<'a> = &'a gpui_shared_string::SharedString
+pub type ely_media::ImageAnnotator::Element = gpui::view::ViewElement<ely_media::ImageAnnotator>
+pub type ely_media::ImageAnnotator::Value<'a> = &'a [ely_media::Mark]
+pub type ely_media::ImageCropper::Element = gpui::view::ViewElement<ely_media::ImageCropper>
+pub type ely_media::ImageCropper::Value<'a> = ely_media::Crop
+pub type ely_media::ImageThumbnail::Element = gpui::view::ViewElement<ely_media::ImageThumbnail>
+pub type ely_media::ImageUpload::Element = gpui::view::ViewElement<ely_media::ImageUpload>
+pub type ely_media::ImageViewer::Element = gpui::view::ViewElement<ely_media::ImageViewer>
+pub type ely_media::MediaControls::Element = gpui::view::ViewElement<ely_media::MediaControls>
+pub type ely_media::MicLevelMeter::Element = gpui::view::ViewElement<ely_media::MicLevelMeter>
+pub type ely_media::ModelViewer::Element = gpui::view::ViewElement<ely_media::ModelViewer>
+pub type ely_media::PlaybackSpeedControl::Element = gpui::view::ViewElement<ely_media::PlaybackSpeedControl>
+pub type ely_media::PlaybackSpeedControl::Value<'a> = f32
+pub type ely_media::Playlist::Element = gpui::view::ViewElement<ely_media::Playlist>
+pub type ely_media::ScreenRecorderControls::Element = gpui::view::ViewElement<ely_media::ScreenRecorderControls>
+pub type ely_media::Scrubber::Element = gpui::view::ViewElement<ely_media::Scrubber>
+pub type ely_media::SubtitleEditor::Element = gpui::view::ViewElement<ely_media::SubtitleEditor>
+pub type ely_media::SubtitleEditor::Value<'a> = &'a [ely_media::Cue]
+pub type ely_media::VideoPlayer::Element = gpui::view::ViewElement<ely_media::VideoPlayer>
+pub type ely_media::VideoThumbnailStrip::Element = gpui::view::ViewElement<ely_media::VideoThumbnailStrip>
+pub type ely_media::VolumeControl::Element = gpui::view::ViewElement<ely_media::VolumeControl>
+pub use ely_media::AudioPlayer = ely_media::listen::AudioPlayer
+pub use ely_media::AudioSpectrum = ely_media::audio::AudioSpectrum
+pub use ely_media::AudioWaveform = ely_media::audio::AudioWaveform
+pub use ely_media::CameraPreview = ely_media::camera::CameraPreview
+pub use ely_media::Crop = ely_media::crop::Crop
+pub use ely_media::Cue = ely_media::subtitles::Cue
+pub use ely_media::Device = ely_media::camera::Device
+pub use ely_media::DeviceKind = ely_media::camera::DeviceKind
+pub use ely_media::DeviceSelector = ely_media::camera::DeviceSelector
+pub use ely_media::ImageAnnotator = ely_media::annotate::ImageAnnotator
+pub use ely_media::ImageCropper = ely_media::cropper::ImageCropper
+pub use ely_media::ImageThumbnail = ely_media::thumbnail::ImageThumbnail
+pub use ely_media::ImageUpload = ely_media::upload::ImageUpload
+pub use ely_media::ImageViewer = ely_media::viewer::ImageViewer
+pub use ely_media::Mark = ely_media::marks::Mark
+pub use ely_media::MediaControls = ely_media::controls::MediaControls
+pub use ely_media::MicLevelMeter = ely_media::record::MicLevelMeter
+pub use ely_media::ModelViewer = ely_media::model::ModelViewer
+pub use ely_media::Orbit = ely_media::model::Orbit
+pub use ely_media::PlaybackSpeedControl = ely_media::controls::PlaybackSpeedControl
+pub use ely_media::Playlist = ely_media::listen::Playlist
+pub use ely_media::Recording = ely_media::record::Recording
+pub use ely_media::Repeat = ely_media::controls::Repeat
+pub use ely_media::SPEEDS = ely_media::player::SPEEDS
+pub use ely_media::ScreenRecorderControls = ely_media::record::ScreenRecorderControls
+pub use ely_media::Scrubber = ely_media::scrubber::Scrubber
+pub use ely_media::SubtitleEditor = ely_media::subtitles::SubtitleEditor
+pub use ely_media::Tool = ely_media::marks::Tool
+pub use ely_media::Track = ely_media::listen::Track
+pub use ely_media::VideoPlayer = ely_media::player::VideoPlayer
+pub use ely_media::VideoThumbnailStrip = ely_media::strip::VideoThumbnailStrip
+pub use ely_media::VolumeControl = ely_media::controls::VolumeControl

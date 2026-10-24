@@ -1,0 +1,308 @@
+impl core::clone::Clone for ely_dashboard::AlertState
+impl core::clone::Clone for ely_dashboard::Check
+impl core::clone::Clone for ely_dashboard::DashboardFilter
+impl core::clone::Clone for ely_dashboard::Health
+impl core::clone::Clone for ely_dashboard::Incident
+impl core::clone::Clone for ely_dashboard::IncidentPhase
+impl core::clone::Clone for ely_dashboard::IncidentUpdate
+impl core::clone::Clone for ely_dashboard::MonitorAlert
+impl core::clone::Clone for ely_dashboard::Service
+impl core::clone::Clone for ely_dashboard::StreamEvent
+impl core::clone::Clone for ely_dashboard::Tile
+impl core::clone::Clone for ely_dashboard::TimeWindow
+impl core::cmp::Eq for ely_dashboard::AlertState
+impl core::cmp::Eq for ely_dashboard::Check
+impl core::cmp::Eq for ely_dashboard::Health
+impl core::cmp::Eq for ely_dashboard::IncidentPhase
+impl core::cmp::Eq for ely_dashboard::Tile
+impl core::cmp::Eq for ely_dashboard::TimeWindow
+impl core::cmp::Ord for ely_dashboard::Health
+impl core::cmp::PartialEq for ely_dashboard::AlertState
+impl core::cmp::PartialEq for ely_dashboard::Check
+impl core::cmp::PartialEq for ely_dashboard::DashboardFilter
+impl core::cmp::PartialEq for ely_dashboard::Health
+impl core::cmp::PartialEq for ely_dashboard::Incident
+impl core::cmp::PartialEq for ely_dashboard::IncidentPhase
+impl core::cmp::PartialEq for ely_dashboard::IncidentUpdate
+impl core::cmp::PartialEq for ely_dashboard::MonitorAlert
+impl core::cmp::PartialEq for ely_dashboard::Service
+impl core::cmp::PartialEq for ely_dashboard::StreamEvent
+impl core::cmp::PartialEq for ely_dashboard::Tile
+impl core::cmp::PartialEq for ely_dashboard::TimeWindow
+impl core::cmp::PartialOrd for ely_dashboard::Health
+impl core::fmt::Debug for ely_dashboard::AlertState
+impl core::fmt::Debug for ely_dashboard::Check
+impl core::fmt::Debug for ely_dashboard::DashboardFilter
+impl core::fmt::Debug for ely_dashboard::Health
+impl core::fmt::Debug for ely_dashboard::Incident
+impl core::fmt::Debug for ely_dashboard::IncidentPhase
+impl core::fmt::Debug for ely_dashboard::IncidentUpdate
+impl core::fmt::Debug for ely_dashboard::MonitorAlert
+impl core::fmt::Debug for ely_dashboard::Service
+impl core::fmt::Debug for ely_dashboard::StreamEvent
+impl core::fmt::Debug for ely_dashboard::Tile
+impl core::fmt::Debug for ely_dashboard::TimeWindow
+impl core::marker::Copy for ely_dashboard::AlertState
+impl core::marker::Copy for ely_dashboard::Check
+impl core::marker::Copy for ely_dashboard::Health
+impl core::marker::Copy for ely_dashboard::IncidentPhase
+impl core::marker::Copy for ely_dashboard::TimeWindow
+impl core::marker::StructuralPartialEq for ely_dashboard::AlertState
+impl core::marker::StructuralPartialEq for ely_dashboard::Check
+impl core::marker::StructuralPartialEq for ely_dashboard::DashboardFilter
+impl core::marker::StructuralPartialEq for ely_dashboard::Health
+impl core::marker::StructuralPartialEq for ely_dashboard::Incident
+impl core::marker::StructuralPartialEq for ely_dashboard::IncidentPhase
+impl core::marker::StructuralPartialEq for ely_dashboard::IncidentUpdate
+impl core::marker::StructuralPartialEq for ely_dashboard::MonitorAlert
+impl core::marker::StructuralPartialEq for ely_dashboard::Service
+impl core::marker::StructuralPartialEq for ely_dashboard::StreamEvent
+impl core::marker::StructuralPartialEq for ely_dashboard::Tile
+impl core::marker::StructuralPartialEq for ely_dashboard::TimeWindow
+impl ely_dashboard::AlertList
+impl ely_dashboard::DashboardCard
+impl ely_dashboard::DashboardFilterBar
+impl ely_dashboard::DashboardGrid
+impl ely_dashboard::EventStream
+impl ely_dashboard::Health
+impl ely_dashboard::HealthCheck
+impl ely_dashboard::Incident
+impl ely_dashboard::IncidentCard
+impl ely_dashboard::RefreshIntervalSelector
+impl ely_dashboard::ServiceStatus
+impl ely_dashboard::Tile
+impl ely_dashboard::TimeWindow
+impl ely_dashboard::UptimeBar
+impl gpui::element::IntoElement for ely_dashboard::AlertList
+impl gpui::element::IntoElement for ely_dashboard::DashboardCard
+impl gpui::element::IntoElement for ely_dashboard::DashboardFilterBar
+impl gpui::element::IntoElement for ely_dashboard::DashboardGrid
+impl gpui::element::IntoElement for ely_dashboard::EventStream
+impl gpui::element::IntoElement for ely_dashboard::HealthCheck
+impl gpui::element::IntoElement for ely_dashboard::IncidentCard
+impl gpui::element::IntoElement for ely_dashboard::RefreshIntervalSelector
+impl gpui::element::IntoElement for ely_dashboard::ServiceStatus
+impl gpui::element::IntoElement for ely_dashboard::UptimeBar
+impl gpui::element::ParentElement for ely_dashboard::DashboardCard
+impl gpui::element::RenderOnce for ely_dashboard::AlertList
+impl gpui::element::RenderOnce for ely_dashboard::DashboardCard
+impl gpui::element::RenderOnce for ely_dashboard::DashboardFilterBar
+impl gpui::element::RenderOnce for ely_dashboard::DashboardGrid
+impl gpui::element::RenderOnce for ely_dashboard::EventStream
+impl gpui::element::RenderOnce for ely_dashboard::HealthCheck
+impl gpui::element::RenderOnce for ely_dashboard::IncidentCard
+impl gpui::element::RenderOnce for ely_dashboard::RefreshIntervalSelector
+impl gpui::element::RenderOnce for ely_dashboard::ServiceStatus
+impl gpui::element::RenderOnce for ely_dashboard::UptimeBar
+pub const ely_dashboard::TimeWindow::ALL: [ely_dashboard::TimeWindow; 6]
+pub ely_dashboard::AlertState::Acknowledged
+pub ely_dashboard::AlertState::Firing
+pub ely_dashboard::AlertState::Resolved
+pub ely_dashboard::Check::Failing
+pub ely_dashboard::Check::Passing
+pub ely_dashboard::Check::Pending
+pub ely_dashboard::Check::Warning
+pub ely_dashboard::DashboardFilter::choices: alloc::vec::Vec<ely_core::forms::options::Choice>
+pub ely_dashboard::DashboardFilter::key: gpui_shared_string::SharedString
+pub ely_dashboard::DashboardFilter::name: gpui_shared_string::SharedString
+pub ely_dashboard::DashboardFilter::picked: core::option::Option<gpui_shared_string::SharedString>
+pub ely_dashboard::Health::Degraded
+pub ely_dashboard::Health::Maintenance
+pub ely_dashboard::Health::MajorOutage
+pub ely_dashboard::Health::Operational
+pub ely_dashboard::Health::PartialOutage
+pub ely_dashboard::Incident::services: alloc::vec::Vec<gpui_shared_string::SharedString>
+pub ely_dashboard::Incident::severity: ely_core::primitives::severity::Severity
+pub ely_dashboard::Incident::started: jiff::timestamp::Timestamp
+pub ely_dashboard::Incident::title: gpui_shared_string::SharedString
+pub ely_dashboard::Incident::updates: alloc::vec::Vec<ely_dashboard::IncidentUpdate>
+pub ely_dashboard::IncidentPhase::Identified
+pub ely_dashboard::IncidentPhase::Investigating
+pub ely_dashboard::IncidentPhase::Monitoring
+pub ely_dashboard::IncidentPhase::Resolved
+pub ely_dashboard::IncidentUpdate::at: jiff::timestamp::Timestamp
+pub ely_dashboard::IncidentUpdate::phase: ely_dashboard::IncidentPhase
+pub ely_dashboard::IncidentUpdate::text: gpui_shared_string::SharedString
+pub ely_dashboard::MonitorAlert::key: gpui_shared_string::SharedString
+pub ely_dashboard::MonitorAlert::severity: ely_core::primitives::severity::Severity
+pub ely_dashboard::MonitorAlert::since: jiff::timestamp::Timestamp
+pub ely_dashboard::MonitorAlert::source: gpui_shared_string::SharedString
+pub ely_dashboard::MonitorAlert::state: ely_dashboard::AlertState
+pub ely_dashboard::MonitorAlert::title: gpui_shared_string::SharedString
+pub ely_dashboard::Service::health: ely_dashboard::Health
+pub ely_dashboard::Service::name: gpui_shared_string::SharedString
+pub ely_dashboard::Service::uptime: core::option::Option<f32>
+pub ely_dashboard::StreamEvent::at: jiff::timestamp::Timestamp
+pub ely_dashboard::StreamEvent::key: gpui_shared_string::SharedString
+pub ely_dashboard::StreamEvent::kind: gpui_shared_string::SharedString
+pub ely_dashboard::StreamEvent::text: gpui_shared_string::SharedString
+pub ely_dashboard::StreamEvent::tone: ely_core::data_display::badge::Tone
+pub ely_dashboard::Tile::h: u32
+pub ely_dashboard::Tile::key: gpui_shared_string::SharedString
+pub ely_dashboard::Tile::w: u32
+pub ely_dashboard::Tile::x: u32
+pub ely_dashboard::Tile::y: u32
+pub ely_dashboard::TimeWindow::Day
+pub ely_dashboard::TimeWindow::Hour
+pub ely_dashboard::TimeWindow::Hours6
+pub ely_dashboard::TimeWindow::Minutes15
+pub ely_dashboard::TimeWindow::Month
+pub ely_dashboard::TimeWindow::Week
+pub enum ely_dashboard::AlertState
+pub enum ely_dashboard::Check
+pub enum ely_dashboard::Health
+pub enum ely_dashboard::IncidentPhase
+pub enum ely_dashboard::TimeWindow
+pub fn ely_dashboard::AlertList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::AlertList::into_element(self) -> Self::Element
+pub fn ely_dashboard::AlertList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_dashboard::MonitorAlert>, jiff::timestamp::Timestamp) -> Self
+pub fn ely_dashboard::AlertList::on_acknowledge(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_dashboard::AlertList::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_dashboard::AlertList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::AlertState::clone(&self) -> Self
+pub fn ely_dashboard::AlertState::eq(&self, &Self) -> bool
+pub fn ely_dashboard::AlertState::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::Check::clone(&self) -> Self
+pub fn ely_dashboard::Check::eq(&self, &Self) -> bool
+pub fn ely_dashboard::Check::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::DashboardCard::action(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_dashboard::DashboardCard::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_dashboard::DashboardCard::footer(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_dashboard::DashboardCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::DashboardCard::into_element(self) -> Self::Element
+pub fn ely_dashboard::DashboardCard::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_dashboard::DashboardCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::DashboardCard::subtitle(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_dashboard::DashboardFilter::clone(&self) -> Self
+pub fn ely_dashboard::DashboardFilter::eq(&self, &Self) -> bool
+pub fn ely_dashboard::DashboardFilter::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::DashboardFilterBar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::DashboardFilterBar::into_element(self) -> Self::Element
+pub fn ely_dashboard::DashboardFilterBar::new(impl core::convert::Into<gpui::window::ElementId>, ely_dashboard::TimeWindow, impl core::iter::traits::collect::IntoIterator<Item = ely_dashboard::DashboardFilter>, impl core::ops::function::Fn(ely_dashboard::TimeWindow, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&gpui_shared_string::SharedString, core::option::Option<gpui_shared_string::SharedString>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_dashboard::DashboardFilterBar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::DashboardGrid::card(self, impl core::convert::Into<gpui_shared_string::SharedString>, ely_dashboard::DashboardCard) -> Self
+pub fn ely_dashboard::DashboardGrid::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::DashboardGrid::into_element(self) -> Self::Element
+pub fn ely_dashboard::DashboardGrid::new(impl core::convert::Into<gpui::window::ElementId>, u32, impl core::iter::traits::collect::IntoIterator<Item = ely_dashboard::Tile>, impl core::ops::function::Fn(alloc::vec::Vec<ely_dashboard::Tile>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_dashboard::DashboardGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::EventStream::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::EventStream::into_element(self) -> Self::Element
+pub fn ely_dashboard::EventStream::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_dashboard::StreamEvent>, jiff::timestamp::Timestamp) -> Self
+pub fn ely_dashboard::EventStream::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::Health::clone(&self) -> Self
+pub fn ely_dashboard::Health::cmp(&self, &Self) -> core::cmp::Ordering
+pub fn ely_dashboard::Health::eq(&self, &Self) -> bool
+pub fn ely_dashboard::Health::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::Health::key(self) -> &'static str
+pub fn ely_dashboard::Health::partial_cmp(&self, &Self) -> core::option::Option<core::cmp::Ordering>
+pub fn ely_dashboard::Health::tone(self) -> ely_core::data_display::badge::Tone
+pub fn ely_dashboard::Health::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_dashboard::HealthCheck::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::HealthCheck::into_element(self) -> Self::Element
+pub fn ely_dashboard::HealthCheck::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_dashboard::Check) -> Self
+pub fn ely_dashboard::HealthCheck::ran(self, jiff::timestamp::Timestamp, jiff::timestamp::Timestamp) -> Self
+pub fn ely_dashboard::HealthCheck::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::HealthCheck::took(self, u32) -> Self
+pub fn ely_dashboard::Incident::clone(&self) -> Self
+pub fn ely_dashboard::Incident::eq(&self, &Self) -> bool
+pub fn ely_dashboard::Incident::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::Incident::phase(&self) -> ely_dashboard::IncidentPhase
+pub fn ely_dashboard::IncidentCard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::IncidentCard::into_element(self) -> Self::Element
+pub fn ely_dashboard::IncidentCard::new(ely_dashboard::Incident, jiff::timestamp::Timestamp) -> Self
+pub fn ely_dashboard::IncidentCard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::IncidentPhase::clone(&self) -> Self
+pub fn ely_dashboard::IncidentPhase::eq(&self, &Self) -> bool
+pub fn ely_dashboard::IncidentPhase::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::IncidentUpdate::clone(&self) -> Self
+pub fn ely_dashboard::IncidentUpdate::eq(&self, &Self) -> bool
+pub fn ely_dashboard::IncidentUpdate::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::MonitorAlert::clone(&self) -> Self
+pub fn ely_dashboard::MonitorAlert::eq(&self, &Self) -> bool
+pub fn ely_dashboard::MonitorAlert::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::RefreshIntervalSelector::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::RefreshIntervalSelector::into_element(self) -> Self::Element
+pub fn ely_dashboard::RefreshIntervalSelector::new(impl core::convert::Into<gpui::window::ElementId>, core::option::Option<u32>, jiff::timestamp::Timestamp, jiff::timestamp::Timestamp, impl core::ops::function::Fn(core::option::Option<u32>, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_dashboard::RefreshIntervalSelector::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::Service::clone(&self) -> Self
+pub fn ely_dashboard::Service::eq(&self, &Self) -> bool
+pub fn ely_dashboard::Service::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::ServiceStatus::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::ServiceStatus::into_element(self) -> Self::Element
+pub fn ely_dashboard::ServiceStatus::new(impl core::iter::traits::collect::IntoIterator<Item = ely_dashboard::Service>) -> Self
+pub fn ely_dashboard::ServiceStatus::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::StreamEvent::clone(&self) -> Self
+pub fn ely_dashboard::StreamEvent::eq(&self, &Self) -> bool
+pub fn ely_dashboard::StreamEvent::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::Tile::clone(&self) -> Self
+pub fn ely_dashboard::Tile::eq(&self, &Self) -> bool
+pub fn ely_dashboard::Tile::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::Tile::new(impl core::convert::Into<gpui_shared_string::SharedString>, (u32, u32), (u32, u32)) -> Self
+pub fn ely_dashboard::TimeWindow::clone(&self) -> Self
+pub fn ely_dashboard::TimeWindow::eq(&self, &Self) -> bool
+pub fn ely_dashboard::TimeWindow::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_dashboard::TimeWindow::key(self) -> &'static str
+pub fn ely_dashboard::TimeWindow::seconds(self) -> i64
+pub fn ely_dashboard::TimeWindow::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_dashboard::UptimeBar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_dashboard::UptimeBar::into_element(self) -> Self::Element
+pub fn ely_dashboard::UptimeBar::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, jiff::civil::date::Date, impl core::iter::traits::collect::IntoIterator<Item = core::option::Option<f32>>) -> Self
+pub fn ely_dashboard::UptimeBar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_dashboard::arranged(&[ely_dashboard::Tile], ely_dashboard::Tile, u32) -> core::option::Option<alloc::vec::Vec<ely_dashboard::Tile>>
+pub fn ely_dashboard::overall(&[ely_dashboard::Service]) -> ely_dashboard::Health
+pub fn ely_dashboard::stepped(&[ely_dashboard::Tile], &str, bool) -> core::option::Option<ely_dashboard::Tile>
+pub fn ely_dashboard::uptime(&[core::option::Option<f32>]) -> core::option::Option<f32>
+pub mod ely_dashboard
+pub struct ely_dashboard::AlertList
+pub struct ely_dashboard::DashboardCard
+pub struct ely_dashboard::DashboardFilter
+pub struct ely_dashboard::DashboardFilterBar
+pub struct ely_dashboard::DashboardGrid
+pub struct ely_dashboard::EventStream
+pub struct ely_dashboard::HealthCheck
+pub struct ely_dashboard::Incident
+pub struct ely_dashboard::IncidentCard
+pub struct ely_dashboard::IncidentUpdate
+pub struct ely_dashboard::MonitorAlert
+pub struct ely_dashboard::RefreshIntervalSelector
+pub struct ely_dashboard::Service
+pub struct ely_dashboard::ServiceStatus
+pub struct ely_dashboard::StreamEvent
+pub struct ely_dashboard::Tile
+pub struct ely_dashboard::UptimeBar
+pub type ely_dashboard::AlertList::Element = gpui::view::ViewElement<ely_dashboard::AlertList>
+pub type ely_dashboard::DashboardCard::Element = gpui::view::ViewElement<ely_dashboard::DashboardCard>
+pub type ely_dashboard::DashboardFilterBar::Element = gpui::view::ViewElement<ely_dashboard::DashboardFilterBar>
+pub type ely_dashboard::DashboardGrid::Element = gpui::view::ViewElement<ely_dashboard::DashboardGrid>
+pub type ely_dashboard::EventStream::Element = gpui::view::ViewElement<ely_dashboard::EventStream>
+pub type ely_dashboard::HealthCheck::Element = gpui::view::ViewElement<ely_dashboard::HealthCheck>
+pub type ely_dashboard::IncidentCard::Element = gpui::view::ViewElement<ely_dashboard::IncidentCard>
+pub type ely_dashboard::RefreshIntervalSelector::Element = gpui::view::ViewElement<ely_dashboard::RefreshIntervalSelector>
+pub type ely_dashboard::ServiceStatus::Element = gpui::view::ViewElement<ely_dashboard::ServiceStatus>
+pub type ely_dashboard::UptimeBar::Element = gpui::view::ViewElement<ely_dashboard::UptimeBar>
+pub use ely_dashboard::AlertList = ely_dashboard::alerts::AlertList
+pub use ely_dashboard::AlertState = ely_dashboard::alerts::AlertState
+pub use ely_dashboard::Check = ely_dashboard::status::Check
+pub use ely_dashboard::DashboardCard = ely_dashboard::card::DashboardCard
+pub use ely_dashboard::DashboardFilter = ely_dashboard::controls::DashboardFilter
+pub use ely_dashboard::DashboardFilterBar = ely_dashboard::controls::DashboardFilterBar
+pub use ely_dashboard::DashboardGrid = ely_dashboard::grid::DashboardGrid
+pub use ely_dashboard::EventStream = ely_dashboard::events::EventStream
+pub use ely_dashboard::Health = ely_dashboard::status::Health
+pub use ely_dashboard::HealthCheck = ely_dashboard::status::HealthCheck
+pub use ely_dashboard::Incident = ely_dashboard::alerts::Incident
+pub use ely_dashboard::IncidentCard = ely_dashboard::alerts::IncidentCard
+pub use ely_dashboard::IncidentPhase = ely_dashboard::alerts::IncidentPhase
+pub use ely_dashboard::IncidentUpdate = ely_dashboard::alerts::IncidentUpdate
+pub use ely_dashboard::MonitorAlert = ely_dashboard::alerts::MonitorAlert
+pub use ely_dashboard::RefreshIntervalSelector = ely_dashboard::controls::RefreshIntervalSelector
+pub use ely_dashboard::Service = ely_dashboard::status::Service
+pub use ely_dashboard::ServiceStatus = ely_dashboard::status::ServiceStatus
+pub use ely_dashboard::StreamEvent = ely_dashboard::events::StreamEvent
+pub use ely_dashboard::Tile = ely_dashboard::tiles::Tile
+pub use ely_dashboard::TimeWindow = ely_dashboard::controls::TimeWindow
+pub use ely_dashboard::UptimeBar = ely_dashboard::status::UptimeBar
+pub use ely_dashboard::arranged = ely_dashboard::tiles::arranged
+pub use ely_dashboard::overall = ely_dashboard::status::overall
+pub use ely_dashboard::stepped = ely_dashboard::tiles::stepped
+pub use ely_dashboard::uptime = ely_dashboard::status::uptime

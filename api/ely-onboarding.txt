@@ -1,0 +1,169 @@
+impl core::clone::Clone for ely_onboarding::HelpArticle
+impl core::clone::Clone for ely_onboarding::OnboardingStep
+impl core::clone::Clone for ely_onboarding::Sentiment
+impl core::clone::Clone for ely_onboarding::SetupTask
+impl core::cmp::Eq for ely_onboarding::Sentiment
+impl core::cmp::PartialEq for ely_onboarding::HelpArticle
+impl core::cmp::PartialEq for ely_onboarding::OnboardingStep
+impl core::cmp::PartialEq for ely_onboarding::Sentiment
+impl core::cmp::PartialEq for ely_onboarding::SetupTask
+impl core::fmt::Debug for ely_onboarding::HelpArticle
+impl core::fmt::Debug for ely_onboarding::OnboardingStep
+impl core::fmt::Debug for ely_onboarding::Sentiment
+impl core::fmt::Debug for ely_onboarding::SetupTask
+impl core::marker::Copy for ely_onboarding::Sentiment
+impl core::marker::StructuralPartialEq for ely_onboarding::HelpArticle
+impl core::marker::StructuralPartialEq for ely_onboarding::OnboardingStep
+impl core::marker::StructuralPartialEq for ely_onboarding::Sentiment
+impl core::marker::StructuralPartialEq for ely_onboarding::SetupTask
+impl ely_onboarding::ContactSupport
+impl ely_onboarding::FeatureHighlight
+impl ely_onboarding::FeedbackWidget
+impl ely_onboarding::HelpPanel
+impl ely_onboarding::Hotspot
+impl ely_onboarding::InlineHelp
+impl ely_onboarding::KeyboardShortcutCheatsheet
+impl ely_onboarding::OnboardingWizard
+impl ely_onboarding::Sentiment
+impl ely_onboarding::SetupChecklist
+impl ely_onboarding::WhatsNewDialog
+impl gpui::element::IntoElement for ely_onboarding::ContactSupport
+impl gpui::element::IntoElement for ely_onboarding::FeatureHighlight
+impl gpui::element::IntoElement for ely_onboarding::FeedbackWidget
+impl gpui::element::IntoElement for ely_onboarding::HelpPanel
+impl gpui::element::IntoElement for ely_onboarding::Hotspot
+impl gpui::element::IntoElement for ely_onboarding::InlineHelp
+impl gpui::element::IntoElement for ely_onboarding::KeyboardShortcutCheatsheet
+impl gpui::element::IntoElement for ely_onboarding::OnboardingWizard
+impl gpui::element::IntoElement for ely_onboarding::SetupChecklist
+impl gpui::element::IntoElement for ely_onboarding::WhatsNewDialog
+impl gpui::element::RenderOnce for ely_onboarding::ContactSupport
+impl gpui::element::RenderOnce for ely_onboarding::FeatureHighlight
+impl gpui::element::RenderOnce for ely_onboarding::FeedbackWidget
+impl gpui::element::RenderOnce for ely_onboarding::HelpPanel
+impl gpui::element::RenderOnce for ely_onboarding::Hotspot
+impl gpui::element::RenderOnce for ely_onboarding::InlineHelp
+impl gpui::element::RenderOnce for ely_onboarding::KeyboardShortcutCheatsheet
+impl gpui::element::RenderOnce for ely_onboarding::OnboardingWizard
+impl gpui::element::RenderOnce for ely_onboarding::SetupChecklist
+impl gpui::element::RenderOnce for ely_onboarding::WhatsNewDialog
+pub ely_onboarding::HelpArticle::body: gpui_shared_string::SharedString
+pub ely_onboarding::HelpArticle::key: gpui_shared_string::SharedString
+pub ely_onboarding::HelpArticle::summary: gpui_shared_string::SharedString
+pub ely_onboarding::HelpArticle::title: gpui_shared_string::SharedString
+pub ely_onboarding::OnboardingStep::body: gpui_shared_string::SharedString
+pub ely_onboarding::OnboardingStep::key: gpui_shared_string::SharedString
+pub ely_onboarding::OnboardingStep::title: gpui_shared_string::SharedString
+pub ely_onboarding::Sentiment::Bad
+pub ely_onboarding::Sentiment::Good
+pub ely_onboarding::Sentiment::Great
+pub ely_onboarding::Sentiment::Okay
+pub ely_onboarding::SetupTask::body: gpui_shared_string::SharedString
+pub ely_onboarding::SetupTask::done: bool
+pub ely_onboarding::SetupTask::key: gpui_shared_string::SharedString
+pub ely_onboarding::SetupTask::title: gpui_shared_string::SharedString
+pub enum ely_onboarding::Sentiment
+pub fn ely_onboarding::ContactSupport::address(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_onboarding::ContactSupport::busy(self, bool) -> Self
+pub fn ely_onboarding::ContactSupport::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::ContactSupport::into_element(self) -> Self::Element
+pub fn ely_onboarding::ContactSupport::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_core::forms::options::Choice>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::ContactSupport::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::FeatureHighlight::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::FeatureHighlight::into_element(self) -> Self::Element
+pub fn ely_onboarding::FeatureHighlight::new(impl core::convert::Into<gpui::window::ElementId>, ely_core::primitives::icon::names::IconName, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::FeatureHighlight::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::FeedbackWidget::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::FeedbackWidget::into_element(self) -> Self::Element
+pub fn ely_onboarding::FeedbackWidget::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(ely_onboarding::Sentiment, &str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::FeedbackWidget::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::HelpArticle::clone(&self) -> Self
+pub fn ely_onboarding::HelpArticle::eq(&self, &Self) -> bool
+pub fn ely_onboarding::HelpArticle::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_onboarding::HelpPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::HelpPanel::into_element(self) -> Self::Element
+pub fn ely_onboarding::HelpPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_onboarding::HelpArticle>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, core::option::Option<gpui_shared_string::SharedString>, impl core::ops::function::Fn(core::option::Option<&gpui_shared_string::SharedString>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::HelpPanel::on_close(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::HelpPanel::on_contact(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::HelpPanel::on_shortcuts(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::HelpPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::Hotspot::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::Hotspot::into_element(self) -> Self::Element
+pub fn ely_onboarding::Hotspot::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::Hotspot::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::InlineHelp::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::InlineHelp::into_element(self) -> Self::Element
+pub fn ely_onboarding::InlineHelp::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_onboarding::InlineHelp::on_more(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::InlineHelp::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::KeyboardShortcutCheatsheet::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::KeyboardShortcutCheatsheet::into_element(self) -> Self::Element
+pub fn ely_onboarding::KeyboardShortcutCheatsheet::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_settings::shortcuts::Shortcut>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::KeyboardShortcutCheatsheet::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::OnboardingStep::clone(&self) -> Self
+pub fn ely_onboarding::OnboardingStep::eq(&self, &Self) -> bool
+pub fn ely_onboarding::OnboardingStep::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_onboarding::OnboardingWizard::content(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_onboarding::OnboardingWizard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::OnboardingWizard::into_element(self) -> Self::Element
+pub fn ely_onboarding::OnboardingWizard::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_onboarding::OnboardingStep>, usize, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::OnboardingWizard::on_skip(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::OnboardingWizard::ready(self, bool) -> Self
+pub fn ely_onboarding::OnboardingWizard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::Sentiment::clone(&self) -> Self
+pub fn ely_onboarding::Sentiment::eq(&self, &Self) -> bool
+pub fn ely_onboarding::Sentiment::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_onboarding::Sentiment::key(self) -> &'static str
+pub fn ely_onboarding::SetupChecklist::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::SetupChecklist::into_element(self) -> Self::Element
+pub fn ely_onboarding::SetupChecklist::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_onboarding::SetupTask>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::SetupChecklist::on_dismiss(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::SetupChecklist::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::SetupTask::clone(&self) -> Self
+pub fn ely_onboarding::SetupTask::eq(&self, &Self) -> bool
+pub fn ely_onboarding::SetupTask::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_onboarding::WhatsNewDialog::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_onboarding::WhatsNewDialog::into_element(self) -> Self::Element
+pub fn ely_onboarding::WhatsNewDialog::new(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_onboarding::WhatsNewDialog::release(self, ely_core::data_display::changelog::Release) -> Self
+pub fn ely_onboarding::WhatsNewDialog::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_onboarding::found<'a>(&'a [ely_onboarding::HelpArticle], &str) -> alloc::vec::Vec<&'a ely_onboarding::HelpArticle>
+pub mod ely_onboarding
+pub struct ely_onboarding::ContactSupport
+pub struct ely_onboarding::FeatureHighlight
+pub struct ely_onboarding::FeedbackWidget
+pub struct ely_onboarding::HelpArticle
+pub struct ely_onboarding::HelpPanel
+pub struct ely_onboarding::Hotspot
+pub struct ely_onboarding::InlineHelp
+pub struct ely_onboarding::KeyboardShortcutCheatsheet
+pub struct ely_onboarding::OnboardingStep
+pub struct ely_onboarding::OnboardingWizard
+pub struct ely_onboarding::SetupChecklist
+pub struct ely_onboarding::SetupTask
+pub struct ely_onboarding::WhatsNewDialog
+pub type ely_onboarding::ContactSupport::Element = gpui::view::ViewElement<ely_onboarding::ContactSupport>
+pub type ely_onboarding::FeatureHighlight::Element = gpui::view::ViewElement<ely_onboarding::FeatureHighlight>
+pub type ely_onboarding::FeedbackWidget::Element = gpui::view::ViewElement<ely_onboarding::FeedbackWidget>
+pub type ely_onboarding::HelpPanel::Element = gpui::view::ViewElement<ely_onboarding::HelpPanel>
+pub type ely_onboarding::Hotspot::Element = gpui::view::ViewElement<ely_onboarding::Hotspot>
+pub type ely_onboarding::InlineHelp::Element = gpui::view::ViewElement<ely_onboarding::InlineHelp>
+pub type ely_onboarding::KeyboardShortcutCheatsheet::Element = gpui::view::ViewElement<ely_onboarding::KeyboardShortcutCheatsheet>
+pub type ely_onboarding::OnboardingWizard::Element = gpui::view::ViewElement<ely_onboarding::OnboardingWizard>
+pub type ely_onboarding::SetupChecklist::Element = gpui::view::ViewElement<ely_onboarding::SetupChecklist>
+pub type ely_onboarding::WhatsNewDialog::Element = gpui::view::ViewElement<ely_onboarding::WhatsNewDialog>
+pub use ely_onboarding::ContactSupport = ely_onboarding::support::ContactSupport
+pub use ely_onboarding::FeatureHighlight = ely_onboarding::highlight::FeatureHighlight
+pub use ely_onboarding::FeedbackWidget = ely_onboarding::feedback::FeedbackWidget
+pub use ely_onboarding::HelpArticle = ely_onboarding::help::HelpArticle
+pub use ely_onboarding::HelpPanel = ely_onboarding::help::HelpPanel
+pub use ely_onboarding::Hotspot = ely_onboarding::hotspot::Hotspot
+pub use ely_onboarding::InlineHelp = ely_onboarding::support::InlineHelp
+pub use ely_onboarding::KeyboardShortcutCheatsheet = ely_onboarding::dialogs::KeyboardShortcutCheatsheet
+pub use ely_onboarding::OnboardingStep = ely_onboarding::wizard::OnboardingStep
+pub use ely_onboarding::OnboardingWizard = ely_onboarding::wizard::OnboardingWizard
+pub use ely_onboarding::Sentiment = ely_onboarding::feedback::Sentiment
+pub use ely_onboarding::SetupChecklist = ely_onboarding::checklist::SetupChecklist
+pub use ely_onboarding::SetupTask = ely_onboarding::checklist::SetupTask
+pub use ely_onboarding::WhatsNewDialog = ely_onboarding::dialogs::WhatsNewDialog
+pub use ely_onboarding::found = ely_onboarding::help::found

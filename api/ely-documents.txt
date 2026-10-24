@@ -1,0 +1,1266 @@
+impl core::clone::Clone for ely_documents::AlertKind
+impl core::clone::Clone for ely_documents::Align
+impl core::clone::Clone for ely_documents::AlignKind
+impl core::clone::Clone for ely_documents::Attachment
+impl core::clone::Clone for ely_documents::Backlink
+impl core::clone::Clone for ely_documents::BlockCommand
+impl core::clone::Clone for ely_documents::BlockData
+impl core::clone::Clone for ely_documents::BlockEvent
+impl core::clone::Clone for ely_documents::BlockKind
+impl core::clone::Clone for ely_documents::Chapter
+impl core::clone::Clone for ely_documents::DocPage
+impl core::clone::Clone for ely_documents::DocumentEvent
+impl core::clone::Clone for ely_documents::DocumentHeading
+impl core::clone::Clone for ely_documents::DocumentLook
+impl core::clone::Clone for ely_documents::DocumentTarget
+impl core::clone::Clone for ely_documents::EditRefusal
+impl core::clone::Clone for ely_documents::Favorite
+impl core::clone::Clone for ely_documents::Format
+impl core::clone::Clone for ely_documents::HeldPicture
+impl core::clone::Clone for ely_documents::Inline
+impl core::clone::Clone for ely_documents::InlineFormat
+impl core::clone::Clone for ely_documents::Margins
+impl core::clone::Clone for ely_documents::MarkdownBlock
+impl core::clone::Clone for ely_documents::MarkdownMode
+impl core::clone::Clone for ely_documents::MathError
+impl core::clone::Clone for ely_documents::Media
+impl core::clone::Clone for ely_documents::PageHit
+impl core::clone::Clone for ely_documents::PageNote
+impl core::clone::Clone for ely_documents::Paper
+impl core::clone::Clone for ely_documents::PrintSettings
+impl core::clone::Clone for ely_documents::Style
+impl core::clone::Clone for ely_documents::TableEdit
+impl core::clone::Clone for ely_documents::TableRefusal
+impl core::clone::Clone for ely_documents::TargetBlock
+impl core::clone::Clone for ely_documents::Template
+impl core::clone::Clone for ely_documents::Trashed
+impl core::clone::Clone for ely_documents::Version
+impl core::clone::Clone for ely_documents::mdast::Code
+impl core::clone::Clone for ely_documents::mdast::Definition
+impl core::clone::Clone for ely_documents::mdast::FootnoteDefinition
+impl core::clone::Clone for ely_documents::mdast::FootnoteReference
+impl core::clone::Clone for ely_documents::mdast::Heading
+impl core::clone::Clone for ely_documents::mdast::Image
+impl core::clone::Clone for ely_documents::mdast::ImageReference
+impl core::clone::Clone for ely_documents::mdast::Leaf
+impl core::clone::Clone for ely_documents::mdast::Link
+impl core::clone::Clone for ely_documents::mdast::LinkReference
+impl core::clone::Clone for ely_documents::mdast::List
+impl core::clone::Clone for ely_documents::mdast::ListItem
+impl core::clone::Clone for ely_documents::mdast::Literal
+impl core::clone::Clone for ely_documents::mdast::Node
+impl core::clone::Clone for ely_documents::mdast::Parent
+impl core::clone::Clone for ely_documents::mdast::Table
+impl core::cmp::Eq for ely_documents::AlertKind
+impl core::cmp::Eq for ely_documents::Align
+impl core::cmp::Eq for ely_documents::AlignKind
+impl core::cmp::Eq for ely_documents::BlockCommand
+impl core::cmp::Eq for ely_documents::BlockEvent
+impl core::cmp::Eq for ely_documents::DocumentEvent
+impl core::cmp::Eq for ely_documents::DocumentTarget
+impl core::cmp::Eq for ely_documents::EditRefusal
+impl core::cmp::Eq for ely_documents::Format
+impl core::cmp::Eq for ely_documents::HeldPicture
+impl core::cmp::Eq for ely_documents::InlineFormat
+impl core::cmp::Eq for ely_documents::Margins
+impl core::cmp::Eq for ely_documents::MarkdownMode
+impl core::cmp::Eq for ely_documents::MathError
+impl core::cmp::Eq for ely_documents::Paper
+impl core::cmp::Eq for ely_documents::PrintSettings
+impl core::cmp::Eq for ely_documents::Style
+impl core::cmp::Eq for ely_documents::TableEdit
+impl core::cmp::Eq for ely_documents::TableRefusal
+impl core::cmp::Eq for ely_documents::TargetBlock
+impl core::cmp::Eq for ely_documents::mdast::Code
+impl core::cmp::Eq for ely_documents::mdast::Definition
+impl core::cmp::Eq for ely_documents::mdast::FootnoteDefinition
+impl core::cmp::Eq for ely_documents::mdast::FootnoteReference
+impl core::cmp::Eq for ely_documents::mdast::Heading
+impl core::cmp::Eq for ely_documents::mdast::Image
+impl core::cmp::Eq for ely_documents::mdast::ImageReference
+impl core::cmp::Eq for ely_documents::mdast::Leaf
+impl core::cmp::Eq for ely_documents::mdast::Link
+impl core::cmp::Eq for ely_documents::mdast::LinkReference
+impl core::cmp::Eq for ely_documents::mdast::List
+impl core::cmp::Eq for ely_documents::mdast::ListItem
+impl core::cmp::Eq for ely_documents::mdast::Literal
+impl core::cmp::Eq for ely_documents::mdast::Node
+impl core::cmp::Eq for ely_documents::mdast::Parent
+impl core::cmp::Eq for ely_documents::mdast::Table
+impl core::cmp::PartialEq for ely_documents::AlertKind
+impl core::cmp::PartialEq for ely_documents::Align
+impl core::cmp::PartialEq for ely_documents::AlignKind
+impl core::cmp::PartialEq for ely_documents::Attachment
+impl core::cmp::PartialEq for ely_documents::Backlink
+impl core::cmp::PartialEq for ely_documents::BlockCommand
+impl core::cmp::PartialEq for ely_documents::BlockData
+impl core::cmp::PartialEq for ely_documents::BlockEvent
+impl core::cmp::PartialEq for ely_documents::BlockKind
+impl core::cmp::PartialEq for ely_documents::Chapter
+impl core::cmp::PartialEq for ely_documents::DocPage
+impl core::cmp::PartialEq for ely_documents::DocumentEvent
+impl core::cmp::PartialEq for ely_documents::DocumentHeading
+impl core::cmp::PartialEq for ely_documents::DocumentLook
+impl core::cmp::PartialEq for ely_documents::DocumentTarget
+impl core::cmp::PartialEq for ely_documents::EditRefusal
+impl core::cmp::PartialEq for ely_documents::Favorite
+impl core::cmp::PartialEq for ely_documents::Format
+impl core::cmp::PartialEq for ely_documents::HeldPicture
+impl core::cmp::PartialEq for ely_documents::Inline
+impl core::cmp::PartialEq for ely_documents::InlineFormat
+impl core::cmp::PartialEq for ely_documents::Margins
+impl core::cmp::PartialEq for ely_documents::MarkdownBlock
+impl core::cmp::PartialEq for ely_documents::MarkdownMode
+impl core::cmp::PartialEq for ely_documents::MathError
+impl core::cmp::PartialEq for ely_documents::Media
+impl core::cmp::PartialEq for ely_documents::PageHit
+impl core::cmp::PartialEq for ely_documents::PageNote
+impl core::cmp::PartialEq for ely_documents::Paper
+impl core::cmp::PartialEq for ely_documents::PrintSettings
+impl core::cmp::PartialEq for ely_documents::Style
+impl core::cmp::PartialEq for ely_documents::TableEdit
+impl core::cmp::PartialEq for ely_documents::TableRefusal
+impl core::cmp::PartialEq for ely_documents::TargetBlock
+impl core::cmp::PartialEq for ely_documents::Template
+impl core::cmp::PartialEq for ely_documents::Trashed
+impl core::cmp::PartialEq for ely_documents::Version
+impl core::cmp::PartialEq for ely_documents::mdast::Code
+impl core::cmp::PartialEq for ely_documents::mdast::Definition
+impl core::cmp::PartialEq for ely_documents::mdast::FootnoteDefinition
+impl core::cmp::PartialEq for ely_documents::mdast::FootnoteReference
+impl core::cmp::PartialEq for ely_documents::mdast::Heading
+impl core::cmp::PartialEq for ely_documents::mdast::Image
+impl core::cmp::PartialEq for ely_documents::mdast::ImageReference
+impl core::cmp::PartialEq for ely_documents::mdast::Leaf
+impl core::cmp::PartialEq for ely_documents::mdast::Link
+impl core::cmp::PartialEq for ely_documents::mdast::LinkReference
+impl core::cmp::PartialEq for ely_documents::mdast::List
+impl core::cmp::PartialEq for ely_documents::mdast::ListItem
+impl core::cmp::PartialEq for ely_documents::mdast::Literal
+impl core::cmp::PartialEq for ely_documents::mdast::Node
+impl core::cmp::PartialEq for ely_documents::mdast::Parent
+impl core::cmp::PartialEq for ely_documents::mdast::Table
+impl core::default::Default for ely_documents::Align
+impl core::default::Default for ely_documents::DocumentLook
+impl core::default::Default for ely_documents::Inline
+impl core::default::Default for ely_documents::Margins
+impl core::default::Default for ely_documents::Paper
+impl core::default::Default for ely_documents::PrintSettings
+impl core::error::Error for ely_documents::MathError
+impl core::fmt::Debug for ely_documents::AlertKind
+impl core::fmt::Debug for ely_documents::Align
+impl core::fmt::Debug for ely_documents::AlignKind
+impl core::fmt::Debug for ely_documents::Attachment
+impl core::fmt::Debug for ely_documents::Backlink
+impl core::fmt::Debug for ely_documents::BlockCommand
+impl core::fmt::Debug for ely_documents::BlockData
+impl core::fmt::Debug for ely_documents::BlockEvent
+impl core::fmt::Debug for ely_documents::BlockKind
+impl core::fmt::Debug for ely_documents::Chapter
+impl core::fmt::Debug for ely_documents::DocPage
+impl core::fmt::Debug for ely_documents::DocumentEvent
+impl core::fmt::Debug for ely_documents::DocumentHeading
+impl core::fmt::Debug for ely_documents::DocumentLook
+impl core::fmt::Debug for ely_documents::DocumentTarget
+impl core::fmt::Debug for ely_documents::EditRefusal
+impl core::fmt::Debug for ely_documents::Favorite
+impl core::fmt::Debug for ely_documents::Format
+impl core::fmt::Debug for ely_documents::HeldPicture
+impl core::fmt::Debug for ely_documents::Inline
+impl core::fmt::Debug for ely_documents::InlineFormat
+impl core::fmt::Debug for ely_documents::Margins
+impl core::fmt::Debug for ely_documents::MarkdownBlock
+impl core::fmt::Debug for ely_documents::MarkdownMode
+impl core::fmt::Debug for ely_documents::MathError
+impl core::fmt::Debug for ely_documents::Media
+impl core::fmt::Debug for ely_documents::PageHit
+impl core::fmt::Debug for ely_documents::PageNote
+impl core::fmt::Debug for ely_documents::Paper
+impl core::fmt::Debug for ely_documents::PrintSettings
+impl core::fmt::Debug for ely_documents::Style
+impl core::fmt::Debug for ely_documents::TableEdit
+impl core::fmt::Debug for ely_documents::TableRefusal
+impl core::fmt::Debug for ely_documents::TargetBlock
+impl core::fmt::Debug for ely_documents::Template
+impl core::fmt::Debug for ely_documents::Trashed
+impl core::fmt::Debug for ely_documents::Version
+impl core::fmt::Debug for ely_documents::mdast::Code
+impl core::fmt::Debug for ely_documents::mdast::Definition
+impl core::fmt::Debug for ely_documents::mdast::FootnoteDefinition
+impl core::fmt::Debug for ely_documents::mdast::FootnoteReference
+impl core::fmt::Debug for ely_documents::mdast::Heading
+impl core::fmt::Debug for ely_documents::mdast::Image
+impl core::fmt::Debug for ely_documents::mdast::ImageReference
+impl core::fmt::Debug for ely_documents::mdast::Leaf
+impl core::fmt::Debug for ely_documents::mdast::Link
+impl core::fmt::Debug for ely_documents::mdast::LinkReference
+impl core::fmt::Debug for ely_documents::mdast::List
+impl core::fmt::Debug for ely_documents::mdast::ListItem
+impl core::fmt::Debug for ely_documents::mdast::Literal
+impl core::fmt::Debug for ely_documents::mdast::Node
+impl core::fmt::Debug for ely_documents::mdast::Parent
+impl core::fmt::Debug for ely_documents::mdast::Table
+impl core::fmt::Display for ely_documents::MathError
+impl core::hash::Hash for ely_documents::HeldPicture
+impl core::marker::Copy for ely_documents::AlertKind
+impl core::marker::Copy for ely_documents::Align
+impl core::marker::Copy for ely_documents::AlignKind
+impl core::marker::Copy for ely_documents::BlockCommand
+impl core::marker::Copy for ely_documents::BlockEvent
+impl core::marker::Copy for ely_documents::EditRefusal
+impl core::marker::Copy for ely_documents::Format
+impl core::marker::Copy for ely_documents::InlineFormat
+impl core::marker::Copy for ely_documents::Margins
+impl core::marker::Copy for ely_documents::MarkdownMode
+impl core::marker::Copy for ely_documents::Paper
+impl core::marker::Copy for ely_documents::PrintSettings
+impl core::marker::Copy for ely_documents::Style
+impl core::marker::Copy for ely_documents::TableEdit
+impl core::marker::Copy for ely_documents::TableRefusal
+impl core::marker::Copy for ely_documents::TargetBlock
+impl core::marker::StructuralPartialEq for ely_documents::AlertKind
+impl core::marker::StructuralPartialEq for ely_documents::Align
+impl core::marker::StructuralPartialEq for ely_documents::AlignKind
+impl core::marker::StructuralPartialEq for ely_documents::Attachment
+impl core::marker::StructuralPartialEq for ely_documents::Backlink
+impl core::marker::StructuralPartialEq for ely_documents::BlockCommand
+impl core::marker::StructuralPartialEq for ely_documents::BlockData
+impl core::marker::StructuralPartialEq for ely_documents::BlockEvent
+impl core::marker::StructuralPartialEq for ely_documents::BlockKind
+impl core::marker::StructuralPartialEq for ely_documents::Chapter
+impl core::marker::StructuralPartialEq for ely_documents::DocPage
+impl core::marker::StructuralPartialEq for ely_documents::DocumentEvent
+impl core::marker::StructuralPartialEq for ely_documents::DocumentHeading
+impl core::marker::StructuralPartialEq for ely_documents::DocumentLook
+impl core::marker::StructuralPartialEq for ely_documents::DocumentTarget
+impl core::marker::StructuralPartialEq for ely_documents::EditRefusal
+impl core::marker::StructuralPartialEq for ely_documents::Favorite
+impl core::marker::StructuralPartialEq for ely_documents::Format
+impl core::marker::StructuralPartialEq for ely_documents::Inline
+impl core::marker::StructuralPartialEq for ely_documents::InlineFormat
+impl core::marker::StructuralPartialEq for ely_documents::Margins
+impl core::marker::StructuralPartialEq for ely_documents::MarkdownBlock
+impl core::marker::StructuralPartialEq for ely_documents::MarkdownMode
+impl core::marker::StructuralPartialEq for ely_documents::MathError
+impl core::marker::StructuralPartialEq for ely_documents::Media
+impl core::marker::StructuralPartialEq for ely_documents::PageHit
+impl core::marker::StructuralPartialEq for ely_documents::PageNote
+impl core::marker::StructuralPartialEq for ely_documents::Paper
+impl core::marker::StructuralPartialEq for ely_documents::PrintSettings
+impl core::marker::StructuralPartialEq for ely_documents::Style
+impl core::marker::StructuralPartialEq for ely_documents::TableEdit
+impl core::marker::StructuralPartialEq for ely_documents::TableRefusal
+impl core::marker::StructuralPartialEq for ely_documents::TargetBlock
+impl core::marker::StructuralPartialEq for ely_documents::Template
+impl core::marker::StructuralPartialEq for ely_documents::Trashed
+impl core::marker::StructuralPartialEq for ely_documents::Version
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Code
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Definition
+impl core::marker::StructuralPartialEq for ely_documents::mdast::FootnoteDefinition
+impl core::marker::StructuralPartialEq for ely_documents::mdast::FootnoteReference
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Heading
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Image
+impl core::marker::StructuralPartialEq for ely_documents::mdast::ImageReference
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Leaf
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Link
+impl core::marker::StructuralPartialEq for ely_documents::mdast::LinkReference
+impl core::marker::StructuralPartialEq for ely_documents::mdast::List
+impl core::marker::StructuralPartialEq for ely_documents::mdast::ListItem
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Literal
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Node
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Parent
+impl core::marker::StructuralPartialEq for ely_documents::mdast::Table
+impl ely_core::primitives::capability::Changeable for ely_documents::PageIcon
+impl ely_documents::AlertKind
+impl ely_documents::Backlinks
+impl ely_documents::BlockData
+impl ely_documents::BlockEditor
+impl ely_documents::BlockKind
+impl ely_documents::Checklist
+impl ely_documents::Diagram
+impl ely_documents::DocumentViewer
+impl ely_documents::EpubReader
+impl ely_documents::Favorites
+impl ely_documents::FixedFormatToolbar
+impl ely_documents::Footnote
+impl ely_documents::Glossary
+impl ely_documents::HeldPicture
+impl ely_documents::Latex
+impl ely_documents::LinkEditor
+impl ely_documents::MarkdownDocument
+impl ely_documents::MarkdownEditor
+impl ely_documents::MarkdownRenderer
+impl ely_documents::Media
+impl ely_documents::PageCover
+impl ely_documents::PageHistoryDiff
+impl ely_documents::PageIcon
+impl ely_documents::PageThumbnailList
+impl ely_documents::PrintPreview
+impl ely_documents::ReadingProgress
+impl ely_documents::ReadingTime
+impl ely_documents::RichTextEditor
+impl ely_documents::TemplatePicker
+impl ely_documents::TodoItem
+impl ely_documents::TooltipTerm
+impl ely_documents::TrashBin
+impl ely_documents::VersionHistory
+impl ely_documents::WordCount
+impl ely_documents::ZenMode
+impl ely_documents::mdast::Node
+impl gpui::EventEmitter<ely_documents::Attachment> for ely_documents::MarkdownDocument
+impl gpui::EventEmitter<ely_documents::BlockEvent> for ely_documents::BlockEditor
+impl gpui::EventEmitter<ely_documents::DocumentEvent> for ely_documents::MarkdownDocument
+impl gpui::element::IntoElement for ely_documents::Backlinks
+impl gpui::element::IntoElement for ely_documents::Checklist
+impl gpui::element::IntoElement for ely_documents::Diagram
+impl gpui::element::IntoElement for ely_documents::DocumentViewer
+impl gpui::element::IntoElement for ely_documents::EpubReader
+impl gpui::element::IntoElement for ely_documents::Favorites
+impl gpui::element::IntoElement for ely_documents::FixedFormatToolbar
+impl gpui::element::IntoElement for ely_documents::Footnote
+impl gpui::element::IntoElement for ely_documents::Glossary
+impl gpui::element::IntoElement for ely_documents::Latex
+impl gpui::element::IntoElement for ely_documents::LinkEditor
+impl gpui::element::IntoElement for ely_documents::MarkdownEditor
+impl gpui::element::IntoElement for ely_documents::MarkdownRenderer
+impl gpui::element::IntoElement for ely_documents::PageCover
+impl gpui::element::IntoElement for ely_documents::PageHistoryDiff
+impl gpui::element::IntoElement for ely_documents::PageIcon
+impl gpui::element::IntoElement for ely_documents::PageThumbnailList
+impl gpui::element::IntoElement for ely_documents::PrintPreview
+impl gpui::element::IntoElement for ely_documents::ReadingProgress
+impl gpui::element::IntoElement for ely_documents::ReadingTime
+impl gpui::element::IntoElement for ely_documents::RichTextEditor
+impl gpui::element::IntoElement for ely_documents::TemplatePicker
+impl gpui::element::IntoElement for ely_documents::TodoItem
+impl gpui::element::IntoElement for ely_documents::TooltipTerm
+impl gpui::element::IntoElement for ely_documents::TrashBin
+impl gpui::element::IntoElement for ely_documents::VersionHistory
+impl gpui::element::IntoElement for ely_documents::WordCount
+impl gpui::element::IntoElement for ely_documents::ZenMode
+impl gpui::element::ParentElement for ely_documents::ZenMode
+impl gpui::element::Render for ely_documents::BlockEditor
+impl gpui::element::Render for ely_documents::MarkdownDocument
+impl gpui::element::RenderOnce for ely_documents::Backlinks
+impl gpui::element::RenderOnce for ely_documents::Checklist
+impl gpui::element::RenderOnce for ely_documents::Diagram
+impl gpui::element::RenderOnce for ely_documents::DocumentViewer
+impl gpui::element::RenderOnce for ely_documents::EpubReader
+impl gpui::element::RenderOnce for ely_documents::Favorites
+impl gpui::element::RenderOnce for ely_documents::FixedFormatToolbar
+impl gpui::element::RenderOnce for ely_documents::Footnote
+impl gpui::element::RenderOnce for ely_documents::Glossary
+impl gpui::element::RenderOnce for ely_documents::Latex
+impl gpui::element::RenderOnce for ely_documents::LinkEditor
+impl gpui::element::RenderOnce for ely_documents::MarkdownEditor
+impl gpui::element::RenderOnce for ely_documents::MarkdownRenderer
+impl gpui::element::RenderOnce for ely_documents::PageCover
+impl gpui::element::RenderOnce for ely_documents::PageHistoryDiff
+impl gpui::element::RenderOnce for ely_documents::PageIcon
+impl gpui::element::RenderOnce for ely_documents::PageThumbnailList
+impl gpui::element::RenderOnce for ely_documents::PrintPreview
+impl gpui::element::RenderOnce for ely_documents::ReadingProgress
+impl gpui::element::RenderOnce for ely_documents::ReadingTime
+impl gpui::element::RenderOnce for ely_documents::RichTextEditor
+impl gpui::element::RenderOnce for ely_documents::TemplatePicker
+impl gpui::element::RenderOnce for ely_documents::TodoItem
+impl gpui::element::RenderOnce for ely_documents::TooltipTerm
+impl gpui::element::RenderOnce for ely_documents::TrashBin
+impl gpui::element::RenderOnce for ely_documents::VersionHistory
+impl gpui::element::RenderOnce for ely_documents::WordCount
+impl gpui::element::RenderOnce for ely_documents::ZenMode
+impl gpui::window::Focusable for ely_documents::MarkdownDocument
+impl<'a> ely_documents::MarkdownReader<'a>
+pub const ely_documents::LARGEST_READ: usize
+pub ely_documents::AlertKind::Caution
+pub ely_documents::AlertKind::Important
+pub ely_documents::AlertKind::Note
+pub ely_documents::AlertKind::Tip
+pub ely_documents::AlertKind::Warning
+pub ely_documents::Align::Center
+pub ely_documents::Align::Left
+pub ely_documents::Align::Right
+pub ely_documents::AlignKind::Center
+pub ely_documents::AlignKind::Left
+pub ely_documents::AlignKind::None
+pub ely_documents::AlignKind::Right
+pub ely_documents::Attachment::Files(alloc::vec::Vec<std::path::PathBuf>)
+pub ely_documents::Attachment::Picture(gpui::platform::Image)
+pub ely_documents::Backlink::context: gpui_shared_string::SharedString
+pub ely_documents::Backlink::icon: gpui_shared_string::SharedString
+pub ely_documents::Backlink::mention: core::ops::range::Range<usize>
+pub ely_documents::Backlink::page: gpui_shared_string::SharedString
+pub ely_documents::BlockCommand::BulletList
+pub ely_documents::BlockCommand::CodeBlock
+pub ely_documents::BlockCommand::Delete
+pub ely_documents::BlockCommand::Demote
+pub ely_documents::BlockCommand::Footnote
+pub ely_documents::BlockCommand::FrontMatter
+pub ely_documents::BlockCommand::Heading(u8)
+pub ely_documents::BlockCommand::LinkDefinition
+pub ely_documents::BlockCommand::MathBlock
+pub ely_documents::BlockCommand::OrderedList
+pub ely_documents::BlockCommand::Paragraph
+pub ely_documents::BlockCommand::ParagraphAfter
+pub ely_documents::BlockCommand::ParagraphBefore
+pub ely_documents::BlockCommand::Promote
+pub ely_documents::BlockCommand::Quote
+pub ely_documents::BlockCommand::Rule
+pub ely_documents::BlockCommand::TaskList
+pub ely_documents::BlockCommand::Toc
+pub ely_documents::BlockData::kind: ely_documents::BlockKind
+pub ely_documents::BlockData::texts: alloc::vec::Vec<alloc::string::String>
+pub ely_documents::BlockEvent::Changed
+pub ely_documents::BlockKind::Bullet
+pub ely_documents::BlockKind::Callout
+pub ely_documents::BlockKind::Code
+pub ely_documents::BlockKind::Columns(usize)
+pub ely_documents::BlockKind::Diagram
+pub ely_documents::BlockKind::Divider
+pub ely_documents::BlockKind::Embed(ely_documents::Media)
+pub ely_documents::BlockKind::Heading(u8)
+pub ely_documents::BlockKind::Image(ely_documents::Media)
+pub ely_documents::BlockKind::Math
+pub ely_documents::BlockKind::Numbered
+pub ely_documents::BlockKind::Paragraph
+pub ely_documents::BlockKind::Quote
+pub ely_documents::BlockKind::Synced(gpui_shared_string::SharedString)
+pub ely_documents::BlockKind::Table
+pub ely_documents::BlockKind::Table::columns: usize
+pub ely_documents::BlockKind::Table::merged: alloc::vec::Vec<(usize, usize)>
+pub ely_documents::BlockKind::Todo(bool)
+pub ely_documents::BlockKind::Toggle(bool)
+pub ely_documents::BlockKind::Video(ely_documents::Media)
+pub ely_documents::Chapter::markdown: gpui_shared_string::SharedString
+pub ely_documents::Chapter::title: gpui_shared_string::SharedString
+pub ely_documents::DocPage::height: f32
+pub ely_documents::DocPage::source: gpui_shared_string::SharedString
+pub ely_documents::DocPage::width: f32
+pub ely_documents::DocumentEvent::Changed
+pub ely_documents::DocumentEvent::EditRefused(ely_documents::EditRefusal)
+pub ely_documents::DocumentEvent::Parsed
+pub ely_documents::DocumentEvent::Pointed(ely_documents::DocumentTarget)
+pub ely_documents::DocumentHeading::at: usize
+pub ely_documents::DocumentHeading::depth: u8
+pub ely_documents::DocumentHeading::title: alloc::string::String
+pub ely_documents::DocumentLook::focus: bool
+pub ely_documents::DocumentLook::font: core::option::Option<gpui_shared_string::SharedString>
+pub ely_documents::DocumentLook::line_numbers: bool
+pub ely_documents::DocumentLook::measure: core::option::Option<gpui::geometry::Rems>
+pub ely_documents::DocumentLook::scale: f32
+pub ely_documents::DocumentLook::typewriter: bool
+pub ely_documents::DocumentTarget::at: usize
+pub ely_documents::DocumentTarget::block: core::option::Option<ely_documents::TargetBlock>
+pub ely_documents::DocumentTarget::code: core::option::Option<alloc::string::String>
+pub ely_documents::DocumentTarget::image: core::option::Option<alloc::string::String>
+pub ely_documents::DocumentTarget::in_table: bool
+pub ely_documents::DocumentTarget::link: core::option::Option<alloc::string::String>
+pub ely_documents::EditRefusal::Across
+pub ely_documents::EditRefusal::Busy
+pub ely_documents::EditRefusal::Cells(ely_documents::TableRefusal)
+pub ely_documents::EditRefusal::Changed
+pub ely_documents::EditRefusal::Code
+pub ely_documents::EditRefusal::FrontMatter
+pub ely_documents::EditRefusal::Html
+pub ely_documents::EditRefusal::Math
+pub ely_documents::EditRefusal::Misread
+pub ely_documents::EditRefusal::NoImage
+pub ely_documents::EditRefusal::Outside
+pub ely_documents::EditRefusal::Present
+pub ely_documents::EditRefusal::Preview
+pub ely_documents::EditRefusal::Table
+pub ely_documents::EditRefusal::TooLong
+pub ely_documents::Favorite::icon: gpui_shared_string::SharedString
+pub ely_documents::Favorite::key: gpui_shared_string::SharedString
+pub ely_documents::Favorite::title: gpui_shared_string::SharedString
+pub ely_documents::Format::Bold
+pub ely_documents::Format::Bullet
+pub ely_documents::Format::Code
+pub ely_documents::Format::Heading(u8)
+pub ely_documents::Format::Italic
+pub ely_documents::Format::Link
+pub ely_documents::Format::Numbered
+pub ely_documents::Format::Quote
+pub ely_documents::Format::Strike
+pub ely_documents::Format::Task
+pub ely_documents::Inline::links: alloc::vec::Vec<(core::ops::range::Range<usize>, alloc::string::String)>
+pub ely_documents::Inline::sources: alloc::vec::Vec<(usize, core::ops::range::Range<usize>, ely_documents::tree::sources::Escapes)>
+pub ely_documents::Inline::styles: alloc::vec::Vec<(core::ops::range::Range<usize>, ely_documents::Style)>
+pub ely_documents::Inline::text: alloc::string::String
+pub ely_documents::InlineFormat::Clear
+pub ely_documents::InlineFormat::Code
+pub ely_documents::InlineFormat::Emphasis
+pub ely_documents::InlineFormat::Image
+pub ely_documents::InlineFormat::Link
+pub ely_documents::InlineFormat::Strike
+pub ely_documents::InlineFormat::Strong
+pub ely_documents::InlineFormat::Underline
+pub ely_documents::Margins::Narrow
+pub ely_documents::Margins::None
+pub ely_documents::Margins::Normal
+pub ely_documents::MarkdownBlock::Alert
+pub ely_documents::MarkdownBlock::Alert::body: alloc::vec::Vec<ely_documents::MarkdownBlock>
+pub ely_documents::MarkdownBlock::Alert::kind: ely_documents::AlertKind
+pub ely_documents::MarkdownBlock::Code
+pub ely_documents::MarkdownBlock::Code::from: usize
+pub ely_documents::MarkdownBlock::Code::language: core::option::Option<alloc::string::String>
+pub ely_documents::MarkdownBlock::Code::text: alloc::string::String
+pub ely_documents::MarkdownBlock::Footnote
+pub ely_documents::MarkdownBlock::Footnote::body: alloc::vec::Vec<ely_documents::MarkdownBlock>
+pub ely_documents::MarkdownBlock::Footnote::label: alloc::string::String
+pub ely_documents::MarkdownBlock::FrontMatter
+pub ely_documents::MarkdownBlock::FrontMatter::from: usize
+pub ely_documents::MarkdownBlock::FrontMatter::text: alloc::string::String
+pub ely_documents::MarkdownBlock::Heading(u8, ely_documents::Inline)
+pub ely_documents::MarkdownBlock::Image
+pub ely_documents::MarkdownBlock::Image::alt: alloc::string::String
+pub ely_documents::MarkdownBlock::Image::at: usize
+pub ely_documents::MarkdownBlock::Image::link: core::option::Option<alloc::string::String>
+pub ely_documents::MarkdownBlock::Image::url: alloc::string::String
+pub ely_documents::MarkdownBlock::List
+pub ely_documents::MarkdownBlock::List::items: alloc::vec::Vec<(core::option::Option<bool>, alloc::vec::Vec<ely_documents::MarkdownBlock>)>
+pub ely_documents::MarkdownBlock::List::start: core::option::Option<u64>
+pub ely_documents::MarkdownBlock::Math(alloc::string::String)
+pub ely_documents::MarkdownBlock::Paragraph(ely_documents::Inline)
+pub ely_documents::MarkdownBlock::Quote(alloc::vec::Vec<ely_documents::MarkdownBlock>)
+pub ely_documents::MarkdownBlock::Rule
+pub ely_documents::MarkdownBlock::Table
+pub ely_documents::MarkdownBlock::Table::aligns: alloc::vec::Vec<ely_documents::AlignKind>
+pub ely_documents::MarkdownBlock::Table::head: alloc::vec::Vec<alloc::vec::Vec<ely_documents::MarkdownBlock>>
+pub ely_documents::MarkdownBlock::Table::rows: alloc::vec::Vec<alloc::vec::Vec<alloc::vec::Vec<ely_documents::MarkdownBlock>>>
+pub ely_documents::MarkdownBlock::Toc(alloc::vec::Vec<ely_documents::DocumentHeading>)
+pub ely_documents::MarkdownMode::Preview
+pub ely_documents::MarkdownMode::Source
+pub ely_documents::MarkdownMode::Split
+pub ely_documents::MarkdownMode::Visual
+pub ely_documents::MarkdownReader::headings: alloc::vec::Vec<ely_documents::DocumentHeading>
+pub ely_documents::Media::align: ely_documents::Align
+pub ely_documents::Media::source: gpui_shared_string::SharedString
+pub ely_documents::Media::width: f32
+pub ely_documents::PageHit::bounds: gpui::geometry::Bounds<f32>
+pub ely_documents::PageHit::page: usize
+pub ely_documents::PageNote::at: gpui::geometry::Point<f32>
+pub ely_documents::PageNote::page: usize
+pub ely_documents::PageNote::text: gpui_shared_string::SharedString
+pub ely_documents::Paper::A4
+pub ely_documents::Paper::Legal
+pub ely_documents::Paper::Letter
+pub ely_documents::PrintSettings::copies: u32
+pub ely_documents::PrintSettings::landscape: bool
+pub ely_documents::PrintSettings::margins: ely_documents::Margins
+pub ely_documents::PrintSettings::paper: ely_documents::Paper
+pub ely_documents::Style::Code
+pub ely_documents::Style::Emphasis
+pub ely_documents::Style::Footnote
+pub ely_documents::Style::Link
+pub ely_documents::Style::Mark
+pub ely_documents::Style::Math
+pub ely_documents::Style::Strike
+pub ely_documents::Style::Strong
+pub ely_documents::Style::Underline
+pub ely_documents::TableEdit::ColumnLeft
+pub ely_documents::TableEdit::ColumnRight
+pub ely_documents::TableEdit::Delete
+pub ely_documents::TableEdit::DeleteColumn
+pub ely_documents::TableEdit::DeleteRow
+pub ely_documents::TableEdit::MoveColumnLeft
+pub ely_documents::TableEdit::MoveColumnRight
+pub ely_documents::TableEdit::MoveRowDown
+pub ely_documents::TableEdit::MoveRowUp
+pub ely_documents::TableEdit::RowAbove
+pub ely_documents::TableEdit::RowBelow
+pub ely_documents::TableEdit::Tidy
+pub ely_documents::TableRefusal::Beyond
+pub ely_documents::TableRefusal::Edge
+pub ely_documents::TableRefusal::Kept
+pub ely_documents::TableRefusal::Mixed
+pub ely_documents::TableRefusal::Outside
+pub ely_documents::TargetBlock::Alert
+pub ely_documents::TargetBlock::Code
+pub ely_documents::TargetBlock::Definition
+pub ely_documents::TargetBlock::Footnote
+pub ely_documents::TargetBlock::FrontMatter
+pub ely_documents::TargetBlock::Heading(u8)
+pub ely_documents::TargetBlock::Html
+pub ely_documents::TargetBlock::List
+pub ely_documents::TargetBlock::Math
+pub ely_documents::TargetBlock::Paragraph
+pub ely_documents::TargetBlock::Quote
+pub ely_documents::TargetBlock::Rule
+pub ely_documents::TargetBlock::Table
+pub ely_documents::TargetBlock::Toc
+pub ely_documents::Template::category: gpui_shared_string::SharedString
+pub ely_documents::Template::description: gpui_shared_string::SharedString
+pub ely_documents::Template::icon: gpui_shared_string::SharedString
+pub ely_documents::Template::markdown: gpui_shared_string::SharedString
+pub ely_documents::Template::name: gpui_shared_string::SharedString
+pub ely_documents::Trashed::deleted: jiff::timestamp::Timestamp
+pub ely_documents::Trashed::icon: gpui_shared_string::SharedString
+pub ely_documents::Trashed::key: gpui_shared_string::SharedString
+pub ely_documents::Trashed::place: gpui_shared_string::SharedString
+pub ely_documents::Trashed::title: gpui_shared_string::SharedString
+pub ely_documents::Version::at: jiff::timestamp::Timestamp
+pub ely_documents::Version::author: gpui_shared_string::SharedString
+pub ely_documents::Version::markdown: gpui_shared_string::SharedString
+pub ely_documents::mdast::AlignKind::Center
+pub ely_documents::mdast::AlignKind::Left
+pub ely_documents::mdast::AlignKind::None
+pub ely_documents::mdast::AlignKind::Right
+pub ely_documents::mdast::Code::lang: core::option::Option<alloc::string::String>
+pub ely_documents::mdast::Code::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Code::value: alloc::string::String
+pub ely_documents::mdast::Definition::identifier: alloc::string::String
+pub ely_documents::mdast::Definition::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Definition::url: alloc::string::String
+pub ely_documents::mdast::FootnoteDefinition::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::FootnoteDefinition::identifier: alloc::string::String
+pub ely_documents::mdast::FootnoteDefinition::label: alloc::string::String
+pub ely_documents::mdast::FootnoteDefinition::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::FootnoteReference::identifier: alloc::string::String
+pub ely_documents::mdast::FootnoteReference::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Heading::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::Heading::depth: u8
+pub ely_documents::mdast::Heading::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Image::alt: alloc::string::String
+pub ely_documents::mdast::Image::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Image::url: alloc::string::String
+pub ely_documents::mdast::ImageReference::alt: alloc::string::String
+pub ely_documents::mdast::ImageReference::identifier: alloc::string::String
+pub ely_documents::mdast::ImageReference::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Leaf::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Link::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::Link::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Link::url: alloc::string::String
+pub ely_documents::mdast::LinkReference::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::LinkReference::identifier: alloc::string::String
+pub ely_documents::mdast::LinkReference::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::List::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::List::ordered: bool
+pub ely_documents::mdast::List::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::List::spread: bool
+pub ely_documents::mdast::List::start: core::option::Option<u32>
+pub ely_documents::mdast::ListItem::checked: core::option::Option<bool>
+pub ely_documents::mdast::ListItem::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::ListItem::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Literal::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Literal::value: alloc::string::String
+pub ely_documents::mdast::Node::Blockquote(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::Break(ely_documents::mdast::Leaf)
+pub ely_documents::mdast::Node::Code(ely_documents::mdast::Code)
+pub ely_documents::mdast::Node::Definition(ely_documents::mdast::Definition)
+pub ely_documents::mdast::Node::Delete(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::Emphasis(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::FootnoteDefinition(ely_documents::mdast::FootnoteDefinition)
+pub ely_documents::mdast::Node::FootnoteReference(ely_documents::mdast::FootnoteReference)
+pub ely_documents::mdast::Node::Heading(ely_documents::mdast::Heading)
+pub ely_documents::mdast::Node::Html(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Node::Image(ely_documents::mdast::Image)
+pub ely_documents::mdast::Node::ImageReference(ely_documents::mdast::ImageReference)
+pub ely_documents::mdast::Node::InlineCode(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Node::InlineMath(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Node::Link(ely_documents::mdast::Link)
+pub ely_documents::mdast::Node::LinkReference(ely_documents::mdast::LinkReference)
+pub ely_documents::mdast::Node::List(ely_documents::mdast::List)
+pub ely_documents::mdast::Node::ListItem(ely_documents::mdast::ListItem)
+pub ely_documents::mdast::Node::Math(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Node::Paragraph(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::Root(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::Strong(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::Table(ely_documents::mdast::Table)
+pub ely_documents::mdast::Node::TableCell(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::TableRow(ely_documents::mdast::Parent)
+pub ely_documents::mdast::Node::Text(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Node::ThematicBreak(ely_documents::mdast::Leaf)
+pub ely_documents::mdast::Node::Toml(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Node::Yaml(ely_documents::mdast::Literal)
+pub ely_documents::mdast::Parent::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::Parent::position: core::ops::range::Range<usize>
+pub ely_documents::mdast::Table::align: alloc::vec::Vec<ely_documents::AlignKind>
+pub ely_documents::mdast::Table::children: alloc::vec::Vec<ely_documents::mdast::Node>
+pub ely_documents::mdast::Table::position: core::ops::range::Range<usize>
+pub enum ely_documents::AlertKind
+pub enum ely_documents::Align
+pub enum ely_documents::AlignKind
+pub enum ely_documents::Attachment
+pub enum ely_documents::BlockCommand
+pub enum ely_documents::BlockEvent
+pub enum ely_documents::BlockKind
+pub enum ely_documents::DocumentEvent
+pub enum ely_documents::EditRefusal
+pub enum ely_documents::Format
+pub enum ely_documents::InlineFormat
+pub enum ely_documents::Margins
+pub enum ely_documents::MarkdownBlock
+pub enum ely_documents::MarkdownMode
+pub enum ely_documents::Paper
+pub enum ely_documents::Style
+pub enum ely_documents::TableEdit
+pub enum ely_documents::TableRefusal
+pub enum ely_documents::TargetBlock
+pub enum ely_documents::mdast::AlignKind
+pub enum ely_documents::mdast::Node
+pub fn ely_documents::AlertKind::clone(&self) -> Self
+pub fn ely_documents::AlertKind::eq(&self, &Self) -> bool
+pub fn ely_documents::AlertKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::AlertKind::title(self) -> &'static str
+pub fn ely_documents::Align::clone(&self) -> Self
+pub fn ely_documents::Align::default() -> Self
+pub fn ely_documents::Align::eq(&self, &Self) -> bool
+pub fn ely_documents::Align::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::AlignKind::clone(&self) -> Self
+pub fn ely_documents::AlignKind::eq(&self, &Self) -> bool
+pub fn ely_documents::AlignKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Attachment::clone(&self) -> Self
+pub fn ely_documents::Attachment::eq(&self, &Self) -> bool
+pub fn ely_documents::Attachment::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Backlink::clone(&self) -> Self
+pub fn ely_documents::Backlink::eq(&self, &Self) -> bool
+pub fn ely_documents::Backlink::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Backlinks::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Backlinks::into_element(self) -> Self::Element
+pub fn ely_documents::Backlinks::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_documents::Backlink>) -> Self
+pub fn ely_documents::Backlinks::on_open(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::Backlinks::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::BlockCommand::clone(&self) -> Self
+pub fn ely_documents::BlockCommand::eq(&self, &Self) -> bool
+pub fn ely_documents::BlockCommand::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::BlockData::clone(&self) -> Self
+pub fn ely_documents::BlockData::eq(&self, &Self) -> bool
+pub fn ely_documents::BlockData::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::BlockData::from_markdown(&str) -> alloc::vec::Vec<ely_documents::BlockData>
+pub fn ely_documents::BlockData::new(ely_documents::BlockKind, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<alloc::string::String>>) -> Self
+pub fn ely_documents::BlockData::to_markdown(&[ely_documents::BlockData]) -> alloc::string::String
+pub fn ely_documents::BlockEditor::blocks(&self, &gpui::app::App) -> alloc::vec::Vec<ely_documents::BlockData>
+pub fn ely_documents::BlockEditor::diagrams(self, impl core::ops::function::Fn(&str) -> core::result::Result<alloc::string::String, alloc::string::String> + 'static) -> Self
+pub fn ely_documents::BlockEditor::duplicate(&mut self, u64, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::BlockEditor::insert(&mut self, core::option::Option<u64>, ely_documents::BlockData, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> u64
+pub fn ely_documents::BlockEditor::move_block(&mut self, usize, usize, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::BlockEditor::new(alloc::vec::Vec<ely_documents::BlockData>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> Self
+pub fn ely_documents::BlockEditor::people(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_documents::BlockEditor::remove(&mut self, u64, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::BlockEditor::render(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> impl gpui::element::IntoElement
+pub fn ely_documents::BlockEditor::set_kind(&mut self, u64, ely_documents::BlockKind, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::BlockEditor::turn_into(&mut self, u64, ely_documents::BlockKind, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::BlockEvent::clone(&self) -> Self
+pub fn ely_documents::BlockEvent::eq(&self, &Self) -> bool
+pub fn ely_documents::BlockEvent::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::BlockKind::accepts(&self, usize) -> bool
+pub fn ely_documents::BlockKind::clone(&self) -> Self
+pub fn ely_documents::BlockKind::eq(&self, &Self) -> bool
+pub fn ely_documents::BlockKind::fields(&self) -> usize
+pub fn ely_documents::BlockKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::BlockKind::icon(&self) -> ely_core::primitives::icon::names::IconName
+pub fn ely_documents::BlockKind::is_prose(&self) -> bool
+pub fn ely_documents::BlockKind::is_source(&self) -> bool
+pub fn ely_documents::BlockKind::key(&self) -> &'static str
+pub fn ely_documents::BlockKind::label(&self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_documents::BlockKind::next(&self) -> Self
+pub fn ely_documents::BlockKind::placeholder(&self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_documents::Chapter::clone(&self) -> Self
+pub fn ely_documents::Chapter::eq(&self, &Self) -> bool
+pub fn ely_documents::Chapter::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Checklist::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Checklist::into_element(self) -> Self::Element
+pub fn ely_documents::Checklist::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, bool)>) -> Self
+pub fn ely_documents::Checklist::on_add(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::Checklist::on_toggle(self, impl core::ops::function::Fn(usize, bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::Checklist::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Diagram::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Diagram::into_element(self) -> Self::Element
+pub fn ely_documents::Diagram::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::Diagram::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::DocPage::clone(&self) -> Self
+pub fn ely_documents::DocPage::eq(&self, &Self) -> bool
+pub fn ely_documents::DocPage::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::DocumentEvent::clone(&self) -> Self
+pub fn ely_documents::DocumentEvent::eq(&self, &Self) -> bool
+pub fn ely_documents::DocumentEvent::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::DocumentHeading::clone(&self) -> Self
+pub fn ely_documents::DocumentHeading::eq(&self, &Self) -> bool
+pub fn ely_documents::DocumentHeading::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::DocumentLook::clone(&self) -> Self
+pub fn ely_documents::DocumentLook::default() -> Self
+pub fn ely_documents::DocumentLook::eq(&self, &Self) -> bool
+pub fn ely_documents::DocumentLook::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::DocumentTarget::clone(&self) -> Self
+pub fn ely_documents::DocumentTarget::eq(&self, &Self) -> bool
+pub fn ely_documents::DocumentTarget::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::DocumentViewer::find(self, ely_editor::find::FindWidget, alloc::vec::Vec<ely_documents::PageHit>, core::option::Option<usize>) -> Self
+pub fn ely_documents::DocumentViewer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::DocumentViewer::into_element(self) -> Self::Element
+pub fn ely_documents::DocumentViewer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_documents::DocPage>>>) -> Self
+pub fn ely_documents::DocumentViewer::notes(self, alloc::vec::Vec<ely_documents::PageNote>, impl core::ops::function::Fn(usize, gpui::geometry::Point<f32>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::DocumentViewer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::DocumentViewer::thumbnails(self) -> Self
+pub fn ely_documents::DocumentViewer::zoom(self, f32, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::EditRefusal::clone(&self) -> Self
+pub fn ely_documents::EditRefusal::eq(&self, &Self) -> bool
+pub fn ely_documents::EditRefusal::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::EpubReader::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::EpubReader::into_element(self) -> Self::Element
+pub fn ely_documents::EpubReader::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_documents::Chapter>>>) -> Self
+pub fn ely_documents::EpubReader::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Favorite::clone(&self) -> Self
+pub fn ely_documents::Favorite::eq(&self, &Self) -> bool
+pub fn ely_documents::Favorite::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Favorites::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Favorites::into_element(self) -> Self::Element
+pub fn ely_documents::Favorites::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_documents::Favorite>) -> Self
+pub fn ely_documents::Favorites::on_move(self, impl core::ops::function::Fn(usize, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::Favorites::on_open(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::Favorites::on_unpin(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::Favorites::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::FixedFormatToolbar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::FixedFormatToolbar::into_element(self) -> Self::Element
+pub fn ely_documents::FixedFormatToolbar::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_documents::FixedFormatToolbar::on_link(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::FixedFormatToolbar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Footnote::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Footnote::into_element(self) -> Self::Element
+pub fn ely_documents::Footnote::new(impl core::convert::Into<gpui::window::ElementId>, usize, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::Footnote::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Format::clone(&self) -> Self
+pub fn ely_documents::Format::eq(&self, &Self) -> bool
+pub fn ely_documents::Format::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Glossary::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Glossary::into_element(self) -> Self::Element
+pub fn ely_documents::Glossary::new(impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>)>) -> Self
+pub fn ely_documents::Glossary::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::HeldPicture::clone(&self) -> Self
+pub fn ely_documents::HeldPicture::eq(&self, &Self) -> bool
+pub fn ely_documents::HeldPicture::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::HeldPicture::hash<H: core::hash::Hasher>(&self, &mut H)
+pub fn ely_documents::HeldPicture::new(gpui::platform::ImageFormat, impl core::convert::Into<alloc::rcs::arc::Arc<[u8]>>) -> Self
+pub fn ely_documents::Inline::clone(&self) -> Self
+pub fn ely_documents::Inline::default() -> Self
+pub fn ely_documents::Inline::eq(&self, &Self) -> bool
+pub fn ely_documents::Inline::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::InlineFormat::clone(&self) -> Self
+pub fn ely_documents::InlineFormat::eq(&self, &Self) -> bool
+pub fn ely_documents::InlineFormat::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Latex::display(self) -> Self
+pub fn ely_documents::Latex::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::Latex::into_element(self) -> Self::Element
+pub fn ely_documents::Latex::parse(impl core::convert::Into<gpui::window::ElementId>, &str) -> core::result::Result<Self, ely_documents::MathError>
+pub fn ely_documents::Latex::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Latex::size(self, ely_core::theme::tokens::TextSize) -> Self
+pub fn ely_documents::LinkEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::LinkEditor::into_element(self) -> Self::Element
+pub fn ely_documents::LinkEditor::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::LinkEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Margins::clone(&self) -> Self
+pub fn ely_documents::Margins::default() -> Self
+pub fn ely_documents::Margins::eq(&self, &Self) -> bool
+pub fn ely_documents::Margins::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::MarkdownBlock::clone(&self) -> Self
+pub fn ely_documents::MarkdownBlock::eq(&self, &Self) -> bool
+pub fn ely_documents::MarkdownBlock::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::MarkdownDocument::block(&mut self, ely_documents::BlockCommand, &mut gpui::app::context::Context<'_, Self>) -> core::result::Result<(), ely_documents::EditRefusal>
+pub fn ely_documents::MarkdownDocument::caret(&self, &gpui::app::App) -> (usize, usize)
+pub fn ely_documents::MarkdownDocument::delete_image(&mut self, usize, &mut gpui::app::context::Context<'_, Self>) -> core::result::Result<(), ely_documents::EditRefusal>
+pub fn ely_documents::MarkdownDocument::edit_table(&mut self, ely_documents::TableEdit, &mut gpui::app::context::Context<'_, Self>) -> core::result::Result<(), ely_documents::EditRefusal>
+pub fn ely_documents::MarkdownDocument::editor(&self) -> &gpui::app::entity_map::Entity<ely_editor::state::CodeEditor>
+pub fn ely_documents::MarkdownDocument::focus_handle(&self, &gpui::app::App) -> gpui::window::FocusHandle
+pub fn ely_documents::MarkdownDocument::format(&mut self, ely_documents::InlineFormat, &mut gpui::app::context::Context<'_, Self>) -> core::result::Result<(), ely_documents::EditRefusal>
+pub fn ely_documents::MarkdownDocument::insert(&mut self, &str, &mut gpui::app::context::Context<'_, Self>) -> bool
+pub fn ely_documents::MarkdownDocument::insert_table(&mut self, &mut gpui::app::context::Context<'_, Self>) -> core::result::Result<(), ely_documents::EditRefusal>
+pub fn ely_documents::MarkdownDocument::look(&self) -> &ely_documents::DocumentLook
+pub fn ely_documents::MarkdownDocument::mode(&self) -> ely_documents::MarkdownMode
+pub fn ely_documents::MarkdownDocument::new(impl core::convert::Into<alloc::string::String>, ely_documents::MarkdownMode, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> Self
+pub fn ely_documents::MarkdownDocument::on_link(&mut self, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static)
+pub fn ely_documents::MarkdownDocument::outline(&self, &gpui::app::App) -> alloc::vec::Vec<(ely_documents::DocumentHeading, usize)>
+pub fn ely_documents::MarkdownDocument::read_now(&self, &gpui::app::App) -> bool
+pub fn ely_documents::MarkdownDocument::render(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> impl gpui::element::IntoElement
+pub fn ely_documents::MarkdownDocument::replace(&mut self, alloc::vec::Vec<(core::ops::range::Range<usize>, alloc::string::String)>, &mut gpui::app::context::Context<'_, Self>) -> bool
+pub fn ely_documents::MarkdownDocument::reset(&mut self, impl core::convert::Into<alloc::string::String>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::reveal(&mut self, usize, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::selected(&self, &gpui::app::App) -> alloc::string::String
+pub fn ely_documents::MarkdownDocument::set_base(&mut self, impl core::convert::Into<alloc::rcs::arc::Arc<std::path::Path>>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::set_caret(&mut self, usize, usize, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::set_look(&mut self, ely_documents::DocumentLook, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::set_mode(&mut self, ely_documents::MarkdownMode, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::set_text(&mut self, impl core::convert::Into<alloc::string::String>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::set_top_line(&mut self, usize, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::show_match(&mut self, core::ops::range::Range<usize>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::text(&self, &gpui::app::App) -> alloc::string::String
+pub fn ely_documents::MarkdownDocument::top_line(&self, &gpui::app::App) -> usize
+pub fn ely_documents::MarkdownEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::MarkdownEditor::into_element(self) -> Self::Element
+pub fn ely_documents::MarkdownEditor::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, ely_documents::MarkdownMode) -> Self
+pub fn ely_documents::MarkdownEditor::on_mode(self, impl core::ops::function::Fn(ely_documents::MarkdownMode, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::MarkdownEditor::people(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_documents::MarkdownEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::MarkdownMode::clone(&self) -> Self
+pub fn ely_documents::MarkdownMode::eq(&self, &Self) -> bool
+pub fn ely_documents::MarkdownMode::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::MarkdownReader<'a>::block(&self, &ely_documents::mdast::Node, &mut alloc::vec::Vec<ely_documents::MarkdownBlock>)
+pub fn ely_documents::MarkdownReader<'a>::inline(&self, &[ely_documents::mdast::Node]) -> ely_documents::Inline
+pub fn ely_documents::MarkdownReader<'a>::joined(&'a str, &ely_documents::mdast::Node) -> Self
+pub fn ely_documents::MarkdownReader<'a>::label(&self, &ely_documents::mdast::FootnoteDefinition) -> alloc::string::String
+pub fn ely_documents::MarkdownReader<'a>::note(&self, &str) -> core::option::Option<usize>
+pub fn ely_documents::MarkdownRenderer::base(self, impl core::convert::Into<alloc::rcs::arc::Arc<std::path::Path>>) -> Self
+pub fn ely_documents::MarkdownRenderer::blocks(impl core::convert::Into<gpui::window::ElementId>, alloc::rcs::rc::Rc<[ely_documents::MarkdownBlock]>) -> Self
+pub fn ely_documents::MarkdownRenderer::code(self, impl core::ops::function::Fn(gpui::window::ElementId, core::option::Option<gpui_shared_string::SharedString>, gpui_shared_string::SharedString) -> gpui::element::AnyElement + 'static) -> Self
+pub fn ely_documents::MarkdownRenderer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::MarkdownRenderer::into_element(self) -> Self::Element
+pub fn ely_documents::MarkdownRenderer::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::MarkdownRenderer::on_link(self, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::MarkdownRenderer::pictures(self, alloc::rcs::rc::Rc<ely_documents::Pictures>) -> Self
+pub fn ely_documents::MarkdownRenderer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::MarkdownRenderer::sections(self, &gpui::app::entity_map::Entity<ely_core::navigation::toc::Sections>) -> Self
+pub fn ely_documents::MarkdownRenderer::text_size(self, ely_core::theme::tokens::TextSize) -> Self
+pub fn ely_documents::MathError::clone(&self) -> Self
+pub fn ely_documents::MathError::eq(&self, &Self) -> bool
+pub fn ely_documents::MathError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Media::clone(&self) -> Self
+pub fn ely_documents::Media::eq(&self, &Self) -> bool
+pub fn ely_documents::Media::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Media::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::PageCover::choices(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, impl core::ops::function::Fn(core::option::Option<gpui_shared_string::SharedString>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::PageCover::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::PageCover::into_element(self) -> Self::Element
+pub fn ely_documents::PageCover::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::PageCover::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::PageHistoryDiff::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::PageHistoryDiff::into_element(self) -> Self::Element
+pub fn ely_documents::PageHistoryDiff::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::PageHistoryDiff::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::PageHit::clone(&self) -> Self
+pub fn ely_documents::PageHit::eq(&self, &Self) -> bool
+pub fn ely_documents::PageHit::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::PageIcon::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::PageIcon::into_element(self) -> Self::Element
+pub fn ely_documents::PageIcon::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::PageIcon::on_change(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::PageIcon::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::PageNote::clone(&self) -> Self
+pub fn ely_documents::PageNote::eq(&self, &Self) -> bool
+pub fn ely_documents::PageNote::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::PageThumbnailList::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::PageThumbnailList::into_element(self) -> Self::Element
+pub fn ely_documents::PageThumbnailList::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_documents::DocPage>>>, usize) -> Self
+pub fn ely_documents::PageThumbnailList::on_pick(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::PageThumbnailList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Paper::clone(&self) -> Self
+pub fn ely_documents::Paper::default() -> Self
+pub fn ely_documents::Paper::eq(&self, &Self) -> bool
+pub fn ely_documents::Paper::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::PrintPreview::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::PrintPreview::into_element(self) -> Self::Element
+pub fn ely_documents::PrintPreview::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_documents::DocPage>>>, ely_documents::PrintSettings, impl core::ops::function::Fn(ely_documents::PrintSettings, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(ely_documents::PrintSettings, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::PrintPreview::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::PrintSettings::clone(&self) -> Self
+pub fn ely_documents::PrintSettings::default() -> Self
+pub fn ely_documents::PrintSettings::eq(&self, &Self) -> bool
+pub fn ely_documents::PrintSettings::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::ReadingProgress::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::ReadingProgress::into_element(self) -> Self::Element
+pub fn ely_documents::ReadingProgress::new(&gpui::elements::div::ScrollHandle) -> Self
+pub fn ely_documents::ReadingProgress::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::ReadingTime::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::ReadingTime::into_element(self) -> Self::Element
+pub fn ely_documents::ReadingTime::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::ReadingTime::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::RichTextEditor::beside(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_documents::RichTextEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::RichTextEditor::into_element(self) -> Self::Element
+pub fn ely_documents::RichTextEditor::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>) -> Self
+pub fn ely_documents::RichTextEditor::people(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_documents::RichTextEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::RichTextEditor::toolbar_end(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_documents::Style::clone(&self) -> Self
+pub fn ely_documents::Style::eq(&self, &Self) -> bool
+pub fn ely_documents::Style::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::TableEdit::clone(&self) -> Self
+pub fn ely_documents::TableEdit::eq(&self, &Self) -> bool
+pub fn ely_documents::TableEdit::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::TableRefusal::clone(&self) -> Self
+pub fn ely_documents::TableRefusal::eq(&self, &Self) -> bool
+pub fn ely_documents::TableRefusal::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::TargetBlock::clone(&self) -> Self
+pub fn ely_documents::TargetBlock::eq(&self, &Self) -> bool
+pub fn ely_documents::TargetBlock::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Template::clone(&self) -> Self
+pub fn ely_documents::Template::eq(&self, &Self) -> bool
+pub fn ely_documents::Template::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::TemplatePicker::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::TemplatePicker::into_element(self) -> Self::Element
+pub fn ely_documents::TemplatePicker::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<alloc::rcs::rc::Rc<alloc::vec::Vec<ely_documents::Template>>>) -> Self
+pub fn ely_documents::TemplatePicker::on_use(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::TemplatePicker::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::TodoItem::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::TodoItem::into_element(self) -> Self::Element
+pub fn ely_documents::TodoItem::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, bool) -> Self
+pub fn ely_documents::TodoItem::on_toggle(self, impl core::ops::function::Fn(bool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::TodoItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::TooltipTerm::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::TooltipTerm::into_element(self) -> Self::Element
+pub fn ely_documents::TooltipTerm::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::TooltipTerm::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::TrashBin::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::TrashBin::into_element(self) -> Self::Element
+pub fn ely_documents::TrashBin::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_documents::Trashed>) -> Self
+pub fn ely_documents::TrashBin::on_delete(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::TrashBin::on_empty(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::TrashBin::on_restore(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::TrashBin::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::Trashed::clone(&self) -> Self
+pub fn ely_documents::Trashed::eq(&self, &Self) -> bool
+pub fn ely_documents::Trashed::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::Version::clone(&self) -> Self
+pub fn ely_documents::Version::eq(&self, &Self) -> bool
+pub fn ely_documents::Version::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::VersionHistory::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::VersionHistory::into_element(self) -> Self::Element
+pub fn ely_documents::VersionHistory::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_documents::Version>, usize) -> Self
+pub fn ely_documents::VersionHistory::on_restore(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::VersionHistory::on_select(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::VersionHistory::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::WordCount::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::WordCount::into_element(self) -> Self::Element
+pub fn ely_documents::WordCount::limit(self, usize) -> Self
+pub fn ely_documents::WordCount::new(impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_documents::WordCount::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::ZenMode::chrome(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_documents::ZenMode::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_documents::ZenMode::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_documents::ZenMode::into_element(self) -> Self::Element
+pub fn ely_documents::ZenMode::new(impl core::convert::Into<gpui::window::ElementId>, bool) -> Self
+pub fn ely_documents::ZenMode::on_exit(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_documents::ZenMode::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::alert(&ely_documents::mdast::Parent) -> core::option::Option<(ely_documents::AlertKind, alloc::vec::Vec<ely_documents::mdast::Node>)>
+pub fn ely_documents::bind_keys(&mut gpui::app::App)
+pub fn ely_documents::diagram_svg(&str) -> core::result::Result<alloc::string::String, gpui_shared_string::SharedString>
+pub fn ely_documents::format(&gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, ely_documents::Format, &mut gpui::app::App)
+pub fn ely_documents::formula_svg(&str, bool) -> core::result::Result<alloc::string::String, ely_documents::MathError>
+pub fn ely_documents::is_toc(&ely_documents::mdast::Node, &str) -> bool
+pub fn ely_documents::markdown_highlights(&str, &gpui::app::App) -> alloc::vec::Vec<(core::ops::range::Range<usize>, ely_core::forms::text::highlight::Highlight)>
+pub fn ely_documents::markdown_tree(&str) -> ely_documents::mdast::Node
+pub fn ely_documents::mdast::Code::clone(&self) -> Self
+pub fn ely_documents::mdast::Code::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Code::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Definition::clone(&self) -> Self
+pub fn ely_documents::mdast::Definition::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Definition::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::FootnoteDefinition::clone(&self) -> Self
+pub fn ely_documents::mdast::FootnoteDefinition::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::FootnoteDefinition::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::FootnoteReference::clone(&self) -> Self
+pub fn ely_documents::mdast::FootnoteReference::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::FootnoteReference::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Heading::clone(&self) -> Self
+pub fn ely_documents::mdast::Heading::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Heading::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Image::clone(&self) -> Self
+pub fn ely_documents::mdast::Image::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Image::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::ImageReference::clone(&self) -> Self
+pub fn ely_documents::mdast::ImageReference::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::ImageReference::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Leaf::clone(&self) -> Self
+pub fn ely_documents::mdast::Leaf::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Leaf::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Link::clone(&self) -> Self
+pub fn ely_documents::mdast::Link::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Link::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::LinkReference::clone(&self) -> Self
+pub fn ely_documents::mdast::LinkReference::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::LinkReference::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::List::clone(&self) -> Self
+pub fn ely_documents::mdast::List::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::List::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::ListItem::clone(&self) -> Self
+pub fn ely_documents::mdast::ListItem::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::ListItem::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Literal::clone(&self) -> Self
+pub fn ely_documents::mdast::Literal::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Literal::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Node::children(&self) -> core::option::Option<&alloc::vec::Vec<ely_documents::mdast::Node>>
+pub fn ely_documents::mdast::Node::clone(&self) -> Self
+pub fn ely_documents::mdast::Node::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Node::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Node::position(&self) -> &core::ops::range::Range<usize>
+pub fn ely_documents::mdast::Parent::clone(&self) -> Self
+pub fn ely_documents::mdast::Parent::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Parent::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::mdast::Table::clone(&self) -> Self
+pub fn ely_documents::mdast::Table::eq(&self, &Self) -> bool
+pub fn ely_documents::mdast::Table::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::outline(&str) -> alloc::vec::Vec<(gpui_shared_string::SharedString, gpui_shared_string::SharedString, usize)>
+pub fn ely_documents::sheet(ely_documents::PrintSettings) -> (f32, f32)
+pub mod ely_documents
+pub mod ely_documents::mdast
+pub struct ely_documents::Backlink
+pub struct ely_documents::Backlinks
+pub struct ely_documents::BlockData
+pub struct ely_documents::BlockEditor
+pub struct ely_documents::Chapter
+pub struct ely_documents::Checklist
+pub struct ely_documents::Diagram
+pub struct ely_documents::DocPage
+pub struct ely_documents::DocumentHeading
+pub struct ely_documents::DocumentLook
+pub struct ely_documents::DocumentTarget
+pub struct ely_documents::DocumentViewer
+pub struct ely_documents::EpubReader
+pub struct ely_documents::Favorite
+pub struct ely_documents::Favorites
+pub struct ely_documents::FixedFormatToolbar
+pub struct ely_documents::Footnote
+pub struct ely_documents::Glossary
+pub struct ely_documents::HeldPicture
+pub struct ely_documents::Inline
+pub struct ely_documents::Latex
+pub struct ely_documents::LinkEditor
+pub struct ely_documents::MarkdownDocument
+pub struct ely_documents::MarkdownEditor
+pub struct ely_documents::MarkdownReader<'a>
+pub struct ely_documents::MarkdownRenderer
+pub struct ely_documents::MathError
+pub struct ely_documents::Media
+pub struct ely_documents::PageCover
+pub struct ely_documents::PageHistoryDiff
+pub struct ely_documents::PageHit
+pub struct ely_documents::PageIcon
+pub struct ely_documents::PageNote
+pub struct ely_documents::PageThumbnailList
+pub struct ely_documents::PrintPreview
+pub struct ely_documents::PrintSettings
+pub struct ely_documents::ReadingProgress
+pub struct ely_documents::ReadingTime
+pub struct ely_documents::RichTextEditor
+pub struct ely_documents::Template
+pub struct ely_documents::TemplatePicker
+pub struct ely_documents::TodoItem
+pub struct ely_documents::TooltipTerm
+pub struct ely_documents::TrashBin
+pub struct ely_documents::Trashed
+pub struct ely_documents::Version
+pub struct ely_documents::VersionHistory
+pub struct ely_documents::WordCount
+pub struct ely_documents::ZenMode
+pub struct ely_documents::mdast::Code
+pub struct ely_documents::mdast::Definition
+pub struct ely_documents::mdast::FootnoteDefinition
+pub struct ely_documents::mdast::FootnoteReference
+pub struct ely_documents::mdast::Heading
+pub struct ely_documents::mdast::Image
+pub struct ely_documents::mdast::ImageReference
+pub struct ely_documents::mdast::Leaf
+pub struct ely_documents::mdast::Link
+pub struct ely_documents::mdast::LinkReference
+pub struct ely_documents::mdast::List
+pub struct ely_documents::mdast::ListItem
+pub struct ely_documents::mdast::Literal
+pub struct ely_documents::mdast::Parent
+pub struct ely_documents::mdast::Table
+pub type ely_documents::Backlinks::Element = gpui::view::ViewElement<ely_documents::Backlinks>
+pub type ely_documents::Checklist::Element = gpui::view::ViewElement<ely_documents::Checklist>
+pub type ely_documents::Diagram::Element = gpui::view::ViewElement<ely_documents::Diagram>
+pub type ely_documents::DocumentViewer::Element = gpui::view::ViewElement<ely_documents::DocumentViewer>
+pub type ely_documents::EpubReader::Element = gpui::view::ViewElement<ely_documents::EpubReader>
+pub type ely_documents::Favorites::Element = gpui::view::ViewElement<ely_documents::Favorites>
+pub type ely_documents::FixedFormatToolbar::Element = gpui::view::ViewElement<ely_documents::FixedFormatToolbar>
+pub type ely_documents::Footnote::Element = gpui::view::ViewElement<ely_documents::Footnote>
+pub type ely_documents::Glossary::Element = gpui::view::ViewElement<ely_documents::Glossary>
+pub type ely_documents::Latex::Element = gpui::view::ViewElement<ely_documents::Latex>
+pub type ely_documents::LinkEditor::Element = gpui::view::ViewElement<ely_documents::LinkEditor>
+pub type ely_documents::MarkdownEditor::Element = gpui::view::ViewElement<ely_documents::MarkdownEditor>
+pub type ely_documents::MarkdownRenderer::Element = gpui::view::ViewElement<ely_documents::MarkdownRenderer>
+pub type ely_documents::PageCover::Element = gpui::view::ViewElement<ely_documents::PageCover>
+pub type ely_documents::PageHistoryDiff::Element = gpui::view::ViewElement<ely_documents::PageHistoryDiff>
+pub type ely_documents::PageIcon::Element = gpui::view::ViewElement<ely_documents::PageIcon>
+pub type ely_documents::PageIcon::Value<'a> = &'a gpui_shared_string::SharedString
+pub type ely_documents::PageThumbnailList::Element = gpui::view::ViewElement<ely_documents::PageThumbnailList>
+pub type ely_documents::Pictures = std::collections::hash::map::HashMap<alloc::string::String, core::result::Result<ely_documents::HeldPicture, gpui_shared_string::SharedString>>
+pub type ely_documents::PrintPreview::Element = gpui::view::ViewElement<ely_documents::PrintPreview>
+pub type ely_documents::ReadingProgress::Element = gpui::view::ViewElement<ely_documents::ReadingProgress>
+pub type ely_documents::ReadingTime::Element = gpui::view::ViewElement<ely_documents::ReadingTime>
+pub type ely_documents::RichTextEditor::Element = gpui::view::ViewElement<ely_documents::RichTextEditor>
+pub type ely_documents::TemplatePicker::Element = gpui::view::ViewElement<ely_documents::TemplatePicker>
+pub type ely_documents::TodoItem::Element = gpui::view::ViewElement<ely_documents::TodoItem>
+pub type ely_documents::TooltipTerm::Element = gpui::view::ViewElement<ely_documents::TooltipTerm>
+pub type ely_documents::TrashBin::Element = gpui::view::ViewElement<ely_documents::TrashBin>
+pub type ely_documents::VersionHistory::Element = gpui::view::ViewElement<ely_documents::VersionHistory>
+pub type ely_documents::WordCount::Element = gpui::view::ViewElement<ely_documents::WordCount>
+pub type ely_documents::ZenMode::Element = gpui::view::ViewElement<ely_documents::ZenMode>
+pub use ely_documents::AlertKind = ely_documents::tree::blocks::AlertKind
+pub use ely_documents::Align = ely_documents::blocks::kind::Align
+pub use ely_documents::AlignKind = ely_documents::markdown::mdast::AlignKind
+pub use ely_documents::Attachment = ely_documents::document::attach::Attachment
+pub use ely_documents::Backlink = ely_documents::knowledge::Backlink
+pub use ely_documents::Backlinks = ely_documents::knowledge::Backlinks
+pub use ely_documents::BlockCommand = ely_documents::document::block::BlockCommand
+pub use ely_documents::BlockData = ely_documents::blocks::BlockData
+pub use ely_documents::BlockEditor = ely_documents::blocks::BlockEditor
+pub use ely_documents::BlockEvent = ely_documents::blocks::BlockEvent
+pub use ely_documents::BlockKind = ely_documents::blocks::kind::BlockKind
+pub use ely_documents::Chapter = ely_documents::epub::Chapter
+pub use ely_documents::Checklist = ely_documents::todo::Checklist
+pub use ely_documents::Diagram = ely_documents::diagram::Diagram
+pub use ely_documents::DocPage = ely_documents::viewer::DocPage
+pub use ely_documents::DocumentEvent = ely_documents::document::DocumentEvent
+pub use ely_documents::DocumentHeading = ely_documents::tree::blocks::DocumentHeading
+pub use ely_documents::DocumentLook = ely_documents::document::look::DocumentLook
+pub use ely_documents::DocumentTarget = ely_documents::document::point::DocumentTarget
+pub use ely_documents::DocumentViewer = ely_documents::viewer::DocumentViewer
+pub use ely_documents::EditRefusal = ely_documents::document::format::EditRefusal
+pub use ely_documents::EpubReader = ely_documents::epub::EpubReader
+pub use ely_documents::Favorite = ely_documents::knowledge::Favorite
+pub use ely_documents::Favorites = ely_documents::knowledge::Favorites
+pub use ely_documents::FixedFormatToolbar = ely_documents::toolbar::FixedFormatToolbar
+pub use ely_documents::Footnote = ely_documents::reading::Footnote
+pub use ely_documents::Format = ely_documents::format::Format
+pub use ely_documents::Glossary = ely_documents::reading::Glossary
+pub use ely_documents::HeldPicture = ely_documents::picture::HeldPicture
+pub use ely_documents::Inline = ely_documents::tree::Inline
+pub use ely_documents::InlineFormat = ely_documents::document::format::InlineFormat
+pub use ely_documents::LARGEST_READ = ely_documents::document::LARGEST_READ
+pub use ely_documents::Latex = ely_documents::math::Latex
+pub use ely_documents::LinkEditor = ely_documents::link::LinkEditor
+pub use ely_documents::Margins = ely_documents::print::Margins
+pub use ely_documents::MarkdownBlock = ely_documents::tree::Node
+pub use ely_documents::MarkdownDocument = ely_documents::document::MarkdownDocument
+pub use ely_documents::MarkdownEditor = ely_documents::modes::MarkdownEditor
+pub use ely_documents::MarkdownMode = ely_documents::modes::MarkdownMode
+pub use ely_documents::MarkdownReader = ely_documents::tree::Reader
+pub use ely_documents::MarkdownRenderer = ely_documents::render::MarkdownRenderer
+pub use ely_documents::MathError = ely_documents::math::MathError
+pub use ely_documents::Media = ely_documents::blocks::kind::Media
+pub use ely_documents::PageCover = ely_documents::pages::PageCover
+pub use ely_documents::PageHistoryDiff = ely_documents::history::PageHistoryDiff
+pub use ely_documents::PageHit = ely_documents::viewer::PageHit
+pub use ely_documents::PageIcon = ely_documents::pages::PageIcon
+pub use ely_documents::PageNote = ely_documents::viewer::PageNote
+pub use ely_documents::PageThumbnailList = ely_documents::thumbs::PageThumbnailList
+pub use ely_documents::Paper = ely_documents::print::Paper
+pub use ely_documents::Pictures = ely_documents::picture::Pictures
+pub use ely_documents::PrintPreview = ely_documents::print::PrintPreview
+pub use ely_documents::PrintSettings = ely_documents::print::PrintSettings
+pub use ely_documents::ReadingProgress = ely_documents::reading::ReadingProgress
+pub use ely_documents::ReadingTime = ely_documents::counts::ReadingTime
+pub use ely_documents::RichTextEditor = ely_documents::rich::RichTextEditor
+pub use ely_documents::Style = ely_documents::tree::Style
+pub use ely_documents::TableEdit = ely_documents::document::tables::TableEdit
+pub use ely_documents::TableRefusal = ely_documents::document::tables::TableRefusal
+pub use ely_documents::TargetBlock = ely_documents::document::point::TargetBlock
+pub use ely_documents::Template = ely_documents::templates::Template
+pub use ely_documents::TemplatePicker = ely_documents::templates::TemplatePicker
+pub use ely_documents::TodoItem = ely_documents::todo::TodoItem
+pub use ely_documents::TooltipTerm = ely_documents::reading::TooltipTerm
+pub use ely_documents::TrashBin = ely_documents::knowledge::TrashBin
+pub use ely_documents::Trashed = ely_documents::knowledge::Trashed
+pub use ely_documents::Version = ely_documents::history::Version
+pub use ely_documents::VersionHistory = ely_documents::history::VersionHistory
+pub use ely_documents::WordCount = ely_documents::counts::WordCount
+pub use ely_documents::ZenMode = ely_documents::reading::ZenMode
+pub use ely_documents::alert = ely_documents::tree::blocks::alert
+pub use ely_documents::diagram_svg = ely_documents::diagram::diagram_svg
+pub use ely_documents::format = ely_documents::format::format
+pub use ely_documents::formula_svg = ely_documents::math::formula_svg
+pub use ely_documents::is_toc = ely_documents::tree::blocks::is_toc
+pub use ely_documents::markdown_highlights = ely_documents::markdown::markdown_highlights
+pub use ely_documents::markdown_tree = ely_documents::markdown::file_tree
+pub use ely_documents::mdast = ely_documents::markdown::mdast
+pub use ely_documents::outline = ely_documents::contents::outline
+pub use ely_documents::sheet = ely_documents::print::sheet

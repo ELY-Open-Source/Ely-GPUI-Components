@@ -1,0 +1,838 @@
+impl core::clone::Clone for ely_canvas::Align
+impl core::clone::Clone for ely_canvas::Artboard
+impl core::clone::Clone for ely_canvas::AutoLayout
+impl core::clone::Clone for ely_canvas::Board
+impl core::clone::Clone for ely_canvas::Border
+impl core::clone::Clone for ely_canvas::Brush
+impl core::clone::Clone for ely_canvas::Constraints
+impl core::clone::Clone for ely_canvas::Corner
+impl core::clone::Clone for ely_canvas::Dash
+impl core::clone::Clone for ely_canvas::Edge
+impl core::clone::Clone for ely_canvas::ExportFormat
+impl core::clone::Clone for ely_canvas::ExportSetting
+impl core::clone::Clone for ely_canvas::Flow
+impl core::clone::Clone for ely_canvas::Frame
+impl core::clone::Clone for ely_canvas::Guide
+impl core::clone::Clone for ely_canvas::Handle
+impl core::clone::Clone for ely_canvas::Link
+impl core::clone::Clone for ely_canvas::Node
+impl core::clone::Clone for ely_canvas::Pin
+impl core::clone::Clone for ely_canvas::Place
+impl core::clone::Clone for ely_canvas::Port
+impl core::clone::Clone for ely_canvas::Shadow
+impl core::clone::Clone for ely_canvas::Shape
+impl core::clone::Clone for ely_canvas::ShapeKind
+impl core::clone::Clone for ely_canvas::Step
+impl core::clone::Clone for ely_canvas::StepKind
+impl core::clone::Clone for ely_canvas::Tool
+impl core::clone::Clone for ely_canvas::Topic
+impl core::clone::Clone for ely_canvas::TypeStyle
+impl core::clone::Clone for ely_canvas::Viewport
+impl core::cmp::Eq for ely_canvas::Align
+impl core::cmp::Eq for ely_canvas::Constraints
+impl core::cmp::Eq for ely_canvas::Corner
+impl core::cmp::Eq for ely_canvas::Dash
+impl core::cmp::Eq for ely_canvas::Edge
+impl core::cmp::Eq for ely_canvas::ExportFormat
+impl core::cmp::Eq for ely_canvas::Flow
+impl core::cmp::Eq for ely_canvas::Handle
+impl core::cmp::Eq for ely_canvas::Pin
+impl core::cmp::Eq for ely_canvas::Place
+impl core::cmp::Eq for ely_canvas::StepKind
+impl core::cmp::Eq for ely_canvas::Tool
+impl core::cmp::PartialEq for ely_canvas::Align
+impl core::cmp::PartialEq for ely_canvas::Artboard
+impl core::cmp::PartialEq for ely_canvas::AutoLayout
+impl core::cmp::PartialEq for ely_canvas::Board
+impl core::cmp::PartialEq for ely_canvas::Border
+impl core::cmp::PartialEq for ely_canvas::Brush
+impl core::cmp::PartialEq for ely_canvas::Constraints
+impl core::cmp::PartialEq for ely_canvas::Corner
+impl core::cmp::PartialEq for ely_canvas::Dash
+impl core::cmp::PartialEq for ely_canvas::Edge
+impl core::cmp::PartialEq for ely_canvas::ExportFormat
+impl core::cmp::PartialEq for ely_canvas::ExportSetting
+impl core::cmp::PartialEq for ely_canvas::Flow
+impl core::cmp::PartialEq for ely_canvas::Frame
+impl core::cmp::PartialEq for ely_canvas::Guide
+impl core::cmp::PartialEq for ely_canvas::Handle
+impl core::cmp::PartialEq for ely_canvas::Link
+impl core::cmp::PartialEq for ely_canvas::Node
+impl core::cmp::PartialEq for ely_canvas::Pin
+impl core::cmp::PartialEq for ely_canvas::Place
+impl core::cmp::PartialEq for ely_canvas::Port
+impl core::cmp::PartialEq for ely_canvas::Shadow
+impl core::cmp::PartialEq for ely_canvas::Shape
+impl core::cmp::PartialEq for ely_canvas::ShapeKind
+impl core::cmp::PartialEq for ely_canvas::Step
+impl core::cmp::PartialEq for ely_canvas::StepKind
+impl core::cmp::PartialEq for ely_canvas::Tool
+impl core::cmp::PartialEq for ely_canvas::Topic
+impl core::cmp::PartialEq for ely_canvas::TypeStyle
+impl core::cmp::PartialEq for ely_canvas::Viewport
+impl core::default::Default for ely_canvas::Board
+impl core::default::Default for ely_canvas::Frame
+impl core::fmt::Debug for ely_canvas::Align
+impl core::fmt::Debug for ely_canvas::Artboard
+impl core::fmt::Debug for ely_canvas::AutoLayout
+impl core::fmt::Debug for ely_canvas::Board
+impl core::fmt::Debug for ely_canvas::Border
+impl core::fmt::Debug for ely_canvas::Brush
+impl core::fmt::Debug for ely_canvas::Constraints
+impl core::fmt::Debug for ely_canvas::Corner
+impl core::fmt::Debug for ely_canvas::Dash
+impl core::fmt::Debug for ely_canvas::Edge
+impl core::fmt::Debug for ely_canvas::ExportFormat
+impl core::fmt::Debug for ely_canvas::ExportSetting
+impl core::fmt::Debug for ely_canvas::Flow
+impl core::fmt::Debug for ely_canvas::Frame
+impl core::fmt::Debug for ely_canvas::Guide
+impl core::fmt::Debug for ely_canvas::Handle
+impl core::fmt::Debug for ely_canvas::Link
+impl core::fmt::Debug for ely_canvas::Node
+impl core::fmt::Debug for ely_canvas::Pin
+impl core::fmt::Debug for ely_canvas::Place
+impl core::fmt::Debug for ely_canvas::Port
+impl core::fmt::Debug for ely_canvas::Shadow
+impl core::fmt::Debug for ely_canvas::Shape
+impl core::fmt::Debug for ely_canvas::ShapeKind
+impl core::fmt::Debug for ely_canvas::Step
+impl core::fmt::Debug for ely_canvas::StepKind
+impl core::fmt::Debug for ely_canvas::Tool
+impl core::fmt::Debug for ely_canvas::Topic
+impl core::fmt::Debug for ely_canvas::TypeStyle
+impl core::fmt::Debug for ely_canvas::Viewport
+impl core::marker::Copy for ely_canvas::Align
+impl core::marker::Copy for ely_canvas::AutoLayout
+impl core::marker::Copy for ely_canvas::Border
+impl core::marker::Copy for ely_canvas::Brush
+impl core::marker::Copy for ely_canvas::Constraints
+impl core::marker::Copy for ely_canvas::Corner
+impl core::marker::Copy for ely_canvas::Dash
+impl core::marker::Copy for ely_canvas::ExportFormat
+impl core::marker::Copy for ely_canvas::ExportSetting
+impl core::marker::Copy for ely_canvas::Flow
+impl core::marker::Copy for ely_canvas::Frame
+impl core::marker::Copy for ely_canvas::Guide
+impl core::marker::Copy for ely_canvas::Handle
+impl core::marker::Copy for ely_canvas::Pin
+impl core::marker::Copy for ely_canvas::Place
+impl core::marker::Copy for ely_canvas::Shadow
+impl core::marker::Copy for ely_canvas::StepKind
+impl core::marker::Copy for ely_canvas::Tool
+impl core::marker::Copy for ely_canvas::Viewport
+impl core::marker::StructuralPartialEq for ely_canvas::Align
+impl core::marker::StructuralPartialEq for ely_canvas::Artboard
+impl core::marker::StructuralPartialEq for ely_canvas::AutoLayout
+impl core::marker::StructuralPartialEq for ely_canvas::Board
+impl core::marker::StructuralPartialEq for ely_canvas::Border
+impl core::marker::StructuralPartialEq for ely_canvas::Brush
+impl core::marker::StructuralPartialEq for ely_canvas::Constraints
+impl core::marker::StructuralPartialEq for ely_canvas::Corner
+impl core::marker::StructuralPartialEq for ely_canvas::Dash
+impl core::marker::StructuralPartialEq for ely_canvas::Edge
+impl core::marker::StructuralPartialEq for ely_canvas::ExportFormat
+impl core::marker::StructuralPartialEq for ely_canvas::ExportSetting
+impl core::marker::StructuralPartialEq for ely_canvas::Flow
+impl core::marker::StructuralPartialEq for ely_canvas::Frame
+impl core::marker::StructuralPartialEq for ely_canvas::Guide
+impl core::marker::StructuralPartialEq for ely_canvas::Handle
+impl core::marker::StructuralPartialEq for ely_canvas::Link
+impl core::marker::StructuralPartialEq for ely_canvas::Node
+impl core::marker::StructuralPartialEq for ely_canvas::Pin
+impl core::marker::StructuralPartialEq for ely_canvas::Place
+impl core::marker::StructuralPartialEq for ely_canvas::Port
+impl core::marker::StructuralPartialEq for ely_canvas::Shadow
+impl core::marker::StructuralPartialEq for ely_canvas::Shape
+impl core::marker::StructuralPartialEq for ely_canvas::ShapeKind
+impl core::marker::StructuralPartialEq for ely_canvas::Step
+impl core::marker::StructuralPartialEq for ely_canvas::StepKind
+impl core::marker::StructuralPartialEq for ely_canvas::Tool
+impl core::marker::StructuralPartialEq for ely_canvas::Topic
+impl core::marker::StructuralPartialEq for ely_canvas::TypeStyle
+impl core::marker::StructuralPartialEq for ely_canvas::Viewport
+impl ely_canvas::Align
+impl ely_canvas::AlignmentToolbar
+impl ely_canvas::Artboard
+impl ely_canvas::AssetPanel
+impl ely_canvas::AutoLayout
+impl ely_canvas::AutoLayoutControls
+impl ely_canvas::BorderEditor
+impl ely_canvas::BrushSettings
+impl ely_canvas::ColorPanel
+impl ely_canvas::Constraints
+impl ely_canvas::ConstraintsEditor
+impl ely_canvas::Dash
+impl ely_canvas::Edge
+impl ely_canvas::ExportFormat
+impl ely_canvas::ExportPanel
+impl ely_canvas::ExportSetting
+impl ely_canvas::FlowChart
+impl ely_canvas::Frame
+impl ely_canvas::Handle
+impl ely_canvas::HistoryPanel
+impl ely_canvas::InfiniteCanvas
+impl ely_canvas::InspectorPanel
+impl ely_canvas::LayerPanel
+impl ely_canvas::Link
+impl ely_canvas::MindMap
+impl ely_canvas::MiniMap
+impl ely_canvas::Node
+impl ely_canvas::NodeGraph
+impl ely_canvas::Pin
+impl ely_canvas::Port
+impl ely_canvas::SelectionBox
+impl ely_canvas::ShadowEditor
+impl ely_canvas::Shape
+impl ely_canvas::SnapIndicator
+impl ely_canvas::Step
+impl ely_canvas::Tool
+impl ely_canvas::ToolLayer
+impl ely_canvas::ToolPalette
+impl ely_canvas::Topic
+impl ely_canvas::TransformHandles
+impl ely_canvas::TypographyPanel
+impl ely_canvas::Viewport
+impl ely_canvas::Whiteboard
+impl ely_canvas::ZoomControls
+impl ely_canvas::ZoomIndicator
+impl ely_core::primitives::capability::Changeable for ely_canvas::BrushSettings
+impl ely_core::primitives::capability::Changeable for ely_canvas::ToolPalette
+impl ely_core::primitives::capability::Changeable for ely_canvas::Whiteboard
+impl gpui::element::IntoElement for ely_canvas::AlignmentToolbar
+impl gpui::element::IntoElement for ely_canvas::AssetPanel
+impl gpui::element::IntoElement for ely_canvas::AutoLayoutControls
+impl gpui::element::IntoElement for ely_canvas::BorderEditor
+impl gpui::element::IntoElement for ely_canvas::BrushSettings
+impl gpui::element::IntoElement for ely_canvas::ColorPanel
+impl gpui::element::IntoElement for ely_canvas::ConstraintsEditor
+impl gpui::element::IntoElement for ely_canvas::ExportPanel
+impl gpui::element::IntoElement for ely_canvas::FlowChart
+impl gpui::element::IntoElement for ely_canvas::HistoryPanel
+impl gpui::element::IntoElement for ely_canvas::InfiniteCanvas
+impl gpui::element::IntoElement for ely_canvas::InspectorPanel
+impl gpui::element::IntoElement for ely_canvas::LayerPanel
+impl gpui::element::IntoElement for ely_canvas::MindMap
+impl gpui::element::IntoElement for ely_canvas::MiniMap
+impl gpui::element::IntoElement for ely_canvas::NodeGraph
+impl gpui::element::IntoElement for ely_canvas::SelectionBox
+impl gpui::element::IntoElement for ely_canvas::ShadowEditor
+impl gpui::element::IntoElement for ely_canvas::SnapIndicator
+impl gpui::element::IntoElement for ely_canvas::ToolLayer
+impl gpui::element::IntoElement for ely_canvas::ToolPalette
+impl gpui::element::IntoElement for ely_canvas::TransformHandles
+impl gpui::element::IntoElement for ely_canvas::TypographyPanel
+impl gpui::element::IntoElement for ely_canvas::Whiteboard
+impl gpui::element::IntoElement for ely_canvas::ZoomControls
+impl gpui::element::IntoElement for ely_canvas::ZoomIndicator
+impl gpui::element::ParentElement for ely_canvas::FlowChart
+impl gpui::element::ParentElement for ely_canvas::InfiniteCanvas
+impl gpui::element::RenderOnce for ely_canvas::AlignmentToolbar
+impl gpui::element::RenderOnce for ely_canvas::AssetPanel
+impl gpui::element::RenderOnce for ely_canvas::AutoLayoutControls
+impl gpui::element::RenderOnce for ely_canvas::BorderEditor
+impl gpui::element::RenderOnce for ely_canvas::BrushSettings
+impl gpui::element::RenderOnce for ely_canvas::ColorPanel
+impl gpui::element::RenderOnce for ely_canvas::ConstraintsEditor
+impl gpui::element::RenderOnce for ely_canvas::ExportPanel
+impl gpui::element::RenderOnce for ely_canvas::FlowChart
+impl gpui::element::RenderOnce for ely_canvas::HistoryPanel
+impl gpui::element::RenderOnce for ely_canvas::InfiniteCanvas
+impl gpui::element::RenderOnce for ely_canvas::InspectorPanel
+impl gpui::element::RenderOnce for ely_canvas::LayerPanel
+impl gpui::element::RenderOnce for ely_canvas::MindMap
+impl gpui::element::RenderOnce for ely_canvas::MiniMap
+impl gpui::element::RenderOnce for ely_canvas::NodeGraph
+impl gpui::element::RenderOnce for ely_canvas::SelectionBox
+impl gpui::element::RenderOnce for ely_canvas::ShadowEditor
+impl gpui::element::RenderOnce for ely_canvas::SnapIndicator
+impl gpui::element::RenderOnce for ely_canvas::ToolLayer
+impl gpui::element::RenderOnce for ely_canvas::ToolPalette
+impl gpui::element::RenderOnce for ely_canvas::TransformHandles
+impl gpui::element::RenderOnce for ely_canvas::TypographyPanel
+impl gpui::element::RenderOnce for ely_canvas::Whiteboard
+impl gpui::element::RenderOnce for ely_canvas::ZoomControls
+impl gpui::element::RenderOnce for ely_canvas::ZoomIndicator
+pub const ely_canvas::Align::ALL: [ely_canvas::Align; 8]
+pub const ely_canvas::Dash::ALL: [ely_canvas::Dash; 3]
+pub const ely_canvas::ExportFormat::ALL: [ely_canvas::ExportFormat; 4]
+pub const ely_canvas::Handle::ALL: [ely_canvas::Handle; 8]
+pub const ely_canvas::Pin::ALL: [ely_canvas::Pin; 5]
+pub const ely_canvas::Tool::ALL: [ely_canvas::Tool; 12]
+pub const ely_canvas::Viewport::ZOOMS: (f32, f32)
+pub ely_canvas::Align::Bottom
+pub ely_canvas::Align::Center
+pub ely_canvas::Align::Left
+pub ely_canvas::Align::Middle
+pub ely_canvas::Align::Right
+pub ely_canvas::Align::SpreadAcross
+pub ely_canvas::Align::SpreadDown
+pub ely_canvas::Align::Top
+pub ely_canvas::Artboard::frame: ely_canvas::Frame
+pub ely_canvas::Artboard::key: gpui_shared_string::SharedString
+pub ely_canvas::Artboard::name: gpui_shared_string::SharedString
+pub ely_canvas::AutoLayout::flow: ely_canvas::Flow
+pub ely_canvas::AutoLayout::gap: f32
+pub ely_canvas::AutoLayout::padding: (f32, f32)
+pub ely_canvas::AutoLayout::place: (ely_canvas::Place, ely_canvas::Place)
+pub ely_canvas::Board::links: alloc::vec::Vec<ely_canvas::Link>
+pub ely_canvas::Board::shapes: alloc::vec::Vec<ely_canvas::Shape>
+pub ely_canvas::Border::color: gpui::color::Hsla
+pub ely_canvas::Border::dash: ely_canvas::Dash
+pub ely_canvas::Border::radii: [f32; 4]
+pub ely_canvas::Border::width: f32
+pub ely_canvas::Brush::hue: usize
+pub ely_canvas::Brush::size: f32
+pub ely_canvas::Constraints::across: ely_canvas::Pin
+pub ely_canvas::Constraints::down: ely_canvas::Pin
+pub ely_canvas::Corner::BottomLeft
+pub ely_canvas::Corner::BottomRight
+pub ely_canvas::Corner::TopLeft
+pub ely_canvas::Corner::TopRight
+pub ely_canvas::Dash::Dashed
+pub ely_canvas::Dash::Dotted
+pub ely_canvas::Dash::Solid
+pub ely_canvas::Edge::from: (gpui_shared_string::SharedString, gpui_shared_string::SharedString)
+pub ely_canvas::Edge::to: (gpui_shared_string::SharedString, gpui_shared_string::SharedString)
+pub ely_canvas::ExportFormat::Jpg
+pub ely_canvas::ExportFormat::Pdf
+pub ely_canvas::ExportFormat::Png
+pub ely_canvas::ExportFormat::Svg
+pub ely_canvas::ExportSetting::format: ely_canvas::ExportFormat
+pub ely_canvas::ExportSetting::scale: f32
+pub ely_canvas::Flow::Column
+pub ely_canvas::Flow::Row
+pub ely_canvas::Frame::h: f32
+pub ely_canvas::Frame::w: f32
+pub ely_canvas::Frame::x: f32
+pub ely_canvas::Frame::y: f32
+pub ely_canvas::Guide::Horizontal(f32)
+pub ely_canvas::Guide::Vertical(f32)
+pub ely_canvas::Handle::East
+pub ely_canvas::Handle::North
+pub ely_canvas::Handle::NorthEast
+pub ely_canvas::Handle::NorthWest
+pub ely_canvas::Handle::South
+pub ely_canvas::Handle::SouthEast
+pub ely_canvas::Handle::SouthWest
+pub ely_canvas::Handle::West
+pub ely_canvas::Link::elbow: bool
+pub ely_canvas::Link::from: gpui_shared_string::SharedString
+pub ely_canvas::Link::key: gpui_shared_string::SharedString
+pub ely_canvas::Link::label: core::option::Option<gpui_shared_string::SharedString>
+pub ely_canvas::Link::to: gpui_shared_string::SharedString
+pub ely_canvas::Node::at: (f32, f32)
+pub ely_canvas::Node::inputs: alloc::vec::Vec<ely_canvas::Port>
+pub ely_canvas::Node::key: gpui_shared_string::SharedString
+pub ely_canvas::Node::outputs: alloc::vec::Vec<ely_canvas::Port>
+pub ely_canvas::Node::title: gpui_shared_string::SharedString
+pub ely_canvas::Pin::Both
+pub ely_canvas::Pin::Center
+pub ely_canvas::Pin::End
+pub ely_canvas::Pin::Scale
+pub ely_canvas::Pin::Start
+pub ely_canvas::Place::Center
+pub ely_canvas::Place::End
+pub ely_canvas::Place::Start
+pub ely_canvas::Port::key: gpui_shared_string::SharedString
+pub ely_canvas::Port::kind: gpui_shared_string::SharedString
+pub ely_canvas::Port::name: gpui_shared_string::SharedString
+pub ely_canvas::Shadow::blur: f32
+pub ely_canvas::Shadow::color: gpui::color::Hsla
+pub ely_canvas::Shadow::spread: f32
+pub ely_canvas::Shadow::x: f32
+pub ely_canvas::Shadow::y: f32
+pub ely_canvas::Shape::frame: ely_canvas::Frame
+pub ely_canvas::Shape::hidden: bool
+pub ely_canvas::Shape::hue: usize
+pub ely_canvas::Shape::key: gpui_shared_string::SharedString
+pub ely_canvas::Shape::kind: ely_canvas::ShapeKind
+pub ely_canvas::Shape::label: core::option::Option<gpui_shared_string::SharedString>
+pub ely_canvas::Shape::locked: bool
+pub ely_canvas::Shape::name: gpui_shared_string::SharedString
+pub ely_canvas::ShapeKind::Arrow(ely_canvas::Corner)
+pub ely_canvas::ShapeKind::Ellipse
+pub ely_canvas::ShapeKind::Line(ely_canvas::Corner)
+pub ely_canvas::ShapeKind::Note(gpui_shared_string::SharedString)
+pub ely_canvas::ShapeKind::Path
+pub ely_canvas::ShapeKind::Path::points: alloc::vec::Vec<(f32, f32)>
+pub ely_canvas::ShapeKind::Path::width: f32
+pub ely_canvas::ShapeKind::Polygon(u8)
+pub ely_canvas::ShapeKind::Rect
+pub ely_canvas::ShapeKind::Text(gpui_shared_string::SharedString)
+pub ely_canvas::Step::frame: ely_canvas::Frame
+pub ely_canvas::Step::key: gpui_shared_string::SharedString
+pub ely_canvas::Step::kind: ely_canvas::StepKind
+pub ely_canvas::Step::text: gpui_shared_string::SharedString
+pub ely_canvas::StepKind::Decision
+pub ely_canvas::StepKind::Process
+pub ely_canvas::StepKind::Terminal
+pub ely_canvas::Tool::Arrow
+pub ely_canvas::Tool::Brush
+pub ely_canvas::Tool::Connector
+pub ely_canvas::Tool::Ellipse
+pub ely_canvas::Tool::Hand
+pub ely_canvas::Tool::Line
+pub ely_canvas::Tool::Note
+pub ely_canvas::Tool::Pen
+pub ely_canvas::Tool::Polygon
+pub ely_canvas::Tool::Rect
+pub ely_canvas::Tool::Select
+pub ely_canvas::Tool::Text
+pub ely_canvas::Topic::children: alloc::vec::Vec<ely_canvas::Topic>
+pub ely_canvas::Topic::key: gpui_shared_string::SharedString
+pub ely_canvas::Topic::text: gpui_shared_string::SharedString
+pub ely_canvas::TypeStyle::align: gpui::style::TextAlign
+pub ely_canvas::TypeStyle::family: gpui_shared_string::SharedString
+pub ely_canvas::TypeStyle::line_height: f32
+pub ely_canvas::TypeStyle::size: f32
+pub ely_canvas::TypeStyle::tracking: f32
+pub ely_canvas::TypeStyle::weight: gpui::text_system::FontWeight
+pub ely_canvas::Viewport::x: f32
+pub ely_canvas::Viewport::y: f32
+pub ely_canvas::Viewport::zoom: f32
+pub enum ely_canvas::Align
+pub enum ely_canvas::Corner
+pub enum ely_canvas::Dash
+pub enum ely_canvas::ExportFormat
+pub enum ely_canvas::Flow
+pub enum ely_canvas::Guide
+pub enum ely_canvas::Handle
+pub enum ely_canvas::Pin
+pub enum ely_canvas::Place
+pub enum ely_canvas::ShapeKind
+pub enum ely_canvas::StepKind
+pub enum ely_canvas::Tool
+pub fn ely_canvas::Align::clone(&self) -> Self
+pub fn ely_canvas::Align::eq(&self, &Self) -> bool
+pub fn ely_canvas::Align::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Align::id(self) -> &'static str
+pub fn ely_canvas::Align::least(self) -> usize
+pub fn ely_canvas::Align::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_canvas::AlignmentToolbar::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::AlignmentToolbar::into_element(self) -> Self::Element
+pub fn ely_canvas::AlignmentToolbar::new(impl core::convert::Into<gpui::window::ElementId>, usize) -> Self
+pub fn ely_canvas::AlignmentToolbar::on_align(self, impl core::ops::function::Fn(ely_canvas::Align, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::AlignmentToolbar::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Artboard::clone(&self) -> Self
+pub fn ely_canvas::Artboard::eq(&self, &Self) -> bool
+pub fn ely_canvas::Artboard::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Artboard::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_canvas::Frame) -> Self
+pub fn ely_canvas::AssetPanel::group(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Shape>) -> Self
+pub fn ely_canvas::AssetPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::AssetPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::AssetPanel::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
+pub fn ely_canvas::AssetPanel::on_pick(self, impl core::ops::function::Fn(&ely_canvas::Shape, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::AssetPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::AutoLayout::clone(&self) -> Self
+pub fn ely_canvas::AutoLayout::eq(&self, &Self) -> bool
+pub fn ely_canvas::AutoLayout::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::AutoLayout::laid(&self, ely_canvas::Frame, &[(f32, f32)]) -> alloc::vec::Vec<ely_canvas::Frame>
+pub fn ely_canvas::AutoLayoutControls::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::AutoLayoutControls::into_element(self) -> Self::Element
+pub fn ely_canvas::AutoLayoutControls::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::AutoLayout, impl core::ops::function::Fn(ely_canvas::AutoLayout, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::AutoLayoutControls::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Board::clone(&self) -> Self
+pub fn ely_canvas::Board::default() -> Self
+pub fn ely_canvas::Board::eq(&self, &Self) -> bool
+pub fn ely_canvas::Board::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Border::clone(&self) -> Self
+pub fn ely_canvas::Border::eq(&self, &Self) -> bool
+pub fn ely_canvas::Border::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::BorderEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::BorderEditor::into_element(self) -> Self::Element
+pub fn ely_canvas::BorderEditor::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Border, impl core::ops::function::Fn(ely_canvas::Border, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::BorderEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Brush::clone(&self) -> Self
+pub fn ely_canvas::Brush::eq(&self, &Self) -> bool
+pub fn ely_canvas::Brush::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::BrushSettings::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::BrushSettings::into_element(self) -> Self::Element
+pub fn ely_canvas::BrushSettings::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Brush) -> Self
+pub fn ely_canvas::BrushSettings::on_change(self, impl core::ops::function::Fn(ely_canvas::Brush, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::BrushSettings::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ColorPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ColorPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::ColorPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui::color::Hsla>, impl core::ops::function::Fn(gpui::color::Hsla, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ColorPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ColorPanel::swatches(self, impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui::color::Hsla>)>) -> Self
+pub fn ely_canvas::Constraints::clone(&self) -> Self
+pub fn ely_canvas::Constraints::eq(&self, &Self) -> bool
+pub fn ely_canvas::Constraints::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Constraints::placed(self, ely_canvas::Frame, ely_canvas::Frame, ely_canvas::Frame) -> ely_canvas::Frame
+pub fn ely_canvas::ConstraintsEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ConstraintsEditor::into_element(self) -> Self::Element
+pub fn ely_canvas::ConstraintsEditor::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Constraints, impl core::ops::function::Fn(ely_canvas::Constraints, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ConstraintsEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Corner::clone(&self) -> Self
+pub fn ely_canvas::Corner::eq(&self, &Self) -> bool
+pub fn ely_canvas::Corner::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Dash::clone(&self) -> Self
+pub fn ely_canvas::Dash::eq(&self, &Self) -> bool
+pub fn ely_canvas::Dash::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Dash::id(self) -> &'static str
+pub fn ely_canvas::Dash::word(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_canvas::Edge::clone(&self) -> Self
+pub fn ely_canvas::Edge::eq(&self, &Self) -> bool
+pub fn ely_canvas::Edge::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Edge::new((impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>), (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>)) -> Self
+pub fn ely_canvas::ExportFormat::clone(&self) -> Self
+pub fn ely_canvas::ExportFormat::eq(&self, &Self) -> bool
+pub fn ely_canvas::ExportFormat::extension(self) -> &'static str
+pub fn ely_canvas::ExportFormat::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::ExportFormat::vector(self) -> bool
+pub fn ely_canvas::ExportPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ExportPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::ExportPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::ExportSetting>, impl core::ops::function::Fn(alloc::vec::Vec<ely_canvas::ExportSetting>, &mut gpui::window::Window, &mut gpui::app::App) + 'static, impl core::ops::function::Fn(alloc::vec::Vec<alloc::string::String>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ExportPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ExportSetting::clone(&self) -> Self
+pub fn ely_canvas::ExportSetting::eq(&self, &Self) -> bool
+pub fn ely_canvas::ExportSetting::file(&self, &str) -> alloc::string::String
+pub fn ely_canvas::ExportSetting::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Flow::clone(&self) -> Self
+pub fn ely_canvas::Flow::eq(&self, &Self) -> bool
+pub fn ely_canvas::Flow::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::FlowChart::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_canvas::FlowChart::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::FlowChart::into_element(self) -> Self::Element
+pub fn ely_canvas::FlowChart::layer(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_canvas::FlowChart::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Viewport, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Step>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Link>) -> Self
+pub fn ely_canvas::FlowChart::on_viewport(self, impl core::ops::function::Fn(ely_canvas::Viewport, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::FlowChart::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Frame::bottom(&self) -> f32
+pub fn ely_canvas::Frame::center(&self) -> (f32, f32)
+pub fn ely_canvas::Frame::clone(&self) -> Self
+pub fn ely_canvas::Frame::contains(&self, (f32, f32)) -> bool
+pub fn ely_canvas::Frame::default() -> Self
+pub fn ely_canvas::Frame::eq(&self, &Self) -> bool
+pub fn ely_canvas::Frame::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Frame::new(f32, f32, f32, f32) -> Self
+pub fn ely_canvas::Frame::right(&self) -> f32
+pub fn ely_canvas::Frame::spanning((f32, f32), (f32, f32)) -> ely_canvas::Frame
+pub fn ely_canvas::Frame::union(&self, &ely_canvas::Frame) -> ely_canvas::Frame
+pub fn ely_canvas::Frame::within(&self, &ely_canvas::Frame) -> bool
+pub fn ely_canvas::Guide::clone(&self) -> Self
+pub fn ely_canvas::Guide::eq(&self, &Self) -> bool
+pub fn ely_canvas::Guide::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Handle::clone(&self) -> Self
+pub fn ely_canvas::Handle::eq(&self, &Self) -> bool
+pub fn ely_canvas::Handle::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::HistoryPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::HistoryPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::HistoryPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>, usize) -> Self
+pub fn ely_canvas::HistoryPanel::on_step(self, impl core::ops::function::Fn(usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::HistoryPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::InfiniteCanvas::artboards(self, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Artboard>) -> Self
+pub fn ely_canvas::InfiniteCanvas::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
+pub fn ely_canvas::InfiniteCanvas::guides(self, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Guide>) -> Self
+pub fn ely_canvas::InfiniteCanvas::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::InfiniteCanvas::into_element(self) -> Self::Element
+pub fn ely_canvas::InfiniteCanvas::layer(self, impl gpui::element::IntoElement) -> Self
+pub fn ely_canvas::InfiniteCanvas::links(self, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Link>) -> Self
+pub fn ely_canvas::InfiniteCanvas::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Viewport) -> Self
+pub fn ely_canvas::InfiniteCanvas::on_viewport(self, impl core::ops::function::Fn(ely_canvas::Viewport, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::InfiniteCanvas::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::InfiniteCanvas::rulers(self) -> Self
+pub fn ely_canvas::InfiniteCanvas::shapes(self, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Shape>) -> Self
+pub fn ely_canvas::InspectorPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::InspectorPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::InspectorPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Shape>, impl core::ops::function::Fn(ely_canvas::Shape, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::InspectorPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::LayerPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::LayerPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::LayerPanel::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Shape>) -> Self
+pub fn ely_canvas::LayerPanel::on_rename(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::LayerPanel::on_restack(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::LayerPanel::on_select(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::LayerPanel::on_show(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::LayerPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::LayerPanel::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_canvas::Link::clone(&self) -> Self
+pub fn ely_canvas::Link::elbow(self) -> Self
+pub fn ely_canvas::Link::eq(&self, &Self) -> bool
+pub fn ely_canvas::Link::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Link::label(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_canvas::Link::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_canvas::MindMap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::MindMap::into_element(self) -> Self::Element
+pub fn ely_canvas::MindMap::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Topic, ely_canvas::Viewport) -> Self
+pub fn ely_canvas::MindMap::on_add(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::MindMap::on_remove(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::MindMap::on_rename(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::MindMap::on_select(self, impl core::ops::function::Fn(core::option::Option<&gpui_shared_string::SharedString>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::MindMap::on_viewport(self, impl core::ops::function::Fn(ely_canvas::Viewport, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::MindMap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::MindMap::selected(self, core::option::Option<impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_canvas::MiniMap::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::MiniMap::into_element(self) -> Self::Element
+pub fn ely_canvas::MiniMap::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Frame>, ely_canvas::Viewport, (f32, f32)) -> Self
+pub fn ely_canvas::MiniMap::on_viewport(self, impl core::ops::function::Fn(ely_canvas::Viewport, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::MiniMap::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Node::clone(&self) -> Self
+pub fn ely_canvas::Node::eq(&self, &Self) -> bool
+pub fn ely_canvas::Node::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Node::input(self, ely_canvas::Port) -> Self
+pub fn ely_canvas::Node::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, (f32, f32)) -> Self
+pub fn ely_canvas::Node::output(self, ely_canvas::Port) -> Self
+pub fn ely_canvas::NodeGraph::fixed_wires(self) -> Self
+pub fn ely_canvas::NodeGraph::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::NodeGraph::into_element(self) -> Self::Element
+pub fn ely_canvas::NodeGraph::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Viewport, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Node>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Edge>) -> Self
+pub fn ely_canvas::NodeGraph::on_connect(self, impl core::ops::function::Fn(&ely_canvas::Edge, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::NodeGraph::on_disconnect(self, impl core::ops::function::Fn(&ely_canvas::Edge, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::NodeGraph::on_move(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, (f32, f32), &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::NodeGraph::on_select(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::NodeGraph::on_viewport(self, impl core::ops::function::Fn(ely_canvas::Viewport, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::NodeGraph::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::NodeGraph::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_canvas::Pin::clone(&self) -> Self
+pub fn ely_canvas::Pin::eq(&self, &Self) -> bool
+pub fn ely_canvas::Pin::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Pin::follow(self, (f32, f32), (f32, f32), (f32, f32)) -> (f32, f32)
+pub fn ely_canvas::Place::clone(&self) -> Self
+pub fn ely_canvas::Place::eq(&self, &Self) -> bool
+pub fn ely_canvas::Place::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Port::clone(&self) -> Self
+pub fn ely_canvas::Port::eq(&self, &Self) -> bool
+pub fn ely_canvas::Port::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Port::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_canvas::SelectionBox::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::SelectionBox::into_element(self) -> Self::Element
+pub fn ely_canvas::SelectionBox::new(ely_canvas::Frame) -> Self
+pub fn ely_canvas::SelectionBox::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Shadow::clone(&self) -> Self
+pub fn ely_canvas::Shadow::eq(&self, &Self) -> bool
+pub fn ely_canvas::Shadow::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::ShadowEditor::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ShadowEditor::into_element(self) -> Self::Element
+pub fn ely_canvas::ShadowEditor::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Shadow>, impl core::ops::function::Fn(alloc::vec::Vec<ely_canvas::Shadow>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ShadowEditor::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Shape::clone(&self) -> Self
+pub fn ely_canvas::Shape::eq(&self, &Self) -> bool
+pub fn ely_canvas::Shape::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Shape::hidden(self, bool) -> Self
+pub fn ely_canvas::Shape::hue(self, usize) -> Self
+pub fn ely_canvas::Shape::label(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_canvas::Shape::locked(self, bool) -> Self
+pub fn ely_canvas::Shape::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, ely_canvas::ShapeKind, ely_canvas::Frame) -> Self
+pub fn ely_canvas::Shape::words(&self) -> core::option::Option<&gpui_shared_string::SharedString>
+pub fn ely_canvas::Shape::written(&self, impl core::convert::Into<gpui_shared_string::SharedString>) -> ely_canvas::Shape
+pub fn ely_canvas::ShapeKind::clone(&self) -> Self
+pub fn ely_canvas::ShapeKind::eq(&self, &Self) -> bool
+pub fn ely_canvas::ShapeKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::SnapIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::SnapIndicator::into_element(self) -> Self::Element
+pub fn ely_canvas::SnapIndicator::new(impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Guide>, ely_canvas::Viewport) -> Self
+pub fn ely_canvas::SnapIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Step::clone(&self) -> Self
+pub fn ely_canvas::Step::eq(&self, &Self) -> bool
+pub fn ely_canvas::Step::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Step::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_canvas::StepKind, impl core::convert::Into<gpui_shared_string::SharedString>, ely_canvas::Frame) -> Self
+pub fn ely_canvas::Step::shape(&self) -> ely_canvas::Shape
+pub fn ely_canvas::StepKind::clone(&self) -> Self
+pub fn ely_canvas::StepKind::eq(&self, &Self) -> bool
+pub fn ely_canvas::StepKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Tool::clone(&self) -> Self
+pub fn ely_canvas::Tool::eq(&self, &Self) -> bool
+pub fn ely_canvas::Tool::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Tool::id(self) -> &'static str
+pub fn ely_canvas::Tool::key(self) -> &'static str
+pub fn ely_canvas::Tool::words(self, &gpui::app::App) -> gpui_shared_string::SharedString
+pub fn ely_canvas::ToolLayer::brush(self, ely_canvas::Brush) -> Self
+pub fn ely_canvas::ToolLayer::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ToolLayer::into_element(self) -> Self::Element
+pub fn ely_canvas::ToolLayer::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Tool, ely_canvas::Viewport, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Shape>) -> Self
+pub fn ely_canvas::ToolLayer::on_delete(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::on_draw(self, impl core::ops::function::Fn(ely_canvas::ShapeKind, ely_canvas::Frame, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::on_link(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::on_move(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], (f32, f32), &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::on_resize(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, ely_canvas::Frame, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::on_select(self, impl core::ops::function::Fn(&[gpui_shared_string::SharedString], &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::on_text(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolLayer::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ToolLayer::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
+pub fn ely_canvas::ToolPalette::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ToolPalette::into_element(self) -> Self::Element
+pub fn ely_canvas::ToolPalette::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Tool) -> Self
+pub fn ely_canvas::ToolPalette::on_change(self, impl core::ops::function::Fn(ely_canvas::Tool, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ToolPalette::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ToolPalette::tools(self, impl core::iter::traits::collect::IntoIterator<Item = ely_canvas::Tool>) -> Self
+pub fn ely_canvas::Topic::adding(&self, &str, ely_canvas::Topic) -> core::option::Option<ely_canvas::Topic>
+pub fn ely_canvas::Topic::child(self, ely_canvas::Topic) -> Self
+pub fn ely_canvas::Topic::clone(&self) -> Self
+pub fn ely_canvas::Topic::eq(&self, &Self) -> bool
+pub fn ely_canvas::Topic::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Topic::new(impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_canvas::Topic::parent_of(&self, &str) -> core::option::Option<gpui_shared_string::SharedString>
+pub fn ely_canvas::Topic::removing(&self, &str) -> core::option::Option<ely_canvas::Topic>
+pub fn ely_canvas::Topic::renaming(&self, &str, impl core::convert::Into<gpui_shared_string::SharedString>) -> core::option::Option<ely_canvas::Topic>
+pub fn ely_canvas::TransformHandles::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::TransformHandles::into_element(self) -> Self::Element
+pub fn ely_canvas::TransformHandles::new(ely_canvas::Frame) -> Self
+pub fn ely_canvas::TransformHandles::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::TypeStyle::clone(&self) -> Self
+pub fn ely_canvas::TypeStyle::eq(&self, &Self) -> bool
+pub fn ely_canvas::TypeStyle::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::TypographyPanel::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::TypographyPanel::into_element(self) -> Self::Element
+pub fn ely_canvas::TypographyPanel::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::TypeStyle, &gpui::app::entity_map::Entity<ely_core::forms::text::TextInput>, impl core::ops::function::Fn(ely_canvas::TypeStyle, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::TypographyPanel::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::Viewport::clone(&self) -> Self
+pub fn ely_canvas::Viewport::eq(&self, &Self) -> bool
+pub fn ely_canvas::Viewport::fitting(ely_canvas::Frame, (f32, f32), f32) -> ely_canvas::Viewport
+pub fn ely_canvas::Viewport::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_canvas::Viewport::new(f32, f32, f32) -> Self
+pub fn ely_canvas::Viewport::panned(self, (f32, f32)) -> ely_canvas::Viewport
+pub fn ely_canvas::Viewport::to_canvas(&self, (f32, f32)) -> (f32, f32)
+pub fn ely_canvas::Viewport::to_view(&self, (f32, f32)) -> (f32, f32)
+pub fn ely_canvas::Viewport::zoomed(self, f32, (f32, f32)) -> ely_canvas::Viewport
+pub fn ely_canvas::Whiteboard::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::Whiteboard::into_element(self) -> Self::Element
+pub fn ely_canvas::Whiteboard::new(impl core::convert::Into<gpui::window::ElementId>, ely_canvas::Board) -> Self
+pub fn ely_canvas::Whiteboard::on_change(self, impl core::ops::function::Fn(ely_canvas::Board, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::Whiteboard::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ZoomControls::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ZoomControls::into_element(self) -> Self::Element
+pub fn ely_canvas::ZoomControls::new(impl core::convert::Into<gpui::window::ElementId>, f32) -> Self
+pub fn ely_canvas::ZoomControls::on_fit(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ZoomControls::on_zoom(self, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ZoomControls::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::ZoomIndicator::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_canvas::ZoomIndicator::into_element(self) -> Self::Element
+pub fn ely_canvas::ZoomIndicator::new(impl core::convert::Into<gpui::window::ElementId>, f32) -> Self
+pub fn ely_canvas::ZoomIndicator::on_zoom(self, impl core::ops::function::Fn(f32, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_canvas::ZoomIndicator::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_canvas::aligned(&[ely_canvas::Frame], ely_canvas::Align) -> alloc::vec::Vec<ely_canvas::Frame>
+pub fn ely_canvas::export_files(&str, &[ely_canvas::ExportSetting]) -> alloc::vec::Vec<alloc::string::String>
+pub mod ely_canvas
+pub struct ely_canvas::AlignmentToolbar
+pub struct ely_canvas::Artboard
+pub struct ely_canvas::AssetPanel
+pub struct ely_canvas::AutoLayout
+pub struct ely_canvas::AutoLayoutControls
+pub struct ely_canvas::Board
+pub struct ely_canvas::Border
+pub struct ely_canvas::BorderEditor
+pub struct ely_canvas::Brush
+pub struct ely_canvas::BrushSettings
+pub struct ely_canvas::ColorPanel
+pub struct ely_canvas::Constraints
+pub struct ely_canvas::ConstraintsEditor
+pub struct ely_canvas::Edge
+pub struct ely_canvas::ExportPanel
+pub struct ely_canvas::ExportSetting
+pub struct ely_canvas::FlowChart
+pub struct ely_canvas::Frame
+pub struct ely_canvas::HistoryPanel
+pub struct ely_canvas::InfiniteCanvas
+pub struct ely_canvas::InspectorPanel
+pub struct ely_canvas::LayerPanel
+pub struct ely_canvas::Link
+pub struct ely_canvas::MindMap
+pub struct ely_canvas::MiniMap
+pub struct ely_canvas::Node
+pub struct ely_canvas::NodeGraph
+pub struct ely_canvas::Port
+pub struct ely_canvas::SelectionBox
+pub struct ely_canvas::Shadow
+pub struct ely_canvas::ShadowEditor
+pub struct ely_canvas::Shape
+pub struct ely_canvas::SnapIndicator
+pub struct ely_canvas::Step
+pub struct ely_canvas::ToolLayer
+pub struct ely_canvas::ToolPalette
+pub struct ely_canvas::Topic
+pub struct ely_canvas::TransformHandles
+pub struct ely_canvas::TypeStyle
+pub struct ely_canvas::TypographyPanel
+pub struct ely_canvas::Viewport
+pub struct ely_canvas::Whiteboard
+pub struct ely_canvas::ZoomControls
+pub struct ely_canvas::ZoomIndicator
+pub type ely_canvas::AlignmentToolbar::Element = gpui::view::ViewElement<ely_canvas::AlignmentToolbar>
+pub type ely_canvas::AssetPanel::Element = gpui::view::ViewElement<ely_canvas::AssetPanel>
+pub type ely_canvas::AutoLayoutControls::Element = gpui::view::ViewElement<ely_canvas::AutoLayoutControls>
+pub type ely_canvas::BorderEditor::Element = gpui::view::ViewElement<ely_canvas::BorderEditor>
+pub type ely_canvas::BrushSettings::Element = gpui::view::ViewElement<ely_canvas::BrushSettings>
+pub type ely_canvas::BrushSettings::Value<'a> = ely_canvas::Brush
+pub type ely_canvas::ColorPanel::Element = gpui::view::ViewElement<ely_canvas::ColorPanel>
+pub type ely_canvas::ConstraintsEditor::Element = gpui::view::ViewElement<ely_canvas::ConstraintsEditor>
+pub type ely_canvas::ExportPanel::Element = gpui::view::ViewElement<ely_canvas::ExportPanel>
+pub type ely_canvas::FlowChart::Element = gpui::view::ViewElement<ely_canvas::FlowChart>
+pub type ely_canvas::HistoryPanel::Element = gpui::view::ViewElement<ely_canvas::HistoryPanel>
+pub type ely_canvas::InfiniteCanvas::Element = gpui::view::ViewElement<ely_canvas::InfiniteCanvas>
+pub type ely_canvas::InspectorPanel::Element = gpui::view::ViewElement<ely_canvas::InspectorPanel>
+pub type ely_canvas::LayerPanel::Element = gpui::view::ViewElement<ely_canvas::LayerPanel>
+pub type ely_canvas::MindMap::Element = gpui::view::ViewElement<ely_canvas::MindMap>
+pub type ely_canvas::MiniMap::Element = gpui::view::ViewElement<ely_canvas::MiniMap>
+pub type ely_canvas::NodeGraph::Element = gpui::view::ViewElement<ely_canvas::NodeGraph>
+pub type ely_canvas::SelectionBox::Element = gpui::view::ViewElement<ely_canvas::SelectionBox>
+pub type ely_canvas::ShadowEditor::Element = gpui::view::ViewElement<ely_canvas::ShadowEditor>
+pub type ely_canvas::SnapIndicator::Element = gpui::view::ViewElement<ely_canvas::SnapIndicator>
+pub type ely_canvas::ToolLayer::Element = gpui::view::ViewElement<ely_canvas::ToolLayer>
+pub type ely_canvas::ToolPalette::Element = gpui::view::ViewElement<ely_canvas::ToolPalette>
+pub type ely_canvas::ToolPalette::Value<'a> = ely_canvas::Tool
+pub type ely_canvas::TransformHandles::Element = gpui::view::ViewElement<ely_canvas::TransformHandles>
+pub type ely_canvas::TypographyPanel::Element = gpui::view::ViewElement<ely_canvas::TypographyPanel>
+pub type ely_canvas::Whiteboard::Element = gpui::view::ViewElement<ely_canvas::Whiteboard>
+pub type ely_canvas::Whiteboard::Value<'a> = ely_canvas::Board
+pub type ely_canvas::ZoomControls::Element = gpui::view::ViewElement<ely_canvas::ZoomControls>
+pub type ely_canvas::ZoomIndicator::Element = gpui::view::ViewElement<ely_canvas::ZoomIndicator>
+pub use ely_canvas::Align = ely_canvas::align::Align
+pub use ely_canvas::AlignmentToolbar = ely_canvas::align::AlignmentToolbar
+pub use ely_canvas::Artboard = ely_canvas::shape::Artboard
+pub use ely_canvas::AssetPanel = ely_canvas::assets::AssetPanel
+pub use ely_canvas::AutoLayout = ely_canvas::autolayout::AutoLayout
+pub use ely_canvas::AutoLayoutControls = ely_canvas::autolayout::AutoLayoutControls
+pub use ely_canvas::Board = ely_canvas::whiteboard::Board
+pub use ely_canvas::Border = ely_canvas::style::Border
+pub use ely_canvas::BorderEditor = ely_canvas::style::BorderEditor
+pub use ely_canvas::Brush = ely_canvas::gesture::Brush
+pub use ely_canvas::BrushSettings = ely_canvas::palette::BrushSettings
+pub use ely_canvas::ColorPanel = ely_canvas::style::ColorPanel
+pub use ely_canvas::Constraints = ely_canvas::constraints::Constraints
+pub use ely_canvas::ConstraintsEditor = ely_canvas::constraints::ConstraintsEditor
+pub use ely_canvas::Corner = ely_canvas::shape::Corner
+pub use ely_canvas::Dash = ely_canvas::style::Dash
+pub use ely_canvas::Edge = ely_canvas::graph::Edge
+pub use ely_canvas::ExportFormat = ely_canvas::export::ExportFormat
+pub use ely_canvas::ExportPanel = ely_canvas::export::ExportPanel
+pub use ely_canvas::ExportSetting = ely_canvas::export::ExportSetting
+pub use ely_canvas::Flow = ely_canvas::autolayout::Flow
+pub use ely_canvas::FlowChart = ely_canvas::flow::FlowChart
+pub use ely_canvas::Frame = ely_canvas::view::Frame
+pub use ely_canvas::Guide = ely_canvas::shape::Guide
+pub use ely_canvas::Handle = ely_canvas::edit::Handle
+pub use ely_canvas::HistoryPanel = ely_canvas::history::HistoryPanel
+pub use ely_canvas::InfiniteCanvas = ely_canvas::plane::InfiniteCanvas
+pub use ely_canvas::InspectorPanel = ely_canvas::inspector::InspectorPanel
+pub use ely_canvas::LayerPanel = ely_canvas::layers::LayerPanel
+pub use ely_canvas::Link = ely_canvas::links::Link
+pub use ely_canvas::MindMap = ely_canvas::mindmap_view::MindMap
+pub use ely_canvas::MiniMap = ely_canvas::minimap::MiniMap
+pub use ely_canvas::Node = ely_canvas::graph::Node
+pub use ely_canvas::NodeGraph = ely_canvas::nodes::NodeGraph
+pub use ely_canvas::Pin = ely_canvas::constraints::Pin
+pub use ely_canvas::Place = ely_canvas::autolayout::Place
+pub use ely_canvas::Port = ely_canvas::graph::Port
+pub use ely_canvas::SelectionBox = ely_canvas::marks::SelectionBox
+pub use ely_canvas::Shadow = ely_canvas::style::Shadow
+pub use ely_canvas::ShadowEditor = ely_canvas::style::ShadowEditor
+pub use ely_canvas::Shape = ely_canvas::shape::Shape
+pub use ely_canvas::ShapeKind = ely_canvas::shape::ShapeKind
+pub use ely_canvas::SnapIndicator = ely_canvas::marks::SnapIndicator
+pub use ely_canvas::Step = ely_canvas::flow::Step
+pub use ely_canvas::StepKind = ely_canvas::flow::StepKind
+pub use ely_canvas::Tool = ely_canvas::edit::Tool
+pub use ely_canvas::ToolLayer = ely_canvas::tools::ToolLayer
+pub use ely_canvas::ToolPalette = ely_canvas::palette::ToolPalette
+pub use ely_canvas::Topic = ely_canvas::mindmap::Topic
+pub use ely_canvas::TransformHandles = ely_canvas::marks::TransformHandles
+pub use ely_canvas::TypeStyle = ely_canvas::typography::TypeStyle
+pub use ely_canvas::TypographyPanel = ely_canvas::typography::TypographyPanel
+pub use ely_canvas::Viewport = ely_canvas::view::Viewport
+pub use ely_canvas::Whiteboard = ely_canvas::whiteboard::Whiteboard
+pub use ely_canvas::ZoomControls = ely_canvas::zoom::ZoomControls
+pub use ely_canvas::ZoomIndicator = ely_canvas::zoom::ZoomIndicator
+pub use ely_canvas::aligned = ely_canvas::align::aligned
+pub use ely_canvas::export_files = ely_canvas::export::export_files
