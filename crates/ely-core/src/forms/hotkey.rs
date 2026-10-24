@@ -58,6 +58,10 @@ impl HotkeyInput {
 
 impl RenderOnce for HotkeyInput {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let (recording_words, none_words) = (
+            crate::i18n::text(cx, "hotkey.recording", &[]),
+            crate::i18n::text(cx, "hotkey.none", &[]),
+        );
         let focus = window
             .use_keyed_state(self.id.clone(), cx, |_, cx| {
                 cx.focus_handle().tab_stop(true)
@@ -115,13 +119,9 @@ impl RenderOnce for HotkeyInput {
                 }
             })
             .map(|field| match (&self.value, recording) {
-                (_, true) => field.child(
-                    div()
-                        .text_color(colors.fg_subtle)
-                        .child("Press a shortcut…"),
-                ),
+                (_, true) => field.child(div().text_color(colors.fg_subtle).child(recording_words)),
                 (Some(stroke), false) => field.child(KbdCombo::new(&stroke.unparse())),
-                (None, false) => field.child(div().text_color(colors.fg_subtle).child("None")),
+                (None, false) => field.child(div().text_color(colors.fg_subtle).child(none_words)),
             })
             .child(
                 Icon::new(IconName::Keyboard)

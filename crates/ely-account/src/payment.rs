@@ -202,10 +202,17 @@ impl RenderOnce for PaymentMethodForm {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let id = self.id;
         let on_submit = self.on_submit;
-        let number = field(&id, "number", "", false, window, cx);
-        let until = field(&id, "expiry", "", false, window, cx);
-        let code = field(&id, "cvc", "", false, window, cx);
-        let name = field(&id, "name", "As printed on the card", false, window, cx);
+        let number = field(&id, "number", None, false, window, cx);
+        let until = field(&id, "expiry", None, false, window, cx);
+        let code = field(&id, "cvc", None, false, window, cx);
+        let name = field(
+            &id,
+            "name",
+            Some("account.card.name.hint"),
+            false,
+            window,
+            cx,
+        );
         let typed = digits(number.read(cx).text());
         let brand = CardBrand::of(&typed);
         let (mask, length, code_length) = brand.shape();
@@ -235,13 +242,19 @@ impl RenderOnce for PaymentMethodForm {
         });
         let enter = submit.clone();
         let theme = cx.theme();
-        let mut number_field = FormField::new((id.clone(), "number-field"), "Card number");
+        let mut number_field = FormField::new(
+            (id.clone(), "number-field"),
+            crate::i18n::text(cx, "account.card.number", &[]),
+        );
         if complete && !checks {
             number_field = number_field.error("This number does not check out.");
         } else if brand != CardBrand::Other {
             number_field = number_field.description(brand.name());
         }
-        let mut until_field = FormField::new((id.clone(), "expiry-field"), "Expires");
+        let mut until_field = FormField::new(
+            (id.clone(), "expiry-field"),
+            crate::i18n::text(cx, "account.card.expires", &[]),
+        );
         if let Some(fault) = expiry_fault(until.read(cx).text(), today) {
             until_field = until_field.error(fault);
         }
@@ -276,18 +289,26 @@ impl RenderOnce for PaymentMethodForm {
                             "99/99",
                         )),
                     ))
-                    .child(div().flex_1().min_w(theme.label_width() * 0.6).child(
-                        FormField::new((id.clone(), "cvc-field"), "Security code").child(
-                            MaskedInput::new(
+                    .child(
+                        div().flex_1().min_w(theme.label_width() * 0.6).child(
+                            FormField::new(
+                                (id.clone(), "cvc-field"),
+                                crate::i18n::text(cx, "account.card.code", &[]),
+                            )
+                            .child(MaskedInput::new(
                                 (id.clone(), "cvc"),
                                 &code,
                                 if code_length == 4 { "9999" } else { "999" },
-                            ),
+                            )),
                         ),
-                    )),
+                    ),
             )
             .child(
-                FormField::new((id.clone(), "name-field"), "Name on card").child(Input::new(&name)),
+                FormField::new(
+                    (id.clone(), "name-field"),
+                    crate::i18n::text(cx, "account.card.name", &[]),
+                )
+                .child(Input::new(&name)),
             )
             .children(
                 self.error

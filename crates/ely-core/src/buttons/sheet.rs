@@ -196,9 +196,14 @@ impl RenderOnce for ActionSheet {
                     }))
                     .child(
                         card().child(
-                            row("sheet-cancel".into(), "Cancel".into(), colors.fg, true)
-                                .border_t_0()
-                                .on_click(move |_, window, cx| cancel(window, cx)),
+                            row(
+                                "sheet-cancel".into(),
+                                crate::i18n::text(cx, "dialog.cancel", &[]),
+                                colors.fg,
+                                true,
+                            )
+                            .border_t_0()
+                            .on_click(move |_, window, cx| cancel(window, cx)),
                         ),
                     ),
             )

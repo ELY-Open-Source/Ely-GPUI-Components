@@ -198,12 +198,12 @@ fn palette(_: &Stage, _: Entity<Stage>) -> AnyElement {
 fn the_palette_wraps_inside_a_narrow_box(cx: &mut TestAppContext) {
     let (_, cx) = stage(palette, cx);
     for tool in Tool::ALL {
-        let selector = format!("toggle {}", tool.words()).leak();
+        let selector = format!("toggle {}", tool.id()).leak();
         let face = cx.debug_bounds(selector).expect("a face per tool");
         assert!(
             face.right() <= px(280.0),
             "{} ends at {:?}",
-            tool.words(),
+            tool.id(),
             face.right()
         );
     }

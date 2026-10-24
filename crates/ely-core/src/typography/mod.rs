@@ -20,7 +20,7 @@ pub use fit::{Ellipsis, EllipsisTooltip, LEADING, MiddleEllipsis, text_width};
 pub use format::DurationStyle;
 pub use formatted::{
     CurrencyText, DateTimeText, DurationText, FileSizeText, NumberText, PercentText, PluralText,
-    RelativeTime, fresh,
+    RelativeTime, fresh, relative_text,
 };
 pub use inline::{Blockquote, Code, Highlight, Kbd, KbdCombo};
 pub use link::{ExternalLink, Link};

@@ -75,6 +75,8 @@ pub struct TextInput {
     text: String,
     placeholder: SharedString,
     label: SharedString,
+    placeholder_key: Option<&'static str>,
+    label_key: Option<&'static str>,
     selection: Range<usize>,
     reversed: bool,
     marked: Option<Range<usize>>,
@@ -133,6 +135,8 @@ impl TextInput {
             text: String::new(),
             placeholder: SharedString::default(),
             label: SharedString::default(),
+            placeholder_key: None,
+            label_key: None,
             selection: 0..0,
             reversed: false,
             marked: None,
@@ -168,12 +172,26 @@ impl TextInput {
     /// What it shows while empty.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
         self.placeholder = text.into();
+        self.placeholder_key = None;
         self
     }
 
     /// The name assistive technology reads; the placeholder otherwise.
     pub fn label(mut self, text: impl Into<SharedString>) -> Self {
         self.label = text.into();
+        self.label_key = None;
+        self
+    }
+
+    /// What it shows while empty: a catalog message, read in the shown locale at each render.
+    pub fn placeholder_key(mut self, key: &'static str) -> Self {
+        self.placeholder_key = Some(key);
+        self
+    }
+
+    /// The name assistive technology reads: a catalog message, read in the shown locale at each render.
+    pub fn label_key(mut self, key: &'static str) -> Self {
+        self.label_key = Some(key);
         self
     }
 
@@ -269,13 +287,25 @@ impl TextInput {
     /// Sets what it shows while empty.
     pub fn set_placeholder(&mut self, text: impl Into<SharedString>, cx: &mut Context<Self>) {
         self.placeholder = text.into();
+        self.placeholder_key = None;
         cx.notify();
     }
 
     /// Sets the name assistive technology reads, drawn nowhere.
     pub fn set_label(&mut self, text: impl Into<SharedString>, cx: &mut Context<Self>) {
         self.label = text.into();
+        self.label_key = None;
         cx.notify();
+    }
+
+    /// Reads its catalog keys in the shown locale, so a field built once follows a locale change.
+    fn read_keys(&mut self, cx: &App) {
+        if let Some(key) = self.placeholder_key {
+            self.placeholder = crate::i18n::text(cx, key, &[]);
+        }
+        if let Some(key) = self.label_key {
+            self.label = crate::i18n::text(cx, key, &[]);
+        }
     }
 
     /// Hides or shows its text.

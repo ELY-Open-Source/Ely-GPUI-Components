@@ -7,7 +7,7 @@ use super::{
     super::{Choice, Select},
     show_span, zoned_now,
 };
-use crate::theme::ControlSize;
+use crate::{i18n::text, theme::ControlSize};
 
 /// A span named from today, such as the last seven days.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -43,18 +43,23 @@ impl RelativeRange {
         Self::ThisYear,
     ];
 
-    /// Its English name.
-    pub fn label(self) -> &'static str {
+    /// Its key, the value its choice carries.
+    pub fn key(self) -> &'static str {
         match self {
-            Self::Today => "Today",
-            Self::Yesterday => "Yesterday",
-            Self::Last7Days => "Last 7 days",
-            Self::Last30Days => "Last 30 days",
-            Self::ThisMonth => "This month",
-            Self::LastMonth => "Last month",
-            Self::ThisQuarter => "This quarter",
-            Self::ThisYear => "This year",
+            Self::Today => "today",
+            Self::Yesterday => "yesterday",
+            Self::Last7Days => "last-7-days",
+            Self::Last30Days => "last-30-days",
+            Self::ThisMonth => "this-month",
+            Self::LastMonth => "last-month",
+            Self::ThisQuarter => "this-quarter",
+            Self::ThisYear => "this-year",
         }
+    }
+
+    /// Its name in the shown locale.
+    pub fn label(self, cx: &App) -> SharedString {
+        text(cx, &format!("relative.{}", self.key()), &[])
     }
 
     /// The first and last day it covers, counted from `today`.
@@ -141,23 +146,23 @@ impl RenderOnce for RelativeDatePicker {
         let today = self.today.unwrap_or_else(|| zoned_now().date());
         let choices = RelativeRange::ALL.map(|range| {
             let (start, end) = range.span(today);
-            Choice::new(range.label(), range.label()).note(show_span(start, end, cx))
+            Choice::new(range.key(), range.label(cx)).note(show_span(start, end, cx))
         });
         let on_change = self.on_change;
         let mut select = Select::new(self.id, choices)
-            .placeholder("Any time")
+            .placeholder(text(cx, "relative.any", &[]))
             .size(self.size)
-            .on_change(move |label: &SharedString, window, cx| {
+            .on_change(move |key: &SharedString, window, cx| {
                 let range = RelativeRange::ALL
                     .into_iter()
-                    .find(|range| range.label() == label.as_ref())
-                    .expect("a label from the list");
+                    .find(|range| range.key() == key.as_ref())
+                    .expect("a key from the list");
                 if let Some(on_change) = &on_change {
                     on_change(range, range.span(today), window, cx);
                 }
             });
         if let Some(value) = self.value {
-            select = select.selected(value.label());
+            select = select.selected(value.key());
         }
         select
     }

@@ -49,7 +49,7 @@ fn email_step(step: Step, window: &mut Window, cx: &mut App) -> AnyElement {
         back,
         other,
     } = step;
-    let email = field(&id, "email", "name@example.com", false, window, cx);
+    let email = field(&id, "email", Some("account.email.hint"), false, window, cx);
     let address: SharedString = email.read(cx).text().trim().to_string().into();
     let ready = is_email(&address) && !busy;
     let send: Run = {
@@ -131,7 +131,13 @@ fn email_step(step: Step, window: &mut Window, cx: &mut App) -> AnyElement {
             }
         })
         .child(muted(words.intro.into()))
-        .child(FormField::new((id.clone(), "email-field"), "Email").child(EmailInput::new(&email)))
+        .child(
+            FormField::new(
+                (id.clone(), "email-field"),
+                crate::i18n::text(cx, "account.email", &[]),
+            )
+            .child(EmailInput::new(&email)),
+        )
         .child(
             Button::new((id.clone(), "send"), words.send)
                 .variant(ButtonVariant::Primary)

@@ -132,7 +132,7 @@ impl RenderOnce for SearchFilters {
             (self.id.clone(), "ignore"),
             ToggleItem::new("ignore")
                 .icon(IconName::EyeOff)
-                .tooltip("Leave out ignored files"),
+                .tooltip(crate::i18n::text(cx, "editor.filters.ignored", &[])),
             self.ignore,
         )
         .size(ControlSize::Sm);

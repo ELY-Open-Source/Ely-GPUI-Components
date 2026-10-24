@@ -14,10 +14,7 @@ use super::{
     hex, parse_hex,
     swatch::checker,
 };
-use crate::{
-    i18n,
-    theme::{ActiveTheme, ControlSize, Elevation, Radius},
-};
+use crate::theme::{ActiveTheme, ControlSize, Elevation, Radius};
 
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
@@ -90,7 +87,7 @@ fn picking(id: &ElementId, value: Hsla, window: &mut Window, cx: &mut App) -> En
             let field = cx.new(|cx| {
                 TextInput::new(window, cx)
                     .max_len(9)
-                    .label(i18n::text(cx, "color.value", &[]))
+                    .label_key("color.value")
             });
             let events = cx.subscribe_in(&field, window, |picking, field, event, window, cx| {
                 if !matches!(event, InputEvent::Submit | InputEvent::Blur) {

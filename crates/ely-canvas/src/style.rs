@@ -186,6 +186,7 @@ impl RenderOnce for ShadowEditor {
                         .items_center()
                         .gap_2()
                         .child(color_well(
+                            cx,
                             (id.clone(), format!("color-{ix}")).into(),
                             shadow.color,
                             tint,
@@ -241,13 +242,18 @@ impl Dash {
     /// Every line, in the menu's order.
     pub const ALL: [Dash; 3] = [Dash::Solid, Dash::Dashed, Dash::Dotted];
 
-    /// Its word.
-    pub fn word(self) -> &'static str {
+    /// Its id, the value its control carries.
+    pub fn id(self) -> &'static str {
         match self {
-            Dash::Solid => "Solid",
-            Dash::Dashed => "Dashed",
-            Dash::Dotted => "Dotted",
+            Dash::Solid => "solid",
+            Dash::Dashed => "dashed",
+            Dash::Dotted => "dotted",
         }
+    }
+
+    /// Its word in the shown locale.
+    pub fn word(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("canvas.dash.{}", self.id()), &[])
     }
 }
 
@@ -317,13 +323,13 @@ impl RenderOnce for BorderEditor {
             Dash::ALL
                 .iter()
                 .fold(
-                    SegmentedControl::new((id.clone(), "dash"), border.dash.word()),
-                    |control, dash| control.segment(dash.word(), dash.word(), None),
+                    SegmentedControl::new((id.clone(), "dash"), border.dash.id()),
+                    |control, dash| control.segment(dash.id(), dash.word(cx), None),
                 )
-                .on_change(move |word, window, cx| {
+                .on_change(move |id, window, cx| {
                     let dash = *Dash::ALL
                         .iter()
-                        .find(|dash| dash.word() == word.as_ref())
+                        .find(|dash| dash.id() == id.as_ref())
                         .expect("a dash the control offers");
                     set(dash, window, cx)
                 })
@@ -370,6 +376,7 @@ impl RenderOnce for BorderEditor {
                     .items_center()
                     .gap_2()
                     .child(color_well(
+                        cx,
                         (id.clone(), "color").into(),
                         border.color,
                         editing(

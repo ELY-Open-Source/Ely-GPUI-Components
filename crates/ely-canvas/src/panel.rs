@@ -79,16 +79,18 @@ pub(crate) fn heading(
 /// A swatch that opens a color picker.
 #[doc(hidden)]
 pub fn color_well(
+    cx: &App,
     id: ElementId,
     color: Hsla,
     on_pick: impl Fn(Hsla, &mut Window, &mut App) + 'static,
 ) -> Popover {
     let swatch = (id.clone(), "swatch");
+    let tip = crate::i18n::text(cx, "canvas.color.change", &[]);
     Popover::with_opener(
         id.clone(),
         move |toggle| {
             ColorSwatch::new(swatch, color)
-                .tooltip("Change the color")
+                .tooltip(tip)
                 .on_click(move |window, cx| toggle(window, cx))
         },
         move |_, _, _| ColorPicker::new((id, "picker"), color).on_change(on_pick),

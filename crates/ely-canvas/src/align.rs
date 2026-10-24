@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use gpui::{App, ElementId, IntoElement, ParentElement, RenderOnce, Window};
+use gpui::{App, ElementId, IntoElement, ParentElement, RenderOnce, SharedString, Window};
 
 use super::view::Frame;
 use crate::{
@@ -45,18 +45,23 @@ impl Align {
         Align::SpreadDown,
     ];
 
-    /// Its words, for a tip.
-    pub fn words(self) -> &'static str {
+    /// Its id, the value its control carries.
+    pub fn id(self) -> &'static str {
         match self {
-            Align::Left => "Align left edges",
-            Align::Center => "Align centers",
-            Align::Right => "Align right edges",
-            Align::Top => "Align top edges",
-            Align::Middle => "Align middles",
-            Align::Bottom => "Align bottom edges",
-            Align::SpreadAcross => "Spread across",
-            Align::SpreadDown => "Spread down",
+            Align::Left => "left",
+            Align::Center => "center",
+            Align::Right => "right",
+            Align::Top => "top",
+            Align::Middle => "middle",
+            Align::Bottom => "bottom",
+            Align::SpreadAcross => "spread-across",
+            Align::SpreadDown => "spread-down",
         }
+    }
+
+    /// Its words in the shown locale, for a tip.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("canvas.align.{}", self.id()), &[])
     }
 
     fn icon(self) -> IconName {
@@ -86,7 +91,7 @@ pub fn aligned(frames: &[Frame], align: Align) -> Vec<Frame> {
     assert!(
         frames.len() >= align.least(),
         "{} takes {} shapes, not {}",
-        align.words(),
+        align.id(),
         align.least(),
         frames.len()
     );
@@ -162,14 +167,14 @@ impl AlignmentToolbar {
 }
 
 impl RenderOnce for AlignmentToolbar {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let button = |align: Align| {
             let on_align = self.on_align.clone();
-            IconButton::new((self.id.clone(), align.words()), align.icon())
-                .tooltip(align.words())
+            IconButton::new((self.id.clone(), align.id()), align.icon())
+                .tooltip(align.words(cx))
                 .disabled(self.count < align.least())
                 .on_click(move |_, window, cx| {
-                    log::info!("alignment toolbar: {}", align.words());
+                    log::info!("alignment toolbar: {}", align.id());
                     if let Some(on_align) = &on_align {
                         on_align(align, window, cx);
                     }

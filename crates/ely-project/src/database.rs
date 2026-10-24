@@ -52,15 +52,20 @@ impl DatabaseLayout {
         DatabaseLayout::Timeline,
     ];
 
-    /// Its words.
-    pub fn words(self) -> &'static str {
+    /// Its key, as the catalog names it.
+    pub fn key(self) -> &'static str {
         match self {
-            DatabaseLayout::Table => "Table",
-            DatabaseLayout::Board => "Board",
-            DatabaseLayout::Gallery => "Gallery",
-            DatabaseLayout::Calendar => "Calendar",
-            DatabaseLayout::Timeline => "Timeline",
+            DatabaseLayout::Table => "table",
+            DatabaseLayout::Board => "board",
+            DatabaseLayout::Gallery => "gallery",
+            DatabaseLayout::Calendar => "calendar",
+            DatabaseLayout::Timeline => "timeline",
         }
+    }
+
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("project.layout.{}", self.key()), &[])
     }
 
     fn icon(self) -> IconName {
@@ -73,11 +78,11 @@ impl DatabaseLayout {
         }
     }
 
-    fn of_words(words: &str) -> DatabaseLayout {
+    fn of_key(key: &str) -> DatabaseLayout {
         DatabaseLayout::ALL
             .into_iter()
-            .find(|layout| layout.words() == words)
-            .unwrap_or_else(|| panic!("no database layout {words}"))
+            .find(|layout| layout.key() == key)
+            .unwrap_or_else(|| panic!("no database layout {key}"))
     }
 }
 
@@ -169,15 +174,15 @@ impl RenderOnce for DatabaseView {
         let switch = DatabaseLayout::ALL
             .into_iter()
             .fold(
-                SegmentedControl::new((id.clone(), "layouts"), shown.words()),
-                |switch, each| switch.segment(each.words(), each.words(), Some(each.icon())),
+                SegmentedControl::new((id.clone(), "layouts"), shown.key()),
+                |switch, each| switch.segment(each.key(), each.words(cx), Some(each.icon())),
             )
             .size(ControlSize::Sm)
             .on_change({
                 let (id, layout) = (id.clone(), layout.clone());
-                move |words: &SharedString, _, cx| {
-                    let next = DatabaseLayout::of_words(words);
-                    log::info!("database view {id:?}: {}", next.words());
+                move |key: &SharedString, _, cx| {
+                    let next = DatabaseLayout::of_key(key);
+                    log::info!("database view {id:?}: {}", next.key());
                     layout.update(cx, |layout, cx| {
                         layout.value = next;
                         cx.notify();
@@ -206,8 +211,8 @@ impl RenderOnce for DatabaseView {
                 let rows = self.tasks.iter().map(|task| {
                     let cells = [
                         Cell::Text(task.title.clone()),
-                        Cell::Tag(task.status.words().into(), tone(task.status)),
-                        Cell::Text(task.priority.words().into()),
+                        Cell::Tag(task.status.words(cx), tone(task.status)),
+                        Cell::Text(task.priority.words(cx)),
                         task.assignee
                             .as_ref()
                             .map_or(Cell::Empty, |person| Cell::Person(person.name.clone())),
@@ -238,7 +243,7 @@ impl RenderOnce for DatabaseView {
                                     .today(today);
                                     KanbanCard::new(task.key.clone(), face)
                                 });
-                        board.column(KanbanColumn::new(status.key(), status.words()).cards(cards))
+                        board.column(KanbanColumn::new(status.key(), status.words(cx)).cards(cards))
                     })
                     .on_move(move |key, column, _, window, cx| {
                         let status = Status::of_key(column);
@@ -335,7 +340,7 @@ impl RenderOnce for DatabaseView {
                                 .progress(done)
                         })
                         .collect();
-                    (!bars.is_empty()).then_some((status.words(), bars))
+                    (!bars.is_empty()).then_some((status.words(cx), bars))
                 });
                 let undated = self.tasks.len() - both.len();
                 div()

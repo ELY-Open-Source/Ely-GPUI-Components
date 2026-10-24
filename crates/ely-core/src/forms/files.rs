@@ -196,17 +196,21 @@ impl RenderOnce for FileInput {
             [one] => Some(file_name(one)),
             [first, rest @ ..] => Some(format!("{} +{}", file_name(first), rest.len())),
         };
-        let placeholder = if self.multiple {
-            "Choose files…"
-        } else {
-            "Choose a file…"
-        };
+        let placeholder = crate::i18n::text(
+            cx,
+            if self.multiple {
+                "files.choose.many"
+            } else {
+                "files.choose.one"
+            },
+            &[],
+        );
         let (multiple, browse, clear) = (self.multiple, set.clone(), set.clone());
         let browse_what = what.clone();
         let subtle = cx.theme().colors.fg_subtle;
         let field = field_button(self.id.clone(), &focus, ControlSize::Md, false, window, cx)
             .role(Role::Button)
-            .aria_label(placeholder)
+            .aria_label(placeholder.clone())
             .when_some(text.clone(), |field, text| field.aria_value(text))
             .cursor_pointer()
             .on_click(move |_, window, cx| {
@@ -222,7 +226,7 @@ impl RenderOnce for FileInput {
             .child(Icon::new(IconName::File).size(IconSize::Sm).color(subtle))
             .child(field_text(
                 text.map(SharedString::from),
-                placeholder.into(),
+                placeholder,
                 false,
                 cx,
             ))

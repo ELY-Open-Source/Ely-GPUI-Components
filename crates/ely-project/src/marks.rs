@@ -74,7 +74,7 @@ impl RenderOnce for PriorityIndicator {
                 }))
                 .into_any_element(),
         };
-        let words = self.priority.words();
+        let words = self.priority.words(cx);
         div()
             .id(self.id)
             .flex_none()
@@ -165,8 +165,8 @@ impl StatusSelect {
 
 impl RenderOnce for StatusSelect {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let choices =
-            Status::ALL.map(|status| Choice::new(status.key(), status.words()).icon(status.icon()));
+        let choices = Status::ALL
+            .map(|status| Choice::new(status.key(), status.words(cx)).icon(status.icon()));
         let (id, on_change) = (self.id.clone(), self.on_change);
         Select::new(self.id, choices)
             .label(i18n::text(cx, "project.status", &[]))
@@ -174,7 +174,7 @@ impl RenderOnce for StatusSelect {
             .size(self.size)
             .on_change(move |key: &SharedString, window, cx| {
                 let status = Status::of_key(key);
-                log::info!("status select {id:?}: {}", status.words());
+                log::info!("status select {id:?}: {}", status.key());
                 if let Some(on_change) = &on_change {
                     on_change(status, window, cx);
                 }

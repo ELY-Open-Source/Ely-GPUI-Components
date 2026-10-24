@@ -32,7 +32,7 @@ pub struct MultiSelect {
     label: Option<SharedString>,
     choices: Vec<Choice>,
     selected: Vec<SharedString>,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     size: ControlSize,
     on_change: Option<OnValues>,
 }
@@ -45,7 +45,7 @@ impl MultiSelect {
             label: None,
             choices: choices.into_iter().collect(),
             selected: Vec::new(),
-            placeholder: SharedString::from("Choose…"),
+            placeholder: None,
             size: ControlSize::default(),
             on_change: None,
         }
@@ -65,7 +65,7 @@ impl MultiSelect {
 
     /// What it shows with nothing chosen; `Choose…` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
-        self.placeholder = text.into();
+        self.placeholder = Some(text.into());
         self
     }
 
@@ -87,6 +87,8 @@ impl MultiSelect {
 
 impl RenderOnce for MultiSelect {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let placeholder = (self.placeholder.clone())
+            .unwrap_or_else(|| crate::i18n::text(cx, "select.placeholder", &[]));
         assert!(
             !self.choices.is_empty(),
             "multi select {:?} has no choices",
@@ -175,11 +177,7 @@ impl RenderOnce for MultiSelect {
         div()
             .id(self.id.clone())
             .role(Role::ComboBox)
-            .aria_label(
-                self.label
-                    .clone()
-                    .unwrap_or_else(|| self.placeholder.clone()),
-            )
+            .aria_label(self.label.clone().unwrap_or_else(|| placeholder.clone()))
             .aria_value(value)
             .track_focus(&focus)
             .relative()
@@ -230,12 +228,7 @@ impl RenderOnce for MultiSelect {
             })
             .children(chips)
             .when(selected.is_empty(), |field| {
-                field.child(
-                    div()
-                        .pl_2()
-                        .text_color(colors.fg_subtle)
-                        .child(self.placeholder),
-                )
+                field.child(div().pl_2().text_color(colors.fg_subtle).child(placeholder))
             })
             .child(
                 div().ml_auto().child(

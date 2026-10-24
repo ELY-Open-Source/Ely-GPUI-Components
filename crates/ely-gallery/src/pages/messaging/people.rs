@@ -162,7 +162,7 @@ pub fn setter(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 Some(emoji) => format!("{emoji} {}", status.text),
                 None => status.text.to_string(),
             };
-            format!("{words} · {}", status.clear.label())
+            format!("{words} · {}", status.clear.label(cx))
         }
         None => "No status set.".to_string(),
     };

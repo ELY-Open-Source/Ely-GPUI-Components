@@ -187,7 +187,7 @@ fn side_tag(side: Side) -> Cell {
 }
 
 impl RenderOnce for OrderTable {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let zone = self
             .zone
             .clone()
@@ -222,7 +222,7 @@ impl RenderOnce for OrderTable {
                         Cell::Text(time),
                         Cell::Text(order.symbol.clone()),
                         side_tag(order.side),
-                        Cell::Text(order.kind.word().into()),
+                        Cell::Text(order.kind.word(cx)),
                         order.quantity.into(),
                         price,
                         Cell::Progress(filled as f32),

@@ -191,7 +191,7 @@ impl RenderOnce for UnitConverter {
         let desk = window.use_keyed_state((id.clone(), "desk"), cx, |window, cx| Desk {
             input: cx.new(|cx| {
                 let mut input = TextInput::new(window, cx)
-                    .label(i18n::text(cx, "units.value", &[]))
+                    .label_key("units.value")
                     .filter(|ch| ch.is_ascii_digit() || matches!(ch, '.' | ',' | '-' | MINUS));
                 input.set_text("1", cx);
                 input

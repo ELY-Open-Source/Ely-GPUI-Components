@@ -45,23 +45,28 @@ impl ClearAfter {
         Self::ThisWeek,
     ];
 
-    /// Its words.
-    pub fn label(self) -> &'static str {
+    /// Its key, the value its choice carries.
+    pub fn key(self) -> &'static str {
         match self {
-            Self::Never => "Don't clear",
-            Self::ThirtyMinutes => "30 minutes",
-            Self::OneHour => "1 hour",
-            Self::FourHours => "4 hours",
-            Self::Today => "Today",
-            Self::ThisWeek => "This week",
+            Self::Never => "never",
+            Self::ThirtyMinutes => "30-minutes",
+            Self::OneHour => "1-hour",
+            Self::FourHours => "4-hours",
+            Self::Today => "today",
+            Self::ThisWeek => "this-week",
         }
     }
 
-    fn of(label: &str) -> Self {
+    /// Its words in the shown locale.
+    pub fn label(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("messaging.clear.{}", self.key()), &[])
+    }
+
+    fn of(key: &str) -> Self {
         Self::ALL
             .into_iter()
-            .find(|clear| clear.label() == label)
-            .unwrap_or_else(|| panic!("no clear after {label}"))
+            .find(|clear| clear.key() == key)
+            .unwrap_or_else(|| panic!("no clear after {key}"))
     }
 }
 
@@ -246,7 +251,7 @@ impl RenderOnce for StatusSetter {
         .aria_label(i18n::text(cx, "messaging.emoji", &[]));
         let theme = cx.theme();
         let colors = &theme.colors;
-        let label = |text: &'static str| {
+        let label = |text: SharedString| {
             div()
                 .text_size(theme.text_size(TextSize::Xs))
                 .font_weight(gpui::FontWeight::SEMIBOLD)
@@ -266,7 +271,7 @@ impl RenderOnce for StatusSetter {
                         (self.id.clone(), format!("suggestion-{ix}")),
                         suggestion.text.clone(),
                     )
-                    .trailing(suggestion.clear.label());
+                    .trailing(suggestion.clear.label(cx));
                     let row = match suggestion.emoji.clone() {
                         Some(emoji) => row.leading(emoji),
                         None => row,
@@ -279,7 +284,7 @@ impl RenderOnce for StatusSetter {
                 .flex()
                 .flex_col()
                 .gap_1()
-                .child(label("Suggestions"))
+                .child(label(crate::i18n::text(cx, "messaging.suggestions", &[])))
                 .child(rows.selected(lit).on_change(move |keys, _, cx| {
                     let key = keys.first().expect("a pick names a suggestion");
                     let ix: usize = key["suggestion-".len()..]
@@ -293,13 +298,13 @@ impl RenderOnce for StatusSetter {
         let clearing = draft.clone();
         let clear_after = Select::new(
             (self.id.clone(), "clear"),
-            ClearAfter::ALL.map(|clear| Choice::new(clear.label(), clear.label())),
+            ClearAfter::ALL.map(|clear| Choice::new(clear.key(), clear.label(cx))),
         )
         .label(i18n::text(cx, "messaging.clear", &[]))
-        .selected(now.clear.label())
+        .selected(now.clear.key())
         .on_change(move |value, _, cx| {
             let clear = ClearAfter::of(value);
-            log::info!("status setter: clear after {}", clear.label());
+            log::info!("status setter: clear after {}", clear.key());
             clearing.update(cx, |draft, cx| {
                 draft.clear = clear;
                 cx.notify();
@@ -351,7 +356,7 @@ impl RenderOnce for StatusSetter {
                     .items_center()
                     .justify_between()
                     .gap_2()
-                    .child(label("Clear after"))
+                    .child(label(crate::i18n::text(cx, "messaging.clear", &[])))
                     .child(div().flex_none().w(theme.label_width()).child(clear_after)),
             )
             .child(

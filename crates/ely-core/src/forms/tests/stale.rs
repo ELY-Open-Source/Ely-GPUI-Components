@@ -1,7 +1,10 @@
 use gpui::{AppContext, Context, EntityInputHandler, IntoElement, Render, TestAppContext, Window};
 
 use super::setup;
-use crate::forms::{TextInput, UnitInput};
+use crate::{
+    forms::{TextInput, UnitInput},
+    i18n::I18n,
+};
 
 #[gpui::test]
 fn a_selection_outside_the_text_or_inside_a_character_is_left(cx: &mut TestAppContext) {
@@ -65,4 +68,37 @@ fn an_ime_finds_its_composition_before_the_next_layout(cx: &mut TestAppContext) 
     });
     let asked = asked.expect("the candidate box has a place");
     assert_eq!(asked.origin, laid.origin, "at the caret, on its line");
+}
+
+#[gpui::test]
+fn a_field_built_once_reads_its_keys_in_a_new_locale(cx: &mut TestAppContext) {
+    setup(cx);
+    cx.update(|cx| {
+        cx.set_global(
+            I18n::new("en-US")
+                .catalog("en-US", &[("app.name", "Name")])
+                .catalog("de-DE", &[("app.name", "Name")]),
+        )
+    });
+    let (field, cx) = cx.add_window_view(|window, cx| {
+        TextInput::new(window, cx)
+            .label_key("lists.filter_files")
+            .placeholder_key("lists.filter_files")
+    });
+    let words = |cx: &mut gpui::VisualTestContext| {
+        field.read_with(cx, |field, _| {
+            (
+                field.label_text().to_string(),
+                field.placeholder_text().to_string(),
+            )
+        })
+    };
+    cx.run_until_parked();
+    assert_eq!(words(cx), ("Filter files".into(), "Filter files".into()));
+    cx.update(|_, cx| I18n::set_locale("de-DE", cx));
+    cx.run_until_parked();
+    assert_eq!(
+        words(cx),
+        ("Dateien filtern".into(), "Dateien filtern".into())
+    );
 }

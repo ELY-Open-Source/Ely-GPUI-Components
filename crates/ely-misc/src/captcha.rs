@@ -86,8 +86,12 @@ impl RenderOnce for Captcha {
         let id = self.id;
         let on_answer = self.on_answer;
         let field = window.use_keyed_state((id.clone(), "field"), cx, |window, cx| {
-            TextInput::new(window, cx).placeholder("Type the characters")
+            TextInput::new(window, cx)
         });
+        let hint = crate::i18n::text(cx, "misc.captcha.hint", &[]);
+        if *field.read(cx).placeholder_text() != hint {
+            field.update(cx, |field, cx| field.set_placeholder(hint, cx));
+        }
         let passed = self.state == CaptchaState::Passed;
         if field.read(cx).is_disabled() != passed {
             field.update(cx, |field, cx| field.set_disabled(passed, cx));

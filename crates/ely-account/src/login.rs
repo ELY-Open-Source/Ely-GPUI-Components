@@ -20,15 +20,21 @@ pub(super) type Run = Rc<dyn Fn(&mut Window, &mut App)>;
 pub(super) fn field(
     id: &ElementId,
     key: &'static str,
-    hint: &'static str,
+    hint: Option<&'static str>,
     masked: bool,
     window: &mut Window,
     cx: &mut App,
 ) -> Entity<TextInput> {
-    window.use_keyed_state((id.clone(), key), cx, move |window, cx| {
-        let field = TextInput::new(window, cx).placeholder(hint);
+    let field = window.use_keyed_state((id.clone(), key), cx, move |window, cx| {
+        let field = TextInput::new(window, cx);
         if masked { field.masked() } else { field }
-    })
+    });
+    if let Some(hint) = hint.map(|hint| crate::i18n::text(cx, hint, &[]))
+        && *field.read(cx).placeholder_text() != hint
+    {
+        field.update(cx, |field, cx| field.set_placeholder(hint, cx));
+    }
+    field
 }
 
 /// Muted words and a link on one line, as under a form: "No account? Sign up".
@@ -125,8 +131,8 @@ impl LoginForm {
 impl RenderOnce for LoginForm {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let id = self.id;
-        let email = field(&id, "email", "name@example.com", false, window, cx);
-        let password = field(&id, "password", "Password", true, window, cx);
+        let email = field(&id, "email", Some("account.email.hint"), false, window, cx);
+        let password = field(&id, "password", Some("account.password"), true, window, cx);
         let remember = window.use_keyed_state((id.clone(), "remember"), cx, |_, _| false);
         let login = Login {
             email: email.read(cx).text().trim().to_string().into(),
@@ -152,11 +158,18 @@ impl RenderOnce for LoginForm {
                 }
             })
             .child(
-                FormField::new((id.clone(), "email-field"), "Email").child(EmailInput::new(&email)),
+                FormField::new(
+                    (id.clone(), "email-field"),
+                    crate::i18n::text(cx, "account.email", &[]),
+                )
+                .child(EmailInput::new(&email)),
             )
             .child(
-                FormField::new((id.clone(), "password-field"), "Password")
-                    .child(PasswordInput::new(&password)),
+                FormField::new(
+                    (id.clone(), "password-field"),
+                    crate::i18n::text(cx, "account.password", &[]),
+                )
+                .child(PasswordInput::new(&password)),
             )
             .child(
                 div()
@@ -167,7 +180,7 @@ impl RenderOnce for LoginForm {
                     .gap_2()
                     .child(
                         Checkbox::new((id.clone(), "remember"), remembered)
-                            .label("Keep me signed in")
+                            .label(crate::i18n::text(cx, "account.remember", &[]))
                             .on_change(move |on, _, cx| {
                                 remember.update(cx, |remember, cx| {
                                     *remember = on;

@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, InteractiveElement, IntoElement, ObjectFit, ParentElement, RenderOnce,
-    StatefulInteractiveElement, Styled, Window, div,
+    SharedString, StatefulInteractiveElement, Styled, Window, div,
 };
 
 use super::viewer::DocPage;
@@ -13,7 +13,7 @@ use crate::{
     i18n,
     primitives::Image,
     theme::{ActiveTheme, ControlSize, Elevation, Radius, TextSize},
-    typography::{format::plural, tabular},
+    typography::tabular,
 };
 
 /// Sheets the app can print on.
@@ -70,9 +70,9 @@ const PAPERS: [(Paper, &str); 3] = [
     (Paper::Legal, "Legal"),
 ];
 const MARGINS: [(Margins, &str); 3] = [
-    (Margins::None, "None"),
-    (Margins::Narrow, "Narrow"),
-    (Margins::Normal, "Normal"),
+    (Margins::None, "none"),
+    (Margins::Narrow, "narrow"),
+    (Margins::Normal, "normal"),
 ];
 
 /// Most copies one print makes.
@@ -120,7 +120,14 @@ impl PrintPreview {
     }
 }
 
-fn row(label: &'static str, control: impl IntoElement, cx: &App) -> impl IntoElement {
+/// `n` of what `key` counts, in the shown locale.
+fn counted(key: &str, n: usize, cx: &App) -> SharedString {
+    let form = if n == 1 { "one" } else { "other" };
+    let count = n.to_string();
+    i18n::text(cx, &format!("{key}.{form}"), &[("n", &count)])
+}
+
+fn row(key: &'static str, control: impl IntoElement, cx: &App) -> impl IntoElement {
     div()
         .flex()
         .flex_col()
@@ -129,7 +136,7 @@ fn row(label: &'static str, control: impl IntoElement, cx: &App) -> impl IntoEle
             div()
                 .text_size(cx.theme().text_size(TextSize::Sm))
                 .text_color(cx.theme().colors.fg_muted)
-                .child(label),
+                .child(i18n::text(cx, key, &[])),
         )
         .child(control)
 }
@@ -173,8 +180,8 @@ impl RenderOnce for PrintPreview {
                 },
             )
             .size(ControlSize::Sm)
-            .segment("portrait", "Portrait", None)
-            .segment("landscape", "Landscape", None)
+            .segment("portrait", i18n::text(cx, "print.portrait", &[]), None)
+            .segment("landscape", i18n::text(cx, "print.landscape", &[]), None)
             .on_change(move |value, window, cx| {
                 on_change(
                     PrintSettings {
@@ -190,7 +197,9 @@ impl RenderOnce for PrintPreview {
             let on_change = self.on_change.clone();
             Select::new(
                 (self.id.clone(), "margins"),
-                MARGINS.map(|(_, name)| Choice::new(name, name)),
+                MARGINS.map(|(_, name)| {
+                    Choice::new(name, i18n::text(cx, &format!("print.margins.{name}"), &[]))
+                }),
             )
             .label(i18n::text(cx, "print.margins", &[]))
             .selected(
@@ -301,13 +310,13 @@ impl RenderOnce for PrintPreview {
                     .bg(colors.surface)
                     .child(div().text_color(colors.fg_muted).child(format!(
                         "{} · {}",
-                        plural(self.pages.len() as u64, "page", "pages"),
-                        plural(settings.copies as u64, "copy", "copies")
+                        counted("print.count.page", self.pages.len(), cx),
+                        counted("print.count.copy", settings.copies as usize, cx)
                     )))
-                    .child(row("Paper", paper, cx))
-                    .child(row("Turn", turn, cx))
-                    .child(row("Margins", margins, cx))
-                    .child(row("Copies", copies, cx))
+                    .child(row("print.paper", paper, cx))
+                    .child(row("print.turn", turn, cx))
+                    .child(row("print.margins", margins, cx))
+                    .child(row("print.copies", copies, cx))
                     .child(div().flex_1())
                     .child(
                         div()
@@ -315,17 +324,23 @@ impl RenderOnce for PrintPreview {
                             .justify_end()
                             .gap_2()
                             .child(
-                                Button::new((self.id.clone(), "cancel"), "Cancel")
-                                    .variant(ButtonVariant::Ghost)
-                                    .on_click(move |_, window, cx| cancel(window, cx)),
+                                Button::new(
+                                    (self.id.clone(), "cancel"),
+                                    i18n::text(cx, "dialog.cancel", &[]),
+                                )
+                                .variant(ButtonVariant::Ghost)
+                                .on_click(move |_, window, cx| cancel(window, cx)),
                             )
                             .child(
-                                Button::new((self.id.clone(), "print"), "Print")
-                                    .variant(ButtonVariant::Primary)
-                                    .on_click(move |_, window, cx| {
-                                        log::info!("print preview: print {settings:?}");
-                                        print(settings, window, cx)
-                                    }),
+                                Button::new(
+                                    (self.id.clone(), "print"),
+                                    i18n::text(cx, "print.print", &[]),
+                                )
+                                .variant(ButtonVariant::Primary)
+                                .on_click(move |_, window, cx| {
+                                    log::info!("print preview: print {settings:?}");
+                                    print(settings, window, cx)
+                                }),
                             ),
                     ),
             )

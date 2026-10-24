@@ -134,7 +134,7 @@ pub struct Cascader {
     id: ElementId,
     roots: Vec<Cascade>,
     selected: Vec<SharedString>,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     size: ControlSize,
     on_change: Option<OnValues>,
 }
@@ -146,7 +146,7 @@ impl Cascader {
             id: id.into(),
             roots: roots.into_iter().collect(),
             selected: Vec::new(),
-            placeholder: SharedString::from("Choose…"),
+            placeholder: None,
             size: ControlSize::default(),
             on_change: None,
         }
@@ -160,7 +160,7 @@ impl Cascader {
 
     /// What it shows before anything is chosen; `Choose…` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
-        self.placeholder = text.into();
+        self.placeholder = Some(text.into());
         self
     }
 
@@ -182,6 +182,8 @@ impl Cascader {
 
 impl RenderOnce for Cascader {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let placeholder = (self.placeholder.clone())
+            .unwrap_or_else(|| crate::i18n::text(cx, "select.placeholder", &[]));
         assert!(
             !self.roots.is_empty(),
             "cascader {:?} has no roots",
@@ -300,7 +302,7 @@ impl RenderOnce for Cascader {
         });
         field_button(self.id, &focus, self.size, false, window, cx)
             .role(Role::ComboBox)
-            .aria_label(self.placeholder.clone())
+            .aria_label(placeholder.clone())
             .when(!shown.is_empty(), |field| {
                 field.aria_value(shown.join(" / "))
             })
@@ -346,7 +348,7 @@ impl RenderOnce for Cascader {
             })
             .child(field_text(
                 (!shown.is_empty()).then(|| SharedString::from(shown.join(" / "))),
-                self.placeholder,
+                placeholder,
                 false,
                 cx,
             ))

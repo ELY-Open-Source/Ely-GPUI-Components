@@ -74,12 +74,12 @@ impl ToolPalette {
 }
 
 impl RenderOnce for ToolPalette {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         if !self.tools.contains(&self.tool) {
             log::error!(
                 "tool palette {:?}: {} is not offered; none chosen",
                 self.id,
-                self.tool.words()
+                self.tool.id()
             );
         }
         let on_change = self.on_change;
@@ -87,19 +87,19 @@ impl RenderOnce for ToolPalette {
             .into_iter()
             .fold(ToggleGroup::new(self.id), |group, tool| {
                 group.item(
-                    ToggleItem::new(tool.words())
+                    ToggleItem::new(tool.id())
                         .icon(icon(tool))
-                        .tooltip(tool.words()),
+                        .tooltip(tool.words(cx)),
                 )
             })
-            .selected([self.tool.words()])
+            .selected([self.tool.id()])
             .on_change(move |values: &[SharedString], window, cx| {
-                let Some(words) = values.first() else { return };
+                let Some(id) = values.first() else { return };
                 let tool = Tool::ALL
                     .into_iter()
-                    .find(|tool| tool.words() == words.as_ref())
+                    .find(|tool| tool.id() == id.as_ref())
                     .expect("a tool of the palette");
-                log::info!("tool palette: {}", tool.words());
+                log::info!("tool palette: {}", tool.id());
                 if let Some(on_change) = &on_change {
                     on_change(tool, window, cx);
                 }

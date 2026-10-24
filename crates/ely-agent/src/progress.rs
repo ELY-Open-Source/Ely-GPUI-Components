@@ -201,15 +201,16 @@ pub enum AgentState {
 }
 
 impl AgentState {
-    /// Its state as a word.
-    pub fn label(self) -> &'static str {
-        match self {
-            Self::Planning => "Planning",
-            Self::Working => "Working",
-            Self::Waiting => "Waiting for you",
-            Self::Done => "Done",
-            Self::Failed => "Failed",
-        }
+    /// Its state as a word in the shown locale.
+    pub fn label(self, cx: &App) -> SharedString {
+        let key = match self {
+            Self::Planning => "agent.state.planning",
+            Self::Working => "agent.state.working",
+            Self::Waiting => "agent.state.waiting",
+            Self::Done => "agent.state.done",
+            Self::Failed => "agent.state.failed",
+        };
+        crate::i18n::text(cx, key, &[])
     }
 }
 
@@ -277,7 +278,7 @@ impl RenderOnce for AgentStatus {
             .font_weight(FontWeight::MEDIUM)
             .text_color(ink)
             .child(mark)
-            .child(self.state.label())
+            .child(self.state.label(cx))
     }
 }
 

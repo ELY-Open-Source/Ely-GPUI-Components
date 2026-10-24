@@ -27,12 +27,16 @@ pub enum OrderKind {
 }
 
 impl OrderKind {
-    pub(crate) fn word(self) -> &'static str {
+    pub(crate) fn key(self) -> &'static str {
         match self {
-            OrderKind::Market => "Market",
-            OrderKind::Limit => "Limit",
-            OrderKind::Stop => "Stop",
+            OrderKind::Market => "market",
+            OrderKind::Limit => "limit",
+            OrderKind::Stop => "stop",
         }
+    }
+
+    pub(crate) fn word(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("finance.order.{}", self.key()), &[])
     }
 }
 
@@ -194,9 +198,9 @@ impl RenderOnce for OrderEntry {
         let kind = [OrderKind::Market, OrderKind::Limit, OrderKind::Stop]
             .iter()
             .fold(
-                SegmentedControl::new((self.id.clone(), "kind"), order.kind.word().to_lowercase())
+                SegmentedControl::new((self.id.clone(), "kind"), order.kind.key())
                     .size(ControlSize::Sm),
-                |control, kind| control.segment(kind.word().to_lowercase(), kind.word(), None),
+                |control, kind| control.segment(kind.key(), kind.word(cx), None),
             );
         let kind = kind.on_change(pick(order.clone(), self.on_change.clone()));
         let price_field = if order.kind == OrderKind::Market {
@@ -208,7 +212,7 @@ impl RenderOnce for OrderEntry {
                 .rounded(theme.radius(crate::theme::Radius::Md))
                 .bg(colors.sunken)
                 .text_color(colors.fg_muted)
-                .child("Market")
+                .child(OrderKind::Market.word(cx))
                 .child(tabular(div()).child(price(self.last, 2)))
                 .into_any_element()
         } else {

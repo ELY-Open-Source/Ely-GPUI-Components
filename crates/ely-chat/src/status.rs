@@ -324,7 +324,7 @@ impl RenderOnce for ThinkingDuration {
 #[derive(IntoElement)]
 pub struct ThinkingIndicator {
     id: ElementId,
-    label: SharedString,
+    label: Option<SharedString>,
 }
 
 impl ThinkingIndicator {
@@ -332,13 +332,13 @@ impl ThinkingIndicator {
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
-            label: "Thinking".into(),
+            label: None,
         }
     }
 
     /// What the work is, such as Searching the web.
     pub fn label(mut self, label: impl Into<SharedString>) -> Self {
-        self.label = label.into();
+        self.label = Some(label.into());
         self
     }
 }
@@ -355,7 +355,10 @@ impl RenderOnce for ThinkingIndicator {
                     .size(IconSize::Sm)
                     .color(colors.fg_subtle),
             )
-            .child(ShimmerText::new(self.id, self.label))
+            .child(ShimmerText::new(
+                self.id,
+                (self.label).unwrap_or_else(|| i18n::text(cx, "chat.thinking", &[])),
+            ))
     }
 }
 

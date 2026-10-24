@@ -69,10 +69,10 @@ impl RenderOnce for CurrencyConverter {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let from_field =
             window.use_keyed_state((self.id.clone(), "from-field"), cx, |window, cx| {
-                TextInput::new(window, cx).label(i18n::text(cx, "finance.from", &[]))
+                TextInput::new(window, cx).label_key("finance.from")
             });
         let to_field = window.use_keyed_state((self.id.clone(), "to-field"), cx, |window, cx| {
-            TextInput::new(window, cx).label(i18n::text(cx, "finance.to", &[]))
+            TextInput::new(window, cx).label_key("finance.to")
         });
         let theme = cx.theme();
         let colors = theme.colors.clone();

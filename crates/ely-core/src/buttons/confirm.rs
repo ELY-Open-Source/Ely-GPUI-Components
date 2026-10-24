@@ -52,7 +52,7 @@ type OnConfirm = Rc<dyn Fn(&mut Window, &mut App)>;
 pub struct ConfirmButton {
     id: ElementId,
     label: SharedString,
-    armed_label: SharedString,
+    armed_label: Option<SharedString>,
     mode: ConfirmMode,
     size: ControlSize,
     on_confirm: Option<OnConfirm>,
@@ -68,10 +68,7 @@ impl ConfirmButton {
         let label = label.into();
         Self {
             id: id.into(),
-            armed_label: match mode {
-                ConfirmMode::Hold => "Press again to confirm".into(),
-                ConfirmMode::Twice => "Click again to confirm".into(),
-            },
+            armed_label: None,
             label,
             mode,
             size: ControlSize::default(),
@@ -81,7 +78,7 @@ impl ConfirmButton {
 
     /// The label while waiting for the second click.
     pub fn armed_label(mut self, label: impl Into<SharedString>) -> Self {
-        self.armed_label = label.into();
+        self.armed_label = Some(label.into());
         self
     }
 
@@ -168,7 +165,13 @@ impl RenderOnce for ConfirmButton {
         let tone = tone(variant, colors);
         let (text, icon_size) = label_size(self.size);
         let label = if armed {
-            self.armed_label.clone()
+            self.armed_label.clone().unwrap_or_else(|| {
+                let key = match self.mode {
+                    ConfirmMode::Hold => "confirm.hold",
+                    ConfirmMode::Twice => "confirm.twice",
+                };
+                crate::i18n::text(cx, key, &[])
+            })
         } else {
             self.label.clone()
         };

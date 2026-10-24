@@ -406,6 +406,7 @@ impl TextInput {
 
 impl Render for TextInput {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        self.read_keys(cx);
         div()
             .id("ely-text-input")
             .role(Role::TextInput)

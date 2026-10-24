@@ -1,4 +1,4 @@
-use gpui::SharedString;
+use gpui::{App, SharedString};
 
 use super::{
     shape::{Corner, Guide, Shape, ShapeKind},
@@ -51,22 +51,27 @@ impl Tool {
         Tool::Connector,
     ];
 
-    /// Its name.
-    pub fn words(self) -> &'static str {
+    /// Its id, the value its control carries.
+    pub fn id(self) -> &'static str {
         match self {
-            Tool::Select => "Select",
-            Tool::Hand => "Hand",
-            Tool::Rect => "Rectangle",
-            Tool::Ellipse => "Ellipse",
-            Tool::Polygon => "Polygon",
-            Tool::Line => "Line",
-            Tool::Arrow => "Arrow",
-            Tool::Pen => "Pen",
-            Tool::Text => "Text",
-            Tool::Brush => "Brush",
-            Tool::Note => "Note",
-            Tool::Connector => "Connector",
+            Tool::Select => "select",
+            Tool::Hand => "hand",
+            Tool::Rect => "rect",
+            Tool::Ellipse => "ellipse",
+            Tool::Polygon => "polygon",
+            Tool::Line => "line",
+            Tool::Arrow => "arrow",
+            Tool::Pen => "pen",
+            Tool::Text => "text",
+            Tool::Brush => "brush",
+            Tool::Note => "note",
+            Tool::Connector => "connector",
         }
+    }
+
+    /// Its name in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("canvas.tool.{}", self.id()), &[])
     }
 
     /// The letter that picks it.

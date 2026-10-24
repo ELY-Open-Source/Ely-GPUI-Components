@@ -7,7 +7,6 @@ use gpui::{
 
 use crate::{
     forms::{Input, InputEvent, OnValue, TextInput},
-    i18n::text,
     theme::{ActiveTheme, TextSize},
 };
 
@@ -77,7 +76,6 @@ impl SignatureEditor {
 impl RenderOnce for SignatureEditor {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let seed = self.text.clone();
-        let placeholder = text(cx, "mail.signature.placeholder", &[]);
         let signed = window.use_keyed_state(
             (self.id.clone(), "signed"),
             cx,
@@ -85,7 +83,7 @@ impl RenderOnce for SignatureEditor {
                 let input = cx.new(|cx| {
                     let mut input = TextInput::new(window, cx)
                         .multi_line(3, 6)
-                        .placeholder(placeholder);
+                        .placeholder_key("mail.signature.placeholder");
                     input.set_text(seed.to_string(), cx);
                     input
                 });

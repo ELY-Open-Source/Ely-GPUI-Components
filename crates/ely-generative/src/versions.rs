@@ -216,13 +216,16 @@ impl RenderOnce for PromptVersionHistory {
             .filter(|chosen| *chosen > 0)
             .zip(self.on_restore.clone())
             .map(|(chosen, restore)| {
-                Button::new((self.id.clone(), "restore"), "Restore")
-                    .variant(ButtonVariant::Secondary)
-                    .size(ControlSize::Sm)
-                    .on_click(move |_, window, cx| {
-                        log::info!("prompt versions: restore {chosen}");
-                        restore(chosen, window, cx)
-                    })
+                Button::new(
+                    (self.id.clone(), "restore"),
+                    crate::i18n::text(cx, "generative.restore", &[]),
+                )
+                .variant(ButtonVariant::Secondary)
+                .size(ControlSize::Sm)
+                .on_click(move |_, window, cx| {
+                    log::info!("prompt versions: restore {chosen}");
+                    restore(chosen, window, cx)
+                })
             });
         let rows = self.versions.iter().zip(focuses).enumerate().map(
             |(ix, (version, (focus, focused)))| {

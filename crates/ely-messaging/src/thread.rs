@@ -14,7 +14,7 @@ use crate::{
     layout::on_axis,
     primitives::{Divider, FocusRing, IconName},
     theme::{ActiveTheme, AvatarSize, ControlSize, Radius, TextSize},
-    typography::{Ellipsis, format},
+    typography::Ellipsis,
 };
 
 /// A thread's mark under its first message: who replied, how many replies, and when the last came. With a handler, a press opens the thread.
@@ -69,11 +69,9 @@ impl RenderOnce for MessageThread {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let colors = &theme.colors;
-        let count = format::plural(self.replies as u64, "reply", "replies");
-        let when = format!(
-            "Last reply {}",
-            format::relative(self.last, Timestamp::now())
-        );
+        let count = replies(self.replies, cx);
+        let last = crate::typography::relative_text(cx, self.last, Timestamp::now());
+        let when = crate::i18n::text(cx, "messaging.reply.last", &[("when", &last)]);
         let id = self.id.clone();
         div()
             .id(self.id)
@@ -237,11 +235,7 @@ impl RenderOnce for ThreadPanel {
                 .debug_selector(|| "thread-replies".into())
                 .px_3()
                 .py_1()
-                .child(Divider::horizontal().label(format::plural(
-                    count as u64,
-                    "reply",
-                    "replies",
-                )))
+                .child(Divider::horizontal().label(replies(count, cx)))
         });
         let body = on_axis(
             div()
@@ -276,4 +270,11 @@ impl RenderOnce for ThreadPanel {
                     .child(composer)
             }))
     }
+}
+
+/// `count` replies, counted in the shown locale.
+fn replies(count: usize, cx: &App) -> SharedString {
+    let form = if count == 1 { "one" } else { "other" };
+    let n = count.to_string();
+    crate::i18n::text(cx, &format!("messaging.reply.{form}"), &[("n", &n)])
 }

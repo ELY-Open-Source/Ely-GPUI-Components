@@ -285,8 +285,8 @@ impl RenderOnce for MailComposer {
             (self.id.clone(), "draft"),
             cx,
             |window, cx: &mut Context<Composing>| {
-                let placeholder = text(cx, "mail.compose.subject", &[]);
-                let subject = cx.new(|cx| TextInput::new(window, cx).placeholder(placeholder));
+                let subject =
+                    cx.new(|cx| TextInput::new(window, cx).placeholder_key("mail.compose.subject"));
                 let typing =
                     cx.subscribe_in(&subject, window, |composing, _, event, window, cx| {
                         if *event == InputEvent::Changed {

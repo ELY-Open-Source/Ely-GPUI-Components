@@ -8,7 +8,6 @@ use crate::{
     buttons::{IconButton, SegmentedControl},
     feedback::InlineMessage,
     forms::{Input, TextInput},
-    i18n,
     primitives::{IconName, Severity},
     theme::{ActiveTheme, Radius, TextSize},
     typography::literal,
@@ -196,7 +195,7 @@ impl RenderOnce for Encoder {
             input: cx.new(|cx| {
                 let mut input = TextInput::new(window, cx)
                     .multi_line(3, 8)
-                    .label(i18n::text(cx, "devtools.text", &[]));
+                    .label_key("devtools.text");
                 input.set_text(text, cx);
                 input
             }),

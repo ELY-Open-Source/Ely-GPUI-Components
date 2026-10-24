@@ -75,7 +75,7 @@ pub fn pomodoro(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
             .gap_3()
             .child(
                 PomodoroTimer::new("project-pomodoro")
-                    .on_phase(move |phase, _, cx| set(&said, Some(format!("{} begins.", phase.words()).into()), cx)),
+                    .on_phase(move |phase, _, cx| set(&said, Some(format!("{} begins.", phase.words(cx)).into()), cx)),
             )
             .children(shown.map(|shown| quiet(shown, cx))),
     ))

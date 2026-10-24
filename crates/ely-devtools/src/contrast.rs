@@ -62,6 +62,7 @@ impl RenderOnce for ColorContrastChecker {
                 .items_center()
                 .gap_2()
                 .child(color_well(
+                    cx,
                     (self.id.clone(), name).into(),
                     color,
                     move |color, window, cx| set(color, window, cx),

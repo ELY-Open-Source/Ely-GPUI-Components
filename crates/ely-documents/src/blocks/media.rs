@@ -49,7 +49,7 @@ fn media_of(kind: &mut BlockKind) -> Option<&mut Media> {
     match kind {
         BlockKind::Image(media) | BlockKind::Video(media) | BlockKind::Embed(media) => Some(media),
         other => {
-            log::error!("block editor: a {} block holds no media now", other.label());
+            log::error!("block editor: a {} block holds no media now", other.key());
             None
         }
     }
@@ -104,7 +104,7 @@ pub(super) fn media(
         BlockKind::Image(media) => (media.clone(), None),
         BlockKind::Video(media) => (media.clone(), Some(IconName::Video)),
         BlockKind::Embed(media) => (media.clone(), Some(IconName::Globe)),
-        other => unreachable!("{} is no media", other.label()),
+        other => unreachable!("{} is no media", other.key()),
     };
     if let Some(icon) = icon {
         let address = media.source.clone();

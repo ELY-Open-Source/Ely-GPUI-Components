@@ -56,49 +56,29 @@ impl PrivacySettings {
 }
 
 impl RenderOnce for PrivacySettings {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let on_change = self.on_change;
         let (id, privacy, on_change) = (self.id, self.privacy, &on_change);
-        let row = |key: &'static str,
-                   title: &'static str,
-                   text: &'static str,
-                   on: bool,
-                   set: fn(&mut Privacy, bool)| {
-            SettingsRow::new(title).description(text).control(
+        let row = |key: &'static str, on: bool, set: fn(&mut Privacy, bool)| {
+            let title = crate::i18n::text(cx, &format!("settings.privacy.{key}"), &[]);
+            let note = crate::i18n::text(cx, &format!("settings.privacy.{key}.note"), &[]);
+            SettingsRow::new(title).description(note).control(
                 Switch::new((id.clone(), key), on)
                     .on_change(editing("privacy", &privacy, on_change, set)),
             )
         };
-        SettingsSection::new("Privacy")
-            .description("What this app shares and keeps.")
-            .row(row(
-                "telemetry",
-                "Usage data",
-                "Counts of features used, without content.",
-                privacy.telemetry,
-                |p, on| p.telemetry = on,
-            ))
-            .row(row(
-                "crashes",
-                "Crash reports",
-                "What went wrong when the app quits on its own.",
-                privacy.crash_reports,
-                |p, on| p.crash_reports = on,
-            ))
-            .row(row(
-                "personal",
-                "Personal suggestions",
-                "Suggestions drawn from what you do here.",
-                privacy.personalization,
-                |p, on| p.personalization = on,
-            ))
-            .row(row(
-                "history",
-                "Keep history",
-                "Recent files and searches, on this device only.",
-                privacy.history,
-                |p, on| p.history = on,
-            ))
+        SettingsSection::new(crate::i18n::text(cx, "settings.privacy", &[]))
+            .description(crate::i18n::text(cx, "settings.privacy.note", &[]))
+            .row(row("telemetry", privacy.telemetry, |p, on| {
+                p.telemetry = on
+            }))
+            .row(row("crashes", privacy.crash_reports, |p, on| {
+                p.crash_reports = on
+            }))
+            .row(row("personal", privacy.personalization, |p, on| {
+                p.personalization = on
+            }))
+            .row(row("history", privacy.history, |p, on| p.history = on))
     }
 }
 
@@ -277,19 +257,18 @@ impl RenderOnce for StartupSettings {
             on_change,
             |startup: &mut Startup, page: SharedString| startup.opens = page,
         );
-        SettingsSection::new("Startup")
-            .row(SettingsRow::new("Open at login").control(switch(
-                "login",
-                startup.at_login,
-                |s, on| s.at_login = on,
-            )))
+        SettingsSection::new(crate::i18n::text(cx, "settings.startup", &[]))
             .row(
-                SettingsRow::new("Restore windows")
-                    .description("Reopen what was open when the app quit.")
+                SettingsRow::new(crate::i18n::text(cx, "settings.startup.login", &[]))
+                    .control(switch("login", startup.at_login, |s, on| s.at_login = on)),
+            )
+            .row(
+                SettingsRow::new(crate::i18n::text(cx, "settings.startup.restore", &[]))
+                    .description(crate::i18n::text(cx, "settings.startup.restore.note", &[]))
                     .control(switch("restore", startup.restore, |s, on| s.restore = on)),
             )
             .row(
-                SettingsRow::new("Opens to").control(
+                SettingsRow::new(crate::i18n::text(cx, "settings.startup.opens", &[])).control(
                     div().w(cx.theme().label_width()).child(
                         Select::new((id.clone(), "opens"), self.pages)
                             .selected(startup.opens.clone())
@@ -297,10 +276,9 @@ impl RenderOnce for StartupSettings {
                     ),
                 ),
             )
-            .row(SettingsRow::new("Look for updates").control(switch(
-                "updates",
-                startup.updates,
-                |s, on| s.updates = on,
-            )))
+            .row(
+                SettingsRow::new(crate::i18n::text(cx, "settings.startup.updates", &[]))
+                    .control(switch("updates", startup.updates, |s, on| s.updates = on)),
+            )
     }
 }

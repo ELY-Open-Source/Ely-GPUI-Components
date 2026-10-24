@@ -155,16 +155,21 @@ impl TimeWindow {
         TimeWindow::Month,
     ];
 
-    /// Its words.
-    pub fn words(self) -> &'static str {
+    /// Its key, the value its choice carries.
+    pub fn key(self) -> &'static str {
         match self {
-            TimeWindow::Minutes15 => "Last 15 minutes",
-            TimeWindow::Hour => "Last hour",
-            TimeWindow::Hours6 => "Last 6 hours",
-            TimeWindow::Day => "Last 24 hours",
-            TimeWindow::Week => "Last 7 days",
-            TimeWindow::Month => "Last 30 days",
+            TimeWindow::Minutes15 => "15-minutes",
+            TimeWindow::Hour => "hour",
+            TimeWindow::Hours6 => "6-hours",
+            TimeWindow::Day => "day",
+            TimeWindow::Week => "week",
+            TimeWindow::Month => "month",
         }
+    }
+
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("dashboard.window.{}", self.key()), &[])
     }
 
     /// How far back it reaches, in seconds.
@@ -288,16 +293,16 @@ impl RenderOnce for DashboardFilterBar {
                         (id.clone(), "window"),
                         TimeWindow::ALL
                             .iter()
-                            .map(|window| Choice::new(window.words(), window.words())),
+                            .map(|window| Choice::new(window.key(), window.words(cx))),
                     )
                     .label(i18n::text(cx, "dashboard.window", &[]))
-                    .selected(self.window.words())
+                    .selected(self.window.key())
                     .on_change(move |value, window, cx| {
                         let chosen = *TimeWindow::ALL
                             .iter()
-                            .find(|each| each.words() == value.as_ref())
+                            .find(|each| each.key() == value.as_ref())
                             .expect("a window the select offers");
-                        log::info!("filter bar: window {}", chosen.words());
+                        log::info!("filter bar: window {}", chosen.key());
                         on_window(chosen, window, cx);
                     }),
                 ),

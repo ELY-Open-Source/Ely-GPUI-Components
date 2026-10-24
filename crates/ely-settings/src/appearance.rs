@@ -139,7 +139,7 @@ impl AccentColorPicker {
 }
 
 impl RenderOnce for AccentColorPicker {
-    fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let on_change = self.on_change;
         let (picked, custom) = (on_change.clone(), on_change);
         let report = |on_change: OnColor| {
@@ -163,6 +163,7 @@ impl RenderOnce for AccentColorPicker {
                 ),
             )
             .child(color_well(
+                cx,
                 (self.id, "custom").into(),
                 self.color,
                 report(custom),

@@ -145,15 +145,20 @@ pub enum Health {
 }
 
 impl Health {
-    /// Its words.
-    pub fn words(self) -> &'static str {
+    /// Its key, the value its choice carries.
+    pub fn key(self) -> &'static str {
         match self {
-            Health::Operational => "Operational",
-            Health::Maintenance => "Under maintenance",
-            Health::Degraded => "Degraded",
-            Health::PartialOutage => "Partial outage",
-            Health::MajorOutage => "Major outage",
+            Health::Operational => "operational",
+            Health::Maintenance => "maintenance",
+            Health::Degraded => "degraded",
+            Health::PartialOutage => "partial-outage",
+            Health::MajorOutage => "major-outage",
         }
+    }
+
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("dashboard.health.{}", self.key()), &[])
     }
 
     /// Its tone.
@@ -215,10 +220,7 @@ impl RenderOnce for ServiceStatus {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let whole = overall(&self.services);
-        let headline = match whole {
-            Health::Operational => "All systems operational".to_string(),
-            worst => format!("Some systems: {}", worst.words().to_lowercase()),
-        };
+        let headline = crate::i18n::text(cx, &format!("dashboard.headline.{}", whole.key()), &[]);
         div()
             .flex()
             .flex_col()
@@ -229,7 +231,7 @@ impl RenderOnce for ServiceStatus {
                     .gap_2()
                     .pb_3()
                     .font_weight(FontWeight::SEMIBOLD)
-                    .child(Badge::new(whole.words()).tone(whole.tone()).dot())
+                    .child(Badge::new(whole.words(cx)).tone(whole.tone()).dot())
                     .child(div().min_w_0().child(Ellipsis::new(headline))),
             )
             .children(self.services.into_iter().map(|service| {
@@ -255,7 +257,7 @@ impl RenderOnce for ServiceStatus {
                                     .child(format::percent(share as f64, 2, false))
                             }))
                             .child(
-                                Badge::new(service.health.words())
+                                Badge::new(service.health.words(cx))
                                     .tone(service.health.tone())
                                     .dot(),
                             ),

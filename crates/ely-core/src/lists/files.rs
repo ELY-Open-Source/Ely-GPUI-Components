@@ -9,7 +9,6 @@ use super::{Tree, TreeNode};
 use crate::{
     data_display::Tone,
     forms::{SearchInput, TextInput},
-    i18n,
     primitives::{IconName, IconTheme, icon_theme},
     theme::ControlSize,
 };
@@ -241,7 +240,7 @@ impl Styled for FileTree {
 impl RenderOnce for FileTree {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let filter = window.use_keyed_state((self.id.clone(), "filter"), cx, |window, cx| {
-            TextInput::new(window, cx).label(i18n::text(cx, "lists.filter_files", &[]))
+            TextInput::new(window, cx).label_key("lists.filter_files")
         });
         let picked = window.use_keyed_state((self.id.clone(), "picked"), cx, |_, _| {
             Vec::<SharedString>::new()

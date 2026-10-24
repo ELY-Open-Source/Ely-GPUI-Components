@@ -16,7 +16,7 @@ type Shape<'a> = (usize, usize, &'a [(usize, usize)]);
 /// A table's shape; none once the block is no table.
 fn shape(kind: &BlockKind, fields: usize) -> Option<Shape<'_>> {
     let BlockKind::Table { columns, merged } = kind else {
-        log::error!("block editor: a {} block is no table now", kind.label());
+        log::error!("block editor: a {} block is no table now", kind.key());
         return None;
     };
     Some((*columns, fields / columns, merged))

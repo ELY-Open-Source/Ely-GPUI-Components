@@ -23,7 +23,10 @@ pub(crate) use kind::{matching, shortcut};
 pub use media::source;
 
 use super::markdown::markdown_highlights;
-use crate::forms::{History, InputEvent, TextInput, code_highlights};
+use crate::{
+    forms::{History, InputEvent, TextInput, code_highlights},
+    i18n::I18n,
+};
 
 /// A block as the editor gives it out and takes it in: its kind and the text of each of its fields.
 #[derive(Clone, Debug, PartialEq)]
@@ -41,7 +44,7 @@ impl BlockData {
         assert!(
             kind.accepts(texts.len()),
             "a {} block cannot hold {} fields",
-            kind.label(),
+            kind.key(),
             texts.len()
         );
         Self { kind, texts }
@@ -108,6 +111,7 @@ pub struct BlockEditor {
     /// The caret last brought into view: field, selection and length.
     revealed: Option<(EntityId, std::ops::Range<usize>, usize)>,
     _synced: Subscription,
+    _locale: Subscription,
 }
 
 impl EventEmitter<BlockEvent> for BlockEditor {}
@@ -116,6 +120,7 @@ impl BlockEditor {
     /// An editor of `blocks`.
     pub fn new(blocks: Vec<BlockData>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let synced = cx.observe_global_in::<SyncedTexts>(window, |editor, _, cx| editor.pull(cx));
+        let locale = cx.observe_global::<I18n>(|editor, cx| editor.relabel(cx));
         let mut editor = Self {
             blocks: Vec::new(),
             next: 0,
@@ -132,6 +137,7 @@ impl BlockEditor {
             across: span::Across::default(),
             revealed: None,
             _synced: synced,
+            _locale: locale,
         };
         for data in blocks {
             let key = editor.fresh_key();
@@ -173,12 +179,12 @@ impl BlockEditor {
         let code = *kind == BlockKind::Code;
         let field = cx.new(|cx| {
             let hint = match kind {
-                BlockKind::Paragraph | BlockKind::Table { .. } => "",
-                kind => kind.placeholder(),
+                BlockKind::Paragraph | BlockKind::Table { .. } => SharedString::default(),
+                kind => kind.placeholder(cx),
             };
             let field = TextInput::new(window, cx)
                 .multi_line(1, usize::MAX)
-                .label(kind.label())
+                .label(kind.label(cx))
                 .placeholder(hint);
             match (code, kind.is_source()) {
                 (true, _) => field.highlighter(code_highlights),
@@ -188,6 +194,21 @@ impl BlockEditor {
         });
         field.update(cx, |field, cx| field.set_text(text, cx));
         field
+    }
+
+    /// Reads every field's label, and each shown placeholder, again in the shown locale.
+    fn relabel(&mut self, cx: &mut Context<Self>) {
+        for block in &self.blocks {
+            let (label, hint) = (block.kind.label(cx), block.kind.placeholder(cx));
+            for field in &block.fields {
+                field.update(cx, |field, cx| {
+                    field.set_label(label.clone(), cx);
+                    if !field.placeholder_text().is_empty() {
+                        field.set_placeholder(hint.clone(), cx);
+                    }
+                });
+            }
+        }
     }
 
     fn fresh_key(&mut self) -> u64 {
@@ -205,7 +226,7 @@ impl BlockEditor {
         assert!(
             data.kind.accepts(data.texts.len()),
             "a {} block cannot hold {} fields",
-            data.kind.label(),
+            data.kind.key(),
             data.texts.len()
         );
         let mut texts = data.texts;
@@ -302,7 +323,7 @@ impl BlockEditor {
                 {
                     log::info!(
                         "block editor: markdown turns block {key} into {}",
-                        kind.label()
+                        kind.key()
                     );
                     field.update(cx, |field, cx| {
                         field.select(0..length, cx);
@@ -334,7 +355,7 @@ impl BlockEditor {
                     .position(|each| each == field)
                     .map(|at| (key, at));
                 if field.read(cx).is_empty() {
-                    let hint = self.blocks[ix].kind.placeholder();
+                    let hint = self.blocks[ix].kind.placeholder(cx);
                     field.update(cx, |field, cx| field.set_placeholder(hint, cx));
                 }
             }
@@ -403,7 +424,7 @@ impl BlockEditor {
         self.before_change(cx);
         let key = self.fresh_key();
         let block = self.build(data, key, window, cx);
-        log::info!("block editor: {} block at {at}", block.kind.label());
+        log::info!("block editor: {} block at {at}", block.kind.key());
         let end = block
             .fields
             .first()
@@ -435,7 +456,7 @@ impl BlockEditor {
         if let Some(text) = texts.first_mut() {
             *text = first;
         }
-        log::info!("block editor: block {key} turns into {}", kind.label());
+        log::info!("block editor: block {key} turns into {}", kind.key());
         let block = self.build(BlockData { kind, texts }, key, window, cx);
         self.blocks[ix] = block;
         self.after_change(cx);

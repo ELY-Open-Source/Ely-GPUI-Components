@@ -324,8 +324,8 @@ impl RenderOnce for YearView {
             .child(head(
                 &self.id,
                 shown.to_string(),
-                "Previous year",
-                "Next year",
+                "calendar.year.previous",
+                "calendar.year.next",
                 step,
                 cx,
             ))

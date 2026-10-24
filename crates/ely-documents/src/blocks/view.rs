@@ -135,16 +135,22 @@ impl BlockEditor {
                 }),
             )
             .child(field.clone());
+        let named: Vec<(BlockKind, SharedString)> = (super::kind::offered().into_iter())
+            .map(|kind| {
+                let name = kind.label(cx);
+                (kind, name)
+            })
+            .collect();
         let slash = move |query: &str, at: usize, caret: usize| -> (Vec<Choice>, Pick) {
-            let kinds = matching(query);
+            let kinds = matching(query, &named);
             let rows = kinds
                 .iter()
-                .map(|kind| Choice::new(kind.label(), kind.label()).icon(kind.icon()))
+                .map(|(kind, name)| Choice::new(kind.key(), name.clone()).icon(kind.icon()))
                 .collect();
             let (entity, field) = (entity.clone(), field.clone());
             let pick: Pick = Rc::new(move |pick: usize, window: &mut Window, cx: &mut App| {
                 replace_trigger(&field, at, caret, "", cx);
-                let kind = kinds[pick].clone();
+                let kind = kinds[pick].0.clone();
                 entity.update(cx, |editor, cx| editor.pick_kind(key, kind, window, cx));
             });
             (rows, pick)
@@ -192,7 +198,7 @@ impl BlockEditor {
             .into_iter()
             .fold(Menu::new(), |menu, kind| {
                 let entity = entity.clone();
-                menu.item(MenuItem::new(kind.label()).icon(kind.icon()).on_click(
+                menu.item(MenuItem::new(kind.label(cx)).icon(kind.icon()).on_click(
                     move |window, cx| {
                         let kind = kind.clone();
                         entity.update(cx, |editor, cx| editor.turn_into(key, kind, window, cx));

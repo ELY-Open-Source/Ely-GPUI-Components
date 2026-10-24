@@ -145,11 +145,15 @@ impl RenderOnce for TTSVoicePicker {
                     )
                     .variant(ButtonVariant::Ghost)
                     .size(ControlSize::Sm)
-                    .tooltip(if sounding {
-                        "Stop the sample"
-                    } else {
-                        "Play a sample"
-                    })
+                    .tooltip(crate::i18n::text(
+                        cx,
+                        if sounding {
+                            "generative.sample.stop"
+                        } else {
+                            "generative.sample.play"
+                        },
+                        &[],
+                    ))
                     .on_click(move |_, window, cx| {
                         cx.stop_propagation();
                         let next = (!sounding).then(|| key.clone());

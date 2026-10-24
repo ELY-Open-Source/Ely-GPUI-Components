@@ -105,9 +105,14 @@ impl RenderOnce for UploadList {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let colors = &theme.colors;
+        let (cancel, retry, remove) = (
+            crate::i18n::text(cx, "upload.cancel", &[]),
+            crate::i18n::text(cx, "upload.retry", &[]),
+            crate::i18n::text(cx, "upload.remove", &[]),
+        );
         let button = |name: String,
                       icon: IconName,
-                      tip: &'static str,
+                      tip: SharedString,
                       handler: &Option<OnRow>,
                       ix: usize| {
             handler.clone().map(|run| {
@@ -130,21 +135,21 @@ impl RenderOnce for UploadList {
                 UploadState::Uploading(_) => button(
                     format!("cancel-{ix}"),
                     IconName::X,
-                    "Cancel",
+                    cancel.clone(),
                     &self.on_cancel,
                     ix,
                 ),
                 UploadState::Failed(_) => button(
                     format!("retry-{ix}"),
                     IconName::RotateCw,
-                    "Retry",
+                    retry.clone(),
                     &self.on_retry,
                     ix,
                 ),
                 UploadState::Done => button(
                     format!("remove-{ix}"),
                     IconName::X,
-                    "Remove",
+                    remove.clone(),
                     &self.on_remove,
                     ix,
                 ),

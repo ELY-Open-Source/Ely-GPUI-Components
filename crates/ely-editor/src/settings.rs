@@ -179,8 +179,12 @@ impl RenderOnce for SettingsEditor {
             if self.json.is_some() { "json" } else { "ui" },
         )
         .size(ControlSize::Sm)
-        .segment("ui", "Settings", None)
-        .segment("json", "JSON", None);
+        .segment("ui", crate::i18n::text(cx, "editor.settings", &[]), None)
+        .segment(
+            "json",
+            crate::i18n::text(cx, "editor.settings.json", &[]),
+            None,
+        );
         let mode = match self.on_json.clone() {
             Some(on_json) => {
                 mode.on_change(move |key, window, cx| on_json(key.as_ref() == "json", window, cx))
@@ -191,7 +195,7 @@ impl RenderOnce for SettingsEditor {
             div()
                 .text_size(theme.text_size(TextSize::Md))
                 .font_weight(FontWeight::SEMIBOLD)
-                .child("Settings"),
+                .child(crate::i18n::text(cx, "editor.settings", &[])),
         );
         let header = header.child(mode);
         if let Some(field) = self.json {

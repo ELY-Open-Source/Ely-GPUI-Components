@@ -193,6 +193,7 @@ impl RenderOnce for ThemeEditor {
                             .child(hex(color.to_rgb())),
                     )
                     .child(color_well(
+                        cx,
                         (id.clone(), format!("color-{token}")).into(),
                         color,
                         move |next, window, cx| {

@@ -192,9 +192,10 @@ impl RenderOnce for AccountSwitcher {
                 self.current
             );
         }
-        let name = now
-            .as_ref()
-            .map_or_else(|| SharedString::from("No account"), |now| now.name.clone());
+        let name = now.as_ref().map_or_else(
+            || crate::i18n::text(cx, "account.none", &[]),
+            |now| now.name.clone(),
+        );
         let mut avatar = Avatar::new((id.clone(), "avatar"), name.clone()).size(AvatarSize::Sm);
         if let Some(image) = now.as_ref().and_then(|now| now.image.clone()) {
             avatar = avatar.image(image);
@@ -290,7 +291,7 @@ impl RenderOnce for WorkspaceSwitcher {
             );
         }
         let name = now.as_ref().map_or_else(
-            || SharedString::from("No workspace"),
+            || crate::i18n::text(cx, "account.workspace.none", &[]),
             |now| now.name.clone(),
         );
         let mark = Avatar::new((id.clone(), "mark"), name.clone())

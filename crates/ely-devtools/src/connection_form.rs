@@ -61,10 +61,10 @@ struct Fields {
 
 impl Fields {
     fn filled(connection: &Connection, window: &mut Window, cx: &mut App) -> Self {
-        let mut field = |text: &SharedString, key: &str| {
-            let (text, name) = (text.to_string(), i18n::text(cx, key, &[]));
+        let mut field = |text: &SharedString, key: &'static str| {
+            let text = text.to_string();
             cx.new(|cx| {
-                let mut input = TextInput::new(window, cx).label(name);
+                let mut input = TextInput::new(window, cx).label_key(key);
                 input.set_text(text, cx);
                 input
             })
@@ -196,7 +196,8 @@ impl RenderOnce for ConnectionForm {
         );
         let testing = self.test == Some(TestState::Testing);
         let (chosen, switched) = (fields.clone(), fields.clone());
-        let field = |key: &'static str, label: &'static str, control: gpui::AnyElement| {
+        let field = |key: &'static str, control: gpui::AnyElement| {
+            let label = i18n::text(cx, &format!("devtools.{key}"), &[]);
             FormField::new((id.clone(), key), label).child(control)
         };
         let ask = |handler: Option<OnConnection>, what: &'static str| {
@@ -220,10 +221,9 @@ impl RenderOnce for ConnectionForm {
             .flex()
             .flex_col()
             .gap_4()
-            .child(field("name", "Name", Input::new(&name).into_any_element()))
+            .child(field("name", Input::new(&name).into_any_element()))
             .child(field(
                 "engine",
-                "Engine",
                 Select::new(
                     (id.clone(), "engine-select"),
                     Engine::ALL
@@ -244,44 +244,39 @@ impl RenderOnce for ConnectionForm {
                 })
                 .into_any_element(),
             ))
-            .children(file.then(|| field("file", "File", Input::new(&database).into_any_element())))
+            .children(file.then(|| field("file", Input::new(&database).into_any_element())))
             .children((!file).then(|| {
                 div()
                     .flex()
                     .flex_wrap()
                     .gap_3()
-                    .child(div().flex_1().min_w_40().child(field(
-                        "host",
-                        "Host",
-                        Input::new(&host).into_any_element(),
-                    )))
+                    .child(
+                        div()
+                            .flex_1()
+                            .min_w_40()
+                            .child(field("host", Input::new(&host).into_any_element())),
+                    )
                     .child(div().w_32().flex_none().child({
-                        let mut port = FormField::new((id.clone(), "port"), "Port")
-                            .child(Input::new(&port_field).invalid(!good_port));
+                        let mut port = FormField::new(
+                            (id.clone(), "port"),
+                            i18n::text(cx, "devtools.port", &[]),
+                        )
+                        .child(Input::new(&port_field).invalid(!good_port));
                         if !good_port {
                             port = port.error("From 1 to 65535");
                         }
                         port
                     }))
             }))
-            .children((!file).then(|| {
-                field(
-                    "database",
-                    "Database",
-                    Input::new(&database).into_any_element(),
-                )
-            }))
-            .children((!file).then(|| field("user", "User", Input::new(&user).into_any_element())))
-            .children((!file).then(|| {
-                field(
-                    "password",
-                    "Password",
-                    PasswordInput::new(&password).into_any_element(),
-                )
-            }))
+            .children((!file).then(|| field("database", Input::new(&database).into_any_element())))
+            .children((!file).then(|| field("user", Input::new(&user).into_any_element())))
+            .children(
+                (!file)
+                    .then(|| field("password", PasswordInput::new(&password).into_any_element())),
+            )
             .children((!file).then(|| {
                 Switch::new((id.clone(), "tls"), tls)
-                    .label("Use TLS")
+                    .label(i18n::text(cx, "devtools.tls", &[]))
                     .on_change(move |on, _, cx| {
                         switched.update(cx, |fields, cx| {
                             fields.tls = on;

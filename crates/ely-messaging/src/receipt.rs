@@ -1,4 +1,6 @@
-use gpui::{App, IntoElement, ParentElement, RenderOnce, Styled, Window, div, prelude::*};
+use gpui::{
+    App, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Window, div, prelude::*,
+};
 
 use crate::{
     data_display::{Avatar, AvatarGroup},
@@ -20,14 +22,15 @@ pub enum Delivery {
 }
 
 impl Delivery {
-    /// Its word.
-    pub fn label(self) -> &'static str {
-        match self {
-            Self::Sending => "Sending",
-            Self::Sent => "Sent",
-            Self::Delivered => "Delivered",
-            Self::Read => "Read",
-        }
+    /// Its word in the shown locale.
+    pub fn label(self, cx: &App) -> SharedString {
+        let key = match self {
+            Self::Sending => "messaging.delivery.sending",
+            Self::Sent => "messaging.delivery.sent",
+            Self::Delivered => "messaging.delivery.delivered",
+            Self::Read => "messaging.delivery.read",
+        };
+        crate::i18n::text(cx, key, &[])
     }
 
     fn icon(self) -> IconName {
@@ -95,9 +98,9 @@ impl RenderOnce for ReadReceipt {
                     .color(tint),
             )
             .child(if seen {
-                "Seen by"
+                crate::i18n::text(cx, "messaging.seen", &[])
             } else {
-                self.delivery.label()
+                self.delivery.label(cx)
             })
             .when(seen, |receipt| {
                 receipt.child(AvatarGroup::new(self.readers).max(3).size(AvatarSize::Xs))

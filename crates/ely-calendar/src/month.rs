@@ -450,8 +450,8 @@ impl RenderOnce for CalendarMonthView {
             .child(head(
                 &self.id,
                 title,
-                "Previous month",
-                "Next month",
+                "calendar.month.previous",
+                "calendar.month.next",
                 step,
                 cx,
             ))

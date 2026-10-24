@@ -87,7 +87,14 @@ impl RenderOnce for ApiKeyManager {
         let id = self.id;
         let on_create = self.on_create;
         let on_revoke = self.on_revoke;
-        let name = field(&id, "name", "A name, such as Deploys", false, window, cx);
+        let name = field(
+            &id,
+            "name",
+            Some("account.key.name.hint"),
+            false,
+            window,
+            cx,
+        );
         let named: SharedString = name.read(cx).text().trim().to_string().into();
         let ready = !named.is_empty();
         let clear = name.clone();

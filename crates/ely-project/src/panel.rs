@@ -199,7 +199,7 @@ impl RenderOnce for TaskDetailPanel {
         let priority = {
             let edit = edit.clone();
             let choices =
-                Priority::ALL.map(|priority| Choice::new(priority.key(), priority.words()));
+                Priority::ALL.map(|priority| Choice::new(priority.key(), priority.words(cx)));
             Select::new((id.clone(), "priority"), choices)
                 .label(i18n::text(cx, "project.priority", &[]))
                 .selected(task.priority.key())

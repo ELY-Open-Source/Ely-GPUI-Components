@@ -187,10 +187,10 @@ struct Draft {
 
 impl Draft {
     fn filled(request: &ApiRequest, window: &mut Window, cx: &mut App) -> Self {
-        let mut field = |text: &str, key: &str| {
-            let (text, name) = (text.to_string(), i18n::text(cx, key, &[]));
+        let mut field = |text: &str, key: &'static str| {
+            let text = text.to_string();
             cx.new(|cx| {
-                let mut input = TextInput::new(window, cx).label(name);
+                let mut input = TextInput::new(window, cx).label_key(key);
                 input.set_text(text, cx);
                 input
             })
@@ -374,9 +374,9 @@ impl RenderOnce for ApiRequestBuilder {
                     Select::new(
                         (id.clone(), "auth"),
                         [
-                            Choice::new("none", "No sign-in"),
-                            Choice::new("bearer", "Bearer token"),
-                            Choice::new("basic", "Basic"),
+                            Choice::new("none", i18n::text(cx, "devtools.auth.none", &[])),
+                            Choice::new("bearer", i18n::text(cx, "devtools.auth.bearer", &[])),
+                            Choice::new("basic", i18n::text(cx, "devtools.auth.basic", &[])),
                         ],
                     )
                     .label(i18n::text(cx, "devtools.auth", &[]))
@@ -384,16 +384,19 @@ impl RenderOnce for ApiRequestBuilder {
                     .on_change(update(|draft, value| draft.auth = value)),
                 )
                 .children((auth == "bearer").then(|| {
-                    FormField::new((id.clone(), "token"), "Token").child(PasswordInput::new(&token))
+                    FormField::new((id.clone(), "token"), i18n::text(cx, "devtools.token", &[]))
+                        .child(PasswordInput::new(&token))
                 }))
-                .children(
-                    (auth == "basic").then(|| {
-                        FormField::new((id.clone(), "user"), "User").child(Input::new(&user))
-                    }),
-                )
                 .children((auth == "basic").then(|| {
-                    FormField::new((id.clone(), "password"), "Password")
-                        .child(PasswordInput::new(&password))
+                    FormField::new((id.clone(), "user"), i18n::text(cx, "devtools.user", &[]))
+                        .child(Input::new(&user))
+                }))
+                .children((auth == "basic").then(|| {
+                    FormField::new(
+                        (id.clone(), "password"),
+                        i18n::text(cx, "devtools.password", &[]),
+                    )
+                    .child(PasswordInput::new(&password))
                 }))
                 .into_any_element(),
         };

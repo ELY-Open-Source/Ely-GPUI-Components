@@ -447,3 +447,5 @@
 | T56 D4 | 1 | FAIL | a block's label sliced live text with a stale range and panicked; the audit stopped at editors that keep Tab; an open InlineEdit lost its name; a submenu announced its parent row |
 | T56 D4 | 2 | FAIL | SearchableMenu's rows go unheard while its filter field holds focus |
 | T56 D4 | 3 | PASS | every focus stop has a role and a name: gallery --audit walks 2,272 stops on 44 pages with none failing and runs in CI's Windows leg; a list a typed filter drives announces its field, a gpui 0.3.9 limit recorded at the owner's word; D4 stays unticked while the VoiceOver walk is open |
+| T56 D5 | 1 | FAIL | a block field kept the label and placeholder of the locale it was built in |
+| T56 D5 | 2 | PASS | seven locale tables, 581 keys, no English fallback, a test walks every locale; the listed English moved into the catalog, words used as values split into keys; a field built once reads its catalog keys at each render and BlockEditor relabels on a locale change |

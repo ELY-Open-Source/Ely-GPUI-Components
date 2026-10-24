@@ -1,7 +1,8 @@
 use std::{rc::Rc, time::Duration};
 
 use gpui::{
-    App, ElementId, Entity, IntoElement, ParentElement, RenderOnce, Styled, Task, Window, div,
+    App, ElementId, Entity, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Task,
+    Window, div,
 };
 use web_time::Instant;
 
@@ -27,13 +28,18 @@ pub enum Phase {
 }
 
 impl Phase {
-    /// Its words.
-    pub fn words(self) -> &'static str {
+    /// Its key, as the catalog names it.
+    pub fn key(self) -> &'static str {
         match self {
-            Phase::Focus => "Focus",
-            Phase::ShortBreak => "Short break",
-            Phase::LongBreak => "Long break",
+            Phase::Focus => "focus",
+            Phase::ShortBreak => "short-break",
+            Phase::LongBreak => "long-break",
         }
+    }
+
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("project.phase.{}", self.key()), &[])
     }
 }
 
@@ -165,7 +171,7 @@ fn advance(
     });
     log::info!(
         "pomodoro: {} begins, round {}",
-        next.phase.words(),
+        next.phase.key(),
         next.round
     );
     if let Some(on_phase) = on_phase {
@@ -216,7 +222,7 @@ impl RenderOnce for PomodoroTimer {
                 div()
                     .text_size(theme.text_size(TextSize::Sm))
                     .text_color(colors.fg_muted)
-                    .child(current.phase.words()),
+                    .child(current.phase.words(cx)),
             );
         let share = gone.as_secs_f32() / length.as_secs_f32();
         let dots = (1..=lengths.rounds).map(|round| {

@@ -72,8 +72,11 @@ impl RenderOnce for WeekPicker {
             self.id,
             Face {
                 icon: IconName::CalendarRange,
-                shown: value.map(|(year, week)| format!("Week {week}, {year}").into()),
-                placeholder: "Pick a week".into(),
+                shown: value.map(|(year, week)| {
+                    let (week, year) = (week.to_string(), year.to_string());
+                    crate::i18n::text(cx, "picker.week.shown", &[("week", &week), ("year", &year)])
+                }),
+                placeholder: crate::i18n::text(cx, "picker.week", &[]),
                 size: ControlSize::default(),
                 disabled: false,
             },

@@ -135,7 +135,7 @@ fn enter_opens_the_task_under_the_cursor(cx: &mut TestAppContext) {
 
 fn status(_: &Desk, owner: Entity<Desk>) -> AnyElement {
     StatusSelect::new("status", Status::Todo)
-        .on_change(move |status, _, cx| note(&owner, status.words().into(), cx))
+        .on_change(move |status, _, cx| note(&owner, status.words(cx).into(), cx))
         .into_any_element()
 }
 

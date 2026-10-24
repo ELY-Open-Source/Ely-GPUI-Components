@@ -12,7 +12,7 @@ fn pomodoro(_: &Desk, owner: Entity<Desk>) -> AnyElement {
     PomodoroTimer::new("pomodoro")
         .minutes(2, 1, 3)
         .rounds(2)
-        .on_phase(move |phase, _, cx| note(&owner, phase.words().into(), cx))
+        .on_phase(move |phase, _, cx| note(&owner, phase.words(cx).into(), cx))
         .into_any_element()
 }
 
@@ -100,7 +100,9 @@ fn database(_: &Desk, owner: Entity<Desk>) -> AnyElement {
     ];
     DatabaseView::new("db", tasks)
         .today(date(2026, 9, 27))
-        .on_status(move |key, status, _, cx| note(&owner, format!("{key} {}", status.words()), cx))
+        .on_status(move |key, status, _, cx| {
+            note(&owner, format!("{key} {}", status.words(cx)), cx)
+        })
         .into_any_element()
 }
 
@@ -139,7 +141,7 @@ fn a_focused_segment_past_the_fold_comes_into_view(cx: &mut TestAppContext) {
     tab_to(5, cx);
     let frame = cx.debug_bounds("narrow").expect("the box draws");
     let segment = cx
-        .debug_bounds("segment Timeline")
+        .debug_bounds("segment timeline")
         .expect("the segment draws");
     assert!(
         frame.left() <= segment.left() && segment.right() <= frame.right(),

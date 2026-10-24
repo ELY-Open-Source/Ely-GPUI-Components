@@ -205,7 +205,10 @@ impl RenderOnce for PieMenu {
                     },
                 )
         });
-        let label = marked.map_or(SharedString::from("Cancel"), |ix| items[ix].label.clone());
+        let label = marked.map_or_else(
+            || crate::i18n::text(cx, "dialog.cancel", &[]),
+            |ix| items[ix].label.clone(),
+        );
         let name = label.clone();
         let measure = state.clone();
         let ring = div()

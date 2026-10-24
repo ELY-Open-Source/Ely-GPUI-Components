@@ -113,8 +113,7 @@ impl RenderOnce for FilterBuilder {
         let latest = fields.read(cx).latest.clone();
         *latest.borrow_mut() = (self.rules.clone(), self.any, self.on_change.clone());
         while fields.read(cx).fields.len() < self.rules.len() {
-            let field =
-                cx.new(|cx| TextInput::new(window, cx).label(i18n::text(cx, "builder.value", &[])));
+            let field = cx.new(|cx| TextInput::new(window, cx).label_key("builder.value"));
             let (latest, owner) = (latest.clone(), fields.downgrade());
             let heard = window.subscribe(&field, cx, move |field, event, window, cx| {
                 if !matches!(event, InputEvent::Changed) {

@@ -1,6 +1,6 @@
 use std::fmt;
 
-use gpui::SharedString;
+use gpui::{App, SharedString};
 use jiff::civil::Date;
 
 use crate::{mail::Label, primitives::IconName};
@@ -33,16 +33,9 @@ impl Status {
         Status::Canceled,
     ];
 
-    /// Its words.
-    pub fn words(self) -> &'static str {
-        match self {
-            Status::Backlog => "Backlog",
-            Status::Todo => "Todo",
-            Status::InProgress => "In progress",
-            Status::InReview => "In review",
-            Status::Done => "Done",
-            Status::Canceled => "Canceled",
-        }
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("project.status.{}", self.key()), &[])
     }
 
     /// Its mark.
@@ -106,15 +99,9 @@ impl Priority {
         Priority::None,
     ];
 
-    /// Its words.
-    pub fn words(self) -> &'static str {
-        match self {
-            Priority::None => "No priority",
-            Priority::Low => "Low",
-            Priority::Medium => "Medium",
-            Priority::High => "High",
-            Priority::Urgent => "Urgent",
-        }
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("project.priority.{}", self.key()), &[])
     }
 
     pub(crate) fn key(self) -> &'static str {

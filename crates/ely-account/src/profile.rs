@@ -9,7 +9,6 @@ use crate::{
     buttons::{Button, ButtonVariant},
     data_display::{Avatar, Presence},
     forms::{AvatarUpload, EmailInput, FormField, Input, TextInput, is_email},
-    i18n,
     layout::Card,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, AvatarSize, IconSize, TextSize},
@@ -186,10 +185,10 @@ struct Fields {
 
 impl Fields {
     fn filled(profile: &Profile, window: &mut Window, cx: &mut App) -> Self {
-        let mut field = |text: &SharedString, lines: bool, key: &str| {
-            let (text, name) = (text.to_string(), i18n::text(cx, key, &[]));
+        let mut field = |text: &SharedString, lines: bool, key: &'static str| {
+            let text = text.to_string();
             cx.new(|cx| {
-                let input = TextInput::new(window, cx).label(name);
+                let input = TextInput::new(window, cx).label_key(key);
                 let mut input = if lines { input.multi_line(3, 6) } else { input };
                 input.set_text(text, cx);
                 input
@@ -307,27 +306,42 @@ impl RenderOnce for ProfileEditor {
                 }),
             )
             .child(
-                FormField::new((id.clone(), "name-field"), "Name")
-                    .required()
-                    .child(Input::new(&name)),
+                FormField::new(
+                    (id.clone(), "name-field"),
+                    crate::i18n::text(cx, "account.name", &[]),
+                )
+                .required()
+                .child(Input::new(&name)),
             )
             .child(
-                FormField::new((id.clone(), "username-field"), "Username")
-                    .child(Input::new(&username).prefix("@")),
+                FormField::new(
+                    (id.clone(), "username-field"),
+                    crate::i18n::text(cx, "account.username", &[]),
+                )
+                .child(Input::new(&username).prefix("@")),
             )
             .child(
-                FormField::new((id.clone(), "email-field"), "Email")
-                    .required()
-                    .child(EmailInput::new(&email)),
+                FormField::new(
+                    (id.clone(), "email-field"),
+                    crate::i18n::text(cx, "account.email", &[]),
+                )
+                .required()
+                .child(EmailInput::new(&email)),
             )
             .child(
-                FormField::new((id.clone(), "bio-field"), "About")
-                    .description("A line or two others see.")
-                    .child(Input::new(&bio)),
+                FormField::new(
+                    (id.clone(), "bio-field"),
+                    crate::i18n::text(cx, "account.about", &[]),
+                )
+                .description(crate::i18n::text(cx, "account.about.note", &[]))
+                .child(Input::new(&bio)),
             )
             .child(
-                FormField::new((id.clone(), "location-field"), "Location")
-                    .child(Input::new(&location)),
+                FormField::new(
+                    (id.clone(), "location-field"),
+                    crate::i18n::text(cx, "account.location", &[]),
+                )
+                .child(Input::new(&location)),
             )
             .child(
                 div()

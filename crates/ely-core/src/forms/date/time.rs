@@ -194,7 +194,7 @@ pub struct TimePicker {
     id: ElementId,
     value: Option<Time>,
     step: u8,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     size: ControlSize,
     disabled: bool,
     on_change: Option<OnTime>,
@@ -207,7 +207,7 @@ impl TimePicker {
             id: id.into(),
             value,
             step: 5,
-            placeholder: SharedString::from("Pick a time"),
+            placeholder: None,
             size: ControlSize::default(),
             disabled: false,
             on_change: None,
@@ -226,7 +226,7 @@ impl TimePicker {
 
     /// What it shows with no time chosen.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
-        self.placeholder = text.into();
+        self.placeholder = Some(text.into());
         self
     }
 
@@ -252,6 +252,8 @@ impl TimePicker {
 impl RenderOnce for TimePicker {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let (id, step, value) = (self.id.clone(), self.step, self.value);
+        let placeholder =
+            (self.placeholder.clone()).unwrap_or_else(|| text(cx, "picker.time", &[]));
         let state = dropdown(&id, window, cx);
         let commit: OnTime = {
             let (id, on_change) = (id.clone(), self.on_change);
@@ -267,7 +269,7 @@ impl RenderOnce for TimePicker {
             Face {
                 icon: IconName::Clock,
                 shown: value.map(|time| show_time(time).into()),
-                placeholder: self.placeholder,
+                placeholder,
                 size: self.size,
                 disabled: self.disabled,
             },
@@ -306,7 +308,7 @@ pub struct DateTimePicker {
     id: ElementId,
     value: Option<DateTime>,
     step: u8,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     today: Option<Date>,
     size: ControlSize,
     on_change: Option<OnDateTime>,
@@ -319,7 +321,7 @@ impl DateTimePicker {
             id: id.into(),
             value,
             step: 5,
-            placeholder: SharedString::from("Pick a date and time"),
+            placeholder: None,
             today: None,
             size: ControlSize::default(),
             on_change: None,
@@ -361,6 +363,8 @@ impl DateTimePicker {
 impl RenderOnce for DateTimePicker {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let (id, step, value, today) = (self.id.clone(), self.step, self.value, self.today);
+        let placeholder =
+            (self.placeholder.clone()).unwrap_or_else(|| text(cx, "picker.datetime", &[]));
         let state = dropdown(&id, window, cx);
         let commit: OnDateTime = {
             let (id, on_change) = (id.clone(), self.on_change);
@@ -378,7 +382,7 @@ impl RenderOnce for DateTimePicker {
                 shown: value.map(|at| {
                     format!("{} {}", show_date(at.date(), cx), show_time(at.time())).into()
                 }),
-                placeholder: self.placeholder,
+                placeholder,
                 size: self.size,
                 disabled: false,
             },

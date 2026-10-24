@@ -116,6 +116,7 @@ pub fn arrange(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         });
     let toolbar =
         AlignmentToolbar::new("canvas-align", selected.len()).on_align(move |align, _, cx| {
+            let words = align.words(cx).to_string();
             change(&lined, cx, |studio| {
                 let keys: Vec<SharedString> = studio.selected.clone();
                 let frames: Vec<Frame> = studio
@@ -131,7 +132,7 @@ pub fn arrange(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     .filter(|shape| keys.contains(&shape.key))
                     .zip(moved)
                     .for_each(|(shape, frame)| shape.frame = frame);
-                studio.record(align.words().into());
+                studio.record(words);
             })
         });
     let inspector = InspectorPanel::new("canvas-inspector", chosen, move |shape, _, cx| {

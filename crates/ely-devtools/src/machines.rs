@@ -399,7 +399,12 @@ impl RenderOnce for PodList {
                 div().max_w(gpui::rems(theme.label_width().0 * 2.0)).child(
                     Select::new(
                         (id, "spaces"),
-                        [Choice::new("", "All namespaces")].into_iter().chain(
+                        [Choice::new(
+                            "",
+                            i18n::text(cx, "devtools.namespace.all", &[]),
+                        )]
+                        .into_iter()
+                        .chain(
                             spaces
                                 .iter()
                                 .map(|space| Choice::new(space.clone(), space.clone())),

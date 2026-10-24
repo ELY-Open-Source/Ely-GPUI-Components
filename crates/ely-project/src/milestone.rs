@@ -26,14 +26,19 @@ pub enum Standing {
 }
 
 impl Standing {
-    /// Its words.
-    pub fn words(self) -> &'static str {
+    /// Its key, as the catalog names it.
+    pub fn key(self) -> &'static str {
         match self {
-            Standing::OnTrack => "On track",
-            Standing::AtRisk => "At risk",
-            Standing::Late => "Late",
-            Standing::Done => "Done",
+            Standing::OnTrack => "on-track",
+            Standing::AtRisk => "at-risk",
+            Standing::Late => "late",
+            Standing::Done => "done",
         }
+    }
+
+    /// Its words in the shown locale.
+    pub fn words(self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("project.standing.{}", self.key()), &[])
     }
 
     fn severity(self) -> Severity {
@@ -184,7 +189,7 @@ impl RenderOnce for MilestoneProgress {
                             .text_size(theme.text_size(TextSize::Sm))
                             .text_color(ink)
                             .child(div().size(theme.status_dot()).rounded_full().bg(ink))
-                            .child(stands.words()),
+                            .child(stands.words(cx)),
                     ),
             )
             .child(ProgressBar::new((self.id.clone(), "done"), share))

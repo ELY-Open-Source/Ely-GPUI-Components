@@ -137,7 +137,12 @@ impl RenderOnce for MaskBrush {
                     .items_center()
                     .gap_3()
                     .text_size(theme.text_size(TextSize::Sm))
-                    .child(div().flex_none().text_color(colors.fg_muted).child("Size"))
+                    .child(
+                        div()
+                            .flex_none()
+                            .text_color(colors.fg_muted)
+                            .child(i18n::text(cx, "brush.size.short", &[])),
+                    )
                     .child(
                         div().flex_1().min_w_0().child(
                             Slider::new((self.id.clone(), "size"), f64::from(radius))

@@ -105,7 +105,7 @@ pub struct InlineEdit {
     id: ElementId,
     label: Option<SharedString>,
     value: SharedString,
-    placeholder: SharedString,
+    placeholder: Option<SharedString>,
     on_commit: Option<OnCommit>,
 }
 
@@ -116,7 +116,7 @@ impl InlineEdit {
             id: id.into(),
             label: None,
             value: value.into(),
-            placeholder: "Empty".into(),
+            placeholder: None,
             on_commit: None,
         }
     }
@@ -129,7 +129,7 @@ impl InlineEdit {
 
     /// What it shows while empty; `Empty` unless set.
     pub fn placeholder(mut self, text: impl Into<SharedString>) -> Self {
-        self.placeholder = text.into();
+        self.placeholder = Some(text.into());
         self
     }
 
@@ -189,7 +189,8 @@ impl RenderOnce for InlineEdit {
             .flex_1()
             .min_w_0()
             .child(Ellipsis::new(if empty {
-                self.placeholder
+                (self.placeholder.clone())
+                    .unwrap_or_else(|| crate::i18n::text(cx, "inline.empty", &[]))
             } else {
                 self.value
             }));

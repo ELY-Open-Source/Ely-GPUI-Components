@@ -254,7 +254,8 @@ pub fn fresh(id: impl Into<ElementId>, window: &mut Window, cx: &mut App) {
 }
 
 /// `then` against `now`, in the shown locale.
-pub(crate) fn relative_text(cx: &App, then: Timestamp, now: Timestamp) -> SharedString {
+#[doc(hidden)]
+pub fn relative_text(cx: &App, then: Timestamp, now: Timestamp) -> SharedString {
     let Some((count, unit, future)) = format::span(then, now) else {
         return i18n::text(cx, "time.now", &[]);
     };

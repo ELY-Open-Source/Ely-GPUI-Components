@@ -1,4 +1,4 @@
-use gpui::SharedString;
+use gpui::{App, SharedString};
 
 use crate::primitives::IconName;
 
@@ -83,30 +83,35 @@ pub enum BlockKind {
 }
 
 impl BlockKind {
-    /// Its name in the slash menu.
-    pub fn label(&self) -> &'static str {
+    /// Its key, as logs and the catalog name it.
+    pub fn key(&self) -> &'static str {
         match self {
-            Self::Paragraph => "Text",
-            Self::Heading(1) => "Heading 1",
-            Self::Heading(2) => "Heading 2",
-            Self::Heading(_) => "Heading 3",
-            Self::Bullet => "Bulleted list",
-            Self::Numbered => "Numbered list",
-            Self::Todo(_) => "To-do",
-            Self::Quote => "Quote",
-            Self::Callout => "Callout",
-            Self::Toggle(_) => "Toggle",
-            Self::Code => "Code",
-            Self::Math => "Math",
-            Self::Diagram => "Diagram",
-            Self::Divider => "Divider",
-            Self::Table { .. } => "Table",
-            Self::Image(_) => "Image",
-            Self::Video(_) => "Video",
-            Self::Embed(_) => "Embed",
-            Self::Columns(_) => "Columns",
-            Self::Synced(_) => "Synced block",
+            Self::Paragraph => "paragraph",
+            Self::Heading(1) => "heading-1",
+            Self::Heading(2) => "heading-2",
+            Self::Heading(_) => "heading-3",
+            Self::Bullet => "bullet",
+            Self::Numbered => "numbered",
+            Self::Todo(_) => "todo",
+            Self::Quote => "quote",
+            Self::Callout => "callout",
+            Self::Toggle(_) => "toggle",
+            Self::Code => "code",
+            Self::Math => "math",
+            Self::Diagram => "diagram",
+            Self::Divider => "divider",
+            Self::Table { .. } => "table",
+            Self::Image(_) => "image",
+            Self::Video(_) => "video",
+            Self::Embed(_) => "embed",
+            Self::Columns(_) => "columns",
+            Self::Synced(_) => "synced",
         }
+    }
+
+    /// Its name in the slash menu, in the shown locale.
+    pub fn label(&self, cx: &App) -> SharedString {
+        crate::i18n::text(cx, &format!("block.{}", self.key()), &[])
     }
 
     /// The icon its slash menu row shows.
@@ -136,20 +141,23 @@ impl BlockKind {
     }
 
     /// What an empty field of this kind says while it has focus.
-    pub fn placeholder(&self) -> &'static str {
-        match self {
-            Self::Paragraph => "Type '/' for commands",
-            Self::Heading(_) => self.label(),
-            Self::Bullet | Self::Numbered => "List",
-            Self::Todo(_) => "To-do",
-            Self::Quote => "Quote",
-            Self::Callout | Self::Toggle(_) | Self::Columns(_) | Self::Synced(_) => "Write",
-            Self::Code => "Code",
-            Self::Math => "A formula in TeX, such as e^{i\\pi} + 1 = 0",
-            Self::Diagram => "A diagram in Mermaid, such as graph LR; a --> b",
-            Self::Image(_) | Self::Video(_) | Self::Embed(_) => "Add a caption",
-            Self::Divider | Self::Table { .. } => "",
-        }
+    pub fn placeholder(&self, cx: &App) -> SharedString {
+        let key = match self {
+            Self::Paragraph => "block.hint.paragraph",
+            Self::Heading(_) | Self::Todo(_) | Self::Quote | Self::Code => return self.label(cx),
+            Self::Bullet | Self::Numbered => "block.hint.list",
+            Self::Callout | Self::Toggle(_) | Self::Columns(_) | Self::Synced(_) => {
+                "block.hint.write"
+            }
+            Self::Math => {
+                let sample = ("sample", "e^{i\\pi} + 1 = 0");
+                return crate::i18n::text(cx, "block.hint.math", &[sample]);
+            }
+            Self::Diagram => "block.hint.diagram",
+            Self::Image(_) | Self::Video(_) | Self::Embed(_) => "block.hint.caption",
+            Self::Divider | Self::Table { .. } => return SharedString::default(),
+        };
+        crate::i18n::text(cx, key, &[])
     }
 
     /// How many fields a new block of this kind holds.
@@ -238,12 +246,15 @@ pub(crate) fn offered() -> Vec<BlockKind> {
     ]
 }
 
-/// The kinds whose name holds `query`, for the slash menu.
-pub(crate) fn matching(query: &str) -> Vec<BlockKind> {
+/// The named kinds whose name holds `query`, for the slash menu.
+pub(crate) fn matching(
+    query: &str,
+    named: &[(BlockKind, SharedString)],
+) -> Vec<(BlockKind, SharedString)> {
     let query = query.to_lowercase();
-    offered()
-        .into_iter()
-        .filter(|kind| kind.label().to_lowercase().contains(&query))
+    (named.iter())
+        .filter(|(_, name)| name.to_lowercase().contains(&query))
+        .cloned()
         .collect()
 }
 
@@ -286,9 +297,19 @@ mod tests {
 
     #[test]
     fn the_slash_menu_filters_by_name() {
-        let labels: Vec<&str> = matching("head").iter().map(BlockKind::label).collect();
-        assert_eq!(labels, ["Heading 1", "Heading 2", "Heading 3"]);
-        assert!(matching("zzz").is_empty());
+        let named: Vec<(BlockKind, SharedString)> = [
+            (BlockKind::Paragraph, "Text"),
+            (BlockKind::Heading(1), "Heading 1"),
+            (BlockKind::Heading(2), "Heading 2"),
+            (BlockKind::Quote, "Quote"),
+        ]
+        .map(|(kind, name)| (kind, name.into()))
+        .into();
+        let found: Vec<SharedString> = (matching("head", &named).into_iter())
+            .map(|(_, name)| name)
+            .collect();
+        assert_eq!(found, ["Heading 1", "Heading 2"]);
+        assert!(matching("zzz", &named).is_empty());
     }
 
     #[test]

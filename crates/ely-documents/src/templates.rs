@@ -105,9 +105,7 @@ impl RenderOnce for TemplatePicker {
             (self.id.clone(), "picking"),
             cx,
             |window, cx: &mut Context<Picking>| Picking {
-                search: cx.new(|cx| {
-                    TextInput::new(window, cx).placeholder(i18n::text(cx, "templates.find", &[]))
-                }),
+                search: cx.new(|cx| TextInput::new(window, cx).placeholder_key("templates.find")),
                 category: ALL.into(),
                 highlighted: 0,
             },

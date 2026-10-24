@@ -250,13 +250,13 @@ impl<const DAYS: usize> RenderOnce for CalendarDays<DAYS> {
         let (title, back, on) = match DAYS {
             7 => (
                 show_span(days[0], days[DAYS - 1], cx),
-                "Previous week",
-                "Next week",
+                "calendar.week.previous",
+                "calendar.week.next",
             ),
             _ => (
                 shown.strftime("%A, %B %-d, %Y").to_string(),
-                "Previous day",
-                "Next day",
+                "calendar.day.previous",
+                "calendar.day.next",
             ),
         };
         let mut zones = vec![format::datetime(now, &zone, "%Z").expect("a fixed pattern")];

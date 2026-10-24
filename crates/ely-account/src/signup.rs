@@ -97,9 +97,16 @@ impl SignupForm {
 impl RenderOnce for SignupForm {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let id = self.id;
-        let name = field(&id, "name", "Your name", false, window, cx);
-        let email = field(&id, "email", "name@example.com", false, window, cx);
-        let password = field(&id, "password", "A new password", true, window, cx);
+        let name = field(&id, "name", Some("account.name.hint"), false, window, cx);
+        let email = field(&id, "email", Some("account.email.hint"), false, window, cx);
+        let password = field(
+            &id,
+            "password",
+            Some("account.password.new.hint"),
+            true,
+            window,
+            cx,
+        );
         let accepted = window.use_keyed_state((id.clone(), "terms"), cx, |_, _| false);
         let signup = Signup {
             name: name.read(cx).text().trim().to_string().into(),
@@ -154,14 +161,27 @@ impl RenderOnce for SignupForm {
                     enter(window, cx);
                 }
             })
-            .child(FormField::new((id.clone(), "name-field"), "Name").child(Input::new(&name)))
             .child(
-                FormField::new((id.clone(), "email-field"), "Email").child(EmailInput::new(&email)),
+                FormField::new(
+                    (id.clone(), "name-field"),
+                    crate::i18n::text(cx, "account.name", &[]),
+                )
+                .child(Input::new(&name)),
             )
             .child(
-                FormField::new((id.clone(), "password-field"), "Password")
-                    .child(PasswordInput::new(&password))
-                    .child(rules),
+                FormField::new(
+                    (id.clone(), "email-field"),
+                    crate::i18n::text(cx, "account.email", &[]),
+                )
+                .child(EmailInput::new(&email)),
+            )
+            .child(
+                FormField::new(
+                    (id.clone(), "password-field"),
+                    crate::i18n::text(cx, "account.password", &[]),
+                )
+                .child(PasswordInput::new(&password))
+                .child(rules),
             )
             .children(self.terms.map(|terms| {
                 Checkbox::new((id.clone(), "terms"), agreed)

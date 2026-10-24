@@ -340,7 +340,7 @@ impl RenderOnce for InvitationList {
         let on_invite = self.on_invite;
         let on_resend = self.on_resend;
         let on_revoke = self.on_revoke;
-        let email = field(&id, "email", "name@example.com", false, window, cx);
+        let email = field(&id, "email", Some("account.email.hint"), false, window, cx);
         let first = self.roles[0].key.clone();
         let role = window.use_keyed_state((id.clone(), "role"), cx, move |_, _| first);
         let (address, chosen): (SharedString, SharedString) = (

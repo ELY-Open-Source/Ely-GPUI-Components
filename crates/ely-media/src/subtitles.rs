@@ -278,7 +278,7 @@ impl RenderOnce for SubtitleEditor {
                         .child(reason.clone())
                 });
             let text = InlineEdit::new((self.id.clone(), format!("{key}-words")), cue.text.clone())
-                .placeholder("Words")
+                .placeholder(crate::i18n::text(cx, "subtitles.placeholder", &[]))
                 .label(words_name);
             div()
                 .w_full()

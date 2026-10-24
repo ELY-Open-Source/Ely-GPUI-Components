@@ -4,6 +4,7 @@ use super::{blocks, caret, open, settle, text};
 use crate::{
     blocks::{Align, BlockData, BlockKind, Media},
     forms,
+    i18n::I18n,
 };
 
 #[gpui::test]
@@ -138,4 +139,30 @@ fn a_drag_on_a_picture_turned_paragraph_leaves_undo_alone(cx: &mut TestAppContex
     });
     settle(cx);
     assert_eq!(blocks(&editor, cx)[0].0, image);
+}
+
+#[gpui::test]
+fn a_new_locale_reaches_the_fields_built_before_it(cx: &mut TestAppContext) {
+    let (editor, cx) = open(vec![BlockData::new(BlockKind::Heading(1), [""])], cx);
+    caret(&editor, 0, 0, cx);
+    let words = |cx: &mut gpui::VisualTestContext| {
+        cx.update(|_, cx| {
+            let field = editor.read(cx).blocks[0].fields[0].read(cx);
+            (
+                field.label_text().to_string(),
+                field.placeholder_text().to_string(),
+            )
+        })
+    };
+    assert_eq!(words(cx), ("Heading 1".into(), "Heading 1".into()));
+    cx.update(|_, cx| {
+        cx.set_global(
+            I18n::new("en-US")
+                .catalog("en-US", &[("app.name", "Name")])
+                .catalog("de-DE", &[("app.name", "Name")]),
+        );
+        I18n::set_locale("de-DE", cx);
+    });
+    settle(cx);
+    assert_eq!(words(cx), ("Überschrift 1".into(), "Überschrift 1".into()));
 }
