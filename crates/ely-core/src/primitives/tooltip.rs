@@ -9,8 +9,7 @@ use gpui::{
 
 use super::{Icon, IconName, raise};
 use crate::{
-    i18n::I18n,
-    motion,
+    i18n, motion,
     theme::{ActiveTheme, Elevation, IconSize, Radius, TextSize},
 };
 
@@ -48,13 +47,8 @@ fn surface(content: AnyElement, cx: &App) -> impl IntoElement + use<> {
 /// ```
 pub struct Tooltip {
     content: Content,
-    /// The locale it opened in; in another it withdraws.
-    spoken: Option<&'static str>,
-}
-
-/// The locale the app shows, if it set one.
-fn spoken(cx: &App) -> Option<&'static str> {
-    cx.try_global::<I18n>().map(|i18n| i18n.locale().tag)
+    /// Locale changes before its words were made; after another it withdraws.
+    turn: u64,
 }
 
 impl Tooltip {
@@ -77,17 +71,17 @@ impl Tooltip {
     pub fn rich(
         content: impl Fn(&mut Window, &mut App) -> AnyElement + 'static,
     ) -> impl Fn(&mut Window, &mut App) -> AnyView {
-        let content: Content = Rc::new(content);
+        let (content, turn): (Content, u64) = (Rc::new(content), i18n::turns());
         move |_, cx| {
-            let (content, spoken) = (content.clone(), spoken(cx));
-            cx.new(|_| Tooltip { content, spoken }).into()
+            let content = content.clone();
+            cx.new(|_| Tooltip { content, turn }).into()
         }
     }
 }
 
 impl Render for Tooltip {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        if spoken(cx) != self.spoken {
+        if i18n::turns() != self.turn {
             return div();
         }
         let content = (self.content)(window, cx);
