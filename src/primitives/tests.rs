@@ -1,4 +1,4 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, rc::Rc, time::Duration};
 
 use gpui::{
     AnyView, App, Context, Entity, FocusHandle, IntoElement, KeyBinding, Modifiers, ParentElement,
@@ -335,4 +335,57 @@ fn an_open_tooltip_withdraws_when_the_language_changes(cx: &mut TestAppContext) 
     cx.update(|_, cx| I18n::set_locale("zh-CN", cx));
     cx.run_until_parked();
     assert!(cx.debug_bounds("tip").is_none(), "it withdraws in another");
+}
+
+/// A button whose tooltip carries the words of the locale it was drawn in.
+struct Worded;
+
+impl Render for Worded {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let words = cx.global::<I18n>().text("label", &[]);
+        let english = words.as_ref() == "English";
+        let body = move |_: &mut Window, _: &mut App| {
+            let shown = if english { "english" } else { "chinese" };
+            let tip = div().debug_selector(move || shown.into());
+            tip.child(words.clone()).into_any_element()
+        };
+        let button = div()
+            .id("button")
+            .size(px(80.0))
+            .tooltip(Tooltip::rich(body));
+        div().size_full().child(button)
+    }
+}
+
+#[gpui::test]
+fn a_tooltip_worded_before_a_language_change_does_not_open_after_it(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        let english = I18n::new("en-US").catalog("en-US", &[("label", "English")]);
+        cx.set_global(english.catalog("zh-CN", &[("label", "中文")]));
+    });
+    let (_, cx) = cx.add_window_view(|_, _| Worded);
+    cx.run_until_parked();
+    cx.simulate_mouse_move(point(px(20.0), px(20.0)), None, Modifiers::none());
+    cx.run_until_parked();
+    // gpui waits before it shows a tooltip; the language changes meanwhile.
+    cx.executor().advance_clock(Duration::from_millis(120));
+    cx.update(|_, cx| I18n::set_locale("zh-CN", cx));
+    cx.run_until_parked();
+    cx.executor().advance_clock(Duration::from_millis(600));
+    cx.run_until_parked();
+    assert!(
+        cx.debug_bounds("english").is_none(),
+        "no English opens after the change"
+    );
+    cx.simulate_mouse_move(point(px(200.0), px(200.0)), None, Modifiers::none());
+    cx.run_until_parked();
+    cx.simulate_mouse_move(point(px(20.0), px(20.0)), None, Modifiers::none());
+    cx.run_until_parked();
+    cx.executor().advance_clock(Duration::from_millis(600));
+    cx.run_until_parked();
+    assert!(
+        cx.debug_bounds("chinese").is_some(),
+        "a new hover opens in Chinese"
+    );
 }

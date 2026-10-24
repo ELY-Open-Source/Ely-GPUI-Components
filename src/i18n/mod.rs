@@ -4,7 +4,7 @@ mod skip;
 #[cfg(test)]
 mod tests;
 
-use std::collections::HashMap;
+use std::{cell::Cell, collections::HashMap};
 
 use gpui::{App, Global, SharedString};
 
@@ -12,6 +12,16 @@ pub use locale::{Direction, LOCALES, Locale};
 pub use skip::SkipLink;
 
 type Catalog = HashMap<&'static str, &'static str>;
+
+thread_local! {
+    /// Locale changes so far on the thread the app runs on.
+    static TURNS: Cell<u64> = const { Cell::new(0) };
+}
+
+/// How many times the locale has changed: words made at one count are stale at another.
+pub(crate) fn turns() -> u64 {
+    TURNS.get()
+}
 
 /// The locale shown and a catalog of messages per locale; every catalog holds the first one's keys.
 pub struct I18n {
@@ -70,6 +80,9 @@ impl I18n {
             locale.tag
         );
         log::info!("i18n: locale {} to {}", i18n.locale.tag, locale.tag);
+        if i18n.locale != locale {
+            TURNS.set(TURNS.get() + 1);
+        }
         i18n.locale = locale;
         cx.refresh_windows();
     }
