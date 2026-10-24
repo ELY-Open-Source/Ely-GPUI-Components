@@ -3,6 +3,7 @@
 set -eu
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
+python3 scripts/panics.py
 cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
 cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
 cargo test -p ely-gpui-component --all-features --test '*' --quiet

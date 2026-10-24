@@ -1,0 +1,403 @@
+file	kind	expression	hosts	reason
+crates/ely-account/src/payment.rs	expect_used	card.as_ref().expect("Save rests until the card reads")	linux,macos,windows	Save rests until the card reads
+crates/ely-agent/src/registry.rs	expect_used	Self::ALL .iter() .find(|(access, _, _)| *access == self) .expect("every access has a key")	linux,macos,windows	every access has a key
+crates/ely-agent/src/registry.rs	expect_used	ToolAccess::ALL .iter() .find(|(_, name, _)| *name == key.as_ref()) .expect("a segment names an access")	linux,macos,windows	a segment names an access
+crates/ely-calendar/src/agenda.rs	expect_used	owners.get(key).expect("a row names its event")	linux,macos,windows	a row names its event
+crates/ely-calendar/src/agenda.rs	expect_used	self.from.checked_add(offset.days()).expect("a day follows")	linux,macos,windows	a day follows
+crates/ely-calendar/src/agenda.rs	expect_used	today.tomorrow().expect("a day follows today")	linux,macos,windows	a day follows today
+crates/ely-calendar/src/availability.rs	expect_used	open .iter() .find(|(day, _)| *day == shown) .map(|(_, slots)| slots.clone()) .expect("the day shown is one of the days")	linux,macos,windows	the day shown is one of the days
+crates/ely-calendar/src/availability.rs	expect_used	values .first() .expect("a day is chosen")	linux,macos,windows	a day is chosen
+crates/ely-calendar/src/availability.rs	expect_used	values .first() .expect("a day is chosen") .parse() .expect("a day's value is its date")	linux,macos,windows	a day's value is its date
+crates/ely-calendar/src/availability.rs	expect_used	values .first() .expect("a slot is chosen")	linux,macos,windows	a slot is chosen
+crates/ely-calendar/src/availability.rs	expect_used	values .first() .expect("a slot is chosen") .parse() .expect("a slot's value is its minute")	linux,macos,windows	a slot's value is its minute
+crates/ely-calendar/src/chip.rs	expect_used	format::datetime(start, &zone, "%H:%M").expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
+crates/ely-calendar/src/days.rs	expect_used	format::datetime(now, &overlay.zone, "%Z").expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-calendar/src/days.rs	expect_used	format::datetime(now, &zone, "%Z").expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-calendar/src/days.rs	expect_used	shown.checked_add(ix.days()).expect("a day follows")	linux,macos,windows	a day follows
+crates/ely-calendar/src/editor.rs	expect_used	chart .iter() .position(|each| *each == color) .expect("a hue of the chart")	linux,macos,windows	a hue of the chart
+crates/ely-calendar/src/event.rs	expect_used	format::datetime(moment, zone, pattern).expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-calendar/src/grid.rs	expect_used	format::datetime(at, zone, "%H:%M").expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-calendar/src/hours.rs	expect_used	day .to_zoned(zone.clone()) .expect("the zone holds the day")	linux,macos,windows	the zone holds the day
+crates/ely-calendar/src/hours.rs	expect_used	day .to_zoned(zone.clone()) .expect("the zone holds the day")	linux,macos,windows	the zone holds the day
+crates/ely-calendar/src/month.rs	expect_used	monday .checked_add((column as i64).days()) .expect("a week has seven days")	linux,macos,windows	a week has seven days
+crates/ely-calendar/src/recurrence.rs	expect_used	FREQUENCIES .iter() .find(|(_, _, each)| *each == frequency) .map(|(key, _, _)| *key) .expect("every frequency has a key")	linux,macos,windows	every frequency has a key
+crates/ely-calendar/src/recurrence.rs	expect_used	WEEKDAYS .iter() .find(|(_, _, each)| *each == day) .map(|(key, _, _)| *key) .expect("every weekday has a key")	linux,macos,windows	every weekday has a key
+crates/ely-calendar/src/reminders.rs	expect_used	spare.expect("Add waits for a reminder not yet set")	linux,macos,windows	Add waits for a reminder not yet set
+crates/ely-calendar/src/reminders.rs	expect_used	value.parse().expect("an offset is a count")	linux,macos,windows	an offset is a count
+crates/ely-calendar/src/weeks.rs	expect_used	first .checked_add((count as i64 - 1).days()) .expect("the days end")	linux,macos,windows	the days end
+crates/ely-calendar/src/weeks.rs	expect_used	first.until(day).expect("days apart")	linux,macos,windows	two days of one month view; jiff spans any pair of its dates
+crates/ely-calendar/src/weeks.rs	expect_used	monday.checked_add(1.week()).expect("a week follows")	linux,macos,windows	a week follows
+crates/ely-calendar/src/weeks.rs	expect_used	usize::try_from(days).expect("a day in its week")	linux,macos,windows	a day in its week
+crates/ely-calendar/src/weeks.rs	panic	panic!("event {}: an all-day event spans", event.key)	linux,macos,windows	singles keeps events that do not span days, and every all-day event spans
+crates/ely-calendar/src/year.rs	expect_used	Date::new(shown, 1, 1).expect("a year has a first day")	linux,macos,windows	a year has a first day
+crates/ely-calendar/src/year.rs	expect_used	Date::new(shown, month, 1).expect("a month has a first day")	linux,macos,windows	a month has a first day
+crates/ely-calendar/src/year.rs	expect_used	day.tomorrow().expect("a day before the last has one after")	linux,macos,windows	a day before the last has one after
+crates/ely-canvas/src/align.rs	expect_used	frames .iter() .copied() .reduce(|whole, frame| whole.union(&frame)) .expect("frames to align")	linux,macos,windows	frames to align
+crates/ely-canvas/src/autolayout.rs	expect_used	PLACES .iter() .position(|place| *place == self) .expect("a place")	linux,macos,windows	every place is in PLACES, its own table
+crates/ely-canvas/src/constraints.rs	expect_used	Pin::ALL .iter() .find(|pin| pin.value() == value.as_ref()) .expect("a pin the select offers")	linux,macos,windows	a pin the select offers
+crates/ely-canvas/src/export.rs	expect_used	ExportFormat::ALL .iter() .find(|format| format.extension() == value.as_ref()) .expect("a format the select offers")	linux,macos,windows	a format the select offers
+crates/ely-canvas/src/export.rs	expect_used	value.parse().expect("a scale the select offers")	linux,macos,windows	a scale the select offers
+crates/ely-canvas/src/gesture.rs	expect_used	points .iter() .map(|(x, y)| Frame::new(*x, *y, 0.0, 0.0)) .reduce(|whole, frame| whole.union(&frame)) .expect("a path has points")	linux,macos,windows	a path has points
+crates/ely-canvas/src/history.rs	expect_used	key.parse().expect("a step's key is its place")	linux,macos,windows	a step's key is its place
+crates/ely-canvas/src/inspector.rs	expect_used	chart .iter() .position(|hue| *hue == color) .expect("the fill is a chart hue")	linux,macos,windows	the fill is a chart hue
+crates/ely-canvas/src/layers.rs	panic	panic!("layer {target} holds no layers")	linux,macos,windows	layers are leaves, and the tree drops inside only a row that opens
+crates/ely-canvas/src/links.rs	expect_used	points.last().expect("a run has points")	linux,macos,windows	a run has points
+crates/ely-canvas/src/mindmap.rs	expect_used	next.find(&parent) .expect("the parent is in the map")	linux,macos,windows	the parent is in the map
+crates/ely-canvas/src/mindmap_view.rs	expect_used	placed .iter() .find(|topic| topic.key == *key) .expect("a placed topic")	linux,macos,windows	a placed topic
+crates/ely-canvas/src/mindmap_view.rs	expect_used	placed .iter() .find(|topic| topic.key == *parent) .expect("a placed parent")	linux,macos,windows	a placed parent
+crates/ely-canvas/src/nodes.rs	expect_used	kinds .iter() .position(|each| each == kind) .expect("a kind on the graph")	linux,macos,windows	a kind on the graph
+crates/ely-canvas/src/palette.rs	expect_used	Tool::ALL .into_iter() .find(|tool| tool.words() == words.as_ref()) .expect("a tool of the palette")	linux,macos,windows	a tool of the palette
+crates/ely-canvas/src/palette.rs	expect_used	chart .iter() .position(|each| *each == color) .expect("a hue of the chart")	linux,macos,windows	a hue of the chart
+crates/ely-canvas/src/press.rs	expect_used	drawer.draws().expect("the rest draw shapes")	linux,macos,windows	the rest draw shapes
+crates/ely-canvas/src/style.rs	expect_used	Dash::ALL .iter() .find(|dash| dash.word() == word.as_ref()) .expect("a dash the control offers")	linux,macos,windows	a dash the control offers
+crates/ely-canvas/src/style.rs	expect_used	cx .theme() .elevation(Elevation::Floating) .last() .map(|shadow| Shadow { x: f32::from(shadow.offset.x), y: f32::from(shadow.offset.y), blur: f32::from(shadow.blur_radius), spread: f32::from(shadow.spread_radius), color: shadow.color, }) .expect("a floating elevation casts a shadow")	linux,macos,windows	a floating elevation casts a shadow
+crates/ely-canvas/src/typography.rs	expect_used	ALIGNS .iter() .find(|(_, name, _)| *name == word.as_ref()) .expect("an alignment the control offers")	linux,macos,windows	an alignment the control offers
+crates/ely-canvas/src/typography.rs	expect_used	ALIGNS .iter() .find(|(align, _, _)| *align == style.align) .expect("every alignment is offered")	linux,macos,windows	every alignment is offered
+crates/ely-canvas/src/typography.rs	expect_used	value.parse().expect("a weight the select offers")	linux,macos,windows	a weight the select offers
+crates/ely-canvas/src/typography.rs	panic	panic!("typography panel: no weight {}", style.weight.0)	linux,macos,windows	a style's weight is one of the nine offered, the owner's contract (panics.md P32)
+crates/ely-canvas/src/view.rs	expect_used	[1.0, 2.0, 5.0, 10.0] .into_iter() .map(|each| each * power) .find(|each| *each >= raw) .expect("ten times the power passes the raw step")	linux,macos,windows	ten times the power passes the raw step
+crates/ely-canvas/src/zoom.rs	expect_used	next.expect("a step lies that way")	linux,macos,windows	a step lies that way
+crates/ely-charts/src/burndown.rs	expect_used	self .first .checked_add((ix as i64).days()) .expect("a day of the sprint")	linux,macos,windows	a day of the sprint
+crates/ely-charts/src/calendar.rs	expect_used	self.start .checked_add(Span::new().days(ix as i64)) .expect("a day within the calendar")	linux,macos,windows	a day within the calendar
+crates/ely-charts/src/cartesian.rs	panic	panic!("point {key} is past the last cloud")	linux,macos,windows	a tip's key is a point the plot drew from these clouds
+crates/ely-charts/src/export.rs	expect_used	write!(d, " C{ax:.1},{ay:.1} {bx:.1},{by:.1} {x1:.1},{y1:.1}") .expect("a string takes writes")	linux,macos,windows	a string takes writes
+crates/ely-charts/src/export.rs	expect_used	write!(d, " L{x:.1},{y:.1}").expect("a string takes writes")	linux,macos,windows	a string takes writes
+crates/ely-charts/src/export.rs	expect_used	write!(d, "M{x:.1},{y:.1}").expect("a string takes writes")	linux,macos,windows	a string takes writes
+crates/ely-charts/src/network.rs	expect_used	graph .force .as_mut() .expect("a dragged graph has forces")	linux,macos,windows	a dragged graph has forces
+crates/ely-charts/src/network.rs	expect_used	graph.force.as_mut().expect("forces were just set")	linux,macos,windows	forces were just set
+crates/ely-charts/src/pie.rs	expect_used	glided.into_iter().next().expect("one ring of values")	linux,macos,windows	one ring of values
+crates/ely-charts/src/schedule.rs	expect_used	first .checked_add(Span::new().days(offset)) .expect("a day within the schedule")	linux,macos,windows	a day within the schedule
+crates/ely-charts/src/schedule.rs	expect_used	to.since(from) .expect("dates within jiff's range")	linux,macos,windows	dates within jiff's range
+crates/ely-charts/src/stats.rs	expect_used	sorted .iter() .find(inside) .expect("the quartiles lie inside")	linux,macos,windows	the quartiles lie inside
+crates/ely-charts/src/stats.rs	expect_used	sorted .iter() .rev() .find(inside) .expect("the quartiles lie inside")	linux,macos,windows	the quartiles lie inside
+crates/ely-charts/src/targets.rs	expect_used	glided.into_iter().next().expect("one row of shares")	linux,macos,windows	one row of shares
+crates/ely-chat/src/composer.rs	expect_used	active.expect("rows show at a trigger")	linux,macos,windows	rows show at a trigger
+crates/ely-collab/src/share.rs	expect_used	ROLES .into_iter() .find(|(_, named, _)| *named == value.as_ref()) .expect("a listed role")	linux,macos,windows	a listed role
+crates/ely-collab/src/share.rs	expect_used	ROLES .into_iter() .find(|(listed, ..)| *listed == role) .expect("every role is listed")	linux,macos,windows	every role is listed
+crates/ely-collab/src/share.rs	expect_used	ROLES .into_iter() .find(|(role, ..)| *role == self.role) .expect("every role is listed")	linux,macos,windows	every role is listed
+crates/ely-collab/src/track.rs	expect_used	MODES .into_iter() .find(|(_, named, ..)| *named == value.as_ref()) .expect("a listed mode")	linux,macos,windows	a listed mode
+crates/ely-collab/src/track.rs	expect_used	MODES .into_iter() .find(|(mode, ..)| *mode == self.mode) .expect("every mode is listed")	linux,macos,windows	every mode is listed
+crates/ely-core/src/data_display/codes.rs	expect_used	digit.to_digit(10).expect("barcoders checked the digits")	linux,macos,windows	barcoders checked the digits
+crates/ely-core/src/data_display/stars.rs	expect_used	path.build().expect("a star is a simple closed path")	linux,macos,windows	a star is a simple closed path
+crates/ely-core/src/forms/catalogs.rs	expect_used	char::from_u32(0x1F1E6 + (letter as u32 - 'A' as u32)).expect("a regional indicator")	linux,macos,windows	a regional indicator
+crates/ely-core/src/forms/checked.rs	expect_used	Regex::new(r"^[^\s@]+@[^\s@]+\.[^\s@]+$").expect("email pattern compiles")	linux,macos,windows	email pattern compiles
+crates/ely-core/src/forms/checked.rs	expect_used	Regex::new(r"^https?://[^\s/?#]+\.[^\s/?#]+\S*$").expect("url pattern compiles")	linux,macos,windows	url pattern compiles
+crates/ely-core/src/forms/color/dropper.rs	unreachable	unreachable!("the eye dropper stays disabled off macOS")	linux,macos,windows	the eye dropper stays disabled off macOS
+crates/ely-core/src/forms/color/fields.rs	expect_used	Format::ALL .into_iter() .find(|format| format.label() == label.as_ref()) .expect("a label from the list")	linux,macos,windows	a label from the list
+crates/ely-core/src/forms/color/gradient.rs	expect_used	stops.first().expect("a gradient has stops")	linux,macos,windows	a gradient has stops
+crates/ely-core/src/forms/color/gradient.rs	expect_used	stops.last().expect("a gradient has stops")	linux,macos,windows	a gradient has stops
+crates/ely-core/src/forms/date/cron.rs	expect_used	at .to_zoned(zone.clone()) .expect("a run within five years has a zone time")	linux,macos,windows	a run within five years has a zone time
+crates/ely-core/src/forms/date/cron.rs	expect_used	datetime(zoned.timestamp(), zone, PATTERN).expect("the pattern is fixed")	linux,macos,windows	the pattern is fixed
+crates/ely-core/src/forms/date/period.rs	expect_used	i16::try_from(columns).expect("a few columns")	linux,macos,windows	a few columns
+crates/ely-core/src/forms/date/relative.rs	expect_used	Date::new(today.year(), month, 1).expect("the first of a month exists")	linux,macos,windows	the first of a month exists
+crates/ely-core/src/forms/date/relative.rs	expect_used	RelativeRange::ALL .into_iter() .find(|range| range.label() == label.as_ref()) .expect("a label from the list")	linux,macos,windows	a label from the list
+crates/ely-core/src/forms/date/rule.rs	expect_used	run.next().expect("peeked")	linux,macos,windows	peek saw the next value just before
+crates/ely-core/src/forms/date/time.rs	expect_used	time.with() .minute(minute) .build() .expect("minutes run 0 to 59")	linux,macos,windows	minutes run 0 to 59
+crates/ely-core/src/forms/date/time.rs	expect_used	time.with().hour(hour).build().expect("hours run 0 to 23")	linux,macos,windows	hours run 0 to 23
+crates/ely-core/src/forms/date/week.rs	panic	panic!("week {week} of {year} does not exist: {error}")	linux,macos,windows	the owner's week, a caller contract; the picker's own picks are real weeks
+crates/ely-core/src/forms/knob.rs	expect_used	line.build().expect("a tick is a straight line")	linux,macos,windows	a tick is a straight line
+crates/ely-core/src/forms/knob.rs	expect_used	path.build().expect("an arc is a simple open path")	linux,macos,windows	an arc is a simple open path
+crates/ely-core/src/forms/masked.rs	expect_used	COUNTRIES .iter() .find(|(code, ..)| *code == self.country) .expect("checked at construction")	linux,macos,windows	checked at construction
+crates/ely-core/src/forms/mention.rs	expect_used	self .triggers .iter() .find(|(mark, _)| *mark == trigger) .expect("from triggers")	linux,macos,windows	the active trigger comes from these triggers' marks
+crates/ely-core/src/forms/pairs.rs	expect_used	row.pop().expect("two columns")	linux,macos,windows	the pair editor's rows hold two columns, key and value
+crates/ely-core/src/forms/pairs.rs	expect_used	row.pop().expect("two columns")	linux,macos,windows	the pair editor's rows hold two columns, key and value
+crates/ely-core/src/forms/pairs.rs	expect_used	rows.rows.last().expect("just pushed")	linux,macos,windows	a row was pushed the line before
+crates/ely-core/src/forms/picks.rs	expect_used	rows .iter() .rev() .find_map(|row| match row { Row::Glyphs(range) => Some(range.end - 1), Row::Title(_) => None, }) .expect("a grid with a cursor has glyphs")	linux,macos,windows	a grid with a cursor has glyphs
+crates/ely-core/src/forms/picks.rs	expect_used	rows.iter() .position(|row| matches!(row, Row::Glyphs(range) if range.contains(&ix))) .expect("every glyph sits in a row")	linux,macos,windows	every glyph sits in a row
+crates/ely-core/src/forms/picks.rs	unreachable	unreachable!("row_of finds glyph rows")	linux,macos,windows	row_of finds glyph rows
+crates/ely-core/src/forms/signature.rs	expect_used	path.build().expect("a stroke is a simple open path")	linux,macos,windows	a stroke is a simple open path
+crates/ely-core/src/i18n/builtin.rs	panic	panic!("no builtin message {key:?}")	linux,macos,windows	builtin keys come from Ely's code; a test holds every catalog to the first's keys
+crates/ely-core/src/i18n/locale.rs	panic	panic!("no locale {tag:?}")	linux,macos,windows	a locale tag from the app's code, set_locale's contract
+crates/ely-core/src/i18n/locale.rs	panic	panic!("{}'s date pattern: {error}", self.tag)	linux,macos,windows	a Locale's fields are public; a valid date pattern is the caller's contract, as Ely's table holds
+crates/ely-core/src/i18n/mod.rs	panic	panic!("no catalog for {}", self.locale.tag)	linux,macos,windows	catalogs and keys come from code; AGENTS.md's i18n rule fails on a missing one
+crates/ely-core/src/i18n/mod.rs	panic	panic!("no message {key:?} in {}", self.locale.tag)	linux,macos,windows	catalogs and keys come from code; AGENTS.md's i18n rule fails on a missing one
+crates/ely-core/src/i18n/mod.rs	panic	panic!("{key:?} in {}: {error}", self.locale.tag)	linux,macos,windows	arguments come from code with their message; a missing one fails, as AGENTS.md says
+crates/ely-core/src/i18n/mod.rs	panic	panic!("{key:?}: {error}")	linux,macos,windows	arguments come from code with their message; a missing one fails, as AGENTS.md says
+crates/ely-core/src/layout/dock/mod.rs	expect_used	self.find(id).expect("checked above")	linux,macos,windows	the ensure above refused unknown panels
+crates/ely-core/src/layout/dock/mod.rs	panic	panic!("no dock panel {id}")	linux,macos,windows	panel ids come from the owner's code, and a dock never removes a panel (panics.md P03)
+crates/ely-core/src/layout/dock/mod.rs	panic	panic!("no dock panel {id}")	linux,macos,windows	panel ids come from the owner's code, and a dock never removes a panel (panics.md P03)
+crates/ely-core/src/layout/dock/view.rs	expect_used	dock.find(&dock_id).expect("dock panels are never removed")	linux,macos,windows	dock panels are never removed
+crates/ely-core/src/layout/grid.rs	expect_used	heights .iter() .enumerate() .min_by(|a, b| f32::from(*a.1).total_cmp(&f32::from(*b.1))) .map(|(ix, _)| ix) .expect("at least one column")	linux,macos,windows	at least one column
+crates/ely-core/src/layout/panes.rs	expect_used	new.checked_add(1).expect("pane ids exhausted")	linux,macos,windows	pane ids exhausted
+crates/ely-core/src/layout/panes.rs	expect_used	unique.last().expect("a layout holds a pane")	linux,macos,windows	a layout holds a pane
+crates/ely-core/src/layout/testing.rs	expect_used	cx.debug_bounds(selector).expect(selector)	linux,macos,windows	test support: a test names a selector its view draws
+crates/ely-core/src/layout/workspace.rs	expect_used	serde_json::to_string_pretty(self).expect("workspace layout always serializes")	linux,macos,windows	workspace layout always serializes
+crates/ely-core/src/lists/directory.rs	expect_used	shown .iter() .find(|entry| entry.name == *name) .expect("a listed entry")	linux,macos,windows	a listed entry
+crates/ely-core/src/lists/files.rs	expect_used	parts.pop().expect("a path has a name")	linux,macos,windows	a path has a name
+crates/ely-core/src/lists/sections.rs	expect_used	keys.first().expect("a pick names a row")	linux,macos,windows	a pick names a row
+crates/ely-core/src/lists/sections.rs	expect_used	self .sections .last_mut() .expect("a fixed mark follows a section")	linux,macos,windows	a fixed mark follows a section
+crates/ely-core/src/lists/sections.rs	expect_used	self.sections.last_mut().expect("a badge follows a section")	linux,macos,windows	a badge follows a section
+crates/ely-core/src/lists/tree/mod.rs	expect_used	find(&nodes, key).expect("a checked row is a node")	linux,macos,windows	a checked row is a node
+crates/ely-core/src/lists/tree/mod.rs	expect_used	row.parent.expect("a wait has a parent")	linux,macos,windows	a wait has a parent
+crates/ely-core/src/lists/tree/mod.rs	expect_used	shown[row.parent.expect("a wait has a parent")] .key() .cloned() .expect("a node")	linux,macos,windows	a loading row's parent is a node row
+crates/ely-core/src/lists/tree/row.rs	expect_used	find(&rows.nodes, &key).expect("a shown node")	linux,macos,windows	a shown node
+crates/ely-core/src/menus/draw.rs	expect_used	at_depth(menu, &open.levels, depth).expect("settled levels follow submenu rows")	linux,macos,windows	settled levels follow submenu rows
+crates/ely-core/src/menus/draw.rs	expect_used	item.icon.expect("a menu button has its icon")	linux,macos,windows	a menu button has its icon
+crates/ely-core/src/menus/menu.rs	expect_used	across(if key == "right" { 1 } else { -1 }).expect("a row with a button")	linux,macos,windows	a row with a button
+crates/ely-core/src/menus/menu.rs	expect_used	here.first(to).expect("a stepped row runs")	linux,macos,windows	a stepped row runs
+crates/ely-core/src/menus/menu.rs	expect_used	menu .item_at(ix, column) .expect("its first spot")	linux,macos,windows	its first spot
+crates/ely-core/src/menus/menu.rs	expect_used	menu.first(ix).expect("a stepped row runs")	linux,macos,windows	a stepped row runs
+crates/ely-core/src/motion/progress.rs	expect_used	self.value.expect("an indeterminate bar has no buffer")	linux,macos,windows	an indeterminate bar has no buffer
+crates/ely-core/src/motion/reorder.rs	expect_used	rows[ix].take().expect("each row once")	linux,macos,windows	each row once
+crates/ely-core/src/navigation/history.rs	expect_used	value.parse().expect("history rows carry their index")	linux,macos,windows	history rows carry their index
+crates/ely-core/src/navigation/palette/mod.rs	expect_used	c.to_lowercase() .next() .expect("a char lowercases to at least one char")	linux,macos,windows	a char lowercases to at least one char
+crates/ely-core/src/overlays/dialog.rs	expect_used	self .first .clone() .expect("a dialog that takes Enter names its field with focus_first")	linux,macos,windows	a dialog that takes Enter names its field with focus_first
+crates/ely-core/src/overlays/popover.rs	panic	panic!("popover {:?}: {what} is for its own button", self.id)	linux,macos,windows	builder misuse: a face setter on a popover with the owner's opener
+crates/ely-core/src/platform/mac.rs	expect_used	NSWindow::standardWindowButton_forStyleMask(NSWindowButton::CloseButton, mask, mtm) .expect("AppKit gives a close button to size the traffic lights by")	macos	AppKit gives a close button to size the traffic lights by
+crates/ely-core/src/platform/mac.rs	panic	panic!("{what} runs on the main thread")	macos	AppKit's contract: these calls take a MainThreadMarker, and gpui runs the app on the main thread
+crates/ely-core/src/primitives/held.rs	expect_used	self.0.get_mut(&key).expect("a held asset is counted")	linux,macos,windows	a held asset is counted
+crates/ely-core/src/primitives/held.rs	expect_used	self.0.get_mut(&key).expect("a loaded asset is held")	linux,macos,windows	a loaded asset is held
+crates/ely-core/src/primitives/layer.rs	expect_used	LAYERS .with_borrow_mut(|layers| layers.pop()) .expect("a layer pops what it pushed")	linux,macos,windows	a layer pops what it pushed
+crates/ely-core/src/primitives/layer.rs	expect_used	layers .last_mut() .expect("a nested element prepaints in its layer")	linux,macos,windows	a nested element prepaints in its layer
+crates/ely-core/src/primitives/layer.rs	expect_used	layout.expect("the child laid out")	linux,macos,windows	the child laid out
+crates/ely-core/src/primitives/layer.rs	expect_used	self.child.as_mut().expect("a raised element lays out once")	linux,macos,windows	a raised element lays out once
+crates/ely-core/src/primitives/layer.rs	expect_used	self.child.take().expect("a raised element prepaints once")	linux,macos,windows	a raised element prepaints once
+crates/ely-core/src/shell/columns.rs	panic	panic!( "column shell {:?}: column {ix} resizes, but no border lies toward a filling column", self.id )	linux,macos,windows	builder misuse: a resizable column with no filling column to drag toward
+crates/ely-core/src/tables/body.rs	expect_used	self .detail .clone() .expect("a detail line comes from a detail")	linux,macos,windows	a detail line comes from a detail
+crates/ely-core/src/tables/body.rs	expect_used	self.on_edit.clone().expect("checked")	linux,macos,windows	the `when` above draws this only with on_edit set
+crates/ely-core/src/tables/builders.rs	expect_used	Test::ALL .iter() .find(|test| test.key() == label.as_ref()) .expect("a listed test")	linux,macos,windows	a listed test
+crates/ely-core/src/tables/formula.rs	expect_used	Regex::new(r"(?i)\b([A-Z]+)\(\s*([A-Z]+[0-9]+)\s*:\s*([A-Z]+[0-9]+)\s*\)") .expect("a range pattern")	linux,macos,windows	a range pattern
+crates/ely-core/src/tables/formula.rs	expect_used	Regex::new(r"\b([A-Z]+)([0-9]+)\b").expect("a reference pattern")	linux,macos,windows	a reference pattern
+crates/ely-core/src/tables/formula.rs	expect_used	Regex::new(r"\b([A-Za-z]+)\(").expect("a call pattern")	linux,macos,windows	a call pattern
+crates/ely-core/src/tables/formula.rs	expect_used	String::from_utf8(out).expect("letters are ASCII")	linux,macos,windows	letters are ASCII
+crates/ely-core/src/tables/gridkeys.rs	expect_used	stepped(merges, (row, col), key, size).expect("left and right always step")	linux,macos,windows	left and right always step
+crates/ely-core/src/tables/model.rs	unreachable	unreachable!("counted above")	linux,macos,windows	the function returns a count before this match
+crates/ely-core/src/tables/table.rs	expect_used	self.page_size.expect("pages come from a page size")	linux,macos,windows	pages come from a page size
+crates/ely-core/src/theme/palette.rs	panic	other => panic!("no {} color {other}", stringify!($name).to_lowercase()),	linux,macos,windows	a token name from code; the tokens are the struct's own fields
+crates/ely-core/src/theme/palette.rs	panic	other => panic!("no {} color {other}", stringify!($name).to_lowercase()),	linux,macos,windows	a token name from code; the tokens are the struct's own fields
+crates/ely-core/src/theme/palette.rs	panic	panic!("{owner}: no chart hue {hue}")	linux,macos,windows	a hue index under the fixed eight, the owner's contract (panics.md P39)
+crates/ely-core/src/typography/format.rs	expect_used	exponent.parse::<i32>().expect("a whole exponent")	linux,macos,windows	a whole exponent
+crates/ely-core/src/typography/format.rs	expect_used	rounded.split_once('e').expect("Rust writes an exponent")	linux,macos,windows	Rust writes an exponent
+crates/ely-core/src/typography/formatted.rs	panic	panic!("DateTimeText pattern {:?}: {error}", self.pattern)	linux,macos,windows	a name from the owner's code; a wrong one is builder misuse
+crates/ely-core/src/typography/keys.rs	panic	panic!("bad keystroke {source:?}: {error}")	linux,macos,windows	a name from the owner's code; a wrong one is builder misuse
+crates/ely-dashboard/src/controls.rs	expect_used	TimeWindow::ALL .iter() .find(|each| each.words() == value.as_ref()) .expect("a window the select offers")	linux,macos,windows	a window the select offers
+crates/ely-dashboard/src/controls.rs	expect_used	value.parse().expect("an interval the select offers")	linux,macos,windows	an interval the select offers
+crates/ely-dashboard/src/grid.rs	expect_used	keyed_tiles .iter() .find(|tile| tile.key == keys) .expect("a tile of the grid")	linux,macos,windows	a tile of the grid
+crates/ely-dashboard/src/grid.rs	expect_used	tiles .iter() .find(|tile| tile.key == key) .expect("a tile of the grid")	linux,macos,windows	a tile of the grid
+crates/ely-dashboard/src/status.rs	expect_used	services .iter() .map(|service| service.health) .max() .expect("a status lists a service")	linux,macos,windows	a status lists a service
+crates/ely-debug/src/disasm.rs	expect_used	Regex::new( r"(?x) (?P<register>\b(?:[re]?(?:ax|bx|cx|dx|si|di|sp|bp|ip)|r(?:[89]|1[0-5])[dwb]?|[xyz]mm[0-9]{1,2}|[abcd][lh]|[xw](?:[12]?[0-9]|30)|sp|lr|fp|pc|[xw]zr|[vqdsbh][0-9]{1,2})\b) |(?P<number>\#?-?(?:0x[0-9a-fA-F]+|\b[0-9]+\b)) |(?P<mark>[\[\],+*!\-\#])", ) .expect("the operand pattern compiles")	linux,macos,windows	the operand pattern compiles
+crates/ely-debug/src/disasm.rs	expect_used	found.name("mark").expect("a piece is one of three")	linux,macos,windows	a piece is one of three
+crates/ely-debug/src/disasm.rs	expect_used	instructions[ix] .source .clone() .expect("a source row has its line")	linux,macos,windows	a source row has its line
+crates/ely-desktop/src/native/linux.rs	expect_used	OwnedObjectPath::try_from(MENU).expect("a valid path")	linux	MENU is the constant "/MenuBar", a valid D-Bus object path
+crates/ely-desktop/src/native/linux.rs	expect_used	OwnedValue::try_from(value).expect("plain values own")	linux	plain values own
+crates/ely-desktop/src/platform/mac.rs	panic	panic!("{what} runs on the main thread")	macos	AppKit's contract: these calls take a MainThreadMarker, and gpui runs the app on the main thread
+crates/ely-devtools/src/connections.rs	panic	panic!("no engine {name}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-devtools/src/encode.rs	expect_used	Code::ALL .iter() .find(|code| code.name() == name.as_ref()) .expect("a code the control offers")	linux,macos,windows	a code the control offers
+crates/ely-devtools/src/encode.rs	expect_used	u8::from_str_radix(digits, 16).expect("two hex digits read")	linux,macos,windows	two hex digits read
+crates/ely-devtools/src/encode.rs	panic	panic!("encoder: no way named {other}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-devtools/src/json_editor.rs	expect_used	out.expect("a value read from JSON writes back")	linux,macos,windows	a value read from JSON writes back
+crates/ely-devtools/src/json_editor.rs	expect_used	reformat(&text, pretty) .expect("Format and Minify rest until the JSON reads")	linux,macos,windows	Format and Minify rest until the JSON reads
+crates/ely-devtools/src/monitor.rs	expect_used	reading.values.last().expect("a reading has values")	linux,macos,windows	a reading has values
+crates/ely-devtools/src/monitor.rs	expect_used	reading.values.last().expect("a reading has values")	linux,macos,windows	a reading has values
+crates/ely-devtools/src/regex.rs	expect_used	captures.get(0).expect("a match holds itself")	linux,macos,windows	a match holds itself
+crates/ely-devtools/src/request.rs	panic	panic!("no method {name}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-devtools/src/request.rs	panic	panic!("request builder: no sign-in named {other}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-devtools/src/structure.rs	expect_used	(1..) .map(|n| format!("field_{n}")) .find(|name| all.iter().all(|field| field.name != name.as_str())) .expect("a free name")	linux,macos,windows	a free name
+crates/ely-documents/src/blocks/export.rs	expect_used	rows.next().expect("a table holds its header row")	linux,macos,windows	a table holds its header row
+crates/ely-documents/src/blocks/media.rs	expect_used	Regex::new(r#"<svg\b[^>]*?\swidth=['"]([0-9.]+)(px)?['"]"#) .expect("the SVG width pattern compiles")	linux,macos,windows	the SVG width pattern compiles
+crates/ely-documents/src/blocks/media.rs	unreachable	unreachable!("a renderer draws before this shows")	linux,macos,windows	a renderer draws before this shows
+crates/ely-documents/src/blocks/media.rs	unreachable	unreachable!("{} is no media", other.label())	linux,macos,windows	{} is no media
+crates/ely-documents/src/blocks/span.rs	expect_used	one.0.partial_cmp(&two.0).expect("pixels are finite")	linux,macos,windows	pixels are finite
+crates/ely-documents/src/blocks/span.rs	expect_used	self.index(key).expect("a focused block is drawn")	linux,macos,windows	a focused block is drawn
+crates/ely-documents/src/blocks/table.rs	expect_used	shape(&block.kind, block.fields.len()).expect("a table block draws as a table")	linux,macos,windows	a table block draws as a table
+crates/ely-documents/src/document/block/heading.rs	expect_used	inside(text, line, &containers).expect("a blank line holds its prefix")	linux,macos,windows	a blank line holds its prefix
+crates/ely-documents/src/document/block/heading.rs	expect_used	marks.find(['=', '-']).expect("a setext underline")	linux,macos,windows	a setext underline
+crates/ely-documents/src/document/block/heading.rs	expect_used	next_line(text, whole.end).expect("a joining line follows")	linux,macos,windows	a joining line follows
+crates/ely-documents/src/document/block/heading.rs	expect_used	prev_line(text, under).expect("a setext heading has text")	linux,macos,windows	a setext heading has text
+crates/ely-documents/src/document/block/heading.rs	expect_used	text[whole.clone()].find('#').expect("an ATX heading has #")	linux,macos,windows	an ATX heading has #
+crates/ely-documents/src/document/block/insert.rs	expect_used	(1..) .find(|n: &usize| !used.contains(n.to_string().as_str())) .expect("a free number")	linux,macos,windows	a free number
+crates/ely-documents/src/document/block/insert.rs	expect_used	(1..=ix) .find(|j| { let held = span(here.path[*j]); line <= held.start && held.end <= last }) .expect("the block lies on its lines")	linux,macos,windows	the block lies on its lines
+crates/ely-documents/src/document/block/insert.rs	expect_used	inside(text, line, &room.containers).expect("a blank line holds its prefix")	linux,macos,windows	a blank line holds its prefix
+crates/ely-documents/src/document/block/list.rs	expect_used	first.expect("a boxed item has text")	linux,macos,windows	a boxed item has text
+crates/ely-documents/src/document/block/list.rs	expect_used	inside(here.text, line, &here.containers(path.len())) .expect("a blank line holds its prefix")	linux,macos,windows	a blank line holds its prefix
+crates/ely-documents/src/document/block/list.rs	expect_used	next_line(text, start).expect("an item's text lies below")	linux,macos,windows	an item's text lies below
+crates/ely-documents/src/document/block/list.rs	expect_used	next_line(text, whole.end).expect("a joining line follows")	linux,macos,windows	a joining line follows
+crates/ely-documents/src/document/block/list.rs	expect_used	text[line..kid].rfind('[').expect("a task's box")	linux,macos,windows	a task's box
+crates/ely-documents/src/document/block/quote.rs	expect_used	inside(here.text, line, &here.containers(here.path.len())) .expect("a blank line holds its prefix")	linux,macos,windows	a blank line holds its prefix
+crates/ely-documents/src/document/block/quote.rs	expect_used	next_line(text, whole.end).expect("a joining line follows")	linux,macos,windows	a joining line follows
+crates/ely-documents/src/document/block/split.rs	expect_used	prev_line(text, line).expect("a line above the floor")	linux,macos,windows	a line above the floor
+crates/ely-documents/src/document/cells.rs	expect_used	cell.children().expect("a cell holds inlines")	linux,macos,windows	a cell holds inlines
+crates/ely-documents/src/document/cells.rs	expect_used	row.children().expect("a row holds cells")	linux,macos,windows	a row holds cells
+crates/ely-documents/src/document/edit.rs	expect_used	self.waiting.take().expect("checked above")	linux,macos,windows	the early return above leaves it set
+crates/ely-documents/src/document/finding.rs	expect_used	self.showing.take().expect("checked above")	linux,macos,windows	the early return above leaves it set
+crates/ely-documents/src/document/format.rs	expect_used	marks(node, text).expect("a styled node has marks")	linux,macos,windows	a styled node has marks
+crates/ely-documents/src/document/format.rs	expect_used	marks(node, text).expect("a styled node has marks")	linux,macos,windows	a styled node has marks
+crates/ely-documents/src/document/format.rs	unreachable	unreachable!("clear writes no marks")	linux,macos,windows	clear writes no marks
+crates/ely-documents/src/document/lists.rs	expect_used	rest[..digits].parse().expect("ascii digits")	linux,macos,windows	the run was counted over ASCII digits, nine at most
+crates/ely-documents/src/document/mod.rs	expect_used	this.update(cx, |document, cx| document.reveal_at(at, window, cx)) .expect("a heading list lives in its document")	linux,macos,windows	a heading list lives in its document
+crates/ely-documents/src/document/parse.rs	expect_used	root .children() .expect("the root holds the blocks")	linux,macos,windows	the root holds the blocks
+crates/ely-documents/src/document/place.rs	expect_used	anchors.get(index).expect("an anchor per heading read")	linux,macos,windows	an anchor per heading read
+crates/ely-documents/src/document/point.rs	expect_used	document .update(cx, |document, cx| { // The open cell's padding keeps its typing. let open = match pointed.place { Place::Cell(cell) => document.open_cell(&block) == Some(cell), _ => false, }; match (button, open) { (MouseButton::Left, true) => document.cell_end(window, cx), (MouseButton::Right, true) => document.point_open(None, cx), (MouseButton::Left, false) => document.open(ix, landing, window, cx), (MouseButton::Right, false) => document.point(ix, at, pointed, window, cx), _ => {} } }) .expect("a block's drawing lives in its document")	linux,macos,windows	a block's drawing lives in its document
+crates/ely-documents/src/document/point.rs	unreachable	unreachable!("{other:?} is no block outside MDX")	linux,macos,windows	{other:?} is no block outside MDX
+crates/ely-documents/src/document/tables.rs	expect_used	cell.children().expect("a cell holds inlines")	linux,macos,windows	a cell holds inlines
+crates/ely-documents/src/document/tables.rs	expect_used	cell.children().expect("a cell holds inlines")	linux,macos,windows	a cell holds inlines
+crates/ely-documents/src/document/tables.rs	expect_used	row.children().expect("a row holds cells")	linux,macos,windows	a row holds cells
+crates/ely-documents/src/format.rs	expect_used	format.mark().expect("an inline format has a mark")	linux,macos,windows	an inline format has a mark
+crates/ely-documents/src/format.rs	unreachable	unreachable!("an inline format has no prefix")	linux,macos,windows	an inline format has no prefix
+crates/ely-documents/src/markdown.rs	expect_used	root.children() .expect("the root holds the blocks")	linux,macos,windows	the root holds the blocks
+crates/ely-documents/src/markdown.rs	expect_used	span.chars().next().expect("a styled span has its marker")	linux,macos,windows	a styled span has its marker
+crates/ely-documents/src/markdown/build.rs	expect_used	String::from_utf8(bytes).expect("LF for CR keeps UTF-8")	linux,macos,windows	LF for CR keeps UTF-8
+crates/ely-documents/src/markdown/build.rs	expect_used	item.expect("a task box sits in an item")	linux,macos,windows	a task box sits in an item
+crates/ely-documents/src/markdown/build.rs	expect_used	self.stack.last().expect("the root frame stays")	linux,macos,windows	the root frame stays
+crates/ely-documents/src/markdown/build.rs	expect_used	self.stack.last_mut().expect("the root frame stays")	linux,macos,windows	the root frame stays
+crates/ely-documents/src/markdown/build.rs	expect_used	self.stack.pop().expect("an end has its start")	linux,macos,windows	an end has its start
+crates/ely-documents/src/markdown/build.rs	expect_used	self.stack.pop().expect("an implicit paragraph")	linux,macos,windows	an implicit paragraph
+crates/ely-documents/src/markdown/build.rs	expect_used	self.stack.pop().expect("the root frame stays")	linux,macos,windows	the root frame stays
+crates/ely-documents/src/markdown/build.rs	unreachable	unreachable!("HTML lines sit in an HTML block")	linux,macos,windows	HTML lines sit in an HTML block
+crates/ely-documents/src/markdown/build.rs	unreachable	unreachable!("alt text belongs to an image")	linux,macos,windows	alt text belongs to an image
+crates/ely-documents/src/markdown/build/node.rs	expect_used	u32::try_from(start).expect("a list starts at nine digits at most")	linux,macos,windows	a list starts at nine digits at most
+crates/ely-documents/src/markdown/build/node.rs	unreachable	unreachable!("the root closes at the end")	linux,macos,windows	the root closes at the end
+crates/ely-documents/src/markdown/build/node.rs	unreachable	unreachable!("{other:?} is off in the parser's options")	linux,macos,windows	{other:?} is off in the parser's options
+crates/ely-documents/src/markdown/build/text.rs	expect_used	stretch.as_mut().expect("a stretch to join")	linux,macos,windows	a stretch to join
+crates/ely-documents/src/markdown/front.rs	expect_used	String::from_utf8(blanked).expect("spaces and line ends are UTF-8")	linux,macos,windows	spaces and line ends are UTF-8
+crates/ely-documents/src/markdown/shape.rs	expect_used	(1..written.len() - 1) .rev() .find(|ix| written.as_bytes()[*ix] == b'[' && !escaped(written, *ix)) .expect("a full reference ends in its label")	linux,macos,windows	a full reference ends in its label
+crates/ely-documents/src/markdown/shape.rs	expect_used	parent .children_mut() .expect("a definition sits in a container")	linux,macos,windows	a definition sits in a container
+crates/ely-documents/src/markdown/shape.rs	expect_used	root.children_mut().expect("the root holds blocks")	linux,macos,windows	the root holds blocks
+crates/ely-documents/src/markdown/tex.rs	expect_used	(math.value.strip_prefix(pad)) .and_then(|value| value.strip_suffix(pad)) .expect("a swapped pair keeps its pads")	linux,macos,windows	a swapped pair keeps its pads
+crates/ely-documents/src/markdown/tex.rs	expect_used	String::from_utf8(swapped).expect("ASCII swaps keep UTF-8")	linux,macos,windows	ASCII swaps keep UTF-8
+crates/ely-documents/src/modes.rs	expect_used	MarkdownMode::ALL .into_iter() .find(|(_, named)| *named == name.as_ref()) .expect("a segment names a mode")	linux,macos,windows	a segment names a mode
+crates/ely-documents/src/modes.rs	expect_used	Self::ALL .iter() .find(|(mode, _)| *mode == self) .map(|(_, name)| *name) .expect("every mode is named")	linux,macos,windows	every mode is named
+crates/ely-documents/src/print.rs	expect_used	MARGINS .into_iter() .find(|(_, named)| *named == name.as_ref()) .expect("listed margins")	linux,macos,windows	a name the select offers from MARGINS
+crates/ely-documents/src/print.rs	expect_used	MARGINS .iter() .find(|(margins, _)| *margins == settings.margins) .expect("known margins")	linux,macos,windows	every margin setting is in MARGINS
+crates/ely-documents/src/print.rs	expect_used	PAPERS .into_iter() .find(|(_, named)| *named == name.as_ref()) .expect("a listed paper")	linux,macos,windows	a listed paper
+crates/ely-documents/src/print.rs	expect_used	PAPERS .iter() .find(|(paper, _)| *paper == settings.paper) .expect("a known paper")	linux,macos,windows	a known paper
+crates/ely-documents/src/reading.rs	expect_used	term .chars() .next() .expect("a glossary term has a first letter")	linux,macos,windows	a glossary term has a first letter
+crates/ely-documents/src/reading.rs	expect_used	term .chars() .next() .expect("a glossary term has a first letter") .to_uppercase() .next() .expect("a letter has an upper case")	linux,macos,windows	a letter has an upper case
+crates/ely-documents/src/render/blocks.rs	expect_used	top.expect("a heading is listed")	linux,macos,windows	a heading is listed
+crates/ely-documents/src/suggest.rs	unreachable	unreachable!("an empty offer has no row")	linux,macos,windows	an empty offer has no row
+crates/ely-documents/src/tree/html.rs	expect_used	named(name, false).expect("a legacy name")	linux,macos,windows	a legacy name
+crates/ely-documents/src/tree/mod.rs	expect_used	cell.children().expect("a cell holds inlines")	linux,macos,windows	a cell holds inlines
+crates/ely-documents/src/tree/mod.rs	expect_used	root.children().expect("the root holds the blocks")	linux,macos,windows	the root holds the blocks
+crates/ely-documents/src/tree/mod.rs	expect_used	rows.next().expect("a table has its head row")	linux,macos,windows	a table has its head row
+crates/ely-documents/src/tree/mod.rs	expect_used	self.urls .get(identifier) .cloned() .expect("a reference names a definition")	linux,macos,windows	a reference names a definition
+crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("a list holds items, not {other:?}")	linux,macos,windows	a list holds items, not {other:?}
+crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("a table holds rows, not {other:?}")	linux,macos,windows	a table holds rows, not {other:?}
+crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("matched as an image")	linux,macos,windows	matched as an image
+crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("{other:?} is no block outside MDX")	linux,macos,windows	{other:?} is no block outside MDX
+crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("{other:?} is no inline outside MDX")	linux,macos,windows	{other:?} is no inline outside MDX
+crates/ely-documents/src/tree/stack.rs	expect_used	self .open .iter() .rposition(|opened| opened.name == name) .expect("a counted name is open")	linux,macos,windows	a counted name is open
+crates/ely-documents/src/tree/stack.rs	expect_used	self.named.get_mut(&opened.name).expect("counted")	linux,macos,windows	each open element was counted in named when it opened
+crates/ely-documents/src/viewer.rs	expect_used	scroll .bounds_for_item(hit.page) .expect("the hit's page is laid out")	linux,macos,windows	the hit's page is laid out
+crates/ely-editor/src/line.rs	expect_used	all.last_mut().expect("an editor keeps a cursor")	linux,macos,windows	an editor keeps a cursor
+crates/ely-editor/src/line.rs	expect_used	all.last_mut().expect("an editor keeps a cursor")	linux,macos,windows	an editor keeps a cursor
+crates/ely-editor/src/measure.rs	expect_used	starts .chain([(self.text.len(), self.layout.width)]) .min_by(|a, b| off(a.1).total_cmp(&off(b.1))) .map(|(at, _)| at.min(self.text.len())) .expect("the line end is always a stop")	linux,macos,windows	the line end is always a stop
+crates/ely-editor/src/row.rs	expect_used	self .marks .ghost .as_ref() .expect("a ghost row has its ghost")	linux,macos,windows	a ghost row has its ghost
+crates/ely-editor/src/settings.rs	expect_used	serde_json::Number::from_f64(*value) .map(serde_json::Value::Number) .expect("a setting's number is finite")	linux,macos,windows	a setting's number is finite
+crates/ely-editor/src/settings.rs	expect_used	serde_json::to_string_pretty(&serde_json::Value::Object(map)).expect("settings serialize")	linux,macos,windows	a JSON object of plain values serializes
+crates/ely-editor/src/state.rs	expect_used	self.selections.last().expect("an editor keeps a cursor")	linux,macos,windows	an editor keeps a cursor
+crates/ely-editor/src/symbols.rs	expect_used	lines .iter() .find(|(key, _)| key == picked) .map(|(_, line)| *line) .expect("a picked symbol is in the outline")	linux,macos,windows	a picked symbol is in the outline
+crates/ely-editor/src/symbols.rs	expect_used	value.parse().expect("a symbol row carries its line")	linux,macos,windows	a symbol row carries its line
+crates/ely-editor/src/welcome.rs	expect_used	value.parse().expect("a project row carries its place")	linux,macos,windows	a project row carries its place
+crates/ely-files/src/archive.rs	expect_used	entries .iter() .find(|entry| entry.path == *key) .expect("a leaf is a listed file")	linux,macos,windows	a leaf is a listed file
+crates/ely-files/src/archive.rs	expect_used	entries .iter() .find(|entry| entry.path.as_ref() == path) .expect("a listed entry")	linux,macos,windows	a listed entry
+crates/ely-files/src/columns.rs	expect_used	opened[depth] .iter() .find(|entry| entry.name() == name) .expect("a listed entry")	linux,macos,windows	a listed entry
+crates/ely-files/src/columns.rs	expect_used	picked[depth] .iter() .find(|entry| entry.name() == name) .expect("a listed entry")	linux,macos,windows	a listed entry
+crates/ely-files/src/explorer.rs	expect_used	VIEWS .iter() .find(|each| each.0 == self.view) .expect("a listed view")	linux,macos,windows	a listed view
+crates/ely-files/src/explorer.rs	expect_used	VIEWS .iter() .find(|each| each.1 == key.as_ref()) .expect("a listed view")	linux,macos,windows	a listed view
+crates/ely-files/src/explorer.rs	expect_used	levels.last().expect("a listed folder")	linux,macos,windows	a listed folder
+crates/ely-files/src/explorer.rs	expect_used	self.levels.last().expect("a listed folder")	linux,macos,windows	a listed folder
+crates/ely-files/src/recent.rs	expect_used	datetime(file.opened, &zone, "%H:%M").expect("a time formats")	linux,macos,windows	a time formats
+crates/ely-files/src/recent.rs	expect_used	files .iter() .find(|file| file.place() == *key) .expect("a listed file")	linux,macos,windows	a listed file
+crates/ely-files/src/search.rs	expect_used	shown .iter() .find(|file| file.place() == *key) .expect("a listed file")	linux,macos,windows	a listed file
+crates/ely-finance/src/blotter.rs	expect_used	format::datetime(fill.time, &zone, "%b %-d %H:%M") .expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/blotter.rs	expect_used	format::datetime(working.time, &zone, "%H:%M:%S") .expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/calendars.rs	expect_used	format::datetime(release.time, &zone, "%A, %B %-d") .expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/calendars.rs	expect_used	format::datetime(release.time, &zone, "%H:%M") .expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/calendars.rs	expect_used	format::datetime(story.time, &zone, "%b %-d, %H:%M").expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/controls.rs	expect_used	Arrangement::ALL .iter() .find(|(_, listed, _)| *listed == key.as_ref()) .map(|(arrangement, ..)| *arrangement) .expect("listed")	linux,macos,windows	a key the select offers from ALL
+crates/ely-finance/src/controls.rs	expect_used	Arrangement::ALL .iter() .find(|(arrangement, ..)| *arrangement == self.arrangement) .map(|(_, key, _)| *key) .expect("listed")	linux,macos,windows	every arrangement is in ALL
+crates/ely-finance/src/controls.rs	expect_used	KINDS .iter() .find(|(_, listed, ..)| *listed == key.as_ref()) .map(|(kind, ..)| *kind) .expect("a listed kind")	linux,macos,windows	a key the select offers from ALL
+crates/ely-finance/src/controls.rs	expect_used	KINDS .iter() .find(|(kind, ..)| *kind == self.kind) .map(|(_, key, ..)| *key) .expect("every kind is listed")	linux,macos,windows	every kind is listed
+crates/ely-finance/src/depth.rs	expect_used	asks.last().expect("asks")	linux,macos,windows	new refuses an empty side
+crates/ely-finance/src/depth.rs	expect_used	bids .last() .expect("bids")	linux,macos,windows	new refuses an empty side
+crates/ely-finance/src/draw.rs	expect_used	high[*ix].expect("shown")	linux,macos,windows	shown keeps only indexes where low and high are both set
+crates/ely-finance/src/draw.rs	expect_used	high[shown[0]].expect("shown")	linux,macos,windows	shown keeps only indexes where low and high are both set
+crates/ely-finance/src/draw.rs	expect_used	low[*ix].expect("shown")	linux,macos,windows	shown keeps only indexes where low and high are both set
+crates/ely-finance/src/indicators.rs	expect_used	value.expect("readings run on once they start")	linux,macos,windows	readings run on once they start
+crates/ely-finance/src/labels.rs	expect_used	format::datetime(candle.time, zone, pattern).expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/renko.rs	expect_used	datetime(self.candles[brick.at].time, &zone, "%b %-d, %Y") .expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/tape.rs	expect_used	datetime(trade.time, &zone, "%H:%M:%S").expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-finance/src/tools.rs	expect_used	TOOLS .iter() .find(|(tool, ..)| *tool == self.tool) .map(|(_, key, ..)| *key) .expect("every tool is listed")	linux,macos,windows	every tool is listed
+crates/ely-finance/src/wallet.rs	expect_used	format::datetime(transfer.time, &zone, "%b %-d, %H:%M") .expect("a fixed pattern")	linux,macos,windows	a fixed pattern
+crates/ely-generative/src/embed.rs	expect_used	groups .iter() .position(|group| group == name) .expect("a listed group")	linux,macos,windows	a listed group
+crates/ely-generative/src/seed.rs	expect_used	text.parse().expect("a seed field holds digits")	linux,macos,windows	a seed field holds digits
+crates/ely-git/src/diff.rs	expect_used	group.first().expect("a group holds ops")	linux,macos,windows	a group holds ops
+crates/ely-git/src/diff.rs	expect_used	group.last().expect("a group holds ops")	linux,macos,windows	a group holds ops
+crates/ely-git/src/merging.rs	expect_used	line(ix) .expect("a region's lines are in its text")	linux,macos,windows	a region's lines are in its text
+crates/ely-git/src/merging.rs	unreachable	unreachable!("a merge resolution this crate does not know: {other:?}")	linux,macos,windows	a merge resolution this crate does not know: {other:?}
+crates/ely-mail/src/item.rs	expect_used	at .date() .until(now.date()) .expect("two dates have a span")	linux,macos,windows	two dates have a span
+crates/ely-mail/src/reader.rs	expect_used	format::datetime(at, zone, "%H:%M").expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
+crates/ely-mail/src/send.rs	expect_used	today.tomorrow().expect("a day follows today")	linux,macos,windows	a day follows today
+crates/ely-mail/src/snooze.rs	expect_used	today .nth_weekday(1, Weekday::Saturday) .expect("a Saturday lies ahead")	linux,macos,windows	a Saturday lies ahead
+crates/ely-mail/src/snooze.rs	expect_used	today.tomorrow().expect("a day follows today")	linux,macos,windows	a day follows today
+crates/ely-mail/src/times.rs	expect_used	ahead.expect("the action waits for a time ahead")	linux,macos,windows	the action waits for a time ahead
+crates/ely-mail/src/times.rs	expect_used	day.at(hour, 0, 0, 0) .to_zoned(zone.clone()) .expect("the zone holds the hour")	linux,macos,windows	the zone holds the hour
+crates/ely-mail/src/times.rs	expect_used	day.checked_add(ahead.days()).expect("a Monday lies ahead")	linux,macos,windows	a Monday lies ahead
+crates/ely-mail/src/times.rs	expect_used	format::datetime(at, zone, "%a %H:%M").expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
+crates/ely-maps/src/tile.rs	expect_used	RgbaImage::from_raw(w, h, bytes).expect("a frame's bytes fill its size")	linux,macos,windows	a frame's bytes fill its size
+crates/ely-maps/src/tile.rs	expect_used	image.as_bytes(ix).expect("a frame in range")	linux,macos,windows	a frame in range
+crates/ely-maps/src/tile.rs	panic	panic!( "map tile {:?}: a web address, a file or a picture drawn in code", laid.tile )	linux,macos,windows	builder misuse: a tile is a file or a picture drawn in code
+crates/ely-maps/src/world.rs	expect_used	read_geojson(include_str!("../assets/countries.geojson")) .expect("the bundled countries read")	linux,macos,windows	the bundled countries read
+crates/ely-media/src/annotate.rs	expect_used	TOOLS .iter() .find(|(_, key, ..)| *key == value.as_ref()) .expect("a listed tool")	linux,macos,windows	a listed tool
+crates/ely-media/src/annotate.rs	expect_used	TOOLS .iter() .find(|(each, ..)| *each == tool) .expect("a listed tool")	linux,macos,windows	a listed tool
+crates/ely-media/src/player.rs	expect_used	SPEEDS .iter() .position(|each| *each == speed) .expect("a listed speed")	linux,macos,windows	a listed speed
+crates/ely-media/src/subtitles.rs	expect_used	(cues.len() + 1..) .map(|n| format!("cue-{n}")) .find(|key| !taken(key)) .expect("a free key")	linux,macos,windows	a free key
+crates/ely-media/src/subtitles.rs	expect_used	next .iter_mut() .find(|cue| cue.key == key) .expect("a listed cue")	linux,macos,windows	a listed cue
+crates/ely-media/src/turn.rs	expect_used	RgbaImage::from_raw(size.width.0 as u32, size.height.0 as u32, bytes) .expect("a frame's bytes fill its size")	linux,macos,windows	a frame's bytes fill its size
+crates/ely-media/src/turn.rs	expect_used	image.as_bytes(ix).expect("a frame in range")	linux,macos,windows	a frame in range
+crates/ely-media/src/upload.rs	expect_used	opened.expect("an opened picture has its shape")	linux,macos,windows	an opened picture has its shape
+crates/ely-messaging/src/messages.rs	expect_used	format::datetime(self.at, &zone, "%H:%M").expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
+crates/ely-messaging/src/people.rs	expect_used	format::datetime(Timestamp::now(), &zone, "%H:%M") .expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
+crates/ely-messaging/src/pins.rs	expect_used	keys.first().expect("a pick names a message")	linux,macos,windows	a pick names a message
+crates/ely-messaging/src/status.rs	expect_used	key["suggestion-".len()..] .parse() .expect("a suggestion's key holds its place")	linux,macos,windows	a suggestion's key holds its place
+crates/ely-messaging/src/status.rs	expect_used	keys.first().expect("a pick names a suggestion")	linux,macos,windows	a pick names a suggestion
+crates/ely-messaging/src/status.rs	panic	panic!("no clear after {label}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-messaging/src/tiles.rs	expect_used	(1..=count) .find(|columns| columns * columns >= count) .expect("a call holds a tile")	linux,macos,windows	a call holds a tile
+crates/ely-misc/src/export.rs	panic	panic!("export dialog {id:?} has no formats")	linux,macos,windows	builder misuse: an export dialog with no format
+crates/ely-misc/src/import.rs	expect_used	value.parse().expect("a column's place")	linux,macos,windows	a column's place
+crates/ely-misc/src/licenses.rs	expect_used	key.parse().expect("a package's place")	linux,macos,windows	a package's place
+crates/ely-misc/src/poll.rs	expect_used	picked.expect("Vote waits for a pick")	linux,macos,windows	Vote waits for a pick
+crates/ely-misc/src/poll.rs	expect_used	value.parse().expect("an option's place")	linux,macos,windows	an option's place
+crates/ely-misc/src/quiz.rs	expect_used	value.parse().expect("an option's place")	linux,macos,windows	an option's place
+crates/ely-misc/src/survey.rs	expect_used	sheet.fields[ix].as_ref().expect("a field for words")	linux,macos,windows	a field for words
+crates/ely-misc/src/survey.rs	expect_used	sheet.read(cx).fields[ix] .clone() .expect("a field for words")	linux,macos,windows	a field for words
+crates/ely-misc/src/survey.rs	expect_used	value.parse().expect("an option's place")	linux,macos,windows	an option's place
+crates/ely-misc/src/units.rs	panic	panic!("unit converter: no kind {name}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-misc/src/units.rs	panic	panic!("unit converter: no unit named {name}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-onboarding/src/feedback.rs	expect_used	sentiment.expect("Send rests until a face is picked")	linux,macos,windows	Send rests until a face is picked
+crates/ely-onboarding/src/feedback.rs	panic	panic!("no sentiment {key}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-onboarding/src/support.rs	expect_used	chosen.clone().expect("Send rests until a topic is chosen")	linux,macos,windows	Send rests until a topic is chosen
+crates/ely-project/src/board.rs	expect_used	distance(a) .partial_cmp(&distance(b)) .expect("distances are numbers")	linux,macos,windows	distances are numbers
+crates/ely-project/src/board.rs	expect_used	held.as_ref().expect("a slot holds a card")	linux,macos,windows	a slot holds a card
+crates/ely-project/src/board.rs	expect_used	held.as_ref().expect("a slot holds a card")	linux,macos,windows	a slot holds a card
+crates/ely-project/src/board.rs	expect_used	reveals.remove(&key).expect("each card has a reveal")	linux,macos,windows	each card has a reveal
+crates/ely-project/src/database.rs	expect_used	task.due.expect("dated")	linux,macos,windows	the filter above keeps tasks with both dates
+crates/ely-project/src/database.rs	expect_used	task.start.expect("dated")	linux,macos,windows	the filter above keeps tasks with both dates
+crates/ely-project/src/database.rs	panic	panic!("no database layout {words}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-project/src/labels.rs	expect_used	chart .iter() .position(|each| *each == color) .expect("a hue of the chart")	linux,macos,windows	a hue of the chart
+crates/ely-project/src/milestone.rs	expect_used	to.since(from).expect("days between two dates")	linux,macos,windows	days between two dates
+crates/ely-project/src/roadmap.rs	expect_used	Date::MAX.since(self.first).expect("days of the roadmap")	linux,macos,windows	days of the roadmap
+crates/ely-project/src/roadmap.rs	expect_used	day.since(first).expect("days between two dates")	linux,macos,windows	days between two dates
+crates/ely-project/src/roadmap.rs	expect_used	end.since(self.first) .expect("days of the roadmap")	linux,macos,windows	days of the roadmap
+crates/ely-project/src/roadmap.rs	expect_used	end.yesterday().expect("a day before a later one")	linux,macos,windows	a day before a later one
+crates/ely-project/src/work.rs	expect_used	due.since(today).expect("days between two dates")	linux,macos,windows	days between two dates
+crates/ely-project/src/work.rs	panic	panic!("no priority {key}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-project/src/work.rs	panic	panic!("no status {key}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-settings/src/appearance.rs	expect_used	Appearance::ALL .iter() .find(|(_, words, _)| *words == value.as_ref()) .expect("an appearance the control offers")	linux,macos,windows	an appearance the control offers
+crates/ely-settings/src/appearance.rs	expect_used	Appearance::ALL .iter() .find(|(each, _, _)| *each == self.appearance) .expect("every appearance is offered")	linux,macos,windows	every appearance is offered
+crates/ely-settings/src/appearance.rs	expect_used	DENSITIES .iter() .find(|(_, words)| *words == value.as_ref()) .expect("a density the control offers")	linux,macos,windows	a density the control offers
+crates/ely-settings/src/appearance.rs	expect_used	DENSITIES .iter() .find(|(each, _)| *each == self.density) .expect("every density is offered")	linux,macos,windows	every density is offered
+crates/ely-settings/src/appearance.rs	expect_used	u16::try_from(self.presets.len()).expect("a handful of presets")	linux,macos,windows	a handful of presets
+crates/ely-settings/src/importer.rs	expect_used	paths.first().expect("a drop brings a file")	linux,macos,windows	a drop brings a file
+crates/ely-settings/src/network.rs	expect_used	read.clone().expect("Apply rests until the proxy reads")	linux,macos,windows	Apply rests until the proxy reads
+crates/ely-settings/src/network.rs	panic	panic!("proxy settings: no way named {other}")	linux,macos,windows	a value the component's own select offers, from the same table
+crates/ely-terminal/src/links.rs	expect_used	Regex::new(r"(?:\.{1,2}/|/|~/)?(?:[\w.-]+/)+[\w.-]+\.\w+(?::(\d+))?(?::(\d+))?") .expect("the path pattern compiles")	linux,macos,windows	the path pattern compiles
+crates/ely-terminal/src/links.rs	expect_used	Regex::new(r#"\b(?:https?|file)://[^\s<>"'`]+"#).expect("the URL pattern compiles")	linux,macos,windows	the URL pattern compiles
+crates/ely-terminal/src/links.rs	expect_used	hit.get(0).expect("a capture has its match")	linux,macos,windows	a capture has its match
+crates/ely-terminal/src/logs.rs	expect_used	LEVELS .into_iter() .find(|level| level.word() == word.as_ref()) .expect("a segment names a level")	linux,macos,windows	a segment names a level
+crates/ely-terminal/src/processes.rs	expect_used	key.parse().expect("a process row is keyed by its pid")	linux,macos,windows	a process row is keyed by its pid
+crates/ely-tooling/src/playground.rs	panic	panic!("playground knob {name} is {other:?}, not a choice")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)
+crates/ely-tooling/src/playground.rs	panic	panic!("playground knob {name} is {other:?}, not a number")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)
+crates/ely-tooling/src/playground.rs	panic	panic!("playground knob {name} is {other:?}, not a switch")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)
+crates/ely-tooling/src/playground.rs	panic	panic!("playground knob {name}: no option {at}")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)
+crates/ely-tooling/src/playground.rs	panic	panic!("playground: no knob named {name}")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)

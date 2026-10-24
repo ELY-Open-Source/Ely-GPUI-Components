@@ -437,3 +437,8 @@
 | T56 C8 | 1 | FAIL | MapPopup, drawn by MapView, had no example; a render census missed it |
 | T56 C8 | 2 | PASS | 1,098 items in 17 crates documented, deny(missing_docs) on each and the root; 215 examples plus MapPopup, AccordionItem and ShellColumn; docs.rs build in check.sh and CI's Linux leg |
 | T56 D1 | 1 | PASS | three apps in tests/ on the public API and init_for_tests: a form, folders beside a table, a workspace with a dialog and toasts; check.sh and CI run them |
+| T56 D2 | 1 | FAIL | chained expects shared a key; Ely's macros, #[allow], wasm-only code and commented-out sites escaped; Locale::date's reason false |
+| T56 D2 | 2 | FAIL | the text scanner misread macro delimiters, strings, nested comments, test modules and two sites on a line |
+| T56 D2 | 3 | FAIL | containment dropped a macro-body panic inside an expect; include!'s absolute paths were skipped |
+| T56 D2 | 4 | FAIL | an expect ident passed into a macro, inside an outer expect, counted once |
+| T56 D2 | 5 | PASS | scripts/panics.py force-warns expect_used, panic and unreachable, with disallowed_macros and disallowed_methods for macro bodies, natively and for wasm32; 402 sites with reasons and hosts in scripts/panics.tsv; fails on new, gone, no reason and a rise at PANICS_BASE; check.sh and CI on three hosts |

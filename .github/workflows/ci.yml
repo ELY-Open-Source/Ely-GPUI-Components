@@ -11,13 +11,18 @@ jobs:
     runs-on: [self-hosted, macos-arm64]
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: "1.95"
           components: clippy, rustfmt
           targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
+      # panics.py counts against the PR's base or the commit before the push.
       - run: scripts/check.sh
+        env:
+          PANICS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
 
   platforms:
     strategy:
@@ -28,9 +33,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: "1.95"
+          components: clippy
+          targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
       # gpui's Wayland and X11 backends link xkbcommon and fontconfig.
       - if: runner.os == 'Linux'
@@ -44,6 +53,11 @@ jobs:
         run: cargo doc --workspace --exclude ely-gallery --no-deps --quiet
         env:
           RUSTDOCFLAGS: --cfg docsrs -D warnings
+      # Each host compiles its own platform code, so each counts its own sites.
+      - run: ${{ runner.os == 'Windows' && 'python' || 'python3' }} scripts/panics.py
+        shell: bash
+        env:
+          PANICS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       - run: cargo build -p ely-gallery
 
   site:
