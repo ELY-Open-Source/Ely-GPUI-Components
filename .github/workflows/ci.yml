@@ -98,6 +98,31 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
 
+  deny:
+    # Licenses each dependency carries, RustSec advisories, registries and git sources (deny.toml).
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          # The root is a package too, so the gallery and its dependencies need --workspace.
+          arguments: --workspace --all-features
+          command: check
+
+  msrv:
+    # The workspace builds on the Rust its manifest declares, whatever the other jobs take.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - id: msrv
+        run: echo "rust=$(sed -n 's/^rust-version = \"\(.*\)\"$/\1/p' Cargo.toml)" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.msrv.outputs.rust }}
+      - uses: Swatinem/rust-cache@v2
+      - run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
+      - run: cargo check --workspace --all-targets --all-features --locked
+
   bench:
     runs-on: ubuntu-24.04
     steps:
