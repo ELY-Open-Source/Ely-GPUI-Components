@@ -1,9 +1,11 @@
 #!/bin/sh
 # Pre-review gate: build rules plus house rules.
 set -eu
+# Windows names its Python python.
+py=$(command -v python3 || command -v python) || { echo "no python3 or python on PATH" >&2; exit 1; }
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
-python3 scripts/panics.py
+"$py" scripts/panics.py
 cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
 cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
 cargo test -p ely-gpui-component --all-features --test '*' --quiet
@@ -25,7 +27,7 @@ rustup target list --installed | grep -qx wasm32-unknown-unknown || {
 # gpui_web's wasm_thread asks for an unstable feature, as in scripts/web.sh.
 RUSTC_BOOTSTRAP=1 ELY_GALLERY_ASSETS=https://example.invalid/ \
   cargo clippy -p ely-gallery --target wasm32-unknown-unknown -- -D warnings
-python3 scripts/stories.py --check
+"$py" scripts/stories.py --check
 fail=0
 # A Button-only app needs ely-core alone; zbus comes with gpui's Linux backend.
 for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify; do

@@ -6,9 +6,13 @@ on:
   pull_request:
 
 jobs:
-  crate:
-    # The Mac mini runs the whole gate: the house rules, the Kit compat crate and the wasm32 lint.
-    runs-on: [self-hosted, macos-arm64]
+  gate:
+    # The whole gate on each hosted OS: house rules, tests, docs, the panic list, the Kit compat crate, the wasm32 lint.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -19,42 +23,11 @@ jobs:
           components: clippy, rustfmt
           targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
-      # panics.py counts against the PR's base or the commit before the push.
-      - run: scripts/check.sh
-        env:
-          PANICS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-
-  platforms:
-    strategy:
-      fail-fast: false
-      matrix:
-        # GitHub-hosted runners; macOS arm64 is the crate job above.
-        os: [ubuntu-24.04, windows-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: "1.95"
-          components: clippy
-          targets: wasm32-unknown-unknown
-      - uses: Swatinem/rust-cache@v2
       # gpui's Wayland and X11 backends link xkbcommon and fontconfig.
       - if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
-      # Hosted runners test as a plain user, so the file permissions the tests check hold.
-      - run: cargo test --workspace --exclude ely-gallery --lib --all-features --quiet
-      - run: cargo test --workspace --exclude ely-gallery --doc --all-features --quiet
-      - run: cargo test -p ely-gpui-component --all-features --test '*' --quiet
-      # docs.rs builds on Linux with default features and `docsrs` set.
-      - if: runner.os == 'Linux'
-        run: cargo doc --workspace --exclude ely-gallery --no-deps --quiet
-        env:
-          RUSTDOCFLAGS: --cfg docsrs -D warnings
-      # Each host compiles its own platform code, so each counts its own sites.
-      - run: ${{ runner.os == 'Windows' && 'python' || 'python3' }} scripts/panics.py
+      # Hosted runners test as a plain user, so the file permissions the tests check hold; each host counts its own panic sites.
+      - run: sh scripts/check.sh
         shell: bash
         env:
           PANICS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
