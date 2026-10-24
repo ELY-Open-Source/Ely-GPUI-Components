@@ -89,6 +89,11 @@ required-features = ["test-support"]
 name = "workspace"
 required-features = ["test-support"]
 
+[[bench]]
+name = "budget"
+harness = false
+required-features = ["test-support"]
+
 [features]
 default = ["runtime_shaders", "fonts"]
 fonts = ["ely-core/fonts"]
@@ -128,6 +133,9 @@ ely-terminal.workspace = true
 ely-tooling.workspace = true
 anyhow.workspace = true
 gpui.workspace = true
+
+[dev-dependencies]
+criterion = { version = "0.8", default-features = false, features = ["cargo_bench_support"] }
 
 [lints]
 workspace = true

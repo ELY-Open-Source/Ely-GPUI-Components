@@ -24,6 +24,29 @@ fn replayed_output_shows_without_its_codes(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn a_scroll_redraws_once(cx: &mut TestAppContext) {
+    use alacritty_terminal::grid::Scroll;
+    use std::{cell::Cell, rc::Rc};
+    let (terminal, cx) = replayed(
+        b"1
+2
+3
+4
+5
+6
+7",
+        cx,
+    );
+    let notes = Rc::new(Cell::new(0));
+    let counted = notes.clone();
+    let _watch =
+        cx.update(|_, cx| cx.observe(&terminal, move |_, _| counted.set(counted.get() + 1)));
+    terminal.update(cx, |terminal, cx| terminal.scroll(Scroll::Delta(1), cx));
+    cx.run_until_parked();
+    assert_eq!(notes.get(), 1, "the grid's cursor note draws nothing");
+}
+
+#[gpui::test]
 fn find_counts_matches_and_steps_round(cx: &mut TestAppContext) {
     let (terminal, cx) = replayed(b"one two one\r\nthree one", cx);
     terminal.update(cx, |terminal, cx| {

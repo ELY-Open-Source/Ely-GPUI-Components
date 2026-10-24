@@ -442,3 +442,5 @@
 | T56 D2 | 3 | FAIL | containment dropped a macro-body panic inside an expect; include!'s absolute paths were skipped |
 | T56 D2 | 4 | FAIL | an expect ident passed into a macro, inside an outer expect, counted once |
 | T56 D2 | 5 | PASS | scripts/panics.py force-warns expect_used, panic and unreachable, with disallowed_macros and disallowed_methods for macro bodies, natively and for wasm32; 402 sites with reasons and hosts in scripts/panics.tsv; fails on new, gone, no reason and a rise at PANICS_BASE; check.sh and CI on three hosts |
+| T56 D3 | 1 | FAIL | the virtualized table had no height of its own, so the wheel scrolled nothing; a forced frame after each input drew twice |
+| T56 D3 | 2 | PASS | benches/budget.rs: table, editor, terminal and Markdown on gpui's test platform, each input held to one draw at setup; scripts/bench.py budgets and a 10% rise; CI's bench job compares base and head on one runner; Terminal::handle no longer redraws on alacritty's cursor note, so a scroll draws once |

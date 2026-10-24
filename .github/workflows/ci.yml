@@ -60,6 +60,34 @@ jobs:
           PANICS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       - run: cargo build -p ely-gallery
 
+  bench:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      # The base benches on this same runner; numbers from two machines do not compare.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.event.before }}
+          path: base
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.95"
+      - uses: Swatinem/rust-cache@v2
+      - run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
+      - shell: bash
+        run: |
+          rm -rf target/criterion
+          bench="cargo bench -p ely-gpui-component --features test-support --bench budget --"
+          if [ -f base/benches/budget.rs ]; then
+            (cd base && CARGO_TARGET_DIR=../target $bench --save-baseline base)
+            $bench --baseline base
+            python3 scripts/bench.py --against base
+          else
+            echo "bench: the base has no benches; budgets only"
+            $bench
+            python3 scripts/bench.py
+          fi
+
   site:
     runs-on: ubuntu-latest
     defaults:

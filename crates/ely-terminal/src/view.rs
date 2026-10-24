@@ -219,6 +219,9 @@ impl Terminal {
     }
 
     fn handle(&mut self, events: Vec<Event>, cx: &mut Context<Self>) {
+        let drawn = events
+            .iter()
+            .any(|event| !matches!(event, Event::MouseCursorDirty | Event::CursorBlinkingChange));
         for event in events {
             match event {
                 Event::Wakeup | Event::MouseCursorDirty | Event::CursorBlinkingChange => {}
@@ -266,7 +269,9 @@ impl Terminal {
                 Event::Exit => log::info!("terminal: the grid closed"),
             }
         }
-        cx.notify();
+        if drawn {
+            cx.notify();
+        }
     }
 }
 

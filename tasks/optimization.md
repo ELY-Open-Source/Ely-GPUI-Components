@@ -61,7 +61,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
   - Owner's call, 2026-10-23: the apps guard what they use; E1's public-API snapshot is what fails on the removal of any item.
 - [x] D2 O-16 clippy `expect_used`, `panic`, `unreachable` on library code; an allow list with reasons; CI counts and fails on a rise.
   - The asserts noted in C7 and C8 (flags, versions, shares and levels past 0 to 1, a thread's comments, event and initiative order, canvas values, readings, plan costs, services, quotas) are callers' contracts `tasks/panics.md` already ruled on (P11, P16, P21–P26, P30–P36): one value checked against itself. They stay.
-- [ ] D3 O-17 criterion benches: 100k-row table scroll, 10k-line editor typing, terminal scrollback, 2 MiB Markdown read; CI fails past 10% regression.
+- [x] D3 O-17 criterion benches: 100k-row table scroll, 10k-line editor typing, terminal scrollback, 2 MiB Markdown read; CI fails past 10% regression.
 - [ ] D4 O-19 Role and name on every interactive component; a test holds the list; VoiceOver walk of form, menu, dialog on the Mac, written down.
 - [ ] D5 O-20 Every declared locale has every key; a test walks them.
   - Found in C6 and C7, for here: fixed English the copy test misses: `ConfirmButton`'s labels, `TimePicker`'s placeholder, `RelativeRange::label`, `ely_agent::AgentState::label`, `ThinkingIndicator`'s "Thinking".
