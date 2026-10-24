@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, rc::Rc};
 
 use gpui::{
     App, ElementId, Entity, IntoElement, PathPromptOptions, RenderOnce, SharedString, Window,
@@ -68,7 +68,10 @@ pub struct PathInput {
     id: ElementId,
     state: Entity<TextInput>,
     directories: bool,
+    on_choose: Option<OnChoose>,
 }
+
+type OnChoose = Rc<dyn Fn(PathBuf, &mut Window, &mut App)>;
 
 impl PathInput {
     /// A field under `id` over `state`, with Browse for files.
@@ -77,7 +80,14 @@ impl PathInput {
             id: id.into(),
             state: state.clone(),
             directories: false,
+            on_choose: None,
         }
+    }
+
+    /// Hands the chosen path whole to `handler`, in place of the field.
+    pub fn on_choose(mut self, handler: impl Fn(PathBuf, &mut Window, &mut App) + 'static) -> Self {
+        self.on_choose = Some(Rc::new(handler));
+        self
     }
 
     /// Chooses folders instead of files.
@@ -90,7 +100,8 @@ impl PathInput {
 impl RenderOnce for PathInput {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let subtle = cx.theme().colors.fg_subtle;
-        let (state, directories) = (self.state.clone(), self.directories);
+        let (state, directories, on_choose) =
+            (self.state.clone(), self.directories, self.on_choose);
         let icon = if directories {
             IconName::Folder
         } else {
@@ -103,7 +114,7 @@ impl RenderOnce for PathInput {
                     .size(ControlSize::Sm)
                     .variant(ButtonVariant::Ghost)
                     .on_click(move |_, window, cx| {
-                        let state = state.clone();
+                        let (state, on_choose) = (state.clone(), on_choose.clone());
                         let options = PathPromptOptions {
                             files: !directories,
                             directories,
@@ -115,12 +126,31 @@ impl RenderOnce for PathInput {
                             options,
                             window,
                             cx,
-                            move |paths, _, cx| {
-                                let shown = paths[0].display().to_string();
-                                state.update(cx, |input, cx| input.set_text(shown, cx));
+                            move |mut paths, window, cx| {
+                                picked(paths.swap_remove(0), &state, on_choose, window, cx)
                             },
                         );
                     }),
             )
+    }
+}
+
+/// `on_choose` takes the chosen path whole; else the field, as UTF-8 text.
+fn picked(
+    path: PathBuf,
+    state: &Entity<TextInput>,
+    on_choose: Option<OnChoose>,
+    window: &mut Window,
+    cx: &mut App,
+) {
+    if let Some(handler) = on_choose {
+        return handler(path, window, cx);
+    }
+    match path.to_str() {
+        Some(text) => state.update(cx, |input, cx| input.set_text(text, cx)),
+        None => log::error!(
+            "path input: {} is not UTF-8, so the field keeps its text",
+            path.display()
+        ),
     }
 }

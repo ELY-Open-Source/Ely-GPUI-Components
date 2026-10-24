@@ -2,6 +2,7 @@ mod choices;
 mod colors;
 mod dates;
 mod other;
+mod path;
 mod popup;
 mod stale;
 mod structure;

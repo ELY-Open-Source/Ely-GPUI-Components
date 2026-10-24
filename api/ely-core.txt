@@ -3453,6 +3453,7 @@ pub fn ely_core::forms::PathInput::directories(self) -> Self
 pub fn ely_core::forms::PathInput::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::forms::PathInput::into_element(self) -> Self::Element
 pub fn ely_core::forms::PathInput::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::TextInput>) -> Self
+pub fn ely_core::forms::PathInput::on_choose(self, impl core::ops::function::Fn(std::path::PathBuf, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::forms::PathInput::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::forms::PhoneInput::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::forms::PhoneInput::into_element(self) -> Self::Element
