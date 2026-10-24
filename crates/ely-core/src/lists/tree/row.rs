@@ -7,7 +7,7 @@ use gpui::{
 };
 
 use super::{
-    DropAt, Nav, OnKey, OnMove, OnPick, OnRow, OnToggle, TreeDrag,
+    DropAt, Nav, OnContext, OnKey, OnMove, OnPick, OnRow, OnToggle, TreeDrag,
     model::{Row, Shown, TreeNode, can_drop, check_state, find, place_at},
 };
 use crate::{
@@ -36,6 +36,7 @@ pub(super) struct Rows {
     pub check: Option<OnKey>,
     pub activate: OnRow,
     pub on_move: Option<OnMove>,
+    pub on_context: Option<OnContext>,
 }
 
 pub(super) fn draw(
@@ -229,6 +230,15 @@ fn row(rows: &Rows, ix: usize, window: &mut Window, cx: &mut App) -> AnyElement 
                     .border_1()
                     .border_color(colors.focus),
             )
+        })
+        .when_some(rows.on_context.clone(), |row, context| {
+            let key = key.clone();
+            row.on_mouse_down(MouseButton::Right, move |event, window, cx| {
+                window.prevent_default();
+                cx.stop_propagation();
+                log::info!("tree: context on {key}");
+                context(&key, event.position, window, cx);
+            })
         })
         .on_click(move |event, window, cx| {
             window.focus(&focus, cx);

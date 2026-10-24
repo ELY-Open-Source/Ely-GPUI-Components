@@ -45,11 +45,12 @@ struct Docs {
     chosen: SharedString,
     clicked: Option<SharedString>,
     closed: Option<SharedString>,
+    asked: Option<SharedString>,
 }
 
 impl Render for Docs {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let (picker, closer) = (cx.entity(), cx.entity());
+        let (picker, closer, asker) = (cx.entity(), cx.entity(), cx.entity());
         let tabs = (0..10).map(|ix| EditorTab::new(format!("t{ix}"), format!("document-{ix}.rs")));
         div().w(px(200.0)).child(
             EditorTabs::new("docs", tabs)
@@ -61,6 +62,10 @@ impl Render for Docs {
                 .on_close(move |id, _, cx| {
                     let id = id.clone();
                     closer.update(cx, |view, _| view.closed = Some(id));
+                })
+                .on_context(move |id, _, _, cx| {
+                    let id = id.clone();
+                    asker.update(cx, |view, _| view.asked = Some(id));
                 }),
         )
     }
@@ -86,6 +91,7 @@ fn the_chosen_tab_scrolls_in_once_and_a_manual_scroll_stays(cx: &mut TestAppCont
         chosen: "t9".into(),
         clicked: None,
         closed: None,
+        asked: None,
     });
     settle(cx);
     let strip_end = cx
@@ -162,6 +168,25 @@ fn a_right_click_names_its_tab_and_keeps_the_choice(cx: &mut TestAppContext) {
         "the clicked tab, not the chosen one"
     );
     assert_eq!(chosen, "c");
+}
+
+#[gpui::test]
+fn a_right_press_on_an_editor_tab_names_it_and_selects_nothing(cx: &mut TestAppContext) {
+    setup(cx);
+    let (view, cx) = cx.add_window_view(|_, _| Docs {
+        chosen: "t0".into(),
+        clicked: None,
+        closed: None,
+        asked: None,
+    });
+    settle(cx);
+    let at = point(px(6.0), px(16.0));
+    cx.simulate_mouse_move(at, None, Modifiers::none());
+    cx.simulate_mouse_down(at, gpui::MouseButton::Right, Modifiers::none());
+    cx.simulate_mouse_up(at, gpui::MouseButton::Right, Modifiers::none());
+    let (asked, clicked) = view.read_with(cx, |view, _| (view.asked.clone(), view.clicked.clone()));
+    assert_eq!(asked.as_deref(), Some("t0"));
+    assert_eq!(clicked, None, "a right press is no click");
 }
 
 #[gpui::test]

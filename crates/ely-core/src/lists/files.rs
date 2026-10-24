@@ -1,8 +1,8 @@
 use std::{collections::BTreeMap, rc::Rc};
 
 use gpui::{
-    App, Div, ElementId, IntoElement, ParentElement, RenderOnce, SharedString, StyleRefinement,
-    Styled, Window, div,
+    App, Div, ElementId, IntoElement, ParentElement, Pixels, Point, RenderOnce, SharedString,
+    StyleRefinement, Styled, Window, div,
 };
 
 use super::{Tree, TreeNode};
@@ -168,6 +168,7 @@ fn nodes(
 }
 
 type OnOpen = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
+type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
 /// A project's files as a tree: folders first, an icon for each kind, git status by letter and tint, a dot on folders with changes, and a filter that keeps matches and opens the folders that hold them. Enter or a double press opens a file. Give it a height.
 ///
@@ -185,6 +186,7 @@ pub struct FileTree {
     paths: Vec<SharedString>,
     status: Vec<(SharedString, GitStatus)>,
     on_open: Option<OnOpen>,
+    on_context: Option<OnContext>,
 }
 
 impl FileTree {
@@ -199,6 +201,7 @@ impl FileTree {
             paths: paths.into_iter().map(Into::into).collect(),
             status: Vec::new(),
             on_open: None,
+            on_context: None,
         }
     }
 
@@ -214,6 +217,17 @@ impl FileTree {
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.on_open = Some(Rc::new(handler));
+        self
+    }
+}
+
+impl FileTree {
+    /// A right press on a row: its path and the pointer.
+    pub fn on_context(
+        mut self,
+        handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_context = Some(Rc::new(handler));
         self
     }
 }
@@ -257,6 +271,12 @@ impl RenderOnce for FileTree {
             })
             .flex_1()
             .min_h_0();
+        let tree = match self.on_context {
+            Some(context) => {
+                tree.on_context(move |path, at, window, cx| context(path, at, window, cx))
+            }
+            None => tree,
+        };
         self.base
             .flex()
             .flex_col()
@@ -335,5 +355,39 @@ mod tests {
         let (labels, open) = shown("butt");
         assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
         assert_eq!(open, ["src/ui", "src"].map(SharedString::from));
+    }
+
+    struct Project(Option<SharedString>);
+
+    impl gpui::Render for Project {
+        fn render(
+            &mut self,
+            _: &mut gpui::Window,
+            cx: &mut gpui::Context<Self>,
+        ) -> impl gpui::IntoElement {
+            use gpui::{Styled as _, px};
+            let view = cx.entity();
+            super::FileTree::new("files", ["docs/a.md", "b.md"])
+                .on_context(move |path, _, _, cx| {
+                    let path = path.clone();
+                    view.update(cx, |project, _| project.0 = Some(path));
+                })
+                .w(px(300.))
+                .h(px(400.))
+        }
+    }
+
+    #[gpui::test]
+    fn a_right_press_on_a_file_names_its_path(cx: &mut gpui::TestAppContext) {
+        use gpui::{Modifiers, MouseButton, point, px};
+        cx.update(crate::theme::Theme::init);
+        let (view, cx) = cx.add_window_view(|_, _| Project(None));
+        cx.run_until_parked();
+        let slot = cx.debug_bounds("tree-chevron-b.md").expect("b.md's row");
+        let at = slot.center() + point(px(40.), px(0.));
+        cx.simulate_mouse_move(at, None, Modifiers::none());
+        cx.simulate_mouse_down(at, MouseButton::Right, Modifiers::none());
+        let named = view.read_with(cx, |project, _| project.0.clone());
+        assert_eq!(named.as_deref(), Some("b.md"));
     }
 }

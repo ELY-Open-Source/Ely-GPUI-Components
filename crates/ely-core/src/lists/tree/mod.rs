@@ -7,9 +7,9 @@ mod tests;
 use std::{collections::HashSet, rc::Rc};
 
 use gpui::{
-    App, Div, ElementId, EntityId, InteractiveElement, IntoElement, ParentElement, RenderOnce,
-    Role, ScrollStrategy, SharedString, StatefulInteractiveElement, StyleRefinement, Styled,
-    UniformListScrollHandle, Window, div, uniform_list,
+    App, Div, ElementId, EntityId, InteractiveElement, IntoElement, ParentElement, Pixels, Point,
+    RenderOnce, Role, ScrollStrategy, SharedString, StatefulInteractiveElement, StyleRefinement,
+    Styled, UniformListScrollHandle, Window, div, uniform_list,
 };
 
 pub(crate) use model::{Children, Shown, rows};
@@ -30,6 +30,7 @@ type OnMove = Rc<dyn Fn(&SharedString, &SharedString, DropAt, &mut Window, &mut 
 type OnRow = Rc<dyn Fn(usize, &mut Window, &mut App)>;
 type OnPick = Rc<dyn Fn(usize, Pick, &mut Window, &mut App)>;
 type OnToggle = Rc<dyn Fn(&SharedString, bool, &mut App)>;
+type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
 /// The keyboard's row, where a Shift range starts, the scroll that follows, pending nodes already asked for, where a drag would land, and the node being renamed.
 #[derive(Default)]
@@ -75,6 +76,7 @@ pub struct Tree {
     on_load: Option<OnKey>,
     on_rename: Option<OnRename>,
     on_move: Option<OnMove>,
+    on_context: Option<OnContext>,
 }
 
 impl Tree {
@@ -94,6 +96,7 @@ impl Tree {
             on_load: None,
             on_rename: None,
             on_move: None,
+            on_context: None,
         }
     }
 
@@ -145,6 +148,15 @@ impl Tree {
         handler: impl Fn(&SharedString, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.on_activate = Some(Rc::new(handler));
+        self
+    }
+
+    /// A right press on a row: its key and the pointer.
+    pub fn on_context(
+        mut self,
+        handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_context = Some(Rc::new(handler));
         self
     }
 
@@ -330,6 +342,7 @@ impl RenderOnce for Tree {
             check: check.clone(),
             activate: activate.clone(),
             on_move: self.on_move,
+            on_context: self.on_context,
         };
         let list = uniform_list((id.clone(), "rows"), count, move |range, window, cx| {
             draw(&data, range, window, cx)
