@@ -221,7 +221,7 @@ impl FileTree {
 }
 
 impl FileTree {
-    /// A right press on a row: its path and the pointer.
+    /// A right press on a row: its path, the pointer.
     pub fn on_context(
         mut self,
         handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,

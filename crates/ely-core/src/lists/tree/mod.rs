@@ -151,7 +151,7 @@ impl Tree {
         self
     }
 
-    /// A right press on a row: its key and the pointer.
+    /// A right press on a row: its key, the pointer.
     pub fn on_context(
         mut self,
         handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,

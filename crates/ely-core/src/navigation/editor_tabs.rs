@@ -156,7 +156,7 @@ impl EditorTabs {
         self
     }
 
-    /// A right click on a tab: its id and the pointer.
+    /// A right click on a tab: its id, the pointer.
     pub fn on_context(
         mut self,
         handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,
