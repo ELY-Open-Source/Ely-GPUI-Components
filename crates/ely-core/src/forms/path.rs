@@ -7,6 +7,7 @@ use gpui::{
 use super::{Input, TextInput};
 use crate::{
     buttons::{Button, ButtonVariant},
+    i18n,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize},
 };
@@ -98,7 +99,7 @@ impl RenderOnce for PathInput {
         Input::new(&self.state)
             .prefix(Icon::new(icon).size(IconSize::Sm).color(subtle))
             .suffix(
-                Button::new(self.id, "Browse…")
+                Button::new(self.id, i18n::text(cx, "input.browse", &[]))
                     .size(ControlSize::Sm)
                     .variant(ButtonVariant::Ghost)
                     .on_click(move |_, window, cx| {
@@ -107,7 +108,7 @@ impl RenderOnce for PathInput {
                             files: !directories,
                             directories,
                             multiple: false,
-                            prompt: Some(SharedString::from("Choose")),
+                            prompt: Some(i18n::text(cx, "input.choose", &[])),
                         };
                         choose(
                             "path input".into(),

@@ -213,6 +213,8 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("input.clear", "消去"),
     ("input.show_password", "パスワードを表示"),
     ("input.hide_password", "パスワードを隠す"),
+    ("input.browse", "参照…"),
+    ("input.choose", "選択"),
     ("completion.empty", "候補はありません"),
     ("builder.remove", "削除"),
     ("tabs.unpin", "ピン留めを解除"),

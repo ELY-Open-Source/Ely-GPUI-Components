@@ -189,6 +189,8 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("input.clear", "清除"),
     ("input.show_password", "显示密码"),
     ("input.hide_password", "隐藏密码"),
+    ("input.browse", "浏览…"),
+    ("input.choose", "选择"),
     ("completion.empty", "没有建议"),
     ("builder.remove", "移除"),
     ("tabs.unpin", "取消固定"),

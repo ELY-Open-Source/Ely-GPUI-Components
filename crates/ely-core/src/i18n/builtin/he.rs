@@ -198,6 +198,8 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("input.clear", "ניקוי"),
     ("input.show_password", "הצגת הסיסמה"),
     ("input.hide_password", "הסתרת הסיסמה"),
+    ("input.browse", "עיון…"),
+    ("input.choose", "בחירה"),
     ("completion.empty", "אין הצעות"),
     ("builder.remove", "הסרה"),
     ("tabs.unpin", "ביטול הצמדה"),

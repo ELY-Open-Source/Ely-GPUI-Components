@@ -15,6 +15,14 @@ const SHIPPED: &[(&str, &str)] = &[
         include_str!("../crates/ely-core/src/forms/input.rs"),
     ),
     (
+        "forms/path.rs",
+        include_str!("../crates/ely-core/src/forms/path.rs"),
+    ),
+    (
+        "forms/catalogs.rs",
+        include_str!("../crates/ely-core/src/forms/catalogs.rs"),
+    ),
+    (
         "forms/select.rs",
         include_str!("../crates/ely-core/src/forms/select.rs"),
     ),

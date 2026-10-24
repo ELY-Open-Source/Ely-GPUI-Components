@@ -8,7 +8,10 @@ use iso_currency::Currency;
 use isocountry::CountryCode;
 
 use super::{Choice, Combobox, TextInput, options::OnValue};
-use crate::theme::{ActiveTheme, TextSize};
+use crate::{
+    i18n,
+    theme::{ActiveTheme, TextSize},
+};
 
 /// The flag emoji of a two-letter region code.
 #[doc(hidden)]
@@ -151,6 +154,7 @@ impl RenderOnce for FontPicker {
             found
         });
         let theme = cx.theme();
+        let sample = i18n::text(cx, "theme.size.sample", &[]);
         let mut combobox = Combobox::new(
             self.id.clone(),
             &self.state,
@@ -170,7 +174,7 @@ impl RenderOnce for FontPicker {
                         .font_family(family)
                         .text_size(theme.text_size(TextSize::Lg))
                         .text_color(theme.colors.fg_muted)
-                        .child("The quick brown fox jumps over the lazy dog"),
+                        .child(sample),
                 )
             },
         )

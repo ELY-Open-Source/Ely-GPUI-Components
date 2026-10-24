@@ -207,6 +207,8 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("input.clear", "Löschen"),
     ("input.show_password", "Passwort anzeigen"),
     ("input.hide_password", "Passwort ausblenden"),
+    ("input.browse", "Durchsuchen…"),
+    ("input.choose", "Auswählen"),
     ("completion.empty", "Keine Vorschläge"),
     ("builder.remove", "Entfernen"),
     ("tabs.unpin", "Lösen"),
