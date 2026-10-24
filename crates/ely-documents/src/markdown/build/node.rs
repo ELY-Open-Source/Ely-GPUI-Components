@@ -36,11 +36,12 @@ impl Builder<'_> {
                 fenced: false,
             },
             Tag::HtmlBlock => Kind::Html,
-            Tag::List(start) => {
-                Kind::List(start.map(|start| {
+            Tag::List(start) => Kind::List {
+                start: start.map(|start| {
                     u32::try_from(start).expect("a list starts at nine digits at most")
-                }))
-            }
+                }),
+                spread: false,
+            },
             Tag::Item => Kind::Item(None),
             Tag::FootnoteDefinition(label) => Kind::Footnote(label.to_string()),
             Tag::Table(aligns) => Kind::Table(aligns.iter().map(align).collect()),
@@ -100,11 +101,12 @@ impl Builder<'_> {
                 children,
                 position: block,
             }),
-            Kind::List(start) => Node::List(mdast::List {
+            Kind::List { start, spread } => Node::List(mdast::List {
                 position: block,
                 children,
                 ordered: start.is_some(),
                 start,
+                spread,
             }),
             Kind::Item(checked) => {
                 let (checked, children) = match checked {

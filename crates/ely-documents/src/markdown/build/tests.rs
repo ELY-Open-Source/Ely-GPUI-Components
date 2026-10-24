@@ -107,3 +107,30 @@ fn a_byte_order_mark_starts_no_text() {
     let root = tree(&("\u{FEFF}".repeat(1024) + "x"), false);
     assert!(matches!(blocks(&root), [Node::Paragraph(_)]), "{root:?}");
 }
+
+#[test]
+fn a_list_is_loose_when_its_items_hold_paragraphs() {
+    let spread = |source: &str| {
+        let root = tree(source, false);
+        let spread: Vec<bool> = (blocks(&root).iter())
+            .filter_map(|node| match node {
+                Node::List(list) => Some(list.spread),
+                _ => None,
+            })
+            .collect();
+        spread
+    };
+    assert_eq!(spread("- a\n- b\n"), [false]);
+    assert_eq!(spread("- a\n\n- b\n"), [true]);
+    assert_eq!(spread("1. a\n\n   more\n2. b\n"), [true]);
+    let root = tree("- a\n\n- b\n  - c\n  - d\n", false);
+    let Some(Node::List(outer)) = blocks(&root).first() else {
+        panic!("{root:?}")
+    };
+    let inner = outer.children[1].children().expect("an item").last();
+    assert!(outer.spread, "{root:?}");
+    assert!(
+        matches!(inner, Some(Node::List(list)) if !list.spread),
+        "{root:?}"
+    );
+}

@@ -84,7 +84,7 @@ impl Reader<'_> {
 }
 
 /// A quote's alert kind and its blocks after the marker.
-pub(crate) fn alert(quote: &mdast::Parent) -> Option<(AlertKind, Vec<mdast::Node>)> {
+pub fn alert(quote: &mdast::Parent) -> Option<(AlertKind, Vec<mdast::Node>)> {
     let [mdast::Node::Paragraph(paragraph), rest @ ..] = &quote.children[..] else {
         return None;
     };
@@ -102,7 +102,7 @@ pub(crate) fn alert(quote: &mdast::Parent) -> Option<(AlertKind, Vec<mdast::Node
 }
 
 /// A paragraph that is `[toc]` alone, as Typora reads it.
-pub(crate) fn is_toc(node: &mdast::Node, source: &str) -> bool {
+pub fn is_toc(node: &mdast::Node, source: &str) -> bool {
     matches!(node, mdast::Node::Paragraph(_))
         && source[span(node)].trim().eq_ignore_ascii_case("[toc]")
 }

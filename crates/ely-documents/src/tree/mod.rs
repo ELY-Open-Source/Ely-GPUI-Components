@@ -12,7 +12,7 @@ mod sources;
 mod stack;
 
 pub use blocks::{AlertKind, DocumentHeading};
-pub(crate) use blocks::{alert, is_toc};
+pub use blocks::{alert, is_toc};
 use html_block::html_block_text;
 pub(crate) use sources::Escapes;
 pub(crate) use sources::{inside, lines_at};
@@ -129,7 +129,7 @@ pub enum Node {
 }
 
 /// A tree read against its source and its link definitions.
-pub(crate) struct Reader<'a> {
+pub struct Reader<'a> {
     source: &'a str,
     urls: HashMap<String, String>,
     /// Footnotes numbered by their first reference.
@@ -217,6 +217,15 @@ pub(crate) fn parse(markdown: &str) -> Vec<Node> {
 impl<'a> Reader<'a> {
     /// Reads `root`, parsed from `source`, as drawn on screen.
     pub(crate) fn new(source: &'a str, root: &mdast::Node) -> Self {
+        Self::reading(source, root, true)
+    }
+
+    /// The same, soft breaks joined as GFM output joins them.
+    pub fn joined(source: &'a str, root: &mdast::Node) -> Self {
+        Self::reading(source, root, false)
+    }
+
+    fn reading(source: &'a str, root: &mdast::Node, lines: bool) -> Self {
         let mut nodes = Vec::new();
         walk(root, &mut nodes);
         let (mut urls, mut notes, mut headings) = (HashMap::new(), HashMap::new(), Vec::new());
@@ -249,8 +258,8 @@ impl<'a> Reader<'a> {
                 at,
             })
             .collect();
-        // Titles read on one line; the body keeps its lines.
-        reader.lines = true;
+        // Titles read on one line; the body as asked.
+        reader.lines = lines;
         reader
     }
 
@@ -275,7 +284,7 @@ impl<'a> Reader<'a> {
     }
 
     /// `node`'s blocks, as the drawing reads them.
-    pub(crate) fn block(&self, node: &mdast::Node, out: &mut Vec<Node>) {
+    pub fn block(&self, node: &mdast::Node, out: &mut Vec<Node>) {
         match node {
             mdast::Node::Paragraph(paragraph) => self.paragraph(node, &paragraph.children, out),
             mdast::Node::Heading(heading) => {
@@ -371,12 +380,12 @@ impl<'a> Reader<'a> {
     }
 
     /// A footnote's number, by its first reference.
-    pub(crate) fn note(&self, identifier: &str) -> Option<usize> {
+    pub fn note(&self, identifier: &str) -> Option<usize> {
         self.notes.get(identifier).copied()
     }
 
     /// A note's label: its number, once referenced.
-    pub(crate) fn label(&self, note: &mdast::FootnoteDefinition) -> String {
+    pub fn label(&self, note: &mdast::FootnoteDefinition) -> String {
         match self.note(&note.identifier) {
             Some(number) => number.to_string(),
             None => note.label.clone(),
@@ -384,7 +393,7 @@ impl<'a> Reader<'a> {
     }
 
     /// Inline text where images draw as their alt text.
-    pub(crate) fn inline(&self, nodes: &[mdast::Node]) -> Inline {
+    pub fn inline(&self, nodes: &[mdast::Node]) -> Inline {
         let mut run = self.run();
         for node in nodes {
             self.inline_into(node, &mut run, &mut Images::Alt);

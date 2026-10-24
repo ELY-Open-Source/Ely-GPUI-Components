@@ -4,7 +4,7 @@ mod autolink;
 mod build;
 mod flow;
 mod front;
-pub(crate) mod mdast;
+pub mod mdast;
 mod shape;
 mod tex;
 
@@ -31,7 +31,7 @@ pub(crate) fn math_inside(source: &str, whole: Range<usize>) -> Range<usize> {
 }
 
 /// A whole file as a syntax tree: front matter too.
-pub(crate) fn file_tree(text: &str) -> mdast::Node {
+pub fn file_tree(text: &str) -> mdast::Node {
     parsed(text, true)
 }
 

@@ -84,7 +84,10 @@ enum Kind {
     },
     Heading(u8),
     Quote,
-    List(Option<u32>),
+    List {
+        start: Option<u32>,
+        spread: bool,
+    },
     Item(Option<bool>),
     Code {
         lang: Option<String>,
@@ -181,6 +184,9 @@ impl Builder<'_> {
             Event::Start(tag) => {
                 if !inline_tag(&tag) {
                     self.close_implicit();
+                }
+                if matches!(tag, Tag::Paragraph) {
+                    self.loosen();
                 }
                 let kind = self.kind(tag, &range);
                 self.stack.push(Frame::new(kind, span.start));
@@ -292,6 +298,16 @@ impl Builder<'_> {
         let range = frame.start..end;
         let node = self.node(frame, range);
         self.top().children.push(node);
+    }
+
+    /// A paragraph in an item: its list is loose.
+    fn loosen(&mut self) {
+        let [.., list, item] = self.stack.as_mut_slice() else {
+            return;
+        };
+        if let (Kind::List { spread, .. }, Kind::Item(_)) = (&mut list.kind, &item.kind) {
+            *spread = true;
+        }
     }
 
     /// Ends a tight item's text, which pulldown-cmark leaves bare.

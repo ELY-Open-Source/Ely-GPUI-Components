@@ -4,137 +4,225 @@ use std::ops::Range;
 
 /// A parsed node; `position` is its span in the source.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) enum Node {
+pub enum Node {
+    /// The document.
     Root(Parent),
+    /// A paragraph.
     Paragraph(Parent),
+    /// An ATX or setext heading.
     Heading(Heading),
+    /// A thematic break.
     ThematicBreak(Leaf),
+    /// A block quote.
     Blockquote(Parent),
+    /// A list.
     List(List),
+    /// A list item.
     ListItem(ListItem),
+    /// Raw HTML, a block or inline.
     Html(Literal),
+    /// A fenced or indented code block.
     Code(Code),
+    /// A `$$` math block.
     Math(Literal),
+    /// A link reference definition.
     Definition(Definition),
+    /// Plain text.
     Text(Literal),
+    /// Emphasis.
     Emphasis(Parent),
+    /// Strong emphasis.
     Strong(Parent),
+    /// Struck-through text.
     Delete(Parent),
+    /// Inline code.
     InlineCode(Literal),
+    /// Inline math.
     InlineMath(Literal),
+    /// A hard line break.
     Break(Leaf),
+    /// An inline link or autolink.
     Link(Link),
+    /// An inline image.
     Image(Image),
+    /// A link by reference.
     LinkReference(LinkReference),
+    /// An image by reference.
     ImageReference(ImageReference),
+    /// A footnote definition.
     FootnoteDefinition(FootnoteDefinition),
+    /// A footnote reference.
     FootnoteReference(FootnoteReference),
+    /// A GFM table.
     Table(Table),
+    /// A table row.
     TableRow(Parent),
+    /// A table cell.
     TableCell(Parent),
+    /// YAML front matter.
     Yaml(Literal),
+    /// TOML front matter.
     Toml(Literal),
 }
 
+/// A node of nodes.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Parent {
+pub struct Parent {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
 }
 
+/// A node with nothing inside.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Leaf {
+pub struct Leaf {
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
 }
 
+/// A node of text.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Literal {
+pub struct Literal {
+    /// Its text, unescaped.
     pub value: String,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
 }
 
+/// A heading.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Heading {
+pub struct Heading {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// Its level, 1 to 6.
     pub depth: u8,
 }
 
+/// A list.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct List {
+pub struct List {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// Numbered.
     pub ordered: bool,
+    /// A numbered list's first number.
     pub start: Option<u32>,
+    /// Loose: its items' text sits in paragraphs.
+    pub spread: bool,
 }
 
+/// A list item.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct ListItem {
+pub struct ListItem {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// A task box: ticked or not.
     pub checked: Option<bool>,
 }
 
+/// A code block.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Code {
+pub struct Code {
+    /// Its text, unescaped.
     pub value: String,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The fence's info string's first word.
     pub lang: Option<String>,
 }
 
+/// A link reference definition.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Definition {
+pub struct Definition {
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The address.
     pub url: String,
+    /// The label, as references match it.
     pub identifier: String,
 }
 
+/// A link.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Link {
+pub struct Link {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The address.
     pub url: String,
 }
 
+/// An image.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Image {
+pub struct Image {
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The alternative text.
     pub alt: String,
+    /// The address.
     pub url: String,
 }
 
+/// A link by reference.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct LinkReference {
+pub struct LinkReference {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The label, as references match it.
     pub identifier: String,
 }
 
+/// An image by reference.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct ImageReference {
+pub struct ImageReference {
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The alternative text.
     pub alt: String,
+    /// The label, as references match it.
     pub identifier: String,
 }
 
+/// A footnote definition.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct FootnoteDefinition {
+pub struct FootnoteDefinition {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The label, as references match it.
     pub identifier: String,
+    /// The label as written.
     pub label: String,
 }
 
+/// A footnote reference.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct FootnoteReference {
+pub struct FootnoteReference {
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// The label, as references match it.
     pub identifier: String,
 }
 
+/// A table.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Table {
+pub struct Table {
+    /// The nodes inside.
     pub children: Vec<Node>,
+    /// Its span in the source, in bytes.
     pub position: Range<usize>,
+    /// Each column's alignment.
     pub align: Vec<AlignKind>,
 }
 
@@ -152,7 +240,8 @@ pub enum AlignKind {
 }
 
 impl Node {
-    pub(crate) fn position(&self) -> &Range<usize> {
+    /// Its span in the source, in bytes.
+    pub fn position(&self) -> &Range<usize> {
         use Node::*;
         match self {
             Root(x) | Paragraph(x) | Blockquote(x) | Emphasis(x) | Strong(x) | Delete(x)
@@ -200,7 +289,8 @@ impl Node {
         }
     }
 
-    pub(crate) fn children(&self) -> Option<&Vec<Node>> {
+    /// The nodes inside, if it holds any.
+    pub fn children(&self) -> Option<&Vec<Node>> {
         use Node::*;
         match self {
             Root(x) | Paragraph(x) | Blockquote(x) | Emphasis(x) | Strong(x) | Delete(x)

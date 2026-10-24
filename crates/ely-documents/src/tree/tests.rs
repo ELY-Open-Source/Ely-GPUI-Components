@@ -83,6 +83,19 @@ fn a_soft_break_draws_as_a_line() {
 }
 
 #[test]
+fn a_joined_reader_reads_a_soft_break_as_a_space() {
+    let source = "one\ntwo  \nthree";
+    let root = super::super::markdown::tree(source);
+    let mut out = Vec::new();
+    let paragraph = &root.children().expect("blocks")[0];
+    Reader::joined(source, &root).block(paragraph, &mut out);
+    assert!(
+        matches!(&out[0], Node::Paragraph(text) if text.text == "one two\nthree"),
+        "{out:?}"
+    );
+}
+
+#[test]
 fn a_heading_title_reads_on_one_line() {
     let source = "one\ntwo\n===\n";
     let root = super::super::markdown::tree(source);
