@@ -171,12 +171,20 @@ fn mark(moving: &mut Option<image::GrayImage>, before: &Path, after: &Path) -> R
         image::open(before)?.to_rgb8(),
         image::open(after)?.to_rgb8(),
     );
+    // A new size moves every pixel; what came before it no longer lines up.
     if before.dimensions() != after.dimensions() {
-        bail!(
-            "the window changed size between shots: {:?} to {:?}",
+        log::info!(
+            "capture: the window went from {:?} to {:?} while it settled",
             before.dimensions(),
             after.dimensions()
         );
+        let (width, height) = after.dimensions();
+        *moving = Some(image::GrayImage::from_pixel(
+            width,
+            height,
+            image::Luma([255]),
+        ));
+        return Ok(());
     }
     let mask = moving.get_or_insert_with(|| image::GrayImage::new(before.width(), before.height()));
     for ((x, y, was), now) in before.enumerate_pixels().zip(after.pixels()) {
