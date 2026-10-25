@@ -464,3 +464,4 @@
 | T56 E4 | 4 | FAIL | a deleted or moved-away input was in no listing, so a break it caused selected no crate |
 | T56 E4 | 5 | PASS | check.sh gates on GitHub-hosted Linux, Windows and macOS, the gallery build and Windows audit after it, no self-hosted runner; scripts read UTF-8 and the Windows checkout keeps LF; the semver job shares one target and checks the crates whose packaged files, or a dependency's, changed, deletions and renames included |
 | T56 E5 | 1 | FAIL | the moving mask kept pixels that had settled, and a fully masked shot passed; an accepted change hid an empty side, and a gallery that failed to launch exited 0; added, removed and resized shots had no picture in the report |
+| T56 E5 | 2 | FAIL | a resized or one-sided shot skipped the movement limit, so --accept let a fully moving one through |

@@ -29,6 +29,17 @@ def moving(base, head, size):
     return seen
 
 
+def own_moving(shot):
+    """The share of one shot its own capture saw move, checked against the shot's size."""
+    path = shot.with_suffix(".moving.png")
+    if not path.is_file():
+        return 0.0
+    mask, size = Image.open(path).convert("L"), Image.open(shot).size
+    if mask.size != size:
+        sys.exit(f"pixels: {path} is {mask.size}, its shot {size}")
+    return mask.histogram()[255] / (size[0] * size[1])
+
+
 def changed(base, head):
     """The share of still pixels that changed, a mask of them or, for a new size, both sizes, and the share passed over as moving."""
     a, b = Image.open(base).convert("RGB"), Image.open(head).convert("RGB")
@@ -64,7 +75,15 @@ def main():
     names = sorted(shots(base) | shots(head))
     rows, failed, unusable = [], [], []
     for name in names:
-        if not (base / name).is_file() or not (head / name).is_file():
+        # Each side's own mask first, so no size or presence difference hides a capture fault.
+        worst = max(own_moving(folder / name) for folder in (base, head) if (folder / name).is_file())
+        if worst > MOVING:
+            share, note = 1.0, f"{worst:.3%} moving, too little still to compare"
+            unusable.append(name)
+            for folder, kept in ((head, name), (base, name.replace(".png", ".base.png"))):
+                if (folder / name).is_file():
+                    shutil.copyfile(folder / name, out / kept)
+        elif not (base / name).is_file() or not (head / name).is_file():
             share, note = 1.0, "only in head" if (head / name).is_file() else "only in base"
             shutil.copyfile(head / name if (head / name).is_file() else base / name, out / name)
         else:
