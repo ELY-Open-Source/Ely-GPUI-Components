@@ -31,7 +31,13 @@ enum Mouse {
 
 /// Parks the pointer on empty sidebar space.
 pub fn park(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<()> {
-    send(window, Mouse::Move, point(px(24.0), px(720.0)), cx)
+    let height = window.update(cx, |_, window, _| window.viewport_size().height)?;
+    send(
+        window,
+        Mouse::Move,
+        point(px(24.0), px(720.0).min(height - px(24.0))),
+        cx,
+    )
 }
 
 fn opened(key: &str, cx: &mut AsyncApp) -> Result<gpui::AnyWindowHandle> {
