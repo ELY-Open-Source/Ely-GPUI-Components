@@ -5,7 +5,7 @@ use futures::future::{Either, select};
 use gpui::{AsyncApp, Bounds, Keystroke, Pixels, Point, WindowHandle, point, px};
 
 use crate::{
-    capture::{number, popup_number, snapshot},
+    capture::{number, popup_number, snapshot, steady},
     probe::{Opened, Probes},
     shell::Gallery,
     step::Step,
@@ -153,15 +153,15 @@ pub async fn play(
             }
             Step::Shot(name) => {
                 let file = path(name);
-                shown(window.into(), cx).await?;
-                snapshot(window.update(cx, |_, window, _| number(window))??, &file)?;
+                let number = window.update(cx, |_, window, _| number(window))??;
+                steady(window.into(), &file, |file| snapshot(number, file), cx).await?;
                 log::info!("script: wrote {}", file.display());
             }
             Step::ShotWindow(key, name) => {
                 let file = path(name);
                 let handle = opened(key, cx)?;
-                shown(handle, cx).await?;
-                snapshot(handle.update(cx, |_, window, _| number(window))??, &file)?;
+                let number = handle.update(cx, |_, window, _| number(window))??;
+                steady(handle, &file, |file| snapshot(number, file), cx).await?;
                 log::info!("script: wrote {}", file.display());
             }
             Step::KeyWindow(key, stroke) => {
@@ -175,7 +175,8 @@ pub async fn play(
             }
             Step::ShotPopup(name) => {
                 let file = path(name);
-                snapshot(popup_number()?, &file)?;
+                let number = popup_number()?;
+                steady(window.into(), &file, |file| snapshot(number, file), cx).await?;
                 log::info!("script: wrote {}", file.display());
             }
             Step::NativeKey(key) => {

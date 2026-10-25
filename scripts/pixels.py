@@ -15,10 +15,10 @@ MARK = (220, 30, 30)
 
 
 def changed(base, head):
-    """The share of pixels that changed, and a mask of them; a new size changes every pixel."""
+    """The share of pixels that changed, and a mask of them or, for a new size, both sizes; a new size changes every pixel."""
     a, b = Image.open(base).convert("RGB"), Image.open(head).convert("RGB")
     if a.size != b.size:
-        return 1.0, None
+        return 1.0, f"{a.size[0]}x{a.size[1]} to {b.size[0]}x{b.size[1]}"
     r, g, bl = ImageChops.difference(a, b).split()
     mask = ImageChops.lighter(ImageChops.lighter(r, g), bl).point(lambda v: 255 if v > TOLERANCE else 0)
     count = mask.histogram()[255]
@@ -48,8 +48,8 @@ def main():
             share, note = 1.0, "only in head" if (head / name).is_file() else "only in base"
         else:
             share, mask = changed(base / name, head / name)
-            note = "new size" if mask is None else ""
-            if mask is not None and share > 0:
+            note = f"new size, {mask}" if isinstance(mask, str) else ""
+            if not isinstance(mask, str) and share > 0:
                 picture(head / name, mask, out / name)
         if share > 0:
             rows.append((share, name, note))

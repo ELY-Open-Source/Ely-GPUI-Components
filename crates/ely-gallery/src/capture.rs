@@ -15,6 +15,8 @@ use crate::{
 /// The moment every capture draws.
 pub const AT: &str = "2026-10-20T14:30:00Z";
 const SETTLE: Duration = Duration::from_millis(700);
+const STEADY: Duration = Duration::from_millis(250);
+const STEADY_TRIES: usize = 12;
 const SCROLL_SETTLE: Duration = Duration::from_millis(250);
 
 /// Shoots one page, or all, in both modes, then quits; exits 1 on failure.
@@ -50,6 +52,12 @@ async fn shoot_all(
         .filter(|(ix, _)| only.is_none_or(|only| only == *ix));
     let gallery = window.update(cx, |_, window, _| number(window))??;
     window.update(cx, |_, window, _| take_posted_moves(window))??;
+    window.update(cx, |_, window, _| {
+        let size = window.viewport_size();
+        let scale = window.scale_factor();
+        let (width, height) = (f32::from(size.width), f32::from(size.height));
+        log::info!("capture: window {width}x{height} at scale {scale}");
+    })?;
     for (ix, page) in chosen {
         for (choice, name) in [(Choice::Light, "light"), (Choice::Dark, "dark")] {
             window.update(cx, |gallery, window, cx| {
@@ -74,8 +82,7 @@ async fn shoot_all(
                     format!("-{segment}")
                 };
                 let path = dir.join(format!("{}-{name}{suffix}.png", page.slug));
-                script::shown(window.into(), cx).await?;
-                snapshot(gallery, &path)?;
+                steady(window.into(), &path, |file| snapshot(gallery, file), cx).await?;
                 log::info!("capture: wrote {}", path.display());
                 if offset >= max {
                     break;
@@ -92,6 +99,33 @@ async fn shoot_all(
             }
         }
     }
+    Ok(())
+}
+
+/// Shoots to `path` until two shots in a row match, so a picture still decoding is never caught half drawn.
+pub async fn steady(
+    frames: gpui::AnyWindowHandle,
+    path: &Path,
+    shoot: impl Fn(&Path) -> Result<()>,
+    cx: &mut AsyncApp,
+) -> Result<()> {
+    let next = path.with_extension("next.png");
+    script::shown(frames, cx).await?;
+    shoot(path)?;
+    for _ in 0..STEADY_TRIES {
+        cx.background_executor().timer(STEADY).await;
+        script::shown(frames, cx).await?;
+        shoot(&next)?;
+        let same = std::fs::read(path)? == std::fs::read(&next)?;
+        std::fs::rename(&next, path).with_context(|| format!("replace {}", path.display()))?;
+        if same {
+            return Ok(());
+        }
+    }
+    log::warn!(
+        "capture: {} still changed after {STEADY_TRIES} shots {STEADY:?} apart",
+        path.display()
+    );
     Ok(())
 }
 
