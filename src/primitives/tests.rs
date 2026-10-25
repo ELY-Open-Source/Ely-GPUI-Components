@@ -297,7 +297,7 @@ fn a_retired_image_is_freed_at_the_next_paint(cx: &mut TestAppContext) {
     );
 }
 
-/// A view that holds an open tooltip's body, as gpui holds one.
+/// Holds an open tooltip's body, as gpui does.
 struct Open {
     tip: AnyView,
 }
@@ -337,7 +337,7 @@ fn an_open_tooltip_withdraws_when_the_language_changes(cx: &mut TestAppContext) 
     assert!(cx.debug_bounds("tip").is_none(), "it withdraws in another");
 }
 
-/// A button whose tooltip carries the words of the locale it was drawn in.
+/// A button whose tooltip speaks its drawing locale.
 struct Worded;
 
 impl Render for Worded {
@@ -368,7 +368,7 @@ fn a_tooltip_worded_before_a_language_change_does_not_open_after_it(cx: &mut Tes
     cx.run_until_parked();
     cx.simulate_mouse_move(point(px(20.0), px(20.0)), None, Modifiers::none());
     cx.run_until_parked();
-    // gpui waits before it shows a tooltip; the language changes meanwhile.
+    // gpui delays a tooltip; the language changes meanwhile.
     cx.executor().advance_clock(Duration::from_millis(120));
     cx.update(|_, cx| I18n::set_locale("zh-CN", cx));
     cx.run_until_parked();

@@ -14,11 +14,11 @@ pub use skip::SkipLink;
 type Catalog = HashMap<&'static str, &'static str>;
 
 thread_local! {
-    /// Locale changes so far on the thread the app runs on.
+    /// Locale changes so far on the app's thread.
     static TURNS: Cell<u64> = const { Cell::new(0) };
 }
 
-/// How many times the locale has changed: words made at one count are stale at another.
+/// Locale changes so far; words from another count are stale.
 pub(crate) fn turns() -> u64 {
     TURNS.get()
 }

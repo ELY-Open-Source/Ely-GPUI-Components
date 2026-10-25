@@ -7,7 +7,7 @@ use smallvec::SmallVec;
 
 use crate::theme::{ActiveTheme, Elevation, Radius};
 
-/// Which untiled edge or corner `pos` grabs, `inset` from the rim.
+/// The untiled edge or corner `pos` grabs, within `inset`.
 fn resize_edge(
     pos: Point<Pixels>,
     inset: Pixels,

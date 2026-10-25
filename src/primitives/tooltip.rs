@@ -40,7 +40,7 @@ fn surface(content: AnyElement, cx: &App) -> impl IntoElement + use<> {
 /// Tooltip body for gpui's `.tooltip()`.
 pub struct Tooltip {
     content: Content,
-    /// The locale changes before its words were made: gpui keeps an open or pending tooltip, so after another it withdraws until hovered again.
+    /// Locale changes before its words; after another it withdraws.
     turn: u64,
 }
 
