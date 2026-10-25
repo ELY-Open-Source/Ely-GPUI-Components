@@ -258,7 +258,7 @@ fn main() -> Result<()> {
                 Ok(window) => window,
                 Err(error) => {
                     log::error!("gallery: {error:#}");
-                    return cx.quit();
+                    std::process::exit(1);
                 }
             };
             if let Some(dir) = capture {

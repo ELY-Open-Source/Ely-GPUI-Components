@@ -154,14 +154,14 @@ pub async fn steady(
     script::shown(frames, cx).await?;
     shoot(path)?;
     let start = cx.background_executor().now();
-    let (mut since, mut moving) = (start, None);
-    loop {
+    let (mut since, mut moves) = (start, Vec::new());
+    let end = loop {
         cx.background_executor().timer(STEADY).await;
         script::shown(frames, cx).await?;
         shoot(&next)?;
         let now = cx.background_executor().now();
         if std::fs::read(path)? != std::fs::read(&next)? {
-            mark(&mut moving, path, &next)?;
+            moves.push((now, moved(path, &next)?));
             since = now;
         }
         std::fs::rename(&next, path).with_context(|| format!("replace {}", path.display()))?;
@@ -169,10 +169,16 @@ pub async fn steady(
             return Ok(());
         }
         if now - start >= PATIENCE {
-            break;
+            break now;
         }
-    }
-    let moving = moving.context("a shot that never held still marked no pixel")?;
+    };
+    // Only what moved in the last `STILL` kept the view from holding still; what settled before stays compared.
+    let moving = moves
+        .into_iter()
+        .filter(|(at, _)| end - *at < STILL)
+        .map(|(_, mask)| mask)
+        .reduce(join)
+        .context("a shot that never held still marked no pixel")?;
     moving
         .save(&mask)
         .with_context(|| format!("write {}", mask.display()))?;
@@ -184,12 +190,13 @@ pub async fn steady(
     Ok(())
 }
 
-/// Adds the pixels that differ between two shots to `moving`.
-fn mark(moving: &mut Option<image::GrayImage>, before: &Path, after: &Path) -> Result<()> {
+/// The pixels that differ between two shots.
+fn moved(before: &Path, after: &Path) -> Result<image::GrayImage> {
     let (before, after) = (
         image::open(before)?.to_rgb8(),
         image::open(after)?.to_rgb8(),
     );
+    let (width, height) = after.dimensions();
     // A new size moves every pixel; what came before it no longer lines up.
     if before.dimensions() != after.dimensions() {
         log::info!(
@@ -197,21 +204,30 @@ fn mark(moving: &mut Option<image::GrayImage>, before: &Path, after: &Path) -> R
             before.dimensions(),
             after.dimensions()
         );
-        let (width, height) = after.dimensions();
-        *moving = Some(image::GrayImage::from_pixel(
+        return Ok(image::GrayImage::from_pixel(
             width,
             height,
             image::Luma([255]),
         ));
-        return Ok(());
     }
-    let mask = moving.get_or_insert_with(|| image::GrayImage::new(before.width(), before.height()));
-    for ((x, y, was), now) in before.enumerate_pixels().zip(after.pixels()) {
-        if was != now {
-            mask.put_pixel(x, y, image::Luma([255]));
-        }
+    Ok(image::GrayImage::from_fn(width, height, |x, y| {
+        image::Luma([if before.get_pixel(x, y) == after.get_pixel(x, y) {
+            0
+        } else {
+            255
+        }])
+    }))
+}
+
+/// Two masks' moved pixels together; a later size replaces an earlier one.
+fn join(mut earlier: image::GrayImage, later: image::GrayImage) -> image::GrayImage {
+    if earlier.dimensions() != later.dimensions() {
+        return later;
     }
-    Ok(())
+    for (pixel, moved) in earlier.pixels_mut().zip(later.pixels()) {
+        pixel.0[0] = pixel.0[0].max(moved.0[0]);
+    }
+    earlier
 }
 
 /// A gpui window's AppKit window.

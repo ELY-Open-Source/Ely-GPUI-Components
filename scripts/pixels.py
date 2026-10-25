@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Compares two gallery captures shot by shot: a report and a picture of each change; fails past the threshold unless `--accept`."""
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -10,6 +11,8 @@ from PIL import Image, ImageChops
 TOLERANCE = 8
 # A shot fails when a larger share of its pixels changed.
 THRESHOLD = 0.0005
+# A shot whose moving pixels pass this share has too little still to compare: a capture fault no Pixels-accepted line lets through.
+MOVING = 0.5
 # Changed pixels in the picture of a change, over the head shot faded to a fifth.
 MARK = (220, 30, 30)
 
@@ -54,19 +57,28 @@ def main():
     accept = "--accept" in sys.argv
     out.mkdir(parents=True, exist_ok=True)
     shots = lambda folder: {path.name for path in folder.glob("*.png") if not path.name.endswith(".moving.png")}
+    # Each side must have shot, whatever a Pixels-accepted line lets through.
+    for folder in (base, head):
+        if not shots(folder):
+            sys.exit(f"pixels: no shots in {folder}")
     names = sorted(shots(base) | shots(head))
-    if not names:
-        sys.exit(f"pixels: no shots in {base} or {head}")
-    rows, failed = [], []
+    rows, failed, unusable = [], [], []
     for name in names:
         if not (base / name).is_file() or not (head / name).is_file():
             share, note = 1.0, "only in head" if (head / name).is_file() else "only in base"
+            shutil.copyfile(head / name if (head / name).is_file() else base / name, out / name)
         else:
             share, mask, skipped = changed(base / name, head / name)
             note = f"new size, {mask}" if isinstance(mask, str) else ""
-            if skipped:
+            if skipped > MOVING:
+                share, note = 1.0, f"{skipped:.3%} moving, too little still to compare"
+                unusable.append(name)
+            elif skipped:
                 note = f"{skipped:.3%} moving, passed over"
-            if not isinstance(mask, str) and share > 0:
+            if isinstance(mask, str) or skipped > MOVING:
+                shutil.copyfile(head / name, out / name)
+                shutil.copyfile(base / name, out / name.replace(".png", ".base.png"))
+            elif share > 0:
                 picture(head / name, mask, out / name)
         if share > 0:
             rows.append((share, name, note))
@@ -76,7 +88,7 @@ def main():
     lines = [
         f"## Pixels: {len(names)} shots, {len(rows)} changed, {len(failed)} past {THRESHOLD:.2%}",
         "",
-        f"A pixel counts when a channel moves more than {TOLERANCE}, unless the capture saw it move while it waited; changed pixels show red in the report's pictures.",
+        f"A pixel counts when a channel moves more than {TOLERANCE}, unless the capture saw it move while it waited; changed pixels show red in the report's pictures. A shot only one side has is kept as it is; a shot of a new size, or mostly moving, is kept as head's `NAME.png` beside base's `NAME.base.png`.",
         "",
     ]
     if rows:
@@ -89,6 +101,8 @@ def main():
         with open(summary, "a", encoding="utf-8", newline="\n") as file:
             file.write(report)
     print(report)
+    if unusable:
+        sys.exit(f"pixels: {len(unusable)} shots kept moving over more than {MOVING:.0%} of the window; hold them still for the capture")
     if failed and accept:
         print(f"pixels: {len(failed)} shots changed past the threshold; accepted by a Pixels-accepted line")
     elif failed:
