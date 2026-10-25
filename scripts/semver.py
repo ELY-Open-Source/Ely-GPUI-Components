@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fails a breaking change whose crate kept its version: each library crate the base also has and that may have changed, against the base, by default, with no features and with all."""
+import fnmatch
 import json
 import os
 import subprocess
@@ -37,27 +38,33 @@ def rel(path):
     return Path(path).resolve().relative_to(ROOT).as_posix()
 
 
+def packaged(path, include):
+    """Whether `path`, relative to its package's home, is among the files cargo would package."""
+    if not include:
+        return True
+    return any(fnmatch.fnmatch(path, entry) or path.startswith(entry.rstrip("/") + "/") for entry in (each.lstrip("/") for each in include))
+
+
 def touched(base, packages):
-    """The packages whose manifest, library or macro sources, or build script changed since the base, with every package that depends on one."""
+    """The packages a file of which changed since the base, with every package that depends on one."""
+    # A file counts for the nearest package above it, if cargo would package it; a published crate reads no other, `#[path]` and `include!` included.
     diff = git("diff", "--name-only", base)
     if diff.returncode != 0:
         sys.exit(f"semver: cannot diff against {base}: {diff.stderr.strip()}")
     changed = set(diff.stdout.splitlines())
     if changed & EVERYWHERE:
         return set(packages)
+    homes = {name: rel(Path(package["manifest_path"]).parent) for name, package in packages.items()}
+    includes = {name: tomllib.loads(Path(package["manifest_path"]).read_text(encoding="utf-8"))["package"].get("include") for name, package in packages.items()}
     hit = set()
-    for name, package in packages.items():
-        files = {rel(package["manifest_path"])}
-        trees = set()
-        for target in package["targets"]:
-            # A library's module tree sits beside its root file, wherever the manifest puts it.
-            if {"lib", "proc-macro"} & set(target["kind"]):
-                folder = rel(Path(target["src_path"]).parent)
-                trees.add("" if folder == "." else folder + "/")
-            if "custom-build" in target["kind"]:
-                files.add(rel(target["src_path"]))
-        if any(path in files or any(path.startswith(tree) for tree in trees) for path in changed):
-            hit.add(name)
+    for path in changed:
+        owners = [name for name, home in homes.items() if home == "." or path.startswith(home + "/")]
+        if not owners:
+            continue
+        owner = max(owners, key=lambda name: len(homes[name]) if homes[name] != "." else 0)
+        inside = path if homes[owner] == "." else path[len(homes[owner]) + 1:]
+        if packaged(inside, includes[owner]):
+            hit.add(owner)
     by_home = {Path(package["manifest_path"]).resolve().parent: name for name, package in packages.items()}
     uses = {
         name: {by_home.get(Path(dep["path"]).resolve()) for dep in package["dependencies"] if dep.get("path") and dep["kind"] != "dev"}
