@@ -109,6 +109,8 @@ pub struct Start {
     pub choice: shell::Choice,
     /// Narrow check width, if any.
     pub narrow: Option<f32>,
+    /// The window's size when not the usual 1280 by 820.
+    pub window: Option<gpui::Size<gpui::Pixels>>,
     /// Why the start could not be read, shown instead.
     pub failure: Option<SharedString>,
 }
@@ -126,7 +128,8 @@ fn launch(start: Start, cx: &mut App) -> Result<WindowHandle<shell::Gallery>> {
     if start.choice == shell::Choice::Dark {
         Theme::set_mode_now(Mode::Dark, cx);
     }
-    let bounds = Bounds::centered(None, size(px(1280.0), px(820.0)), cx);
+    let asked = start.window.unwrap_or(size(px(1280.0), px(820.0)));
+    let bounds = Bounds::centered(None, asked, cx);
     let options = WindowOptions {
         window_bounds: Some(WindowBounds::Windowed(bounds)),
         titlebar: Some(TitlebarOptions {
@@ -179,6 +182,17 @@ fn parse_args() -> Result<Args> {
             "--story" => args.start.story = Some(value.into()),
             "--capture" => args.capture = Some(PathBuf::from(value)),
             "--audit" if cfg!(windows) => args.audit = Some(PathBuf::from(value)),
+            // A size every runner's screen holds, so the system never trims the window.
+            "--window" => {
+                let (width, height) = value
+                    .split_once('x')
+                    .with_context(|| format!("--window takes WIDTHxHEIGHT, not {value}"))?;
+                let parse = |side: &str| {
+                    side.parse::<f32>()
+                        .with_context(|| format!("bad size {value}"))
+                };
+                args.start.window = Some(size(px(parse(width)?), px(parse(height)?)));
+            }
             "--narrow" => {
                 args.start.narrow = Some(
                     value

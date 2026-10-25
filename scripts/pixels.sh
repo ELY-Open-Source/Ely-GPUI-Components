@@ -1,6 +1,7 @@
 #!/bin/sh
 # Shoots the gallery at BASE and here on this machine and compares them: scripts/pixels.sh BASE [OUT].
 # A Linux runner with no display runs it under xvfb-run.
+# Hosted screens are 1024x768, so the window asks for less than the system would trim it to.
 set -eu
 base=${1:?usage: scripts/pixels.sh BASE [OUT]}
 out=${2:-target/pixels}
@@ -29,7 +30,7 @@ done
 for side in head base; do
   dir=$here
   [ $side = base ] && dir=$here/$tree
-  (cd "$dir" && "$here/$out/gallery-$side$exe" --capture "$here/$out/$side")
+  (cd "$dir" && "$here/$out/gallery-$side$exe" --window 1000x600 --capture "$here/$out/$side")
 done
 accept=""
 if git log --format=%B "$base..HEAD" | grep -q '^Pixels-accepted:'; then

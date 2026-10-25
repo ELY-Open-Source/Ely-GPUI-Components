@@ -16,7 +16,9 @@ use crate::{
 pub const AT: &str = "2026-10-20T14:30:00Z";
 const SETTLE: Duration = Duration::from_millis(700);
 const STEADY: Duration = Duration::from_millis(250);
-const STEADY_TRIES: usize = 12;
+// Past a second, so a counter that ticks each second cannot pass for still.
+const STILL: Duration = Duration::from_millis(1100);
+const PATIENCE: Duration = Duration::from_secs(4);
 const SCROLL_SETTLE: Duration = Duration::from_millis(250);
 
 /// Shoots one page, or all, in both modes, then quits; exits 1 on failure.
@@ -70,7 +72,21 @@ async fn shoot_all(
                 script::park(window, cx)?;
             }
             cx.background_executor().timer(SETTLE).await;
-            let (viewport, max) = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
+            // A picture that lands late grows the page, which would move every segment below it.
+            let mut extent = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
+            let start = cx.background_executor().now();
+            loop {
+                cx.background_executor().timer(STEADY).await;
+                let now = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
+                if now == extent {
+                    break;
+                }
+                if cx.background_executor().now() - start >= PATIENCE {
+                    bail!("page {} kept changing height for {PATIENCE:?}", page.slug);
+                }
+                extent = now;
+            }
+            let (viewport, max) = extent;
             if viewport <= px(0.0) {
                 bail!("page {} has no viewport", page.slug);
             }
@@ -102,30 +118,72 @@ async fn shoot_all(
     Ok(())
 }
 
-/// Shoots to `path` until two shots in a row match, so a picture still decoding is never caught half drawn.
+/// Shoots to `path` until it holds still for `STILL`, so neither a picture still decoding nor a counter between ticks is caught; what still moves after `PATIENCE` goes to `NAME.moving.png`, which the comparison passes over.
 pub async fn steady(
     frames: gpui::AnyWindowHandle,
     path: &Path,
     shoot: impl Fn(&Path) -> Result<()>,
     cx: &mut AsyncApp,
 ) -> Result<()> {
-    let next = path.with_extension("next.png");
+    let (next, mask) = (
+        path.with_extension("next.png"),
+        path.with_extension("moving.png"),
+    );
+    if mask.exists() {
+        std::fs::remove_file(&mask).with_context(|| format!("remove {}", mask.display()))?;
+    }
     script::shown(frames, cx).await?;
     shoot(path)?;
-    for _ in 0..STEADY_TRIES {
+    let start = cx.background_executor().now();
+    let (mut since, mut moving) = (start, None);
+    loop {
         cx.background_executor().timer(STEADY).await;
         script::shown(frames, cx).await?;
         shoot(&next)?;
-        let same = std::fs::read(path)? == std::fs::read(&next)?;
+        let now = cx.background_executor().now();
+        if std::fs::read(path)? != std::fs::read(&next)? {
+            mark(&mut moving, path, &next)?;
+            since = now;
+        }
         std::fs::rename(&next, path).with_context(|| format!("replace {}", path.display()))?;
-        if same {
+        if now - since >= STILL {
             return Ok(());
         }
+        if now - start >= PATIENCE {
+            break;
+        }
     }
+    let moving = moving.context("a shot that never held still marked no pixel")?;
+    moving
+        .save(&mask)
+        .with_context(|| format!("write {}", mask.display()))?;
     log::warn!(
-        "capture: {} still changed after {STEADY_TRIES} shots {STEADY:?} apart",
-        path.display()
+        "capture: {} still moved after {PATIENCE:?}; its moving pixels are in {}",
+        path.display(),
+        mask.display()
     );
+    Ok(())
+}
+
+/// Adds the pixels that differ between two shots to `moving`.
+fn mark(moving: &mut Option<image::GrayImage>, before: &Path, after: &Path) -> Result<()> {
+    let (before, after) = (
+        image::open(before)?.to_rgb8(),
+        image::open(after)?.to_rgb8(),
+    );
+    if before.dimensions() != after.dimensions() {
+        bail!(
+            "the window changed size between shots: {:?} to {:?}",
+            before.dimensions(),
+            after.dimensions()
+        );
+    }
+    let mask = moving.get_or_insert_with(|| image::GrayImage::new(before.width(), before.height()));
+    for ((x, y, was), now) in before.enumerate_pixels().zip(after.pixels()) {
+        if was != now {
+            mask.put_pixel(x, y, image::Luma([255]));
+        }
+    }
     Ok(())
 }
 

@@ -14,15 +14,29 @@ THRESHOLD = 0.0005
 MARK = (220, 30, 30)
 
 
+def moving(base, head, size):
+    """The pixels a capture saw move while it waited for the view to hold still, on either side."""
+    seen = Image.new("L", size, 0)
+    for path in (base.with_suffix(".moving.png"), head.with_suffix(".moving.png")):
+        if path.is_file():
+            mask = Image.open(path).convert("L")
+            if mask.size != size:
+                sys.exit(f"pixels: {path} is {mask.size}, its shot {size}")
+            seen = ImageChops.lighter(seen, mask)
+    return seen
+
+
 def changed(base, head):
-    """The share of pixels that changed, and a mask of them or, for a new size, both sizes; a new size changes every pixel."""
+    """The share of still pixels that changed, a mask of them or, for a new size, both sizes, and the share passed over as moving."""
     a, b = Image.open(base).convert("RGB"), Image.open(head).convert("RGB")
     if a.size != b.size:
-        return 1.0, f"{a.size[0]}x{a.size[1]} to {b.size[0]}x{b.size[1]}"
+        return 1.0, f"{a.size[0]}x{a.size[1]} to {b.size[0]}x{b.size[1]}", 0.0
     r, g, bl = ImageChops.difference(a, b).split()
     mask = ImageChops.lighter(ImageChops.lighter(r, g), bl).point(lambda v: 255 if v > TOLERANCE else 0)
-    count = mask.histogram()[255]
-    return count / (a.size[0] * a.size[1]), mask
+    skipped = moving(base, head, a.size)
+    mask = ImageChops.subtract(mask, skipped)
+    area = a.size[0] * a.size[1]
+    return mask.histogram()[255] / area, mask, skipped.histogram()[255] / area
 
 
 def picture(head, mask, path):
@@ -39,7 +53,8 @@ def main():
     base, head, out = map(Path, args)
     accept = "--accept" in sys.argv
     out.mkdir(parents=True, exist_ok=True)
-    names = sorted({path.name for path in base.glob("*.png")} | {path.name for path in head.glob("*.png")})
+    shots = lambda folder: {path.name for path in folder.glob("*.png") if not path.name.endswith(".moving.png")}
+    names = sorted(shots(base) | shots(head))
     if not names:
         sys.exit(f"pixels: no shots in {base} or {head}")
     rows, failed = [], []
@@ -47,8 +62,10 @@ def main():
         if not (base / name).is_file() or not (head / name).is_file():
             share, note = 1.0, "only in head" if (head / name).is_file() else "only in base"
         else:
-            share, mask = changed(base / name, head / name)
+            share, mask, skipped = changed(base / name, head / name)
             note = f"new size, {mask}" if isinstance(mask, str) else ""
+            if skipped:
+                note = f"{skipped:.3%} moving, passed over"
             if not isinstance(mask, str) and share > 0:
                 picture(head / name, mask, out / name)
         if share > 0:
@@ -59,12 +76,12 @@ def main():
     lines = [
         f"## Pixels: {len(names)} shots, {len(rows)} changed, {len(failed)} past {THRESHOLD:.2%}",
         "",
-        f"A pixel counts when a channel moves more than {TOLERANCE}; changed pixels show red in the report's pictures.",
+        f"A pixel counts when a channel moves more than {TOLERANCE}, unless the capture saw it move while it waited; changed pixels show red in the report's pictures.",
         "",
     ]
     if rows:
         lines += ["| Shot | Changed | |", "| --- | ---: | --- |"]
-        lines += [f"| {name} | {share:.3%} | {note or ('fails' if name in failed else '')} |" for share, name, note in rows]
+        lines += [f"| {name} | {share:.3%} | {', '.join(filter(None, ['fails' if name in failed else '', note]))} |" for share, name, note in rows]
     report = "\n".join(lines) + "\n"
     (out / "report.md").write_text(report, encoding="utf-8", newline="\n")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
