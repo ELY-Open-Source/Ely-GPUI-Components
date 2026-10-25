@@ -50,7 +50,9 @@ fn each_second(id: impl Into<ElementId>, window: &mut Window, cx: &mut App) {
     window.use_keyed_state(id, cx, |window, cx| -> Task<()> {
         cx.spawn_in(window, async move |ticker, cx| {
             loop {
-                let past = Timestamp::now().subsec_nanosecond().max(0) as u64;
+                let past = ely_core::typography::format::now()
+                    .subsec_nanosecond()
+                    .max(0) as u64;
                 cx.background_executor()
                     .timer(Duration::from_nanos(1_000_000_000 - past))
                     .await;
@@ -174,7 +176,10 @@ impl RenderOnce for Clock {
         if self.now.is_none() {
             each_second((self.id.clone(), "tick"), window, cx);
         }
-        let now = self.now.unwrap_or_else(Timestamp::now).to_zoned(zone);
+        let now = self
+            .now
+            .unwrap_or_else(ely_core::typography::format::now)
+            .to_zoned(zone);
         let theme = cx.theme();
         let side = theme.misc().face.to_pixels(window.rem_size());
         div()
@@ -255,7 +260,7 @@ impl RenderOnce for WorldClock {
         if self.now.is_none() {
             each_second((self.id.clone(), "tick"), window, cx);
         }
-        let now = self.now.unwrap_or_else(Timestamp::now);
+        let now = self.now.unwrap_or_else(ely_core::typography::format::now);
         let theme = cx.theme();
         let side = theme.misc().small_face.to_pixels(window.rem_size());
         let rows = self.places.into_iter().map(|(name, zone)| {

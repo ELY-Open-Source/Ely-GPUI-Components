@@ -197,7 +197,9 @@ impl MailItem {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("mail item"));
-        let date = mail.at.map(|at| say(when(at, Timestamp::now(), &zone), cx));
+        let date = mail
+            .at
+            .map(|at| say(when(at, ely_core::typography::format::now(), &zone), cx));
         let dot = div()
             .size(theme.icon_size(IconSize::Xs))
             .flex()

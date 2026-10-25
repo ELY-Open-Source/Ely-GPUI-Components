@@ -111,7 +111,7 @@ pub(super) fn time_dialog(
         return None;
     }
     let chosen = now.chosen;
-    let ahead = chosen.and_then(|chosen| ahead(chosen, zone, Timestamp::now()));
+    let ahead = chosen.and_then(|chosen| ahead(chosen, zone, ely_core::typography::format::now()));
     let (closing, choosing, id) = (picking.clone(), picking.clone(), id.clone());
     let late = (chosen.is_some() && ahead.is_none()).then(|| {
         div()

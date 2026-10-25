@@ -38,7 +38,7 @@ fn thread_mark(open: Entity<bool>) -> MessageThread {
     MessageThread::new(
         "messaging-thread-mark",
         3,
-        Timestamp::now() - SignedDuration::from_hours(2),
+        ely_gpui_component::typography::format::now() - SignedDuration::from_hours(2),
     )
     .repliers([
         Avatar::new("messaging-replier-ana", "Ana Lima"),

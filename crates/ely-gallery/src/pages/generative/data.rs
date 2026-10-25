@@ -9,7 +9,7 @@ use ely_gpui_component::{
     tables::{Cell, Column, DataTable, Row},
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Styled, Window, div, px, rems};
-use jiff::{SignedDuration, Timestamp};
+use jiff::SignedDuration;
 
 use crate::{
     probe::probe,
@@ -240,7 +240,7 @@ pub fn playground(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
 }
 
 fn history() -> Vec<PromptVersion> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let version = |key: &str, text: &str, note: &str, hours: i64| PromptVersion {
         key: key.to_string().into(),
         text: text.to_string().into(),
@@ -301,7 +301,7 @@ pub fn versions(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                         0,
                         PromptVersion {
                             key: format!("v{}", list.len() + 1).into(),
-                            at: Timestamp::now(),
+                            at: ely_gpui_component::typography::format::now(),
                             note: format!("Restored version {place}").into(),
                             ..back
                         },

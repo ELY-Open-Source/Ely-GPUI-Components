@@ -172,7 +172,7 @@ pub fn knowledge(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> 
     let trash = keep(
         "know-trash",
         || {
-            let now = Timestamp::now();
+            let now = ely_gpui_component::typography::format::now();
             vec![
                 Trashed {
                     key: "old-palette".into(),
@@ -196,9 +196,14 @@ pub fn knowledge(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> 
     let now_trash = trash.read(cx).clone();
     let picked_version = keep("know-version", || 0usize, window, cx);
     let now_version = *picked_version.read(cx);
-    let history = keep("know-history", || versions(Timestamp::now()), window, cx)
-        .read(cx)
-        .clone();
+    let history = keep(
+        "know-history",
+        || versions(ely_gpui_component::typography::format::now()),
+        window,
+        cx,
+    )
+    .read(cx)
+    .clone();
     let theme = cx.theme();
     let (unpinned, moved, restored, deleted, emptied) = (
         favorites.clone(),

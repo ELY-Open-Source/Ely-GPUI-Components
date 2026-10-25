@@ -53,6 +53,9 @@ deferred=$(grep -rn 'deferred(' src $libs --include='*.rs' | grep -v "^$core/pri
 [ -z "$deferred" ] || { echo "gpui deferred outside primitives::raise:"; echo "$deferred"; fail=1; }
 instant=$(grep -rnE '(^|[^_[:alnum:]])time::(Instant|\{[^}]*Instant)' src crates || true)
 [ -z "$instant" ] || { echo "std Instant panics in the browser, use web_time::Instant:"; echo "$instant"; fail=1; }
+# Drawn time reads typography::format::now, which a capture holds still.
+now=$(grep -rnE '(Timestamp|Zoned|SystemTime)::now([^_[:alnum:]]|$)' src crates --include='*.rs' | grep -vE '/tests/|tests\.rs:|typography/format\.rs:|:[0-9]+:[[:space:]]*//' || true)
+[ -z "$now" ] || { echo "read the time through typography::format::now:"; echo "$now"; fail=1; }
 gallery=crates/ely-gallery
 for f in $gallery/examples/docs/*.rs; do
   [ -e "$f" ] || continue

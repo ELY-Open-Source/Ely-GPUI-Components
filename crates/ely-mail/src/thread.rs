@@ -5,7 +5,7 @@ use gpui::{
     MouseButton, ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, Styled,
     Window, div, prelude::*,
 };
-use jiff::{Timestamp, tz::TimeZone};
+use jiff::tz::TimeZone;
 use smallvec::SmallVec;
 
 use super::reader::{Asks, Message, dated, open_letter};
@@ -130,7 +130,7 @@ impl RenderOnce for MailThreadView {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("mail thread"));
-        let now = Timestamp::now();
+        let now = ely_core::typography::format::now();
         let newest = self.messages.len() - 1;
         let mut open_now = opened.read(cx).clone();
         open_now.extend(self.picked.clone());

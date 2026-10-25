@@ -3,7 +3,7 @@ use ely_gpui_component::{
     lists::{DirEntry, FileTree},
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Styled, Window, div, px};
-use jiff::{Timestamp, ToSpan};
+use jiff::ToSpan;
 
 use crate::{
     probe::probe,
@@ -12,7 +12,7 @@ use crate::{
 
 /// What the demo's folder at `path` holds, the root first.
 pub fn listing(path: &[SharedString]) -> Vec<DirEntry> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let file = |name: &str, bytes: u64, hours: i64| {
         DirEntry::file(name.to_string(), bytes, now - hours.hours())
     };

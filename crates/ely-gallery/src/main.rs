@@ -210,6 +210,10 @@ fn main() -> Result<()> {
     if capture.is_some() && cfg!(not(target_os = "macos")) {
         log::warn!("capture: scripted states need macOS, so only the pages are shot");
     }
+    // Clocks, dates and "minutes ago" draw one moment, so two captures compare pixel for pixel.
+    if capture.is_some() {
+        ely_gpui_component::typography::format::freeze_now(capture::AT.parse()?);
+    }
     gpui_platform::application()
         .with_assets(GalleryAssets)
         .run(move |cx: &mut App| {

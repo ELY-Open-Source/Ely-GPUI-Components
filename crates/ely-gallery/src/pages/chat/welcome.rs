@@ -10,7 +10,7 @@ use ely_gpui_component::{
     theme::{ActiveTheme, Radius},
 };
 use gpui::{App, Entity, IntoElement, ParentElement, Styled, Window, div, px};
-use jiff::{Timestamp, tz::TimeZone};
+use jiff::tz::TimeZone;
 
 use crate::{
     probe::probe,
@@ -33,7 +33,9 @@ pub fn welcome_section(
     cx: &mut App,
 ) -> impl IntoElement + use<> {
     let zone = TimeZone::try_system().expect("the gallery reads the system time zone");
-    let hour = Timestamp::now().to_zoned(zone).hour() as u8;
+    let hour = ely_gpui_component::typography::format::now()
+        .to_zoned(zone)
+        .hour() as u8;
     let (filled, typed, sent, toaster) =
         (draft.clone(), draft.clone(), draft.clone(), toaster.clone());
     let starters = [

@@ -29,7 +29,7 @@ pub fn history(window: &mut Window, cx: &mut App) -> History {
     History {
         all: keep(
             "chat-conversations",
-            || conversations(Timestamp::now()),
+            || conversations(ely_gpui_component::typography::format::now()),
             window,
             cx,
         ),
@@ -79,7 +79,7 @@ pub fn conversations_section(
     window: &mut Window,
     cx: &mut App,
 ) -> impl IntoElement + use<> {
-    let today = Timestamp::now()
+    let today = ely_gpui_component::typography::format::now()
         .to_zoned(TimeZone::try_system().expect("the gallery reads the system time zone"))
         .date();
     let query = window.use_keyed_state("chat-find-conversation", cx, |window, cx| {
@@ -127,7 +127,7 @@ pub fn conversations_section(
             .border_color(theme.colors.border)
             .bg(theme.colors.sunken)
             .child(new_chat_button("chat-new").on_click(move |_, _, cx| {
-                let at = Timestamp::now();
+                let at = ely_gpui_component::typography::format::now();
                 let key = SharedString::from(format!("new-{}", at.as_millisecond()));
                 open_new(&fresh, Conversation { key, title: "New chat".into(), at, pinned: false }, cx)
             }))
@@ -315,8 +315,8 @@ pub fn shared_section(
             .border_color(theme.colors.border)
             .overflow_hidden()
             .child(
-                SharedConversationView::new("chat-shared", "Grace Lin", Timestamp::now() - 3.hours(), messages).on_continue(move |_, cx| {
-                    let conversation = Conversation { key: "shared-lift".into(), title: SHARED[0].0.into(), at: Timestamp::now(), pinned: false };
+                SharedConversationView::new("chat-shared", "Grace Lin", ely_gpui_component::typography::format::now() - 3.hours(), messages).on_continue(move |_, cx| {
+                    let conversation = Conversation { key: "shared-lift".into(), title: SHARED[0].0.into(), at: ely_gpui_component::typography::format::now(), pinned: false };
                     open_new(&carried, conversation, cx)
                 }),
             ),

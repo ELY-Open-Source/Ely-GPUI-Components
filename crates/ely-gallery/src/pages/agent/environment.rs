@@ -8,7 +8,7 @@ use ely_gpui_component::{
     forms::{SearchInput, TextInput},
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Styled, Window, div, px};
-use jiff::{Timestamp, ToSpan};
+use jiff::ToSpan;
 
 use crate::{
     probe::probe,
@@ -192,7 +192,7 @@ pub fn connectors_section(window: &mut Window, cx: &mut App) -> impl IntoElement
 }
 
 pub fn memory_section(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let kept = keep(
         "agent-memories",
         || {
@@ -260,7 +260,7 @@ pub fn memory_section(window: &mut Window, cx: &mut App) -> impl IntoElement + u
                         .on_add(move |text, _, cx| {
                             let mut next = added.read(cx).clone();
                             let key = SharedString::from(format!("kept-{}", next.len()));
-                            next.insert(0, Memory { key, text: text.to_string().into(), source: None, at: Timestamp::now() });
+                            next.insert(0, Memory { key, text: text.to_string().into(), source: None, at: ely_gpui_component::typography::format::now() });
                             set(&added, next, cx)
                         })
                         .on_forget(move |key, _, cx| {

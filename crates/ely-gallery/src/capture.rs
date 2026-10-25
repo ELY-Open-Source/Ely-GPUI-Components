@@ -12,6 +12,8 @@ use crate::{
     shell::{Choice, Gallery},
 };
 
+/// The moment every capture draws.
+pub const AT: &str = "2026-10-20T14:30:00Z";
 const SETTLE: Duration = Duration::from_millis(700);
 const SCROLL_SETTLE: Duration = Duration::from_millis(250);
 
@@ -130,15 +132,15 @@ fn take_posted_moves(window: &Window) -> Result<()> {
     Ok(())
 }
 
-/// Windows posts no pointer, so there is nothing to take.
-#[cfg(target_os = "windows")]
+/// Windows and X11 get no posted pointer, so there is nothing to take.
+#[cfg(any(target_os = "windows", target_os = "linux"))]
 fn take_posted_moves(_: &Window) -> Result<()> {
     Ok(())
 }
 
-#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 fn take_posted_moves(_: &Window) -> Result<()> {
-    bail!("capture needs macOS or Windows window APIs")
+    bail!("capture needs macOS, Windows or X11 window APIs")
 }
 
 /// This process's frontmost window above the normal level: a popover or menu.
@@ -195,9 +197,25 @@ pub fn number(window: &Window) -> Result<u32> {
     u32::try_from(win32.hwnd.get()).context("window handle out of range")
 }
 
-#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+/// A gpui window's X11 id, which `snapshot` takes; Wayland lets no client read a window back.
+#[cfg(target_os = "linux")]
+pub fn number(window: &Window) -> Result<u32> {
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+
+    let handle = HasWindowHandle::window_handle(window)
+        .map_err(|error| anyhow::anyhow!("window has no native handle: {error:?}"))?;
+    match handle.as_raw() {
+        RawWindowHandle::Xcb(xcb) => Ok(xcb.window.get()),
+        RawWindowHandle::Xlib(xlib) => {
+            u32::try_from(xlib.window).context("X11 window id out of range")
+        }
+        other => bail!("capture needs an X11 window, not {other:?}; unset WAYLAND_DISPLAY"),
+    }
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 pub fn number(_: &Window) -> Result<u32> {
-    bail!("capture needs macOS or Windows window APIs")
+    bail!("capture needs macOS, Windows or X11 window APIs")
 }
 
 #[cfg(target_os = "macos")]
@@ -346,7 +364,52 @@ pub fn snapshot(hwnd: u32, path: &Path) -> Result<()> {
     .with_context(|| format!("write {}", path.display()))
 }
 
-#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+/// A window's contents as the X server holds them.
+#[cfg(target_os = "linux")]
+pub fn snapshot(window: u32, path: &Path) -> Result<()> {
+    use x11rb::{
+        connection::Connection as _,
+        protocol::xproto::{ConnectionExt as _, ImageFormat, ImageOrder},
+    };
+
+    let (conn, _) = x11rb::connect(None).context("connect to the X server named by DISPLAY")?;
+    if conn.setup().image_byte_order != ImageOrder::LSB_FIRST {
+        bail!("the X server sends pixels most significant byte first");
+    }
+    let geometry = conn
+        .get_geometry(window)?
+        .reply()
+        .with_context(|| format!("no geometry for X11 window {window}"))?;
+    let (width, height) = (geometry.width, geometry.height);
+    let shot = conn
+        .get_image(ImageFormat::Z_PIXMAP, window, 0, 0, width, height, u32::MAX)?
+        .reply()
+        .with_context(|| format!("could not read the pixels of X11 window {window}"))?;
+    let size = usize::from(width) * usize::from(height) * 4;
+    if !matches!(shot.depth, 24 | 32) || shot.data.len() != size {
+        bail!(
+            "X11 window {window} came as depth {} with {} bytes, not {size}",
+            shot.depth,
+            shot.data.len()
+        );
+    }
+    // A 24- or 32-bit ZPixmap holds each pixel as blue, green, red and a pad.
+    let rgba: Vec<u8> = shot
+        .data
+        .chunks_exact(4)
+        .flat_map(|pixel| [pixel[2], pixel[1], pixel[0], 255])
+        .collect();
+    image::save_buffer(
+        path,
+        &rgba,
+        u32::from(width),
+        u32::from(height),
+        image::ColorType::Rgba8,
+    )
+    .with_context(|| format!("write {}", path.display()))
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 pub fn snapshot(_: u32, _: &Path) -> Result<()> {
-    bail!("capture needs macOS or Windows window APIs")
+    bail!("capture needs macOS, Windows or X11 window APIs")
 }

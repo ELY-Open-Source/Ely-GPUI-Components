@@ -6,7 +6,7 @@ use ely_gpui_component::{
     primitives::IconName,
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Styled, Window, div, px};
-use jiff::{Timestamp, ToSpan};
+use jiff::ToSpan;
 
 use crate::{
     probe::probe,
@@ -129,7 +129,7 @@ pub fn sharing(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
 }
 
 pub fn activity(cx: &mut App) -> impl IntoElement + use<> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let entry = |key: &str, actor: &str, verb: &str, object: &str, minutes: i64| {
         Activity::new(
             key.to_string(),

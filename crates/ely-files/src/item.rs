@@ -43,7 +43,7 @@ impl FileItem {
 
 impl From<FileItem> for ListItem {
     fn from(item: FileItem) -> Self {
-        let detail = detail(&item.entry, Timestamp::now());
+        let detail = detail(&item.entry, ely_core::typography::format::now());
         ListItem::new(item.id, item.entry.name().clone())
             .leading(FileIcon::entry(&item.entry))
             .description(detail)

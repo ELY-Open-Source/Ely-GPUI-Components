@@ -10,7 +10,7 @@ mod zone;
 
 use gpui::App;
 use jiff::{
-    Timestamp, Zoned,
+    Zoned,
     civil::{Date, Time},
 };
 
@@ -28,7 +28,7 @@ pub use zone::TimezoneSelect;
 
 /// The system's clock in its own zone, UTC when that zone is unknown.
 pub(crate) fn zoned_now() -> Zoned {
-    Timestamp::now().to_zoned(system_zone("date pickers"))
+    crate::typography::format::now().to_zoned(system_zone("date pickers"))
 }
 
 /// A day as the reader's language writes it.

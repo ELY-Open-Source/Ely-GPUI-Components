@@ -141,7 +141,7 @@ fn boxes(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
 
 /// The demo's inbox: dated back from now, so the list reads the time, the weekday, the date and the year.
 fn inbox() -> Vec<Mail> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let ago = |minutes: i64| now - SignedDuration::from_mins(minutes);
     vec![
         Mail::new(

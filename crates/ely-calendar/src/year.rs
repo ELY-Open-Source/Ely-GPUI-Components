@@ -4,7 +4,7 @@ use gpui::{
     AnyElement, App, ElementId, FontWeight, Hsla, InteractiveElement, IntoElement, MouseButton,
     ParentElement, RenderOnce, Role, Styled, Window, div, prelude::*,
 };
-use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
+use jiff::{ToSpan, civil::Date, tz::TimeZone};
 
 use super::{
     chip::tint,
@@ -212,9 +212,11 @@ impl RenderOnce for YearView {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("year view"));
-        let today = self
-            .today
-            .unwrap_or_else(|| Timestamp::now().to_zoned(zone.clone()).date());
+        let today = self.today.unwrap_or_else(|| {
+            ely_core::typography::format::now()
+                .to_zoned(zone.clone())
+                .date()
+        });
         let year = use_seeded((self.id.clone(), "year"), self.year, window, cx);
         let shown = year.read(cx).value;
         let start = match today.year() == shown {

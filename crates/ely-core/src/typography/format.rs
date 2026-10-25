@@ -1,4 +1,7 @@
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{
+    OnceLock,
+    atomic::{AtomicBool, Ordering},
+};
 
 use jiff::{Timestamp, fmt::strtime, tz::TimeZone};
 
@@ -248,6 +251,21 @@ pub(crate) fn span(then: Timestamp, now: Timestamp) -> Option<(u64, &'static str
         _ => (round(365 * 86_400), "year"),
     };
     Some((count, unit, delta < 0))
+}
+
+static FROZEN: OnceLock<Timestamp> = OnceLock::new();
+
+/// The current moment, or the one `freeze_now` held; what a component draws reads time here.
+#[doc(hidden)]
+pub fn now() -> Timestamp {
+    FROZEN.get().copied().unwrap_or_else(Timestamp::now)
+}
+
+/// Holds `now` at `at` for the rest of the process, so two captures draw the same times; once only.
+#[doc(hidden)]
+pub fn freeze_now(at: Timestamp) {
+    assert!(FROZEN.set(at).is_ok(), "now is already frozen");
+    log::info!("time: now frozen at {at}");
 }
 
 /// The system's zone; an unknown one logs once, naming `user`, and reads as jiff's unknown zone.

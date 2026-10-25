@@ -6,7 +6,6 @@ use ely_gpui_component::{
     primitives::IconName,
 };
 use gpui::{App, IntoElement, ParentElement, SharedString, Styled, Window, div, px};
-use jiff::Timestamp;
 
 use crate::{
     probe::probe,
@@ -103,7 +102,7 @@ pub fn drop_files(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
                             DirEntry::file(
                                 name.to_string_lossy().to_string(),
                                 bytes,
-                                Timestamp::now(),
+                                ely_gpui_component::typography::format::now(),
                             )
                         });
                         let entries: Vec<DirEntry> = entries.collect();

@@ -270,7 +270,13 @@ const ARRIVALS: [(&str, &str, &str); 3] = [
 ];
 
 pub fn feed(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let opened = *keep("feed-opened", Timestamp::now, window, cx).read(cx);
+    let opened = *keep(
+        "feed-opened",
+        ely_gpui_component::typography::format::now,
+        window,
+        cx,
+    )
+    .read(cx);
     let arrivals = keep("feed-arrivals", Vec::<Timestamp>::new, window, cx);
     let (now, post) = (arrivals.read(cx).clone(), arrivals.clone());
     let ago = |span: jiff::Span| opened.checked_sub(span).expect("a time in range");
@@ -314,7 +320,7 @@ pub fn feed(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
             .icon(IconName::Plus)
             .on_click(move |_, _, cx| {
                 let mut next = post.read(cx).clone();
-                next.push(Timestamp::now());
+                next.push(ely_gpui_component::typography::format::now());
                 set(&post, next, cx)
             }),
     )))

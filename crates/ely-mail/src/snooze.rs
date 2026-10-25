@@ -82,7 +82,7 @@ impl RenderOnce for SnoozePicker {
             .zone
             .unwrap_or_else(|| format::system_zone("snooze picker"));
         let picking = picking(&self.id, window, cx);
-        let menu = snoozes(Timestamp::now(), &zone)
+        let menu = snoozes(ely_core::typography::format::now(), &zone)
             .into_iter()
             .fold(Menu::new(), |menu, (name, at)| {
                 let on_snooze = self.on_snooze.clone();

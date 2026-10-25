@@ -4,7 +4,7 @@ use gpui::{
     App, ElementId, FontWeight, ImageSource, IntoElement, ParentElement, RenderOnce, SharedString,
     Styled, Window, div, prelude::*,
 };
-use jiff::{Timestamp, tz::TimeZone};
+use jiff::tz::TimeZone;
 
 use crate::{
     buttons::{Button, ButtonVariant, IconButton},
@@ -152,7 +152,7 @@ impl RenderOnce for UserProfileCard {
         };
         let line = |text: SharedString| div().min_w_0().child(Ellipsis::new(text));
         let local = self.zone.map(|zone| {
-            let time = format::datetime(Timestamp::now(), &zone, "%H:%M")
+            let time = format::datetime(ely_core::typography::format::now(), &zone, "%H:%M")
                 .expect("a fixed pattern formats");
             div()
                 .flex()

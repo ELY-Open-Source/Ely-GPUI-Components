@@ -94,16 +94,15 @@ impl RenderOnce for ScheduleSend {
             .clone()
             .filter(|_| !self.disabled)
             .map(|schedule| {
-                let presets = presets(Timestamp::now(), &zone).into_iter().fold(
-                    Menu::new(),
-                    |menu, (name, at)| {
+                let presets = presets(ely_core::typography::format::now(), &zone)
+                    .into_iter()
+                    .fold(Menu::new(), |menu, (name, at)| {
                         let schedule = schedule.clone();
                         menu.item(MenuItem::new(name).on_click(move |window, cx| {
                             log::info!("schedule send: at {at}");
                             schedule(at, window, cx)
                         }))
-                    },
-                );
+                    });
                 presets
                     .separator()
                     .item(pick_item("schedule send", &picking))

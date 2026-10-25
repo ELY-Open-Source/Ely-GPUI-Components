@@ -54,7 +54,10 @@ impl RenderOnce for CurrentTimeIndicator {
         if self.now.is_none() {
             fresh((self.id.clone(), "clock"), window, cx);
         }
-        let now = self.now.unwrap_or_else(Timestamp::now).to_zoned(zone);
+        let now = self
+            .now
+            .unwrap_or_else(ely_core::typography::format::now)
+            .to_zoned(zone);
         let minute = f32::from(now.hour()) * 60.0 + f32::from(now.minute());
         let theme = cx.theme();
         let (hour, dot) = (theme.calendar().hour, theme.status_dot() * 1.5);

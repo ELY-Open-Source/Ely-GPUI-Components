@@ -5,7 +5,7 @@ use ely_gpui_component::{
 use gpui::{
     AnyElement, App, Entity, IntoElement, ParentElement, SharedString, Styled, Window, div,
 };
-use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
+use jiff::{ToSpan, civil::Date, tz::TimeZone};
 
 mod editing;
 mod months;
@@ -66,7 +66,9 @@ fn quiet(text: SharedString, cx: &App) -> impl IntoElement + use<> {
 /// The gallery's zone and today in it.
 fn here() -> (TimeZone, Date) {
     let zone = TimeZone::try_system().expect("the gallery reads the system time zone");
-    let today = Timestamp::now().to_zoned(zone.clone()).date();
+    let today = ely_gpui_component::typography::format::now()
+        .to_zoned(zone.clone())
+        .date();
     (zone, today)
 }
 

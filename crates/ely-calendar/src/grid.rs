@@ -383,7 +383,7 @@ impl RenderOnce for TimeGrid {
             .unwrap_or_else(|| format::system_zone("time grid"));
         let now = self
             .now
-            .unwrap_or_else(Timestamp::now)
+            .unwrap_or_else(ely_core::typography::format::now)
             .to_zoned(zone.clone());
         let today = now.date();
         let rem = window.rem_size();

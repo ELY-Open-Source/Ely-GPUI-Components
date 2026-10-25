@@ -81,7 +81,12 @@ fn listing(path: &[&str], now: Timestamp) -> Vec<DirEntry> {
 }
 
 pub fn directory(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let opened = keep("dir-opened", Timestamp::now, window, cx);
+    let opened = keep(
+        "dir-opened",
+        ely_gpui_component::typography::format::now,
+        window,
+        cx,
+    );
     let at = keep(
         "dir-path",
         || vec!["Macintosh HD", "Users", "grace", "Documents"],

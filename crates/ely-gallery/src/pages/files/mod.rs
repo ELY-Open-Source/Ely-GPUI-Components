@@ -4,7 +4,7 @@ use ely_gpui_component::{
     theme::{ActiveTheme, IconSize, TextSize},
 };
 use gpui::{AnyElement, App, IntoElement, ParentElement, SharedString, Styled, Window, div, px};
-use jiff::{Timestamp, ToSpan};
+use jiff::ToSpan;
 
 mod actions;
 mod explorer;
@@ -68,7 +68,7 @@ const SCRIPT: &[Step] = &[
 
 /// A project's entries, changed a few hours to a few weeks ago.
 pub fn entries() -> Vec<DirEntry> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let ago = |hours: i64| now - hours.hours();
     vec![
         DirEntry::folder("Design", ago(3)),

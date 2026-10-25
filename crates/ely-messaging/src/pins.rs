@@ -97,7 +97,7 @@ impl RenderOnce for PinnedMessages {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let colors = &theme.colors;
-        let now = Timestamp::now();
+        let now = ely_core::typography::format::now();
         let count = self.messages.len();
         let rows = self.messages.iter().fold(
             SelectableList::new((self.id.clone(), "pins")),

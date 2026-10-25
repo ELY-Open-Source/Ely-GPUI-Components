@@ -4,7 +4,6 @@ use gpui::{
     App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, SharedString,
     Styled, Window, div,
 };
-use jiff::Timestamp;
 
 use super::login::{Run, field};
 use crate::{
@@ -218,7 +217,7 @@ impl RenderOnce for PaymentMethodForm {
         let (mask, length, code_length) = brand.shape();
         let complete = typed.len() == length;
         let checks = complete && luhn(&typed);
-        let now = Timestamp::now().to_zoned(system_zone("payment method form"));
+        let now = ely_core::typography::format::now().to_zoned(system_zone("payment method form"));
         let today = (now.year() as i32, now.month());
         let expires = expiry(until.read(cx).text(), today);
         let cvc = digits(code.read(cx).text());

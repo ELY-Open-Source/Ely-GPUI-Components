@@ -1,10 +1,7 @@
 use std::{rc::Rc, sync::LazyLock};
 
 use gpui::{App, ElementId, Entity, IntoElement, RenderOnce, SharedString, Window};
-use jiff::{
-    Timestamp,
-    tz::{self, Offset, TimeZone},
-};
+use jiff::tz::{self, Offset, TimeZone};
 
 use super::super::{Choice, Combobox, TextInput, options::OnValue};
 use crate::typography::format::MINUS;
@@ -82,7 +79,7 @@ impl TimezoneSelect {
 
 impl RenderOnce for TimezoneSelect {
     fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
-        let now = Timestamp::now();
+        let now = crate::typography::format::now();
         let zones = ZONES.iter().map(|(name, zone)| {
             Choice::new(name.clone(), name.clone()).note(show_offset(zone.to_offset(now)))
         });

@@ -4,7 +4,7 @@ use gpui::{
     AnyElement, App, ElementId, InteractiveElement, IntoElement, MouseButton, ParentElement,
     RenderOnce, SharedString, Styled, Window, div,
 };
-use jiff::{Timestamp, civil::Date};
+use jiff::civil::Date;
 
 use super::{
     marks::{IssueIdBadge, PriorityIndicator},
@@ -23,7 +23,9 @@ type OnTaskToggle = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 
 /// Today by the clock, in the system's zone.
 pub(super) fn clock_today(user: &str) -> Date {
-    Timestamp::now().to_zoned(format::system_zone(user)).date()
+    ely_core::typography::format::now()
+        .to_zoned(format::system_zone(user))
+        .date()
 }
 
 /// A task in a row: its box, its priority and its issue's name, its title, then when it is due and who has it. Closed, the title goes quiet and struck through; past due and still open, the day reads in red.

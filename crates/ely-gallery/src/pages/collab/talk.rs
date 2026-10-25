@@ -96,7 +96,7 @@ fn answer(all: &Entity<Vec<Thread>>, key: &SharedString, field: &Entity<TextInpu
     change(all, key, cx, |thread| {
         thread.comments.push(Comment {
             author: you(),
-            at: Timestamp::now(),
+            at: ely_gpui_component::typography::format::now(),
             body: body.into(),
             reactions: Vec::new(),
         })
@@ -110,7 +110,12 @@ fn reply_field(key: &'static str, window: &mut Window, cx: &mut App) -> Entity<T
 }
 
 pub fn comments(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let all = keep("collab-threads", || threads(Timestamp::now()), window, cx);
+    let all = keep(
+        "collab-threads",
+        || threads(ely_gpui_component::typography::format::now()),
+        window,
+        cx,
+    );
     let now = all.read(cx).clone();
     let (one, marked, side) = (
         reply_field("collab-reply-one", window, cx),

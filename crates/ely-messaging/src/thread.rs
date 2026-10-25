@@ -70,7 +70,8 @@ impl RenderOnce for MessageThread {
         let theme = cx.theme();
         let colors = &theme.colors;
         let count = replies(self.replies, cx);
-        let last = crate::typography::relative_text(cx, self.last, Timestamp::now());
+        let last =
+            crate::typography::relative_text(cx, self.last, ely_core::typography::format::now());
         let when = crate::i18n::text(cx, "messaging.reply.last", &[("when", &last)]);
         let id = self.id.clone();
         div()

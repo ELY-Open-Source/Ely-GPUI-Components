@@ -144,7 +144,7 @@ impl RenderOnce for AvailabilityPicker {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("availability picker"));
-        let now = self.now.unwrap_or_else(Timestamp::now);
+        let now = self.now.unwrap_or_else(ely_core::typography::format::now);
         let open: Vec<(Date, Vec<i64>)> = self
             .days
             .iter()

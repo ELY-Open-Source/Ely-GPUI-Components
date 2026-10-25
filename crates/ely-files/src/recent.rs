@@ -99,7 +99,9 @@ impl RecentFiles {
 impl RenderOnce for RecentFiles {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let zone = self.zone.unwrap_or_else(|| system_zone("recent files"));
-        let today = Timestamp::now().to_zoned(zone.clone()).date();
+        let today = ely_core::typography::format::now()
+            .to_zoned(zone.clone())
+            .date();
         let mut files = self.files;
         files.sort_by_key(|file| std::cmp::Reverse(file.opened));
         let files: Rc<[RecentFile]> = files.into();

@@ -115,10 +115,10 @@ fn row(ix: usize, row: &Row, today: Date, now: Timestamp) -> gpui::AnyElement {
 }
 
 pub fn conversation(_: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let today = Timestamp::now()
+    let today = ely_gpui_component::typography::format::now()
         .to_zoned(TimeZone::try_system().expect("the gallery reads the system time zone"))
         .date();
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let all = rows(today);
     let count = all.len();
     let theme = cx.theme();

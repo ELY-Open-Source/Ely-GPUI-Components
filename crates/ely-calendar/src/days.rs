@@ -211,7 +211,7 @@ impl<const DAYS: usize> RenderOnce for CalendarDays<DAYS> {
             .zone
             .clone()
             .unwrap_or_else(|| format::system_zone("calendar days"));
-        let now = self.now.unwrap_or_else(Timestamp::now);
+        let now = self.now.unwrap_or_else(ely_core::typography::format::now);
         let today = now.to_zoned(zone.clone()).date();
         let first = use_seeded(
             (self.id.clone(), "first"),

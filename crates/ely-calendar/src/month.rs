@@ -5,7 +5,7 @@ use gpui::{
     ParentElement, Pixels, RenderOnce, Role, StatefulInteractiveElement, Styled, Window, div,
     prelude::*, relative, rems,
 };
-use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
+use jiff::{ToSpan, civil::Date, tz::TimeZone};
 
 use super::{
     chip::EventChip,
@@ -314,9 +314,11 @@ impl RenderOnce for CalendarMonthView {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("calendar month view"));
-        let today = self
-            .today
-            .unwrap_or_else(|| Timestamp::now().to_zoned(zone.clone()).date());
+        let today = self.today.unwrap_or_else(|| {
+            ely_core::typography::format::now()
+                .to_zoned(zone.clone())
+                .date()
+        });
         let month = use_seeded(
             (self.id.clone(), "month"),
             self.month.first_of_month(),

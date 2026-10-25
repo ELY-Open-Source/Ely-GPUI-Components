@@ -20,7 +20,7 @@ fn moment() -> Timestamp {
 
 pub fn relative_time(cx: &App) -> impl IntoElement + use<> {
     let ago = |seconds: i64| {
-        Timestamp::now()
+        ely_gpui_component::typography::format::now()
             .checked_sub(SignedDuration::from_secs(seconds))
             .expect("in range")
     };

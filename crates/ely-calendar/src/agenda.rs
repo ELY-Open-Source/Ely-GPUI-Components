@@ -4,7 +4,7 @@ use gpui::{
     App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, SharedString,
     Styled, Window, div,
 };
-use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
+use jiff::{ToSpan, civil::Date, tz::TimeZone};
 
 use super::{
     chip::tint,
@@ -117,9 +117,11 @@ impl RenderOnce for AgendaView {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("agenda view"));
-        let today = self
-            .today
-            .unwrap_or_else(|| Timestamp::now().to_zoned(zone.clone()).date());
+        let today = self.today.unwrap_or_else(|| {
+            ely_core::typography::format::now()
+                .to_zoned(zone.clone())
+                .date()
+        });
         let picked =
             window.use_keyed_state((self.id.clone(), "picked"), cx, |_, _| None::<SharedString>);
         let theme = cx.theme();

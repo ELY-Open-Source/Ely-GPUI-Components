@@ -2,7 +2,6 @@ use gpui::{
     AnyElement, App, ElementId, FontWeight, ImageSource, IntoElement, ParentElement, RenderOnce,
     SharedString, Styled, Window, div, prelude::*, relative,
 };
-use jiff::Timestamp;
 
 use super::FileIcon;
 use crate::{
@@ -121,7 +120,7 @@ impl RenderOnce for FilePreview {
         };
         let changed = format!(
             "Changed {}",
-            format::relative(self.entry.modified(), Timestamp::now())
+            format::relative(self.entry.modified(), ely_core::typography::format::now())
         );
         let muted = |text: String| {
             div()

@@ -17,7 +17,7 @@ fn you() -> Contact {
 }
 
 fn ago(minutes: i64) -> Timestamp {
-    Timestamp::now() - SignedDuration::from_mins(minutes)
+    ely_gpui_component::typography::format::now() - SignedDuration::from_mins(minutes)
 }
 
 fn paragraph(text: &'static str) -> impl IntoElement {

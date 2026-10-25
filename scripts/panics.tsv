@@ -347,7 +347,7 @@ crates/ely-media/src/turn.rs	expect_used	RgbaImage::from_raw(size.width.0 as u32
 crates/ely-media/src/turn.rs	expect_used	image.as_bytes(ix).expect("a frame in range")	linux,macos,windows	a frame in range
 crates/ely-media/src/upload.rs	expect_used	opened.expect("an opened picture has its shape")	linux,macos,windows	an opened picture has its shape
 crates/ely-messaging/src/messages.rs	expect_used	format::datetime(self.at, &zone, "%H:%M").expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
-crates/ely-messaging/src/people.rs	expect_used	format::datetime(Timestamp::now(), &zone, "%H:%M") .expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
+crates/ely-messaging/src/people.rs	expect_used	format::datetime(ely_core::typography::format::now(), &zone, "%H:%M") .expect("a fixed pattern formats")	linux,macos,windows	a fixed pattern formats
 crates/ely-messaging/src/pins.rs	expect_used	keys.first().expect("a pick names a message")	linux,macos,windows	a pick names a message
 crates/ely-messaging/src/status.rs	expect_used	key["suggestion-".len()..] .parse() .expect("a suggestion's key holds its place")	linux,macos,windows	a suggestion's key holds its place
 crates/ely-messaging/src/status.rs	expect_used	keys.first().expect("a pick names a suggestion")	linux,macos,windows	a pick names a suggestion

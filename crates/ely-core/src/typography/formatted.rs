@@ -269,7 +269,7 @@ pub fn relative_text(cx: &App, then: Timestamp, now: Timestamp) -> SharedString 
 impl RenderOnce for RelativeTime {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         fresh(self.id, window, cx);
-        let text = relative_text(cx, self.at, Timestamp::now());
+        let text = relative_text(cx, self.at, crate::typography::format::now());
         figure(text.to_string())
     }
 }

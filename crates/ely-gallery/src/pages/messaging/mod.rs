@@ -5,7 +5,7 @@ use ely_gpui_component::{
     },
 };
 use gpui::{AnyElement, App, IntoElement, ParentElement, SharedString, Styled, Window, div, px};
-use jiff::{SignedDuration, Timestamp};
+use jiff::SignedDuration;
 
 mod calls;
 mod messages;
@@ -206,7 +206,7 @@ fn header(cx: &mut App) -> impl IntoElement + use<> {
 }
 
 fn pins(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let pin = |key: &str, author: &str, hours: i64, text: &str| PinnedMessage {
         key: SharedString::from(key.to_string()),
         author: SharedString::from(author.to_string()),

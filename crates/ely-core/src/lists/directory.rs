@@ -219,7 +219,7 @@ impl RenderOnce for DirectoryListing {
             + date_width
             + theme.icon_size(IconSize::Md)
             + rems(ROW_CHROME);
-        let now = Timestamp::now();
+        let now = crate::typography::format::now();
         let header = |label: &'static str, this: Column| {
             let order = order.clone();
             div()

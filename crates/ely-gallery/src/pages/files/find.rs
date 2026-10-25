@@ -12,7 +12,7 @@ use ely_gpui_component::{
 use gpui::{
     App, InteractiveElement, IntoElement, ParentElement, SharedString, Styled, Window, div, px,
 };
-use jiff::{SignedDuration, Timestamp, ToSpan};
+use jiff::{SignedDuration, ToSpan};
 
 use crate::{
     probe::probe,
@@ -23,7 +23,11 @@ const ATRIUM: &str = asset!("atrium.jpg");
 const BRIEF: &str = "# Atrium\n\nA quiet hall for the new library.\n\n- Light from above, all day\n- One stair, curved, in plaster\n- Olive trees by the windows\n\nNext: the model walkthrough on Friday.";
 
 fn entry(name: &str, bytes: u64, hours: i64) -> DirEntry {
-    DirEntry::file(name.to_string(), bytes, Timestamp::now() - hours.hours())
+    DirEntry::file(
+        name.to_string(),
+        bytes,
+        ely_gpui_component::typography::format::now() - hours.hours(),
+    )
 }
 
 pub fn previews(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
@@ -86,7 +90,7 @@ pub fn previews(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
 }
 
 pub fn recent(cx: &mut App) -> impl IntoElement + use<> {
-    let now = Timestamp::now();
+    let now = ely_gpui_component::typography::format::now();
     let file = |name: &str, folder: &str, minutes: i64| RecentFile {
         name: SharedString::from(name.to_string()),
         folder: SharedString::from(folder.to_string()),

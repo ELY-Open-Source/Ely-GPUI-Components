@@ -6,7 +6,7 @@ use ely_gpui_component::{
 use gpui::{
     AnyElement, App, Entity, IntoElement, ParentElement, SharedString, Styled, Window, div,
 };
-use jiff::{Timestamp, ToSpan, civil::Date, tz::TimeZone};
+use jiff::{ToSpan, civil::Date, tz::TimeZone};
 
 mod boards;
 mod plans;
@@ -65,7 +65,9 @@ fn quiet(text: SharedString, cx: &App) -> impl IntoElement + use<> {
 /// Today in the gallery's zone.
 fn today() -> Date {
     let zone = TimeZone::try_system().expect("the gallery reads the system time zone");
-    Timestamp::now().to_zoned(zone).date()
+    ely_gpui_component::typography::format::now()
+        .to_zoned(zone)
+        .date()
 }
 
 fn team() -> Vec<Person> {
