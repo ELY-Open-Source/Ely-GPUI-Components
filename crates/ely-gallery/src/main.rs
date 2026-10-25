@@ -160,6 +160,8 @@ struct Args {
     capture: Option<PathBuf>,
     /// Where the accessibility audit writes its report.
     audit: Option<PathBuf>,
+    /// Holds every demo that runs on its own at its start.
+    still: bool,
 }
 
 #[cfg(not(target_family = "wasm"))]
@@ -169,9 +171,14 @@ fn parse_args() -> Result<Args> {
         page: None,
         capture: None,
         audit: None,
+        still: false,
     };
     let mut iter = std::env::args().skip(1);
     while let Some(flag) = iter.next() {
+        if flag == "--still" {
+            args.still = true;
+            continue;
+        }
         let value = iter
             .next()
             .with_context(|| format!("{flag} needs a value"))?;
@@ -218,6 +225,7 @@ fn main() -> Result<()> {
         page,
         capture,
         audit,
+        still,
     } = parse_args()?;
     // A script aims across its page; stories hold part. Its input is posted through AppKit, so only macOS plays one.
     let scripted = start.narrow.is_none() && start.story.is_none() && cfg!(target_os = "macos");
@@ -231,6 +239,9 @@ fn main() -> Result<()> {
     gpui_platform::application()
         .with_assets(GalleryAssets)
         .run(move |cx: &mut App| {
+            if still {
+                cx.set_global(ui::Still);
+            }
             let window = match launch(start, cx) {
                 Ok(window) => window,
                 Err(error) => {

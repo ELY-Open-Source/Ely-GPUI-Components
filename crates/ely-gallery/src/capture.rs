@@ -75,18 +75,21 @@ async fn shoot_all(
             // A picture that lands late grows the page, which would move every segment below it.
             let mut extent = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
             let start = cx.background_executor().now();
+            let mut since = start;
             loop {
                 cx.background_executor().timer(STEADY).await;
                 let now = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
-                if now == extent {
+                let at = cx.background_executor().now();
+                if now != extent {
+                    (extent, since) = (now, at);
+                } else if at - since >= STILL {
                     break;
                 }
-                if cx.background_executor().now() - start >= PATIENCE {
+                if at - start >= PATIENCE {
                     bail!("page {} kept changing height for {PATIENCE:?}", page.slug);
                 }
-                extent = now;
             }
-            let (viewport, max) = extent;
+            let (viewport, _) = extent;
             if viewport <= px(0.0) {
                 bail!("page {} has no viewport", page.slug);
             }
@@ -100,6 +103,8 @@ async fn shoot_all(
                 let path = dir.join(format!("{}-{name}{suffix}.png", page.slug));
                 steady(window.into(), &path, |file| snapshot(gallery, file), cx).await?;
                 log::info!("capture: wrote {}", path.display());
+                // Read again: content that lands late may still grow the page.
+                let (_, max) = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
                 if offset >= max {
                     break;
                 }

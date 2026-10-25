@@ -30,7 +30,7 @@ done
 for side in head base; do
   dir=$here
   [ $side = base ] && dir=$here/$tree
-  (cd "$dir" && "$here/$out/gallery-$side$exe" --window 1000x600 --capture "$here/$out/$side")
+  (cd "$dir" && "$here/$out/gallery-$side$exe" --window 1000x600 --still --capture "$here/$out/$side")
 done
 accept=""
 if git log --format=%B "$base..HEAD" | grep -q '^Pixels-accepted:'; then

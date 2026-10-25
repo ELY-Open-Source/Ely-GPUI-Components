@@ -46,12 +46,18 @@ impl Story {
     }
 }
 
-/// Whether a demo's clock runs: on its page or story.
+/// Set by `--still`: no demo's clock runs, so two pixel captures draw the same.
+pub struct Still;
+
+impl Global for Still {}
+
+/// Whether a demo's clock runs: on its page or story, and never under `--still`.
 pub fn live(title: &str, cx: &App) -> bool {
-    cx.try_global::<Story>().is_none_or(|story| {
-        story.live.borrow_mut().push(title.to_string().into());
-        story.answers(title)
-    })
+    !cx.has_global::<Still>()
+        && cx.try_global::<Story>().is_none_or(|story| {
+            story.live.borrow_mut().push(title.to_string().into());
+            story.answers(title)
+        })
 }
 
 /// A title as a story's address: lowercase, dashes between.
