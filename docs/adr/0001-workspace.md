@@ -17,6 +17,8 @@ The repository is a Cargo workspace.
 
 The root manifest holds `[workspace.package]` (edition, Rust version, license, repository), `[workspace.dependencies]` for what more than one crate uses, gpui's exact pin among them, `[workspace.lints]` and the profiles. Each crate keeps its own version.
 
+Two items move home so the chapters stay a DAG: Latex moves from typography to `documents::Latex`, since it typesets through the documents' svg reader; WCAG contrast (`luminance`, `contrast`, `over`, `grades`) moves from devtools to `theme`, which core's palette tests need. A core item a vertical uses turns `pub`.
+
 ## Steps
 
 B1 moves the gallery and the docs examples; the library stays at the root as `ely-gpui-component`. B2 moves the core chapters; the root re-exports core's modules, so the verticals' `crate::buttons` paths hold until B3–B6 move them out. B7 moves the desktop parts. Once the last chapter leaves, the root holds no package.

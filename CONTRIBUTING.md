@@ -27,13 +27,13 @@ cargo run -p ely-gallery -- --page forms
 
 ## House rules
 
-`AGENTS.md` holds them all. The ones reviews catch most:
+The root `AGENTS.md` holds what every change needs; `crates/ely-core/AGENTS.md` holds the component rules every crate follows, and each crate or folder's own `AGENTS.md` adds its rules. Decisions are in `docs/adr/`. The ones reviews catch most:
 
 - Colors, sizes, radii and shadows come from `cx.theme()`; no raw `px()` in components. Spacing uses gpui's rem helpers.
 - Every component works in light and dark, at 280px wide, by keyboard (Tab reaches it, a 1px focus ring shows, Enter and Space press it), and holds still under reduced motion.
 - Fail fast and log state changes; no silent fallbacks.
 - A file holds one responsibility; `scripts/check.sh` warns past 800 lines and never fails on size. A file under 40 lines is a module entry or a type of its own. Comments are one short line, and rare.
-- A new rule or dependency gets a line in `AGENTS.md`.
+- A new rule or dependency gets a line in the `AGENTS.md` nearest the code it governs; a decision gets a record in `docs/adr/`.
 
 ## Checks
 

@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 RESULTS = ROOT / "target" / "criterion"
 FRAME = 16e6
-# Nanoseconds each bench may take: a 60 Hz frame, and AGENTS.md's 2 MiB read.
+# Nanoseconds each bench may take: a 60 Hz frame, and crates/ely-documents/AGENTS.md's 2 MiB read.
 BUDGETS = {
     "table_scroll_100k_rows": FRAME,
     "editor_typing_10k_lines": FRAME,

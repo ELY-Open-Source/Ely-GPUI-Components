@@ -90,7 +90,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 ## F. Docs and process
 
-- [ ] F1 O-23 Root AGENTS.md ≤10 KB, each rule ≤3 lines; module rules in each crate's AGENTS.md; Decisions to `docs/adr/`.
+- [x] F1 O-23 Root AGENTS.md ≤10 KB, each rule ≤3 lines; module rules in each crate's AGENTS.md; Decisions to `docs/adr/`.
+  - Done: the root `AGENTS.md` went from 112 KB to 5 KB: what every change needs, and where the rest lives. Each other bullet moved verbatim, by script, to one home: `crates/ely-core/AGENTS.md` (the component rules every crate follows), the gallery's, `scripts/`, `frontend/`, `compat/kit` and 17 vertical crates' own. The 53 decisions are `docs/adr/` records, numbered by date, with an index naming what superseded what. `check.sh` fails a root past 10 KB, or a rule that is not one `- ` line of at most 300 characters. Review: three rounds.
 - [ ] F2 O-27 Review record template under `tasks/`; core modules stay unstable until the owner signs.
 - [ ] F3 O-28 README section on the agent-driven process, links checked.
 - [ ] F4 Acceptance table, item by item, against OPTIMIZATION.md.

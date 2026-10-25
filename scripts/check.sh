@@ -40,7 +40,17 @@ done
 files=$(git ls-files -co --exclude-standard '*.rs')
 multi=$(awk 'FNR==1{prev=0} /^[[:space:]]*\/\/([^\/!]|$|\/\/)/ {if(prev) print FILENAME":"FNR; prev=1; next} {prev=0}' $files)
 [ -z "$multi" ] || { echo "multi-line comments:"; echo "$multi"; fail=1; }
-for f in $files AGENTS.md README.md TASKS.md tasks/*.md; do
+# The root AGENTS.md stays short: 10 KB, each rule one `- ` line of at most three 100-character lines; no other list form.
+[ "$(wc -c < AGENTS.md)" -le 10240 ] || { echo "AGENTS.md passes 10 KB; move module rules to their own AGENTS.md"; fail=1; }
+long=$(awk '
+  /^[[:space:]]/ { print "AGENTS.md:" FNR ": an indented line"; rule = 0; next }
+  /^[*+][ \t]|^[0-9]+[.)]([ \t]|$)|^-\t|^-$/ { print "AGENTS.md:" FNR ": a rule is one line starting with - and a space"; rule = 0; next }
+  /^- / { if (length($0) > 300) print "AGENTS.md:" FNR ": " length($0) " characters"; rule = 1; next }
+  /^$|^#/ { rule = 0; next }
+  rule { print "AGENTS.md:" FNR ": a rule runs onto a second line" }
+  { rule = 0 }' AGENTS.md)
+[ -z "$long" ] || { echo "rules in AGENTS.md past three lines:"; echo "$long"; fail=1; }
+for f in $files $(git ls-files -co --exclude-standard '*AGENTS.md') README.md TASKS.md tasks/*.md; do
   n=$(wc -l < "$f")
   [ "$n" -le 800 ] || echo "warning: $f has $n lines; split it by responsibility"
 done

@@ -1,0 +1,57 @@
+# Decisions
+
+One record per decision, numbered by date. A superseded record names the one that replaced it.
+
+- [0002 Official gpui 0.2.2](0002-official-gpui-0-2-2.md): 2026-09-24, superseded by 0017.
+- [0003 One crate](0003-one-crate.md): 2026-09-24, superseded by 0001.
+- [0004 gpui 0.2.2 lacks accessibility, tray, badge and notifications](0004-gpui-0-2-2-lacks-accessibility-tray-badge-and-no.md): 2026-09-24, superseded by 0018.
+- [0005 The gallery photographs its own window](0005-the-gallery-photographs-its-own-window.md): 2026-09-24, accepted.
+- [0006 MIT OR Apache-2.0](0006-mit-or-apache-2-0.md): 2026-09-24, superseded by 0024.
+- [0007 Layouts persist as versioned JSON](0007-layouts-persist-as-versioned-json.md): 2026-09-25, accepted.
+- [0008 An entry built from a later chapter lands there](0008-an-entry-built-from-a-later-chapter-lands-there.md): 2026-09-25, accepted.
+- [0009 SystemNotification blocked](0009-systemnotification-blocked.md): 2026-09-25, superseded by 0019.
+- [0010 unexpected_cfgs declares cargo-clippy](0010-unexpected-cfgs-declares-cargo-clippy.md): 2026-09-25, accepted.
+- [0011 Terminal on alacritty_terminal](0011-terminal-on-alacritty-terminal.md): 2026-09-26, accepted.
+- [0012 ThemeSwitcher is settings::ThemeSelector](0012-themeswitcher-is-settings-themeselector.md): 2026-09-27, accepted.
+- [0013 QRCodeScanner on rqrr](0013-qrcodescanner-on-rqrr.md): 2026-09-28, accepted.
+- [0014 WebView on wry](0014-webview-on-wry.md): 2026-09-28, accepted.
+- [0015 InspectorOverlay is gpui's inspector](0015-inspectoroverlay-is-gpui-s-inspector.md): 2026-09-28, accepted.
+- [0016 Text pairs meet 4.5:1](0016-text-pairs-meet-4-5-1.md): 2026-09-28, accepted.
+- [0017 The site shows components live](0017-the-site-shows-components-live.md): 2026-09-28, accepted, partly superseded by 0032.
+- [0018 gpui's AccessKit tree](0018-gpui-s-accesskit-tree.md): 2026-09-28, accepted.
+- [0019 SystemNotification posts from a bundle](0019-systemnotification-posts-from-a-bundle.md): 2026-09-28, accepted.
+- [0020 The ported gallery draws slower](0020-the-ported-gallery-draws-slower.md): 2026-09-29, accepted.
+- [0021 The web gallery on one thread](0021-the-web-gallery-on-one-thread.md): 2026-09-29, accepted.
+- [0022 The Showcase lives in its own repo](0022-the-showcase-lives-in-its-own-repo.md): 2026-10-04, accepted, partly superseded by 0025.
+- [0023 Rendering holds RenderSurface alone](0023-rendering-holds-rendersurface-alone.md): 2026-10-04, accepted.
+- [0024 MIT alone](0024-mit-alone.md): 2026-10-05, accepted.
+- [0025 The showcase pin moves by itself](0025-the-showcase-pin-moves-by-itself.md): 2026-10-05, accepted.
+- [0026 A removed overlay hands focus back](0026-a-removed-overlay-hands-focus-back.md): 2026-10-05, accepted.
+- [0027 Select and TextInput take a label](0027-select-and-textinput-take-a-label.md): 2026-10-05, accepted.
+- [0028 NumberInput takes a label](0028-numberinput-takes-a-label.md): 2026-10-05, accepted.
+- [0029 TemplatePicker's list is one Tab stop](0029-templatepicker-s-list-is-one-tab-stop.md): 2026-10-05, accepted.
+- [0030 SelectableList in the AX tree](0030-selectablelist-in-the-ax-tree.md): 2026-10-05, accepted.
+- [0031 NumberInput::blank](0031-numberinput-blank.md): 2026-10-05, accepted.
+- [0032 gpui from crates.io's gpui-pre](0032-gpui-from-crates-io-s-gpui-pre.md): 2026-10-07, accepted.
+- [0033 The repos move to Gitea](0033-the-repos-move-to-gitea.md): 2026-10-09, superseded by 0034.
+- [0034 The repos return to GitHub](0034-the-repos-return-to-github.md): 2026-10-19, accepted.
+- [0035 ListItem::editor renames in place](0035-listitem-editor-renames-in-place.md): 2026-10-19, accepted.
+- [0036 Traffic lights at AppKit's height](0036-traffic-lights-at-appkit-s-height.md): 2026-10-20, accepted.
+- [0037 TrayIcon on three platforms](0037-trayicon-on-three-platforms.md): 2026-10-21, accepted.
+- [0038 Mail files open and download](0038-mail-files-open-and-download.md): 2026-10-21, accepted.
+- [0039 gpui-pre 0.3.9](0039-gpui-pre-0-3-9.md): 2026-10-21, accepted.
+- [0040 Components wear Omarchy's theme](0040-components-wear-omarchy-s-theme.md): 2026-10-21, accepted, partly superseded by 0042.
+- [0001 A Cargo workspace](0001-workspace.md): 2026-10-22, accepted.
+- [0041 One Markdown parser, pulldown-cmark](0041-one-markdown-parser-pulldown-cmark.md): 2026-10-22, accepted, partly superseded by 0051.
+- [0042 The desktop crate](0042-the-desktop-crate.md): 2026-10-23, accepted.
+- [0043 Heavy dependencies by crate](0043-heavy-dependencies-by-crate.md): 2026-10-23, accepted.
+- [0044 Icons by use, fonts by feature](0044-icons-by-use-fonts-by-feature.md): 2026-10-23, accepted.
+- [0045 Incremental check times](0045-incremental-check-times.md): 2026-10-23, accepted.
+- [0046 Core's public surface](0046-core-s-public-surface.md): 2026-10-23, accepted.
+- [0047 The verticals' public surface](0047-the-verticals-public-surface.md): 2026-10-23, accepted.
+- [0048 Capability traits](0048-capability-traits.md): 2026-10-23, accepted.
+- [0049 Containers](0049-containers.md): 2026-10-23, accepted.
+- [0050 Every focus stop has a role and a name](0050-every-focus-stop-has-a-role-and-a-name.md): 2026-10-24, accepted.
+- [0051 The Markdown tree returns to the public API](0051-the-markdown-tree-returns-to-the-public-api.md): 2026-10-24, accepted.
+- [0052 The library crates are publishable](0052-the-library-crates-are-publishable.md): 2026-10-24, accepted.
+- [0053 Every declared locale has the whole catalog](0053-every-declared-locale-has-the-whole-catalog.md): 2026-10-24, accepted.
