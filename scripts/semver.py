@@ -33,25 +33,35 @@ def named(base):
     return names
 
 
-def touched(base, libraries):
-    """The libraries whose sources, manifest or build script changed since the base, with every crate that depends on one."""
+def rel(path):
+    return Path(path).resolve().relative_to(ROOT).as_posix()
+
+
+def touched(base, packages):
+    """The packages whose manifest, library or macro sources, or build script changed since the base, with every package that depends on one."""
     diff = git("diff", "--name-only", base)
     if diff.returncode != 0:
         sys.exit(f"semver: cannot diff against {base}: {diff.stderr.strip()}")
     changed = set(diff.stdout.splitlines())
     if changed & EVERYWHERE:
-        return set(libraries)
-    homes = {name: Path(package["manifest_path"]).resolve().parent for name, package in libraries.items()}
+        return set(packages)
     hit = set()
-    for name, home in homes.items():
-        prefix = "" if home == ROOT else home.relative_to(ROOT).as_posix() + "/"
-        own = {f"{prefix}Cargo.toml", f"{prefix}build.rs"}
-        if any(path.startswith(f"{prefix}src/") or path in own for path in changed):
+    for name, package in packages.items():
+        files = {rel(package["manifest_path"])}
+        trees = set()
+        for target in package["targets"]:
+            # A library's module tree sits beside its root file, wherever the manifest puts it.
+            if {"lib", "proc-macro"} & set(target["kind"]):
+                folder = rel(Path(target["src_path"]).parent)
+                trees.add("" if folder == "." else folder + "/")
+            if "custom-build" in target["kind"]:
+                files.add(rel(target["src_path"]))
+        if any(path in files or any(path.startswith(tree) for tree in trees) for path in changed):
             hit.add(name)
-    by_home = {home: name for name, home in homes.items()}
+    by_home = {Path(package["manifest_path"]).resolve().parent: name for name, package in packages.items()}
     uses = {
         name: {by_home.get(Path(dep["path"]).resolve()) for dep in package["dependencies"] if dep.get("path") and dep["kind"] != "dev"}
-        for name, package in libraries.items()
+        for name, package in packages.items()
     }
     grew = True
     while grew:
@@ -80,19 +90,20 @@ def main():
     meta = json.loads(meta.stdout)
     # Unset, the tool builds each crate in a target of its own, gpui and all, once per crate and tree.
     env = {**os.environ, "CARGO_TARGET_DIR": os.environ.get("CARGO_TARGET_DIR", meta["target_directory"])}
+    packages = {package["name"]: package for package in meta["packages"]}
     libraries = {
-        package["name"]: package
-        for package in meta["packages"]
+        name: package
+        for name, package in packages.items()
         if any("lib" in target["kind"] for target in package["targets"])
     }
     before = named(base)
     for name in sorted(set(libraries) - before):
         print(f"semver: {name} is new since {base}; nothing to break")
-    shared = sorted((set(libraries) & before) & touched(base, libraries))
+    shared = sorted((set(libraries) & before) & touched(base, packages))
     print(f"semver: {len(shared)} of {len(libraries)} crates may have changed since {base}")
     for features in FEATURES:
-        # With no default features, the defaults and none build the same API.
-        names = [name for name in shared if features[0] != "--only-explicit-features" or libraries[name]["features"].get("default")]
+        # Without a `default` feature, the defaults and none build the same API; `default = []` still sets cfg(feature = "default").
+        names = [name for name in shared if features[0] != "--only-explicit-features" or "default" in libraries[name]["features"]]
         if not names:
             continue
         print(f"semver: {len(names)} crates, {features[0]}", flush=True)
