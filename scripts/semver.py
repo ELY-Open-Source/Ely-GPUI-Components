@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Fails a breaking change whose crate kept its version: each library crate the base also has and that may have changed, against the base, by default, with no features and with all."""
-import fnmatch
 import json
 import os
 import subprocess
@@ -38,33 +37,30 @@ def rel(path):
     return Path(path).resolve().relative_to(ROOT).as_posix()
 
 
-def packaged(path, include):
-    """Whether `path`, relative to its package's home, is among the files cargo would package."""
-    if not include:
-        return True
-    return any(fnmatch.fnmatch(path, entry) or path.startswith(entry.rstrip("/") + "/") for entry in (each.lstrip("/") for each in include))
+def packaged(name, package):
+    """The files cargo packages for `name`, relative to the root; its whole folder when cargo cannot list them."""
+    home = rel(Path(package["manifest_path"]).parent)
+    prefix = "" if home == "." else home + "/"
+    listed = subprocess.run(
+        ["cargo", "package", "--list", "--allow-dirty", "-p", name], cwd=ROOT, capture_output=True, text=True,
+    )
+    if listed.returncode != 0:
+        print(f"semver: cargo lists no package for {name}; every file in {home} counts", flush=True)
+        return lambda path: path.startswith(prefix)
+    files = {prefix + line.replace("\\", "/") for line in listed.stdout.splitlines() if line}
+    return files.__contains__
 
 
 def touched(base, packages):
     """The packages a file of which changed since the base, with every package that depends on one."""
-    # A file counts for the nearest package above it, if cargo would package it; a published crate reads no other, `#[path]` and `include!` included.
+    # A published crate reads only what cargo packages for it, `#[path]` and `include!` sources too.
     diff = git("diff", "--name-only", base)
     if diff.returncode != 0:
         sys.exit(f"semver: cannot diff against {base}: {diff.stderr.strip()}")
     changed = set(diff.stdout.splitlines())
     if changed & EVERYWHERE:
         return set(packages)
-    homes = {name: rel(Path(package["manifest_path"]).parent) for name, package in packages.items()}
-    includes = {name: tomllib.loads(Path(package["manifest_path"]).read_text(encoding="utf-8"))["package"].get("include") for name, package in packages.items()}
-    hit = set()
-    for path in changed:
-        owners = [name for name, home in homes.items() if home == "." or path.startswith(home + "/")]
-        if not owners:
-            continue
-        owner = max(owners, key=lambda name: len(homes[name]) if homes[name] != "." else 0)
-        inside = path if homes[owner] == "." else path[len(homes[owner]) + 1:]
-        if packaged(inside, includes[owner]):
-            hit.add(owner)
+    hit = {name for name, package in packages.items() if any(map(packaged(name, package), changed))} if changed else set()
     by_home = {Path(package["manifest_path"]).resolve().parent: name for name, package in packages.items()}
     uses = {
         name: {by_home.get(Path(dep["path"]).resolve()) for dep in package["dependencies"] if dep.get("path") and dep["kind"] != "dev"}

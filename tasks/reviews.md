@@ -460,3 +460,4 @@
 | T56 E3 | 2 | PASS | deny.toml and CI's deny job check the whole workspace: licenses from an allow list, vulnerabilities, unsound and yanked crates at any depth, unmaintained ones Ely names, crates.io alone; the msrv job checks the workspace on its declared Rust; making the four O-25 jobs required waits for the owner |
 | T56 E4 | 1 | FAIL | the semver selection read src/ and build.rs alone, dropped proc-macro crates from the graph, and took default = [] for no defaults |
 | T56 E4 | 2 | FAIL | a #[path] module beside the crate root, outside the root file's folder, selected no crate |
+| T56 E4 | 3 | FAIL | the hand-made include filter dropped member manifests, missed ** matching no folder, and read include.workspace as a pattern |
