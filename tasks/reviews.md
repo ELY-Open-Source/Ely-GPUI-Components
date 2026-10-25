@@ -462,3 +462,4 @@
 | T56 E4 | 2 | FAIL | a #[path] module beside the crate root, outside the root file's folder, selected no crate |
 | T56 E4 | 3 | FAIL | the hand-made include filter dropped member manifests, missed ** matching no folder, and read include.workspace as a pattern |
 | T56 E4 | 4 | FAIL | a deleted or moved-away input was in no listing, so a break it caused selected no crate |
+| T56 E4 | 5 | PASS | check.sh gates on GitHub-hosted Linux, Windows and macOS, the gallery build and Windows audit after it, no self-hosted runner; scripts read UTF-8 and the Windows checkout keeps LF; the semver job shares one target and checks the crates whose packaged files, or a dependency's, changed, deletions and renames included |
