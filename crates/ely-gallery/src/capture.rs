@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::{Context as _, Result, bail};
 use ely_gpui_component::theme::Theme;
-use gpui::{App, AsyncApp, Window, WindowHandle, px};
+use gpui::{App, AsyncApp, Pixels, Size, Window, WindowHandle, px};
 
 use crate::{
     pages, script,
@@ -24,6 +24,7 @@ const SCROLL_SETTLE: Duration = Duration::from_millis(250);
 /// Shoots one page, or all, in both modes, then quits; exits 1 on failure.
 pub fn run(
     window: WindowHandle<Gallery>,
+    asked: Size<Pixels>,
     dir: PathBuf,
     only: Option<usize>,
     scripted: bool,
@@ -31,7 +32,7 @@ pub fn run(
 ) {
     Theme::update(cx, |theme| theme.reduced_motion = true);
     cx.spawn(async move |cx| {
-        let outcome = shoot_all(window, &dir, only, scripted, cx).await;
+        let outcome = shoot_all(window, asked, &dir, only, scripted, cx).await;
         if let Err(error) = outcome.map(|()| cx.update(|cx| cx.quit())) {
             log::error!("capture failed: {error:#}");
             std::process::exit(1);
@@ -42,6 +43,7 @@ pub fn run(
 
 async fn shoot_all(
     window: WindowHandle<Gallery>,
+    asked: Size<Pixels>,
     dir: &Path,
     only: Option<usize>,
     scripted: bool,
@@ -54,12 +56,24 @@ async fn shoot_all(
         .filter(|(ix, _)| only.is_none_or(|only| only == *ix));
     let gallery = window.update(cx, |_, window, _| number(window))??;
     window.update(cx, |_, window, _| take_posted_moves(window))??;
+    // The system may trim or round a window it places; two captures must share one size.
+    let given = window.update(cx, |_, window, _| window.viewport_size())?;
+    if given != asked {
+        log::warn!("capture: the system gave {given:?}, not {asked:?}; resizing");
+        window.update(cx, |_, window, _| window.resize(asked))?;
+        cx.background_executor().timer(SETTLE).await;
+    }
     window.update(cx, |_, window, _| {
         let size = window.viewport_size();
+        anyhow::ensure!(
+            size == asked,
+            "the window is {size:?}, not the {asked:?} asked"
+        );
         let scale = window.scale_factor();
         let (width, height) = (f32::from(size.width), f32::from(size.height));
         log::info!("capture: window {width}x{height} at scale {scale}");
-    })?;
+        Ok(())
+    })??;
     for (ix, page) in chosen {
         for (choice, name) in [(Choice::Light, "light"), (Choice::Dark, "dark")] {
             window.update(cx, |gallery, window, cx| {

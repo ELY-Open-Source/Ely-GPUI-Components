@@ -115,6 +115,11 @@ pub struct Start {
     pub failure: Option<SharedString>,
 }
 
+/// The window's size: the one asked for, else 1280 by 820.
+fn asked(window: Option<gpui::Size<gpui::Pixels>>) -> gpui::Size<gpui::Pixels> {
+    window.unwrap_or(size(px(1280.0), px(820.0)))
+}
+
 /// Sets Ely up and opens the gallery's window.
 fn launch(start: Start, cx: &mut App) -> Result<WindowHandle<shell::Gallery>> {
     ely_gpui_component::init(cx)?;
@@ -128,8 +133,7 @@ fn launch(start: Start, cx: &mut App) -> Result<WindowHandle<shell::Gallery>> {
     if start.choice == shell::Choice::Dark {
         Theme::set_mode_now(Mode::Dark, cx);
     }
-    let asked = start.window.unwrap_or(size(px(1280.0), px(820.0)));
-    let bounds = Bounds::centered(None, asked, cx);
+    let bounds = Bounds::centered(None, asked(start.window), cx);
     let options = WindowOptions {
         window_bounds: Some(WindowBounds::Windowed(bounds)),
         titlebar: Some(TitlebarOptions {
@@ -249,6 +253,7 @@ fn main() -> Result<()> {
             if still {
                 cx.set_global(ui::Still);
             }
+            let size = asked(start.window);
             let window = match launch(start, cx) {
                 Ok(window) => window,
                 Err(error) => {
@@ -257,7 +262,7 @@ fn main() -> Result<()> {
                 }
             };
             if let Some(dir) = capture {
-                capture::run(window, dir, page, scripted, cx);
+                capture::run(window, size, dir, page, scripted, cx);
             }
             #[cfg(windows)]
             if let Some(report) = audit {

@@ -24,7 +24,8 @@ export CARGO_TARGET_DIR="$here/target"
 for side in head base; do
   dir=$here
   [ $side = base ] && dir=$here/$tree
-  (cd "$dir" && cargo build -p ely-gallery --quiet)
+  # Cargo keys a path crate by its place in the workspace, so both trees share fingerprints; fresh times rebuild this one.
+  (cd "$dir" && git ls-files -z | xargs -0 touch && cargo build -p ely-gallery --quiet)
   cp "target/debug/gallery$exe" "$out/gallery-$side$exe"
 done
 for side in head base; do
