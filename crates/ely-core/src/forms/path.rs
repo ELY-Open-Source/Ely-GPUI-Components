@@ -84,7 +84,7 @@ impl PathInput {
         }
     }
 
-    /// Hands the chosen path whole to `handler`, in place of the field.
+    /// Hands the chosen path whole to `handler`, not the field.
     pub fn on_choose(mut self, handler: impl Fn(PathBuf, &mut Window, &mut App) + 'static) -> Self {
         self.on_choose = Some(Rc::new(handler));
         self
@@ -135,7 +135,7 @@ impl RenderOnce for PathInput {
     }
 }
 
-/// `on_choose` takes the chosen path whole; else the field, as UTF-8 text.
+/// `on_choose` takes the path whole; the field takes UTF-8 only.
 fn picked(
     path: PathBuf,
     state: &Entity<TextInput>,

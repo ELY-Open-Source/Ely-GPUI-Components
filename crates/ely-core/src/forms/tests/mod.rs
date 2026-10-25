@@ -2,7 +2,7 @@ mod choices;
 mod colors;
 mod dates;
 mod other;
-// A path not in UTF-8 is built from bytes, which only Unix's paths take.
+// Only Unix paths take the bytes a non-UTF-8 path needs.
 #[cfg(unix)]
 mod path;
 mod popup;

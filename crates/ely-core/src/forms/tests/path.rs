@@ -8,7 +8,7 @@ use gpui::{
 use super::setup;
 use crate::forms::{PathInput, TextInput};
 
-/// A folder field, and the paths its `on_choose`, where it has one, was handed.
+/// A folder field, and the paths its `on_choose` was handed.
 struct Picker {
     field: Entity<TextInput>,
     handed: Option<Rc<RefCell<Vec<PathBuf>>>>,
@@ -24,7 +24,7 @@ impl Render for Picker {
     }
 }
 
-/// Presses Browse, the second stop after the field, and answers its dialog with `chosen`.
+/// Presses Browse and answers its dialog with `chosen`.
 fn browse(chosen: PathBuf, cx: &mut VisualTestContext) {
     cx.update(|window, cx| {
         window.focus_next(cx);

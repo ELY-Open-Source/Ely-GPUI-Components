@@ -18,7 +18,7 @@ thread_local! {
     static TURNS: Cell<u64> = const { Cell::new(0) };
 }
 
-/// Locale changes so far; words made at one count are stale at another.
+/// Locale changes so far; words from another count are stale.
 pub(crate) fn turns() -> u64 {
     TURNS.get()
 }

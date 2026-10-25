@@ -47,7 +47,7 @@ fn surface(content: AnyElement, cx: &App) -> impl IntoElement + use<> {
 /// ```
 pub struct Tooltip {
     content: Content,
-    /// Locale changes before its words were made; after another it withdraws.
+    /// Locale changes before its words; after another it withdraws.
     turn: u64,
 }
 
