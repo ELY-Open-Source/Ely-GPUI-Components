@@ -461,3 +461,4 @@
 | T56 E4 | 1 | FAIL | the semver selection read src/ and build.rs alone, dropped proc-macro crates from the graph, and took default = [] for no defaults |
 | T56 E4 | 2 | FAIL | a #[path] module beside the crate root, outside the root file's folder, selected no crate |
 | T56 E4 | 3 | FAIL | the hand-made include filter dropped member manifests, missed ** matching no folder, and read include.workspace as a pattern |
+| T56 E4 | 4 | FAIL | a deleted or moved-away input was in no listing, so a break it caused selected no crate |

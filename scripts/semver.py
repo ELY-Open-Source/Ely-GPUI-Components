@@ -54,13 +54,21 @@ def packaged(name, package):
 def touched(base, packages):
     """The packages a file of which changed since the base, with every package that depends on one."""
     # A published crate reads only what cargo packages for it, `#[path]` and `include!` sources too.
-    diff = git("diff", "--name-only", base)
+    # --no-renames names a moved file's old path too, as a deletion.
+    diff = git("diff", "--name-only", "--no-renames", base)
     if diff.returncode != 0:
         sys.exit(f"semver: cannot diff against {base}: {diff.stderr.strip()}")
     changed = set(diff.stdout.splitlines())
     if changed & EVERYWHERE:
         return set(packages)
     hit = {name for name, package in packages.items() if any(map(packaged(name, package), changed))} if changed else set()
+    # A file gone from the tree is in no listing; the package whose folder held it may have read it.
+    homes = {name: rel(Path(package["manifest_path"]).parent) for name, package in packages.items()}
+    for path in changed:
+        if not (ROOT / path).exists():
+            owners = [name for name, home in homes.items() if home == "." or path.startswith(home + "/")]
+            if owners:
+                hit.add(max(owners, key=lambda name: 0 if homes[name] == "." else len(homes[name])))
     by_home = {Path(package["manifest_path"]).resolve().parent: name for name, package in packages.items()}
     uses = {
         name: {by_home.get(Path(dep["path"]).resolve()) for dep in package["dependencies"] if dep.get("path") and dep["kind"] != "dev"}
