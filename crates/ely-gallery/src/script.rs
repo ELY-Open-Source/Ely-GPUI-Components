@@ -263,10 +263,18 @@ fn send(
     at: Point<Pixels>,
     cx: &mut AsyncApp,
 ) -> Result<()> {
-    let (height, number) = window.update(cx, |_, window, _| {
-        (window.viewport_size().height, number(window))
-    })?;
-    post(kind, f64::from(at.x), f64::from(height - at.y), number?)
+    let (viewport, number) =
+        window.update(cx, |_, window, _| (window.viewport_size(), number(window)))?;
+    anyhow::ensure!(
+        at.x >= px(0.0) && at.y >= px(0.0) && at.x < viewport.width && at.y < viewport.height,
+        "an aim at {at:?} lies outside the {viewport:?} window, so it would press nothing"
+    );
+    post(
+        kind,
+        f64::from(at.x),
+        f64::from(viewport.height - at.y),
+        number?,
+    )
 }
 
 /// Queues a real mouse event on this app. No permission needed.

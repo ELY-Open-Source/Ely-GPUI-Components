@@ -227,10 +227,17 @@ fn main() -> Result<()> {
         audit,
         still,
     } = parse_args()?;
-    // A script aims across its page; stories hold part. Its input is posted through AppKit, so only macOS plays one.
-    let scripted = start.narrow.is_none() && start.story.is_none() && cfg!(target_os = "macos");
+    // A script aims across its page at 1280 wide; stories hold part. Its input is posted through AppKit, so only macOS plays one.
+    let scripted = start.narrow.is_none()
+        && start.story.is_none()
+        && start.window.is_none()
+        && cfg!(target_os = "macos");
     if capture.is_some() && cfg!(not(target_os = "macos")) {
         log::warn!("capture: scripted states need macOS, so only the pages are shot");
+    } else if capture.is_some() && start.window.is_some() {
+        log::warn!(
+            "capture: scripts aim at the usual 1280 by 820 window, so only the pages are shot"
+        );
     }
     // Clocks, dates and "minutes ago" draw one moment, so two captures compare pixel for pixel.
     if capture.is_some() {

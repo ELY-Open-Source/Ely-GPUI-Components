@@ -317,6 +317,7 @@ impl Render for Gallery {
         self.root(cx).child(sidebar).child(
             on_axis(div().id(("page", self.pass)))
                 .flex_1()
+                .min_w_0()
                 .h_full()
                 .overflow_y_scroll()
                 .track_scroll(&self.scroll)
