@@ -18,6 +18,9 @@ pub const PAGE: Page = Page {
 };
 
 const SCRIPT: &[Step] = &[
+    Step::Live(
+        "Terminal / TerminalTabs / TerminalSplit / TerminalToolbar / ShellSelector / TerminalSearch / TerminalLink",
+    ),
     Step::Rest,
     Step::DownAt("terminal-tabs", 46.0, 16.0),
     Step::UpAt("terminal-tabs", 46.0, 16.0),

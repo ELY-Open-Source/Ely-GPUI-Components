@@ -48,6 +48,12 @@ pub async fn play(
     let mut last = point(px(0.0), px(0.0));
     for step in steps {
         match *step {
+            Step::Live(title) => {
+                if !cx.update(|cx| crate::ui::live(title, cx)) {
+                    log::info!("script: {title} runs no demo; the rest of its script is skipped");
+                    return Ok(());
+                }
+            }
             Step::Rest => park(window, cx)?,
             Step::Hover(key) => {
                 let at = target(window, key, cx).await?;

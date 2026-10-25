@@ -1,5 +1,7 @@
 /// One scripted input, aimed at a probe by key.
 pub enum Step {
+    /// Ends the script unless the titled section's demo runs (`ui::live`).
+    Live(&'static str),
     Rest,
     Hover(&'static str),
     /// Moves the pointer to an offset in the probe.
