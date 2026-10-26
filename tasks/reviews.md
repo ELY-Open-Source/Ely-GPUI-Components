@@ -469,3 +469,6 @@
 | T56 F1 | 1 | FAIL | the root's test rule banned what core's rules allow; the length check missed wrapped and non-dash bullets; ADR 0001 lacked two clauses of the decision it replaced; the frontend was not sent to the gallery's host rules; partial supersessions were unmarked |
 | T56 F1 | 2 | FAIL | the length check still passed an indented dash, a 1) item, a dash and a tab, and a continuation after a blank line |
 | T56 F1 | 3 | PASS | the root AGENTS.md is 5 KB of what every change needs, each rule one line of at most 300 characters, held by check.sh; every other bullet moved verbatim to the AGENTS.md of its crate or folder, core's holding the component rules; the 53 decisions are docs/adr/ records with an index and their supersessions |
+| T56 F2 | 1 | FAIL | a sign-off could name a commit without the crate's API snapshot, and a bare https:// or a placeholder passed for outside feedback |
+| T56 F2 | 2 | FAIL | a tree hash passed as the signed commit, and a feedback address with user information but no real host passed |
+| T56 F2 | 3 | PASS | tasks/stability.md lists every published crate unstable; a stable one needs the owner's signed record naming a commit by hash that holds its api snapshot, and a vertical crate a real outside feedback address; scripts/stability.py, run by check.sh, holds it |

@@ -21,3 +21,4 @@ The checks and tools in `scripts/` that CI runs.
 ## Rules
 
 - `scripts/check.sh` fails by its exit status; a pipe into `tail` hides it.
+- `python3 scripts/stability.py`, which `check.sh` runs, holds `tasks/stability.md` to its rules: every published crate has one row, unstable or stable; a stable one has the owner's signed record in `tasks/signoffs/<crate>.md`, from its `TEMPLATE.md`, naming by hash a commit that holds its `api/<crate>.txt`, and a vertical crate the address of an outside user's feedback, a host and a path, no `<...>` placeholder; `ely-gpui-component` is stable only after every other crate; a crate at 1.0 or above must be stable.

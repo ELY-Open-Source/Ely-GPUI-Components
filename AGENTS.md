@@ -44,4 +44,5 @@ This file holds what every change needs. Before working in a crate or folder, re
 - Every pressable thing is a Tab stop with a role and a name on the element that takes focus; `gallery --audit` proves it on Windows.
 - Time reads `web_time::Instant`, and a drawn moment `typography::format::now()`. What cannot build for wasm32 is absent there through `cfg`, never faked.
 - Tests never depend on the host: what a test asserts holds on any machine. The few that read host fonts or a clock, and why they stay sound, are named in `crates/ely-core/AGENTS.md`.
+- Every crate stays unstable until the owner signs `tasks/signoffs/<crate>.md`; a vertical crate also needs an outside user's feedback. A model never writes a sign-off or marks a crate stable (`tasks/stability.md`).
 - A rule learned while working goes into the `AGENTS.md` nearest the code it governs; a choice between options goes into `docs/adr/`.

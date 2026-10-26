@@ -28,6 +28,7 @@ rustup target list --installed | grep -qx wasm32-unknown-unknown || {
 RUSTC_BOOTSTRAP=1 ELY_GALLERY_ASSETS=https://example.invalid/ \
   cargo clippy -p ely-gallery --target wasm32-unknown-unknown -- -D warnings
 "$py" scripts/stories.py --check
+"$py" scripts/stability.py
 fail=0
 # A Button-only app needs ely-core alone; zbus comes with gpui's Linux backend.
 for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify; do
