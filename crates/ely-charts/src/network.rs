@@ -1,4 +1,4 @@
-use std::{collections::HashSet, f32::consts::TAU};
+use std::{collections::HashSet, f32::consts::TAU, rc::Rc};
 
 use gpui::{
     App, Bounds, Div, ElementId, Entity, HoverListenerMode, InteractiveElement, IntoElement,
@@ -100,6 +100,9 @@ struct Graph {
     force: Option<Force>,
     hover: Option<usize>,
     drag: Option<usize>,
+    /// The node pressed and where the pointer went down, for click vs drag.
+    press: Option<(usize, f32, f32)>,
+    dragged: bool,
 }
 
 /// Nodes and the edges between them, placed by forces: edges pull, nodes push apart, and the layout settles as you watch. Drag a node to move it; hover one to light its neighbors.
@@ -120,7 +123,14 @@ pub struct NetworkGraph {
     id: ElementId,
     nodes: Vec<(SharedString, usize)>,
     edges: Vec<(usize, usize)>,
+    on_node_click: Option<NodeClickHandler>,
 }
+
+/// What a node click does, by node index.
+pub(crate) type NodeClickHandler = Rc<dyn Fn(usize, &mut Window, &mut App)>;
+
+/// How far a press may travel and still count as a click, in pixels.
+const CLICK_SLOP: f32 = 4.0;
 
 impl NetworkGraph {
     /// A graph under `id`, with no nodes yet.
@@ -130,7 +140,17 @@ impl NetworkGraph {
             id: id.into(),
             nodes: Vec::new(),
             edges: Vec::new(),
+            on_node_click: None,
         }
+    }
+
+    /// Called with a node's index when it is clicked, not dragged.
+    pub fn on_node_click(
+        mut self,
+        handler: impl Fn(usize, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_node_click = Some(Rc::new(handler));
+        self
     }
 
     /// A node, colored by its group.
@@ -301,6 +321,7 @@ impl RenderOnce for NetworkGraph {
             graph.clone(),
             graph.clone(),
         );
+        let click = self.on_node_click.clone();
         let press_hit = hit.clone();
         let mut root = div()
             .debug_selector(|| "chart-root".into())
@@ -311,9 +332,10 @@ impl RenderOnce for NetworkGraph {
             .on_mouse_down(MouseButton::Left, move |event: &MouseDownEvent, _, cx| {
                 let place = local(event.position, pressed.read(cx).bounds);
                 if let Some(ix) = press_hit(place) {
-                    log::info!("network graph: dragging node {ix}");
                     pressed.update(cx, |graph, cx| {
                         graph.drag = Some(ix);
+                        graph.press = Some((ix, place.0, place.1));
+                        graph.dragged = false;
                         cx.notify();
                     })
                 }
@@ -324,6 +346,11 @@ impl RenderOnce for NetworkGraph {
                     if let (Some(ix), Some(MouseButton::Left)) =
                         (graph.drag.filter(|ix| *ix < count), event.pressed_button)
                     {
+                        if let Some((_, x, y)) = graph.press
+                            && (place.0 - x).hypot(place.1 - y) > CLICK_SLOP
+                        {
+                            graph.dragged = true;
+                        }
                         graph
                             .force
                             .as_mut()
@@ -339,18 +366,29 @@ impl RenderOnce for NetworkGraph {
                     }
                 })
             })
-            .on_mouse_up(MouseButton::Left, move |_: &MouseUpEvent, _, cx| {
-                released.update(cx, |graph, cx| {
+            .on_mouse_up(MouseButton::Left, move |_: &MouseUpEvent, window, cx| {
+                let clicked = released.update(cx, |graph, cx| {
+                    let pressed = graph.press.take();
+                    let dragged = graph.dragged;
+                    graph.dragged = false;
                     if graph.drag.take().is_some() {
                         cx.notify();
                     }
-                })
+                    match pressed {
+                        Some((ix, _, _)) if !dragged => Some(ix),
+                        _ => None,
+                    }
+                });
+                if let (Some(ix), Some(handler)) = (clicked, click.clone()) {
+                    handler(ix, window, cx);
+                }
             })
             .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
             .on_hover(move |inside, _, cx| {
                 if !*inside {
                     left.update(cx, |graph, cx| {
-                        (graph.hover, graph.drag) = (None, None);
+                        (graph.hover, graph.drag, graph.press, graph.dragged) =
+                            (None, None, None, false);
                         cx.notify();
                     })
                 }

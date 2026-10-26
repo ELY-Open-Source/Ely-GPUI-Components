@@ -409,3 +409,40 @@ fn entries_past_their_lists_are_skipped(cx: &mut TestAppContext) {
     let (_, cx) = cx.add_window_view(|_, _| Dangling);
     settle(cx);
 }
+
+/// A one-node graph whose click is reported to the test.
+struct ClickableNetwork(Rc<Cell<Option<usize>>>);
+
+impl Render for ClickableNetwork {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let clicked = self.0.clone();
+        NetworkGraph::new("click-network")
+            .node("only", 0)
+            .h(px(TALL))
+            .on_node_click(move |ix, _, _| clicked.set(Some(ix)))
+    }
+}
+
+#[gpui::test]
+fn clicking_a_network_node_reports_it(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let clicked = Rc::new(Cell::new(None));
+    let (_, cx) = cx.add_window_view({
+        let clicked = clicked.clone();
+        move |_, _| ClickableNetwork(clicked)
+    });
+    settle(cx);
+    for _ in 0..20 {
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+    }
+    let bounds = cx.debug_bounds("chart-root").expect("the chart drew");
+    let at = point(bounds.center().x, bounds.center().y);
+    cx.simulate_click(at, Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        clicked.get(),
+        Some(0),
+        "a press and release on a node reports its index"
+    );
+}
