@@ -13,8 +13,8 @@ use gpui::{
 
 use crate::{Start, pages, probe::probe, ui::Story};
 
-/// The probe on the sidebar's title, text with no hover, where a capture parks the pointer.
-pub const BRAND: &str = "sidebar-brand";
+/// Where a capture parks the pointer: the sidebar's title, or a story's top band; neither has hover.
+pub const REST: &str = "pointer-rest";
 
 #[derive(Clone, Copy, PartialEq, Eq, Default)]
 pub enum Choice {
@@ -135,7 +135,7 @@ impl Gallery {
             .border_r_1()
             .border_color(colors.border)
             .child(probe(
-                BRAND,
+                REST,
                 div()
                     .px_3()
                     .pb_6()
@@ -295,23 +295,24 @@ impl Render for Gallery {
             }
         };
         if self.story.is_some() {
-            return self.root(cx).child(
-                on_axis(div().id(("story", self.pass)))
-                    .size_full()
-                    .overflow_scroll()
-                    .track_scroll(&self.scroll)
-                    // The widest demo, 900, plus padding; narrower, it scrolls sideways.
-                    .child(
-                        div()
-                            .min_w(px(948.0))
-                            .p_6()
-                            // Natively the traffic lights take the top 56.
-                            .when(cfg!(not(target_family = "wasm")), |story| {
-                                story.pt(px(56.0))
-                            })
-                            .child(body),
-                    ),
-            );
+            let native = cfg!(not(target_family = "wasm"));
+            return self
+                .root(cx)
+                .flex_col()
+                // Natively the traffic lights take the top 56: this band, then the padding.
+                .when(native, |root| {
+                    root.child(probe(REST, div().w_full().h(px(32.0))))
+                })
+                .child(
+                    on_axis(div().id(("story", self.pass)))
+                        .w_full()
+                        .flex_1()
+                        .min_h_0()
+                        .overflow_scroll()
+                        .track_scroll(&self.scroll)
+                        // The widest demo, 900, plus padding; narrower, it scrolls sideways.
+                        .child(div().min_w(px(948.0)).p_6().child(body)),
+                );
         }
         let sidebar = self.sidebar(cx);
         let switcher = self.switcher(cx);
