@@ -62,10 +62,20 @@ node scripts/favicon.mjs   # public/favicon.svg, apple-touch-icon.png and ../log
 pnpm deploy     # Cloudflare, through wrangler
 ```
 
+## How it is built
+
+Ely is built by AI coding agents. A person sets each goal and decides what ships; agents write the code, its tests and these docs, and other agents review them.
+
+- Work runs as task items. One agent writes an item and another model reviews it, round after round, up to five; every round is in [`tasks/reviews.md`](tasks/reviews.md). Some items end on a FAIL row there: their last fixes went in after the cap, unreviewed. These reviews are models reading models; no person has signed a crate yet.
+- No crate is stable until the owner signs its public API and, past `ely-core`, an outside user has given feedback. [`tasks/stability.md`](tasks/stability.md) keeps the ledger; today no crate is stable.
+- [`scripts/check.sh`](scripts/check.sh) gates every change: formatting, lints, tests, the docs build, the web lint, the panic list and the house rules. CI runs it on Linux, Windows and macOS, beside checks on the public API, semver, licenses, the minimum Rust and pixels.
+- Each `expect`, `panic!` and `unreachable!` in library code is listed with its reason in [`scripts/panics.tsv`](scripts/panics.tsv); [`tasks/panics.md`](tasks/panics.md) records how each chapter moved to failing visibly instead.
+- The rules the agents follow are in [`AGENTS.md`](AGENTS.md) and each crate's own; decisions are in [`docs/adr/`](docs/adr/README.md).
+
 ## Build notes
 
 - gpui compiles its Metal shaders at runtime here (`runtime_shaders`, on by default), so a full Xcode install is not required. gpui_platform needs `font-kit`, or macOS draws no text, and `wayland` and `x11`, or Linux opens no window.
-- CI tests the crate and builds the gallery on macOS, Windows and Linux, arm64 and x86_64. The capture tool needs macOS.
+- CI runs `scripts/check.sh` and builds the gallery on GitHub-hosted Linux, Windows and macOS. The capture tool shoots pages on all three; only macOS plays the scripted states.
 
 ## License
 

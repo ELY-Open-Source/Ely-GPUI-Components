@@ -472,3 +472,7 @@
 | T56 F2 | 1 | FAIL | a sign-off could name a commit without the crate's API snapshot, and a bare https:// or a placeholder passed for outside feedback |
 | T56 F2 | 2 | FAIL | a tree hash passed as the signed commit, and a feedback address with user information but no real host passed |
 | T56 F2 | 3 | PASS | tasks/stability.md lists every published crate unstable; a stable one needs the owner's signed record naming a commit by hash that holds its api snapshot, and a vertical crate a real outside feedback address; scripts/stability.py, run by check.sh, holds it |
+| T56 F3 | 1 | FAIL | the section said every item passes, though some end on a FAIL row after the cap; it said every panic site is listed, though only expect, panic! and unreachable! are; reference-style and HTML links escaped the link check |
+| T56 F3 | 2 | FAIL | HTML link attributes in single quotes, unquoted, spaced or upper case escaped the link check |
+| T56 F3 | 3 | FAIL | links split over lines escaped the line-based check, and the unquoted shell loop globbed tasks/*.md into files that exist |
+| T56 F3 | 4 | PASS | README's How it is built says agents write and models review, up to five rounds, some items ending on a FAIL row, no crate signed; it links the review log, stability ledger, check.sh, panic list and its record, AGENTS.md and the ADRs; scripts/links.py, run by check.sh, holds every relative README link to the tree and refuses HTML links |
