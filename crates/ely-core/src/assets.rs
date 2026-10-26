@@ -2,37 +2,75 @@ use std::borrow::Cow;
 
 use anyhow::Context as _;
 use gpui::{App, AssetSource, Result, SharedString};
-use rust_embed::RustEmbed;
 
 /// Ely's fonts. Pass to `Application::with_assets`, alone or through `Assets::before`.
 pub struct Assets;
 
 /// IBM Plex Sans, where gpui's svg renderer loads it.
-#[derive(RustEmbed)]
-#[folder = "assets/plex"]
-#[prefix = "fonts/ibm-plex-sans/"]
-struct Plex;
+const PLEX: &[(&str, &[u8])] = &[
+    (
+        "fonts/ibm-plex-sans/IBMPlexSans-LICENSE.txt",
+        include_bytes!("../assets/plex/IBMPlexSans-LICENSE.txt"),
+    ),
+    (
+        "fonts/ibm-plex-sans/IBMPlexSans-Regular.ttf",
+        include_bytes!("../assets/plex/IBMPlexSans-Regular.ttf"),
+    ),
+];
 
 /// Inter and JetBrains Mono, the theme's families.
 #[cfg(feature = "fonts")]
-#[derive(RustEmbed)]
-#[folder = "assets/fonts"]
-#[prefix = "fonts/"]
-struct Fonts;
+const FONTS: &[(&str, &[u8])] = &[
+    (
+        "fonts/Inter-Italic.ttf",
+        include_bytes!("../assets/fonts/Inter-Italic.ttf"),
+    ),
+    (
+        "fonts/Inter-LICENSE.txt",
+        include_bytes!("../assets/fonts/Inter-LICENSE.txt"),
+    ),
+    (
+        "fonts/Inter-Medium.ttf",
+        include_bytes!("../assets/fonts/Inter-Medium.ttf"),
+    ),
+    (
+        "fonts/Inter-Regular.ttf",
+        include_bytes!("../assets/fonts/Inter-Regular.ttf"),
+    ),
+    (
+        "fonts/Inter-SemiBold.ttf",
+        include_bytes!("../assets/fonts/Inter-SemiBold.ttf"),
+    ),
+    (
+        "fonts/JetBrainsMono-LICENSE.txt",
+        include_bytes!("../assets/fonts/JetBrainsMono-LICENSE.txt"),
+    ),
+    (
+        "fonts/JetBrainsMono-Medium.ttf",
+        include_bytes!("../assets/fonts/JetBrainsMono-Medium.ttf"),
+    ),
+    (
+        "fonts/JetBrainsMono-Regular.ttf",
+        include_bytes!("../assets/fonts/JetBrainsMono-Regular.ttf"),
+    ),
+];
 
 impl Assets {
-    fn get(path: &str) -> Option<Cow<'static, [u8]>> {
-        let plex = Plex::get(path).map(|file| file.data);
+    fn files() -> impl Iterator<Item = &'static (&'static str, &'static [u8])> {
+        let files = PLEX.iter();
         #[cfg(feature = "fonts")]
-        let plex = plex.or_else(|| Fonts::get(path).map(|file| file.data));
-        plex
+        let files = files.chain(FONTS);
+        files
+    }
+
+    fn get(path: &str) -> Option<Cow<'static, [u8]>> {
+        Self::files()
+            .find(|(name, _)| *name == path)
+            .map(|(_, data)| Cow::Borrowed(*data))
     }
 
     fn iter() -> impl Iterator<Item = Cow<'static, str>> {
-        let plex = Plex::iter();
-        #[cfg(feature = "fonts")]
-        let plex = plex.chain(Fonts::iter());
-        plex
+        Self::files().map(|(name, _)| Cow::Borrowed(*name))
     }
 }
 

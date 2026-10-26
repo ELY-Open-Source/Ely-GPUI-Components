@@ -12,4 +12,4 @@ The first release on crates.io.
 - Every public item documented, each component with an example that compiles and runs; `api/` holds each crate's public API.
 - Every focus stop has a role and a name for screen readers; `gallery --audit` walks them on Windows.
 - Messages in English, Chinese, German, French, Japanese and Hebrew; the last four machine translated, awaiting native review.
-- Icons link by use and fonts by feature (`fonts`, on by default); `languages` adds `Combobox::languages`.
+- Icons link by use and fonts by feature (`fonts`, on by default); fonts embed with `include_bytes!`, and `Combobox::languages` reads Ely's own ISO 639-1 table, so neither `rust-embed` nor `isolang` is a dependency.

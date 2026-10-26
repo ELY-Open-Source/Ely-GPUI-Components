@@ -483,3 +483,5 @@
 | T56 D6 | 5 | FAIL | a directly declared item gated to Windows shadowed a glob on every platform; fixed after the cap by counting each definition gate in the shadow, held by 38 probes, unreviewed |
 | T56 B7 B8 | 1 | FAIL | the no-text-system error named only font-kit, though gpui on Linux falls back to the same no-op text system without wayland and x11; the install table repeated it |
 | T56 B7 B8 | 2 | PASS | ely-core takes gpui_platform behind an off-by-default platform feature (0.2.0); zbus and the six others stay out of it; init names font-kit, wayland and x11 when no text system draws |
+| T56 A4 | 1 | FAIL | the languages table carried isolang's notice but not the Apache-2.0 text its section 4(a) asks a redistribution to supply |
+| T56 A4 | 2 | PASS | rust-embed leaves for an include_bytes! table and isolang for Ely's own ISO 639-1 table with isolang's notice and the full Apache-2.0 text; every remaining duplicate group comes from RaTeX 0.1.15 |

@@ -19,7 +19,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] A3 O-05 One Markdown parser; the 128 KiB one-letter case reads in ≤100 ms in release. Find the quadratic first.
 - [ ] A4 O-07 No duplicate in `cargo tree -d` starts at an Ely direct dependency.
   - Done: `iso_currency` drops its `iterator` feature, so `strum` 0.27 leaves; currencies list by ISO 4217 number.
-  - Open, partial: only third-party crates at their newest releases still bring a second version, and Ely can align none without capping a version (O-06). `bit-set`/`bit-vec` 0.8 (RaTeX 0.1.15), the `digest` 0.11 line (`ratex-svg` 0.1.15, `rust-embed` 8.13), `phf` 0.11 (`isolang` 2.4, RaTeX). B9 keeps `rust-embed` for the fonts; the rest needs upstream releases.
+  - Done, 2026-10-26: `rust-embed` leaves for an `include_bytes!` table of the fonts, and `isolang` for Ely's own ISO 639-1 table (`forms/languages.rs`, taken once from isolang 2.4, its Apache-2.0 licence beside it), so `languages` is no longer a feature.
+  - Open: every remaining group, `bit-set`/`bit-vec` 0.8 (its `fancy-regex` 0.14), `phf` 0.11 (`ratex-font`) and the `digest` 0.11 line (`rust-embed` in `ratex-katex-fonts`), comes from RaTeX 0.1.15, its newest release; it needs an upstream release.
 - [x] A5 O-08 Platform calls live in one platform module, on objc2; every `unsafe` block has a SAFETY line; `undocumented_unsafe_blocks` clean.
 
 ## B. Split

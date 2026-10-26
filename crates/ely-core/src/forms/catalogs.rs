@@ -7,7 +7,7 @@ use gpui::{
 use iso_currency::Currency;
 use isocountry::CountryCode;
 
-use super::{Choice, Combobox, TextInput, options::OnValue};
+use super::{Choice, Combobox, TextInput, languages::LANGUAGES, options::OnValue};
 use crate::{
     i18n,
     theme::{ActiveTheme, TextSize},
@@ -26,7 +26,6 @@ pub fn flag(region: &str) -> String {
 }
 
 /// `text` with its first letter capitalized, as list items read.
-#[cfg(feature = "languages")]
 fn titled(text: &str) -> String {
     let mut chars = text.chars();
     chars.next().map_or_else(String::new, |first| {
@@ -40,15 +39,12 @@ fn by_label(mut choices: Vec<Choice>) -> Vec<Choice> {
 }
 
 /// ISO 639-1 languages under their own names, with the English name and code beside.
-#[cfg(feature = "languages")]
 fn languages() -> Vec<Choice> {
-    let choices = isolang::languages()
-        .filter_map(|language| {
-            let (code, english) = (language.to_639_1()?, language.to_name());
-            Some(match language.to_autonym() {
-                Some(own) => Choice::new(code, titled(own)).note(format!("{english} · {code}")),
-                None => Choice::new(code, english).note(code),
-            })
+    let choices = LANGUAGES
+        .iter()
+        .map(|&(code, english, own)| match own {
+            Some(own) => Choice::new(code, titled(own)).note(format!("{english} · {code}")),
+            None => Choice::new(code, english).note(code),
         })
         .collect();
     by_label(choices)
@@ -71,7 +67,6 @@ fn currencies() -> Vec<Choice> {
 
 impl Combobox {
     /// ISO 639-1 languages under their own names; a name in either tongue or the code finds one.
-    #[cfg(feature = "languages")]
     pub fn languages(id: impl Into<ElementId>, state: &Entity<TextInput>) -> Self {
         Self::new(id, state, languages())
     }
@@ -183,15 +178,11 @@ impl RenderOnce for FontPicker {
 
 #[cfg(test)]
 mod tests {
-    use super::{currencies, flag};
-    #[cfg(feature = "languages")]
-    use super::{languages, titled};
+    use super::{currencies, flag, languages, titled};
     use gpui::SharedString;
 
-    #[cfg(feature = "languages")]
     use crate::forms::combobox::matching;
 
-    #[cfg(feature = "languages")]
     #[test]
     fn languages_answer_to_their_code_and_english_name() {
         let found = |query| {
@@ -226,7 +217,6 @@ mod tests {
         assert_eq!(flag("US"), "🇺🇸");
     }
 
-    #[cfg(feature = "languages")]
     #[test]
     fn titles_capitalize_the_first_letter_only() {
         assert_eq!(titled("français"), "Français");

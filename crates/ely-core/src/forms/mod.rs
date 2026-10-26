@@ -17,6 +17,7 @@ mod hotkey;
 mod inline;
 mod input;
 mod knob;
+mod languages;
 mod listbox;
 mod masked;
 mod mention;

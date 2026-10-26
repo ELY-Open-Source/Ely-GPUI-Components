@@ -5,7 +5,7 @@ The gallery, its capture harness, scripts, stories and web build.
 ## Stack
 
 - Windows capture: `windows-sys` 0.59 (MIT OR Apache-2.0, the gallery's, Windows only) has the window draw itself through `PrintWindow`, which holds what DirectX presents; `raw-window-handle` 0.6 finds the window.
-- Web: on wasm32, `web-time` 1.1 (MIT OR Apache-2.0) gives the `Instant` gpui's executor returns, std's own natively; jiff takes `js`, rust-embed `debug-embed`, similar `wasm32_web_time`. The gallery's web entry takes `gpui_web`, `wasm-bindgen`, `js-sys` and `web-sys` as wasm-only dependencies, and a Hebrew cut of Noto Sans Hebrew 2.003 (OFL, `crates/ely-gallery/fonts`): gpui_web asks the browser for emoji and CJK alone. The `wasm-bindgen` CLI at Cargo.lock's version and binaryen's `wasm-opt` finish the bundle.
+- Web: on wasm32, `web-time` 1.1 (MIT OR Apache-2.0) gives the `Instant` gpui's executor returns, std's own natively; jiff takes `js`, similar `wasm32_web_time`. The gallery's web entry takes `gpui_web`, `wasm-bindgen`, `js-sys` and `web-sys` as wasm-only dependencies, and a Hebrew cut of Noto Sans Hebrew 2.003 (OFL, `crates/ely-gallery/fonts`): gpui_web asks the browser for emoji and CJK alone. The `wasm-bindgen` CLI at Cargo.lock's version and binaryen's `wasm-opt` finish the bundle.
 
 ## Commands
 

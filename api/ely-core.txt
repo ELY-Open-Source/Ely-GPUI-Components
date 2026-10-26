@@ -3124,7 +3124,7 @@ pub fn ely_core::forms::Combobox::currencies(impl core::convert::Into<gpui::wind
 pub fn ely_core::forms::Combobox::free(self) -> Self
 pub fn ely_core::forms::Combobox::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::forms::Combobox::into_element(self) -> Self::Element
-pub fn ely_core::forms::Combobox::languages(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::TextInput>) -> Self  [with: languages, all]
+pub fn ely_core::forms::Combobox::languages(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::TextInput>) -> Self
 pub fn ely_core::forms::Combobox::new(impl core::convert::Into<gpui::window::ElementId>, &gpui::app::entity_map::Entity<ely_core::forms::TextInput>, impl core::iter::traits::collect::IntoIterator<Item = ely_core::forms::Choice>) -> Self
 pub fn ely_core::forms::Combobox::on_change(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::forms::Combobox::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement

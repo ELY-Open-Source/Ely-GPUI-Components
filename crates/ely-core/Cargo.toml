@@ -16,7 +16,6 @@ default = ["fonts"]
 fonts = []
 platform = ["dep:gpui_platform"]
 runtime_shaders = ["platform", "gpui_platform/runtime_shaders"]
-languages = ["dep:isolang"]
 test-support = ["gpui/test-support", "gpui/leak-detection"]
 
 [dependencies]
@@ -29,12 +28,10 @@ gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"], o
 image.workspace = true
 iso_currency.workspace = true
 isocountry.workspace = true
-isolang = { version = "2.4", features = ["local_names", "list_languages"], optional = true }
 jiff.workspace = true
 log.workspace = true
 qrcode.workspace = true
 regex.workspace = true
-rust-embed = "8.12"
 serde.workspace = true
 serde_json.workspace = true
 smallvec.workspace = true
@@ -43,7 +40,6 @@ web-time.workspace = true
 
 [target.'cfg(target_family = "wasm")'.dependencies]
 jiff = { workspace = true, features = ["js"] }
-rust-embed = { version = "8.12", features = ["debug-embed"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 block2 = "0.6"

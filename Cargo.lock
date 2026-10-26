@@ -1795,7 +1795,6 @@ dependencies = [
  "image",
  "iso_currency",
  "isocountry",
- "isolang",
  "jiff",
  "log",
  "objc2 0.6.4",
@@ -1804,7 +1803,6 @@ dependencies = [
  "qrcode",
  "raw-window-handle",
  "regex",
- "rust-embed",
  "serde",
  "serde_json",
  "smallvec",
@@ -3745,15 +3743,6 @@ checksum = "1ea1dc4bf0fb4904ba83ffdb98af3d9c325274e92e6e295e4151e86c96363e04"
 dependencies = [
  "serde",
  "thiserror 1.0.69",
-]
-
-[[package]]
-name = "isolang"
-version = "2.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe50d48c77760c55188549098b9a7f6e37ae980c586a24693d6b01c3b2010c3c"
-dependencies = [
- "phf 0.11.3",
 ]
 
 [[package]]
