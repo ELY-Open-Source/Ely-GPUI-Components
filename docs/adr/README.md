@@ -25,7 +25,7 @@ One record per decision, numbered by date. A superseded record names the one tha
 - [0022 The Showcase lives in its own repo](0022-the-showcase-lives-in-its-own-repo.md): 2026-10-04, accepted, partly superseded by 0025.
 - [0023 Rendering holds RenderSurface alone](0023-rendering-holds-rendersurface-alone.md): 2026-10-04, accepted.
 - [0024 MIT alone](0024-mit-alone.md): 2026-10-05, accepted.
-- [0025 The showcase pin moves by itself](0025-the-showcase-pin-moves-by-itself.md): 2026-10-05, accepted.
+- [0025 The showcase pin moves by itself](0025-the-showcase-pin-moves-by-itself.md): 2026-10-05, accepted, partly superseded by 0057.
 - [0026 A removed overlay hands focus back](0026-a-removed-overlay-hands-focus-back.md): 2026-10-05, accepted.
 - [0027 Select and TextInput take a label](0027-select-and-textinput-take-a-label.md): 2026-10-05, accepted.
 - [0028 NumberInput takes a label](0028-numberinput-takes-a-label.md): 2026-10-05, accepted.
@@ -57,3 +57,4 @@ One record per decision, numbered by date. A superseded record names the one tha
 - [0053 Every declared locale has the whole catalog](0053-every-declared-locale-has-the-whole-catalog.md): 2026-10-24, accepted.
 - [0054 Main requires the CI checks](0054-main-requires-the-ci-checks.md): 2026-10-26, accepted.
 - [0055 Publish to crates.io](0055-publish-to-crates-io.md): 2026-10-26, accepted.
+- [0057 The site serves its showcase pin](0057-the-site-serves-its-showcase-pin.md): 2026-10-26, accepted.

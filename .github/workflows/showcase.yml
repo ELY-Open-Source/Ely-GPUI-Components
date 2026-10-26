@@ -1,6 +1,6 @@
 name: Showcase
 
-# Moves the site's showcase pin to the catalog's main once its checks pass, then deploys.
+# Deploys the site at the catalog's main once its checks pass; the site serves the pin it shows.
 on:
   schedule:
     - cron: "*/30 * * * *"
@@ -36,7 +36,14 @@ jobs:
           FORCE: ${{ inputs.deploy }}
         run: |
           head=$(gh api "repos/$CATALOG/branches/main" --jq .commit.sha)
-          pinned=$(tr -d '[:space:]' < frontend/showcase.lock)
+          # The live site names the catalog commit it shows; one that names none takes the checks as a new commit.
+          code=$(curl -sS -o shown.lock -w '%{http_code}' https://elygpui.com/showcase.lock)
+          [ "$code" = 200 ] || { echo "::error::showcase: elygpui.com/showcase.lock answered $code"; exit 1; }
+          pinned=$(tr -d '[:space:]' < shown.lock)
+          if ! printf '%s' "$pinned" | grep -Eqx '[0-9a-f]{40}'; then
+            pinned=""
+            echo "showcase: the site names no catalog commit (its page answers /showcase.lock)"
+          fi
           if [ "$head" = "$pinned" ]; then
             echo "showcase: pinned at ${head:0:7}, the catalog's main"
             [ "$FORCE" = "true" ] && echo "commit=$head" >> "$GITHUB_OUTPUT"
@@ -63,8 +70,6 @@ jobs:
     needs: check
     if: needs.check.outputs.commit != ''
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     env:
       COMMIT: ${{ needs.check.outputs.commit }}
     steps:
@@ -95,7 +100,9 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
-      - run: echo "$COMMIT" > frontend/showcase.lock
+      - run: |
+          echo "$COMMIT" > frontend/showcase.lock
+          cp frontend/showcase.lock frontend/public/showcase.lock
       - run: scripts/web.sh frontend/public/gallery
         env:
           ELY_GALLERY_ASSETS: https://elygpui.com/gallery/assets/
@@ -108,15 +115,3 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      - name: Commit the pin
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add frontend/showcase.lock
-          git diff --cached --quiet && exit 0
-          git commit -m "Site · Showcase: pin Ely-GPUI-Showcases at ${COMMIT:0:7}"
-          for attempt in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
-            sleep 5
-          done
-          exit 1
