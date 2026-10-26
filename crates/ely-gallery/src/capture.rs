@@ -531,7 +531,9 @@ pub fn snapshot(window: u32, path: &Path) -> Result<()> {
     // A 24- or 32-bit ZPixmap holds each pixel as blue, green, red and a pad.
     let rgba: Vec<u8> = shot
         .data
-        .chunks_exact(4)
+        .as_chunks::<4>()
+        .0
+        .iter()
         .flat_map(|pixel| [pixel[2], pixel[1], pixel[0], 255])
         .collect();
     image::save_buffer(

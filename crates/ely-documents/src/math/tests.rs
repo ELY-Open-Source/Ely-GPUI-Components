@@ -223,7 +223,12 @@ fn drawn_fallback_text_stays_inside_the_frame() {
             .render_single_frame(svg.as_bytes(), 4.0)
             .expect("draws");
         let pixels = image.as_bytes(0).expect("pixels");
-        pixels.chunks_exact(4).filter(|pixel| pixel[3] > 16).count()
+        pixels
+            .as_chunks::<4>()
+            .0
+            .iter()
+            .filter(|pixel| pixel[3] > 16)
+            .count()
     };
     // Fixtures and bundled IBM Plex Sans, outlined so host fonts never draw.
     for source in [r"\text{中文}", r"\text{𓀀}", "\\text{\u{ECE0}}"] {
