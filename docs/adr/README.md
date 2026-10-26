@@ -55,3 +55,5 @@ One record per decision, numbered by date. A superseded record names the one tha
 - [0051 The Markdown tree returns to the public API](0051-the-markdown-tree-returns-to-the-public-api.md): 2026-10-24, accepted.
 - [0052 The library crates are publishable](0052-the-library-crates-are-publishable.md): 2026-10-24, accepted.
 - [0053 Every declared locale has the whole catalog](0053-every-declared-locale-has-the-whole-catalog.md): 2026-10-24, accepted.
+- [0054 Main requires the CI checks](0054-main-requires-the-ci-checks.md): 2026-10-26, accepted.
+- [0055 Publish to crates.io](0055-publish-to-crates-io.md): 2026-10-26, accepted.
