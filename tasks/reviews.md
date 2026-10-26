@@ -485,3 +485,6 @@
 | T56 B7 B8 | 2 | PASS | ely-core takes gpui_platform behind an off-by-default platform feature (0.2.0); zbus and the six others stay out of it; init names font-kit, wayland and x11 when no text system draws |
 | T56 A4 | 1 | FAIL | the languages table carried isolang's notice but not the Apache-2.0 text its section 4(a) asks a redistribution to supply |
 | T56 A4 | 2 | PASS | rust-embed leaves for an include_bytes! table and isolang for Ely's own ISO 639-1 table with isolang's notice and the full Apache-2.0 text; every remaining duplicate group comes from RaTeX 0.1.15 |
+| T56 F4 | 1 | FAIL | O-02 marked met though a Linux Button app still pulls zbus through gpui-pre-linux; O-03's command as written still printed ely-core's gpui_platform dev-dependency to zbus |
+| T56 F4 | 2 | FAIL | O-04's recorded build command lacked --features platform, which the five_icons example now requires |
+| T56 F4 | 3 | PASS | tasks/acceptance.md rows every O-item: 23 met, O-02 and O-13 in part, O-07, O-19 and O-27 open; ely-core drops its last dev-dependency, so O-03's commands find neither crate, and check.sh's heavy-crate guard reads the whole graph and fails on any other cargo error |

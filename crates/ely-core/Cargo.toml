@@ -69,8 +69,9 @@ objc2-foundation = { version = "0.3", default-features = false, features = [
 ] }
 raw-window-handle.workspace = true
 
-[dev-dependencies]
-gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"] }
+[[example]]
+name = "five_icons"
+required-features = ["platform"]
 
 [lints]
 workspace = true

@@ -32,10 +32,16 @@ RUSTC_BOOTSTRAP=1 ELY_GALLERY_ASSETS=https://example.invalid/ \
 fail=0
 "$py" scripts/links.py || fail=1
 "$py" scripts/platforms.py || fail=1
-# A Button-only app needs ely-core alone, which adds none of these; gpui's Linux window brings zbus only where the app asks for one.
+# ely-core's graph, dev edges too, holds none of these; gpui's Linux window brings zbus only where the app asks for one.
+err=$(mktemp)
 for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify zbus; do
-  [ -z "$(cargo tree -p ely-core -e normal --target all -i $c 2>/dev/null || true)" ] || { echo "ely-core pulls $c"; fail=1; }
+  if out=$(cargo tree -p ely-core --target all -i "$c" 2>"$err"); then
+    [ -z "$out" ] || { echo "ely-core pulls $c"; echo "$out"; fail=1; }
+  elif ! grep -q "did not match any packages" "$err"; then
+    echo "cargo tree failed for $c"; cat "$err"; fail=1
+  fi
 done
+rm -f "$err"
 # Each published crate carries Ely's MIT notice, the root's own text.
 for d in $(ls -d crates/*/ | grep -v ely-gallery); do
   cmp -s LICENSE "${d}LICENSE" || { echo "${d}LICENSE differs from LICENSE"; fail=1; }
