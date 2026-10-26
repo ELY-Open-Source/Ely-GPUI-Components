@@ -74,22 +74,6 @@ export function Live({ page, story, title }: { page: string; story: string; titl
         Skip the live example
       </button>
       <div className={full ? "live full" : "live"}>
-        <iframe key={run} ref={frame} title={`${title}, live`} src={src(start)} />
-        {state !== "ready" && (
-          <div className="live-state" role="status">
-            {state === "slow" && <span className="spin" />}
-            {state === "failed" ? (
-              <>
-                Couldn't start the example.
-                <button className="text" onClick={() => setRun((n) => n + 1)}>
-                  Reload
-                </button>
-              </>
-            ) : (
-              "Starting…"
-            )}
-          </div>
-        )}
         <div className="live-tools">
           <button className="tool" aria-label="Reload the example" onClick={() => setRun((n) => n + 1)}>
             <Icon name="Refresh" />
@@ -100,6 +84,24 @@ export function Live({ page, story, title }: { page: string; story: string; titl
           <button className="tool" aria-label={full ? "Leave full screen" : "Full screen"} onClick={() => setFull(!full)}>
             <Icon name={full ? "Minimize" : "Maximize"} />
           </button>
+        </div>
+        <div className="live-frame">
+          <iframe key={run} ref={frame} title={`${title}, live`} src={src(start)} />
+          {state !== "ready" && (
+            <div className="live-state" role="status">
+              {state === "slow" && <span className="spin" />}
+              {state === "failed" ? (
+                <>
+                  Couldn't start the example.
+                  <button className="text" onClick={() => setRun((n) => n + 1)}>
+                    Reload
+                  </button>
+                </>
+              ) : (
+                "Starting…"
+              )}
+            </div>
+          )}
         </div>
       </div>
       <span ref={after} tabIndex={-1} />
