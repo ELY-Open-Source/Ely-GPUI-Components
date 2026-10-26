@@ -481,3 +481,5 @@
 | T56 D6 | 3 | FAIL | a named import through a glob resolved nothing; only the last of several conditional definitions had its line checked; test-only code fed the wrapper and loose-cfg scans; a route whose gates do not meet asked for an impossible empty line |
 | T56 D6 | 4 | FAIL | a named import that exists on one platform shadowed a glob on all; items gated to no platform kept no inactive span, so their constructors and Platforms lines, and those in an inner cfg(test) module, still counted |
 | T56 D6 | 5 | FAIL | a directly declared item gated to Windows shadowed a glob on every platform; fixed after the cap by counting each definition gate in the shadow, held by 38 probes, unreviewed |
+| T56 B7 B8 | 1 | FAIL | the no-text-system error named only font-kit, though gpui on Linux falls back to the same no-op text system without wayland and x11; the install table repeated it |
+| T56 B7 B8 | 2 | PASS | ely-core takes gpui_platform behind an off-by-default platform feature (0.2.0); zbus and the six others stay out of it; init names font-kit, wayland and x11 when no text system draws |

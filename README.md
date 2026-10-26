@@ -74,7 +74,7 @@ Ely is built by AI coding agents. A person sets each goal and decides what ships
 
 ## Build notes
 
-- gpui compiles its Metal shaders at runtime here (`runtime_shaders`, on by default), so a full Xcode install is not required. gpui_platform needs `font-kit`, or macOS draws no text, and `wayland` and `x11`, or Linux opens no window.
+- gpui compiles its Metal shaders at runtime here (`runtime_shaders`, on by default in `ely-gpui-component`), so a full Xcode install is not required. `ely-core` alone turns on no gpui backend; the app's own gpui_platform does. gpui_platform needs `font-kit`, or macOS draws no text, and `wayland` and `x11`, or Linux opens no window.
 - CI runs `scripts/check.sh` and builds the gallery on GitHub-hosted Linux, Windows and macOS. The capture tool shoots pages on all three; only macOS plays the scripted states.
 
 ## License

@@ -42,7 +42,7 @@ ely-terminal = { path = "crates/ely-terminal", version = "0.1.1" }
 ely-editor = { path = "crates/ely-editor", version = "0.1.1" }
 ely-finance = { path = "crates/ely-finance", version = "0.1.1" }
 ely-charts = { path = "crates/ely-charts", version = "0.1.1" }
-ely-core = { path = "crates/ely-core", version = "0.1.1", default-features = false }
+ely-core = { path = "crates/ely-core", version = "0.2.0", default-features = false }
 anyhow = "1"
 emojis = "0.9"
 futures = "0.3"
@@ -105,6 +105,7 @@ required-features = ["test-support"]
 [features]
 default = ["runtime_shaders", "fonts"]
 fonts = ["ely-core/fonts"]
+platform = ["ely-core/platform"]
 runtime_shaders = ["ely-core/runtime_shaders"]
 test-support = ["ely-core/test-support", "gpui/test-support", "gpui/leak-detection"]
 

@@ -32,12 +32,12 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] B5 O-01 Verticals, chapters 28–34: messaging, mail, calendar, project, canvas, devtools, dashboard.
 - [x] B6 O-01 Verticals, chapters 35–44: settings, account, onboarding, interaction, maps, misc, tooling, rendering.
   - From B2, done in B6: `countries.geojson` leaves core's assets for `crates/ely-maps/assets`, read with `include_str!`.
-- [ ] B7 O-03 `ely-desktop`: tray, Dock badge, Omarchy; `cargo tree -p ely-core -i notify` and `-i zbus` print nothing.
+- [x] B7 O-03 `ely-desktop`: tray, Dock badge, Omarchy; `cargo tree -p ely-core -i notify` and `-i zbus` print nothing.
   - Done: the tray, the Dock badge and Omarchy live in `crates/ely-desktop`; `cargo tree -p ely-core -i notify` prints nothing.
-  - Open, partial: `-i zbus` still prints, through gpui's Linux backend (`gpui-pre-platform` → `gpui-pre-linux` → accesskit, ashpd, oo7, notify-rust). Core takes `gpui_platform` only to turn on `font-kit`, `wayland` and `x11`, as GPUI Kit 0.8.0 does; dropping it would leave an app that relied on core without macOS text or a Linux window, in silence. Owner's call.
-- [ ] B8 O-02 Features: heavy dependencies default off where a crate can stand without them; a Button-only program pulls none of zbus, ratex-svg, mermaid-rs-renderer, alacritty_terminal, isolang, rqrr, notify.
+  - Done, 2026-10-26: `ely-core` takes gpui_platform only behind `platform`, off by default (0.2.0, `docs/adr/0059`), so `-i zbus` prints nothing; it had taken it only to turn on `font-kit`, `wayland` and `x11`. `init` fails naming `font-kit` (macOS) and `wayland` and `x11` (Linux) when the platform has no text system, so leaving them off is never silent.
+- [x] B8 O-02 Features: heavy dependencies default off where a crate can stand without them; a Button-only program pulls none of zbus, ratex-svg, mermaid-rs-renderer, alacritty_terminal, isolang, rqrr, notify.
   - Done: the split leaves ratex-svg, mermaid-rs-renderer, alacritty_terminal, rqrr and notify out of `ely-core`; `isolang` is optional behind `languages`; check.sh holds all six out.
-  - Open, partial: zbus, as in B7. A Button-only program opens its window through `gpui_platform`, whose Linux backend links zbus; no Ely choice removes it.
+  - Done, 2026-10-26: zbus leaves `ely-core` with gpui_platform (B7); `scripts/check.sh` holds all seven out. A Button-only app links gpui's Linux backend, and zbus with it, only through the gpui_platform features it asks for itself.
 - [x] B9 O-04 Icons embed by use; fonts can be left out or replaced; a 5-icon release binary holds no other icon.
 - [x] B10 O-26 `cargo check -p ely-core` after one edit ≤20 s on the WSL box; the number recorded.
   - Measured 2026-10-23 at `e334c3c`, `rust:1.95` as root on the WSL box (32 cores), `cargo check -p ely-core --lib --features test-support` after a line appended to `buttons/button.rs`, three runs: 1.30 s incremental, 3.47 s with `CARGO_INCREMENTAL=0`; held to 2 CPUs (`docker --cpus=2`), 1.25 s and 3.81–3.99 s. The one crate at `17f936b`, same edit and box: 3.35–3.70 s incremental, 11.3–13.5 s without. A `touch` alone changes no contents, so incremental rustc skips it; the line is the edit.

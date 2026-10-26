@@ -1,6 +1,6 @@
 [package]
 name = "ely-core"
-version = "0.1.1"
+version = "0.2.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -12,9 +12,10 @@ keywords.workspace = true
 categories.workspace = true
 
 [features]
-default = ["runtime_shaders", "fonts"]
+default = ["fonts"]
 fonts = []
-runtime_shaders = ["gpui_platform/runtime_shaders"]
+platform = ["dep:gpui_platform"]
+runtime_shaders = ["platform", "gpui_platform/runtime_shaders"]
 languages = ["dep:isolang"]
 test-support = ["gpui/test-support", "gpui/leak-detection"]
 
@@ -24,7 +25,7 @@ barcoders = { version = "2", default-features = false, features = ["std"] }
 emojis.workspace = true
 futures.workspace = true
 gpui = { workspace = true, features = ["stacker"] }
-gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"] }
+gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"], optional = true }
 image.workspace = true
 iso_currency.workspace = true
 isocountry.workspace = true
@@ -71,6 +72,9 @@ objc2-foundation = { version = "0.3", default-features = false, features = [
     "NSURL",
 ] }
 raw-window-handle.workspace = true
+
+[dev-dependencies]
+gpui_platform = { workspace = true, features = ["font-kit", "wayland", "x11"] }
 
 [lints]
 workspace = true
