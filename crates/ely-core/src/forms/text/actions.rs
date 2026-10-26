@@ -414,12 +414,15 @@ impl Render for TextInput {
             .id("ely-text-input")
             .role(Role::TextInput)
             .when_some(
-                [&self.label, &self.placeholder]
+                [&self.label, &self.field.name, &self.placeholder]
                     .into_iter()
                     .find(|name| !name.is_empty())
                     .cloned(),
                 |el, name| el.aria_label(name),
             )
+            .when_some(self.field.note.clone(), |el, note| {
+                el.aria_description(note)
+            })
             .when(!self.masked, |el| el.aria_value(self.text.clone()))
             .key_context(CONTEXT)
             .track_focus(&self.focus)

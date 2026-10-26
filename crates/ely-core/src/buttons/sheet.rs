@@ -91,6 +91,15 @@ impl RenderOnce for ActionSheet {
                 on_close(window, cx)
             })
         };
+        let (id, name, note) = match (self.title.clone(), self.message.clone()) {
+            (Some(title), message) => (self.id.clone(), title, message),
+            (None, Some(message)) => (self.id.clone(), message, None),
+            (None, None) => (
+                self.id.clone(),
+                crate::i18n::text(cx, "sheet.name", &[]),
+                None,
+            ),
+        };
         let theme = cx.theme();
         let colors = &theme.colors;
         let card = || {
@@ -187,6 +196,7 @@ impl RenderOnce for ActionSheet {
             .child(
                 FocusScope::new(&focus)
                     .trap()
+                    .node((id, "scope"), Role::Dialog, name, note)
                     .flex()
                     .flex_col()
                     .gap_2()

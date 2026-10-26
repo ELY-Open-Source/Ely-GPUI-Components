@@ -75,6 +75,7 @@ pub struct TextInput {
     text: String,
     placeholder: SharedString,
     label: SharedString,
+    field: super::naming::Naming,
     placeholder_key: Option<&'static str>,
     label_key: Option<&'static str>,
     selection: Range<usize>,
@@ -135,6 +136,7 @@ impl TextInput {
             text: String::new(),
             placeholder: SharedString::default(),
             label: SharedString::default(),
+            field: super::naming::Naming::default(),
             placeholder_key: None,
             label_key: None,
             selection: 0..0,
@@ -295,6 +297,16 @@ impl TextInput {
     pub fn set_label(&mut self, text: impl Into<SharedString>, cx: &mut Context<Self>) {
         self.label = text.into();
         self.label_key = None;
+        cx.notify();
+    }
+
+    /// The naming of the `FormField` around it, its name when the owner gives none.
+    pub(crate) fn field(&self) -> &super::naming::Naming {
+        &self.field
+    }
+
+    pub(crate) fn set_field(&mut self, field: super::naming::Naming, cx: &mut Context<Self>) {
+        self.field = field;
         cx.notify();
     }
 

@@ -4629,6 +4629,7 @@ pub fn ely_core::primitives::FocusScope::extend(&mut self, impl core::iter::trai
 pub fn ely_core::primitives::FocusScope::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::primitives::FocusScope::into_element(self) -> Self::Element
 pub fn ely_core::primitives::FocusScope::new(&gpui::window::FocusHandle) -> Self
+pub fn ely_core::primitives::FocusScope::node(self, impl core::convert::Into<gpui::window::ElementId>, accesskit::Role, impl core::convert::Into<gpui_shared_string::SharedString>, core::option::Option<gpui_shared_string::SharedString>) -> Self
 pub fn ely_core::primitives::FocusScope::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::primitives::FocusScope::root(self) -> Self
 pub fn ely_core::primitives::FocusScope::style(&mut self) -> &mut gpui::style::StyleRefinement

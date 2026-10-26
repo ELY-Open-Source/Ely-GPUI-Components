@@ -14,7 +14,7 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 
 ## A. Ground
 
-- [x] A1 O-14 Tests are hermetic: the font tests carry their own fixture, the pty test skips under root; 100% pass as root in `rust:1.95` on WSL.
+- [x] A1 O-14 Tests are hermetic: the font tests carry their own fixture, the pty test skips under root; 100% pass as root in `rust:1.95` on WSL; at the new minimum, 2,261/2,261 lib tests pass as root in `rust:1.98` (2026-10-26).
 - [x] A2 O-06 Caret versions for every third-party crate but `gpui-pre*`.
 - [x] A3 O-05 One Markdown parser; the 128 KiB one-letter case reads in ≤100 ms in release. Find the quadratic first.
 - [ ] A4 O-07 No duplicate in `cargo tree -d` starts at an Ely direct dependency.
@@ -65,7 +65,8 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] D2 O-16 clippy `expect_used`, `panic`, `unreachable` on library code; an allow list with reasons; CI counts and fails on a rise.
   - The asserts noted in C7 and C8 (flags, versions, shares and levels past 0 to 1, a thread's comments, event and initiative order, canvas values, readings, plan costs, services, quotas) are callers' contracts `tasks/panics.md` already ruled on (P11, P16, P21–P26, P30–P36): one value checked against itself. They stay.
 - [x] D3 O-17 criterion benches: 100k-row table scroll, 10k-line editor typing, terminal scrollback, 2 MiB Markdown read; CI fails past 10% regression.
-- [ ] D4 O-19 Role and name on every interactive component; a test holds the list; VoiceOver walk of form, menu, dialog on the Mac, written down.
+- [x] D4 O-19 Role and name on every interactive component; a test holds the list; VoiceOver walk of form, menu, dialog on the Mac, written down.
+  - Walked 2026-10-26, at the owner's word, on the Mac: `tasks/voiceover.md`. Fixed from it: `FormField` names the field inside it; a trapping overlay's scope carries its node and a `Dialog` focuses its first control. Open upstream: VoiceOver does not follow focus gpui moves without a key press, and gpui marks no node modal.
   - Owner's call, 2026-10-24: the test reads gpui's live AccessKit tree on Windows, a UI Automation client connected; the VoiceOver walk is skipped while the owner is away and stays open here.
   - First audit (`gallery --audit`, every page): 2,190 stops, 846 faults: 595 take focus with no role, so no node; 251 have a role and no name (TextInput 85, Select 51, SelectableList 39, Checkbox 23, Slider 18, Switch 12, Tree 10, Button 10, Tabs 3). A source scan lists 122 focus sites with no role in their function; the audit is the gate.
   - Last audit, 2026-10-24: 2,272 stops, 0 faults; the walk steps gpui's `focus_next`, past editors that keep Tab. CI's Windows leg runs it after the gallery build and prints the failing rows. Fixed at the source: 122 focus sites gain a role; names come from each component's own words or a catalog key; gallery demos name their own fields. Left open: the VoiceOver walk, so D4 stays unticked, as A4 does; and, at the owner's word, a gpui 0.3.9 limit: a list a typed filter drives keeps focus in its field, and gpui counts an active descendant only inside the focused element, so a reader hears the field, not the highlighted row.
@@ -104,4 +105,4 @@ Crates. Core is O-01's list and what it imports: chapters 1–14 (primitives, ty
 - [x] F3 O-28 README section on the agent-driven process, links checked.
   - Done: README.md's "How it is built" says agents write the code and models review it, up to five rounds, some items ending on a FAIL row after the cap, and no person has signed a crate; it links `tasks/reviews.md`, `tasks/stability.md`, `scripts/check.sh`, `scripts/panics.tsv`, `tasks/panics.md`, `AGENTS.md` and `docs/adr/`. `scripts/links.py`, run by `check.sh`, reads the README whole and fails a relative link to no path, read literally, or any HTML link; the four outside links answered 200. Review: four rounds.
 - [x] F4 Acceptance table, item by item, against OPTIMIZATION.md.
-  - Done: `tasks/acceptance.md`, at `d77a171`: 23 met, O-02 met on macOS and Windows (on Linux zbus comes through gpui's Linux backend), O-13 met once all 31 crates reached crates.io, three open: O-07 (RaTeX's next release), O-19 (the VoiceOver walk), O-27 (the owner's sign-off).
+  - Done: `tasks/acceptance.md`, at `d77a171`: 23 met, O-02 met on macOS and Windows (on Linux zbus comes through gpui's Linux backend), O-13 met once all 31 crates reached crates.io, O-19 met with the VoiceOver walk, two open: O-07 (RaTeX#179 and fancy-regex#291), O-27 (the owner's sign-off).

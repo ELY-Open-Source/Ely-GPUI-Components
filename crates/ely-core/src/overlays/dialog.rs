@@ -11,7 +11,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     forms::{Enter, Run},
     i18n, motion,
-    primitives::{Backdrop, FocusScope, IconName, give_back, raise, take_focus},
+    primitives::{Backdrop, FocusScope, IconName, enter_scope, give_back, raise, take_focus},
     theme::{ActiveTheme, Elevation, Radius, TextSize},
 };
 
@@ -103,7 +103,7 @@ impl Dialog {
         self
     }
 
-    /// Where focus goes when it opens.
+    /// Where focus goes when it opens; its first control otherwise.
     #[doc(hidden)]
     pub fn focus_first(mut self, handle: FocusHandle) -> Self {
         self.first = Some(handle);
@@ -121,10 +121,22 @@ impl RenderOnce for Dialog {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let takeover = take_focus((self.id.clone(), "takeover"), window, cx);
         let focus = takeover.read(cx).focus.clone();
-        if let Some(first) = &self.first
-            && focus.is_focused(window)
-        {
-            window.focus(first, cx);
+        let entered = window.use_keyed_state((self.id.clone(), "entered"), cx, |_, _| false);
+        if focus.is_focused(window) {
+            match &self.first {
+                Some(first) => window.focus(first, cx),
+                // Its first control, once a frame has laid its stops; tried once, so a dialog with no stop settles.
+                None if !*entered.read(cx) => {
+                    entered.update(cx, |entered, _| *entered = true);
+                    let scope = focus.clone();
+                    window.on_next_frame(move |window, cx| {
+                        if scope.is_focused(window) {
+                            enter_scope(&scope, window, cx);
+                        }
+                    });
+                }
+                None => {}
+            }
         }
         let close: Run = {
             let (id, on_close) = (self.id.clone(), self.on_close);
@@ -182,9 +194,6 @@ impl RenderOnce for Dialog {
         let card = if fullscreen {
             div()
                 .id(self.id.clone())
-                .role(Role::Dialog)
-                .aria_label(title)
-                .when_some(description, |card, text| card.aria_description(text))
                 .flex()
                 .flex_col()
                 .size_full()
@@ -235,9 +244,6 @@ impl RenderOnce for Dialog {
             });
             div()
                 .id(self.id.clone())
-                .role(Role::Dialog)
-                .aria_label(title)
-                .when_some(description, |card, text| card.aria_description(text))
                 .flex()
                 .flex_col()
                 .gap_5()
@@ -288,6 +294,7 @@ impl RenderOnce for Dialog {
             .child(
                 FocusScope::new(&focus)
                     .trap()
+                    .node((self.id.clone(), "scope"), Role::Dialog, title, description)
                     .when(fullscreen, |scope| scope.size_full())
                     .child(card),
             );

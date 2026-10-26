@@ -6,7 +6,7 @@ This file holds what every change needs. Before working in a crate or folder, re
 
 ## Stack
 
-- Rust 1.95, edition 2024. A Cargo workspace (`docs/adr/0001-workspace.md`): `ely-core` (chapters 1–14), one crate per later chapter in `crates/ely-<chapter>`, `ely-desktop`, the root `ely-gpui-component` re-exporting all, and `crates/ely-gallery`.
+- Rust 1.98 (gpui 0.3.10's floor on macOS), edition 2024. A Cargo workspace (`docs/adr/0001-workspace.md`): `ely-core` (chapters 1–14), one crate per later chapter in `crates/ely-<chapter>`, `ely-desktop`, the root `ely-gpui-component` re-exporting all, and `crates/ely-gallery`.
 - gpui, gpui_platform and gpui_web come from crates.io's `gpui-pre` at `=0.3.10`, the pin GPUI Kit 0.8.1 holds. These three alone pin with `=`; every other dependency takes a caret, and `Cargo.lock` holds the build.
 - A dependency beyond gpui is named, with its license and why it is there, in the `AGENTS.md` of the crate that brings it. A new one adds its line there and passes `cargo deny`.
 - `ely_core::init` loads assets and fonts and binds core keys; `ely_gpui_component::init` calls it, then binds the editor's, terminal's and documents' keys.

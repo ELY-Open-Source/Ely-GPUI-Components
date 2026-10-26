@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libwayland-dev libx11-dev libx11-xcb-dev libxcb1-dev libxi-dev libxcursor-dev libxrandr-dev \
       libvulkan-dev libasound2-dev libssl-dev libzstd-dev \
     && rm -rf /var/lib/apt/lists/*
-RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.95
+RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.98
 
 # Tests check file permissions, which root ignores, so the build runs as a plain user.
 RUN useradd --create-home ely

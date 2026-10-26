@@ -17,12 +17,12 @@ Checked 2026-10-26 at `d77a171`. Each row names the acceptance test from OPTIMIZ
 | O-11 | Every capable component implements its trait; generic code compiles | `Sizable`, `Disableable`, `Selectable`, `Changeable`; 30, 19, 5 and 80 impls; a generic test compiles over them | C3 | Met |
 | O-12 | A container list, 100% `ParentElement`, held by a test | `src/containers.rs` lists 87 containers; its test reads every impl | C4 | Met |
 | O-13 | `cargo add ely-core` works; a breaking change without a version bump fails CI | All 31 library crates are on crates.io, `ely-core` at 0.2.0 and the rest at 0.1.1; `cargo add ely-core ely-gpui-component` in a fresh project resolves both. `scripts/semver.py` in CI's `semver` job, a required check | E2 | Met |
-| O-14 | Tests pass as root in `rust:1.95` | Fonts come from fixtures; the pty test skips under root and says so; all pass as root in `rust:1.95` on WSL | A1 | Met |
+| O-14 | Tests pass as root in `rust:1.95` (now the declared minimum, `rust:1.98`) | Fonts come from fixtures; the pty test skips under root and says so. On 2026-10-24, 2,216 passed as root in `rust:1.95`; since gpui 0.3.10 needs 1.98, on 2026-10-26 the 31 library crates' 2,261 lib tests passed as root in `rust:1.98` (Docker on WSL, `--all-features`), none failed | A1 | Met |
 | O-15 | Removing a documented public item breaks a test | `tests/` holds three apps on the public API; the `api` job fails on any removed item | D1, E1 | Met |
 | O-16 | CI prints panic counts and fails on a rise | `scripts/panics.py` on Linux, Windows and macOS, each against the base commit | D2 | Met |
 | O-17 | Benchmarks in CI; a regression past 10% fails | `benches/budget.rs`, four cases; CI's `bench` job benches base and head on one runner | D3 | Met |
 | O-18 | A three-platform diff report per PR; past the threshold it blocks the merge | `scripts/pixels.sh` and `pixels.py` on Linux, Windows and macOS; the three `pixels` legs are required checks | E5, E3 | Met |
-| O-19 | Every interactive component named, held by a test; VoiceOver walk of form, menu, dialog recorded | `gallery --audit` in CI walks 2,272 stops on 44 pages, 0 faults. The VoiceOver walk is not done | D4 | Open: the VoiceOver walk needs the Mac |
+| O-19 | Every interactive component named, held by a test; VoiceOver walk of form, menu, dialog recorded | `gallery --audit` in CI walks 2,272 stops on 44 pages, 0 faults. The VoiceOver walk of a form, a menu and a dialog is `tasks/voiceover.md`; what it found in Ely is fixed and tested, and two gpui limits are recorded there | D4 | Met |
 | O-20 | Every declared locale has every key, by a test | Seven locales, no fallback; a test holds each to English's keys and arguments | D5 | Met |
 | O-21 | Each component's doc names its platforms, matched to its cfgs by a script | 13 items say `Platforms:`; `scripts/platforms.py` in the gate. The fix for review round 5's last finding came after the round cap | D6 | Met |
 | O-22 | `check.sh` never fails on line count; files under 40 lines are real units | An 800-line warning; small files merged by responsibility | C5 | Met |
@@ -33,4 +33,4 @@ Checked 2026-10-26 at `d77a171`. Each row names the acceptance test from OPTIMIZ
 | O-27 | Every crate marked stable has a human review record and outside feedback | `tasks/stability.md` and `scripts/stability.py` enforce it; no crate is marked stable yet, so none is due. OPTIMIZATION.md's goal, a human sign-off on the core API, waits for the owner | F2 | Open: the owner's sign-off |
 | O-28 | README has the section; its links work | "How it is built" in README; `scripts/links.py` checks every relative link in the gate | F3 | Met |
 
-Count: 24 met, one met in part (O-02, on Linux zbus through gpui's Linux backend), three open: O-07 on RaTeX's next release, O-19 on the VoiceOver walk, O-27 on the owner's sign-off.
+Count: 25 met, one met in part (O-02, on Linux zbus through gpui's Linux backend), two open: O-07 on erweixin/RaTeX#179 and fancy-regex#291, O-27 on the owner's sign-off.

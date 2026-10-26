@@ -2,7 +2,10 @@ use std::{path::PathBuf, time::Duration};
 
 use anyhow::{Context as _, Result};
 use futures::future::{Either, select};
-use gpui::{AsyncApp, Bounds, Keystroke, Pixels, Point, WindowHandle, point, px};
+use gpui::{
+    AsyncApp, Bounds, Keystroke, Modifiers, MouseMoveEvent, Pixels, PlatformInput, Point,
+    WindowHandle, point, px,
+};
 
 use crate::{
     capture::{number, popup_number, snapshot, steady},
@@ -32,12 +35,21 @@ enum Mouse {
 /// Parks the pointer on empty sidebar space.
 pub fn park(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<()> {
     let height = window.update(cx, |_, window, _| window.viewport_size().height)?;
-    send(
-        window,
-        Mouse::Move,
-        point(px(24.0), px(720.0).min(height - px(24.0))),
-        cx,
-    )
+    let at = point(px(24.0), px(720.0).min(height - px(24.0)));
+    if cfg!(target_os = "macos") {
+        return send(window, Mouse::Move, at, cx);
+    }
+    // Elsewhere gpui keeps wherever the OS last saw the cursor, which a runner leaves anywhere.
+    window.update(cx, |_, window, cx| {
+        window.dispatch_event(
+            PlatformInput::MouseMove(MouseMoveEvent {
+                position: at,
+                pressed_button: None,
+                modifiers: Modifiers::default(),
+            }),
+            cx,
+        );
+    })
 }
 
 fn opened(key: &str, cx: &mut AsyncApp) -> Result<gpui::AnyWindowHandle> {

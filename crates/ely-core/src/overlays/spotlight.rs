@@ -2,8 +2,8 @@ use std::{cell::RefCell, rc::Rc};
 
 use gpui::{
     Animation, AnimationExt, AnyElement, App, Bounds, ElementId, FontWeight, InteractiveElement,
-    IntoElement, ParentElement, Pixels, Point, RenderOnce, SharedString, Styled, Subscription,
-    Window, anchored, canvas, div, point, prelude::*, size,
+    IntoElement, ParentElement, Pixels, Point, RenderOnce, Role, SharedString, Styled,
+    Subscription, Window, anchored, canvas, div, point, prelude::*, size,
 };
 
 use crate::{
@@ -279,22 +279,30 @@ impl RenderOnce for Spotlight {
             })
         };
         let button = close.clone();
-        let card = FocusScope::new(&focus).trap().child(
-            surface((self.id.clone(), "surface"), cx)
-                .p_4()
-                .flex()
-                .flex_col()
-                .gap_3()
-                .max_w(cx.theme().dialog_width())
-                .child(words(self.step.title, self.step.body, cx))
-                .child(
-                    div().flex().justify_end().child(
-                        Button::new((self.id.clone(), "done"), self.label)
-                            .primary()
-                            .on_click(move |_, window, cx| button(window, cx)),
+        let card = FocusScope::new(&focus)
+            .trap()
+            .node(
+                (self.id.clone(), "scope"),
+                Role::Dialog,
+                self.step.title.clone(),
+                Some(self.step.body.clone()),
+            )
+            .child(
+                surface((self.id.clone(), "surface"), cx)
+                    .p_4()
+                    .flex()
+                    .flex_col()
+                    .gap_3()
+                    .max_w(cx.theme().dialog_width())
+                    .child(words(self.step.title, self.step.body, cx))
+                    .child(
+                        div().flex().justify_end().child(
+                            Button::new((self.id.clone(), "done"), self.label)
+                                .primary()
+                                .on_click(move |_, window, cx| button(window, cx)),
+                        ),
                     ),
-                ),
-        );
+            );
         light(
             &self.id,
             self.step.target,
@@ -429,25 +437,33 @@ impl RenderOnce for Tour {
                     None => done(window, cx),
                 }),
             );
-        let card = FocusScope::new(&focus).trap().child(
-            surface((self.id.clone(), "surface"), cx)
-                .p_4()
-                .flex()
-                .flex_col()
-                .gap_4()
-                .max_w(theme.dialog_width())
-                .child(
-                    div()
-                        .child(words(current.title, current.body, cx))
-                        .with_animation(
-                            (self.id.clone(), format!("words-{turn}")),
-                            Animation::new(motion::duration(motion::BASE, cx))
-                                .with_easing(motion::ease_out_cubic),
-                            move |words, t| if turn == 0 { words } else { words.opacity(t) },
-                        ),
-                )
-                .child(footer),
-        );
+        let card = FocusScope::new(&focus)
+            .trap()
+            .node(
+                (self.id.clone(), "scope"),
+                Role::Dialog,
+                current.title.clone(),
+                Some(current.body.clone()),
+            )
+            .child(
+                surface((self.id.clone(), "surface"), cx)
+                    .p_4()
+                    .flex()
+                    .flex_col()
+                    .gap_4()
+                    .max_w(theme.dialog_width())
+                    .child(
+                        div()
+                            .child(words(current.title, current.body, cx))
+                            .with_animation(
+                                (self.id.clone(), format!("words-{turn}")),
+                                Animation::new(motion::duration(motion::BASE, cx))
+                                    .with_easing(motion::ease_out_cubic),
+                                move |words, t| if turn == 0 { words } else { words.opacity(t) },
+                            ),
+                    )
+                    .child(footer),
+            );
         let keys = move |key: &str, window: &mut Window, cx: &mut App| {
             let to = match key {
                 "left" => back,

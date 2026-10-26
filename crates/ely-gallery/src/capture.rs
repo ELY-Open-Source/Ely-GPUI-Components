@@ -81,10 +81,7 @@ async fn shoot_all(
                 gallery.fresh(cx);
                 gallery.choose(choice, window, cx);
             })?;
-            // Only AppKit takes a posted pointer.
-            if cfg!(target_os = "macos") {
-                script::park(window, cx)?;
-            }
+            script::park(window, cx)?;
             cx.background_executor().timer(SETTLE).await;
             // A picture that lands late grows the page, which would move every segment below it.
             let mut extent = window.update(cx, |gallery, _, _| gallery.scroll_extent())?;
@@ -485,7 +482,7 @@ pub fn snapshot(hwnd: u32, path: &Path) -> Result<()> {
         }
     }
     // Windows hands back BGRA with no alpha.
-    for pixel in pixels.chunks_exact_mut(4) {
+    for pixel in pixels.as_chunks_mut::<4>().0 {
         pixel.swap(0, 2);
         pixel[3] = 255;
     }
@@ -531,7 +528,9 @@ pub fn snapshot(window: u32, path: &Path) -> Result<()> {
     // A 24- or 32-bit ZPixmap holds each pixel as blue, green, red and a pad.
     let rgba: Vec<u8> = shot
         .data
-        .chunks_exact(4)
+        .as_chunks::<4>()
+        .0
+        .iter()
         .flat_map(|pixel| [pixel[2], pixel[1], pixel[0], 255])
         .collect();
     image::save_buffer(

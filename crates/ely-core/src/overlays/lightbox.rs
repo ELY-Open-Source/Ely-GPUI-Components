@@ -173,6 +173,10 @@ impl RenderOnce for Lightbox {
             })
         };
         let (back, next) = (at.checked_sub(1), (at + 1 < count).then_some(at + 1));
+        let caption = match self.slides[at].caption.clone() {
+            caption if caption.is_empty() => i18n::text(cx, "lightbox.name", &[]),
+            caption => caption,
+        };
         let side = |name: &'static str, icon: IconName, to: Option<usize>, cx: &App| {
             let step = step.clone();
             media_button(
@@ -233,6 +237,7 @@ impl RenderOnce for Lightbox {
             .child(
                 FocusScope::new(&focus)
                     .trap()
+                    .node((self.id.clone(), "scope"), Role::Dialog, caption, None)
                     .size_full()
                     .flex()
                     .flex_col()

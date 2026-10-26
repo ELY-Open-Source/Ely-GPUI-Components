@@ -4,6 +4,12 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- All crates: Rust 1.98 at least, the floor gpui 0.3.10 builds on, since its macOS crate calls `Option::map_or_default`; 1.95 had been declared, and failed on macOS.
+- `ely-core`: a `FormField` names the text field it frames for screen readers, its label as the name and its error or description as the description, unless the field's owner named it.
+- `ely-core`: a `Dialog` without `focus_first` focuses its first control a frame after it opens; `Dialog`, `ActionSheet`, `Lightbox`, `Spotlight` and `Tour` name the element that takes their focus. `FocusScope::node` names a scope.
+
+## 2026-10-26: `ely-core` 0.2.0, every other crate 0.1.1
+
 The first release on crates.io.
 
 - 31 library crates: `ely-core` (chapters 1–14, theme, motion, i18n), one crate per vertical chapter from `ely-charts` to `ely-rendering`, `ely-desktop` (tray, Dock badge, Omarchy), and `ely-gpui-component`, which re-exports them all under their chapter names.

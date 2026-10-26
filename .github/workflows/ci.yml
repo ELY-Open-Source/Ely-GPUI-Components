@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: "1.95"
+          toolchain: "1.98"
           components: clippy, rustfmt
           targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
@@ -58,7 +58,7 @@ jobs:
       - run: python3 scripts/api.py
 
   semver:
-    # A breaking change needs its crate's version raised; the base commit stands in for crates.io.
+    # A breaking change since a crate's last release needs its version raised; the base commit picks which crates to check.
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -66,7 +66,7 @@ jobs:
           fetch-depth: 0
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: "1.95"
+          toolchain: "1.98"
       - uses: Swatinem/rust-cache@v2
       - run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       - run: cargo install --locked cargo-semver-checks --version "$(python3 scripts/semver.py --tool)"
@@ -86,17 +86,23 @@ jobs:
           command: check
 
   msrv:
-    # The workspace builds on the Rust its manifest declares, whatever the other jobs take.
-    runs-on: ubuntu-24.04
+    # The workspace builds on the Rust its manifest declares, on each OS, since gpui's platform crates differ.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
       - id: msrv
+        shell: bash
         run: echo "rust=$(sed -n 's/^rust-version = \"\(.*\)\"$/\1/p' Cargo.toml)" >> "$GITHUB_OUTPUT"
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.msrv.outputs.rust }}
       - uses: Swatinem/rust-cache@v2
-      - run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       - run: cargo check --workspace --all-targets --all-features --locked
 
   pixels:
@@ -114,7 +120,7 @@ jobs:
           fetch-depth: 0
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: "1.95"
+          toolchain: "1.98"
       - uses: Swatinem/rust-cache@v2
       - uses: actions/setup-python@v7
         with:
@@ -151,7 +157,7 @@ jobs:
           path: base
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: "1.95"
+          toolchain: "1.98"
       - uses: Swatinem/rust-cache@v2
       - run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       - shell: bash

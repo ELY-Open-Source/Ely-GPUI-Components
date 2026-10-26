@@ -358,6 +358,20 @@ fn before_focused(view: &Entity<Stage>, cx: &mut VisualTestContext) -> bool {
 }
 
 #[gpui::test]
+fn a_dialog_focuses_its_first_control_a_frame_after_it_opens(cx: &mut TestAppContext) {
+    let (view, cx) = stage(cx);
+    show(&view, Open::Confirm, cx);
+    cx.update(|window, cx| window.simulate_next_frame(cx));
+    settle(cx);
+    press("enter", cx);
+    assert!(
+        before_focused(&view, cx),
+        "Enter pressed Cancel, which closed it"
+    );
+    assert!(log(&view, cx).is_empty(), "Cancel, not Delete");
+}
+
+#[gpui::test]
 fn every_dialog_button_hands_focus_back(cx: &mut TestAppContext) {
     let (view, cx) = stage(cx);
     show(&view, Open::Alert, cx);

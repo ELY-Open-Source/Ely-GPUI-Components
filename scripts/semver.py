@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Fails a breaking change whose crate kept its version: each library crate the base also has and that may have changed, against the base, by default, with no features and with all."""
+"""Fails a breaking change since a crate's last release that kept its version: each released library crate that may have changed since the base commit, against crates.io, by default, with no features and with all."""
 import json
 import os
 import subprocess
 import sys
-import tomllib
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -19,18 +20,16 @@ def git(*args):
     return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
 
 
-def named(base):
-    """The package names the base's manifests declare, wherever their crates sat."""
-    tree = git("ls-tree", "-r", "--name-only", base)
-    if tree.returncode != 0:
-        sys.exit(f"semver: cannot list {base}: {tree.stderr.strip()}")
-    names = set()
-    for path in tree.stdout.splitlines():
-        if path == "Cargo.toml" or path.endswith("/Cargo.toml"):
-            manifest = tomllib.loads(git("show", f"{base}:{path}").stdout)
-            if "package" in manifest:
-                names.add(manifest["package"]["name"])
-    return names
+def released(name):
+    """Whether crates.io holds any release of `name`."""
+    ask = urllib.request.Request(f"https://crates.io/api/v1/crates/{name}", headers={"User-Agent": "ely-semver (ELY-Open-Source/Ely-GPUI-Components)"})
+    try:
+        with urllib.request.urlopen(ask, timeout=30):
+            return True
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            return False
+        raise
 
 
 def rel(path):
@@ -107,11 +106,12 @@ def main():
         for name, package in packages.items()
         if any("lib" in target["kind"] for target in package["targets"])
     }
-    before = named(base)
-    for name in sorted(set(libraries) - before):
-        print(f"semver: {name} is new since {base}; nothing to break")
-    shared = sorted((set(libraries) & before) & touched(base, packages))
-    print(f"semver: {len(shared)} of {len(libraries)} crates may have changed since {base}")
+    changed = touched(base, packages) & set(libraries)
+    unreleased = {name for name in changed if not released(name)}
+    for name in sorted(unreleased):
+        print(f"semver: {name} has no release on crates.io; nothing to break")
+    shared = sorted(changed - unreleased)
+    print(f"semver: {len(shared)} of {len(libraries)} crates may have changed since {base}; each checks against its newest release")
     for features in FEATURES:
         # Without a `default` feature, the defaults and none build the same API; `default = []` still sets cfg(feature = "default").
         names = [name for name in shared if features[0] != "--only-explicit-features" or "default" in libraries[name]["features"]]
@@ -120,10 +120,10 @@ def main():
         print(f"semver: {len(names)} crates, {features[0]}", flush=True)
         packages = [arg for name in names for arg in ("-p", name)]
         run = subprocess.run(
-            ["cargo", "semver-checks", *packages, *features, "--baseline-rev", base], cwd=ROOT, env=env,
+            ["cargo", "semver-checks", *packages, *features], cwd=ROOT, env=env,
         )
         if run.returncode != 0:
-            sys.exit(f"semver: a breaking change under {features[0]} needs its crate's version raised")
+            sys.exit(f"semver: a breaking change under {features[0]} needs its crate's version raised past its last release")
 
 
 if __name__ == "__main__":

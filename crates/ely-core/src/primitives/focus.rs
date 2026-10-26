@@ -1,7 +1,8 @@
 use gpui::{
     AnyElement, AnyWindowHandle, App, Div, ElementId, Entity, FocusHandle, Global,
-    InteractiveElement, IntoElement, ParentElement, RenderOnce, StyleRefinement, Styled,
-    Subscription, WeakEntity, Window, actions, div,
+    InteractiveElement, IntoElement, ParentElement, RenderOnce, Role, SharedString,
+    StatefulInteractiveElement, StyleRefinement, Styled, Subscription, WeakEntity, Window, actions,
+    div, prelude::FluentBuilder,
 };
 
 use crate::theme::ActiveTheme;
@@ -47,6 +48,15 @@ pub struct FocusScope {
     handle: FocusHandle,
     trap: bool,
     root: bool,
+    node: Option<Node>,
+}
+
+/// What assistive technology reads when the scope itself holds focus.
+struct Node {
+    id: ElementId,
+    role: Role,
+    label: SharedString,
+    description: Option<SharedString>,
 }
 
 impl FocusScope {
@@ -57,7 +67,25 @@ impl FocusScope {
             handle: handle.clone(),
             trap: false,
             root: false,
+            node: None,
         }
+    }
+
+    /// Reads as `role` named `label` while it holds focus, as a dialog announces itself on opening.
+    pub fn node(
+        mut self,
+        id: impl Into<ElementId>,
+        role: Role,
+        label: impl Into<SharedString>,
+        description: Option<SharedString>,
+    ) -> Self {
+        self.node = Some(Node {
+            id: id.into(),
+            role,
+            label: label.into(),
+            description,
+        });
+        self
     }
 
     /// Keeps Tab and Shift-Tab inside, as a dialog does.
@@ -111,10 +139,25 @@ impl RenderOnce for FocusScope {
         }
         let (next, prev) = (self.handle.clone(), self.handle);
         let trap = self.trap;
-        self.base
+        let base = self
+            .base
             .on_action(move |_: &FocusNext, window, cx| step(&next, trap, true, window, cx))
-            .on_action(move |_: &FocusPrev, window, cx| step(&prev, trap, false, window, cx))
+            .on_action(move |_: &FocusPrev, window, cx| step(&prev, trap, false, window, cx));
+        match self.node {
+            Some(node) => base
+                .id(node.id)
+                .role(node.role)
+                .aria_label(node.label)
+                .when_some(node.description, |scope, text| scope.aria_description(text))
+                .into_any_element(),
+            None => base.into_any_element(),
+        }
     }
+}
+
+/// Moves focus from a trapping scope to its first stop, as Tab would.
+pub(crate) fn enter_scope(scope: &FocusHandle, window: &mut Window, cx: &mut App) {
+    step(scope, true, true, window, cx);
 }
 
 fn step(scope: &FocusHandle, trap: bool, forward: bool, window: &mut Window, cx: &mut App) {

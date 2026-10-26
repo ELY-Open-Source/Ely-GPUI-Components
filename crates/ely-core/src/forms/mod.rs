@@ -22,6 +22,7 @@ mod listbox;
 mod masked;
 mod mention;
 mod multi;
+mod naming;
 mod number;
 mod options;
 mod pairs;

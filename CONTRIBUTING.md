@@ -9,7 +9,7 @@ Thanks for helping. Bugs, component requests and pull requests are all welcome.
 
 ## Setup
 
-- Rust 1.95 with `rustup target add wasm32-unknown-unknown`. No full Xcode needed: gpui compiles its shaders at runtime.
+- Rust 1.98 with `rustup target add wasm32-unknown-unknown`. No full Xcode needed: gpui compiles its shaders at runtime.
 - For the website: Node 24 and pnpm 11.
 - Development happens on macOS; the capture tool needs it.
 

@@ -6,7 +6,11 @@ use gpui::{
 };
 use smallvec::SmallVec;
 
-use super::{options::Run, text::Submit};
+use super::{
+    naming::{Named, Naming},
+    options::Run,
+    text::Submit,
+};
 use crate::{
     motion,
     primitives::{HelpTooltip, Icon, IconName},
@@ -305,6 +309,10 @@ impl ParentElement for FormField {
 
 impl RenderOnce for FormField {
     fn render(self, _: &mut Window, _: &mut App) -> impl IntoElement {
+        let naming = Naming {
+            name: self.label.text.clone(),
+            note: self.error.clone().or_else(|| self.description.clone()),
+        };
         let note = match (self.error, self.description) {
             (Some(error), _) => Some(FormError::new((self.id, "error"), error).into_any_element()),
             (None, Some(description)) => Some(Caption::new(description).into_any_element()),
@@ -315,7 +323,11 @@ impl RenderOnce for FormField {
             .flex_col()
             .gap_1p5()
             .child(self.label)
-            .children(self.children)
+            .children(
+                self.children
+                    .into_iter()
+                    .map(|child| Named::new(naming.clone(), child)),
+            )
             .children(note)
     }
 }

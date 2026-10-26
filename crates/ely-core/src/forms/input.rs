@@ -97,6 +97,11 @@ pub(crate) fn text_size(size: ControlSize) -> TextSize {
 
 impl RenderOnce for Input {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let field = super::naming::current(cx).unwrap_or_default();
+        if self.state.read(cx).field() != &field {
+            self.state
+                .update(cx, |input, cx| input.set_field(field, cx));
+        }
         let input = self.state.read(cx);
         let focus = input.focus().clone();
         let (focused, empty, multi, disabled) = (

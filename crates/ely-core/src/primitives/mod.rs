@@ -27,6 +27,7 @@ pub use disclosure::Disclosure;
 pub use divider::Divider;
 pub use files::{IconTheme, file_icon, icon_theme};
 pub(crate) use focus::CONTEXT as FOCUS_CONTEXT;
+pub(crate) use focus::enter_scope;
 pub use focus::{
     FocusNext, FocusPrev, FocusRing, FocusScope, Held, Takeover, give_back, hand_back, hold_focus,
     lent, tab_stop, take_focus,

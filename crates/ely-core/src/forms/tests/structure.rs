@@ -56,6 +56,90 @@ fn signup(cx: &mut TestAppContext) -> (Entity<Signup>, &mut VisualTestContext) {
     })
 }
 
+struct Labelled {
+    inside: Entity<TextInput>,
+    outside: Entity<TextInput>,
+    error: Option<&'static str>,
+}
+
+impl Render for Labelled {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let field = FormField::new("labelled-email", "Email").description("We never share it.");
+        let field = match self.error {
+            Some(error) => field.error(error),
+            None => field,
+        };
+        div()
+            .child(field.child(Input::new(&self.inside)))
+            .child(Input::new(&self.outside))
+    }
+}
+
+#[gpui::test]
+fn a_field_names_the_input_inside_it_and_no_other(cx: &mut TestAppContext) {
+    setup(cx);
+    let (view, cx) = cx.add_window_view(|window, cx| Labelled {
+        inside: cx.new(|cx| TextInput::new(window, cx)),
+        outside: cx.new(|cx| TextInput::new(window, cx)),
+        error: None,
+    });
+    cx.run_until_parked();
+    let named = |cx: &mut VisualTestContext| {
+        view.read_with(cx, |view, cx| {
+            let (inside, outside) = (view.inside.read(cx).field(), view.outside.read(cx).field());
+            (
+                inside.name.to_string(),
+                inside.note.as_ref().map(|note| note.to_string()),
+                outside.name.is_empty() && outside.note.is_none(),
+            )
+        })
+    };
+    assert_eq!(
+        named(cx),
+        ("Email".into(), Some("We never share it.".into()), true)
+    );
+    view.update(cx, |view, cx| {
+        view.error = Some("Enter an address.");
+        cx.notify();
+    });
+    cx.run_until_parked();
+    assert_eq!(
+        named(cx),
+        ("Email".into(), Some("Enter an address.".into()), true)
+    );
+}
+
+struct Holder(Entity<TextInput>);
+
+impl Render for Holder {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        Input::new(&self.0)
+    }
+}
+
+struct Cached(Entity<Holder>);
+
+impl Render for Cached {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        FormField::new("cached-email", "Email")
+            .child(gpui::AnyView::from(self.0.clone()).cached(gpui::StyleRefinement::default()))
+    }
+}
+
+#[gpui::test]
+fn a_field_names_the_input_of_a_cached_view_inside_it(cx: &mut TestAppContext) {
+    setup(cx);
+    let (view, cx) = cx.add_window_view(|window, cx| {
+        let input = cx.new(|cx| TextInput::new(window, cx));
+        Cached(cx.new(|_| Holder(input)))
+    });
+    cx.run_until_parked();
+    let name = view.read_with(cx, |view, cx| {
+        view.0.read(cx).0.read(cx).field().name.to_string()
+    });
+    assert_eq!(name, "Email");
+}
+
 #[gpui::test]
 fn cmd_enter_in_a_field_submits_the_form_once(cx: &mut TestAppContext) {
     let (view, cx) = signup(cx);
