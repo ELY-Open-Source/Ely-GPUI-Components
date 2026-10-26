@@ -32,10 +32,12 @@ enum Mouse {
     RightUp,
 }
 
-/// Parks the pointer on empty sidebar space.
+/// Parks the pointer on the sidebar's title, which no window size puts a hover under.
 pub fn park(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<()> {
-    let height = window.update(cx, |_, window, _| window.viewport_size().height)?;
-    let at = point(px(24.0), px(720.0).min(height - px(24.0)));
+    let at = cx
+        .update(|cx| Probes::get(crate::shell::BRAND, cx))
+        .context("the sidebar's title never rendered")?
+        .center();
     if cfg!(target_os = "macos") {
         return send(window, Mouse::Move, at, cx);
     }

@@ -11,7 +11,10 @@ use gpui::{
     Subscription, Window, div, point, prelude::*, px,
 };
 
-use crate::{Start, pages, ui::Story};
+use crate::{Start, pages, probe::probe, ui::Story};
+
+/// The probe on the sidebar's title, text with no hover, where a capture parks the pointer.
+pub const BRAND: &str = "sidebar-brand";
 
 #[derive(Clone, Copy, PartialEq, Eq, Default)]
 pub enum Choice {
@@ -131,7 +134,8 @@ impl Gallery {
             .px_3()
             .border_r_1()
             .border_color(colors.border)
-            .child(
+            .child(probe(
+                BRAND,
                 div()
                     .px_3()
                     .pb_6()
@@ -148,7 +152,7 @@ impl Gallery {
                             .text_color(colors.fg_subtle)
                             .child("GPUI Component"),
                     ),
-            )
+            ))
             .child(
                 on_axis(div().id("nav"))
                     .flex()
