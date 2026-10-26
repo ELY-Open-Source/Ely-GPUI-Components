@@ -256,8 +256,7 @@ pub(crate) fn keys(
             });
             return;
         }
-        // Browsers on a Mac send Cmd; wasm's secondary is Control.
-        let command = held.secondary() || (cfg!(target_family = "wasm") && held.platform);
+        let command = held.secondary(cx);
         match (stroke.key.as_str(), command) {
             ("escape", _) => sheet.update(cx, |sheet, cx| {
                 sheet.anchor = sheet.cursor;

@@ -17,8 +17,8 @@ use ely_gpui_component::{
 };
 use gpui::{
     AnyView, AppContext, Context, Focusable, IntoElement, Modifiers, ParentElement, Pixels, Render,
-    ScrollDelta, ScrollWheelEvent, Styled, TestAppContext, TouchPhase, VisualTestContext, Window,
-    div, point, px,
+    ScrollDelta, ScrollEvent, Styled, TestAppContext, TouchPhase, VisualTestContext, Window, div,
+    point, px,
 };
 
 struct Rows(Rc<Vec<Row>>);
@@ -93,11 +93,12 @@ fn draws_once(
 }
 
 fn wheel(cx: &mut VisualTestContext, at: (f32, f32), down: Pixels) {
-    cx.simulate_event(ScrollWheelEvent {
+    cx.simulate_event(ScrollEvent {
         position: point(px(at.0), px(at.1)),
         delta: ScrollDelta::Pixels(point(px(0.0), down)),
         modifiers: Modifiers::none(),
         touch_phase: TouchPhase::Moved,
+        source: gpui::ScrollSource::Pointer,
     });
 }
 

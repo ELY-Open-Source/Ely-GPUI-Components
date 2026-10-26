@@ -26,6 +26,8 @@ pub(super) struct Following {
 impl Global for Following {}
 
 /// Wears Omarchy's theme from `current` now and after each switch, on the theme's own mode; Ely's palettes stand in for the other mode and while Omarchy has no colors, the owner's put aside. A theme that cannot be read logs an error and the colors stay. Fails while following already, or on a folder that cannot be watched.
+///
+/// Platforms: macOS, Windows, Linux.
 pub fn follow_omarchy(current: PathBuf, cx: &mut App) -> Result<()> {
     if let Some(following) = cx.try_global::<Following>() {
         bail!("omarchy: following {} already", following.current.display());
@@ -74,6 +76,8 @@ pub fn follow_omarchy(current: PathBuf, cx: &mut App) -> Result<()> {
 }
 
 /// Stops following; both modes get Ely's palettes back, and the mode stays the owner's to set.
+///
+/// Platforms: macOS, Windows, Linux.
 pub fn stop_omarchy(cx: &mut App) {
     if !cx.has_global::<Following>() {
         log::info!("omarchy: not following, nothing to stop");

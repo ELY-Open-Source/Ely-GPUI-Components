@@ -31,6 +31,7 @@ RUSTC_BOOTSTRAP=1 ELY_GALLERY_ASSETS=https://example.invalid/ \
 "$py" scripts/stability.py
 fail=0
 "$py" scripts/links.py || fail=1
+"$py" scripts/platforms.py || fail=1
 # A Button-only app needs ely-core alone; zbus comes with gpui's Linux backend.
 for c in ratex-svg mermaid-rs-renderer alacritty_terminal isolang rqrr notify; do
   [ -z "$(cargo tree -p ely-core -e normal --target all -i $c 2>/dev/null || true)" ] || { echo "ely-core pulls $c"; fail=1; }

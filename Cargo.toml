@@ -46,9 +46,9 @@ ely-core = { path = "crates/ely-core", version = "0.1.1", default-features = fal
 anyhow = "1"
 emojis = "0.9"
 futures = "0.3"
-gpui = { package = "gpui-pre", version = "=0.3.9", default-features = false }
-gpui_platform = { package = "gpui-pre-platform", version = "=0.3.9" }
-gpui_web = { package = "gpui-pre-web", version = "=0.3.9" }
+gpui = { package = "gpui-pre", version = "=0.3.10", default-features = false }
+gpui_platform = { package = "gpui-pre-platform", version = "=0.3.10" }
+gpui_web = { package = "gpui-pre-web", version = "=0.3.10" }
 image = { version = "0.25", default-features = false }
 iso_currency = "0.7"
 isocountry = "0.3"

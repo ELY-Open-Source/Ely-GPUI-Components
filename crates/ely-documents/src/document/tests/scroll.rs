@@ -1,6 +1,6 @@
 //! A long document's bar shows its place and moves it.
 
-use gpui::{Modifiers, MouseButton, ScrollDelta, ScrollWheelEvent, TestAppContext, point, px};
+use gpui::{Modifiers, MouseButton, ScrollDelta, ScrollEvent, TestAppContext, point, px};
 
 use super::{MarkdownMode, frames, open};
 
@@ -17,7 +17,7 @@ fn the_thumb_follows_and_drags(mode: MarkdownMode, cx: &mut TestAppContext) {
         before.size.height < view.height / 2.0,
         "{before:?} in {view:?}"
     );
-    cx.simulate_event(ScrollWheelEvent {
+    cx.simulate_event(ScrollEvent {
         position: point(view.width / 2.0, view.height / 2.0),
         delta: ScrollDelta::Pixels(point(px(0.), px(-800.))),
         ..Default::default()

@@ -2,8 +2,8 @@ use std::{cell::Cell, rc::Rc};
 
 use gpui::{
     Context, InteractiveElement, IntoElement, Modifiers, ParentElement, Render, ScrollDelta,
-    ScrollWheelEvent, StatefulInteractiveElement, Styled, TestAppContext, TouchPhase,
-    VisualTestContext, Window, div, point, px,
+    ScrollEvent, StatefulInteractiveElement, Styled, TestAppContext, TouchPhase, VisualTestContext,
+    Window, div, point, px,
 };
 
 use super::{LazyLoad, LoadingOverlay, ProgressBar};
@@ -85,11 +85,12 @@ fn a_lazy_row_builds_once_it_scrolls_into_view(cx: &mut TestAppContext) {
     let (view, cx) = bench(false, cx);
     let built = view.read_with(cx, |bench, _| bench.built.clone());
     assert_eq!(built.get(), 0);
-    cx.simulate_event(ScrollWheelEvent {
+    cx.simulate_event(ScrollEvent {
         position: point(px(50.0), px(150.0)),
         delta: ScrollDelta::Pixels(point(px(0.0), px(-2000.0))),
         modifiers: Modifiers::none(),
         touch_phase: TouchPhase::Moved,
+        source: gpui::ScrollSource::Pointer,
     });
     for _ in 0..3 {
         cx.update(|window, _| window.refresh());

@@ -31,7 +31,11 @@ struct Radios {
 
 fn release(key: &str, cx: &mut VisualTestContext) {
     cx.simulate_event(KeyUpEvent {
-        keystroke: Keystroke::parse(key).unwrap(),
+        keystroke: Keystroke::parse_with_os(
+            key,
+            crate::typography::keys::os(crate::theme::Platform::current()),
+        )
+        .unwrap(),
     });
 }
 

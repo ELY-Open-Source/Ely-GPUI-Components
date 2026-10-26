@@ -72,7 +72,11 @@ pub(super) fn tab(stops: usize, cx: &mut VisualTestContext) {
 pub(super) fn tap(key: &str, cx: &mut VisualTestContext) {
     cx.simulate_keystrokes(key);
     cx.simulate_event(gpui::KeyUpEvent {
-        keystroke: gpui::Keystroke::parse(key).expect("a key"),
+        keystroke: gpui::Keystroke::parse_with_os(
+            key,
+            ely_core::typography::keys::os(ely_core::theme::Platform::current()),
+        )
+        .expect("a key"),
     });
     settle(cx);
 }

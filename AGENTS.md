@@ -7,7 +7,7 @@ This file holds what every change needs. Before working in a crate or folder, re
 ## Stack
 
 - Rust 1.95, edition 2024. A Cargo workspace (`docs/adr/0001-workspace.md`): `ely-core` (chapters 1–14), one crate per later chapter in `crates/ely-<chapter>`, `ely-desktop`, the root `ely-gpui-component` re-exporting all, and `crates/ely-gallery`.
-- gpui, gpui_platform and gpui_web come from crates.io's `gpui-pre` at `=0.3.9`, the pin GPUI Kit 0.8.0 holds. These three alone pin with `=`; every other dependency takes a caret, and `Cargo.lock` holds the build.
+- gpui, gpui_platform and gpui_web come from crates.io's `gpui-pre` at `=0.3.10`, the pin GPUI Kit 0.8.1 holds. These three alone pin with `=`; every other dependency takes a caret, and `Cargo.lock` holds the build.
 - A dependency beyond gpui is named, with its license and why it is there, in the `AGENTS.md` of the crate that brings it. A new one adds its line there and passes `cargo deny`.
 - `ely_core::init` loads assets and fonts and binds core keys; `ely_gpui_component::init` calls it, then binds the editor's, terminal's and documents' keys.
 
@@ -42,6 +42,7 @@ This file holds what every change needs. Before working in a crate or folder, re
 - Comments are one short line, and rare. Every public item carries rustdoc, and each component's doc holds an example that compiles and runs.
 - Copy a component draws reads `i18n::text`; `src/shipped.rs` fails on fixed English in a shipped component. A missing key fails, with no fallback.
 - Every pressable thing is a Tab stop with a role and a name on the element that takes focus; `gallery --audit` proves it on Windows.
+- An item that runs on fewer than macOS, Windows, Linux and the web says `Platforms:` in its doc; `scripts/platforms.py` holds the line to its cfgs.
 - Time reads `web_time::Instant`, and a drawn moment `typography::format::now()`. What cannot build for wasm32 is absent there through `cfg`, never faked.
 - Tests never depend on the host: what a test asserts holds on any machine. The few that read host fonts or a clock, and why they stay sound, are named in `crates/ely-core/AGENTS.md`.
 - Every crate stays unstable until the owner signs `tasks/signoffs/<crate>.md`; a vertical crate also needs an outside user's feedback. A model never writes a sign-off or marks a crate stable (`tasks/stability.md`).

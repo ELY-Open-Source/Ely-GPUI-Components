@@ -8,7 +8,7 @@ use gpui::{
 use crate::{
     primitives::{FocusRing, Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
-    typography::KbdCombo,
+    typography::{KbdCombo, keys::os},
 };
 
 type OnChange = Rc<dyn Fn(Option<Keystroke>, &mut Window, &mut App)>;
@@ -71,13 +71,14 @@ impl RenderOnce for HotkeyInput {
         let recording = focus.is_focused(window);
         let theme = cx.theme();
         let colors = &theme.colors;
+        let os = os(theme.platform);
         let on_change = self.on_change;
         div()
             .id(self.id)
             .role(Role::TextInput)
             .when_some(self.label.clone(), |field, label| field.aria_label(label))
             .when_some(self.value.as_ref(), |field, stroke| {
-                field.aria_value(stroke.unparse())
+                field.aria_value(stroke.unparse(os))
             })
             .track_focus(&focus)
             .flex()
@@ -111,7 +112,7 @@ impl RenderOnce for HotkeyInput {
                 log::info!(
                     "hotkey input: {}",
                     next.as_ref()
-                        .map_or("cleared".into(), |stroke| stroke.unparse())
+                        .map_or("cleared".into(), |stroke| stroke.unparse(os))
                 );
                 window.blur(cx);
                 if let Some(on_change) = &on_change {
@@ -120,7 +121,7 @@ impl RenderOnce for HotkeyInput {
             })
             .map(|field| match (&self.value, recording) {
                 (_, true) => field.child(div().text_color(colors.fg_subtle).child(recording_words)),
-                (Some(stroke), false) => field.child(KbdCombo::new(&stroke.unparse())),
+                (Some(stroke), false) => field.child(KbdCombo::new(&stroke.unparse(os))),
                 (None, false) => field.child(div().text_color(colors.fg_subtle).child(none_words)),
             })
             .child(

@@ -90,7 +90,14 @@ mod tests {
     use super::*;
 
     fn sent(keys: &str, app_cursor: bool) -> Option<Vec<u8>> {
-        bytes(&Keystroke::parse(keys).expect("a keystroke"), app_cursor)
+        bytes(
+            &Keystroke::parse_with_os(
+                keys,
+                ely_core::typography::keys::os(ely_core::theme::Platform::current()),
+            )
+            .expect("a keystroke"),
+            app_cursor,
+        )
     }
 
     #[test]

@@ -38,7 +38,11 @@ fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
                     let strokes: Vec<String> = binding
                         .keystrokes()
                         .iter()
-                        .map(|stroke| stroke.unparse())
+                        .map(|stroke| {
+                            stroke.unparse(crate::typography::keys::os(
+                                crate::theme::Platform::current(),
+                            ))
+                        })
                         .collect();
                     strokes.join(" ")
                 });

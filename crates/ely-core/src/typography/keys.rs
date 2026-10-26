@@ -1,4 +1,4 @@
-use gpui::Keystroke;
+use gpui::{Keystroke, OperatingSystem};
 
 use crate::theme::Platform;
 
@@ -13,8 +13,44 @@ pub fn keystroke(source: &str, platform: Platform) -> Keystroke {
         .split('-')
         .map(|part| if part == "secondary" { secondary } else { part })
         .collect();
-    Keystroke::parse(&spelled.join("-"))
+    Keystroke::parse_with_os(&spelled.join("-"), os(platform))
         .unwrap_or_else(|error| panic!("bad keystroke {source:?}: {error}"))
+}
+
+/// The system whose modifier names gpui spells for `platform`.
+#[doc(hidden)]
+pub fn os(platform: Platform) -> OperatingSystem {
+    match platform {
+        Platform::Mac => OperatingSystem::Mac,
+        Platform::Windows => OperatingSystem::Windows,
+        Platform::Linux => OperatingSystem::Linux,
+    }
+}
+
+/// A key spelled with the build's platform key, as `secondary-` read: `cmd-` on macOS, `ctrl-` elsewhere.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! secondary {
+    ($rest:literal) => {
+        if cfg!(target_os = "macos") {
+            concat!("cmd-", $rest)
+        } else {
+            concat!("ctrl-", $rest)
+        }
+    };
+}
+
+/// A key spelled with the build's word key: `alt-` on macOS, `ctrl-` elsewhere.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! word_key {
+    ($rest:literal) => {
+        if cfg!(target_os = "macos") {
+            concat!("alt-", $rest)
+        } else {
+            concat!("ctrl-", $rest)
+        }
+    };
 }
 
 /// Caps for one keystroke, modifiers first, in platform order.
@@ -73,7 +109,11 @@ mod tests {
     use super::*;
 
     fn parse(source: &str) -> Keystroke {
-        Keystroke::parse(source).expect("valid keystroke")
+        Keystroke::parse_with_os(
+            source,
+            crate::typography::keys::os(crate::theme::Platform::current()),
+        )
+        .expect("valid keystroke")
     }
 
     #[test]

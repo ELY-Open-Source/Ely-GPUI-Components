@@ -1,4 +1,6 @@
 //! Ely's core: the theme, motion, i18n and the general components, chapters 1–14.
+//!
+//! Every component in Ely runs on macOS, Windows, Linux and the web, unless its doc says `Platforms:` and names fewer.
 
 #![deny(missing_docs)]
 

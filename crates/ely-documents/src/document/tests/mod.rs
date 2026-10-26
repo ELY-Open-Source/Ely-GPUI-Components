@@ -126,7 +126,7 @@ fn preview_and_a_secondary_press_open_no_block(cx: &mut TestAppContext) {
         document.set_mode(MarkdownMode::Visual, window, cx)
     });
     cx.run_until_parked();
-    press(1, Modifiers::secondary_key(), cx);
+    press(1, cx.read(Modifiers::secondary_key), cx);
     assert!(
         document.read_with(cx, |document, _| document.open.is_none()),
         "Cmd or Ctrl leaves the press to links"

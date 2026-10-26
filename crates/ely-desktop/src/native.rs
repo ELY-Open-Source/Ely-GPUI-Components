@@ -84,6 +84,8 @@ impl Route {
 }
 
 /// An icon in the menu bar or tray with a menu. Dropping it removes it.
+///
+/// Platforms: macOS, Windows, Linux.
 pub struct TrayIcon {
     inner: Inner,
 }
@@ -133,6 +135,8 @@ fn open(look: &Look, items: Vec<TrayItem>, route: Route, cx: &mut App) -> anyhow
 }
 
 /// Sets or clears the badge on the app's Dock icon.
+///
+/// Platforms: macOS.
 pub fn set_dock_badge(label: Option<&str>) -> anyhow::Result<()> {
     #[cfg(target_os = "macos")]
     {
@@ -148,6 +152,8 @@ pub fn set_dock_badge(label: Option<&str>) -> anyhow::Result<()> {
 }
 
 /// The badge the Dock shows now.
+///
+/// Platforms: macOS.
 pub fn dock_badge() -> anyhow::Result<Option<String>> {
     #[cfg(target_os = "macos")]
     return Ok(crate::platform::mac::dock_badge());

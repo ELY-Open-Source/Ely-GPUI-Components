@@ -151,7 +151,11 @@ fn changed_lines_and_hunks_answer_presses(cx: &mut TestAppContext) {
         cx.simulate_keystrokes(key);
         settle(cx);
         cx.simulate_event(KeyUpEvent {
-            keystroke: Keystroke::parse(key).expect("a key"),
+            keystroke: Keystroke::parse_with_os(
+                key,
+                ely_core::typography::keys::os(ely_core::theme::Platform::current()),
+            )
+            .expect("a key"),
         });
         settle(cx);
     };

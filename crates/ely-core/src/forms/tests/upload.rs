@@ -44,7 +44,11 @@ impl Render for Shelf {
 fn press(key: &str, cx: &mut VisualTestContext) {
     cx.simulate_keystrokes(key);
     cx.simulate_event(KeyUpEvent {
-        keystroke: Keystroke::parse(key).expect("a key"),
+        keystroke: Keystroke::parse_with_os(
+            key,
+            crate::typography::keys::os(crate::theme::Platform::current()),
+        )
+        .expect("a key"),
     });
     cx.run_until_parked();
 }

@@ -22,7 +22,7 @@ fn a_heading_written_above_with_the_same_title_is_not_the_pressed_one(cx: &mut T
     let (document, cx) = open(text, MarkdownMode::Visual, cx);
     type_in(&document, Some(0), Some("## B"), cx);
     frames(cx);
-    press_entry(1, Modifiers::secondary_key(), cx);
+    press_entry(1, cx.read(Modifiers::secondary_key), cx);
     let (caret, now) =
         document.read_with(cx, |document, cx| (document.caret(cx), document.text(cx)));
     assert_eq!(now, "## B\n\n[toc]\n\n# A\n\ntext\n\n## B\n");
@@ -92,7 +92,7 @@ fn a_press_in_preview_reveals_the_heading(cx: &mut TestAppContext) {
 #[gpui::test]
 fn visual_reveals_on_a_secondary_press_and_edits_on_a_plain_one(cx: &mut TestAppContext) {
     let (document, cx) = open(LISTED, MarkdownMode::Visual, cx);
-    press_entry(1, Modifiers::secondary_key(), cx);
+    press_entry(1, cx.read(Modifiers::secondary_key), cx);
     let (caret, open) = document.read_with(cx, |document, cx| {
         (document.caret(cx), document.open.is_some())
     });
@@ -107,7 +107,7 @@ fn a_press_after_an_earlier_block_grew_finds_the_heading(cx: &mut TestAppContext
     let (document, cx) = open(text, MarkdownMode::Visual, cx);
     type_in(&document, Some(0), Some("before\nextra\nextra"), cx);
     frames(cx);
-    press_entry(1, Modifiers::secondary_key(), cx);
+    press_entry(1, cx.read(Modifiers::secondary_key), cx);
     frames(cx);
     assert_eq!(
         document.read_with(cx, |document, cx| document.caret(cx)),

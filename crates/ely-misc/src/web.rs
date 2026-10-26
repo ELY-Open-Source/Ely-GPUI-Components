@@ -28,7 +28,9 @@ pub(crate) fn in_view(
     bounds.intersects(&shown)
 }
 
-/// A web page in a native web view laid over this box: an address, or the owner's HTML. The page draws above everything gpui paints, dialogs too, and gpui's clipping does not reach it; it follows the box each frame and hides while the box is out of view. A press on the page gives it the keys; a press anywhere gpui draws, or the view leaving, gives them back. macOS only; elsewhere the box says so.
+/// A web page in a native web view laid over this box: an address, or the owner's HTML. The page draws above everything gpui paints, dialogs too, and gpui's clipping does not reach it; it follows the box each frame and hides while the box is out of view. A press on the page gives it the keys; a press anywhere gpui draws, or the view leaving, gives them back. Elsewhere the box says so.
+///
+/// Platforms: macOS.
 ///
 /// ```
 /// use ely_misc::{WebSource, WebView};
@@ -224,6 +226,8 @@ mod mac {
 }
 
 /// A page from another address in a frame of its own: the address over the page, with Open in browser. The page is a `WebView` in the frame's shape.
+///
+/// Platforms: macOS.
 ///
 /// ```
 /// use ely_misc::IframeEmbed;

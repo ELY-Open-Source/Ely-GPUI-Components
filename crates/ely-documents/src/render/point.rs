@@ -84,7 +84,7 @@ fn pressed<E: InteractiveElement>(
         let (on_point, point) = (on_point.clone(), point.clone());
         move |event: &MouseDownEvent, window: &mut Window, cx: &mut App| {
             // Cmd or Ctrl leaves the press to a link.
-            if button == MouseButton::Left && event.modifiers.secondary() {
+            if button == MouseButton::Left && event.modifiers.secondary(cx) {
                 return;
             }
             window.prevent_default();

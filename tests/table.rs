@@ -82,7 +82,14 @@ fn press(key: &str, cx: &mut VisualTestContext) {
     cx.simulate_keystrokes(key);
     settle(cx);
     cx.simulate_event(KeyUpEvent {
-        keystroke: Keystroke::parse(key).expect("a key"),
+        keystroke:
+            Keystroke::parse_with_os(
+                key,
+                ely_gpui_component::typography::keys::os(
+                    ely_gpui_component::theme::Platform::current(),
+                ),
+            )
+            .expect("a key"),
     });
     settle(cx);
 }

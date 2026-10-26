@@ -157,14 +157,14 @@ impl Draw<'_> {
                     .cursor_pointer()
                     // On press: the layout may move before release.
                     .on_mouse_down(MouseButton::Left, move |event, window, cx| {
-                        if event.modifiers.secondary() {
+                        if event.modifiers.secondary(cx) {
                             window.prevent_default();
                             cx.stop_propagation();
                             pressed(at, window, cx);
                         }
                     })
                     .on_click(move |event, window, cx| {
-                        if !event.modifiers().secondary() {
+                        if !event.modifiers().secondary(cx) {
                             reveal(at, window, cx);
                         }
                     })

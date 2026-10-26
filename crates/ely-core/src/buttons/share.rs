@@ -19,7 +19,9 @@ struct Anchor {
     picker: Option<crate::platform::mac::Picker>,
 }
 
-/// Opens the system share picker beside itself. macOS only.
+/// Opens the system share picker beside itself. Elsewhere it shows disabled.
+///
+/// Platforms: macOS.
 ///
 /// ```
 /// use ely_core::buttons::ShareButton;

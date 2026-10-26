@@ -54,7 +54,7 @@ fn a_plain_press_in_visual_edits_the_block(cx: &mut TestAppContext) {
 fn a_secondary_press_in_visual_hands_the_link_over(cx: &mut TestAppContext) {
     let (document, cx) = open(LINKED, MarkdownMode::Visual, cx);
     let heard = heard(&document, cx);
-    press_text(Modifiers::secondary_key(), cx);
+    press_text(cx.read(Modifiers::secondary_key), cx);
     assert_eq!(*heard.borrow(), ["https://ely.dev"]);
     assert!(!is_open(&document, cx), "no block opens");
 }

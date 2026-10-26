@@ -73,9 +73,9 @@ pub(crate) fn bind_keys(cx: &mut App) {
     let context = Some(CONTEXT);
     let block = Some("MarkdownDocument > ElyInput");
     let mut bindings = vec![
-        KeyBinding::new("secondary-z", Undo, context),
-        KeyBinding::new("secondary-shift-z", Redo, context),
-        KeyBinding::new("secondary-v", Paste, context),
+        KeyBinding::new(ely_core::secondary!("z"), Undo, context),
+        KeyBinding::new(ely_core::secondary!("shift-z"), Redo, context),
+        KeyBinding::new(ely_core::secondary!("v"), Paste, context),
         KeyBinding::new("tab", Indent, block),
         KeyBinding::new("shift-tab", Outdent, block),
     ];
@@ -256,7 +256,7 @@ impl MarkdownDocument {
                 MouseButton::Left,
                 cx.listener(move |document, event: &MouseDownEvent, window, cx| {
                     // Cmd or Ctrl leaves the press to a link.
-                    if event.modifiers.secondary() {
+                    if event.modifiers.secondary(cx) {
                         return;
                     }
                     window.prevent_default();

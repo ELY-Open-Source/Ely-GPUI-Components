@@ -68,7 +68,7 @@ impl Render for Bar {
 fn bar(cx: &mut TestAppContext) -> (gpui::Entity<Bar>, &mut VisualTestContext) {
     cx.update(|cx| {
         Theme::init(cx);
-        cx.bind_keys([KeyBinding::new("secondary-s", Save, None)]);
+        cx.bind_keys([KeyBinding::new(crate::secondary!("s"), Save, None)]);
     });
     let (view, cx) = cx.add_window_view(|_, cx| Bar {
         root: cx.focus_handle(),

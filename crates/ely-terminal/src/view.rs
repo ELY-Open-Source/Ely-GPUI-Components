@@ -37,6 +37,8 @@ const LEADING: f32 = 1.35;
 const HIDE_CURSOR: &[u8] = b"\x1b[?25l";
 
 /// What a terminal tells its host.
+///
+/// Platforms: macOS, Windows, Linux.
 #[derive(Clone, Debug, PartialEq)]
 pub enum TerminalEvent {
     /// The program set its title.
@@ -52,6 +54,8 @@ pub enum TerminalEvent {
 }
 
 /// A terminal: a program on a pseudo-terminal, or replayed output, drawn cell by cell. Type to it, drag to select, Cmd-press a link.
+///
+/// Platforms: macOS, Windows, Linux.
 ///
 /// ```
 /// use ely_terminal::Terminal;

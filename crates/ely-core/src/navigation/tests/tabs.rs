@@ -1,6 +1,6 @@
 use gpui::{
-    Context, IntoElement, Modifiers, ParentElement, Render, ScrollDelta, ScrollWheelEvent,
-    SharedString, Styled, TestAppContext, TouchPhase, VisualTestContext, Window, div, point, px,
+    Context, IntoElement, Modifiers, ParentElement, Render, ScrollDelta, ScrollEvent, SharedString,
+    Styled, TestAppContext, TouchPhase, VisualTestContext, Window, div, point, px,
 };
 
 use super::setup;
@@ -115,11 +115,12 @@ fn the_chosen_tab_scrolls_in_once_and_a_manual_scroll_stays(cx: &mut TestAppCont
         cx.notify();
     });
     settle(cx);
-    cx.simulate_event(ScrollWheelEvent {
+    cx.simulate_event(ScrollEvent {
         position: point(px(60.0), px(16.0)),
         delta: ScrollDelta::Pixels(point(px(5000.0), px(0.0))),
         modifiers: Modifiers::none(),
         touch_phase: TouchPhase::Moved,
+        source: gpui::ScrollSource::Pointer,
     });
     view.update(cx, |_, cx| cx.notify());
     settle(cx);
@@ -256,11 +257,12 @@ fn a_wide_strip_scrolls_its_chosen_tab_in_and_the_wheel_reaches_the_rest(cx: &mu
         picked_at(10.0, &view, cx) > 20,
         "the strip starts at its last tab"
     );
-    cx.simulate_event(ScrollWheelEvent {
+    cx.simulate_event(ScrollEvent {
         position: point(px(60.0), px(16.0)),
         delta: ScrollDelta::Pixels(point(px(0.0), px(5000.0))),
         modifiers: Modifiers::none(),
         touch_phase: TouchPhase::Moved,
+        source: gpui::ScrollSource::Pointer,
     });
     view.update(cx, |_, cx| cx.notify());
     settle(cx);

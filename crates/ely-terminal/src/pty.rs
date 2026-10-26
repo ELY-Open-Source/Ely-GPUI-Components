@@ -22,6 +22,8 @@ impl EventListener for Listener {
 }
 
 /// What a terminal runs: a program and its arguments, the login shell when none; where; and variables on top of TERM, COLORTERM, and LANG when the app has none.
+///
+/// Platforms: macOS, Windows, Linux.
 #[derive(Clone, Debug, Default)]
 pub struct Launch {
     /// The program and its arguments; the login shell when none.

@@ -56,11 +56,6 @@ pub(crate) const CONTEXT: &str = "ElyEditor";
 
 /// Binds the editor's keys. `init` calls it.
 pub fn bind_keys(cx: &mut App) {
-    let word = if cfg!(target_os = "macos") {
-        "alt"
-    } else {
-        "ctrl"
-    };
     let context = Some(CONTEXT);
     let mut bindings = vec![
         KeyBinding::new("left", Left, context),
@@ -71,10 +66,10 @@ pub fn bind_keys(cx: &mut App) {
         KeyBinding::new("shift-right", SelectRight, context),
         KeyBinding::new("shift-up", SelectUp, context),
         KeyBinding::new("shift-down", SelectDown, context),
-        KeyBinding::new(&format!("{word}-left"), WordLeft, context),
-        KeyBinding::new(&format!("{word}-right"), WordRight, context),
-        KeyBinding::new(&format!("{word}-shift-left"), SelectWordLeft, context),
-        KeyBinding::new(&format!("{word}-shift-right"), SelectWordRight, context),
+        KeyBinding::new(ely_core::word_key!("left"), WordLeft, context),
+        KeyBinding::new(ely_core::word_key!("right"), WordRight, context),
+        KeyBinding::new(ely_core::word_key!("shift-left"), SelectWordLeft, context),
+        KeyBinding::new(ely_core::word_key!("shift-right"), SelectWordRight, context),
         KeyBinding::new("home", LineStart, context),
         KeyBinding::new("end", LineEnd, context),
         KeyBinding::new("shift-home", SelectLineStart, context),
@@ -84,24 +79,24 @@ pub fn bind_keys(cx: &mut App) {
         KeyBinding::new("backspace", Backspace, context),
         KeyBinding::new("shift-backspace", Backspace, context),
         KeyBinding::new("delete", Delete, context),
-        KeyBinding::new(&format!("{word}-backspace"), DeleteWordLeft, context),
+        KeyBinding::new(ely_core::word_key!("backspace"), DeleteWordLeft, context),
         KeyBinding::new("enter", Newline, context),
         KeyBinding::new("tab", Indent, context),
         KeyBinding::new("shift-tab", Outdent, context),
-        KeyBinding::new("secondary-z", Undo, context),
-        KeyBinding::new("secondary-shift-z", Redo, context),
-        KeyBinding::new("secondary-a", SelectAll, context),
-        KeyBinding::new("secondary-c", Copy, context),
-        KeyBinding::new("secondary-x", Cut, context),
-        KeyBinding::new("secondary-d", SelectNext, context),
+        KeyBinding::new(ely_core::secondary!("z"), Undo, context),
+        KeyBinding::new(ely_core::secondary!("shift-z"), Redo, context),
+        KeyBinding::new(ely_core::secondary!("a"), SelectAll, context),
+        KeyBinding::new(ely_core::secondary!("c"), Copy, context),
+        KeyBinding::new(ely_core::secondary!("x"), Cut, context),
+        KeyBinding::new(ely_core::secondary!("d"), SelectNext, context),
         KeyBinding::new("escape", SingleCursor, context),
-        KeyBinding::new("secondary-/", ToggleComment, context),
-        KeyBinding::new("secondary-alt-[", Fold, context),
-        KeyBinding::new("secondary-alt-]", Unfold, context),
+        KeyBinding::new(ely_core::secondary!("/"), ToggleComment, context),
+        KeyBinding::new(ely_core::secondary!("alt-["), Fold, context),
+        KeyBinding::new(ely_core::secondary!("alt-]"), Unfold, context),
     ];
     // The browser's paste event reaches the input handler.
     if !cfg!(target_family = "wasm") {
-        bindings.push(KeyBinding::new("secondary-v", Paste, context));
+        bindings.push(KeyBinding::new(ely_core::secondary!("v"), Paste, context));
     }
     if cfg!(target_os = "macos") {
         bindings.extend([

@@ -39,7 +39,7 @@ One record per decision, numbered by date. A superseded record names the one tha
 - [0036 Traffic lights at AppKit's height](0036-traffic-lights-at-appkit-s-height.md): 2026-10-20, accepted.
 - [0037 TrayIcon on three platforms](0037-trayicon-on-three-platforms.md): 2026-10-21, accepted.
 - [0038 Mail files open and download](0038-mail-files-open-and-download.md): 2026-10-21, accepted.
-- [0039 gpui-pre 0.3.9](0039-gpui-pre-0-3-9.md): 2026-10-21, accepted.
+- [0039 gpui-pre 0.3.9](0039-gpui-pre-0-3-9.md): 2026-10-21, superseded by 0058.
 - [0040 Components wear Omarchy's theme](0040-components-wear-omarchy-s-theme.md): 2026-10-21, accepted, partly superseded by 0042.
 - [0001 A Cargo workspace](0001-workspace.md): 2026-10-22, accepted.
 - [0041 One Markdown parser, pulldown-cmark](0041-one-markdown-parser-pulldown-cmark.md): 2026-10-22, accepted, partly superseded by 0051.
@@ -57,4 +57,6 @@ One record per decision, numbered by date. A superseded record names the one tha
 - [0053 Every declared locale has the whole catalog](0053-every-declared-locale-has-the-whole-catalog.md): 2026-10-24, accepted.
 - [0054 Main requires the CI checks](0054-main-requires-the-ci-checks.md): 2026-10-26, accepted.
 - [0055 Publish to crates.io](0055-publish-to-crates-io.md): 2026-10-26, accepted.
+- [0056 WebView stays macOS-only](0056-webview-stays-macos-only.md): 2026-10-26, accepted.
 - [0057 The site serves its showcase pin](0057-the-site-serves-its-showcase-pin.md): 2026-10-26, accepted.
+- [0058 gpui-pre 0.3.10](0058-gpui-pre-0-3-10.md): 2026-10-26, accepted.

@@ -9,7 +9,9 @@ use crate::{
 
 type OnColor = Rc<dyn Fn(Hsla, &mut Window, &mut App)>;
 
-/// A button that picks a color from anywhere on screen. macOS only.
+/// A button that picks a color from anywhere on screen. Elsewhere it shows disabled.
+///
+/// Platforms: macOS.
 ///
 /// ```
 /// use ely_core::forms::EyeDropper;
