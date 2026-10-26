@@ -43,6 +43,8 @@ pub fn park(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<()> {
     }
     // Elsewhere gpui keeps wherever the OS last saw the cursor, which a runner leaves anywhere.
     window.update(cx, |_, window, cx| {
+        #[cfg(target_os = "windows")]
+        crate::capture::point_cursor(number(window)?, at, window.scale_factor())?;
         window.dispatch_event(
             PlatformInput::MouseMove(MouseMoveEvent {
                 position: at,
@@ -51,7 +53,8 @@ pub fn park(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<()> {
             }),
             cx,
         );
-    })
+        anyhow::Ok(())
+    })?
 }
 
 fn opened(key: &str, cx: &mut AsyncApp) -> Result<gpui::AnyWindowHandle> {

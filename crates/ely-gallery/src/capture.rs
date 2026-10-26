@@ -390,6 +390,31 @@ pub fn snapshot(number: u32, path: &Path) -> Result<()> {
     .with_context(|| format!("write {}", path.display()))
 }
 
+/// Moves the system cursor to `at` in the window: Windows sends a window a move at the real cursor when what lies under it changes.
+#[cfg(target_os = "windows")]
+pub fn point_cursor(hwnd: u32, at: gpui::Point<gpui::Pixels>, scale: f32) -> Result<()> {
+    use windows_sys::Win32::{
+        Foundation::{HWND, POINT},
+        Graphics::Gdi::ClientToScreen,
+        UI::WindowsAndMessaging::SetCursorPos,
+    };
+
+    let window = hwnd as usize as HWND;
+    let mut spot = POINT {
+        x: (f32::from(at.x) * scale).round() as i32,
+        y: (f32::from(at.y) * scale).round() as i32,
+    };
+    // SAFETY: `spot` is a valid POINT to rewrite; the handle came from the window itself.
+    if unsafe { ClientToScreen(window, &mut spot) } == 0 {
+        bail!("window {hwnd} placed no point on the screen");
+    }
+    // SAFETY: plain coordinates; the call reads nothing else.
+    if unsafe { SetCursorPos(spot.x, spot.y) } == 0 {
+        bail!("the cursor did not move to {}, {}", spot.x, spot.y);
+    }
+    Ok(())
+}
+
 /// A window's client area as Windows composes it, which holds what DirectX presents.
 #[cfg(target_os = "windows")]
 pub fn snapshot(hwnd: u32, path: &Path) -> Result<()> {
