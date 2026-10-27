@@ -6,10 +6,34 @@
 pub struct Syntax {
     /// The mark that opens a line comment.
     pub comment: &'static str,
-    /// The mark counts only where a word starts (Shell).
-    pub word_comment: bool,
+    /// Where the mark opens a comment.
+    pub comment_start: CommentStart,
     pub keywords: &'static [&'static str],
     pub constants: &'static [&'static str],
+}
+
+/// Where a line comment's mark opens one.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[doc(hidden)]
+pub enum CommentStart {
+    /// Anywhere outside a string.
+    Anywhere,
+    /// At line start or after a space (YAML).
+    Spaced,
+    /// Where a Shell word starts: also after `;&|()<>`.
+    Word,
+}
+
+impl CommentStart {
+    /// Whether the mark opens a comment after `before`.
+    pub(crate) fn after(self, before: Option<char>) -> bool {
+        match (self, before) {
+            (Self::Anywhere, _) | (_, None) => true,
+            (_, Some(ch)) if ch.is_whitespace() => true,
+            (Self::Word, Some(ch)) => matches!(ch, ';' | '&' | '|' | '(' | ')' | '<' | '>'),
+            (Self::Spaced, _) => false,
+        }
+    }
 }
 
 impl Syntax {
@@ -20,7 +44,7 @@ impl Syntax {
     ) -> Self {
         Self {
             comment,
-            word_comment: false,
+            comment_start: CommentStart::Anywhere,
             keywords,
             constants,
         }
@@ -67,7 +91,7 @@ const RUBY: Syntax = Syntax::new("#", &[
 ], &["true", "false", "nil", "self"]);
 
 #[rustfmt::skip]
-const SHELL: Syntax = Syntax { word_comment: true, ..Syntax::new("#", &[
+const SHELL: Syntax = Syntax { comment_start: CommentStart::Word, ..Syntax::new("#", &[
     "case", "do", "done", "elif", "else", "esac", "export", "fi", "for", "function", "if", "in",
     "local", "return", "then", "until", "while",
 ], &["true", "false"]) };
@@ -77,7 +101,7 @@ const HASH: Syntax = Syntax::new("#", &[], &["true", "false"]);
 
 /// YAML, whose `#` starts a comment only after a space.
 const YAML: Syntax = Syntax {
-    word_comment: true,
+    comment_start: CommentStart::Spaced,
     ..Syntax::new("#", &[], &["true", "false", "null", "yes", "no"])
 };
 

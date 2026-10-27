@@ -108,7 +108,7 @@ pub use structure::{
     DirtyIndicator, Form, FormError, FormField, FormLabel, FormSection, InlineForm,
 };
 pub use switch::Switch;
-pub use syntax::{Syntax, syntax_fenced, syntax_of};
+pub use syntax::{CommentStart, Syntax, syntax_fenced, syntax_of};
 pub use tags::TagInput;
 #[doc(hidden)]
 pub use text::{

@@ -222,6 +222,23 @@ mod tests {
                 color("echo x # note", "run.sh", cx).last(),
                 Some(&(7..13, Some(syntax.comment)))
             );
+            // An operator ends a Shell word too.
+            for line in [
+                "echo x;# return 42",
+                "echo x&# return 42",
+                "(echo x)# return 4",
+            ] {
+                assert_eq!(
+                    color(line, "run.sh", cx).last(),
+                    Some(&(line.find('#').expect("a mark")..18, Some(syntax.comment))),
+                    "{line}"
+                );
+            }
+            let yaml = color("key: a;# b", "c.yaml", cx);
+            assert!(
+                yaml.iter().all(|(_, c)| *c != Some(syntax.comment)),
+                "YAML wants a space: {yaml:?}"
+            );
         });
     }
 

@@ -5,7 +5,10 @@ use gpui::{
     prelude::*,
 };
 
-use super::{Highlight, Input, TextInput, syntax::Syntax};
+use super::{
+    Highlight, Input, TextInput,
+    syntax::{CommentStart, Syntax},
+};
 use crate::theme::{ActiveTheme, ControlSize, TextSize};
 
 /// What a span of source is.
@@ -46,7 +49,7 @@ const CONSTANTS: &[&str] = &[
 /// Every language at once, for code of unknown kind.
 const GENERIC: Syntax = Syntax {
     comment: "//",
-    word_comment: false,
+    comment_start: CommentStart::Anywhere,
     keywords: KEYWORDS,
     constants: CONSTANTS,
 };
@@ -77,11 +80,9 @@ pub(crate) fn lex_with(source: &str, syntax: &Syntax) -> Vec<(Range<usize>, Kind
                 Kind::Text
             }
             _ if source[start..].starts_with(syntax.comment)
-                && (!syntax.word_comment
-                    || source[..start]
-                        .chars()
-                        .next_back()
-                        .is_none_or(char::is_whitespace)) =>
+                && syntax
+                    .comment_start
+                    .after(source[..start].chars().next_back()) =>
             {
                 while chars.next_if(|(_, next)| *next != '\n').is_some() {}
                 Kind::Comment
