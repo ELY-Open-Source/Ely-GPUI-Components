@@ -7,11 +7,11 @@ use gpui::{
     Bounds, Context, DevicePixels, Font, FontId, FontMetrics, FontRun, GlyphId, Hsla, IntoElement,
     LineLayout, NoopTextSystem, ParentElement, Pixels, PlatformTextSystem, Render,
     RenderGlyphParams, Size, Styled, TestAppContext, TestDispatcher, TextRenderingMode, Window,
-    div, px,
+    div, hsla, px,
 };
 
 use super::super::{DiffLayout, DiffViewer};
-use crate::theme::ActiveTheme;
+use crate::theme::{ActiveTheme, Mode, Palette, Theme};
 
 /// Gpui's test text, keeping each drawn glyph's color.
 #[derive(Default)]
@@ -97,15 +97,32 @@ fn drawn(path: &'static str, line: &'static str, layout: DiffLayout) -> (Vec<Hsl
     let painted = Arc::new(Painted::default());
     let mut cx =
         TestAppContext::build_with_text_system(TestDispatcher::new(0), None, painted.clone());
-    cx.update(crate::init_for_tests);
+    // Hues no other part of the view draws.
+    let own = [
+        hsla(0.11, 1.0, 0.5, 1.0),
+        hsla(0.37, 1.0, 0.5, 1.0),
+        hsla(0.83, 1.0, 0.5, 1.0),
+    ];
+    cx.update(|cx| {
+        crate::init_for_tests(cx);
+        let mut palette = Palette::light(false);
+        [
+            palette.syntax.keyword,
+            palette.syntax.number,
+            palette.syntax.comment,
+        ] = own;
+        Theme::set_palette(Mode::Light, Some(palette), cx);
+        Theme::set_mode_now(Mode::Light, cx);
+    });
     let (_, window) = cx.add_window_view(|_, _| Shown { path, line, layout });
     window.run_until_parked();
     window.update(|window, _| window.refresh());
     window.run_until_parked();
     let syntax = window.update(|_, cx| cx.theme().colors.syntax.clone());
+    assert_eq!([syntax.keyword, syntax.number, syntax.comment], own);
     cx.quit();
     let colors = painted.0.lock().expect("colors").clone();
-    (colors, [syntax.keyword, syntax.number, syntax.comment])
+    (colors, own)
 }
 
 #[test]

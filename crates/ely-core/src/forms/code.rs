@@ -80,9 +80,7 @@ pub(crate) fn lex_with(source: &str, syntax: &Syntax) -> Vec<(Range<usize>, Kind
                 Kind::Text
             }
             _ if source[start..].starts_with(syntax.comment)
-                && syntax
-                    .comment_start
-                    .after(source[..start].chars().next_back()) =>
+                && syntax.comment_start.after(&source[..start]) =>
             {
                 while chars.next_if(|(_, next)| *next != '\n').is_some() {}
                 Kind::Comment

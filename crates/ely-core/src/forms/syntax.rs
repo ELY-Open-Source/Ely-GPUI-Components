@@ -20,18 +20,26 @@ pub enum CommentStart {
     Anywhere,
     /// At line start or after a space (YAML).
     Spaced,
-    /// Where a Shell word starts: also after `;&|()<>`.
+    /// Where a Shell word starts: also after `;&|()<>`, unless escaped.
     Word,
 }
 
 impl CommentStart {
-    /// Whether the mark opens a comment after `before`.
-    pub(crate) fn after(self, before: Option<char>) -> bool {
-        match (self, before) {
-            (Self::Anywhere, _) | (_, None) => true,
-            (_, Some(ch)) if ch.is_whitespace() => true,
-            (Self::Word, Some(ch)) => matches!(ch, ';' | '&' | '|' | '(' | ')' | '<' | '>'),
-            (Self::Spaced, _) => false,
+    /// Whether the mark opens a comment after the text `before`.
+    pub(crate) fn after(self, before: &str) -> bool {
+        let mut back = before.chars().rev();
+        let Some(last) = back.next() else {
+            return true;
+        };
+        match self {
+            Self::Anywhere => true,
+            Self::Spaced => last.is_whitespace(),
+            Self::Word => {
+                let escaped = back.take_while(|ch| *ch == '\\').count() % 2 == 1;
+                !escaped
+                    && (last.is_whitespace()
+                        || matches!(last, ';' | '&' | '|' | '(' | ')' | '<' | '>'))
+            }
         }
     }
 }

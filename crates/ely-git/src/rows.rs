@@ -227,11 +227,29 @@ mod tests {
                 "echo x;# return 42",
                 "echo x&# return 42",
                 "(echo x)# return 4",
+                r"echo x\\;# return 4",
             ] {
                 assert_eq!(
                     color(line, "run.sh", cx).last(),
-                    Some(&(line.find('#').expect("a mark")..18, Some(syntax.comment))),
+                    Some(&(
+                        line.find('#').expect("a mark")..line.len(),
+                        Some(syntax.comment)
+                    )),
                     "{line}"
+                );
+            }
+            // Escaped, quoted or in a word, it does not.
+            for line in [
+                r"echo x\;# return 42",
+                r"echo x\&# return 42",
+                r"echo x\ # return 42",
+                r"echo x\\\;# return 42",
+                r##"echo "a;"# return 42"##,
+            ] {
+                let shell = color(line, "run.sh", cx);
+                assert!(
+                    shell.iter().all(|(_, c)| *c != Some(syntax.comment)),
+                    "{line}: {shell:?}"
                 );
             }
             let yaml = color("key: a;# b", "c.yaml", cx);
