@@ -244,6 +244,7 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("player.picture", "画中画"),
     ("player.fullscreen", "全屏"),
     ("switcher.windows", "窗口"),
+    ("zoom.reset", "重置缩放，{percent}%"),
     ("preview.frame", "第 {n} 帧"),
     ("calendar.more", "另外 {n} 项"),
     ("place.row.Start", "上"),

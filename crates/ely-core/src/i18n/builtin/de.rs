@@ -262,6 +262,7 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("player.picture", "Bild-in-Bild"),
     ("player.fullscreen", "Vollbild"),
     ("switcher.windows", "Fenster"),
+    ("zoom.reset", "Zoom zurücksetzen, {percent} %"),
     ("preview.frame", "Bild {n}"),
     ("calendar.more", "{n} weitere"),
     ("place.row.Start", "Oben"),

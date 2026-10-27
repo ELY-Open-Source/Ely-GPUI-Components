@@ -250,6 +250,7 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("player.picture", "תמונה בתוך תמונה"),
     ("player.fullscreen", "מסך מלא"),
     ("switcher.windows", "חלונות"),
+    ("zoom.reset", "איפוס הגדלה, {percent}%"),
     ("preview.frame", "פריים {n}"),
     ("calendar.more", "עוד {n}"),
     ("place.row.Start", "למעלה"),

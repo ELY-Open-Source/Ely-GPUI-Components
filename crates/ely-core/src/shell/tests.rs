@@ -1,5 +1,6 @@
 mod border;
 mod title;
+mod zoom;
 
 use gpui::{
     AppContext as _, Context, FocusHandle, InteractiveElement, IntoElement, KeyUpEvent, Keystroke,

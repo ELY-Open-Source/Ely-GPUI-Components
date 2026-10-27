@@ -1,15 +1,15 @@
 use std::{rc::Rc, time::Duration};
 
 use gpui::{
-    Animation, AnimationExt, AnyElement, App, ElementId, IntoElement, ParentElement, RenderOnce,
-    Styled, Task, Window, div, prelude::*,
+    Animation, AnimationExt, AnyElement, App, Div, ElementId, IntoElement, MouseButton,
+    ParentElement, RenderOnce, Role, Stateful, Styled, Task, Window, div, prelude::*,
 };
 use web_time::Instant;
 
 use crate::{
     buttons::{ButtonVariant, IconButton},
-    motion,
-    primitives::{Icon, IconName},
+    i18n, motion,
+    primitives::{FocusRing as _, Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
     typography::AnimatedNumber,
 };
@@ -249,21 +249,7 @@ impl RenderOnce for ZoomControl {
                         button.on_click(move |_, window, cx| apply(next, window, cx))
                     }),
             )
-            .child(
-                div()
-                    .id("zoom-reset")
-                    .flex()
-                    .items_center()
-                    .justify_center()
-                    .min_w(theme.control_height(ControlSize::Lg) * 1.5)
-                    .h(theme.control_height(ControlSize::Sm))
-                    .rounded_full()
-                    .cursor_pointer()
-                    .hover(|style| style.bg(theme.colors.hover))
-                    .on_click(|_, window, cx| apply(100, window, cx))
-                    .child(AnimatedNumber::new("zoom-value", percent as f64).size(TextSize::Sm))
-                    .child(div().text_size(theme.text_size(TextSize::Sm)).child("%")),
-            )
+            .child(reset(percent, cx).on_click(|_, window, cx| apply(100, window, cx)))
             .child(
                 IconButton::new("zoom-in", IconName::ZoomIn)
                     .size(ControlSize::Sm)
@@ -277,9 +263,33 @@ impl RenderOnce for ZoomControl {
     }
 }
 
+/// The percentage, a Tab stop that resets on a press.
+fn reset(percent: u32, cx: &App) -> Stateful<Div> {
+    let theme = cx.theme();
+    let name = i18n::text(cx, "zoom.reset", &[("percent", &percent.to_string())]);
+    div()
+        .id("zoom-reset")
+        .role(Role::Button)
+        .aria_label(name)
+        .tab_index(0)
+        .flex()
+        .items_center()
+        .justify_center()
+        .min_w(theme.control_height(ControlSize::Lg) * 1.5)
+        .h(theme.control_height(ControlSize::Sm))
+        .rounded_full()
+        .border_1()
+        .border_color(gpui::transparent_black())
+        .focus_ring(cx)
+        .cursor_pointer()
+        .hover(|style| style.bg(theme.colors.hover))
+        .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
+        .child(AnimatedNumber::new("zoom-value", percent as f64).size(TextSize::Sm))
+        .child(div().text_size(theme.text_size(TextSize::Sm)).child("%"))
+}
+
 /// The owner's zoom: its percent, its steps.
 fn owned(id: ElementId, percent: u32, on_zoom: OnZoom, cx: &App) -> impl IntoElement {
-    let theme = cx.theme();
     let press = |step: ZoomStep| {
         let on_zoom = on_zoom.clone();
         move |_: &gpui::ClickEvent, window: &mut Window, cx: &mut App| on_zoom(step, window, cx)
@@ -295,21 +305,7 @@ fn owned(id: ElementId, percent: u32, on_zoom: OnZoom, cx: &App) -> impl IntoEle
                 .size(ControlSize::Sm)
                 .on_click(press(ZoomStep::Out)),
         )
-        .child(
-            div()
-                .id("zoom-reset")
-                .flex()
-                .items_center()
-                .justify_center()
-                .min_w(theme.control_height(ControlSize::Lg) * 1.5)
-                .h(theme.control_height(ControlSize::Sm))
-                .rounded_full()
-                .cursor_pointer()
-                .hover(|style| style.bg(theme.colors.hover))
-                .on_click(press(ZoomStep::Reset))
-                .child(AnimatedNumber::new("zoom-value", percent as f64).size(TextSize::Sm))
-                .child(div().text_size(theme.text_size(TextSize::Sm)).child("%")),
-        )
+        .child(reset(percent, cx).on_click(press(ZoomStep::Reset)))
         .child(
             IconButton::new("zoom-in", IconName::ZoomIn)
                 .size(ControlSize::Sm)

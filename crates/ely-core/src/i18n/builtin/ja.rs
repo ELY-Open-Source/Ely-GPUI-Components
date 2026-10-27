@@ -268,6 +268,7 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("player.picture", "ピクチャ・イン・ピクチャ"),
     ("player.fullscreen", "フルスクリーン"),
     ("switcher.windows", "ウインドウ"),
+    ("zoom.reset", "ズームをリセット、{percent}%"),
     ("preview.frame", "フレーム {n}"),
     ("calendar.more", "他 {n} 件"),
     ("place.row.Start", "上"),
