@@ -120,11 +120,14 @@ pub fn highlights(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
     let (spot_seen, card_seen) = (state.read(cx).hotspot, state.read(cx).highlight);
     let [spot, card, reset] = [(); 3].map(|_| state.clone());
     let theme = cx.theme();
-    let tool =
-        |id: &'static str, icon: IconName| IconButton::new(id, icon).variant(ButtonVariant::Ghost);
+    let tool = |id: &'static str, icon: IconName, name: &'static str| {
+        IconButton::new(id, icon)
+            .tooltip(name)
+            .variant(ButtonVariant::Ghost)
+    };
     let pin = div()
         .relative()
-        .child(tool("onboarding-pin", IconName::Pin))
+        .child(tool("onboarding-pin", IconName::Pin, "Pin"))
         .when(!spot_seen, |pin| {
             pin.child(div().absolute().top_neg_1p5().right_neg_1p5().child(probe(
                 "onboarding-hotspot",
@@ -144,9 +147,9 @@ pub fn highlights(window: &mut Window, cx: &mut App) -> impl IntoElement + use<>
         .rounded_lg()
         .border_1()
         .border_color(theme.colors.border)
-        .child(tool("onboarding-search", IconName::Search))
+        .child(tool("onboarding-search", IconName::Search, "Search"))
         .child(pin)
-        .child(tool("onboarding-share", IconName::Share2));
+        .child(tool("onboarding-share", IconName::Share2, "Share"));
     let highlight = (!card_seen).then(|| {
         FeatureHighlight::new(
             "onboarding-split",

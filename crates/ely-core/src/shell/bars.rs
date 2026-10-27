@@ -22,9 +22,9 @@ use crate::{
 /// use gpui::ParentElement;
 ///
 /// let tools = Toolbar::new()
-///     .child(ToolbarGroup::new().child(IconButton::new("bold", IconName::Bold)))
+///     .child(ToolbarGroup::new().child(IconButton::new("bold", IconName::Bold).tooltip("Bold")))
 ///     .child(ToolbarSeparator)
-///     .child(ToolbarGroup::new().child(IconButton::new("link", IconName::Link)));
+///     .child(ToolbarGroup::new().child(IconButton::new("link", IconName::Link).tooltip("Link")));
 /// ```
 #[derive(IntoElement)]
 pub struct Toolbar {
@@ -80,8 +80,8 @@ impl RenderOnce for Toolbar {
 /// use gpui::ParentElement;
 ///
 /// let marks = ToolbarGroup::new()
-///     .child(IconButton::new("bold", IconName::Bold))
-///     .child(IconButton::new("italic", IconName::Italic));
+///     .child(IconButton::new("bold", IconName::Bold).tooltip("Bold"))
+///     .child(IconButton::new("italic", IconName::Italic).tooltip("Italic"));
 /// ```
 #[derive(IntoElement, Default)]
 pub struct ToolbarGroup {

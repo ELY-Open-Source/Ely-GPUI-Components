@@ -13,8 +13,10 @@ use gpui::{App, IntoElement, ParentElement, SharedString, Styled, Window, div, p
 use super::chrome::window_frame;
 use crate::{probe::probe, ui::section};
 
-fn tool(id: &'static str, icon: IconName) -> IconButton {
-    IconButton::new(id, icon).size(ControlSize::Sm)
+fn tool(id: &'static str, icon: IconName, name: &'static str) -> IconButton {
+    IconButton::new(id, icon)
+        .tooltip(name)
+        .size(ControlSize::Sm)
 }
 
 pub fn toolbar(cx: &App) -> impl IntoElement + use<> {
@@ -32,22 +34,22 @@ pub fn toolbar(cx: &App) -> impl IntoElement + use<> {
                     .w_full()
                     .child(
                         ToolbarGroup::new()
-                            .child(tool("tb-undo", IconName::Undo2))
-                            .child(tool("tb-redo", IconName::Redo2)),
+                            .child(tool("tb-undo", IconName::Undo2, "Undo"))
+                            .child(tool("tb-redo", IconName::Redo2, "Redo")),
                     )
                     .child(ToolbarSeparator)
                     .child(
                         ToolbarGroup::new()
-                            .child(tool("tb-bold", IconName::Bold))
-                            .child(tool("tb-italic", IconName::Italic))
-                            .child(tool("tb-underline", IconName::Underline)),
+                            .child(tool("tb-bold", IconName::Bold, "Bold"))
+                            .child(tool("tb-italic", IconName::Italic, "Italic"))
+                            .child(tool("tb-underline", IconName::Underline, "Underline")),
                     )
                     .child(ToolbarSeparator)
                     .child(
                         ToolbarGroup::new()
-                            .child(tool("tb-left", IconName::AlignLeft))
-                            .child(tool("tb-center", IconName::AlignCenter))
-                            .child(tool("tb-right", IconName::AlignRight)),
+                            .child(tool("tb-left", IconName::AlignLeft, "Align left"))
+                            .child(tool("tb-center", IconName::AlignCenter, "Center"))
+                            .child(tool("tb-right", IconName::AlignRight, "Align right")),
                     )
                     .child(div().flex_1())
                     .child(

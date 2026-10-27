@@ -53,6 +53,7 @@ impl RenderOnce for CopyButton {
         let success = theme.colors.success;
         let text = self.text;
         let button = IconButton::new("copy", IconName::Copy)
+            .tooltip(crate::i18n::text(cx, "copy.button", &[]))
             .size(ControlSize::Sm)
             .on_click(move |_, window, cx| {
                 cx.write_to_clipboard(ClipboardItem::new_string(text.to_string()));

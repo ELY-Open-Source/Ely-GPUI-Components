@@ -30,7 +30,9 @@ fn title_row(title: SharedString, close: Close, cx: &App) -> impl IntoElement + 
                 .child(title),
         )
         .child(
-            IconButton::new("close", IconName::X).on_click(move |_, window, cx| close(window, cx)),
+            IconButton::new("close", IconName::X)
+                .tooltip(crate::i18n::text(cx, "dialog.close", &[]))
+                .on_click(move |_, window, cx| close(window, cx)),
         )
 }
 

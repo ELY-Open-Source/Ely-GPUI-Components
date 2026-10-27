@@ -131,6 +131,7 @@ pub fn presence(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                         SharedString::from(format!("presence-remove-{number}")),
                         IconName::X,
                     )
+                    .tooltip(format!("Remove {name}"))
                     .variant(ButtonVariant::Ghost)
                     .size(ControlSize::Sm)
                     .on_click(move |_, _, cx| {

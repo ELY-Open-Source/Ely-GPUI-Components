@@ -95,6 +95,7 @@ impl RenderOnce for Stepper {
             .bg(theme.colors.surface)
             .child(
                 IconButton::new((self.id.clone(), "less"), IconName::Minus)
+                    .tooltip(crate::i18n::text(cx, "stepper.less", &[]))
                     .variant(ButtonVariant::Ghost)
                     .size(ControlSize::Sm)
                     .disabled(value <= min)
@@ -110,6 +111,7 @@ impl RenderOnce for Stepper {
             )
             .child(
                 IconButton::new((self.id.clone(), "more"), IconName::Plus)
+                    .tooltip(crate::i18n::text(cx, "stepper.more", &[]))
                     .variant(ButtonVariant::Ghost)
                     .size(ControlSize::Sm)
                     .disabled(value >= max)

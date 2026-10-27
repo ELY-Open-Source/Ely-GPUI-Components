@@ -177,6 +177,7 @@ impl RenderOnce for UpdateBanner {
             .when_some(dismiss, |banner, dismiss| {
                 banner.child(
                     IconButton::new("update-dismiss", IconName::X)
+                        .tooltip(text(cx, "message.dismiss", &[]))
                         .size(ControlSize::Sm)
                         .on_click(move |_, window, cx| dismiss(window, cx)),
                 )

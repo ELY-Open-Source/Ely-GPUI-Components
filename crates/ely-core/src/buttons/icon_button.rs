@@ -31,7 +31,7 @@ pub struct IconButton {
 }
 
 impl IconButton {
-    /// A ghost button under `id` that shows `icon`.
+    /// A ghost button under `id` that shows `icon`; `tooltip` names it.
     pub fn new(id: impl Into<ElementId>, icon: IconName) -> Self {
         Self {
             id: id.into(),
@@ -62,7 +62,7 @@ impl IconButton {
         self
     }
 
-    /// Names what the icon does, on hover.
+    /// Names what the icon does, on hover and to readers.
     pub fn tooltip(mut self, text: impl Into<SharedString>) -> Self {
         self.tooltip = Some(text.into());
         self
@@ -84,15 +84,11 @@ impl RenderOnce for IconButton {
         let tone = tone(self.variant, &theme.colors);
         let (_, icon_size) = label_size(self.size);
         let side = theme.control_height(self.size);
-        let name: SharedString = self
-            .tooltip
-            .clone()
-            .unwrap_or_else(|| self.icon.name().into());
 
         div()
             .id(self.id)
             .role(Role::Button)
-            .aria_label(name)
+            .when_some(self.tooltip.clone(), |el, name| el.aria_label(name))
             .flex()
             .flex_none()
             .items_center()

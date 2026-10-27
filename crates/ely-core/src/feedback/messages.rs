@@ -15,9 +15,10 @@ use crate::{
 };
 
 /// A ghost close button that keeps its row's height.
-fn dismiss(id: ElementId, run: Run) -> impl IntoElement {
+fn dismiss(id: ElementId, run: Run, cx: &App) -> impl IntoElement {
     div().my_neg_1().child(
         IconButton::new(id, IconName::X)
+            .tooltip(crate::i18n::text(cx, "message.dismiss", &[]))
             .variant(ButtonVariant::Ghost)
             .size(ControlSize::Sm)
             .on_click(move |_, window, cx| run(window, cx)),
@@ -133,7 +134,7 @@ impl RenderOnce for Alert {
                     }),
             )
             .when_some(self.on_dismiss, |alert, run| {
-                alert.child(dismiss(close.into(), run))
+                alert.child(dismiss(close.into(), run, cx))
             })
     }
 }
@@ -250,7 +251,7 @@ impl RenderOnce for Banner {
                         .bottom_0()
                         .flex()
                         .items_center()
-                        .child(dismiss(close.into(), run)),
+                        .child(dismiss(close.into(), run, cx)),
                 )
             })
     }

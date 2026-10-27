@@ -24,7 +24,7 @@ use crate::{
 ///
 /// fn tools(window: &mut Window, cx: &mut App) -> FloatingToolbar {
 ///     let field = cx.new(|cx| TextInput::new(window, cx));
-///     FloatingToolbar::new("selection-tools", &field).child(IconButton::new("bold", IconName::Bold))
+///     FloatingToolbar::new("selection-tools", &field).child(IconButton::new("bold", IconName::Bold).tooltip("Bold"))
 /// }
 /// ```
 #[derive(IntoElement)]

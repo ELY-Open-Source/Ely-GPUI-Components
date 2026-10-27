@@ -118,7 +118,7 @@ pub fn tour(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         row()
             .child(target(&boxes, 0, Button::new("tour-search", "Search").icon(IconName::Search)))
             .child(target(&boxes, 1, Button::new("tour-invite", "Invite").icon(IconName::Users)))
-            .child(target(&boxes, 2, IconButton::new("tour-settings", IconName::Settings)))
+            .child(target(&boxes, 2, IconButton::new("tour-settings", IconName::Settings).tooltip("Settings")))
             .child(div().w_8())
             .child(probe(
                 "tour",

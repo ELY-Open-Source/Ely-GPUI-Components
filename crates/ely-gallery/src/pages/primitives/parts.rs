@@ -1,7 +1,7 @@
 use std::{path::Path, time::Duration};
 
 use ely_gpui_component::{
-    buttons::{Button, IconButton},
+    buttons::Button,
     primitives::{
         Backdrop, Divider, FocusRing, FocusScope, Icon, IconName, Image, IntersectionObserver,
         Measure, Pressable, Tooltip, TooltipTrigger,
@@ -427,21 +427,21 @@ pub fn tooltip(cx: &App) -> impl IntoElement + use<> {
                 "tip-plain",
                 div()
                     .id("tip-plain")
-                    .child(IconButton::new("tip-a", IconName::Copy))
+                    .child(Button::new("tip-a", "Copy").icon(IconName::Copy))
                     .tooltip(Tooltip::text("Copy")),
             ))
             .child(probe(
                 "tip-meta",
                 div()
                     .id("tip-meta")
-                    .child(IconButton::new("tip-b", IconName::Search))
+                    .child(Button::new("tip-b", "Search").icon(IconName::Search))
                     .tooltip(Tooltip::with_meta("Search", "⌘K")),
             ))
             .child(probe(
                 "tip-rich",
                 div()
                     .id("tip-rich")
-                    .child(IconButton::new("tip-c", IconName::Info))
+                    .child(Button::new("tip-c", "About").icon(IconName::Info))
                     .tooltip(Tooltip::rich(move |_, _| {
                         div()
                             .flex()

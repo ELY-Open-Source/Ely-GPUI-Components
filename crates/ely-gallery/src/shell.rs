@@ -190,9 +190,14 @@ impl Gallery {
 
     fn switcher(&self, cx: &mut Context<Self>) -> impl IntoElement + use<> {
         let options = [
-            (Choice::Light, IconName::Sun, "theme-light"),
-            (Choice::Dark, IconName::Moon, "theme-dark"),
-            (Choice::System, IconName::Monitor, "theme-system"),
+            (Choice::Light, IconName::Sun, "theme-light", "Light"),
+            (Choice::Dark, IconName::Moon, "theme-dark", "Dark"),
+            (
+                Choice::System,
+                IconName::Monitor,
+                "theme-system",
+                "Match system",
+            ),
         ];
         let colors = &cx.theme().colors;
         div()
@@ -203,13 +208,14 @@ impl Gallery {
             .rounded(cx.theme().radius(Radius::Lg))
             .border_1()
             .border_color(colors.border)
-            .children(options.map(|(choice, icon, id)| {
+            .children(options.map(|(choice, icon, id, name)| {
                 let variant = if choice == self.choice {
                     ButtonVariant::Subtle
                 } else {
                     ButtonVariant::Ghost
                 };
                 IconButton::new(id, icon)
+                    .tooltip(name)
                     .variant(variant)
                     .size(ControlSize::Sm)
                     .on_click(

@@ -190,7 +190,7 @@ impl RenderOnce for Card {
 /// use gpui::{ParentElement, div};
 ///
 /// let properties = Panel::new("Properties")
-///     .action(IconButton::new("add", IconName::Plus))
+///     .action(IconButton::new("add", IconName::Plus).tooltip("Add"))
 ///     .child(div());
 /// ```
 #[derive(IntoElement)]

@@ -11,8 +11,10 @@ use gpui::{App, IntoElement, ParentElement, SharedString, Styled, div, px};
 use super::chrome::window_frame;
 use crate::ui::{code, section, specimen};
 
-fn icon(id: &'static str, ix: usize, name: IconName) -> IconButton {
-    IconButton::new((id, ix), name).size(ControlSize::Sm)
+fn icon(id: &'static str, ix: usize, name: IconName, label: &'static str) -> IconButton {
+    IconButton::new((id, ix), name)
+        .tooltip(label)
+        .size(ControlSize::Sm)
 }
 
 fn shell(id: &'static str, cx: &App) -> ColumnShell {
@@ -32,9 +34,9 @@ fn sidebar(id: &'static str, items: [(IconName, &'static str); 3], cx: &App) -> 
         }));
     ShellColumn::new(id)
         .width(cx.theme().sidebar_width(false))
-        .leading(icon(id, 0, IconName::PanelLeft))
-        .leading(icon(id, 1, IconName::ArrowLeft))
-        .leading(icon(id, 2, IconName::ArrowRight))
+        .leading(icon(id, 0, IconName::PanelLeft, "Sidebar"))
+        .leading(icon(id, 1, IconName::ArrowLeft, "Back"))
+        .leading(icon(id, 2, IconName::ArrowRight, "Forward"))
         .child(nav)
 }
 
@@ -46,8 +48,8 @@ fn two_columns(cx: &App) -> impl IntoElement + use<> {
     ];
     let main = ShellColumn::new("cs2-main")
         .title("New task")
-        .action(icon("cs2-main", 0, IconName::Info))
-        .action(icon("cs2-main", 1, IconName::PanelRight))
+        .action(icon("cs2-main", 0, IconName::Info, "Details"))
+        .action(icon("cs2-main", 1, IconName::PanelRight, "Inspector"))
         .child(
             div()
                 .size_full()
@@ -80,7 +82,7 @@ fn three_columns(cx: &App) -> impl IntoElement + use<> {
     let list = ShellColumn::new("cs3-list")
         .width(px(220.0))
         .title("Inbox")
-        .action(icon("cs3-list", 0, IconName::Search))
+        .action(icon("cs3-list", 0, IconName::Search, "Search"))
         .child(
             div()
                 .p_2()
@@ -99,8 +101,8 @@ fn three_columns(cx: &App) -> impl IntoElement + use<> {
         );
     let message = ShellColumn::new("cs3-main")
         .title("Quarterly review")
-        .action(icon("cs3-main", 0, IconName::Reply))
-        .action(icon("cs3-main", 1, IconName::Archive))
+        .action(icon("cs3-main", 0, IconName::Reply, "Reply"))
+        .action(icon("cs3-main", 1, IconName::Archive, "Archive"))
         .child(div().p_5().child(Paragraph::new(
             "Revenue rose eight percent. Three moves come next: hire, ship the beta, close the books.",
         )));

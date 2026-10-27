@@ -296,6 +296,7 @@ impl Render for Player {
                         IconName::Play
                     },
                 )
+                .tooltip(if playing { "Pause" } else { "Play" })
                 .on_click(cx.listener(|player, _, _, cx| {
                     player.playing = !player.playing;
                     cx.notify();

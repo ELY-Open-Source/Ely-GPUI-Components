@@ -326,6 +326,7 @@ impl RenderOnce for SignatureHelp {
             let on_step = self.on_step.clone();
             let next = (active + by) % count;
             IconButton::new((self.id.clone(), key), icon)
+                .tooltip(i18n::text(cx, key, &[]))
                 .variant(ButtonVariant::Ghost)
                 .size(ControlSize::Sm)
                 .disabled(count < 2)
@@ -352,13 +353,21 @@ impl RenderOnce for SignatureHelp {
                     .items_center()
                     .gap_1()
                     .when(count > 1, |row| {
-                        row.child(step(count - 1, IconName::ChevronUp, "previous"))
-                            .child(
-                                div()
-                                    .text_color(colors.fg_subtle)
-                                    .child(format!("{}/{count}", active + 1)),
-                            )
-                            .child(step(1, IconName::ChevronDown, "next"))
+                        row.child(step(
+                            count - 1,
+                            IconName::ChevronUp,
+                            "editor.signature.previous",
+                        ))
+                        .child(
+                            div()
+                                .text_color(colors.fg_subtle)
+                                .child(format!("{}/{count}", active + 1)),
+                        )
+                        .child(step(
+                            1,
+                            IconName::ChevronDown,
+                            "editor.signature.next",
+                        ))
                     })
                     .child(
                         div()

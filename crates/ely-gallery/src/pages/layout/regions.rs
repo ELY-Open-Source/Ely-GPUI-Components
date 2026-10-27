@@ -168,7 +168,11 @@ pub fn card(cx: &App) -> impl IntoElement + use<> {
             .header(
                 CardHeader::new("Storage")
                     .description("Across all workspaces")
-                    .action(IconButton::new("card-more", IconName::Ellipsis).size(ControlSize::Sm)),
+                    .action(
+                        IconButton::new("card-more", IconName::Ellipsis)
+                            .tooltip("More")
+                            .size(ControlSize::Sm),
+                    ),
             )
             .child(Label::new("42.8 GB of 100 GB"))
             .child(Caption::new("Media takes the most room."))
@@ -192,8 +196,16 @@ pub fn panel(cx: &App) -> impl IntoElement + use<> {
         Panel::new("Outline")
             .w(px(320.0))
             .h(px(160.0))
-            .action(IconButton::new("panel-filter", IconName::Filter).size(ControlSize::Sm))
-            .action(IconButton::new("panel-more", IconName::Ellipsis).size(ControlSize::Sm))
+            .action(
+                IconButton::new("panel-filter", IconName::Filter)
+                    .tooltip("Filter")
+                    .size(ControlSize::Sm),
+            )
+            .action(
+                IconButton::new("panel-more", IconName::Ellipsis)
+                    .tooltip("More")
+                    .size(ControlSize::Sm),
+            )
             .child(
                 div()
                     .p_3()

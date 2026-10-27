@@ -88,6 +88,7 @@ pub fn basics(cx: &App) -> AnyElement {
                                     ElementId::Name(format!("{name}-a").into()),
                                     IconName::Bold,
                                 )
+                                .tooltip("Bold")
                                 .size(size),
                             )
                             .child(
@@ -95,6 +96,7 @@ pub fn basics(cx: &App) -> AnyElement {
                                     ElementId::Name(format!("{name}-b").into()),
                                     IconName::Italic,
                                 )
+                                .tooltip("Italic")
                                 .size(size),
                             )
                             .child(
@@ -102,6 +104,7 @@ pub fn basics(cx: &App) -> AnyElement {
                                     ElementId::Name(format!("{name}-c").into()),
                                     IconName::Underline,
                                 )
+                                .tooltip("Underline")
                                 .size(size)
                                 .variant(ButtonVariant::Subtle),
                             )
@@ -110,6 +113,7 @@ pub fn basics(cx: &App) -> AnyElement {
                                     ElementId::Name(format!("{name}-d").into()),
                                     IconName::Link,
                                 )
+                                .tooltip("Link")
                                 .size(size)
                                 .variant(ButtonVariant::Outline),
                             ),

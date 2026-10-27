@@ -311,6 +311,7 @@ impl PaneGroup {
                     .gap_0p5()
                     .child(
                         IconButton::new(("split-right", id), IconName::PanelRight)
+                            .tooltip(crate::i18n::text(cx, "panes.split_right", &[]))
                             .size(ControlSize::Sm)
                             .on_click(cx.listener(move |group, _, _, cx| {
                                 group.split(id, Axis::Horizontal, cx);
@@ -318,6 +319,7 @@ impl PaneGroup {
                     )
                     .child(
                         IconButton::new(("split-down", id), IconName::PanelBottom)
+                            .tooltip(crate::i18n::text(cx, "panes.split_down", &[]))
                             .size(ControlSize::Sm)
                             .on_click(cx.listener(move |group, _, _, cx| {
                                 group.split(id, Axis::Vertical, cx);
@@ -325,6 +327,7 @@ impl PaneGroup {
                     )
                     .child(
                         IconButton::new(("close", id), IconName::X)
+                            .tooltip(crate::i18n::text(cx, "panes.close", &[]))
                             .size(ControlSize::Sm)
                             .disabled(lone)
                             .on_click(cx.listener(move |group, _, _, cx| group.close(id, cx))),

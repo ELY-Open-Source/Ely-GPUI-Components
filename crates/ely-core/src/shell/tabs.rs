@@ -226,6 +226,7 @@ impl RenderOnce for TabBar {
                             })
                             .child(
                                 IconButton::new(("close", ix), IconName::X)
+                                    .tooltip(crate::i18n::text(cx, "tabs.close", &[]))
                                     .size(ControlSize::Sm)
                                     .on_click(move |_, window, cx| {
                                         cx.stop_propagation();
@@ -251,6 +252,7 @@ impl RenderOnce for TabBar {
             .when_some(self.on_add, |bar, add| {
                 bar.child(
                     IconButton::new("new-tab", IconName::Plus)
+                        .tooltip(crate::i18n::text(cx, "tabs.new", &[]))
                         .size(ControlSize::Sm)
                         .on_click(move |_, window, cx| {
                             log::info!("tab bar: new tab");

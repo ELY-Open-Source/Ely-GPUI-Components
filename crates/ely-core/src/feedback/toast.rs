@@ -361,6 +361,7 @@ fn card(
         })
         .child(
             IconButton::new((key.clone(), "close"), IconName::X)
+                .tooltip(crate::i18n::text(cx, "message.dismiss", &[]))
                 .variant(ButtonVariant::Ghost)
                 .size(ControlSize::Sm)
                 .on_click(send(None)),

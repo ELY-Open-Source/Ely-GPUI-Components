@@ -149,7 +149,7 @@ fn capped(count: usize, max: usize) -> Option<String> {
 /// ```
 /// use ely_core::{buttons::IconButton, data_display::CountBadge, primitives::IconName};
 ///
-/// let unread = CountBadge::new("unread", 12).over(IconButton::new("inbox", IconName::Inbox));
+/// let unread = CountBadge::new("unread", 12).over(IconButton::new("inbox", IconName::Inbox).tooltip("Inbox"));
 /// ```
 #[derive(IntoElement)]
 pub struct CountBadge {

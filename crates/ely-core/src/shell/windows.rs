@@ -280,6 +280,7 @@ impl Render for MiniWindow {
                     .when_some(back, |bar, back| {
                         bar.child(
                             IconButton::new("mini-expand", IconName::Maximize2)
+                                .tooltip(crate::i18n::text(cx, "mini.back", &[]))
                                 .size(ControlSize::Sm)
                                 .on_click(move |_, window, cx| {
                                     window.remove_window();
@@ -295,6 +296,7 @@ impl Render for MiniWindow {
                     })
                     .child(
                         IconButton::new("mini-close", IconName::X)
+                            .tooltip(crate::i18n::text(cx, "dialog.close", &[]))
                             .size(ControlSize::Sm)
                             .on_click(|_, window, _| window.remove_window()),
                     ),

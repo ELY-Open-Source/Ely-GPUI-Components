@@ -105,6 +105,7 @@ impl RenderOnce for ScrollToTop {
             .shadow(cx.theme().elevation(Elevation::Floating))
             .child(
                 IconButton::new(self.id, IconName::ArrowUp)
+                    .tooltip(crate::i18n::text(cx, "scroll.top", &[]))
                     .variant(ButtonVariant::Secondary)
                     .on_click(move |_, window, cx| {
                         let handle = handle.clone();

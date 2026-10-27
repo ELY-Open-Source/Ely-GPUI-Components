@@ -243,6 +243,7 @@ impl RenderOnce for ZoomControl {
             .gap_0p5()
             .child(
                 IconButton::new("zoom-out", IconName::ZoomOut)
+                    .tooltip(i18n::text(cx, "zoom.out", &[]))
                     .size(ControlSize::Sm)
                     .disabled(down.is_none())
                     .when_some(down, |button, next| {
@@ -252,6 +253,7 @@ impl RenderOnce for ZoomControl {
             .child(reset(percent, cx).on_click(|_, window, cx| apply(100, window, cx)))
             .child(
                 IconButton::new("zoom-in", IconName::ZoomIn)
+                    .tooltip(i18n::text(cx, "zoom.in", &[]))
                     .size(ControlSize::Sm)
                     .variant(ButtonVariant::Ghost)
                     .disabled(up.is_none())
@@ -302,12 +304,14 @@ fn owned(id: ElementId, percent: u32, on_zoom: OnZoom, cx: &App) -> impl IntoEle
         .gap_0p5()
         .child(
             IconButton::new("zoom-out", IconName::ZoomOut)
+                .tooltip(i18n::text(cx, "zoom.out", &[]))
                 .size(ControlSize::Sm)
                 .on_click(press(ZoomStep::Out)),
         )
         .child(reset(percent, cx).on_click(press(ZoomStep::Reset)))
         .child(
             IconButton::new("zoom-in", IconName::ZoomIn)
+                .tooltip(i18n::text(cx, "zoom.in", &[]))
                 .size(ControlSize::Sm)
                 .on_click(press(ZoomStep::In)),
         )

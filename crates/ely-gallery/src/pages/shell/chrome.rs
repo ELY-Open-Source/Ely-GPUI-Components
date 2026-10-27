@@ -30,8 +30,16 @@ fn demo_bar(id: &'static str, style: Platform) -> TitleBar {
         .platform(style)
         .title("Ely — Projects")
         .on_close(|_, _| log::info!("gallery: demo close refused"))
-        .child(IconButton::new((id, 1usize), IconName::PanelLeft).size(ControlSize::Sm))
-        .action(IconButton::new((id, 2usize), IconName::Search).size(ControlSize::Sm))
+        .child(
+            IconButton::new((id, 1usize), IconName::PanelLeft)
+                .tooltip("Sidebar")
+                .size(ControlSize::Sm),
+        )
+        .action(
+            IconButton::new((id, 2usize), IconName::Search)
+                .tooltip("Search")
+                .size(ControlSize::Sm),
+        )
 }
 
 pub fn title_bar(cx: &App) -> impl IntoElement + use<> {
