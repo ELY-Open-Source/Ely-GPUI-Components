@@ -15,7 +15,7 @@ pub use ely_chat as chat;
 pub use ely_collab as collab;
 pub use ely_core::{
     Assets, Before, buttons, data_display, feedback, forms, i18n, layout, lists, menus, motion,
-    navigation, overlays, primitives, shell, tables, theme, typography,
+    navigation, overlays, primitives, secondary, shell, tables, theme, typography,
 };
 pub use ely_dashboard as dashboard;
 pub use ely_debug as debug;
