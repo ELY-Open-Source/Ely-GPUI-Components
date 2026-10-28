@@ -197,8 +197,35 @@ impl Scrollbar {
     }
 }
 
+/// What a bar draws from: the offset and the thumb's place.
+type Seen = (Point<Pixels>, Option<(Pixels, f32, f32)>);
+
+fn seen(source: &ScrollSource, axis: Axis, cx: &App) -> Seen {
+    let place = source
+        .place(axis, cx)
+        .map(|place| (place.span, place.shown, place.passed));
+    (source.offset(cx), place)
+}
+
+/// Draws again if the source moved after render, as a list's deferred scroll does.
+fn follow(source: ScrollSource, axis: Axis, drawn: Seen) -> impl IntoElement {
+    canvas(
+        move |_, window, cx| {
+            if seen(&source, axis, cx) != drawn {
+                window.request_animation_frame();
+            }
+        },
+        |_, _, _, _| {},
+    )
+}
+
 impl RenderOnce for Scrollbar {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let follows = follow(
+            self.handle.clone(),
+            self.axis,
+            seen(&self.handle, self.axis, cx),
+        );
         let grip = window.use_keyed_state(self.id.clone(), cx, |_, _| false);
         let owner = grip.entity_id();
         // Its own drag keeps it whole; gpui drops hover then.
@@ -230,14 +257,14 @@ impl RenderOnce for Scrollbar {
         let hidden = activity.is_none() && presence <= 0.0;
         let Some(place) = self.handle.place(self.axis, cx).filter(|_| !hidden) else {
             self.let_go(cx);
-            return div().into_any_element();
+            return div().child(follows).into_any_element();
         };
         let span = place.span;
         let length = (span * place.shown).max(min_thumb).min(span);
         let travel = span - length;
         if travel <= Pixels::ZERO {
             self.let_go(cx);
-            return div().into_any_element();
+            return div().child(follows).into_any_element();
         }
         let theme = cx.theme();
         let start = travel * place.passed;
@@ -326,6 +353,7 @@ impl RenderOnce for Scrollbar {
                 .pt(thickness * 0.5),
         }
         .child(thumb)
+        .child(follows)
         .into_any_element()
     }
 }

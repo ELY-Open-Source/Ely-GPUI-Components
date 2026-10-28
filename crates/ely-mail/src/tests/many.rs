@@ -61,7 +61,11 @@ fn only_the_rows_in_view_draw(cx: &mut TestAppContext) {
 fn its_scrollbar_follows_and_drags_the_list(cx: &mut TestAppContext) {
     let (_, cx) = mailing(many, cx);
     tab_to(1, cx);
-    press("end", cx);
+    // Plain input; only frames the view asked for are drawn.
+    cx.simulate_keystrokes("end");
+    cx.run_until_parked();
+    cx.update(|window, cx| window.simulate_next_frame(cx));
+    cx.run_until_parked();
     let thumb = cx
         .debug_bounds("scrollbar-thumb")
         .expect("a scroll shows the thumb");
