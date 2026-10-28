@@ -49,28 +49,24 @@ pub(super) fn holding<'a>(
         .min_by_key(|node| span(node).len())
 }
 
-/// The selection `<u>` tags hold at `part`, or wrap exactly.
+/// What a `<u>` pair holds in `part`, end tags aside.
 fn underlined(
     text: &str,
     nodes: &[&Node],
     room: &Range<usize>,
     part: &Range<usize>,
 ) -> Option<Range<usize>> {
-    if underline(nodes, room, part.start, part.end).is_some() {
-        return Some(part.clone());
+    let tag = |at: Range<usize>, name: &str| {
+        (text.get(at)).is_some_and(|tag| tag.eq_ignore_ascii_case(name))
+    };
+    let mut inside = part.clone();
+    if inside.len() >= 3 && tag(inside.start..inside.start + 3, "<u>") {
+        inside.start += 3;
     }
-    let shown = &text[part.clone()];
-    let opens = shown
-        .get(..3)
-        .is_some_and(|tag| tag.eq_ignore_ascii_case("<u>"));
-    let closes = (shown.len().checked_sub(4).and_then(|at| shown.get(at..)))
-        .is_some_and(|tag| tag.eq_ignore_ascii_case("</u>"));
-    if !opens || !closes || shown.len() < 7 {
-        return None;
+    if inside.len() >= 4 && tag(inside.end - 4..inside.end, "</u>") {
+        inside.end -= 4;
     }
-    let inside = part.start + 3..part.end - 4;
-    let tags = underline(nodes, room, inside.start, inside.end)?;
-    (tags[0].start == part.start && tags[1].end == part.end).then_some(inside)
+    underline(nodes, room, inside.start, inside.end).map(|_| inside)
 }
 
 /// `format` in each block `s..e` touches, as one toggle.

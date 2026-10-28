@@ -8,7 +8,10 @@ use gpui::{
 };
 
 use super::{MarkdownDocument, Open};
-use crate::{forms::TextInput, modes::at_edge};
+use crate::{
+    forms::TextInput,
+    modes::{at_edge, joint},
+};
 
 /// How often a drag held past an edge scrolls.
 const TICK: Duration = Duration::from_millis(16);
@@ -20,7 +23,7 @@ pub(super) struct Drag {
     across: bool,
     /// The pointer, last seen.
     at: Option<Point<Pixels>>,
-    /// Scrolls while the pointer stays past an edge.
+    /// Scrolls past an edge; dropped with the drag.
     scrolling: Option<Task<()>>,
 }
 
@@ -32,6 +35,8 @@ pub(super) struct Aim {
     /// Where the added block lies in the field.
     place: Range<usize>,
     down: bool,
+    /// The field's edits and selection when aimed.
+    seen: (u64, Range<usize>),
     asked: bool,
 }
 
@@ -45,8 +50,13 @@ fn ends(input: &TextInput) -> (usize, usize) {
 }
 
 impl MarkdownDocument {
-    /// The first and last blocks `range` covers.
-    pub(super) fn covered(&self, range: &Range<usize>) -> (usize, usize) {
+    /// The blocks `open` covers; a new end lies past them.
+    pub(super) fn covered(&self, open: &Open) -> (usize, usize) {
+        if open.append {
+            let end = self.parsed.blocks.len();
+            return (end, end);
+        }
+        let range = &open.range;
         let last = range.end.saturating_sub(1).max(range.start);
         (self.block_at(range.start), self.block_at(last))
     }
@@ -55,7 +65,7 @@ impl MarkdownDocument {
     pub(super) fn pressed_open(&mut self) {
         self.aim = None;
         self.drag = (self.open.as_ref())
-            .filter(|open| open.cell.is_none() && !open.append)
+            .filter(|open| open.cell.is_none())
             .map(|_| Drag::default());
     }
 
@@ -130,7 +140,7 @@ impl MarkdownDocument {
         let ix = self
             .item_at(position)
             .min(self.parsed.blocks.len().saturating_sub(1));
-        let (first, last) = self.covered(&open.range);
+        let (first, last) = self.covered(open);
         if (first..=last).contains(&ix) {
             if drag.across {
                 open.input.clone().update(cx, |input, cx| {
@@ -158,15 +168,14 @@ impl MarkdownDocument {
         cx: &mut Context<Self>,
     ) -> bool {
         self.aim = None;
-        let Some(open) = (self.open.as_ref()).filter(|open| open.cell.is_none() && !open.append)
-        else {
+        let Some(open) = (self.open.as_ref()).filter(|open| open.cell.is_none()) else {
             return false;
         };
         let input = open.input.read(cx);
         if !at_edge(input, down) {
             return false;
         }
-        let (first, last) = self.covered(&open.range);
+        let (first, last) = self.covered(open);
         let next = match down {
             true => Some(last + 1).filter(|next| *next < self.parsed.blocks.len()),
             false => first.checked_sub(1),
@@ -177,12 +186,16 @@ impl MarkdownDocument {
         };
         // Its first line going down, its last going up.
         let edge = if down { place.start } else { place.end };
-        input.update(cx, |input, cx| input.select_from(ends(input).0, edge, cx));
+        let seen = input.update(cx, |input, cx| {
+            input.select_from(ends(input).0, edge, cx);
+            (input.edits().0, input.selection())
+        });
         self.aim = x.map(|x| Aim {
             input,
             x,
             place,
             down,
+            seen,
             asked: false,
         });
         true
@@ -210,6 +223,10 @@ impl MarkdownDocument {
             return log::info!("markdown document: the aimed field closed first");
         }
         aim.input.update(cx, |input, cx| {
+            // Typing or a move since lets it lapse.
+            if (input.edits().0, input.selection()) != aim.seen {
+                return log::info!("markdown document: the aimed head lapsed");
+            }
             let edge = if aim.down {
                 aim.place.start
             } else {
@@ -240,15 +257,20 @@ impl MarkdownDocument {
         let text = self.editor.read(cx).text();
         let input = open.input.read(cx);
         let typed = input.text();
+        // A new end writes back after its joint.
+        let lead = match open.append && !typed.is_empty() {
+            true => joint(text),
+            false => "",
+        };
         let range = open.range.start.min(target.start)..open.range.end.max(target.end);
         let before = &text[range.start..open.range.start];
-        let source = [before, typed, &text[open.range.end..range.end]].concat();
+        let source = [before, lead, typed, &text[open.range.end..range.end]].concat();
         let (anchor, head) = ends(input);
+        let shift = before.len() + lead.len();
         let place = match target.start < open.range.start {
             true => target.start - range.start,
-            false => before.len() + typed.len() + target.start - open.range.end,
+            false => shift + typed.len() + target.start - open.range.end,
         };
-        let shift = before.len();
         let (input, subscriptions) = Self::new_field(source, false, window, cx);
         input.update(cx, |input, cx| {
             input.select_from(anchor + shift, head + shift, cx)

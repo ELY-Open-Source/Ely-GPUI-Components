@@ -262,3 +262,77 @@ fn a_format_takes_each_selected_block(cx: &mut TestAppContext) {
         "**First line.**\n\n**Second one.**\n\nThird here.\n"
     );
 }
+
+#[gpui::test]
+fn shift_up_from_a_new_end_takes_the_block_above(cx: &mut TestAppContext) {
+    let (document, cx) = open("alpha\n", MarkdownMode::Visual, cx);
+    document.update_in(cx, |document, window, cx| {
+        document.open(None, crate::document::edit::Landing::End, window, cx)
+    });
+    cx.simulate_input("beta");
+    cx.simulate_keystrokes("shift-up");
+    super::frames(cx);
+    let (range, selection, caret) = field(&document, cx);
+    assert_eq!(range, 0..6, "the block above and the new end");
+    assert_eq!(opened(&document, cx), "alpha\n\nbeta");
+    assert_eq!((selection.end, caret), (11, selection.start));
+    assert!(caret < 5, "the head is in the block above: {caret}");
+    cx.simulate_keystrokes("escape");
+    assert_eq!(text(&document, cx), "alpha\n\nbeta");
+    cx.dispatch_action(visual::Undo);
+    assert_eq!(text(&document, cx), "alpha\n", "one step undoes it");
+}
+
+#[gpui::test]
+fn a_held_drag_ends_with_its_field(cx: &mut TestAppContext) {
+    let long: String = (0..80).map(|n| format!("Line {n}.\n\n")).collect();
+    let (document, cx) = open(&long, MarkdownMode::Visual, cx);
+    let start = drawn("markdown-block-0", cx).expect("drawn");
+    let at = point(start.left() + px(4.0), start.top() + px(4.0));
+    cx.simulate_mouse_down(at, MouseButton::Left, Modifiers::none());
+    cx.run_until_parked();
+    let view = document.read_with(cx, |document, _| document.list.viewport_bounds());
+    let below = point(view.center().x, view.bottom() + px(20.0));
+    cx.simulate_mouse_move(below, MouseButton::Left, Modifiers::none());
+    cx.run_until_parked();
+    document.update_in(cx, |document, window, cx| {
+        document.set_mode(MarkdownMode::Source, window, cx)
+    });
+    cx.simulate_mouse_up(below, MouseButton::Left, Modifiers::none());
+    cx.run_until_parked();
+    let notified = Rc::new(RefCell::new(0));
+    let counted = notified.clone();
+    cx.update(|_, cx| {
+        cx.observe(&document, move |_, _| *counted.borrow_mut() += 1)
+            .detach()
+    });
+    let top = document.read_with(cx, |document, _| document.list.logical_scroll_top());
+    for _ in 0..10 {
+        cx.executor().advance_clock(Duration::from_millis(16));
+        cx.run_until_parked();
+    }
+    assert!(document.read_with(cx, |document, _| document.drag.is_none()));
+    assert_eq!(*notified.borrow(), 0, "idle once the field is gone");
+    let still = document.read_with(cx, |document, _| document.list.logical_scroll_top());
+    assert_eq!(
+        (still.item_ix, still.offset_in_item),
+        (top.item_ix, top.offset_in_item)
+    );
+}
+
+#[gpui::test]
+fn typing_or_a_move_before_the_aim_lands_keeps_its_place(cx: &mut TestAppContext) {
+    let (document, cx) = open(TEXT, MarkdownMode::Visual, cx);
+    super::press(0, Modifiers::none(), cx);
+    cx.simulate_keystrokes("shift-down");
+    cx.simulate_input("X");
+    super::frames(cx);
+    cx.simulate_input("Y");
+    assert_eq!(opened(&document, cx), "First line.XYSecond one.");
+    cx.simulate_keystrokes("escape");
+    super::press(0, Modifiers::none(), cx);
+    cx.simulate_keystrokes("shift-down left");
+    super::frames(cx);
+    let (_, selection, _) = field(&document, cx);
+    assert!(selection.is_empty(), "the move stands: {selection:?}");
+}

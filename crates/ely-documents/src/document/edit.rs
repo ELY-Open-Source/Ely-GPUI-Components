@@ -278,6 +278,8 @@ impl MarkdownDocument {
 
     /// Writes the open block as one step; the edit made.
     pub(super) fn commit(&mut self, cx: &mut Context<Self>) -> Option<(Range<usize>, usize)> {
+        // A drag or aim ends with its field.
+        (self.drag, self.aim) = (None, None);
         let open = self.open.take()?;
         self.orphan = Some(open.input.focus_handle(cx));
         cx.notify();
@@ -338,8 +340,7 @@ impl MarkdownDocument {
             }
         }
         let next = match down {
-            true => Some(self.covered(&open.range).1 + 1)
-                .filter(|next| *next < self.parsed.blocks.len()),
+            true => Some(self.covered(open).1 + 1).filter(|next| *next < self.parsed.blocks.len()),
             false => here.checked_sub(1),
         };
         let Some(next) = next else {

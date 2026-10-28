@@ -378,6 +378,7 @@ impl MarkdownDocument {
 
     /// Closes the open block without writing it.
     fn drop_open(&mut self, cx: &mut Context<Self>) {
+        (self.drag, self.aim) = (None, None);
         if let Some(open) = self.open.take() {
             self.orphan = Some(open.input.focus_handle(cx));
             log::info!("markdown document: the open block closed unwritten");
