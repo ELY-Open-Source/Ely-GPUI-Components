@@ -283,6 +283,38 @@ fn shift_up_from_a_new_end_takes_the_block_above(cx: &mut TestAppContext) {
     assert_eq!(text(&document, cx), "alpha\n", "one step undoes it");
 }
 
+/// A press and release at `at`, drawn between.
+fn click(at: gpui::Point<Pixels>, cx: &mut VisualTestContext) {
+    cx.simulate_mouse_down(at, MouseButton::Left, Modifiers::none());
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    cx.simulate_mouse_up(at, MouseButton::Left, Modifiers::none());
+    cx.run_until_parked();
+}
+
+#[gpui::test]
+fn clicks_in_a_new_end_select_nothing_above(cx: &mut TestAppContext) {
+    let (document, cx) = open("alpha\n", MarkdownMode::Visual, cx);
+    let more = document.read_with(cx, |document, _| {
+        document.list.bounds_for_item(document.parsed.blocks.len())
+    });
+    click(more.expect("the end is drawn").center(), cx);
+    cx.simulate_input("beta");
+    assert_eq!(
+        text(&document, cx),
+        "alpha\n\nbeta",
+        "the click took no block"
+    );
+    let input = document.read_with(cx, |document, _| {
+        document.open.as_ref().expect("open").input.clone()
+    });
+    let at = input.read_with(cx, |input, _| input.bounds_for(2).expect("laid out"));
+    click(at.center(), cx);
+    cx.simulate_input("X");
+    cx.simulate_keystrokes("escape");
+    assert_eq!(text(&document, cx), "alpha\n\nbeXta");
+}
+
 #[gpui::test]
 fn a_held_drag_ends_with_its_field(cx: &mut TestAppContext) {
     let long: String = (0..80).map(|n| format!("Line {n}.\n\n")).collect();

@@ -137,10 +137,13 @@ impl MarkdownDocument {
         let (Some(drag), Some(open)) = (self.drag.as_ref(), self.open.as_ref()) else {
             return;
         };
-        let ix = self
-            .item_at(position)
-            .min(self.parsed.blocks.len().saturating_sub(1));
+        let end = self.parsed.blocks.len();
         let (first, last) = self.covered(open);
+        // Past the blocks is a new end's own, else the last block.
+        let ix = match self.item_at(position).min(end) {
+            ix if ix == end && last < end => end.saturating_sub(1),
+            ix => ix,
+        };
         if (first..=last).contains(&ix) {
             if drag.across {
                 open.input.clone().update(cx, |input, cx| {
