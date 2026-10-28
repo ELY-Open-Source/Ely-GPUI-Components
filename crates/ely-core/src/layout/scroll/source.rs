@@ -2,7 +2,9 @@
 
 use std::rc::Rc;
 
-use gpui::{App, Axis, ListOffset, ListState, Pixels, Point, ScrollHandle, point};
+use gpui::{
+    App, Axis, IntoElement, ListOffset, ListState, Pixels, Point, ScrollHandle, canvas, point,
+};
 
 /// What a scrollbar moves: a box, list or kept scroll.
 #[derive(Clone)]
@@ -203,4 +205,26 @@ fn list_place(list: &ListState) -> Option<ScrollPlace> {
         shown: (shown / (end + shown).max(f32::EPSILON)).clamp(0.0, 1.0),
         passed,
     })
+}
+
+/// A bar's offset and thumb place.
+pub(super) type Seen = (Point<Pixels>, Option<(Pixels, f32, f32)>);
+
+pub(super) fn seen(source: &ScrollSource, axis: Axis, cx: &App) -> Seen {
+    let place = source
+        .place(axis, cx)
+        .map(|place| (place.span, place.shown, place.passed));
+    (source.offset(cx), place)
+}
+
+/// Asks one more frame if the source moved after render.
+pub(super) fn follow(source: ScrollSource, axis: Axis, drawn: Seen) -> impl IntoElement {
+    canvas(
+        move |_, window, cx| {
+            if seen(&source, axis, cx) != drawn {
+                window.request_animation_frame();
+            }
+        },
+        |_, _, _, _| {},
+    )
 }

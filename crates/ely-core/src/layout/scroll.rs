@@ -1,24 +1,24 @@
-use std::{cell::Cell, rc::Rc, time::Duration};
+use std::{cell::Cell, rc::Rc};
 
 use gpui::{
     AnyElement, App, Axis, Bounds, Canvas, Div, ElementId, EmptyView, Entity, EntityId,
-    FocusHandle, HoverListenerMode, InteractiveElement, IntoElement, ParentElement, Pixels, Point,
+    FocusHandle, HoverListenerMode, InteractiveElement, IntoElement, ParentElement, Pixels,
     RenderOnce, ScrollHandle, StatefulInteractiveElement, StyleRefinement, Styled, Window, canvas,
     div, point, prelude::*,
 };
 use smallvec::SmallVec;
-use web_time::Instant;
 
+mod shown;
 mod source;
 #[cfg(test)]
 mod tests;
 
+use shown::{Activity, track_activity};
 pub use source::{ScrollModel, ScrollPlace, ScrollSource};
+use source::{follow, seen};
 
 use super::ScrollShadow;
-use crate::{motion, theme::ActiveTheme};
-
-const IDLE: Duration = Duration::from_millis(900);
+use crate::theme::ActiveTheme;
 
 /// Sets `scroll`'s offset along `axis` whole so `item`, as painted, sits inside the box, its start first when it is longer; true when it moved.
 #[doc(hidden)]
@@ -83,38 +83,11 @@ pub fn on_axis<E: Styled>(mut element: E) -> E {
     element
 }
 
-struct Activity {
-    handle: ScrollHandle,
-    last: Point<Pixels>,
-    active_at: Option<Instant>,
-    hovered: bool,
-    /// The pointer on the area's own bars, by `slot`.
-    on_bar: [bool; 2],
-}
-
-impl Activity {
-    fn held(&self) -> bool {
-        self.hovered || self.on_bar.contains(&true)
-    }
-}
-
 fn slot(axis: Axis) -> usize {
     match axis {
         Axis::Horizontal => 0,
         Axis::Vertical => 1,
     }
-}
-
-/// Visibility 0..=1: full while active, fading after `IDLE`.
-fn presence(activity: &Activity, fade: Duration) -> f32 {
-    if activity.held() {
-        return 1.0;
-    }
-    let Some(at) = activity.active_at else {
-        return 0.0;
-    };
-    let quiet = at.elapsed().saturating_sub(IDLE);
-    1.0 - (quiet.as_secs_f32() / fade.as_secs_f32()).min(1.0)
 }
 
 /// Thumb start at press, the pointer's first position, the end.
@@ -197,28 +170,6 @@ impl Scrollbar {
     }
 }
 
-/// What a bar draws from: the offset and the thumb's place.
-type Seen = (Point<Pixels>, Option<(Pixels, f32, f32)>);
-
-fn seen(source: &ScrollSource, axis: Axis, cx: &App) -> Seen {
-    let place = source
-        .place(axis, cx)
-        .map(|place| (place.span, place.shown, place.passed));
-    (source.offset(cx), place)
-}
-
-/// Draws again if the source moved after render, as a list's deferred scroll does.
-fn follow(source: ScrollSource, axis: Axis, drawn: Seen) -> impl IntoElement {
-    canvas(
-        move |_, window, cx| {
-            if seen(&source, axis, cx) != drawn {
-                window.request_animation_frame();
-            }
-        },
-        |_, _, _, _| {},
-    )
-}
-
 impl RenderOnce for Scrollbar {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let follows = follow(
@@ -238,13 +189,7 @@ impl RenderOnce for Scrollbar {
         let thickness = theme.scrollbar_thickness().to_pixels(rem);
         let min_thumb = theme.scrollbar_min_thumb().to_pixels(rem);
         let activity = matches!(self.shown, Shown::Auto).then(|| {
-            window.use_keyed_state((self.id.clone(), "activity"), cx, |_, _| Activity {
-                handle: ScrollHandle::new(),
-                last: Point::default(),
-                active_at: None,
-                hovered: false,
-                on_bar: [false; 2],
-            })
+            window.use_keyed_state((self.id.clone(), "activity"), cx, |_, _| Activity::new())
         });
         let given = match self.shown {
             Shown::Given(presence) => presence,
@@ -420,35 +365,9 @@ impl ParentElement for ScrollArea {
     }
 }
 
-fn track_activity(
-    state: &Entity<Activity>,
-    offset: Point<Pixels>,
-    window: &mut Window,
-    cx: &mut App,
-) -> f32 {
-    if state.read(cx).last != offset {
-        state.update(cx, |activity, _| {
-            activity.last = offset;
-            activity.active_at = Some(Instant::now());
-        });
-    }
-    let fade = motion::duration(motion::SLOW, cx);
-    let presence = presence(state.read(cx), fade);
-    if presence > 0.0 && !state.read(cx).held() {
-        window.request_animation_frame();
-    }
-    presence
-}
-
 impl RenderOnce for ScrollArea {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let state = window.use_keyed_state(self.id.clone(), cx, |_, _| Activity {
-            handle: ScrollHandle::new(),
-            last: Point::default(),
-            active_at: None,
-            hovered: false,
-            on_bar: [false; 2],
-        });
+        let state = window.use_keyed_state(self.id.clone(), cx, |_, _| Activity::new());
         let handle = match self.handle {
             Some(handle) => handle,
             None => state.read(cx).handle.clone(),

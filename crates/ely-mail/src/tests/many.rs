@@ -60,12 +60,49 @@ fn only_the_rows_in_view_draw(cx: &mut TestAppContext) {
 #[gpui::test]
 fn its_scrollbar_follows_and_drags_the_list(cx: &mut TestAppContext) {
     let (_, cx) = mailing(many, cx);
+    // Normal motion: the bar holds, then fades.
+    cx.update(|_, cx| crate::theme::Theme::update(cx, |theme| theme.reduced_motion = false));
     tab_to(1, cx);
     // Plain input; only frames the view asked for are drawn.
     cx.simulate_keystrokes("end");
     cx.run_until_parked();
-    cx.update(|window, cx| window.simulate_next_frame(cx));
+    let asked: Vec<usize> = (0..8)
+        .map(|_| {
+            let asked = cx.update(|window, cx| window.simulate_next_frame(cx));
+            cx.run_until_parked();
+            asked
+        })
+        .collect();
+    assert!(asked[0] > 0, "the moved list asks a frame: {asked:?}");
+    assert!(
+        asked[4..].iter().all(|&n| n == 0),
+        "then it rests: {asked:?}"
+    );
+    // The hold ends by one wake, then the bar fades.
+    std::thread::sleep(std::time::Duration::from_millis(950));
+    cx.executor()
+        .advance_clock(std::time::Duration::from_millis(950));
     cx.run_until_parked();
+    let fading: Vec<usize> = (0..8)
+        .map(|_| {
+            let asked = cx.update(|window, cx| window.simulate_next_frame(cx));
+            cx.run_until_parked();
+            asked
+        })
+        .collect();
+    assert!(fading[0] > 0, "the wake starts the fade: {fading:?}");
+    std::thread::sleep(std::time::Duration::from_millis(400));
+    let fading: Vec<usize> = (0..8)
+        .map(|_| {
+            let asked = cx.update(|window, cx| window.simulate_next_frame(cx));
+            cx.run_until_parked();
+            asked
+        })
+        .collect();
+    assert!(
+        fading[4..].iter().all(|&n| n == 0),
+        "the faded bar rests: {fading:?}"
+    );
     let thumb = cx
         .debug_bounds("scrollbar-thumb")
         .expect("a scroll shows the thumb");
