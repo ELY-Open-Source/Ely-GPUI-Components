@@ -139,7 +139,7 @@ impl MarkdownDocument {
         };
         let end = self.parsed.blocks.len();
         let (first, last) = self.covered(open);
-        // Past the blocks is a new end's own, else the last block.
+        // Past the blocks: a new end's own, else the last.
         let ix = match self.item_at(position).min(end) {
             ix if ix == end && last < end => end.saturating_sub(1),
             ix => ix,
