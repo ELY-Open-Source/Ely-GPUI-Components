@@ -2,7 +2,7 @@
 
 use std::time::Duration;
 
-use gpui::{App, Entity, Pixels, Point, ScrollHandle, Window};
+use gpui::{App, Entity, Pixels, Point, ScrollHandle, Task, Window};
 use web_time::Instant;
 
 use crate::motion;
@@ -16,8 +16,8 @@ pub(super) struct Activity {
     pub(super) hovered: bool,
     /// The pointer on the area's own bars, by `slot`.
     pub(super) on_bar: [bool; 2],
-    /// The activity a wake is set for.
-    woken: Option<Instant>,
+    /// The pending wake and its activity; replacing it cancels it.
+    wake: Option<(Instant, Task<()>)>,
 }
 
 impl Activity {
@@ -28,7 +28,7 @@ impl Activity {
             active_at: None,
             hovered: false,
             on_bar: [false; 2],
-            woken: None,
+            wake: None,
         }
     }
 
@@ -73,17 +73,18 @@ pub(super) fn track_activity(
         .map_or(Duration::ZERO, |at| IDLE.saturating_sub(at.elapsed()));
     if left.is_zero() {
         window.request_animation_frame();
-    } else if activity.woken != activity.active_at {
-        let (view, at) = (window.current_view(), activity.active_at);
-        state.update(cx, |activity, _| activity.woken = at);
-        window
-            .spawn(cx, async move |cx| {
-                cx.background_executor().timer(left).await;
-                if cx.update(|_, cx| cx.notify(view)).is_err() {
-                    log::debug!("scrollbar: its window closed before the bar hid");
-                }
-            })
-            .detach();
+    } else if let Some(at) = activity
+        .active_at
+        .filter(|at| activity.wake.as_ref().map(|wake| wake.0) != Some(*at))
+    {
+        let view = window.current_view();
+        let wake = window.spawn(cx, async move |cx| {
+            cx.background_executor().timer(left).await;
+            if cx.update(|_, cx| cx.notify(view)).is_err() {
+                log::debug!("scrollbar: its window closed before the bar hid");
+            }
+        });
+        state.update(cx, |activity, _| activity.wake = Some((at, wake)));
     }
     presence
 }
