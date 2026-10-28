@@ -44,6 +44,7 @@ impl Render for Explorer {
             heard(&cx.entity()),
             heard(&cx.entity()),
         );
+        let context = heard(&cx.entity());
         let tree = Tree::new("tree", all)
             .open(["src"])
             .selected(self.selected.clone())
@@ -53,6 +54,7 @@ impl Render for Explorer {
             .on_load(move |key, _, cx| load(format!("load {key}"), cx))
             .on_rename(move |key, name, _, cx| rename(format!("rename {key} {name}"), cx))
             .on_move(move |key, target, at, _, cx| moved(format!("move {key} {at:?} {target}"), cx))
+            .on_context(move |key, _, _, cx| context(format!("context {key}"), cx))
             .w(px(300.0))
             .h(px(400.0));
         match self.checked.clone() {
@@ -239,4 +241,15 @@ fn guides_run_unbroken_under_the_parents_chevron(cx: &mut TestAppContext) {
     );
     assert_eq!(lib.bottom(), ui.top(), "one row's guide meets the next");
     assert_eq!(lib.size.height, px(28.0), "a guide takes its row's height");
+}
+
+#[gpui::test]
+fn a_right_press_names_its_row_and_keeps_the_selection(cx: &mut TestAppContext) {
+    let (view, cx) = explorer(false, cx);
+    cx.simulate_mouse_move(row(1), None, Modifiers::none());
+    cx.simulate_mouse_down(row(1), MouseButton::Right, Modifiers::none());
+    cx.simulate_mouse_up(row(1), MouseButton::Right, Modifiers::none());
+    let heard = read(&view, cx, |explorer| explorer.heard.clone());
+    assert!(heard.contains(&"context lib".to_string()), "{heard:?}");
+    assert!(read(&view, cx, |explorer| explorer.selected.is_empty()));
 }
