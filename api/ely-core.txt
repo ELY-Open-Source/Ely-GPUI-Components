@@ -3645,6 +3645,7 @@ pub fn ely_core::forms::TextInput::replace_and_mark_text_in_range(&mut self, cor
 pub fn ely_core::forms::TextInput::replace_text_in_range(&mut self, core::option::Option<core::ops::range::Range<usize>>, &str, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_core::forms::TextInput::rows(&self) -> core::option::Option<(usize, usize)>
 pub fn ely_core::forms::TextInput::select(&mut self, core::ops::range::Range<usize>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_core::forms::TextInput::select_from(&mut self, usize, usize, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_core::forms::TextInput::selected_text_range(&mut self, bool, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<gpui::platform::UTF16Selection>
 pub fn ely_core::forms::TextInput::selection(&self) -> core::ops::range::Range<usize>
 pub fn ely_core::forms::TextInput::set_disabled(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)
