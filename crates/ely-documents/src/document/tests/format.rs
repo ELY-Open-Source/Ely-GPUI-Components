@@ -194,7 +194,31 @@ fn an_end_in_marks_or_an_address_refuses() {
     assert_eq!(toggled("[a](ht‸tps://example.com)", Link), across);
     assert_eq!(toggled("a *⟨*b** c⟩", Strong), across);
     assert_eq!(toggled("*a⟨b*⟩", Strong), across);
-    assert_eq!(toggled("⟨alpha\n\nbeta⟩", Strong), across);
+    assert_eq!(toggled("⟨alpha\n\nbeta⟩", Link), across);
+}
+
+#[test]
+fn a_format_across_blocks_runs_in_each_as_one_toggle() {
+    use InlineFormat::*;
+    assert_eq!(ok("⟨alpha\n\nbeta⟩", Strong), "⟨**alpha**\n\n**beta**⟩");
+    assert_eq!(
+        ok("⟨**alpha**\n\n**beta**⟩", Strong),
+        "⟨alpha\n\nbeta⟩",
+        "all styled unwrap"
+    );
+    assert_eq!(
+        ok("⟨**alpha**\n\nbeta⟩", Strong),
+        "⟨**alpha**\n\n**beta**⟩",
+        "the unstyled gain it"
+    );
+    assert_eq!(ok("al⟨pha\n\n# be⟩ta", Emphasis), "al⟨*pha*\n\n# *be*⟩ta");
+    assert_eq!(ok("- ⟨a\n- b⟩", Strike), "- ⟨~~a~~\n- ~~b~~⟩");
+    assert_eq!(
+        ok("⟨a\n\n```\ncode\n```\n\nb⟩", Code),
+        "⟨`a`\n\n```\ncode\n```\n\n`b`⟩",
+        "code between is left"
+    );
+    assert_eq!(ok("⟨a\n\nb⟩", Underline), "⟨<u>a</u>\n\n<u>b</u>⟩");
 }
 
 #[test]
@@ -347,6 +371,9 @@ fn many_paragraphs_format_in_linear_time() {
     });
     linear("**a**\n\n", |text, root| {
         toggle_tree(text, root, 0..text.len(), InlineFormat::Clear).expect("cleared");
+    });
+    linear("a\n\n", |text, root| {
+        toggle_tree(text, root, 0..text.len(), InlineFormat::Strong).expect("across");
     });
 }
 

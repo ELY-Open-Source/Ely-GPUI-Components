@@ -20,6 +20,27 @@ fn a_selection_outside_the_text_or_inside_a_character_is_left(cx: &mut TestAppCo
     });
 }
 
+#[gpui::test]
+fn a_selection_made_backward_keeps_its_caret_at_the_head(cx: &mut TestAppContext) {
+    setup(cx);
+    let (_, cx) = cx.add_window_view(|_, _| gpui::Empty);
+    let input = cx.update(|window, cx| cx.new(|cx| TextInput::new(window, cx)));
+    input.update(cx, |input, cx| {
+        input.set_text("héllo", cx);
+        input.select_from(6, 1, cx);
+        assert_eq!((input.selection(), input.cursor()), (1..6, 1));
+        input.select_from(1, 2, cx);
+        input.select_from(0, 99, cx);
+        assert_eq!(
+            (input.selection(), input.cursor()),
+            (1..6, 1),
+            "left as it was"
+        );
+        input.select_from(0, 3, cx);
+        assert_eq!((input.selection(), input.cursor()), (0..3, 3));
+    });
+}
+
 /// A unit field whose list may drop the chosen unit.
 struct Units {
     shortened: bool,

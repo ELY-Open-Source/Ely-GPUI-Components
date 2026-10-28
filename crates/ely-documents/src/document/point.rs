@@ -128,7 +128,10 @@ impl MarkdownDocument {
                     match (button, open) {
                         (MouseButton::Left, true) => document.cell_end(window, cx),
                         (MouseButton::Right, true) => document.point_open(None, cx),
-                        (MouseButton::Left, false) => document.open(ix, landing, window, cx),
+                        (MouseButton::Left, false) => {
+                            document.open(ix, landing, window, cx);
+                            document.pressed_open();
+                        }
                         (MouseButton::Right, false) => document.point(ix, at, pointed, window, cx),
                         _ => {}
                     }

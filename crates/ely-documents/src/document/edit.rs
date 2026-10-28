@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use gpui::{AppContext as _, Context, Focusable as _, Window};
+use gpui::{AppContext as _, Context, Entity, Focusable as _, Subscription, Window};
 
 use super::{
     DocumentEvent, MarkdownDocument, Open, TargetBlock,
@@ -157,20 +157,41 @@ impl MarkdownDocument {
             },
         };
         let source = text[range.clone()].to_string();
+        let (input, subscriptions) = Self::new_field(source, cell.is_some(), window, cx);
+        if let Some(caret) = caret {
+            input.update(cx, |input, cx| input.select(caret..caret, cx));
+        }
+        window.focus(&input.focus_handle(cx), cx);
+        match cell {
+            Some((at, _)) => log::info!("markdown document: cell {at:?} at {range:?} opens"),
+            None => log::info!("markdown document: block {range:?} opens"),
+        }
+        self.open = Some(Open {
+            range,
+            input,
+            append,
+            cell: cell.map(|(at, _)| at),
+            lent: None,
+            _subscriptions: subscriptions,
+        });
+        cx.notify();
+    }
+
+    /// An open block's field holding `source`, and its watch.
+    pub(super) fn new_field(
+        source: String,
+        cell: bool,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> (Entity<TextInput>, Vec<Subscription>) {
         let input = cx.new(|cx| {
             let input = TextInput::new(window, cx).highlighter(markdown_highlights);
             match cell {
-                Some(_) => input,
-                None => input.multi_line(1, usize::MAX),
+                true => input,
+                false => input.multi_line(1, usize::MAX),
             }
         });
-        input.update(cx, |input, cx| {
-            input.set_text(source, cx);
-            if let Some(caret) = caret {
-                input.select(caret..caret, cx);
-            }
-        });
-        window.focus(&input.focus_handle(cx), cx);
+        input.update(cx, |input, cx| input.set_text(source, cx));
         let subscriptions = vec![cx.subscribe_in(
             &input,
             window,
@@ -198,19 +219,7 @@ impl MarkdownDocument {
                 }
             },
         )];
-        match cell {
-            Some((at, _)) => log::info!("markdown document: cell {at:?} at {range:?} opens"),
-            None => log::info!("markdown document: block {range:?} opens"),
-        }
-        self.open = Some(Open {
-            range,
-            input,
-            append,
-            cell: cell.map(|(at, _)| at),
-            lent: None,
-            _subscriptions: subscriptions,
-        });
-        cx.notify();
+        (input, subscriptions)
     }
 
     /// A block asked open before its text was read, now opened.
@@ -329,7 +338,8 @@ impl MarkdownDocument {
             }
         }
         let next = match down {
-            true => Some(here + 1).filter(|next| *next < self.parsed.blocks.len()),
+            true => Some(self.covered(&open.range).1 + 1)
+                .filter(|next| *next < self.parsed.blocks.len()),
             false => here.checked_sub(1),
         };
         let Some(next) = next else {

@@ -112,8 +112,8 @@ pub use syntax::{CommentStart, Syntax, syntax_fenced, syntax_of};
 pub use tags::TagInput;
 #[doc(hidden)]
 pub use text::{
-    Backspace, Delete, DeleteWordLeft, Down, Enter, Redo, Submit, Undo, Up, bind_keys, from_utf16,
-    to_utf16,
+    Backspace, Delete, DeleteWordLeft, Down, Enter, Redo, SelectDown, SelectUp, Submit, Undo, Up,
+    bind_keys, from_utf16, to_utf16,
 };
 pub use text::{Copy, Cut, Highlight, History, InputEvent, Paste, SelectAll, TextInput};
 pub(crate) use text::{Left, Right};

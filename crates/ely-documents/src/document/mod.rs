@@ -10,6 +10,7 @@ mod look;
 mod parse;
 mod place;
 mod point;
+mod span;
 mod tables;
 #[cfg(all(test, feature = "test-support"))]
 mod tests;
@@ -109,6 +110,8 @@ pub struct MarkdownDocument {
     editing: bool,
     list: ListState,
     open: Option<Open>,
+    /// A left press that may select across blocks.
+    drag: Option<span::Drag>,
     /// A dropped block's focus, for the document to take.
     orphan: Option<FocusHandle>,
     /// A top line asked for, until the view holds it.
@@ -188,6 +191,7 @@ impl MarkdownDocument {
             editing: false,
             list: ListState::new(1, ListAlignment::Top, overdraw),
             open: None,
+            drag: None,
             orphan: None,
             top: None,
             asks: 0,

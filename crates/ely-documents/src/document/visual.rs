@@ -7,7 +7,7 @@ use gpui::{
 
 use super::{MarkdownDocument, edit::Landing, parse::Block};
 use crate::{
-    forms::{self, Down, Up},
+    forms::{self, Down, SelectDown, SelectUp, Up},
     i18n,
     layout::{ScrollSource, Scrollbar},
     primitives::FocusRing as _,
@@ -121,8 +121,15 @@ impl MarkdownDocument {
                 (_, false) => div().into_any_element(),
             };
         };
-        if let Some(open) = open.filter(|open| open.cell.is_none() && open.range == block.range) {
-            return self.field(open, Some(block), cx);
+        if let Some(open) = open.filter(|open| open.cell.is_none() && !open.append) {
+            let range = &open.range;
+            if range.start == block.range.start {
+                return self.field(open, Some(block), cx);
+            }
+            // Shown in the field above.
+            if range.start < block.range.start && block.range.end <= range.end {
+                return div().into_any_element();
+            }
         }
         // A cell open in this block, typed in place.
         let cell = open.and_then(|open| {
@@ -204,11 +211,17 @@ impl MarkdownDocument {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let point = Self::point_in_open(cx);
-        let kind = block.map(|block| (block.kind, block.nodes.is_some()));
+        // A field over several blocks takes no block's look.
+        let kind = (block.filter(|block| block.range == open.range))
+            .map(|block| (block.kind, block.nodes.is_some()));
         let text = open_text(kind, self.look.scale, cx.theme());
         div()
             .debug_selector(|| "markdown-open".to_string())
             .on_mouse_down(MouseButton::Right, point)
+            .on_mouse_down(
+                MouseButton::Left,
+                cx.listener(|document, _: &MouseDownEvent, _, _| document.pressed_open()),
+            )
             .px_3()
             .py_1()
             .border_1()
@@ -262,6 +275,7 @@ impl MarkdownDocument {
                     window.prevent_default();
                     cx.stop_propagation();
                     document.open(ix, Landing::End, window, cx);
+                    document.pressed_open();
                 }),
             )
             .on_mouse_down(
@@ -413,6 +427,16 @@ impl Render for MarkdownDocument {
                         cx.stop_propagation();
                     }
                 }))
+                .capture_action(cx.listener(|document, _: &SelectUp, window, cx| {
+                    if document.extend(false, window, cx) {
+                        cx.stop_propagation();
+                    }
+                }))
+                .capture_action(cx.listener(|document, _: &SelectDown, window, cx| {
+                    if document.extend(true, window, cx) {
+                        cx.stop_propagation();
+                    }
+                }))
                 .on_key_down(
                     cx.listener(|document, event: &gpui::KeyDownEvent, window, cx| {
                         if event.keystroke.key == "escape" && document.open.is_some() {
@@ -425,6 +449,9 @@ impl Render for MarkdownDocument {
                 .px_2()
                 .py_3()
                 .child(blocks)
+                .when(self.drag.is_some(), |root| {
+                    root.child(self.drag_listener(cx))
+                })
                 .into_any_element(),
         };
         div().relative().size_full().child(body).child(bar)

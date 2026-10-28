@@ -391,6 +391,7 @@ mod presses;
 mod reading;
 mod scroll;
 mod secondary;
+mod span;
 mod toc;
 mod tools;
 

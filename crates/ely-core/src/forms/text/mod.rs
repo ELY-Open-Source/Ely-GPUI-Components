@@ -14,7 +14,8 @@ use gpui::{
 
 #[doc(hidden)]
 pub use actions::{
-    Backspace, Delete, DeleteWordLeft, Down, Enter, Redo, Submit, Undo, Up, bind_keys,
+    Backspace, Delete, DeleteWordLeft, Down, Enter, Redo, SelectDown, SelectUp, Submit, Undo, Up,
+    bind_keys,
 };
 pub use actions::{Copy, Cut, Paste, SelectAll};
 pub(crate) use actions::{Left, Right};
@@ -377,6 +378,23 @@ impl TextInput {
         }
         self.selection = range;
         self.reversed = false;
+        self.restart_blink(cx);
+    }
+
+    /// Selects from `anchor` to `head`; the caret sits at `head`.
+    pub fn select_from(&mut self, anchor: usize, head: usize, cx: &mut Context<Self>) {
+        let (start, end) = (anchor.min(head), anchor.max(head));
+        if end > self.text.len()
+            || !self.text.is_char_boundary(start)
+            || !self.text.is_char_boundary(end)
+        {
+            return log::error!(
+                "text input: no selection {anchor}..{head} in {} bytes",
+                self.text.len()
+            );
+        }
+        self.selection = start..end;
+        self.reversed = head < anchor;
         self.restart_blink(cx);
     }
 
