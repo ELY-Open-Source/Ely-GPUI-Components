@@ -1,7 +1,7 @@
 use std::{collections::HashSet, rc::Rc};
 
 use gpui::{
-    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
+    App, Axis, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, Role,
     ScrollStrategy, SharedString, StatefulInteractiveElement, Styled, UniformListScrollHandle,
     Window, div, uniform_list,
 };
@@ -11,6 +11,7 @@ use super::item::{Mail, MailItem};
 use crate::{
     forms::OnValues,
     i18n,
+    layout::Scrollbar,
     lists::Pick,
     primitives::tab_stop,
     theme::{ActiveTheme, TextSize},
@@ -263,6 +264,12 @@ impl RenderOnce for MailList {
             .track_scroll(&scroll)
             .size_full()
         };
+        let bar = Scrollbar::new(
+            (self.id.clone(), "scrollbar"),
+            &scroll.0.borrow().base_handle,
+            Axis::Vertical,
+        )
+        .auto();
         div()
             .id(self.id)
             .debug_selector(|| "mail-list".into())
@@ -288,7 +295,9 @@ impl RenderOnce for MailList {
                     pick(to, how, window, cx);
                 }
             })
+            .relative()
             .child(rows)
+            .child(bar)
             .into_any_element()
     }
 }

@@ -1,6 +1,9 @@
 use std::rc::Rc;
 
-use gpui::{AnyElement, Entity, IntoElement, ParentElement, Styled, TestAppContext, div, px};
+use gpui::{
+    AnyElement, Entity, IntoElement, Modifiers, MouseButton, ParentElement, Styled, TestAppContext,
+    div, point, px,
+};
 use jiff::Timestamp;
 
 use super::{Mailing, heard, mailing, note, press, tab_to};
@@ -52,6 +55,45 @@ fn only_the_rows_in_view_draw(cx: &mut TestAppContext) {
         "the first left the view"
     );
     assert_eq!(heard(&host, cx), ["1 from m99999"]);
+}
+
+#[gpui::test]
+fn its_scrollbar_follows_and_drags_the_list(cx: &mut TestAppContext) {
+    let (_, cx) = mailing(many, cx);
+    tab_to(1, cx);
+    press("end", cx);
+    let thumb = cx
+        .debug_bounds("scrollbar-thumb")
+        .expect("a scroll shows the thumb");
+    assert!(
+        thumb.top() > px(400.),
+        "the thumb sits at the end: {thumb:?}"
+    );
+    assert!(cx.debug_bounds("star m99999").is_some());
+    let grip = thumb.center();
+    cx.simulate_mouse_move(grip, None, Modifiers::none());
+    cx.simulate_mouse_down(grip, MouseButton::Left, Modifiers::none());
+    for up in [10., 200., 400.] {
+        cx.simulate_mouse_move(
+            grip - point(px(0.), px(up)),
+            MouseButton::Left,
+            Modifiers::none(),
+        );
+    }
+    cx.simulate_mouse_up(
+        grip - point(px(0.), px(400.)),
+        MouseButton::Left,
+        Modifiers::none(),
+    );
+    let moved = cx.debug_bounds("scrollbar-thumb").expect("the thumb stays");
+    assert!(
+        moved.top() < thumb.top() - px(150.),
+        "the thumb follows the pointer: {moved:?}"
+    );
+    assert!(
+        cx.debug_bounds("star m99999").is_none(),
+        "the drag scrolls the list"
+    );
 }
 
 #[gpui::test]
