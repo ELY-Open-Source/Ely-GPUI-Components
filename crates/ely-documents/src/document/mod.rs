@@ -112,6 +112,8 @@ pub struct MarkdownDocument {
     open: Option<Open>,
     /// A left press that may select across blocks.
     drag: Option<span::Drag>,
+    /// A Shift selection's head, placed once drawn.
+    aim: Option<span::Aim>,
     /// A dropped block's focus, for the document to take.
     orphan: Option<FocusHandle>,
     /// A top line asked for, until the view holds it.
@@ -192,6 +194,7 @@ impl MarkdownDocument {
             list: ListState::new(1, ListAlignment::Top, overdraw),
             open: None,
             drag: None,
+            aim: None,
             orphan: None,
             top: None,
             asks: 0,

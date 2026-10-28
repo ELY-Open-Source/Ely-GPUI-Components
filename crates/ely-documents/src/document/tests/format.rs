@@ -219,6 +219,16 @@ fn a_format_across_blocks_runs_in_each_as_one_toggle() {
         "code between is left"
     );
     assert_eq!(ok("⟨a\n\nb⟩", Underline), "⟨<u>a</u>\n\n<u>b</u>⟩");
+    assert_eq!(
+        ok("⟨<u>a</u>\n\nb⟩", Underline),
+        "⟨<u>a</u>\n\n<u>b</u>⟩",
+        "an underlined block is left"
+    );
+    assert_eq!(ok("⟨<u>a</u>\n\n<u>b</u>⟩", Underline), "⟨a\n\nb⟩");
+    for format in [Strong, Emphasis, Strike, Underline, Code] {
+        let twice = ok(&ok("⟨alpha\n\n# beta⟩", format), format);
+        assert_eq!(twice, "⟨alpha\n\n# beta⟩", "{format:?} twice");
+    }
 }
 
 #[test]

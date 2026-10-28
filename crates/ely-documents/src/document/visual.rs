@@ -303,6 +303,7 @@ impl Render for MarkdownDocument {
         self.place_top(window, cx);
         self.show_waiting(window, cx);
         self.open_waiting(window, cx);
+        self.aim_waiting(window, cx);
         let colors = cx.theme().colors.clone();
         let root = div()
             .size_full()

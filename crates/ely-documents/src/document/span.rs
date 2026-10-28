@@ -1,22 +1,38 @@
 //! A selection across blocks: they open as one field.
 
-use std::ops::Range;
+use std::{ops::Range, time::Duration};
 
 use gpui::{
     Context, DispatchPhase, Entity, Focusable as _, IntoElement, MouseMoveEvent, MouseUpEvent,
-    Pixels, Point, Styled, Window, canvas,
+    Pixels, Point, Styled, Task, Window, canvas, point,
 };
 
 use super::{MarkdownDocument, Open};
 use crate::{forms::TextInput, modes::at_edge};
 
+/// How often a drag held past an edge scrolls.
+const TICK: Duration = Duration::from_millis(16);
+
 /// A left press that may drag past its blocks.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum Drag {
-    /// The pressed field follows its own drag.
-    Pressed,
+#[derive(Default)]
+pub(super) struct Drag {
     /// The field grew; the document moves the head.
-    Across,
+    across: bool,
+    /// The pointer, last seen.
+    at: Option<Point<Pixels>>,
+    /// Scrolls while the pointer stays past an edge.
+    scrolling: Option<Task<()>>,
+}
+
+/// A head to place once the grown field is drawn.
+pub(super) struct Aim {
+    input: Entity<TextInput>,
+    /// The caret's left edge before the field grew.
+    x: Pixels,
+    /// Where the added block lies in the field.
+    place: Range<usize>,
+    down: bool,
+    asked: bool,
 }
 
 /// The selection's fixed and moving ends.
@@ -37,9 +53,10 @@ impl MarkdownDocument {
 
     /// A press left a field open; a drag may follow.
     pub(super) fn pressed_open(&mut self) {
+        self.aim = None;
         self.drag = (self.open.as_ref())
             .filter(|open| open.cell.is_none() && !open.append)
-            .map(|_| Drag::Pressed);
+            .map(|_| Drag::default());
     }
 
     /// The list item at `position`'s height, else the nearest.
@@ -55,25 +72,67 @@ impl MarkdownDocument {
         found
     }
 
-    /// Follows a drag to `position`, growing the field.
-    fn drag_to(&mut self, position: Point<Pixels>, window: &mut Window, cx: &mut Context<Self>) {
-        let (Some(drag), Some(open)) = (self.drag, self.open.as_ref()) else {
-            return;
-        };
-        // Past the view's top or bottom, the list scrolls.
+    /// How far `position` lies past the view; above is negative.
+    fn past(&self, position: Point<Pixels>) -> Pixels {
         let view = self.list.viewport_bounds();
         let below = (position.y - view.bottom()).max(Pixels::ZERO);
-        let above = (view.top() - position.y).max(Pixels::ZERO);
-        if below > Pixels::ZERO || above > Pixels::ZERO {
-            self.list.scroll_by(below - above);
-            cx.notify();
+        below - (view.top() - position.y).max(Pixels::ZERO)
+    }
+
+    /// A drag at `position`; past an edge, scrolling starts.
+    fn drag_to(&mut self, position: Point<Pixels>, window: &mut Window, cx: &mut Context<Self>) {
+        let outside = self.past(position) != Pixels::ZERO;
+        let Some(drag) = self.drag.as_mut() else {
+            return;
+        };
+        drag.at = Some(position);
+        if outside && drag.scrolling.is_none() {
+            log::debug!("markdown document: a drag past the view scrolls it");
+            drag.scrolling = Some(cx.spawn_in(window, async move |document, cx| {
+                loop {
+                    cx.background_executor().timer(TICK).await;
+                    let step =
+                        |document: &mut Self, window: &mut Window, cx: &mut Context<Self>| {
+                            document.edge_scroll(window, cx)
+                        };
+                    if !document.update_in(cx, step).unwrap_or(false) {
+                        break;
+                    }
+                }
+            }));
         }
+        self.follow(position, window, cx);
+    }
+
+    /// One scroll step for a drag held past an edge.
+    fn edge_scroll(&mut self, window: &mut Window, cx: &mut Context<Self>) -> bool {
+        let Some(at) = self.drag.as_ref().and_then(|drag| drag.at) else {
+            return false;
+        };
+        let past = self.past(at);
+        if past == Pixels::ZERO {
+            if let Some(drag) = self.drag.as_mut() {
+                drag.scrolling = None;
+            }
+            return false;
+        }
+        self.list.scroll_by(past / 2.0);
+        cx.notify();
+        self.follow(at, window, cx);
+        true
+    }
+
+    /// Moves the head to `position`, growing the field.
+    fn follow(&mut self, position: Point<Pixels>, window: &mut Window, cx: &mut Context<Self>) {
+        let (Some(drag), Some(open)) = (self.drag.as_ref(), self.open.as_ref()) else {
+            return;
+        };
         let ix = self
             .item_at(position)
             .min(self.parsed.blocks.len().saturating_sub(1));
         let (first, last) = self.covered(&open.range);
         if (first..=last).contains(&ix) {
-            if drag == Drag::Across {
+            if drag.across {
                 open.input.clone().update(cx, |input, cx| {
                     let head = input.offset_for_point(position);
                     input.select_from(ends(input).0, head, cx)
@@ -86,7 +145,9 @@ impl MarkdownDocument {
         };
         let head = if ix > last { place.start } else { place.end };
         input.update(cx, |input, cx| input.select_from(ends(input).0, head, cx));
-        self.drag = Some(Drag::Across);
+        if let Some(drag) = self.drag.as_mut() {
+            drag.across = true;
+        }
     }
 
     /// Shift+Up or Down past the field's edge selects on.
@@ -96,6 +157,7 @@ impl MarkdownDocument {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> bool {
+        self.aim = None;
         let Some(open) = (self.open.as_ref()).filter(|open| open.cell.is_none() && !open.append)
         else {
             return false;
@@ -109,32 +171,60 @@ impl MarkdownDocument {
             true => Some(last + 1).filter(|next| *next < self.parsed.blocks.len()),
             false => first.checked_sub(1),
         };
-        let (text, head) = (input.text(), input.cursor());
-        let line = text[..head].rfind('\n').map_or(0, |at| at + 1);
-        let column = text[line..head].chars().count();
+        let x = input.bounds_for(input.cursor()).map(|caret| caret.left());
         let Some((input, place)) = next.and_then(|next| self.widen(next, window, cx)) else {
             return false;
         };
-        input.update(cx, |input, cx| {
-            let block = &input.text()[place.clone()];
-            // Its first line going down, its last going up.
-            let line = match down {
-                true => place.start..place.start + block.find('\n').unwrap_or(block.len()),
-                false => place.start + block.rfind('\n').map_or(0, |at| at + 1)..place.end,
-            };
-            let shown = &input.text()[line.clone()];
-            let shown = shown.strip_suffix('\r').unwrap_or(shown);
-            let at = shown
-                .char_indices()
-                .nth(column)
-                .map_or(shown.len(), |(at, _)| at);
-            let anchor = ends(input).0;
-            input.select_from(anchor, line.start + at, cx);
+        // Its first line going down, its last going up.
+        let edge = if down { place.start } else { place.end };
+        input.update(cx, |input, cx| input.select_from(ends(input).0, edge, cx));
+        self.aim = x.map(|x| Aim {
+            input,
+            x,
+            place,
+            down,
+            asked: false,
         });
         true
     }
 
-    /// Opens block `ix` into a new field; where its text lies.
+    /// Places an aimed head a frame after its field draws.
+    pub(super) fn aim_waiting(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let Some(aim) = self.aim.as_mut().filter(|aim| !aim.asked) else {
+            return;
+        };
+        aim.asked = true;
+        cx.on_next_frame(window, |document, _, cx| document.aimed(cx));
+    }
+
+    /// The head on the added block's line, at its x.
+    fn aimed(&mut self, cx: &mut Context<Self>) {
+        let Some(aim) = self.aim.take() else {
+            return;
+        };
+        if self
+            .open
+            .as_ref()
+            .is_none_or(|open| open.input != aim.input)
+        {
+            return log::info!("markdown document: the aimed field closed first");
+        }
+        aim.input.update(cx, |input, cx| {
+            let edge = if aim.down {
+                aim.place.start
+            } else {
+                aim.place.end
+            };
+            let Some(line) = input.bounds_for(edge) else {
+                return log::warn!("markdown document: the grown field is not laid out");
+            };
+            let head = input.offset_for_point(point(aim.x, line.center().y));
+            let head = head.clamp(aim.place.start, aim.place.end);
+            input.select_from(ends(input).0, head, cx);
+        });
+    }
+
+    /// Opens block `ix` into a new field; where it lies.
     fn widen(
         &mut self,
         ix: usize,
@@ -177,7 +267,7 @@ impl MarkdownDocument {
         Some((input, place..place + target.len()))
     }
 
-    /// Follows a drag that left a field until the button lifts.
+    /// Follows a drag past its field until the button lifts.
     pub(super) fn drag_listener(&self, cx: &mut Context<Self>) -> impl IntoElement + use<> {
         let document = cx.entity();
         canvas(
@@ -185,17 +275,20 @@ impl MarkdownDocument {
             move |_, _, window, _| {
                 let moved = document.clone();
                 window.on_mouse_event(move |event: &MouseMoveEvent, phase, window, cx| {
-                    if phase == DispatchPhase::Bubble && event.dragging() {
-                        moved.update(cx, |document, cx| {
-                            document.drag_to(event.position, window, cx)
-                        });
+                    if phase != DispatchPhase::Bubble {
+                        return;
                     }
+                    moved.update(cx, |document, cx| match event.dragging() {
+                        true => document.drag_to(event.position, window, cx),
+                        // A release we never heard.
+                        false => document.drag = None,
+                    });
                 });
                 let lifted = document.clone();
                 window.on_mouse_event(move |event: &MouseUpEvent, phase, window, cx| {
                     if phase == DispatchPhase::Bubble {
                         lifted.update(cx, |document, cx| {
-                            document.drag_to(event.position, window, cx);
+                            document.follow(event.position, window, cx);
                             document.drag = None;
                         });
                     }

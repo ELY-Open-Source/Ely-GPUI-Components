@@ -1,5 +1,6 @@
 //! Inline formats toggle at the selection, as Typora's (R4.6).
 
+mod across;
 mod clear;
 
 use std::ops::Range;
@@ -7,6 +8,7 @@ use std::ops::Range;
 use crate::markdown::mdast::Node;
 
 use super::TableRefusal;
+use across::{each, holding, spreads, trimmed};
 
 use crate::{
     markdown::{file_tree, span, walk},
@@ -172,72 +174,6 @@ fn merges(format: InlineFormat) -> bool {
     )
 }
 
-/// Formats that run across blocks, block by block.
-fn spreads(format: InlineFormat) -> bool {
-    matches!(
-        format,
-        InlineFormat::Strong
-            | InlineFormat::Emphasis
-            | InlineFormat::Strike
-            | InlineFormat::Underline
-            | InlineFormat::Code
-    )
-}
-
-/// `format` in each block `s..e` touches, as one toggle.
-fn each(
-    text: &str,
-    nodes: &[&Node],
-    Range { start: s, end: e }: Range<usize>,
-    format: InlineFormat,
-) -> Result<Change, EditRefusal> {
-    // A block's own nodes follow it in the walk.
-    let mut parts: Vec<(Range<usize>, Range<usize>, &[&Node])> = Vec::new();
-    for (ix, node) in nodes.iter().enumerate().filter(|(_, node)| block(node)) {
-        let (whole, room) = (span(node), room(node, text));
-        if !(room.start < e && s < room.end) {
-            continue;
-        }
-        let part = trimmed(text, s.max(room.start)..e.min(room.end));
-        let kids = (nodes[ix + 1..].iter())
-            .take_while(|kid| whole.start <= span(kid).start && span(kid).end <= whole.end)
-            .count();
-        if !part.is_empty() {
-            parts.push((part, room, &nodes[ix + 1..ix + 1 + kids]));
-        }
-    }
-    parts.sort_by_key(|(part, ..)| part.start);
-    if parts.is_empty() {
-        return Err(EditRefusal::Outside);
-    }
-    // All styled lose it; else the rest gain it.
-    let styled = |(part, _, kids): &&(Range<usize>, Range<usize>, &[&Node])| {
-        holding(text, kids, part.clone(), format).is_some()
-    };
-    let all = parts.iter().all(|part| styled(&part));
-    let mut edits = Vec::new();
-    for (part, room, kids) in parts.iter().filter(|part| all || !styled(part)) {
-        let rooms = std::slice::from_ref(room);
-        edits.extend(toggle_in(text, kids, rooms, part.clone(), format)?.0);
-    }
-    let selection = moved(&edits, s, false)..moved(&edits, e, true);
-    Ok((edits, selection))
-}
-
-/// Where byte `at` lands after sorted `edits`; inside one, an end.
-fn moved(edits: &[(Range<usize>, String)], at: usize, end: bool) -> usize {
-    let mut grown = 0isize;
-    for (range, with) in edits {
-        if range.end <= at {
-            grown += with.len() as isize - range.len() as isize;
-        } else if range.start < at {
-            let start = range.start.saturating_add_signed(grown);
-            return if end { start + with.len() } else { start };
-        }
-    }
-    at.saturating_add_signed(grown)
-}
-
 /// `text[range]` without `holes`, sorted and inside it.
 fn cut(text: &str, range: Range<usize>, holes: &[Range<usize>]) -> String {
     let mut out = String::new();
@@ -359,34 +295,6 @@ pub(super) fn toggle_tree(
         .map(|node| room(node, text))
         .collect();
     toggle_in(text, &nodes, &rooms, selection, format)
-}
-
-/// `selection` trimmed of the spaces at its ends.
-fn trimmed(text: &str, selection: Range<usize>) -> Range<usize> {
-    let picked = &text[selection.clone()];
-    let s = selection.start + (picked.len() - picked.trim_start().len());
-    let e = (selection.end - (picked.len() - picked.trim_end().len())).max(s);
-    s..e
-}
-
-/// The smallest `format` node holding `s..e`, marks aside.
-fn holding<'a>(
-    text: &str,
-    nodes: &[&'a Node],
-    Range { start: s, end: e }: Range<usize>,
-    format: InlineFormat,
-) -> Option<&'a Node> {
-    let holds = |node: &Node| {
-        let whole = span(node);
-        let inside = match s == e {
-            true => whole.start < s && s < whole.end,
-            false => whole.start <= s && e <= whole.end,
-        };
-        inside && !in_marks(node, text, s) && !in_marks(node, text, e)
-    };
-    (nodes.iter().copied())
-        .filter(|node| styled(format, node) && holds(node))
-        .min_by_key(|node| span(node).len())
 }
 
 /// `toggle` with the tree walked and its rooms found.
