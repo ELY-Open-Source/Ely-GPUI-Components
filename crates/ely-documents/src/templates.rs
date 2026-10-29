@@ -245,6 +245,7 @@ impl RenderOnce for TemplatePicker {
                             div()
                                 .flex()
                                 .items_center()
+                                .justify_between()
                                 .gap_2()
                                 .px_4()
                                 .py_2()
@@ -254,16 +255,13 @@ impl RenderOnce for TemplatePicker {
                                 .child(
                                     div()
                                         .debug_selector(|| "templates-name".into())
-                                        .flex_1()
-                                        .min_w_0()
                                         .text_color(colors.fg_muted)
                                         .child(Ellipsis::new(name)),
                                 )
                                 .child(
                                     div()
                                         .debug_selector(|| "templates-use".into())
-                                        .flex()
-                                        .min_w_0()
+                                        .flex_none()
                                         .child(
                                             Button::new(
                                                 (self.id.clone(), "use"),
@@ -314,6 +312,8 @@ impl RenderOnce for TemplatePicker {
                 div()
                     .flex_none()
                     .w(theme.sidebar_width(false))
+                    // In a dialog the preview keeps half.
+                    .max_w(gpui::relative(0.5))
                     .flex()
                     .flex_col()
                     .gap_2()
@@ -403,10 +403,26 @@ mod tests {
 
     #[cfg(feature = "test-support")]
     #[gpui::test]
-    fn a_narrow_pane_cuts_the_name_not_the_button(cx: &mut gpui::TestAppContext) {
-        let [_, roomy] = drawn(1200., cx);
+    fn a_dialog_wide_picker_shows_the_name_and_the_button(cx: &mut gpui::TestAppContext) {
+        let [whole, roomy] = drawn(1200., cx);
         // ElyDoc's new-document dialog.
         let [name, button] = drawn(390., cx);
+        assert_eq!(
+            button.size.width, roomy.size.width,
+            "the button keeps its label"
+        );
+        assert!(name.size.width >= whole.size.width, "{name:?} cuts Blank");
+        assert!(
+            name.right() <= button.left(),
+            "{name:?} runs into {button:?}"
+        );
+    }
+
+    #[cfg(feature = "test-support")]
+    #[gpui::test]
+    fn a_narrower_picker_cuts_the_name_not_the_button(cx: &mut gpui::TestAppContext) {
+        let [_, roomy] = drawn(1200., cx);
+        let [name, button] = drawn(330., cx);
         assert_eq!(
             button.size.width, roomy.size.width,
             "the button keeps its label"
