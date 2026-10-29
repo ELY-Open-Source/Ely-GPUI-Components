@@ -13,6 +13,7 @@ use crate::{
     i18n,
     primitives::{FocusRing as _, Icon, IconName, tab_stop},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
+    typography::Ellipsis,
 };
 
 /// Every category at once.
@@ -230,66 +231,78 @@ impl RenderOnce for TemplatePicker {
                 }
             }
         };
-        let preview = match current {
-            Some(ix) => {
-                let take = self.on_use.clone();
-                div()
-                    .flex_1()
-                    .min_w_0()
-                    .flex()
-                    .flex_col()
-                    .child(
-                        div()
-                            .flex()
-                            .items_center()
-                            .justify_between()
-                            .px_4()
-                            .py_2()
-                            .border_b_1()
-                            .border_color(colors.border)
-                            .child(
-                                div()
-                                    .text_color(colors.fg_muted)
-                                    .child(self.templates[ix].name.clone()),
-                            )
-                            .child(
-                                Button::new(
-                                    (self.id.clone(), "use"),
-                                    i18n::text(cx, "templates.use", &[]),
+        let preview =
+            match current {
+                Some(ix) => {
+                    let take = self.on_use.clone();
+                    let name = self.templates[ix].name.clone();
+                    div()
+                        .flex_1()
+                        .min_w_0()
+                        .flex()
+                        .flex_col()
+                        .child(
+                            div()
+                                .flex()
+                                .items_center()
+                                .gap_2()
+                                .px_4()
+                                .py_2()
+                                .border_b_1()
+                                .border_color(colors.border)
+                                // A narrow pane cuts the name before the button.
+                                .child(
+                                    div()
+                                        .debug_selector(|| "templates-name".into())
+                                        .flex_1()
+                                        .min_w_0()
+                                        .text_color(colors.fg_muted)
+                                        .child(Ellipsis::new(name)),
                                 )
-                                .variant(ButtonVariant::Primary)
-                                .size(ControlSize::Sm)
-                                .disabled(take.is_none())
-                                .when_some(take, |button, take| {
-                                    button.on_click(move |_, window, cx| {
-                                        log::info!("template picker: use {ix}");
-                                        take(ix, window, cx)
-                                    })
-                                }),
-                            ),
-                    )
-                    .child(
-                        div()
-                            .id((self.id.clone(), "preview"))
-                            .flex_1()
-                            .overflow_y_scroll()
-                            .p_4()
-                            .child(MarkdownRenderer::new(
-                                (self.id.clone(), format!("preview-{ix}")),
-                                self.templates[ix].markdown.clone(),
-                            )),
-                    )
-                    .into_any_element()
-            }
-            None => div()
-                .flex_1()
-                .flex()
-                .items_center()
-                .justify_center()
-                .text_color(colors.fg_subtle)
-                .child(i18n::text(cx, "templates.none", &[]))
-                .into_any_element(),
-        };
+                                .child(
+                                    div()
+                                        .debug_selector(|| "templates-use".into())
+                                        .flex()
+                                        .min_w_0()
+                                        .child(
+                                            Button::new(
+                                                (self.id.clone(), "use"),
+                                                i18n::text(cx, "templates.use", &[]),
+                                            )
+                                            .variant(ButtonVariant::Primary)
+                                            .size(ControlSize::Sm)
+                                            .disabled(take.is_none())
+                                            .when_some(take, |button, take| {
+                                                button.on_click(move |_, window, cx| {
+                                                    log::info!("template picker: use {ix}");
+                                                    take(ix, window, cx)
+                                                })
+                                            }),
+                                        ),
+                                ),
+                        )
+                        .child(
+                            div()
+                                .id((self.id.clone(), "preview"))
+                                .flex_1()
+                                .overflow_y_scroll()
+                                .p_4()
+                                .child(MarkdownRenderer::new(
+                                    (self.id.clone(), format!("preview-{ix}")),
+                                    self.templates[ix].markdown.clone(),
+                                )),
+                        )
+                        .into_any_element()
+                }
+                None => div()
+                    .flex_1()
+                    .flex()
+                    .items_center()
+                    .justify_center()
+                    .text_color(colors.fg_subtle)
+                    .child(i18n::text(cx, "templates.none", &[]))
+                    .into_any_element(),
+            };
         div()
             .flex()
             .size_full()
@@ -360,5 +373,47 @@ mod tests {
         assert_eq!(kept(&all, "", "Team"), [0, 2]);
         assert_eq!(kept(&all, "went", ALL), [2], "a description counts");
         assert!(kept(&all, "zzz", ALL).is_empty());
+    }
+
+    /// A picker `width` wide.
+    #[cfg(feature = "test-support")]
+    struct Sized(f32);
+
+    #[cfg(feature = "test-support")]
+    impl gpui::Render for Sized {
+        fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+            let all = vec![template("Blank", "Documents", "An empty page")];
+            div()
+                .w(gpui::px(self.0))
+                .h(gpui::px(400.))
+                .child(TemplatePicker::new("t", all).on_use(|_, _, _| {}))
+        }
+    }
+
+    /// The name's and the button's drawn bounds.
+    #[cfg(feature = "test-support")]
+    fn drawn(width: f32, cx: &mut gpui::TestAppContext) -> [gpui::Bounds<gpui::Pixels>; 2] {
+        cx.update(crate::init_for_tests);
+        let (_, cx) = cx.add_window_view(move |_, _| Sized(width));
+        cx.run_until_parked();
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+        ["templates-name", "templates-use"].map(|name| cx.debug_bounds(name).expect("drawn"))
+    }
+
+    #[cfg(feature = "test-support")]
+    #[gpui::test]
+    fn a_narrow_pane_cuts_the_name_not_the_button(cx: &mut gpui::TestAppContext) {
+        let [_, roomy] = drawn(1200., cx);
+        // ElyDoc's new-document dialog.
+        let [name, button] = drawn(390., cx);
+        assert_eq!(
+            button.size.width, roomy.size.width,
+            "the button keeps its label"
+        );
+        assert!(
+            name.right() <= button.left(),
+            "{name:?} runs into {button:?}"
+        );
     }
 }
