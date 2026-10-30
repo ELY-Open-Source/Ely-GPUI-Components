@@ -200,7 +200,17 @@ fn fonts() -> Arc<usvg::fontdb::Database> {
             use gpui::AssetSource as _;
             let mut fonts = usvg::fontdb::Database::new();
             #[cfg(not(test))]
-            fonts.load_system_fonts();
+            {
+                fonts.load_system_fonts();
+                // macOS's Last Resort boxes any letter: no real glyph.
+                let boxes: Vec<_> = (fonts.faces())
+                    .filter(|face| face.post_script_name == "LastResort")
+                    .map(|face| face.id)
+                    .collect();
+                for face in boxes {
+                    fonts.remove_face(face);
+                }
+            }
             #[cfg(test)]
             for fixture in [
                 &include_bytes!("fixtures/ElyFixtureCJK.ttf")[..],
