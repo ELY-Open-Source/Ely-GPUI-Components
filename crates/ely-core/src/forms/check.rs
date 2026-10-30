@@ -295,7 +295,8 @@ impl RenderOnce for CheckboxGroup {
                 let (choices, selected, on_change) =
                     (choices.clone(), selected.clone(), on_change.clone());
                 let value = choice.value.clone();
-                Checkbox::new(("check", ix), selected.contains(&choice.value))
+                let named = format!("check {value}");
+                let row = Checkbox::new(("check", ix), selected.contains(&choice.value))
                     .label(choice.label.clone())
                     .disabled(choice.disabled)
                     .on_change(move |on, window, cx| {
@@ -303,7 +304,8 @@ impl RenderOnce for CheckboxGroup {
                         if let Some(on_change) = &on_change {
                             on_change(&next, window, cx);
                         }
-                    })
+                    });
+                div().debug_selector(move || named).child(row)
             })
             .collect();
         div().id(self.id).flex().flex_col().gap_2().children(boxes)

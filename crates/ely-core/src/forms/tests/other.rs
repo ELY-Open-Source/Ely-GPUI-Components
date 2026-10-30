@@ -5,7 +5,10 @@ use gpui::{
 
 use super::setup;
 use crate::{
-    forms::{Checkbox, Choice, IconPicker, InlineEdit, RadioGroup, SignaturePad, Stroke, Switch},
+    forms::{
+        Checkbox, CheckboxGroup, Choice, IconPicker, InlineEdit, RadioGroup, SignaturePad, Stroke,
+        Switch,
+    },
     primitives::{FocusNext, IconName},
 };
 
@@ -179,4 +182,36 @@ fn long_labels_wrap_inside_their_box(cx: &mut TestAppContext) {
         let label = cx.debug_bounds(selector).expect("the label draws");
         assert!(label.right() <= px(200.0), "{selector}: {label:?}");
     }
+}
+
+/// Two boxes in a group, the first on.
+struct Grouped(Vec<SharedString>);
+
+impl Render for Grouped {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        CheckboxGroup::new(
+            "grouped",
+            [Choice::new("a", "Alpha"), Choice::new("b", "Beta")],
+        )
+        .selected(self.0.clone())
+        .on_change(move |values, _, cx| {
+            let values = values.to_vec();
+            view.update(cx, |view, cx| {
+                view.0 = values;
+                cx.notify();
+            })
+        })
+    }
+}
+
+#[gpui::test]
+fn each_box_in_a_group_is_found_by_its_value(cx: &mut TestAppContext) {
+    setup(cx);
+    let (view, cx) = cx.add_window_view(|_, _| Grouped(vec!["a".into()]));
+    cx.run_until_parked();
+    let beta = cx.debug_bounds("check b").expect("the second box draws");
+    cx.simulate_click(beta.center(), Modifiers::none());
+    cx.run_until_parked();
+    assert_eq!(view.read_with(cx, |view, _| view.0.clone()), ["a", "b"]);
 }
