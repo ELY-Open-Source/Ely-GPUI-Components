@@ -8,7 +8,7 @@ use gpui::{
 mod loading;
 mod states;
 
-use super::{Alert, Notification, NotificationCenter, Toast, ToastViewport, Toaster};
+use super::{Alert, Banner, Notification, NotificationCenter, Toast, ToastViewport, Toaster};
 use crate::{
     primitives::{FocusNext, FocusScope, IconName, Severity},
     theme::Theme,
@@ -292,4 +292,35 @@ fn a_leaving_toast_runs_its_undo_once(cx: &mut TestAppContext) {
         settle(cx);
     }
     assert_eq!(log(&view, cx), ["undo"]);
+}
+
+/// A warning banner whose action is counted.
+struct Warned(usize);
+
+impl Render for Warned {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        Banner::new("warned", Severity::Warning, "The engine is stuck").action(
+            "Stop",
+            move |_, cx| {
+                view.update(cx, |view, cx| {
+                    view.0 += 1;
+                    cx.notify();
+                })
+            },
+        )
+    }
+}
+
+#[gpui::test]
+fn a_banner_action_is_found_by_its_label(cx: &mut TestAppContext) {
+    setup(cx);
+    let (view, cx) = cx.add_window_view(|_, _| Warned(0));
+    cx.run_until_parked();
+    let stop = cx
+        .debug_bounds("banner-action Stop")
+        .expect("the action draws");
+    cx.simulate_click(stop.center(), Modifiers::none());
+    cx.run_until_parked();
+    assert_eq!(view.read_with(cx, |view, _| view.0), 1);
 }

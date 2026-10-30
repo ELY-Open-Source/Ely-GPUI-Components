@@ -235,10 +235,13 @@ impl RenderOnce for Banner {
                     .gap_x_2()
                     .child(div().min_w_0().child(self.message))
                     .when_some(self.action, |text, (label, run)| {
+                        let named = format!("banner-action {label}");
                         text.child(
-                            Button::new(link, label)
-                                .variant(ButtonVariant::Link)
-                                .on_click(move |_, window, cx| run(window, cx)),
+                            div().debug_selector(move || named).child(
+                                Button::new(link, label)
+                                    .variant(ButtonVariant::Link)
+                                    .on_click(move |_, window, cx| run(window, cx)),
+                            ),
                         )
                     }),
             )
