@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-documents`: in `MarkdownDocument`'s visual view, F6 and Shift+F6 move focus to the nearest stop outside the document, so a keyboard user leaves a long document in one key; they had stepped block to block as Tab does. With nothing outside, focus stays where it was.
 - `ely-core`: a `Banner`'s action carries the debug selector `banner-action {label}`, so a test can press it.
 - `ely-core`: each box of a `CheckboxGroup` carries the debug selector `check {value}`, as `ToggleGroup`'s buttons carry `toggle {value}`, so a test can press one box by its value.
 - `ely-core`: a `Scrollbar` over a `ListState` reads the list's attainable end from its measured tail, so a held drag turned back from the bottom moves at once, and returning from the end keeps the thumb's size and range; an unmeasured gap had shrunk the range to the items measured.

@@ -18,7 +18,10 @@ use crate::{
     },
 };
 
-actions!(markdown_document, [Undo, Redo, Indent, Outdent, Paste]);
+actions!(
+    markdown_document,
+    [Undo, Redo, Indent, Outdent, Paste, LeaveNext, LeavePrev]
+);
 
 const CONTEXT: &str = "MarkdownDocument";
 
@@ -78,6 +81,9 @@ pub(crate) fn bind_keys(cx: &mut App) {
         KeyBinding::new(ely_core::secondary!("v"), Paste, context),
         KeyBinding::new("tab", Indent, block),
         KeyBinding::new("shift-tab", Outdent, block),
+        // Out of the document, not to its next block.
+        KeyBinding::new("f6", LeaveNext, context),
+        KeyBinding::new("shift-f6", LeavePrev, context),
     ];
     if !cfg!(target_os = "macos") {
         bindings.push(KeyBinding::new("ctrl-y", Redo, context));
@@ -86,6 +92,22 @@ pub(crate) fn bind_keys(cx: &mut App) {
 }
 
 impl MarkdownDocument {
+    /// Focus to the nearest stop outside the document, either way.
+    fn leave(&mut self, forward: bool, window: &mut Window, cx: &mut Context<Self>) {
+        let start = window.focused(cx);
+        loop {
+            if forward {
+                window.focus_next(cx);
+            } else {
+                window.focus_prev(cx);
+            }
+            // Out, or around to the start: nothing lies outside.
+            if !self.focus.contains_focused(window, cx) || window.focused(cx) == start {
+                return;
+            }
+        }
+    }
+
     /// List item `ix`, with typewriter room at the ends.
     fn item(&mut self, ix: usize, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
         let (first, last) = (ix == 0, ix == self.parsed.blocks.len());
@@ -380,6 +402,12 @@ impl Render for MarkdownDocument {
                 .track_focus(&self.focus)
                 .on_action(cx.listener(|document, _: &Undo, window, cx| {
                     document.history(false, window, cx);
+                }))
+                .on_action(cx.listener(|document, _: &LeaveNext, window, cx| {
+                    document.leave(true, window, cx)
+                }))
+                .on_action(cx.listener(|document, _: &LeavePrev, window, cx| {
+                    document.leave(false, window, cx)
                 }))
                 .on_action(cx.listener(|document, _: &Redo, window, cx| {
                     document.history(true, window, cx);
