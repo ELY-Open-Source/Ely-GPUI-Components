@@ -20,7 +20,7 @@ use source::{follow, seen};
 use super::ScrollShadow;
 use crate::theme::ActiveTheme;
 
-/// Sets `scroll`'s offset along `axis` whole so `item`, as painted, sits inside the box, its start first when it is longer; true when it moved.
+/// Scrolls `item` into view along `axis`; true when moved.
 #[doc(hidden)]
 pub fn bring_into_view(scroll: &ScrollHandle, item: Bounds<Pixels>, axis: Axis) -> bool {
     let (frame, offset) = (scroll.bounds(), scroll.offset());
@@ -44,7 +44,7 @@ pub fn bring_into_view(scroll: &ScrollHandle, item: Bounds<Pixels>, axis: Axis) 
     shift != Pixels::ZERO
 }
 
-/// A canvas over a Tab stop in a scroll box: when the stop takes focus, it brings its painted box into view along `axis`, once per focus. A new `id` reveals again.
+/// Brings a Tab stop into view once each time it focuses.
 #[doc(hidden)]
 pub fn reveal_when_focused(
     id: impl Into<ElementId>,
@@ -77,7 +77,7 @@ pub fn reveal_when_focused(
     .size_full()
 }
 
-/// Keeps a scroll box's wheel to its own axes; gpui turns a wheel along the other axis onto a box that scrolls one way, while the page scrolls too.
+/// Keeps a scroll box's wheel to the axes it scrolls.
 pub fn on_axis<E: Styled>(mut element: E) -> E {
     element.style().restrict_scroll_to_axis = Some(true);
     element
@@ -334,7 +334,7 @@ impl ScrollArea {
         }
     }
 
-    /// Scrolls through the owner's handle, so the owner can move it.
+    /// Scrolls through the owner's handle, which it can move.
     pub fn track_scroll(mut self, handle: &ScrollHandle) -> Self {
         self.handle = Some(handle.clone());
         self

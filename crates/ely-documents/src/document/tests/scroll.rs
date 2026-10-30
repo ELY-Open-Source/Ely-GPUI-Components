@@ -165,3 +165,62 @@ fn a_drag_up_from_a_tall_blocks_end_moves(cx: &mut TestAppContext) {
     drag_thumb(&[-10., -20., -120.], cx);
     assert!(top(cx) > bottom + px(200.), "{:?} from {bottom:?}", top(cx));
 }
+
+#[gpui::test]
+fn a_held_drag_turns_back_up_from_a_tall_blocks_end(cx: &mut TestAppContext) {
+    let lines: String = (0..300).map(|n| format!("Line {n}\n")).collect();
+    let (document, cx) = open(&format!("```text\n{lines}```\n"), MarkdownMode::Preview, cx);
+    frames(cx);
+    let grip = cx
+        .debug_bounds("scrollbar-thumb")
+        .expect("a thumb")
+        .center();
+    cx.simulate_mouse_move(grip, None, Modifiers::none());
+    frames(cx);
+    cx.simulate_mouse_down(grip, MouseButton::Left, Modifiers::none());
+    let low =
+        document.read_with(cx, |document, _| document.list.viewport_bounds().bottom()) - px(100.);
+    for y in [grip.y + px(10.), grip.y + px(20.), low, low - px(120.)] {
+        cx.simulate_mouse_move(point(grip.x, y), MouseButton::Left, Modifiers::none());
+        frames(cx);
+    }
+    let top = document.read_with(cx, |document, _| {
+        document.list.scroll_px_offset_for_scrollbar().y
+    });
+    let end = document.read_with(cx, |document, _| {
+        -document.list.max_offset_for_scrollbar().y
+    });
+    cx.simulate_mouse_up(
+        point(grip.x, low - px(120.)),
+        MouseButton::Left,
+        Modifiers::none(),
+    );
+    assert!(top > end + px(200.), "{top:?} still at the end {end:?}");
+}
+
+#[gpui::test]
+fn the_range_holds_after_the_end_is_visited(cx: &mut TestAppContext) {
+    let (document, cx) = open(&long(), MarkdownMode::Preview, cx);
+    frames(cx);
+    let before = cx.debug_bounds("scrollbar-thumb").expect("a thumb");
+    drag_thumb(&[10., 20., 1600.], cx);
+    drag_thumb(&[-10., -20., -1600.], cx);
+    let after = cx.debug_bounds("scrollbar-thumb").expect("a thumb");
+    assert!(
+        (after.size.height - before.size.height).abs() <= px(2.),
+        "{before:?} became {after:?}"
+    );
+    let travel = document.read_with(cx, |document, _| {
+        document.list.viewport_bounds().size.height
+    }) - after.size.height;
+    drag_thumb(&[10., 20., 20. + f32::from(travel) / 2.], cx);
+    let (middle, end) = document.read_with(cx, |document, _| {
+        let list = &document.list;
+        (list.logical_scroll_top().item_ix, list.item_count())
+    });
+    // Halfway sits near the middle of what scrolls.
+    assert!(
+        middle.abs_diff(end * 44 / 100) <= end / 20,
+        "item {middle} of {end}"
+    );
+}
