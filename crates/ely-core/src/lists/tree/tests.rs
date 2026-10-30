@@ -13,6 +13,7 @@ struct Explorer {
     selected: Vec<SharedString>,
     checked: Option<Vec<SharedString>>,
     heard: Vec<String>,
+    toggled: Vec<String>,
 }
 
 impl Render for Explorer {
@@ -45,6 +46,7 @@ impl Render for Explorer {
             heard(&cx.entity()),
         );
         let context = heard(&cx.entity());
+        let toggled = cx.entity();
         let tree = Tree::new("tree", all)
             .open(["src"])
             .selected(self.selected.clone())
@@ -55,6 +57,10 @@ impl Render for Explorer {
             .on_rename(move |key, name, _, cx| rename(format!("rename {key} {name}"), cx))
             .on_move(move |key, target, at, _, cx| moved(format!("move {key} {at:?} {target}"), cx))
             .on_context(move |key, _, _, cx| context(format!("context {key}"), cx))
+            .on_toggle(move |key, open, cx| {
+                let line = format!("{} {key}", if open { "open" } else { "close" });
+                toggled.update(cx, |explorer, _| explorer.toggled.push(line))
+            })
             .w(px(300.0))
             .h(px(400.0));
         match self.checked.clone() {
@@ -252,4 +258,19 @@ fn a_right_press_names_its_row_and_keeps_the_selection(cx: &mut TestAppContext) 
     let heard = read(&view, cx, |explorer| explorer.heard.clone());
     assert!(heard.contains(&"context lib".to_string()), "{heard:?}");
     assert!(read(&view, cx, |explorer| explorer.selected.is_empty()));
+}
+
+#[gpui::test]
+fn each_open_and_close_is_heard(cx: &mut TestAppContext) {
+    let (view, cx) = explorer(false, cx);
+    cx.simulate_click(row(3), Modifiers::none());
+    settle(cx);
+    cx.simulate_keystrokes("right");
+    settle(cx);
+    cx.simulate_keystrokes("left");
+    settle(cx);
+    assert_eq!(
+        read(&view, cx, |explorer| explorer.toggled.clone()),
+        ["open docs", "close docs"]
+    );
 }

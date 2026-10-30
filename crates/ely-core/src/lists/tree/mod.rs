@@ -77,6 +77,7 @@ pub struct Tree {
     on_rename: Option<OnRename>,
     on_move: Option<OnMove>,
     on_context: Option<OnContext>,
+    on_toggle: Option<OnToggle>,
 }
 
 impl Tree {
@@ -97,6 +98,7 @@ impl Tree {
             on_rename: None,
             on_move: None,
             on_context: None,
+            on_toggle: None,
         }
     }
 
@@ -157,6 +159,12 @@ impl Tree {
         handler: impl Fn(&SharedString, Point<Pixels>, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.on_context = Some(Rc::new(handler));
+        self
+    }
+
+    /// Each node opened or closed: its key, and whether it is open.
+    pub fn on_toggle(mut self, handler: impl Fn(&SharedString, bool, &mut App) + 'static) -> Self {
+        self.on_toggle = Some(Rc::new(handler));
         self
     }
 
@@ -234,7 +242,7 @@ impl RenderOnce for Tree {
         let selected = Rc::new(self.selected);
         let (multiple, checked) = (self.multiple, self.checked.map(Rc::new));
         let toggle: OnToggle = {
-            let (opened, id) = (opened.clone(), id.clone());
+            let (opened, id, on_toggle) = (opened.clone(), id.clone(), self.on_toggle);
             Rc::new(move |key, open, cx| {
                 log::info!(
                     "tree {id:?}: {} {key}",
@@ -246,7 +254,10 @@ impl RenderOnce for Tree {
                         seeded.value.push(key.clone());
                     }
                     cx.notify();
-                })
+                });
+                if let Some(on_toggle) = &on_toggle {
+                    on_toggle(key, open, cx);
+                }
             })
         };
         let pick: OnPick = {
