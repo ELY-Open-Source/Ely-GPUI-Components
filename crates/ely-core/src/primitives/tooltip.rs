@@ -27,6 +27,8 @@ fn surface(content: AnyElement, cx: &App) -> impl IntoElement + use<> {
         .rounded(theme.radius(Radius::Md))
         .bg(theme.colors.tooltip_bg)
         .text_color(theme.colors.tooltip_fg)
+        // gpui draws a tooltip as a root of its own.
+        .font_family(theme.font_family.clone())
         .text_size(theme.text_size(TextSize::Sm))
         .shadow(theme.elevation(Elevation::Floating))
         .child(content);
