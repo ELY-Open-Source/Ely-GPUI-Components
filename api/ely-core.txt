@@ -1797,7 +1797,7 @@ impl<const N: usize> ely_core::theme::Mix for [gpui::color::Hsla; N]
 pub const ely_core::forms::COUNTRIES: [(&str, &str, &str, &str); 6]
 pub const ely_core::forms::PICTURES: [&str; 5]
 pub const ely_core::forms::RelativeRange::ALL: [Self; 8]
-pub const ely_core::i18n::LOCALES: [ely_core::i18n::Locale; 7]
+pub const ely_core::i18n::LOCALES: [ely_core::i18n::Locale; 8]
 pub const ely_core::layout::WORKSPACE_VERSION: u32
 pub const ely_core::motion::BASE: core::time::Duration
 pub const ely_core::motion::FAST: core::time::Duration

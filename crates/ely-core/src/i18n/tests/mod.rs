@@ -114,6 +114,7 @@ fn locales_write_their_own_numbers_and_dates() {
         [
             ("en-US", "−1,234,567.89".into(), "9/1/26".into()),
             ("en-GB", "−1,234,567.89".into(), "01/09/2026".into()),
+            ("es-ES", "−1.234.567,89".into(), "01/09/26".into()),
             ("de-DE", "−1.234.567,89".into(), "01.09.26".into()),
             (
                 "fr-FR",
@@ -209,4 +210,24 @@ mod shown {
         assert_eq!(side(Direction::Ltr), Some(gpui::TextAlign::Left));
         assert_eq!(side(Direction::Rtl), Some(gpui::TextAlign::Right));
     }
+}
+
+#[test]
+fn spanish_formats_and_component_messages_are_available() {
+    let locale = Locale::of("es-ES");
+    assert_eq!(locale.name, "Español");
+    assert_eq!(locale.direction, Direction::Ltr);
+    assert_eq!(locale.number(1234.5, 1), "1.234,5");
+    assert_eq!(
+        super::builtin::builtin("es-ES", "find.replace_all"),
+        "Reemplazar todo"
+    );
+    assert_eq!(
+        super::builtin::builtin("es-ES", "dialog.cancel"),
+        "Cancelar"
+    );
+    assert_eq!(
+        super::builtin::builtin("es-ES", "time.day.other"),
+        "{n} días"
+    );
 }
