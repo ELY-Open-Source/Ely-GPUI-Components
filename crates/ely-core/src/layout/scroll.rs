@@ -188,12 +188,13 @@ impl RenderOnce for Scrollbar {
         let rem = window.rem_size();
         let thickness = theme.scrollbar_thickness().to_pixels(rem);
         let min_thumb = theme.scrollbar_min_thumb().to_pixels(rem);
-        let activity = matches!(self.shown, Shown::Auto).then(|| {
+        let fades = matches!(self.shown, Shown::Auto) && !theme.scrollbars_shown;
+        let activity = fades.then(|| {
             window.use_keyed_state((self.id.clone(), "activity"), cx, |_, _| Activity::new())
         });
         let given = match self.shown {
             Shown::Given(presence) => presence,
-            Shown::Auto => 0.0,
+            Shown::Auto => 1.0,
         };
         let presence = activity.as_ref().map_or(given, |state| {
             track_activity(state, self.handle.offset(cx), window, cx)
@@ -372,7 +373,10 @@ impl RenderOnce for ScrollArea {
             Some(handle) => handle,
             None => state.read(cx).handle.clone(),
         };
-        let presence = track_activity(&state, handle.offset(), window, cx);
+        let presence = match cx.theme().scrollbars_shown {
+            true => 1.0,
+            false => track_activity(&state, handle.offset(), window, cx),
+        };
         self.base
             .id(self.id)
             .relative()

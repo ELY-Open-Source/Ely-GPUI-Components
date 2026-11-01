@@ -69,6 +69,8 @@ pub struct Theme {
     pub mono_family: SharedString,
     /// Holds repeating motion still and cuts the rest short.
     pub reduced_motion: bool,
+    /// Scrollbars that fade stay shown instead.
+    pub scrollbars_shown: bool,
     /// Whose window buttons, title bar and key caps components draw; the system's to start.
     pub platform: Platform,
 }
@@ -103,6 +105,7 @@ impl Theme {
             font_family: "Inter".into(),
             mono_family: "JetBrains Mono".into(),
             reduced_motion: false,
+            scrollbars_shown: false,
             platform: Platform::current(),
         });
     }

@@ -245,3 +245,23 @@ fn a_bar_stays_while_the_pointer_rests_on_it(cx: &mut TestAppContext) {
 }
 
 mod hold;
+
+#[gpui::test]
+fn an_area_shows_its_thumb_unhovered_when_bars_stay(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    cx.update(|cx| Theme::update(cx, |theme| theme.reduced_motion = false));
+    let (_, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new(), 2000.));
+    cx.simulate_mouse_move(point(px(350.), px(250.)), None, Modifiers::none());
+    // Past the hold and the fade.
+    let later = |cx: &mut gpui::VisualTestContext| {
+        std::thread::sleep(std::time::Duration::from_millis(1500));
+        cx.executor()
+            .advance_clock(std::time::Duration::from_millis(1500));
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+        cx.debug_bounds("scrollbar-thumb").is_some()
+    };
+    assert!(!later(cx), "faded when nothing moves");
+    cx.update(|_, cx| Theme::update(cx, |theme| theme.scrollbars_shown = true));
+    assert!(later(cx), "shown with no hover");
+}

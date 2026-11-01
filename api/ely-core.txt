@@ -2487,6 +2487,7 @@ pub ely_core::theme::Theme::mono_family: gpui_shared_string::SharedString
 pub ely_core::theme::Theme::platform: ely_core::theme::Platform
 pub ely_core::theme::Theme::radius_scale: f32
 pub ely_core::theme::Theme::reduced_motion: bool
+pub ely_core::theme::Theme::scrollbars_shown: bool
 pub ely_core::theme::ToolingSizes::graph: (gpui::geometry::Rems, gpui::geometry::Rems)
 pub ely_core::theme::ToolingSizes::log: gpui::geometry::Rems
 pub ely_core::theme::ToolingSizes::swatch: gpui::geometry::Rems

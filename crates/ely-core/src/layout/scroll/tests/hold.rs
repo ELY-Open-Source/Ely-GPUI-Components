@@ -105,3 +105,17 @@ fn earlier_scrolls_never_wake_the_latest_hold(cx: &mut TestAppContext) {
         .collect();
     assert_eq!(held, [0, 0, 0], "old wakes stay asleep");
 }
+
+#[gpui::test]
+fn a_bar_that_stays_never_wakes_to_fade(cx: &mut TestAppContext) {
+    let (position, host, cx) = hosted(cx);
+    cx.update(|_, cx| Theme::update(cx, |theme| theme.scrollbars_shown = true));
+    scroll(0.4, &position, &host, cx);
+    let from = host.read_with(cx, |host, _| host.renders);
+    assert!(cx.debug_bounds("scrollbar-thumb").is_some(), "drawn");
+    let woke: Vec<usize> = [810, 100, 300]
+        .into_iter()
+        .map(|millis| after(millis, from, &host, cx))
+        .collect();
+    assert_eq!(woke, [0, 0, 0], "no fade to wake for");
+}
