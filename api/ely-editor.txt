@@ -392,6 +392,7 @@ pub ely_editor::Metrics::left: gpui::geometry::Pixels
 pub ely_editor::Metrics::line: gpui::geometry::Pixels
 pub ely_editor::Metrics::size: gpui::geometry::Pixels
 pub ely_editor::Metrics::top: gpui::geometry::Pixels
+pub ely_editor::Metrics::wheel: gpui::geometry::Pixels
 pub ely_editor::Problem::column: usize
 pub ely_editor::Problem::line: usize
 pub ely_editor::Problem::message: gpui_shared_string::SharedString

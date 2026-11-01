@@ -235,7 +235,7 @@ fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
             _ => document.list.scroll_px_offset_for_scrollbar().y,
         })
     };
-    // Pixels from a pad, lines from a mouse; two text sizes.
+    // Pad pixels, mouse lines, two text sizes.
     let deltas = [
         ScrollDelta::Pixels(point(px(0.), px(-200.))),
         ScrollDelta::Lines(point(0., -3.)),
