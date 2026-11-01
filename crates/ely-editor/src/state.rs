@@ -117,6 +117,8 @@ pub struct Metrics {
     pub size: Pixels,
     /// The view's height.
     pub height: Pixels,
+    /// One wheel line, as the code's list scrolls it.
+    pub wheel: Pixels,
 }
 
 const BLINK: Duration = Duration::from_millis(530);

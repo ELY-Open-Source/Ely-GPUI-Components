@@ -228,14 +228,6 @@ fn the_range_holds_after_the_end_is_visited(cx: &mut TestAppContext) {
 /// Wheels over the left margin, the column, then the bar.
 fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
     let (document, cx) = open(&long(), mode, cx);
-    document.update(cx, |document, cx| {
-        let look = crate::DocumentLook {
-            measure: Some(gpui::rems(20.)),
-            ..document.look.clone()
-        };
-        document.set_look(look, cx)
-    });
-    frames(cx);
     let view = cx.update(|window, _| window.viewport_size());
     let top = |cx: &mut gpui::VisualTestContext| {
         document.read_with(cx, |document, cx| match mode {
@@ -243,22 +235,42 @@ fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
             _ => document.list.scroll_px_offset_for_scrollbar().y,
         })
     };
-    let mut at = top(cx);
-    let mut moved = Vec::new();
-    for x in [px(8.), view.width / 2.0, view.width - px(4.)] {
-        cx.simulate_event(ScrollEvent {
-            position: point(x, view.height / 2.0),
-            delta: ScrollDelta::Pixels(point(px(0.), px(-200.))),
-            ..Default::default()
+    // Pixels from a pad, lines from a mouse; two text sizes.
+    let deltas = [
+        ScrollDelta::Pixels(point(px(0.), px(-200.))),
+        ScrollDelta::Lines(point(0., -3.)),
+    ];
+    for (scale, delta) in [(1.0, deltas[0]), (1.0, deltas[1]), (2.0, deltas[1])] {
+        document.update(cx, |document, cx| {
+            let look = crate::DocumentLook {
+                measure: Some(gpui::rems(20.)),
+                scale,
+                ..document.look.clone()
+            };
+            document.set_look(look, cx)
         });
         frames(cx);
-        let now = top(cx);
-        moved.push(at - now);
-        at = now;
+        let mut at = top(cx);
+        let mut moved = Vec::new();
+        for x in [px(8.), view.width / 2.0, view.width - px(4.)] {
+            cx.simulate_event(ScrollEvent {
+                position: point(x, view.height / 2.0),
+                delta,
+                ..Default::default()
+            });
+            frames(cx);
+            let now = top(cx);
+            moved.push(at - now);
+            at = now;
+        }
+        let said = format!("{delta:?} at {scale}x: {moved:?}");
+        assert!(moved[0] > px(0.), "a margin scrolls: {said}");
+        assert_eq!(
+            moved[1], moved[0],
+            "the column scrolls once, as far: {said}"
+        );
+        assert_eq!(moved[2], moved[0], "the bar scrolls as far: {said}");
     }
-    assert!(moved[0] > px(0.), "a margin scrolls: {moved:?}");
-    assert_eq!(moved[1], moved[0], "the column scrolls once");
-    assert_eq!(moved[2], moved[0], "the bar scrolls too");
 }
 
 #[gpui::test]

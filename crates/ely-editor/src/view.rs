@@ -361,7 +361,10 @@ impl Render for CodeEditor {
             .child(
                 canvas(
                     move |bounds, window, cx| {
+                        // The list's text style, so its wheel line.
+                        let wheel = window.line_height();
                         let resized = top.update(cx, |editor, _| {
+                            editor.metrics.wheel = wheel;
                             editor.metrics.top = bounds.origin.y;
                             let resized = editor.metrics.height != bounds.size.height;
                             editor.metrics.height = bounds.size.height;

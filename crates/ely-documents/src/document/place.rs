@@ -187,12 +187,11 @@ impl MarkdownDocument {
         cx.notify();
     }
 
-    /// The block holding byte `at`, or the one before it.
     /// A wheel beside the text column scrolls it too.
     pub(super) fn wheel_aside(
         &mut self,
         event: &ScrollEvent,
-        window: &mut Window,
+        _: &mut Window,
         cx: &mut Context<Self>,
     ) {
         match self.mode {
@@ -203,7 +202,9 @@ impl MarkdownDocument {
                 if handle.bounds().contains(&event.position) {
                     return;
                 }
-                let delta = event.delta.pixel_delta(window.line_height());
+                let delta = event
+                    .delta
+                    .pixel_delta(self.editor.read(cx).metrics().wheel);
                 let (now, most) = (handle.offset(), handle.max_offset());
                 handle.set_offset(gpui::point(now.x, (now.y + delta.y).clamp(-most.y, px(0.))));
                 cx.notify();
@@ -218,6 +219,7 @@ impl MarkdownDocument {
         }
     }
 
+    /// The block holding byte `at`, or the one before it.
     pub(super) fn block_at(&self, at: usize) -> usize {
         self.parsed
             .blocks
