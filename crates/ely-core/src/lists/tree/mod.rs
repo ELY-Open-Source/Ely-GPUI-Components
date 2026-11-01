@@ -162,7 +162,7 @@ impl Tree {
         self
     }
 
-    /// Each node opened or closed: its key, and whether it is open.
+    /// Hears each node toggled: its key, and whether open.
     pub fn on_toggle(mut self, handler: impl Fn(&SharedString, bool, &mut App) + 'static) -> Self {
         self.on_toggle = Some(Rc::new(handler));
         self
