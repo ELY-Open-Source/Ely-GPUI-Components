@@ -26,4 +26,4 @@ pub(crate) use select::row_action;
 pub(crate) use select::{Pick, picked};
 pub use sortable::SortableList;
 pub use swipe::{SwipeAction, SwipeableListItem};
-pub use tree::{DropAt, Tree, TreeNode, TreeSelect};
+pub use tree::{DropAt, Tree, TreeDrag, TreeNode, TreeSelect};
