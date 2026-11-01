@@ -1,4 +1,4 @@
-use gpui::{App, Context, Focusable as _, ListOffset, Pixels, Window};
+use gpui::{App, Context, Focusable as _, ListOffset, Pixels, ScrollEvent, Window, px};
 
 use super::{MarkdownDocument, Placement, cells};
 use crate::{MarkdownMode, modes::joint};
@@ -188,6 +188,36 @@ impl MarkdownDocument {
     }
 
     /// The block holding byte `at`, or the one before it.
+    /// A wheel beside the text column scrolls it too.
+    pub(super) fn wheel_aside(
+        &mut self,
+        event: &ScrollEvent,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        match self.mode {
+            MarkdownMode::Split => {}
+            MarkdownMode::Source => {
+                let handle = self.editor.read(cx).scroll_handle();
+                // Over the code, its own list scrolled.
+                if handle.bounds().contains(&event.position) {
+                    return;
+                }
+                let delta = event.delta.pixel_delta(window.line_height());
+                let (now, most) = (handle.offset(), handle.max_offset());
+                handle.set_offset(gpui::point(now.x, (now.y + delta.y).clamp(-most.y, px(0.))));
+                cx.notify();
+            }
+            MarkdownMode::Visual | MarkdownMode::Preview => {
+                if self.list.viewport_bounds().contains(&event.position) {
+                    return;
+                }
+                self.list.scroll_by(-event.delta.pixel_delta(px(20.)).y);
+                cx.notify();
+            }
+        }
+    }
+
     pub(super) fn block_at(&self, at: usize) -> usize {
         self.parsed
             .blocks

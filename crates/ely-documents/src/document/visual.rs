@@ -483,6 +483,11 @@ impl Render for MarkdownDocument {
                 })
                 .into_any_element(),
         };
-        div().relative().size_full().child(body).child(bar)
+        div()
+            .relative()
+            .size_full()
+            .on_scroll(cx.listener(Self::wheel_aside))
+            .child(body)
+            .child(bar)
     }
 }

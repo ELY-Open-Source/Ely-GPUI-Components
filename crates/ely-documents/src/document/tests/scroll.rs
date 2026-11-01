@@ -224,3 +224,49 @@ fn the_range_holds_after_the_end_is_visited(cx: &mut TestAppContext) {
         "item {middle} of {end}"
     );
 }
+
+/// Wheels over the left margin, the column, then the bar.
+fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
+    let (document, cx) = open(&long(), mode, cx);
+    document.update(cx, |document, cx| {
+        let look = crate::DocumentLook {
+            measure: Some(gpui::rems(20.)),
+            ..document.look.clone()
+        };
+        document.set_look(look, cx)
+    });
+    frames(cx);
+    let view = cx.update(|window, _| window.viewport_size());
+    let top = |cx: &mut gpui::VisualTestContext| {
+        document.read_with(cx, |document, cx| match mode {
+            MarkdownMode::Source => document.editor.read(cx).scroll_handle().offset().y,
+            _ => document.list.scroll_px_offset_for_scrollbar().y,
+        })
+    };
+    let mut at = top(cx);
+    let mut moved = Vec::new();
+    for x in [px(8.), view.width / 2.0, view.width - px(4.)] {
+        cx.simulate_event(ScrollEvent {
+            position: point(x, view.height / 2.0),
+            delta: ScrollDelta::Pixels(point(px(0.), px(-200.))),
+            ..Default::default()
+        });
+        frames(cx);
+        let now = top(cx);
+        moved.push(at - now);
+        at = now;
+    }
+    assert!(moved[0] > px(0.), "a margin scrolls: {moved:?}");
+    assert_eq!(moved[1], moved[0], "the column scrolls once");
+    assert_eq!(moved[2], moved[0], "the bar scrolls too");
+}
+
+#[gpui::test]
+fn visual_margins_scroll(cx: &mut TestAppContext) {
+    the_margins_scroll_once(MarkdownMode::Visual, cx);
+}
+
+#[gpui::test]
+fn source_margins_scroll(cx: &mut TestAppContext) {
+    the_margins_scroll_once(MarkdownMode::Source, cx);
+}
