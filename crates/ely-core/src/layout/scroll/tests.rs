@@ -265,3 +265,26 @@ fn an_area_shows_its_thumb_unhovered_when_bars_stay(cx: &mut TestAppContext) {
     cx.update(|_, cx| Theme::update(cx, |theme| theme.scrollbars_shown = true));
     assert!(later(cx), "shown with no hover");
 }
+
+#[gpui::test]
+fn an_area_turned_to_stay_mid_hold_never_wakes(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    cx.update(|cx| Theme::update(cx, |theme| theme.reduced_motion = false));
+    let (view, cx) = cx.add_window_view(|_, _| Tall(0, gpui::ScrollHandle::new(), 2000.));
+    cx.simulate_event(gpui::ScrollEvent {
+        position: point(px(150.), px(100.)),
+        delta: gpui::ScrollDelta::Pixels(point(px(0.), px(-200.))),
+        ..Default::default()
+    });
+    cx.simulate_mouse_move(point(px(350.), px(250.)), None, Modifiers::none());
+    cx.run_until_parked();
+    cx.update(|_, cx| Theme::update(cx, |theme| theme.scrollbars_shown = true));
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    let from = cx.update(|_, app| view.read(app).0);
+    std::thread::sleep(std::time::Duration::from_millis(1500));
+    cx.executor()
+        .advance_clock(std::time::Duration::from_millis(1500));
+    cx.run_until_parked();
+    assert_eq!(cx.update(|_, app| view.read(app).0), from, "no idle redraw");
+}

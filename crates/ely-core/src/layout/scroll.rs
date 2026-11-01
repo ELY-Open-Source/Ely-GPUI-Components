@@ -13,7 +13,7 @@ mod source;
 #[cfg(test)]
 mod tests;
 
-use shown::{Activity, track_activity};
+use shown::{Activity, still, track_activity};
 pub use source::{ScrollModel, ScrollPlace, ScrollSource};
 use source::{follow, seen};
 
@@ -188,16 +188,17 @@ impl RenderOnce for Scrollbar {
         let rem = window.rem_size();
         let thickness = theme.scrollbar_thickness().to_pixels(rem);
         let min_thumb = theme.scrollbar_min_thumb().to_pixels(rem);
-        let fades = matches!(self.shown, Shown::Auto) && !theme.scrollbars_shown;
-        let activity = fades.then(|| {
+        let stays = theme.scrollbars_shown;
+        let activity = matches!(self.shown, Shown::Auto).then(|| {
             window.use_keyed_state((self.id.clone(), "activity"), cx, |_, _| Activity::new())
         });
         let given = match self.shown {
             Shown::Given(presence) => presence,
-            Shown::Auto => 1.0,
+            Shown::Auto => 0.0,
         };
-        let presence = activity.as_ref().map_or(given, |state| {
-            track_activity(state, self.handle.offset(cx), window, cx)
+        let presence = activity.as_ref().map_or(given, |state| match stays {
+            true => still(state, cx),
+            false => track_activity(state, self.handle.offset(cx), window, cx),
         });
         let presence = if held { 1.0 } else { presence };
         let hidden = activity.is_none() && presence <= 0.0;
@@ -374,7 +375,7 @@ impl RenderOnce for ScrollArea {
             None => state.read(cx).handle.clone(),
         };
         let presence = match cx.theme().scrollbars_shown {
-            true => 1.0,
+            true => still(&state, cx),
             false => track_activity(&state, handle.offset(), window, cx),
         };
         self.base

@@ -119,3 +119,19 @@ fn a_bar_that_stays_never_wakes_to_fade(cx: &mut TestAppContext) {
         .collect();
     assert_eq!(woke, [0, 0, 0], "no fade to wake for");
 }
+
+#[gpui::test]
+fn a_hold_cut_short_by_staying_never_wakes(cx: &mut TestAppContext) {
+    let (position, host, cx) = hosted(cx);
+    scroll(0.4, &position, &host, cx);
+    after(100, 0, &host, cx);
+    cx.update(|_, cx| Theme::update(cx, |theme| theme.scrollbars_shown = true));
+    host.update(cx, |_, cx| cx.notify());
+    cx.run_until_parked();
+    let from = host.read_with(cx, |host, _| host.renders);
+    let woke: Vec<usize> = [710, 100, 300]
+        .into_iter()
+        .map(|millis| after(millis, from, &host, cx))
+        .collect();
+    assert_eq!(woke, [0, 0, 0], "the pending wake is gone");
+}

@@ -49,6 +49,14 @@ fn presence(activity: &Activity, fade: Duration) -> f32 {
     1.0 - (quiet.as_secs_f32() / fade.as_secs_f32()).min(1.0)
 }
 
+/// Always shown: a pending fade's wake is dropped.
+pub(super) fn still(state: &Entity<Activity>, cx: &mut App) -> f32 {
+    if state.read(cx).wake.is_some() {
+        state.update(cx, |activity, _| activity.wake = None);
+    }
+    1.0
+}
+
 /// Frames only while fading; one wake ends a still hold.
 pub(super) fn track_activity(
     state: &Entity<Activity>,
