@@ -1,6 +1,6 @@
 use gpui::{
-    Context, FocusHandle, IntoElement, KeyBinding, KeyUpEvent, Keystroke, Modifiers, ParentElement,
-    Render, Styled, TestAppContext, VisualTestContext, Window, div, point, px,
+    Context, FocusHandle, IntoElement, KeyBinding, KeyUpEvent, Keystroke, Modifiers, MouseButton,
+    ParentElement, Render, Styled, TestAppContext, VisualTestContext, Window, div, point, px,
 };
 
 use super::{Button, SegmentedControl, ToggleButton, ToggleItem};
@@ -124,5 +124,49 @@ fn a_choice_missing_from_its_segments_marks_none(cx: &mut TestAppContext) {
     assert!(
         cx.debug_bounds("segment-thumb").is_none(),
         "no thumb marks a choice"
+    );
+}
+
+/// Segments that hear a right press, inside a focused root.
+struct Pointed {
+    root: FocusHandle,
+    pointed: Vec<String>,
+}
+
+impl Render for Pointed {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        FocusScope::new(&self.root).root().w(px(300.0)).child(
+            SegmentedControl::new("views", "list")
+                .segment("list", "List", None)
+                .segment("grid", "Grid", None)
+                .on_context(move |value, _, _, cx| {
+                    view.update(cx, |pointed, _| pointed.pointed.push(value.to_string()))
+                }),
+        )
+    }
+}
+
+#[gpui::test]
+fn a_right_press_names_its_segment_and_keeps_the_focus(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, cx| Pointed {
+        root: cx.focus_handle(),
+        pointed: Vec::new(),
+    });
+    let root = view.read_with(cx, |pointed, _| pointed.root.clone());
+    cx.update(|window, cx| window.focus(&root, cx));
+    cx.run_until_parked();
+    let grid = cx.debug_bounds("segment grid").expect("the grid segment");
+    cx.simulate_mouse_down(grid.center(), MouseButton::Right, Modifiers::none());
+    cx.simulate_mouse_up(grid.center(), MouseButton::Right, Modifiers::none());
+    cx.run_until_parked();
+    assert_eq!(
+        view.read_with(cx, |pointed, _| pointed.pointed.clone()),
+        ["grid"]
+    );
+    assert!(
+        cx.update(|window, _| root.is_focused(window)),
+        "focus stays put"
     );
 }
