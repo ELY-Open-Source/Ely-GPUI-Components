@@ -42,6 +42,8 @@ impl Render for DragGhost {
             .border_1()
             .border_color(theme.colors.border)
             .shadow(theme.elevation(Elevation::Floating))
+            // Gpui draws a drag as a root of its own.
+            .font_family(theme.font_family.clone())
             .text_size(theme.text_size(TextSize::Sm))
             .text_color(theme.colors.fg)
             .when_some(self.icon, |ghost, icon| {
@@ -54,3 +56,6 @@ impl Render for DragGhost {
             .child(self.title.clone())
     }
 }
+
+#[cfg(test)]
+mod tests;
