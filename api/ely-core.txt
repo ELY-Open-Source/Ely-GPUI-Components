@@ -2641,6 +2641,7 @@ pub fn ely_core::buttons::SegmentedControl::into_any_element(self) -> gpui::elem
 pub fn ely_core::buttons::SegmentedControl::into_element(self) -> Self::Element
 pub fn ely_core::buttons::SegmentedControl::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
 pub fn ely_core::buttons::SegmentedControl::on_change(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_core::buttons::SegmentedControl::on_context(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, gpui::geometry::Point<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::buttons::SegmentedControl::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::buttons::SegmentedControl::segment(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>, core::option::Option<ely_core::primitives::IconName>) -> Self
 pub fn ely_core::buttons::SegmentedControl::size(self, ely_core::theme::ControlSize) -> Self
