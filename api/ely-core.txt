@@ -720,6 +720,7 @@ impl ely_core::lists::SortableList
 impl ely_core::lists::SwipeAction
 impl ely_core::lists::SwipeableListItem
 impl ely_core::lists::Tree
+impl ely_core::lists::TreeDrag
 impl ely_core::lists::TreeNode
 impl ely_core::lists::TreeSelect
 impl ely_core::lists::VirtualList
@@ -4109,6 +4110,8 @@ pub fn ely_core::lists::Tree::open(self, impl core::iter::traits::collect::IntoI
 pub fn ely_core::lists::Tree::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::lists::Tree::selected(self, impl core::iter::traits::collect::IntoIterator<Item = impl core::convert::Into<gpui_shared_string::SharedString>>) -> Self
 pub fn ely_core::lists::Tree::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_core::lists::TreeDrag::key(&self) -> &gpui_shared_string::SharedString
+pub fn ely_core::lists::TreeDrag::label(&self) -> &gpui_shared_string::SharedString
 pub fn ely_core::lists::TreeNode::child(self, ely_core::lists::TreeNode) -> Self
 pub fn ely_core::lists::TreeNode::children(self, impl core::iter::traits::collect::IntoIterator<Item = ely_core::lists::TreeNode>) -> Self
 pub fn ely_core::lists::TreeNode::clone(&self) -> Self
@@ -5660,6 +5663,7 @@ pub struct ely_core::lists::SortableList
 pub struct ely_core::lists::SwipeAction
 pub struct ely_core::lists::SwipeableListItem
 pub struct ely_core::lists::Tree
+pub struct ely_core::lists::TreeDrag
 pub struct ely_core::lists::TreeNode
 pub struct ely_core::lists::TreeSelect
 pub struct ely_core::lists::VirtualList
@@ -6492,6 +6496,7 @@ pub use ely_core::lists::SortableList = ely_core::lists::sortable::SortableList
 pub use ely_core::lists::SwipeAction = ely_core::lists::swipe::SwipeAction
 pub use ely_core::lists::SwipeableListItem = ely_core::lists::swipe::SwipeableListItem
 pub use ely_core::lists::Tree = ely_core::lists::tree::Tree
+pub use ely_core::lists::TreeDrag = ely_core::lists::tree::TreeDrag
 pub use ely_core::lists::TreeNode = ely_core::lists::tree::model::TreeNode
 pub use ely_core::lists::TreeSelect = ely_core::lists::tree::select::TreeSelect
 pub use ely_core::lists::VirtualList = ely_core::lists::long::VirtualList

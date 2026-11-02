@@ -39,7 +39,7 @@ ely-documents = { path = "crates/ely-documents", version = "0.1.1" }
 ely-debug = { path = "crates/ely-debug", version = "0.1.1" }
 ely-git = { path = "crates/ely-git", version = "0.1.1" }
 ely-terminal = { path = "crates/ely-terminal", version = "0.1.1" }
-ely-editor = { path = "crates/ely-editor", version = "0.1.1" }
+ely-editor = { path = "crates/ely-editor", version = "0.2.0" }
 ely-finance = { path = "crates/ely-finance", version = "0.1.1" }
 ely-charts = { path = "crates/ely-charts", version = "0.1.1" }
 ely-core = { path = "crates/ely-core", version = "0.2.0", default-features = false }
