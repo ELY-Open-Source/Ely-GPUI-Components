@@ -43,11 +43,23 @@ struct Nav {
     renaming: Option<SharedString>,
 }
 
-/// A drag of one tree's node, named by its owner.
-pub(crate) struct TreeDrag {
+/// A drag of one tree's node, named by its owner. A drop past the tree's rows takes it wherever the app listens for it.
+pub struct TreeDrag {
     owner: EntityId,
     key: SharedString,
     label: SharedString,
+}
+
+impl TreeDrag {
+    /// The dragged node's key.
+    pub fn key(&self) -> &SharedString {
+        &self.key
+    }
+
+    /// The dragged node's label.
+    pub fn label(&self) -> &SharedString {
+        &self.label
+    }
 }
 
 /// Nodes that open and close, drawn a row at a time so large trees stay quick. Right and Left open, close and climb; Up and Down walk; Enter opens a node or activates a leaf; F2 renames. With `multiple`, Cmd and Shift widen the pick. With `checked`, boxes check whole branches. Nodes drag before, after or into others. Give it a height.
