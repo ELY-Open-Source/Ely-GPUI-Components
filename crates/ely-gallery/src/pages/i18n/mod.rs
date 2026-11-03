@@ -50,74 +50,97 @@ pub const PAGE: Page = Page {
 /// 1 September 2026, when the demo's folder was saved.
 const SAVED: i64 = 1_788_220_800;
 
-/// The gallery's messages, one catalog per listed locale.
+/// The gallery's messages: one catalog per listed locale, sized to `LOCALES`.
+const CATALOGS: [(&str, &[(&str, &str)]); LOCALES.len()] = [
+    (
+        "en-US",
+        &[
+            ("welcome", "Welcome back, {name}"),
+            ("files", "{count} files in {folder}"),
+            ("saved", "Last saved {date}"),
+            ("change", "{change}% since yesterday"),
+        ],
+    ),
+    (
+        "en-GB",
+        &[
+            ("welcome", "Welcome back, {name}"),
+            ("files", "{count} files in {folder}"),
+            ("saved", "Last saved {date}"),
+            ("change", "{change}% since yesterday"),
+        ],
+    ),
+    (
+        "es-ES",
+        &[
+            ("welcome", "Bienvenido de nuevo, {name}"),
+            ("files", "{count} archivos en {folder}"),
+            ("saved", "Guardado por última vez el {date}"),
+            ("change", "{change} % desde ayer"),
+        ],
+    ),
+    (
+        "de-DE",
+        &[
+            ("welcome", "Willkommen zurück, {name}"),
+            ("files", "{count} Dateien in {folder}"),
+            ("saved", "Zuletzt gespeichert am {date}"),
+            ("change", "{change} % seit gestern"),
+        ],
+    ),
+    (
+        "fr-FR",
+        &[
+            ("welcome", "Bon retour, {name}"),
+            ("files", "{count} fichiers dans {folder}"),
+            ("saved", "Enregistré le {date}"),
+            ("change", "{change}\u{202f}% depuis hier"),
+        ],
+    ),
+    (
+        "ja-JP",
+        &[
+            ("welcome", "おかえりなさい、{name}さん"),
+            ("files", "{folder}に{count}個のファイル"),
+            ("saved", "最終保存：{date}"),
+            ("change", "昨日から{change}%"),
+        ],
+    ),
+    (
+        "ko-KR",
+        &[
+            ("welcome", "{name} 님, 다시 오신 것을 환영합니다"),
+            ("files", "{folder}에 파일 {count}개"),
+            ("saved", "마지막 저장: {date}"),
+            ("change", "어제보다 {change}%"),
+        ],
+    ),
+    (
+        "zh-CN",
+        &[
+            ("welcome", "欢迎回来，{name}"),
+            ("files", "{folder}中有{count}个文件"),
+            ("saved", "上次保存于{date}"),
+            ("change", "较昨日{change}%"),
+        ],
+    ),
+    (
+        "he-IL",
+        &[
+            ("welcome", "ברוך שובך, {name}"),
+            ("files", "{count} קבצים ב־{folder}"),
+            ("saved", "נשמר לאחרונה ב־{date}"),
+            ("change", "{change}% מאז אתמול"),
+        ],
+    ),
+];
+
+/// Installs every catalog; a repeated locale fails.
 pub fn install(cx: &mut App) {
-    cx.set_global(
-        I18n::new("en-US")
-            .catalog(
-                "en-US",
-                &[
-                    ("welcome", "Welcome back, {name}"),
-                    ("files", "{count} files in {folder}"),
-                    ("saved", "Last saved {date}"),
-                    ("change", "{change}% since yesterday"),
-                ],
-            )
-            .catalog(
-                "en-GB",
-                &[
-                    ("welcome", "Welcome back, {name}"),
-                    ("files", "{count} files in {folder}"),
-                    ("saved", "Last saved {date}"),
-                    ("change", "{change}% since yesterday"),
-                ],
-            )
-            .catalog(
-                "de-DE",
-                &[
-                    ("welcome", "Willkommen zurück, {name}"),
-                    ("files", "{count} Dateien in {folder}"),
-                    ("saved", "Zuletzt gespeichert am {date}"),
-                    ("change", "{change} % seit gestern"),
-                ],
-            )
-            .catalog(
-                "fr-FR",
-                &[
-                    ("welcome", "Bon retour, {name}"),
-                    ("files", "{count} fichiers dans {folder}"),
-                    ("saved", "Enregistré le {date}"),
-                    ("change", "{change}\u{202f}% depuis hier"),
-                ],
-            )
-            .catalog(
-                "ja-JP",
-                &[
-                    ("welcome", "おかえりなさい、{name}さん"),
-                    ("files", "{folder}に{count}個のファイル"),
-                    ("saved", "最終保存：{date}"),
-                    ("change", "昨日から{change}%"),
-                ],
-            )
-            .catalog(
-                "zh-CN",
-                &[
-                    ("welcome", "欢迎回来，{name}"),
-                    ("files", "{folder}中有{count}个文件"),
-                    ("saved", "上次保存于{date}"),
-                    ("change", "较昨日{change}%"),
-                ],
-            )
-            .catalog(
-                "he-IL",
-                &[
-                    ("welcome", "ברוך שובך, {name}"),
-                    ("files", "{count} קבצים ב־{folder}"),
-                    ("saved", "נשמר לאחרונה ב־{date}"),
-                    ("change", "{change}% מאז אתמול"),
-                ],
-            ),
-    );
+    let i18n = (CATALOGS.iter()).fold(I18n::new("en-US"), |i18n, (tag, messages)| {
+        i18n.catalog(tag, messages)
+    });
+    cx.set_global(i18n);
 }
 
 fn render(window: &mut Window, cx: &mut App) -> AnyElement {
