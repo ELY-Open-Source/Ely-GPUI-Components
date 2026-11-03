@@ -9,6 +9,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 - `ely-editor` 0.2.0: `Metrics` holds `wheel`, one wheel line as the code's list scrolls it, so a struct literal of `Metrics` names it.
 - `ely-core`: `TreeDrag` is public, with `key` and `label`, so a drop past a `Tree`'s rows names the dragged node.
 - `ely-core`: `SegmentedControl::on_context` hears a right press on a segment, with its value and the pointer, as `Tabs::on_context` does; the press stops on the segment, so the focus stays where it was.
+- `ely-core`: adds the Vietnamese `vi-VN` locale and Vietnamese component messages; the gallery's i18n page holds a Vietnamese catalog.
 - `ely-core`: adds the Spanish `es-ES` locale and Spanish component messages.
 - `ely-documents`: in `MarkdownDocument`'s visual view, F6 and Shift+F6 move focus to the nearest stop outside the document, so a keyboard user leaves a long document in one key; they had stepped block to block as Tab does. With nothing outside, focus stays where it was.
 - `ely-core`: a `Banner`'s action carries the debug selector `banner-action {label}`, so a test can press it.

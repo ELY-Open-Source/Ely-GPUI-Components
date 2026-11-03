@@ -62,7 +62,7 @@ const fn locale(
 }
 
 /// The locales Ely formats for, with CLDR's short numeric dates.
-pub const LOCALES: [Locale; 9] = [
+pub const LOCALES: [Locale; 10] = [
     locale(
         "en-US",
         "English (US)",
@@ -92,6 +92,13 @@ pub const LOCALES: [Locale; 9] = [
         "한국어",
         (',', '.'),
         "%y. %-m. %-d.",
+        Direction::Ltr,
+    ),
+    locale(
+        "vi-VN",
+        "Tiếng Việt",
+        ('.', ','),
+        "%d/%m/%Y",
         Direction::Ltr,
     ),
     locale("zh-CN", "中文", (',', '.'), "%Y/%-m/%-d", Direction::Ltr),

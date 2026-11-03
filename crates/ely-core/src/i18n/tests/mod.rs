@@ -123,6 +123,7 @@ fn locales_write_their_own_numbers_and_dates() {
             ),
             ("ja-JP", "−1,234,567.89".into(), "2026/09/01".into()),
             ("ko-KR", "−1,234,567.89".into(), "26. 9. 1.".into()),
+            ("vi-VN", "−1.234.567,89".into(), "01/09/2026".into()),
             ("zh-CN", "−1,234,567.89".into(), "2026/9/1".into()),
             ("he-IL", "\u{200e}−1,234,567.89".into(), "1.9.2026".into()),
         ]
@@ -243,4 +244,20 @@ fn korean_formats_and_component_messages_are_available() {
         "모두 바꾸기"
     );
     assert_eq!(super::builtin::builtin("ko-KR", "dialog.cancel"), "취소");
+}
+
+#[test]
+fn vietnamese_formats_and_component_messages_are_available() {
+    let locale = Locale::of("vi-VN");
+    assert_eq!(locale.name, "Tiếng Việt");
+    assert_eq!(locale.number(1234.5, 1), "1.234,5");
+    assert_eq!(
+        super::builtin::builtin("vi-VN", "find.replace_all"),
+        "Thay thế tất cả"
+    );
+    assert_eq!(super::builtin::builtin("vi-VN", "dialog.cancel"), "Hủy");
+    assert_eq!(
+        super::builtin::builtin("vi-VN", "time.day.other"),
+        "{n} ngày"
+    );
 }

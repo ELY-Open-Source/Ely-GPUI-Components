@@ -116,6 +116,15 @@ const CATALOGS: [(&str, &[(&str, &str)]); LOCALES.len()] = [
         ],
     ),
     (
+        "vi-VN",
+        &[
+            ("welcome", "Chào mừng trở lại, {name}"),
+            ("files", "{count} tệp trong {folder}"),
+            ("saved", "Lưu lần cuối vào {date}"),
+            ("change", "{change}% so với hôm qua"),
+        ],
+    ),
+    (
         "zh-CN",
         &[
             ("welcome", "欢迎回来，{name}"),
