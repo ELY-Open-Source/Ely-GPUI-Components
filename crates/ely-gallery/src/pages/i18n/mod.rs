@@ -50,7 +50,7 @@ pub const PAGE: Page = Page {
 /// 1 September 2026, when the demo's folder was saved.
 const SAVED: i64 = 1_788_220_800;
 
-/// The gallery's messages: one catalog per listed locale, sized to `LOCALES`.
+/// One catalog per locale in `LOCALES`.
 const CATALOGS: [(&str, &[(&str, &str)]); LOCALES.len()] = [
     (
         "en-US",
@@ -264,4 +264,21 @@ fn mirrored(cx: &App) -> impl IntoElement + use<> {
             .child(file("Docs", "12 KB"))
             .child(file("Photos", "3.1 MB")),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use ely_gpui_component::i18n::{I18n, LOCALES};
+
+    #[gpui::test]
+    fn every_listed_locale_can_be_picked(cx: &mut gpui::TestAppContext) {
+        cx.update(|cx| {
+            super::install(cx);
+            for locale in LOCALES {
+                I18n::set_locale(locale.tag, cx);
+                assert_eq!(cx.global::<I18n>().locale().tag, locale.tag);
+                cx.global::<I18n>().text("welcome", &[("name", "Ada")]);
+            }
+        });
+    }
 }

@@ -26,6 +26,9 @@ serde.workspace = true
 serde_json.workspace = true
 web-time.workspace = true
 
+[dev-dependencies]
+gpui = { workspace = true, features = ["test-support"] }
+
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 env_logger = "0.11"
 
