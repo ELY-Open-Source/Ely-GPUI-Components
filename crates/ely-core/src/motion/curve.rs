@@ -16,6 +16,10 @@ pub const THEME: Duration = Duration::from_millis(280);
 /// Travel of small entrances.
 pub const NUDGE: Pixels = px(4.0);
 
+/// How far gpui's list scrolls per wheel line.
+#[doc(hidden)]
+pub const WHEEL_LINE: Pixels = px(20.0);
+
 const DAMPING: f32 = 0.75;
 const OMEGA: f32 = 6.91 / DAMPING;
 

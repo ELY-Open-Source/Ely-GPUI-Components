@@ -1,4 +1,4 @@
-use gpui::{App, Context, Focusable as _, ListOffset, Pixels, ScrollEvent, Window, px};
+use gpui::{App, Context, Focusable as _, ListOffset, Pixels, ScrollEvent, Window};
 
 use super::{MarkdownDocument, Placement, cells};
 use crate::{MarkdownMode, modes::joint};
@@ -206,16 +206,24 @@ impl MarkdownDocument {
                     .delta
                     .pixel_delta(self.editor.read(cx).metrics().wheel);
                 // A sideways wheel moves lines, as over the code.
-                let down = if delta.y == px(0.) { delta.x } else { delta.y };
+                let down = if delta.y == Pixels::ZERO {
+                    delta.x
+                } else {
+                    delta.y
+                };
                 let (now, most) = (handle.offset(), handle.max_offset());
-                handle.set_offset(gpui::point(now.x, (now.y + down).clamp(-most.y, px(0.))));
+                handle.set_offset(gpui::point(
+                    now.x,
+                    (now.y + down).clamp(-most.y, Pixels::ZERO),
+                ));
                 cx.notify();
             }
             MarkdownMode::Visual | MarkdownMode::Preview => {
                 if self.list.viewport_bounds().contains(&event.position) {
                     return;
                 }
-                self.list.scroll_by(-event.delta.pixel_delta(px(20.)).y);
+                self.list
+                    .scroll_by(-event.delta.pixel_delta(crate::motion::WHEEL_LINE).y);
                 cx.notify();
             }
         }
