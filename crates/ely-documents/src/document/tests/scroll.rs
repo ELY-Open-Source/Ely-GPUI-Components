@@ -225,8 +225,19 @@ fn the_range_holds_after_the_end_is_visited(cx: &mut TestAppContext) {
     );
 }
 
+/// Pad pixels, mouse lines, two text sizes.
+const WHEELS: [(f32, ScrollDelta); 3] = [
+    (1.0, ScrollDelta::Pixels(point(px(0.), px(-200.)))),
+    (1.0, ScrollDelta::Lines(point(0., -3.))),
+    (2.0, ScrollDelta::Lines(point(0., -3.))),
+];
+
 /// Wheels over the left margin, the column, then the bar.
-fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
+fn the_margins_scroll_once(
+    mode: MarkdownMode,
+    wheels: &[(f32, ScrollDelta)],
+    cx: &mut TestAppContext,
+) {
     let (document, cx) = open(&long(), mode, cx);
     let view = cx.update(|window, _| window.viewport_size());
     let top = |cx: &mut gpui::VisualTestContext| {
@@ -235,12 +246,7 @@ fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
             _ => document.list.scroll_px_offset_for_scrollbar().y,
         })
     };
-    // Pad pixels, mouse lines, two text sizes.
-    let deltas = [
-        ScrollDelta::Pixels(point(px(0.), px(-200.))),
-        ScrollDelta::Lines(point(0., -3.)),
-    ];
-    for (scale, delta) in [(1.0, deltas[0]), (1.0, deltas[1]), (2.0, deltas[1])] {
+    for &(scale, delta) in wheels {
         document.update(cx, |document, cx| {
             let look = crate::DocumentLook {
                 measure: Some(gpui::rems(20.)),
@@ -275,10 +281,13 @@ fn the_margins_scroll_once(mode: MarkdownMode, cx: &mut TestAppContext) {
 
 #[gpui::test]
 fn visual_margins_scroll(cx: &mut TestAppContext) {
-    the_margins_scroll_once(MarkdownMode::Visual, cx);
+    the_margins_scroll_once(MarkdownMode::Visual, &WHEELS, cx);
 }
 
 #[gpui::test]
 fn source_margins_scroll(cx: &mut TestAppContext) {
-    the_margins_scroll_once(MarkdownMode::Source, cx);
+    // Shift and the wheel: the code scrolls down.
+    let sideways = (1.0, ScrollDelta::Lines(point(-3., 0.)));
+    let wheels = [WHEELS[0], WHEELS[1], WHEELS[2], sideways];
+    the_margins_scroll_once(MarkdownMode::Source, &wheels, cx);
 }

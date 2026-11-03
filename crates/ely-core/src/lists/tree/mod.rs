@@ -43,7 +43,7 @@ struct Nav {
     renaming: Option<SharedString>,
 }
 
-/// A drag of one tree's node, named by its owner. A drop past the tree's rows takes it wherever the app listens for it.
+/// A dragged tree node; drops past the rows carry it.
 pub struct TreeDrag {
     owner: EntityId,
     key: SharedString,

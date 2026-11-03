@@ -205,8 +205,10 @@ impl MarkdownDocument {
                 let delta = event
                     .delta
                     .pixel_delta(self.editor.read(cx).metrics().wheel);
+                // A sideways wheel moves lines, as over the code.
+                let down = if delta.y == px(0.) { delta.x } else { delta.y };
                 let (now, most) = (handle.offset(), handle.max_offset());
-                handle.set_offset(gpui::point(now.x, (now.y + delta.y).clamp(-most.y, px(0.))));
+                handle.set_offset(gpui::point(now.x, (now.y + down).clamp(-most.y, px(0.))));
                 cx.notify();
             }
             MarkdownMode::Visual | MarkdownMode::Preview => {
