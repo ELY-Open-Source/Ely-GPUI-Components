@@ -6,7 +6,7 @@ Ely runs beside Longbridge's [GPUI Kit](https://gpui-kit.com) in one app and one
 
 ```toml
 [dependencies]
-gpui-kit = "0.8"
+gpui-kit = "0.9"
 ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components" }
 ```
 
