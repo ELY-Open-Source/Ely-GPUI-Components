@@ -144,6 +144,8 @@ fn the_thumb_covers_the_chosen_segment(cx: &mut TestAppContext) {
     let (_, cx) = desk(editor, cx);
     for _ in 0..3 {
         std::thread::sleep(std::time::Duration::from_millis(2));
+        cx.executor()
+            .advance_clock(std::time::Duration::from_millis(2));
         settle(cx);
     }
     let thumb = cx.debug_bounds("segment-thumb").expect("the thumb");

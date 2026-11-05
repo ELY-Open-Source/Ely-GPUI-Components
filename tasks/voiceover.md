@@ -43,5 +43,5 @@ Inside, the dialog reads its title, its line and both buttons. Found: the focus 
 ## gpui limits, open upstream
 
 - VoiceOver does not follow focus gpui moves without a key press: opening the menu or the dialog leaves VoiceOver's cursor on the trigger, though gpui's tree holds the new focus. The user hears the open menu or dialog on the next move.
-- gpui 0.3.10 marks no node modal, so VoiceOver's cursor reaches the page behind an open dialog.
+- gpui 0.3.11 marks no node modal, so VoiceOver's cursor reaches the page behind an open dialog.
 - `Popover` holds only its owner's content and names no node; its focus stays silent until the user moves into the content.

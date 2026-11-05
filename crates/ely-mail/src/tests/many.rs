@@ -92,6 +92,8 @@ fn its_scrollbar_follows_and_drags_the_list(cx: &mut TestAppContext) {
         .collect();
     assert!(fading[0] > 0, "the wake starts the fade: {fading:?}");
     std::thread::sleep(std::time::Duration::from_millis(400));
+    cx.executor()
+        .advance_clock(std::time::Duration::from_millis(400));
     let fading: Vec<usize> = (0..8)
         .map(|_| {
             let asked = cx.update(|window, cx| window.simulate_next_frame(cx));

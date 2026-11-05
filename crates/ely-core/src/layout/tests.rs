@@ -33,7 +33,8 @@ fn opened(cx: &mut TestAppContext, reduced: bool) -> &mut VisualTestContext {
     });
     let (_, cx) = cx.add_window_view(|_, _| Pulled);
     cx.run_until_parked();
-    std::thread::sleep(Duration::from_millis(if reduced { 10 } else { 250 }));
+    cx.executor()
+        .advance_clock(Duration::from_millis(if reduced { 10 } else { 250 }));
     cx.update(|window, _| window.refresh());
     cx
 }

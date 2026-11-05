@@ -32,6 +32,8 @@ fn setup(cx: &mut TestAppContext) {
 fn settle(cx: &mut VisualTestContext) {
     for _ in 0..3 {
         std::thread::sleep(std::time::Duration::from_millis(2));
+        cx.executor()
+            .advance_clock(std::time::Duration::from_millis(2));
         cx.update(|window, _| window.refresh());
         cx.run_until_parked();
     }

@@ -279,7 +279,8 @@ fn an_opening_palette_rises_in_the_box_its_scrim_centers(cx: &mut TestAppContext
     let (_, cx) = host(Kind::Commands, cx);
     let top = |cx: &mut VisualTestContext| cx.debug_bounds("palette-card").expect("the card").top();
     let first = top(cx);
-    std::thread::sleep(std::time::Duration::from_millis(250));
+    cx.executor()
+        .advance_clock(std::time::Duration::from_millis(250));
     settle(cx);
     let lift = first - top(cx);
     assert!(

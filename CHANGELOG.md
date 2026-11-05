@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- All crates: gpui, gpui_platform and gpui_web from `gpui-pre` `=0.3.11`, the snapshot GPUI Kit 0.9.0 pins, so Ely and Kit still share a window; an app on Ely moves its own `gpui-pre` pins to `=0.3.11`.
 - `ely-gallery`: `--audit` also opens a `SearchableMenu`, arrows to a button checking a screen reader hears each marked row, and presses it through UI Automation's Invoke: it must run once and close the menu.
 - `ely-core`: a `PromptDialog`'s field takes the dialog's label as its accessible name, and a failed check's reason as its description, so a screen reader names the field.
 - `ely-core`: Shell code colors a `#` right after the `)` that closes `$(`, `$((`, `<(` or `>(` as part of the word, as Bash reads it; only a bare subshell's `)` ends a word before a comment. A `case` pattern's `)` inside `$(` no longer counts as the `)` that closes it; `case` and `esac` are keywords only as whole words where Bash takes a reserved word, so not as a pattern, and also after `fi`, `done`, `esac` or `}`.

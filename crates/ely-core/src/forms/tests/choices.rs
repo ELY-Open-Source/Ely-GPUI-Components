@@ -192,6 +192,8 @@ fn a_long_multi_select_opens_with_its_first_choice_in_view(cx: &mut TestAppConte
 fn frames(cx: &mut VisualTestContext) {
     for _ in 0..3 {
         std::thread::sleep(std::time::Duration::from_millis(2));
+        cx.executor()
+            .advance_clock(std::time::Duration::from_millis(2));
         cx.update(|window, _| window.refresh());
         cx.run_until_parked();
     }

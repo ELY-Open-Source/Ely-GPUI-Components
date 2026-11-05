@@ -48,10 +48,12 @@ fn open(cx: &mut TestAppContext) -> (Entity<BlockEditor>, ScrollHandle, &mut Vis
     (editor, page, cx)
 }
 
-/// Settles past reduced motion's 1 ms glides on the wall clock.
+/// Settles past reduced motion's 1 ms glides on both clocks.
 fn still(cx: &mut VisualTestContext) {
     settle(cx);
     std::thread::sleep(std::time::Duration::from_millis(5));
+    cx.executor()
+        .advance_clock(std::time::Duration::from_millis(5));
     settle(cx);
 }
 

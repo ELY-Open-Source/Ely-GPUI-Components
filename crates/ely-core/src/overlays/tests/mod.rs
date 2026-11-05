@@ -452,6 +452,7 @@ fn a_tall_dialog_keeps_its_actions_in_the_window(cx: &mut TestAppContext) {
     cx.update(|_, cx| Theme::update(cx, |theme| theme.reduced_motion = true));
     show(&view, Open::Tall, cx);
     std::thread::sleep(Duration::from_millis(2));
+    cx.executor().advance_clock(Duration::from_millis(2));
     settle(cx);
     let (size, margin, width, button) = cx.update(|window, cx| {
         let (theme, rem) = (cx.theme(), window.rem_size());
@@ -479,6 +480,7 @@ fn a_tall_dialog_body_keeps_its_height_and_scrolls(cx: &mut TestAppContext) {
     cx.update(|_, cx| Theme::update(cx, |theme| theme.reduced_motion = true));
     show(&view, Open::Tall, cx);
     std::thread::sleep(Duration::from_millis(2));
+    cx.executor().advance_clock(Duration::from_millis(2));
     settle(cx);
     let tall = view.read_with(cx, |stage, _| stage.tall.clone());
     let before = tall.get();
@@ -526,7 +528,7 @@ fn an_opening_dialog_rises_in_the_box_its_scrim_centers(cx: &mut TestAppContext)
     cx.run_until_parked();
     let top = |cx: &mut VisualTestContext| cx.debug_bounds("rising-body").expect("the body").top();
     let first = top(cx);
-    std::thread::sleep(Duration::from_millis(250));
+    cx.executor().advance_clock(Duration::from_millis(250));
     settle(cx);
     let lift = first - top(cx);
     assert!(

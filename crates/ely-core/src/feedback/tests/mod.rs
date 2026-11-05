@@ -191,6 +191,7 @@ fn the_pointer_on_the_stack_holds_the_clock(cx: &mut TestAppContext) {
 fn typing_under_a_resting_pointer_keeps_the_hold(cx: &mut TestAppContext) {
     let (view, cx) = desk(cx);
     let id = push(&view, Toast::new("Saved"), cx);
+    wait(Duration::from_millis(1), cx);
     let screen = cx.update(|window, _| window.viewport_size());
     let on_toast = point(screen.width - px(120.0), screen.height - px(48.0));
     cx.simulate_mouse_move(on_toast, None, Modifiers::none());
@@ -281,9 +282,7 @@ fn a_leaving_toast_runs_its_undo_once(cx: &mut TestAppContext) {
     cx.update(|_, cx| Theme::update(cx, |theme| theme.reduced_motion = false));
     let undo = view.update(cx, |desk, cx| desk.note(cx, "undo"));
     push(&view, Toast::new("Deleted").undo(undo), cx);
-    // Animations run on the wall clock; let the toast finish rising.
-    std::thread::sleep(Duration::from_millis(400));
-    settle(cx);
+    wait(Duration::from_millis(400), cx);
     let screen = cx.update(|window, _| window.viewport_size());
     let on_undo = point(screen.width - px(78.0), screen.height - px(49.0));
     for _ in 0..2 {
