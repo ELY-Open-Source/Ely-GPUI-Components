@@ -1,9 +1,9 @@
 use gpui::{
     AnyElement, App, FontWeight, IntoElement, MouseButton, ParentElement, Role, Styled, StyledText,
-    div, prelude::*,
+    div, prelude::*, svg,
 };
 
-use super::{Draw, point::point_lines};
+use super::{Draw, LINE, point::point_lines};
 use crate::{
     primitives::{FocusRing as _, Icon, IconName},
     theme::{ActiveTheme, IconSize, Radius, TextSize},
@@ -19,6 +19,7 @@ impl Draw<'_> {
         cx: &App,
     ) -> AnyElement {
         let colors = cx.theme().colors.clone();
+        let text = cx.theme().text_size(self.body) * self.scale;
         let depth = self.lists.get();
         self.lists.set(depth + 1);
         let bullet = match depth {
@@ -32,18 +33,31 @@ impl Draw<'_> {
             .gap_1()
             .children(items.iter().enumerate().map(|(ix, (task, body))| {
                 let marker: AnyElement = match (task, start) {
-                    (Some(done), _) => Icon::new(if *done {
-                        IconName::SquareCheck
-                    } else {
-                        IconName::Square
-                    })
-                    .size(IconSize::Sm)
-                    .color(if *done {
-                        colors.focus
-                    } else {
-                        colors.fg_subtle
-                    })
-                    .into_any_element(),
+                    // As tall as the text, centred on its first line.
+                    (Some(done), _) => div()
+                        .h(text * LINE)
+                        .flex()
+                        .items_center()
+                        .child(
+                            svg()
+                                .debug_selector(move || format!("markdown-task-{ix}"))
+                                .data(
+                                    if *done {
+                                        IconName::SquareCheck
+                                    } else {
+                                        IconName::Square
+                                    }
+                                    .svg(),
+                                )
+                                .size(text)
+                                .flex_none()
+                                .text_color(if *done {
+                                    colors.focus
+                                } else {
+                                    colors.fg_subtle
+                                }),
+                        )
+                        .into_any_element(),
                     (None, Some(first)) => div()
                         .text_color(colors.fg_muted)
                         .child(format!("{}.", first + ix as u64))

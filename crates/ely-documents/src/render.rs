@@ -31,6 +31,9 @@ pub(crate) use point::{OnPoint, Place, Pointed, point_lines};
 use style::highlight;
 pub(crate) use table::{CellAt, OpenCell};
 
+/// Line height against the text size.
+pub(crate) const LINE: f32 = 1.6;
+
 pub(crate) type OnLink = Rc<dyn Fn(&str, &mut Window, &mut App)>;
 /// Reveals the heading whose source starts at a byte.
 pub(crate) type OnHeading = Rc<dyn Fn(usize, &mut Window, &mut App)>;
@@ -462,7 +465,7 @@ impl RenderOnce for MarkdownRenderer {
             .flex_col()
             .gap_3()
             .text_size(theme.text_size(self.size))
-            .line_height(theme.text_size(self.size) * 1.6)
+            .line_height(theme.text_size(self.size) * LINE)
             .children(draw.nodes(nodes, cx))
     }
 }

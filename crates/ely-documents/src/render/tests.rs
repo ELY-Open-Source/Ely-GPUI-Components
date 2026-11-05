@@ -151,3 +151,34 @@ fn a_zoomed_document_scales_its_headings(cx: &mut TestAppContext) {
     let off = high - pad - base * 1.5 * 1.5 * 1.3;
     assert!(off.abs() < px(0.5), "{high:?}");
 }
+
+#[gpui::test]
+fn task_boxes_match_the_text_and_centre_on_its_first_line(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    for size in [TextSize::Base, TextSize::Xl] {
+        let source =
+            "- above\n- [ ] open and long enough to wrap onto a second line of text\n- [x] done\n";
+        let (_, cx) = cx.add_window_view(|_, _| Sized(source, size));
+        cx.run_until_parked();
+        let (text, gap) = cx.update(|window, cx| {
+            let rem = window.rem_size();
+            (
+                cx.theme().text_size(size).to_pixels(rem),
+                rems(0.25).to_pixels(rem),
+            )
+        });
+        let bullet = cx.debug_bounds("markdown-bullet-0").expect("drawn");
+        let line = bullet.size.height;
+        for ix in [1, 2] {
+            let selector = Box::leak(format!("markdown-task-{ix}").into_boxed_str());
+            let task = cx.debug_bounds(selector).expect("drawn");
+            assert_eq!(task.size.width, text, "{size:?} {ix}: {task:?}");
+            assert_eq!(task.size.height, text, "{size:?} {ix}: {task:?}");
+            if ix == 1 {
+                // Rows sit a quarter rem apart.
+                let mid = bullet.bottom() + gap + line / 2.0;
+                assert_eq!(task.center().y, mid, "{size:?}: {task:?} {bullet:?}");
+            }
+        }
+    }
+}

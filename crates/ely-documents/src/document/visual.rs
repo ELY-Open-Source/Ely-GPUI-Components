@@ -14,7 +14,7 @@ use crate::{
     theme::{ActiveTheme, Radius, TextSize, Theme},
     {
         MarkdownMode, TargetBlock,
-        render::{HEAVY, Hooks, OpenCell, Pointed, draw_nodes, heading_step, point_lines},
+        render::{HEAVY, Hooks, LINE, OpenCell, Pointed, draw_nodes, heading_step, point_lines},
     },
 };
 
@@ -36,7 +36,7 @@ pub(super) fn open_text(kind: Option<(TargetBlock, bool)>, scale: f32, theme: &T
     let text = div()
         .debug_selector(|| "markdown-open-text".to_string())
         .text_size(body)
-        .line_height(body * 1.6)
+        .line_height(body * LINE)
         .text_color(colors.fg);
     match kind {
         Some((TargetBlock::Heading(level), true)) => text
@@ -175,7 +175,7 @@ impl MarkdownDocument {
                 .flex_col()
                 .gap_3()
                 .text_size(body)
-                .line_height(body * 1.6)
+                .line_height(body * LINE)
                 .text_color(colors.fg)
                 .children(draw_nodes(
                     &("render", ix).into(),
