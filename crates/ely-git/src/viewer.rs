@@ -64,7 +64,7 @@ pub struct DiffViewer {
 }
 
 impl DiffViewer {
-    /// A viewer under `id` of the change in `path` from `old` to `new`.
+    /// Views the change in `path` from `old` to `new`.
     pub fn new(
         id: impl Into<ElementId>,
         path: impl Into<SharedString>,

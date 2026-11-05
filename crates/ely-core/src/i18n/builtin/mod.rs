@@ -8,7 +8,7 @@ mod ko;
 mod vi;
 mod zh_cn;
 
-/// Ely's own table for each locale; en-GB reads the English one.
+/// Ely's table per locale; en-GB reads the English one.
 const TABLES: [(&str, &[(&str, &str)]); 10] = [
     ("en-US", en::TABLE),
     ("en-GB", en::TABLE),
@@ -22,7 +22,7 @@ const TABLES: [(&str, &[(&str, &str)]); 10] = [
     ("he-IL", he::TABLE),
 ];
 
-/// Ely's message for `key` in `locale`; fails on a key or a locale it lacks, with no fallback.
+/// Ely's message for `key` in `locale`; missing ones fail.
 pub(crate) fn builtin(locale: &str, key: &str) -> &'static str {
     (TABLES.iter())
         .filter(|(tag, _)| *tag == locale)
