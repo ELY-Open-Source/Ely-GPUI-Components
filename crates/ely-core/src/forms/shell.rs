@@ -24,6 +24,9 @@ enum Clause {
 impl Nesting {
     /// Reads the word at `range`.
     pub(crate) fn word(&mut self, source: &str, range: Range<usize>) {
+        if !whole(source, &range) {
+            return;
+        }
         let word = &source[range.clone()];
         let before = &source[..range.start];
         match self.opens.last_mut() {
@@ -33,12 +36,21 @@ impl Nesting {
             }) if word == "in" && !source[*keyword_end..range.start].trim().is_empty() => {
                 *at = Clause::Patterns;
             }
-            Some(Open::Case { at, .. })
-                if word == "esac" && (*at == Clause::Patterns || command_starts(before)) =>
-            {
+            Some(Open::Case {
+                at: Clause::Patterns,
+                ..
+            }) if word == "esac" => {
                 self.opens.pop();
             }
-            _ if word == "case" && command_starts(before) => self.opens.push(Open::Case {
+            // Any other pattern is a plain word, `case` too.
+            Some(Open::Case {
+                at: Clause::Patterns,
+                ..
+            }) => {}
+            Some(Open::Case { .. }) if word == "esac" && reserved(before) => {
+                self.opens.pop();
+            }
+            _ if word == "case" && reserved(before) => self.opens.push(Open::Case {
                 keyword_end: range.end,
                 at: Clause::Subject,
             }),
@@ -92,17 +104,29 @@ impl Nesting {
     }
 }
 
-/// Whether a reserved word may start after `before`.
-fn command_starts(before: &str) -> bool {
+/// Reserved words after which another reserved word may start.
+const OPENERS: [&str; 15] = [
+    "then", "do", "done", "else", "elif", "fi", "if", "while", "until", "esac", "{", "}", "!",
+    "time", "coproc",
+];
+
+/// Whether Bash takes a reserved word after `before`.
+fn reserved(before: &str) -> bool {
     let line = before.trim_end_matches([' ', '\t']);
-    let last = line
-        .rsplit(|ch: char| ch.is_whitespace() || ";&|()".contains(ch))
-        .next()
-        .unwrap_or_default();
-    line.is_empty()
-        || line.ends_with([';', '&', '|', '(', ')', '\n'])
-        || [
-            "then", "do", "else", "elif", "if", "while", "until", "{", "!", "time",
-        ]
-        .contains(&last)
+    if line.is_empty() || line.ends_with([';', '&', '|', '(', ')', '\n']) {
+        return true;
+    }
+    let last = line.rsplit(bound).next().unwrap_or_default();
+    OPENERS.contains(&last) && reserved(&line[..line.len() - last.len()])
+}
+
+/// Whether the lexer's word is a whole Shell word.
+fn whole(source: &str, range: &Range<usize>) -> bool {
+    let edge = |ch: Option<char>| ch.is_none_or(bound);
+    edge(source[..range.start].chars().next_back()) && edge(source[range.end..].chars().next())
+}
+
+/// Whether `ch` ends a Shell word.
+fn bound(ch: char) -> bool {
+    ch.is_whitespace() || ";&|()<>".contains(ch)
 }
