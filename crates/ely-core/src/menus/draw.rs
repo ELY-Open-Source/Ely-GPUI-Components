@@ -127,7 +127,6 @@ pub(super) fn button(
         .rounded(theme.radius(Radius::Md))
         .border_1()
         .border_color(colors.border)
-        .aria_selected(current)
         .when(current && !item.disabled, |button| button.bg(colors.hover))
         .when(item.disabled, |button| {
             button.aria_description(i18n::text(cx, "state.unavailable", &[]))

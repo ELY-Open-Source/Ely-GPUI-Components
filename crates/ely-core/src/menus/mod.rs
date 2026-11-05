@@ -1,6 +1,7 @@
 mod aim;
 mod bar;
 mod draw;
+mod filter;
 mod hosts;
 mod menu;
 mod model;

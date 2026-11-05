@@ -184,6 +184,38 @@ fn arrows_cross_buttons_while_the_filter_holds_focus(cx: &mut TestAppContext) {
     assert_eq!(ran(&view, cx), ["paste"], "right skips copy");
 }
 
+/// Whether the filter field holds focus.
+fn typing(cx: &mut VisualTestContext) -> bool {
+    cx.update(|window, _| {
+        window
+            .context_stack()
+            .iter()
+            .any(|context| context.contains("ElyInput"))
+    })
+}
+
+#[gpui::test]
+fn arrows_lend_the_rows_focus_and_typing_takes_it_back(cx: &mut TestAppContext) {
+    let (view, cx) = clip(cx);
+    cx.update(|window, cx| window.focus_next(cx));
+    press("enter", cx);
+    assert!(typing(cx), "the filter types first");
+    // A reader hears a mark only under the focused panel.
+    for key in ["down", "right", "up"] {
+        press(key, cx);
+        assert!(!typing(cx), "{key} leaves the filter");
+    }
+    cx.simulate_input("sel");
+    settle(cx);
+    assert!(typing(cx), "typing goes back to the filter");
+    press("down", cx);
+    press("backspace", cx);
+    settle(cx);
+    assert!(typing(cx), "backspace edits the filter");
+    press("enter", cx);
+    assert_eq!(ran(&view, cx), ["select all"], "se still finds it");
+}
+
 #[gpui::test]
 fn a_marked_button_turned_off_or_gone_runs_nothing(cx: &mut TestAppContext) {
     for change in [
@@ -232,16 +264,18 @@ fn node(item: &MenuItem, current: bool, cx: &mut App) -> gpui::accesskit::Node {
 }
 
 #[gpui::test]
-fn a_button_offers_its_press_and_says_it_is_marked(cx: &mut TestAppContext) {
+fn a_button_offers_its_press_and_no_selected_state(cx: &mut TestAppContext) {
     cx.update(|cx| {
         Theme::init(cx);
         let cut = MenuItem::new("Cut").icon(IconName::Scissors);
         let off = MenuItem::new("Copy").icon(IconName::Copy).disabled(true);
         let click = gpui::accesskit::Action::Click;
-        let marked = node(&cut, true, cx);
-        assert!(marked.supports_action(click), "a reader can press it");
-        assert_eq!(marked.is_selected(), Some(true));
-        assert_eq!(node(&cut, false, cx).is_selected(), Some(false));
+        // Windows offers Invoke only without a selected state.
+        for current in [true, false] {
+            let drawn = node(&cut, current, cx);
+            assert!(drawn.supports_action(click), "a reader can press it");
+            assert_eq!(drawn.is_selected(), None);
+        }
         assert!(!node(&off, false, cx).supports_action(click), "off");
     });
 }

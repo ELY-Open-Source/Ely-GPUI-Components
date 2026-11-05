@@ -8,10 +8,11 @@ use gpui::{
 
 use super::{
     draw::{self, measure},
+    filter,
     model::{Kind, Menu},
 };
 use crate::{
-    forms::{Down, Enter, Left, Right, Run, TextInput, Up, float},
+    forms::{Run, TextInput, float},
     motion,
     primitives::{Icon, IconName, Takeover, give_back, raise, take_focus},
     theme::{ActiveTheme, IconSize},
@@ -86,6 +87,8 @@ pub(crate) struct Open {
     pub(super) over: Option<(usize, (usize, usize))>,
     /// A delayed mark; dropping it cancels.
     pub(super) pending: Option<Task<()>>,
+    /// The filter's text when arrows lent focus to the rows.
+    pub(super) listing: Option<String>,
 }
 
 impl Open {
@@ -230,7 +233,7 @@ pub(super) fn choose(
 }
 
 /// Arrows, Enter, Space and Escape drive the deepest level.
-fn keys(
+pub(super) fn keys(
     menu: &Menu,
     state: &Entity<Open>,
     key: &str,
@@ -278,7 +281,7 @@ fn keys(
 }
 
 /// Whether the deepest level marks a button row.
-fn on_buttons(menu: &Menu, state: &Entity<Open>, cx: &App) -> bool {
+pub(super) fn on_buttons(menu: &Menu, state: &Entity<Open>, cx: &App) -> bool {
     let levels = &state.read(cx).levels;
     let Some(depth) = levels.len().checked_sub(1) else {
         return false;
@@ -327,11 +330,8 @@ pub(crate) fn hang(
         close(window, cx);
         return None;
     }
-    let typing = field.map(|field| field.read(cx).focus().clone());
-    if let Some(typing) = &typing
-        && focus.is_focused(window)
-    {
-        window.focus(typing, cx);
+    if let Some(field) = field {
+        filter::settle(state, &focus, field, window, cx);
     }
     let mut levels = state.read(cx).levels.clone();
     settle(menu, &mut levels);
@@ -345,7 +345,7 @@ pub(crate) fn hang(
     let (keyed, key_menu, key_close) = (state.clone(), menu.clone(), close.clone());
     let (lifted, lift_menu, lift_close) = (state.clone(), menu.clone(), close.clone());
     let (out, out_close) = (state.clone(), close.clone());
-    let spaced = typing.is_none();
+    let spaced = field.is_none();
     let confirm = move |key: &str| key == "enter" || (spaced && key == "space");
     let head = field.map(|field| {
         let theme = cx.theme();
@@ -366,10 +366,7 @@ pub(crate) fn hang(
             .child(div().flex_1().min_w_0().child(field.clone()))
             .into_any_element()
     });
-    let (up_menu, up_state, up_close) = (menu.clone(), state.clone(), close.clone());
-    let (down_menu, down_state, down_close) = (menu.clone(), state.clone(), close.clone());
-    let (left_menu, left_state, left_close) = (menu.clone(), state.clone(), close.clone());
-    let (right_menu, right_state, right_close) = (menu.clone(), state.clone(), close.clone());
+    let (back, back_focus) = (field.cloned(), focus.clone());
     let room = window.viewport_size().width;
     // Not raised: inside the focused panel, a reader hears a submenu's mark.
     let subs: Vec<_> = (1..depth)
@@ -409,33 +406,20 @@ pub(crate) fn hang(
     let root = draw::panel(id, menu, state, 0, &close, head, cx)
         .track_focus(&focus)
         .children(subs)
-        .when(!spaced, |root| {
-            root.capture_action(move |_: &Up, window, cx| {
-                cx.stop_propagation();
-                keys(&up_menu, &up_state, "up", &up_close, window, cx);
-            })
-            .capture_action(move |_: &Down, window, cx| {
-                cx.stop_propagation();
-                keys(&down_menu, &down_state, "down", &down_close, window, cx);
-            })
-            .capture_action(|_: &Enter, _, cx| cx.stop_propagation())
-            // A button row takes the arrows from the filter.
-            .capture_action(move |_: &Left, window, cx| {
-                if on_buttons(&left_menu, &left_state, cx) {
-                    cx.stop_propagation();
-                    keys(&left_menu, &left_state, "left", &left_close, window, cx);
-                }
-            })
-            .capture_action(move |_: &Right, window, cx| {
-                if on_buttons(&right_menu, &right_state, cx) {
-                    cx.stop_propagation();
-                    keys(&right_menu, &right_state, "right", &right_close, window, cx);
-                }
-            })
+        .when_some(field, |root, field| {
+            filter::arrows(root, (menu, state, &close), &focus, field)
         })
         .on_key_down(move |event, window, cx| {
             let stroke = &event.keystroke;
             let key = stroke.key.as_str();
+            if let Some(field) = &back
+                && key == "backspace"
+                && back_focus.is_focused(window)
+            {
+                cx.stop_propagation();
+                filter::backspace(&keyed, field, window, cx);
+                return;
+            }
             if matches!(key, "enter" | "space") {
                 if confirm(key) && !stroke.modifiers.modified() {
                     cx.stop_propagation();
