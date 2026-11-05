@@ -4,7 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
-- `ely-core`: Shell code colors a `#` right after the `)` that closes `$(`, `$((`, `<(` or `>(` as part of the word, as Bash reads it; only a bare subshell's `)` ends a word before a comment.
+- `ely-core`: Shell code colors a `#` right after the `)` that closes `$(`, `$((`, `<(` or `>(` as part of the word, as Bash reads it; only a bare subshell's `)` ends a word before a comment. A `case` pattern's `)` inside `$(` no longer counts as the `)` that closes it.
 - `ely-core`: a menu's icon buttons carry no selected state, so Windows offers their Invoke pattern to a screen reader; in a `SearchableMenu`, the arrows lend the panel focus so a reader hears the marked row or button, and typing or Backspace gives the filter focus back.
 - `ely-core`: adds the Korean `ko-KR` locale and Korean component messages. The gallery's i18n page holds one catalog per listed locale, Spanish and Korean too; its table is sized to `LOCALES`, so a new locale without one does not build.
 - `ely-documents`: a wheel over `MarkdownDocument`'s margins beside a narrowed text column, or over its bar's track, scrolls the text as far as one over the text, once; in the source view a line wheel keeps the code's own line height at any text size, and a sideways wheel (Shift and the wheel) scrolls the code down there as over the code. Split is unchanged.

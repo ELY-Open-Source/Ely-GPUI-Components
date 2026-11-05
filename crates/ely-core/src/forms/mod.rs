@@ -34,6 +34,7 @@ mod radio;
 mod rating;
 mod search;
 mod select;
+mod shell;
 mod signature;
 mod slider;
 mod stepper;

@@ -7,6 +7,7 @@ use gpui::{
 
 use super::{
     Highlight, Input, TextInput,
+    shell::Nesting,
     syntax::{CommentStart, Syntax, escaped},
 };
 use crate::theme::{ActiveTheme, ControlSize, TextSize};
@@ -63,8 +64,7 @@ pub fn lex(source: &str) -> Vec<(Range<usize>, Kind)> {
 /// Splits source as `syntax` reads it.
 pub(crate) fn lex_with(source: &str, syntax: &Syntax) -> Vec<(Range<usize>, Kind)> {
     let mut out = Vec::new();
-    // Open parens: whether each opens a Shell expansion.
-    let mut opens = Vec::new();
+    let mut nesting = Nesting::default();
     let mut shut = None;
     let mut chars = source.char_indices().peekable();
     while let Some((start, ch)) = chars.next() {
@@ -102,17 +102,23 @@ pub(crate) fn lex_with(source: &str, syntax: &Syntax) -> Vec<(Range<usize>, Kind
                     .next_if(|(_, next)| next.is_alphanumeric() || matches!(next, '_' | '$'))
                     .is_some()
                 {}
+                let end = chars.peek().map_or(source.len(), |(next, _)| *next);
+                nesting.word(source, start..end);
                 Kind::Word
             }
             ch if ch.is_whitespace() => continue,
             '(' if !escaped(&source[..start]) => {
-                opens.push(source[..start].ends_with(['$', '<', '>']));
+                nesting.open(source, start);
                 Kind::Mark
             }
             ')' if !escaped(&source[..start]) => {
-                if opens.pop() == Some(true) {
+                if nesting.close() {
                     shut = Some(start + 1);
                 }
+                Kind::Mark
+            }
+            ';' if !escaped(&source[..start]) => {
+                nesting.semicolon(source, start);
                 Kind::Mark
             }
             _ => Kind::Mark,

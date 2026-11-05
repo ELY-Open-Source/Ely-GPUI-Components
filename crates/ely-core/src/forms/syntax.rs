@@ -20,12 +20,12 @@ pub enum CommentStart {
     Anywhere,
     /// At line start or after a space (YAML).
     Spaced,
-    /// Where a Shell word starts: after `;&|()<>`, but not an expansion's `)`.
+    /// Where a Shell word starts, not after an expansion's `)`.
     Word,
 }
 
 impl CommentStart {
-    /// Whether the mark opens a comment after `before`, which may end an expansion.
+    /// Whether the mark opens a comment after `before`.
     pub(crate) fn after(self, before: &str, shut_expansion: bool) -> bool {
         let Some(last) = before.chars().next_back() else {
             return true;
