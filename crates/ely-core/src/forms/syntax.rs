@@ -20,28 +20,32 @@ pub enum CommentStart {
     Anywhere,
     /// At line start or after a space (YAML).
     Spaced,
-    /// Where a Shell word starts: also after `;&|()<>`, unless escaped.
+    /// Where a Shell word starts: after `;&|()<>`, but not an expansion's `)`.
     Word,
 }
 
 impl CommentStart {
-    /// Whether the mark opens a comment after the text `before`.
-    pub(crate) fn after(self, before: &str) -> bool {
-        let mut back = before.chars().rev();
-        let Some(last) = back.next() else {
+    /// Whether the mark opens a comment after `before`, which may end an expansion.
+    pub(crate) fn after(self, before: &str, shut_expansion: bool) -> bool {
+        let Some(last) = before.chars().next_back() else {
             return true;
         };
         match self {
             Self::Anywhere => true,
             Self::Spaced => last.is_whitespace(),
             Self::Word => {
-                let escaped = back.take_while(|ch| *ch == '\\').count() % 2 == 1;
-                !escaped
+                !escaped(&before[..before.len() - last.len_utf8()])
                     && (last.is_whitespace()
-                        || matches!(last, ';' | '&' | '|' | '(' | ')' | '<' | '>'))
+                        || matches!(last, ';' | '&' | '|' | '(' | '<' | '>')
+                        || (last == ')' && !shut_expansion))
             }
         }
     }
+}
+
+/// Whether an odd run of backslashes ends `before`.
+pub(crate) fn escaped(before: &str) -> bool {
+    before.chars().rev().take_while(|ch| *ch == '\\').count() % 2 == 1
 }
 
 impl Syntax {

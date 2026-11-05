@@ -227,6 +227,7 @@ mod tests {
                 "echo x;# return 42",
                 "echo x&# return 42",
                 "(echo x)# return 4",
+                "(echo $(a))# return 4",
                 r"echo x\\;# return 4",
             ] {
                 assert_eq!(
@@ -245,6 +246,11 @@ mod tests {
                 r"echo x\ # return 42",
                 r"echo x\\\;# return 42",
                 r##"echo "a;"# return 42"##,
+                "echo 1 $(echo a)# return 42",
+                "echo 2 $((1+2))# return 42",
+                "cat <(echo 4 p)# return 42",
+                "tee >(cat)# return 42",
+                r"echo \(x\)# return 42",
             ] {
                 let shell = color(line, "run.sh", cx);
                 assert!(
