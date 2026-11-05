@@ -8,7 +8,10 @@ use gpui::{
 use super::{Close, Dialog};
 use crate::{
     buttons::{Button, ButtonVariant},
-    forms::{Input, Run, TextInput},
+    forms::{
+        Input, Run, TextInput,
+        naming::{Named, Naming},
+    },
     i18n,
     primitives::{Icon, Severity},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
@@ -322,6 +325,12 @@ impl RenderOnce for PromptDialog {
         let theme = cx.theme();
         let colors = &theme.colors;
         let (button, lifted) = (send.clone(), send);
+        let reason = verdict.err().filter(|_| !text.is_empty());
+        let naming = Naming {
+            name: self.label.clone().unwrap_or_default(),
+            note: reason.clone(),
+        };
+        let input = Input::new(&self.field).invalid(reason.is_some());
         let field = div()
             .flex()
             .flex_col()
@@ -334,21 +343,18 @@ impl RenderOnce for PromptDialog {
                         .child(label),
                 )
             })
-            .child(Input::new(&self.field).invalid(!ready && !text.is_empty()))
-            .when_some(
-                verdict.err().filter(|_| !text.is_empty()),
-                |field, reason| {
-                    field.child(
-                        div()
-                            .id((self.id.clone(), "error"))
-                            .role(Role::Label)
-                            .aria_label(reason.clone())
-                            .text_size(theme.text_size(TextSize::Xs))
-                            .text_color(colors.danger)
-                            .child(reason),
-                    )
-                },
-            );
+            .child(Named::new(naming, input.into_any_element()))
+            .when_some(reason, |field, reason| {
+                field.child(
+                    div()
+                        .id((self.id.clone(), "error"))
+                        .role(Role::Label)
+                        .aria_label(reason.clone())
+                        .text_size(theme.text_size(TextSize::Xs))
+                        .text_color(colors.danger)
+                        .child(reason),
+                )
+            });
         let (cancel_id, submit_id, label) = (
             (self.id.clone(), "cancel"),
             (self.id.clone(), "submit"),

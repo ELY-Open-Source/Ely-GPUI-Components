@@ -118,6 +118,7 @@ impl Render for Stage {
                 .on_confirm(move |window, cx| confirmed(window, cx))
                 .into_any_element(),
             Open::Prompt => PromptDialog::new("prompt", "Rename", &self.field, shut)
+                .label("New name")
                 .check(|text| match text {
                     "" => Err("Needs a name".into()),
                     text if text.contains('/') => Err("No slashes".into()),
@@ -350,6 +351,26 @@ fn the_prompt_opens_with_its_text_selected(cx: &mut TestAppContext) {
     settle(cx);
     press("enter", cx);
     assert_eq!(log(&view, cx), ["sent notes"]);
+}
+
+#[gpui::test]
+fn the_prompt_names_its_field_by_its_label(cx: &mut TestAppContext) {
+    let (view, cx) = stage(cx);
+    show(&view, Open::Prompt, cx);
+    let field = view.read_with(cx, |stage, _| stage.field.clone());
+    let naming = |cx: &mut VisualTestContext| {
+        field.read_with(cx, |input, _| {
+            let naming = input.field();
+            (
+                naming.name.to_string(),
+                naming.note.clone().map(String::from),
+            )
+        })
+    };
+    assert_eq!(naming(cx), ("New name".into(), None));
+    cx.simulate_input("a/");
+    settle(cx);
+    assert_eq!(naming(cx), ("New name".into(), Some("No slashes".into())));
 }
 
 fn before_focused(view: &Entity<Stage>, cx: &mut VisualTestContext) -> bool {

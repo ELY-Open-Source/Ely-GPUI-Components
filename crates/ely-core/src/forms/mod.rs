@@ -22,7 +22,7 @@ mod listbox;
 mod masked;
 mod mention;
 mod multi;
-mod naming;
+pub(crate) mod naming;
 mod number;
 mod options;
 mod pairs;
