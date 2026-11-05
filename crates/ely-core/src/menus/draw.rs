@@ -172,7 +172,7 @@ pub(super) fn panel(
     let open = state.read(cx);
     let here = at_depth(menu, &open.levels, depth).expect("settled levels follow submenu rows");
     let at = open.levels[depth].at;
-    // Only the deepest open level's mark is what a reader hears.
+    // A reader hears only the deepest open level's mark.
     let deepest = depth + 1 == open.levels.len();
     let theme = cx.theme();
     let colors = &theme.colors;

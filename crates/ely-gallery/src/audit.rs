@@ -13,6 +13,8 @@ use serde_json::Value;
 
 use crate::{pages, script, shell::Gallery};
 
+mod menu;
+
 const SETTLE: Duration = Duration::from_millis(700);
 const WAKE: Duration = Duration::from_secs(20);
 /// More stops than any page holds; past it the walk has lost its way.
@@ -33,7 +35,10 @@ pub fn run(window: WindowHandle<Gallery>, report: PathBuf, only: Option<usize>, 
     Theme::update(cx, |theme| theme.reduced_motion = true);
     cx.spawn(async move |cx| {
         let mut stops = Vec::new();
-        let walked = walk_all(window, only, &mut stops, cx).await;
+        let walked = match walk_all(window, only, &mut stops, cx).await {
+            Ok(()) => menu::check(cx).await,
+            failed => failed,
+        };
         // A walk that fails still reports the stops it read.
         let outcome = write(&report, &stops).and_then(|faults| walked.map(|()| faults));
         match outcome {
@@ -66,8 +71,8 @@ async fn walk_all(
     stops: &mut Vec<Stop>,
     cx: &mut AsyncApp,
 ) -> Result<()> {
-    let mut client = connect(window, cx)?;
-    wake(window, cx).await?;
+    let mut client = connect(window.into(), cx)?;
+    wake(window.into(), cx).await?;
     for (ix, page) in pages::ALL.iter().enumerate() {
         if only.is_some_and(|only| only != ix) {
             continue;
@@ -87,7 +92,7 @@ async fn walk_all(
 }
 
 /// A UI Automation client in another process, so gpui builds its tree.
-fn connect(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<Child> {
+fn connect(window: AnyWindowHandle, cx: &mut AsyncApp) -> Result<Child> {
     let hwnd = window.update(cx, |_, window, _| hwnd(window))??;
     let query = format!(
         "Add-Type -AssemblyName UIAutomationClient; \
@@ -113,7 +118,7 @@ fn hwnd(window: &Window) -> Result<isize> {
 }
 
 /// Waits for the client's first request to turn gpui's tree on.
-async fn wake(window: WindowHandle<Gallery>, cx: &mut AsyncApp) -> Result<()> {
+async fn wake(window: AnyWindowHandle, cx: &mut AsyncApp) -> Result<()> {
     let start = cx.background_executor().now();
     loop {
         if window.update(cx, |_, window, _| window.is_a11y_active())? {

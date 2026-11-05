@@ -368,7 +368,7 @@ pub(crate) fn hang(
     });
     let (back, back_focus) = (field.cloned(), focus.clone());
     let room = window.viewport_size().width;
-    // Not raised: inside the focused panel, a reader hears a submenu's mark.
+    // Not raised: a reader hears submenu marks inside the panel.
     let subs: Vec<_> = (1..depth)
         .filter_map(|level| {
             let open = state.read(cx);

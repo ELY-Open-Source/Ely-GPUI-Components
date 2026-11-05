@@ -1,4 +1,4 @@
-//! A filtered menu's focus: arrows lend it to the rows, typing takes it back.
+//! Filtered menus: arrows focus the rows, typing refocuses the filter.
 
 use gpui::{
     App, Div, ElementInputHandler, Entity, EntityInputHandler, FocusHandle, InteractiveElement,
@@ -55,7 +55,7 @@ pub(super) fn arrows(
         })
 }
 
-/// Lends the panel focus: gpui heeds a mark only under focus.
+/// Lends the panel focus; gpui heeds marks only under focus.
 fn to_rows(
     state: &Entity<Open>,
     panel: &FocusHandle,
@@ -68,7 +68,7 @@ fn to_rows(
     window.focus(panel, cx);
 }
 
-/// Gives the field focus on opening and once typing changed its text.
+/// Focuses the field on opening and after typing changes it.
 pub(super) fn settle(
     state: &Entity<Open>,
     panel: &FocusHandle,

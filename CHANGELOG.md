@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-gallery`: `--audit` also opens a `SearchableMenu`, arrows to a button checking a screen reader hears each marked row, and presses it through UI Automation's Invoke: it must run once and close the menu.
 - `ely-core`: a `PromptDialog`'s field takes the dialog's label as its accessible name, and a failed check's reason as its description, so a screen reader names the field.
 - `ely-core`: Shell code colors a `#` right after the `)` that closes `$(`, `$((`, `<(` or `>(` as part of the word, as Bash reads it; only a bare subshell's `)` ends a word before a comment. A `case` pattern's `)` inside `$(` no longer counts as the `)` that closes it; `case` and `esac` are keywords only as whole words where Bash takes a reserved word, so not as a pattern, and also after `fi`, `done`, `esac` or `}`.
 - `ely-core`: a menu's icon buttons carry no selected state, so Windows offers their Invoke pattern to a screen reader; in a `SearchableMenu`, the arrows lend the panel focus so a reader hears the marked row or button, and typing or Backspace gives the filter focus back.
