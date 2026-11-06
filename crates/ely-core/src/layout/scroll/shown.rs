@@ -73,7 +73,14 @@ pub(super) fn track_activity(
     let fade = motion::duration(motion::SLOW, cx);
     let activity = state.read(cx);
     let presence = presence(activity, fade);
-    if presence <= 0.0 || activity.held() {
+    if activity.held() {
+        // A held bar draws nothing; its pending wake goes.
+        if activity.wake.is_some() {
+            state.update(cx, |activity, _| activity.wake = None);
+        }
+        return presence;
+    }
+    if presence <= 0.0 {
         return presence;
     }
     let left = activity

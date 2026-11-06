@@ -135,3 +135,37 @@ fn a_hold_cut_short_by_staying_never_wakes(cx: &mut TestAppContext) {
         .collect();
     assert_eq!(woke, [0, 0, 0], "the pending wake is gone");
 }
+
+#[gpui::test]
+fn a_pointer_resting_on_the_bar_draws_nothing_and_leaving_fades(cx: &mut TestAppContext) {
+    let (position, host, cx) = hosted(cx);
+    scroll(0.4, &position, &host, cx);
+    after(100, 0, &host, cx);
+    let thumb = cx.debug_bounds("scrollbar-thumb").expect("drawn").center();
+    cx.simulate_mouse_move(thumb, None, gpui::Modifiers::none());
+    cx.run_until_parked();
+    let from = host.read_with(cx, |host, _| host.renders);
+    let rested: Vec<usize> = [710, 100, 300]
+        .into_iter()
+        .map(|millis| after(millis, from, &host, cx))
+        .collect();
+    assert_eq!(rested, [0, 0, 0], "the old wake is gone");
+    cx.simulate_mouse_move(point(px(200.), px(400.)), None, gpui::Modifiers::none());
+    cx.run_until_parked();
+    let from = host.read_with(cx, |host, _| host.renders);
+    for _ in 0..8 {
+        cx.update(|window, cx| window.simulate_next_frame(cx));
+        cx.run_until_parked();
+    }
+    assert!(
+        host.read_with(cx, |host, _| host.renders) > from,
+        "leaving starts the fade"
+    );
+    after(1000, 0, &host, cx);
+    let faded = host.read_with(cx, |host, _| host.renders);
+    assert_eq!(
+        after(500, faded, &host, cx),
+        0,
+        "the fade ends and stays still"
+    );
+}
