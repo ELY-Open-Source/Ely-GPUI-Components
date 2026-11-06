@@ -127,7 +127,7 @@ fn written(text: &str, runs: &[Range<usize>], extra: usize) -> Flow {
 
 /// `text` with its math fences as tildes; each kept fence opens or closes math.
 pub(super) fn rewrite(text: &str, options: Options) -> Flow {
-    let mut active = outside_code(text, fences(text), options);
+    let mut active = paired(text, outside_code(text, fences(text), options));
     loop {
         // One tilde more keeps a longer `$` run the longer fence.
         let mut flow = written(text, &active, 1);
@@ -149,6 +149,41 @@ pub(super) fn rewrite(text: &str, options: Options) -> Flow {
         );
         active = kept.iter().map(|(ix, _)| active[*ix].clone()).collect();
     }
+}
+
+/// Fence pairs as GitHub pairs `$$`: each opener takes the next run as long.
+fn paired(text: &str, runs: Vec<Range<usize>>) -> Vec<Range<usize>> {
+    let mut out = Vec::new();
+    let mut ix = 0;
+    while let Some(open) = runs.get(ix) {
+        let Some(end) = next_run(text, open.end, open.len()) else {
+            break;
+        };
+        match runs[ix + 1..].iter().position(|run| run.start == end.start) {
+            Some(at) => {
+                out.push(open.clone());
+                out.push(runs[ix + 1 + at].clone());
+                ix += at + 2;
+            }
+            // Closed on a text line: display math, not a fence.
+            None => ix += 1 + runs[ix + 1..].partition_point(|run| run.start < end.end),
+        }
+    }
+    out
+}
+
+/// The first run of at least `len` dollars from byte `from`.
+fn next_run(text: &str, from: usize, len: usize) -> Option<Range<usize>> {
+    let bytes = text.as_bytes();
+    let mut at = from;
+    while at < bytes.len() {
+        let run = bytes[at..].iter().take_while(|byte| **byte == b'$').count();
+        if run >= len {
+            return Some(at..at + run);
+        }
+        at += run.max(1);
+    }
+    None
 }
 
 /// `runs` less those in code or HTML as the text reads without math.
@@ -202,10 +237,7 @@ fn kept(flow: &Flow, options: Options) -> Vec<(usize, bool)> {
         };
         let (closing, opening) = (&flow.fences[close].0, &flow.fences[open].0);
         let bare = text[closing.end..last.end].trim().is_empty();
-        // A `$$` inside ends the math first, as GitHub pairs them.
-        let inner = &text[opening.end..closing.start];
-        let ended = inner.contains(&"$".repeat(opening.len() - flow.extra));
-        if bare && !ended && closing.len() >= opening.len() {
+        if bare && closing.len() >= opening.len() {
             out.push((open, true));
             out.push((close, false));
         }
@@ -263,5 +295,12 @@ mod tests {
         ] {
             assert_eq!(rewrite(text, Options::empty()).text, text, "{text:?}");
         }
+    }
+
+    #[test]
+    fn fences_after_a_text_ended_one_pair_on_their_own() {
+        let text = "$$\na.$$\n\n$$\nb\n$$\n\n$$\nc\n$$\n";
+        let flow = rewrite(text, Options::empty());
+        assert_eq!(flow.text, "$$\na.$$\n\n~~~\nb\n~~~\n\n~~~\nc\n~~~\n");
     }
 }

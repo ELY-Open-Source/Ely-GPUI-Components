@@ -181,6 +181,9 @@ fn display_math_stands_alone() {
         [Node::Math("a.".into()), Node::Math("b\\tag{8}".into())]
     );
     assert_eq!(parse("$$a = 1\n$$"), [Node::Math("a = 1".into())]);
+    let three = parse("$$\na.$$\n\n$$\nb\n$$\n\n$$\nc\n$$\n");
+    let math = |tex: &str| Node::Math(tex.into());
+    assert_eq!(three, [math("a."), math("b"), math("c")]);
     let Node::Paragraph(inline) = &parse("so $c$ holds")[0] else {
         panic!("inline math stays in its paragraph")
     };
