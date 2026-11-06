@@ -45,6 +45,22 @@ impl DescriptionList {
         self
     }
 
+    /// A label and text that can be selected and copied.
+    pub fn selectable_text(
+        mut self,
+        label: impl Into<SharedString>,
+        value: impl Into<SharedString>,
+    ) -> Self {
+        let value = value.into();
+        let element = crate::typography::SelectableText::new(
+            ("description-value", self.items.len()),
+            value.clone(),
+        );
+        self.items
+            .push((label.into(), element.into_any_element(), Some(value)));
+        self
+    }
+
     /// Each label above its value, for narrow places.
     pub fn stacked(mut self) -> Self {
         self.stacked = true;

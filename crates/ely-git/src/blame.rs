@@ -8,10 +8,10 @@ use gpui::{
 
 use crate::{
     data_display::Avatar,
-    editor::code_colors,
+    editor::{code_colors, stack},
     primitives::FocusRing,
     theme::{ActiveTheme, AvatarSize, TextSize},
-    typography::{Ellipsis, LEADING},
+    typography::{Ellipsis, LEADING, selection},
 };
 
 /// Who last changed lines; age 0 newest, 1 oldest.
@@ -163,7 +163,7 @@ impl BlameView {
 }
 
 impl RenderOnce for BlameView {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let frame = div()
             .size_full()
@@ -181,6 +181,21 @@ impl RenderOnce for BlameView {
         let lines: Rc<Vec<SharedString>> =
             Rc::new(code.lines().map(|line| line.to_string().into()).collect());
         let digits = lines.len().to_string().len();
+        let selected = selection::state(
+            (id.clone(), "text"),
+            Rc::new(lines.iter().cloned().map(Some).collect()),
+            false,
+            window,
+            cx,
+        );
+        let scroll = window
+            .use_keyed_state((id.clone(), "scroll"), cx, |_, _| {
+                gpui::UniformListScrollHandle::new()
+            })
+            .read(cx)
+            .clone();
+        selection::scroll(&selected, scroll.clone(), cx);
+        let picked = selected.clone();
         // Each line's owner, and whether it starts a run.
         let heads: Rc<Vec<(Option<usize>, bool)>> = Rc::new(
             runs(&owners)
@@ -189,6 +204,7 @@ impl RenderOnce for BlameView {
                 .collect(),
         );
         let blames = Rc::new(blames);
+        let selection_id = (id.clone(), "selection");
         let list = uniform_list((id.clone(), "lines"), lines.len(), move |range, _, cx| {
             let theme = cx.theme();
             let colors = theme.colors.clone();
@@ -297,15 +313,34 @@ impl RenderOnce for BlameView {
                                 .text_color(colors.fg_subtle)
                                 .child((line + 1).to_string()),
                         )
-                        .child(StyledText::new(text).with_highlights(styles))
+                        .child(selection::fragment(
+                            ("blame-text", line),
+                            picked.clone(),
+                            line,
+                            {
+                                let range = selection::range(&picked, line, cx);
+                                let mut styles = styles;
+                                if !range.is_empty() {
+                                    styles.push((
+                                        range,
+                                        gpui::HighlightStyle {
+                                            background_color: Some(colors.selection),
+                                            ..Default::default()
+                                        },
+                                    ));
+                                }
+                                StyledText::new(text).with_highlights(stack(styles))
+                            },
+                        ))
                         .when_some(blame.filter(|_| current == Some(line)), |row, blame| {
                             row.child(GitBlameAnnotation::new(blame))
                         })
                 })
                 .collect()
         })
+        .track_scroll(&scroll)
         .size_full();
-        frame.child(list)
+        frame.child(selection::surface(selection_id, selected, list, cx).size_full())
     }
 }
 

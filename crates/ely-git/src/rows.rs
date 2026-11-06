@@ -93,6 +93,7 @@ pub(super) fn code(
     line: &DiffLine,
     colors: &Palette,
     syntax: Option<&Syntax>,
+    selection: Range<usize>,
     cx: &App,
 ) -> StyledText {
     let (_, word) = washes(line.kind, colors);
@@ -106,6 +107,15 @@ pub(super) fn code(
             },
         )
     }));
+    if !selection.is_empty() {
+        styles.push((
+            selection,
+            HighlightStyle {
+                background_color: Some(colors.selection),
+                ..Default::default()
+            },
+        ));
+    }
     styles.sort_by_key(|(range, _)| range.start);
     StyledText::new(line.text.clone()).with_highlights(stack(styles))
 }
