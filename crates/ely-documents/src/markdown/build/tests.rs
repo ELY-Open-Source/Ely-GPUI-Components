@@ -23,12 +23,15 @@ fn linear(source: impl Fn(usize) -> String) {
 }
 
 #[test]
-fn an_unclosed_fence_before_wide_text_reads() {
-    let root = tree("$$\n中文", false);
+fn a_fence_before_wide_text_reads() {
+    let root = tree("$$\n中文\n$$", false);
     assert!(
         matches!(blocks(&root), [Node::Math(math)] if math.value == "中文"),
         "{root:?}"
     );
+    // Unclosed, GitHub shows it as text.
+    let root = tree("$$\n中文", false);
+    assert!(matches!(blocks(&root), [Node::Paragraph(_)]), "{root:?}");
 }
 
 #[test]

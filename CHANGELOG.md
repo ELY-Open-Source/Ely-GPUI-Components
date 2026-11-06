@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-documents`: `$$` math reads as GitHub pairs it: `$$` alone then `a.$$` on the next line is math and no longer takes the `$$` into the formula or the next block into it; `$$a` then `$$` is math, no longer an empty block; an unclosed `$$` is text.
 - `ely-documents`: `MarkdownDocument::point_match` shows a match as `show_match` does, in visual mode its block opened with the match selected, but leaves focus where it is, so a find box keeps its keys and Enter steps on.
 - `ely-documents`: `MarkdownRenderer::selectable` lets the pointer select its text across blocks, paragraphs, headings, lists, quotes, table cells and code; the secondary C copies it, blocks joined by line ends and list items led by their marker (`3.`, `•`, `[x]`, two spaces per depth), and A selects all while it holds focus. A right press hands a `RightPress` with the selection and the link or picture under it to the owner, which builds its menu. New text drops the selection. Inline math and front matter stay unselectable. `HeldPicture::format` and `HeldPicture::bytes` read a held picture back, so an owner can copy or save it.
 - All crates: gpui, gpui_platform and gpui_web from `gpui-pre` `=0.3.11`, the snapshot GPUI Kit 0.9.0 pins, so Ely and Kit still share a window; an app on Ely moves its own `gpui-pre` pins to `=0.3.11`. A breaking change, so each published crate's minor rises: `ely-core` 0.3.0, every other 0.2.0.

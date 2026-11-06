@@ -49,7 +49,7 @@ impl Flow {
     }
 }
 
-/// `$$` runs that may fence: after container marks, alone with a meta.
+/// `$$` runs that may fence: after container marks, alone on the line.
 fn fences(text: &str) -> Vec<Range<usize>> {
     let mut out = Vec::new();
     let mut at = 0;
@@ -100,8 +100,9 @@ fn fence(line: &str) -> Option<Range<usize>> {
         at += marked;
     }
     let run = bytes[at..].iter().take_while(|byte| **byte == b'$').count();
+    // GitHub reads `$$x` as math opening, never a meta.
     let rest = &line[at + run..];
-    (run >= 2 && !rest.contains('$')).then_some(at..at + run)
+    (run >= 2 && rest.trim().is_empty()).then_some(at..at + run)
 }
 
 /// `text` with every fence in `runs` written as tildes.
@@ -173,7 +174,7 @@ fn outside_code(text: &str, runs: Vec<Range<usize>>, options: Options) -> Vec<Ra
         .collect()
 }
 
-/// Fences pulldown-cmark took as a block's opening or closing line, by index; whether each opens.
+/// Fence pairs pulldown-cmark took as a block's first and last line, by index; whether each opens.
 fn kept(flow: &Flow, options: Options) -> Vec<(usize, bool)> {
     let text = &flow.text;
     let ends = |byte: &u8| matches!(byte, b'\n' | b'\r');
@@ -194,14 +195,18 @@ fn kept(flow: &Flow, options: Options) -> Vec<(usize, bool)> {
         let Some(open) = flow.on(&line_of(range.start)) else {
             continue;
         };
-        out.push((open, true));
         let last = line_of(range.end.saturating_sub(1).max(range.start));
         let Some(close) = flow.on(&last).filter(|close| *close != open) else {
+            // Unclosed, the `$$` is display math's, as GitHub reads it.
             continue;
         };
         let (closing, opening) = (&flow.fences[close].0, &flow.fences[open].0);
         let bare = text[closing.end..last.end].trim().is_empty();
-        if bare && closing.len() >= opening.len() {
+        // A `$$` inside ends the math first, as GitHub pairs them.
+        let inner = &text[opening.end..closing.start];
+        let ended = inner.contains(&"$".repeat(opening.len() - flow.extra));
+        if bare && !ended && closing.len() >= opening.len() {
+            out.push((open, true));
             out.push((close, false));
         }
     }
@@ -216,7 +221,8 @@ mod tests {
     #[test]
     fn a_fence_follows_container_marks_and_takes_no_dollar_after() {
         assert_eq!(fence("$$\n"), Some(0..2));
-        assert_eq!(fence("> - $$$ x\n"), Some(4..7));
+        assert_eq!(fence("> - $$$\n"), Some(4..7));
+        assert_eq!(fence("$$ x"), None, "no meta: GitHub reads it as math");
         assert_eq!(fence("1. $$"), Some(3..5));
         assert_eq!(fence("$$x$$"), None);
         assert_eq!(fence("a $$"), None);
@@ -243,7 +249,19 @@ mod tests {
 
     #[test]
     fn a_shorter_or_meta_line_inside_math_stays_content() {
-        let flow = rewrite("$$$\n$$\n$$ x\n", Options::empty());
-        assert_eq!(flow.text, "~~~~\n$$\n$$ x\n");
+        let flow = rewrite("$$$\n$$\n$$ x\n$$$\n", Options::empty());
+        assert_eq!(flow.text, "~~~~\n$$\n$$ x\n~~~~\n");
+    }
+
+    #[test]
+    fn an_unclosed_or_inline_ended_fence_is_left_to_display_math() {
+        for text in [
+            "$$\nx.$$\n",
+            "$$\nx\n",
+            "$$x\n$$\n",
+            "$$\nx.$$\n\n$$\ny.$$\n",
+        ] {
+            assert_eq!(rewrite(text, Options::empty()).text, text, "{text:?}");
+        }
     }
 }

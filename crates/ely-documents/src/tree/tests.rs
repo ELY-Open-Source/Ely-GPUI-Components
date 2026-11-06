@@ -174,6 +174,13 @@ fn a_heading_keeps_its_images_after_it() {
 fn display_math_stands_alone() {
     assert_eq!(parse("$$c = 1$$"), [Node::Math("c = 1".into())]);
     assert_eq!(parse("$$\nc = 1\n$$"), [Node::Math("c = 1".into())]);
+    // GitHub closes at the first `$$`, even on a text line.
+    let both = parse("$$\na.$$\n\n$$\nb\\tag{8}$$\n");
+    assert_eq!(
+        both,
+        [Node::Math("a.".into()), Node::Math("b\\tag{8}".into())]
+    );
+    assert_eq!(parse("$$a = 1\n$$"), [Node::Math("a = 1".into())]);
     let Node::Paragraph(inline) = &parse("so $c$ holds")[0] else {
         panic!("inline math stays in its paragraph")
     };
