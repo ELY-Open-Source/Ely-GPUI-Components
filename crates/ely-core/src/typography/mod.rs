@@ -11,6 +11,8 @@ pub mod keys;
 mod link;
 mod rolling;
 mod select;
+#[doc(hidden)]
+pub mod selection;
 mod text;
 
 pub use copy::CopyableText;

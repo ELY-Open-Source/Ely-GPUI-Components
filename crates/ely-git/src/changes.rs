@@ -13,7 +13,7 @@ use crate::{
     lists::GitStatus,
     primitives::{FocusRing, IconName},
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
-    typography::{Ellipsis, tabular},
+    typography::{SelectableText, tabular},
 };
 
 /// A changed file: path, status, and lines changed.
@@ -233,14 +233,18 @@ impl ChangesList {
                             .when(file.status == GitStatus::Deleted, |name| {
                                 name.line_through()
                             })
-                            .child(Ellipsis::new(name)),
+                            .overflow_hidden()
+                            .whitespace_nowrap()
+                            .child(SelectableText::new("change-name", name).ellipsis()),
                     )
                     .child(
                         div()
                             .flex_1()
                             .min_w_0()
                             .text_color(colors.fg_subtle)
-                            .child(Ellipsis::new(folder)),
+                            .overflow_hidden()
+                            .whitespace_nowrap()
+                            .child(SelectableText::new("change-folder", folder).ellipsis()),
                     ),
             )
             .child(

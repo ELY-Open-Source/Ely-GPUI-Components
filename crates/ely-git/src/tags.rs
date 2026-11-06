@@ -10,6 +10,7 @@ use crate::{
     i18n,
     primitives::IconName,
     theme::{ActiveTheme, TextSize},
+    typography::SelectableText,
 };
 
 type OnStash = Rc<dyn Fn(usize, StashAction, &mut Window, &mut App)>;
@@ -89,7 +90,7 @@ impl RenderOnce for TagList {
                         icon: IconName::Tag,
                         name: div()
                             .text_color(colors.fg)
-                            .child(tag.name.clone())
+                            .child(SelectableText::new("tag-name", tag.name.clone()))
                             .into_any_element(),
                         detail: tag.message.clone().unwrap_or_default(),
                         trailing: vec![short.into(), tag.when.clone()],
@@ -237,7 +238,7 @@ impl RenderOnce for StashList {
                         name: div()
                             .font_family(theme.mono_family.clone())
                             .text_color(colors.fg)
-                            .child(name)
+                            .child(SelectableText::new("stash-name", name))
                             .into_any_element(),
                         detail,
                         trailing: vec![stash.when.clone()],

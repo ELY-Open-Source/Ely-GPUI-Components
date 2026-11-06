@@ -11,7 +11,7 @@ use crate::{
     navigation::{Group, Palette, Row, fuzzy, marked, query_field},
     primitives::{FocusRing, Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
-    typography::{Ellipsis, tabular},
+    typography::{SelectableText, tabular},
 };
 
 /// A branch, its upstream distance, and its last commit.
@@ -301,7 +301,14 @@ pub(super) fn listed(id: ElementId, entry: Entry, pick: Option<Pick>, cx: &App) 
                             .flex()
                             .gap_2()
                             .text_color(colors.fg_subtle)
-                            .child(div().flex_1().min_w_0().child(Ellipsis::new(detail)))
+                            .child(
+                                div()
+                                    .flex_1()
+                                    .min_w_0()
+                                    .overflow_hidden()
+                                    .whitespace_nowrap()
+                                    .child(SelectableText::new("ref-detail", detail).ellipsis()),
+                            )
                             .children(
                                 trailing
                                     .into_iter()
@@ -415,7 +422,7 @@ impl RenderOnce for BranchList {
                         name.font_weight(FontWeight::SEMIBOLD)
                     })
                     .text_color(colors.fg)
-                    .child(branch.name.clone())
+                    .child(SelectableText::new("branch-name", branch.name.clone()))
                     .into_any_element();
                 let bind = |handler: &Option<OnName>| {
                     handler.clone().map(|handler| {

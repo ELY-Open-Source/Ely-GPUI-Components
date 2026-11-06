@@ -9,7 +9,7 @@ use smallvec::SmallVec;
 
 use crate::{
     theme::{ActiveTheme, ControlSize, Radius, TextSize},
-    typography::{Ellipsis, LEADING},
+    typography::{Ellipsis, LEADING, SelectableText},
 };
 
 type OnClick = Rc<dyn Fn(&ClickEvent, &mut Window, &mut App)>;
@@ -36,6 +36,7 @@ pub struct ListItem {
     leading: Option<AnyElement>,
     trailing: Option<AnyElement>,
     selected: bool,
+    selectable_text: bool,
     current: bool,
     disabled: bool,
     strong: bool,
@@ -59,6 +60,7 @@ impl ListItem {
             leading: None,
             trailing: None,
             selected: false,
+            selectable_text: false,
             current: false,
             disabled: false,
             strong: false,
@@ -91,6 +93,12 @@ impl ListItem {
     /// A field in place of the title, as a row renamed in place has it; the title stays the row's name.
     pub fn editor(mut self, editor: impl IntoElement) -> Self {
         self.editor = Some(editor.into_any_element());
+        self
+    }
+
+    /// Allows dragging and copying the row's text.
+    pub fn selectable_text(mut self) -> Self {
+        self.selectable_text = true;
         self
     }
 
@@ -177,11 +185,20 @@ impl RenderOnce for ListItem {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let colors = &theme.colors;
-        let line = |text: SharedString| {
+        let text_id = self.id.clone();
+        let line = |slot: &'static str, text: SharedString| {
             div()
                 .min_w_0()
                 .line_height(relative(LEADING))
-                .child(Ellipsis::new(text))
+                .overflow_hidden()
+                .whitespace_nowrap()
+                .child(if self.selectable_text {
+                    SelectableText::new((text_id.clone(), slot), text)
+                        .ellipsis()
+                        .into_any_element()
+                } else {
+                    Ellipsis::new(text).into_any_element()
+                })
         };
         let pressable = self.on_click.is_some() && !self.disabled;
         div()
@@ -239,7 +256,7 @@ impl RenderOnce for ListItem {
                     .flex_col()
                     .child(match self.editor {
                         Some(editor) => div().min_w_0().child(editor).into_any_element(),
-                        None => line(self.title)
+                        None => line("title", self.title)
                             .text_size(theme.text_size(TextSize::Base))
                             .when(self.strong, |title| title.font_weight(FontWeight::SEMIBOLD))
                             .when(self.struck, |title| title.line_through())
@@ -251,13 +268,13 @@ impl RenderOnce for ListItem {
                             .into_any_element(),
                     })
                     .children(self.description.map(|text| {
-                        line(text.clone())
+                        line("description", text.clone())
                             .debug_selector(|| format!("item-description-{text}"))
                             .text_size(theme.text_size(TextSize::Sm))
                             .text_color(colors.fg_muted)
                     }))
                     .children(self.detail.map(|text| {
-                        line(text)
+                        line("detail", text)
                             .text_size(theme.text_size(TextSize::Sm))
                             .text_color(colors.fg_subtle)
                     })),

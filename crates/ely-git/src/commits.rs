@@ -11,7 +11,7 @@ use crate::{
     data_display::{Avatar, Tag, Tone},
     primitives::FocusRing,
     theme::{ActiveTheme, AvatarSize, ControlSize, IconSize, Radius, TextSize},
-    typography::Ellipsis,
+    typography::SelectableText,
 };
 
 /// A commit as lists show it; first parent first.
@@ -138,7 +138,9 @@ impl RenderOnce for CommitItem {
                     .flex_1()
                     .min_w_24()
                     .text_color(colors.fg)
-                    .child(Ellipsis::new(commit.subject)),
+                    .overflow_hidden()
+                    .whitespace_nowrap()
+                    .child(SelectableText::new("commit-subject", commit.subject).ellipsis()),
             )
             // Narrow, the details give way before the subject.
             .child(
@@ -149,14 +151,22 @@ impl RenderOnce for CommitItem {
                     .whitespace_nowrap()
                     .flex()
                     .gap_2()
-                    .child(div().text_color(colors.fg_muted).child(commit.author))
+                    .child(
+                        div()
+                            .text_color(colors.fg_muted)
+                            .child(SelectableText::new("commit-author", commit.author)),
+                    )
                     .child(
                         div()
                             .font_family(theme.mono_family.clone())
                             .text_color(colors.fg_subtle)
-                            .child(short),
+                            .child(SelectableText::new("commit-hash", short)),
                     )
-                    .child(div().text_color(colors.fg_subtle).child(commit.when)),
+                    .child(
+                        div()
+                            .text_color(colors.fg_subtle)
+                            .child(SelectableText::new("commit-when", commit.when)),
+                    ),
             )
     }
 }
