@@ -4,6 +4,8 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-git`: keep commit titles visible in narrow lists with many graph lanes; scale the graph within a quarter of the row and let reference badges yield to the title.
+
 - `ely-documents`: `$$` math reads as GitHub pairs it: `$$` alone then `a.$$` on the next line is math and no longer takes the `$$` into the formula or the next block into it; `$$a` then `$$` is math, no longer an empty block; an unclosed `$$` is text.
 - `ely-documents`: `MarkdownDocument::point_match` shows a match as `show_match` does, in visual mode its block opened with the match selected, but leaves focus where it is, so a find box keeps its keys and Enter steps on.
 - `ely-documents`: `MarkdownRenderer::selectable` lets the pointer select its text across blocks, paragraphs, headings, lists, quotes, table cells and code; the secondary C copies it, blocks joined by line ends and list items led by their marker (`3.`, `•`, `[x]`, two spaces per depth), and A selects all while it holds focus. A right press hands a `RightPress` with the selection and the link or picture under it to the owner, which builds its menu. New text drops the selection. Inline math and front matter stay unselectable. `HeldPicture::format` and `HeldPicture::bytes` read a held picture back, so an owner can copy or save it.
