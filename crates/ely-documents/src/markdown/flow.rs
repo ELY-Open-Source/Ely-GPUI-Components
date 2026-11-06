@@ -127,7 +127,12 @@ fn written(text: &str, runs: &[Range<usize>], extra: usize) -> Flow {
 
 /// `text` with its math fences as tildes; each kept fence opens or closes math.
 pub(super) fn rewrite(text: &str, options: Options) -> Flow {
-    let mut active = paired(text, outside_code(text, fences(text), options));
+    let runs = fences(text);
+    let held = match runs.is_empty() {
+        true => Vec::new(),
+        false => code_blocks(text, options),
+    };
+    let mut active = paired(text, &outside_code(runs, &held), &held);
     loop {
         // One tilde more keeps a longer `$` run the longer fence.
         let mut flow = written(text, &active, 1);
@@ -151,32 +156,33 @@ pub(super) fn rewrite(text: &str, options: Options) -> Flow {
     }
 }
 
-/// Fence pairs as GitHub pairs `$$`: each opener takes the next run as long.
-fn paired(text: &str, runs: Vec<Range<usize>>) -> Vec<Range<usize>> {
+/// Fence pairs as GitHub pairs `$$`: every run takes the next as long.
+fn paired(text: &str, runs: &[Range<usize>], held: &[Range<usize>]) -> Vec<Range<usize>> {
+    let fence = |run: &Range<usize>| runs.iter().find(|each| each.start == run.start);
     let mut out = Vec::new();
-    let mut ix = 0;
-    while let Some(open) = runs.get(ix) {
-        let Some(end) = next_run(text, open.end, open.len()) else {
+    let mut at = 0;
+    while let Some(open) = next_run(text, at, 2, held) {
+        let Some(close) = next_run(text, open.end, open.len(), held) else {
             break;
         };
-        match runs[ix + 1..].iter().position(|run| run.start == end.start) {
-            Some(at) => {
-                out.push(open.clone());
-                out.push(runs[ix + 1 + at].clone());
-                ix += at + 2;
-            }
-            // Closed on a text line: display math, not a fence.
-            None => ix += 1 + runs[ix + 1..].partition_point(|run| run.start < end.end),
+        // A pair on two bare lines fences; others are display math.
+        if let (Some(open), Some(close)) = (fence(&open), fence(&close)) {
+            out.extend([open.clone(), close.clone()]);
         }
+        at = close.end;
     }
     out
 }
 
-/// The first run of at least `len` dollars from byte `from`.
-fn next_run(text: &str, from: usize, len: usize) -> Option<Range<usize>> {
+/// The first run of at least `len` dollars from byte `from`, outside `held`.
+fn next_run(text: &str, from: usize, len: usize, held: &[Range<usize>]) -> Option<Range<usize>> {
     let bytes = text.as_bytes();
     let mut at = from;
     while at < bytes.len() {
+        if let Some(block) = held.iter().find(|block| block.contains(&at)) {
+            at = block.end;
+            continue;
+        }
         let run = bytes[at..].iter().take_while(|byte| **byte == b'$').count();
         if run >= len {
             return Some(at..at + run);
@@ -186,18 +192,19 @@ fn next_run(text: &str, from: usize, len: usize) -> Option<Range<usize>> {
     None
 }
 
-/// `runs` less those in code or HTML as the text reads without math.
-fn outside_code(text: &str, runs: Vec<Range<usize>>, options: Options) -> Vec<Range<usize>> {
-    if runs.is_empty() {
-        return runs;
-    }
-    let held = Parser::new_ext(text, options)
+/// Code and HTML blocks, as the text reads without math.
+fn code_blocks(text: &str, options: Options) -> Vec<Range<usize>> {
+    Parser::new_ext(text, options)
         .into_offset_iter()
         .filter_map(|(event, range)| match event {
             Event::Start(Tag::CodeBlock(_) | Tag::HtmlBlock) => Some(range),
             _ => None,
-        });
-    let held: Vec<Range<usize>> = held.collect();
+        })
+        .collect()
+}
+
+/// `runs` less those in `held`.
+fn outside_code(runs: Vec<Range<usize>>, held: &[Range<usize>]) -> Vec<Range<usize>> {
     let mut ix = 0;
     (runs.into_iter())
         .filter(|run| {
@@ -302,5 +309,11 @@ mod tests {
         let text = "$$\na.$$\n\n$$\nb\n$$\n\n$$\nc\n$$\n";
         let flow = rewrite(text, Options::empty());
         assert_eq!(flow.text, "$$\na.$$\n\n~~~\nb\n~~~\n\n~~~\nc\n~~~\n");
+        let text = "$$a\n$$\n\n$$\nb\n$$\n";
+        let flow = rewrite(text, Options::empty());
+        assert_eq!(
+            flow.text, "$$a\n$$\n\n~~~\nb\n~~~\n",
+            "a text-opened one closes on its bare line"
+        );
     }
 }

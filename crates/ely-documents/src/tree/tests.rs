@@ -186,6 +186,12 @@ fn display_math_stands_alone() {
     assert_eq!(three, [math("a."), math("b"), math("c")]);
     let packed = parse("$$\na.$$\n$$\nb\n$$");
     assert_eq!(packed, [math("a."), math("b")], "GitHub shows both");
+    let opened = parse("$$a\n$$\n\n$$\nb\n$$\n");
+    assert_eq!(
+        opened,
+        [math("a"), math("b")],
+        "a text-opened one closes first"
+    );
     let Node::Paragraph(inline) = &parse("so $c$ holds")[0] else {
         panic!("inline math stays in its paragraph")
     };
