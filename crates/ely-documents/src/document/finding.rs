@@ -14,6 +14,26 @@ use crate::MarkdownMode;
 impl MarkdownDocument {
     /// `range` in view: selected, or in its opened block.
     pub fn show_match(&mut self, range: Range<usize>, window: &mut Window, cx: &mut Context<Self>) {
+        self.shown(range, true, window, cx);
+    }
+
+    /// As `show_match`, focus left where it is, as a find box needs.
+    pub fn point_match(
+        &mut self,
+        range: Range<usize>,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        self.shown(range, false, window, cx);
+    }
+
+    fn shown(
+        &mut self,
+        range: Range<usize>,
+        focus: bool,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
         let line = |document: &Self, cx: &Context<Self>| {
             document.editor.read(cx).text()[..range.start]
                 .matches('\n')
@@ -34,7 +54,7 @@ impl MarkdownDocument {
                 if !self.read_now(cx) {
                     // Shown once read, if nothing else changed it.
                     let expected = self.edits + self.writes as u64;
-                    self.showing = Some((range, expected));
+                    self.showing = Some((range, focus, expected));
                     return cx.notify();
                 }
                 let ix = self.block_at(range.start);
@@ -56,7 +76,7 @@ impl MarkdownDocument {
                     Some(_) => return self.reveal(line(self, cx), window, cx),
                     None => Landing::End,
                 };
-                self.open(Some(ix), landing, window, cx);
+                self.open(Some(ix), landing, focus, window, cx);
                 self.list.scroll_to_reveal_item(ix);
                 if let Some(open) = &self.open {
                     let input = open.input.clone();
@@ -72,11 +92,11 @@ impl MarkdownDocument {
         if self.showing.is_none() || !self.read_now(cx) {
             return;
         }
-        let (range, expected) = self.showing.take().expect("checked above");
+        let (range, focus, expected) = self.showing.take().expect("checked above");
         if self.edits != expected {
             return log::info!("markdown document: a waiting match lapsed with its text");
         }
-        self.show_match(range, window, cx);
+        self.shown(range, focus, window, cx);
     }
 
     /// `edits` as one undo step; false in preview.

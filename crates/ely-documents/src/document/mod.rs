@@ -122,9 +122,9 @@ pub struct MarkdownDocument {
     /// Its own write-backs whose changes are still to come.
     writes: usize,
     /// A match asked before its text was read; its version.
-    showing: Option<(Range<usize>, u64)>,
+    showing: Option<(Range<usize>, bool, u64)>,
     /// A block asked open before its text was read.
-    waiting: Option<(Option<usize>, edit::Landing, u64)>,
+    waiting: Option<(Option<usize>, edit::Landing, bool, u64)>,
     look: DocumentLook,
     /// Typing in the open block, counted.
     typed: u64,

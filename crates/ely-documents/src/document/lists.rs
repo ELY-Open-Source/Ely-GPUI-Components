@@ -238,7 +238,7 @@ impl MarkdownDocument {
             let by = if deeper { Move::Next } else { Move::Previous };
             let text = self.editor.read(cx).text();
             match beside(text, block, at, by) {
-                Some(to) => self.open(Some(here), Landing::Cell(Aim::At(to)), window, cx),
+                Some(to) => self.open(Some(here), Landing::Cell(Aim::At(to)), true, window, cx),
                 None => log::info!("markdown document: no cell {by:?} of {at:?}"),
             }
             return;

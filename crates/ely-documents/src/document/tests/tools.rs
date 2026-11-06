@@ -107,6 +107,42 @@ fn a_match_in_visual_opens_its_block_selected(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn a_pointed_match_leaves_focus_where_it_was(cx: &mut TestAppContext) {
+    let source = "find one\n\nfind two\n";
+    let (document, cx) = open(source, MarkdownMode::Visual, cx);
+    let elsewhere = cx.update(|window, cx| {
+        let handle = cx.focus_handle();
+        window.focus(&handle, cx);
+        handle
+    });
+    for (at, block) in [(0, "find one"), (10, "find two")] {
+        document.update_in(cx, |document, window, cx| {
+            document.point_match(at..at + 4, window, cx)
+        });
+        cx.run_until_parked();
+        let (text, selected) = document.read_with(cx, |document, cx| {
+            let input = document
+                .open
+                .as_ref()
+                .expect("a block opens")
+                .input
+                .read(cx);
+            (
+                input.text().to_string(),
+                input.text()[input.selection()].to_string(),
+            )
+        });
+        assert_eq!((text.as_str(), selected.as_str()), (block, "find"));
+        assert!(
+            cx.update(|window, _| elsewhere.is_focused(window)),
+            "focus stays"
+        );
+    }
+    cx.simulate_input("z");
+    assert_eq!(text(&document, cx), source, "typing never reached a block");
+}
+
+#[gpui::test]
 fn every_replacement_is_one_undo_step(cx: &mut TestAppContext) {
     let (document, cx) = open("a b a", MarkdownMode::Visual, cx);
     document.update(cx, |document, cx| {

@@ -246,7 +246,7 @@ pub(super) fn type_in(
     cx: &mut VisualTestContext,
 ) {
     document.update_in(cx, |document, window, cx| {
-        document.open(ix, Landing::End, window, cx);
+        document.open(ix, Landing::End, true, window, cx);
         if let (Some(typed), Some(open)) = (typed, &document.open) {
             open.input.update(cx, |input, cx| input.set_text(typed, cx));
         }
@@ -363,11 +363,11 @@ fn a_press_after_a_write_back_waits_for_the_long_read(cx: &mut TestAppContext) {
     let long = format!("A\n\nB\n\nCCCC\n\n{}", "Prose.\n\n".repeat(AT_ONCE / 8 + 1));
     let (document, cx) = open(&long, MarkdownMode::Visual, cx);
     document.update_in(cx, |document, window, cx| {
-        document.open(Some(0), Landing::End, window, cx);
+        document.open(Some(0), Landing::End, true, window, cx);
         let input = document.open.as_ref().expect("open").input.clone();
         input.update(cx, |input, cx| input.set_text("AAAA", cx));
         // B is pressed before the new read lands.
-        document.open(Some(1), Landing::End, window, cx);
+        document.open(Some(1), Landing::End, true, window, cx);
         assert!(document.open.is_none(), "a stale range opens nothing");
     });
     cx.run_until_parked();

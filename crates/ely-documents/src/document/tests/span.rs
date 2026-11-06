@@ -267,7 +267,7 @@ fn a_format_takes_each_selected_block(cx: &mut TestAppContext) {
 fn shift_up_from_a_new_end_takes_the_block_above(cx: &mut TestAppContext) {
     let (document, cx) = open("alpha\n", MarkdownMode::Visual, cx);
     document.update_in(cx, |document, window, cx| {
-        document.open(None, crate::document::edit::Landing::End, window, cx)
+        document.open(None, crate::document::edit::Landing::End, true, window, cx)
     });
     cx.simulate_input("beta");
     cx.simulate_keystrokes("shift-up");

@@ -56,7 +56,7 @@ impl MarkdownDocument {
         }
         let empty = self.editor.read(cx).text().trim().is_empty() && self.read_now(cx);
         if self.mode == MarkdownMode::Visual && self.open.is_none() && empty {
-            self.open(None, Landing::End, window, cx);
+            self.open(None, Landing::End, true, window, cx);
         }
     }
 
@@ -77,6 +77,7 @@ impl MarkdownDocument {
         &mut self,
         ix: Option<usize>,
         landing: Landing,
+        focus: bool,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -99,7 +100,7 @@ impl MarkdownDocument {
                 return log::warn!("markdown document: the pressed block was written over");
             };
             log::info!("markdown document: a block opens once its text is read");
-            self.waiting = Some((start, landing, self.edits + self.writes as u64));
+            self.waiting = Some((start, landing, focus, self.edits + self.writes as u64));
             return;
         }
         if !self.read_now(cx) {
@@ -161,7 +162,9 @@ impl MarkdownDocument {
         if let Some(caret) = caret {
             input.update(cx, |input, cx| input.select(caret..caret, cx));
         }
-        window.focus(&input.focus_handle(cx), cx);
+        if focus {
+            window.focus(&input.focus_handle(cx), cx);
+        }
         match cell {
             Some((at, _)) => log::info!("markdown document: cell {at:?} at {range:?} opens"),
             None => log::info!("markdown document: block {range:?} opens"),
@@ -227,7 +230,7 @@ impl MarkdownDocument {
         if self.waiting.is_none() || !self.read_now(cx) {
             return;
         }
-        let (start, landing, expected) = self.waiting.take().expect("checked above");
+        let (start, landing, focus, expected) = self.waiting.take().expect("checked above");
         if self.edits != expected {
             return log::info!("markdown document: a waiting block lapsed with its text");
         }
@@ -238,7 +241,7 @@ impl MarkdownDocument {
                 None => return log::warn!("markdown document: the waiting block was read away"),
             },
         };
-        self.open(ix, landing, window, cx);
+        self.open(ix, landing, focus, window, cx);
     }
 
     /// Takes the focus a dropped block still holds.
@@ -335,7 +338,7 @@ impl MarkdownDocument {
             let by = if down { Move::Down } else { Move::Up };
             let text = self.editor.read(cx).text();
             if let Some(to) = cells::beside(text, block, at, by) {
-                self.open(Some(here), Landing::Cell(Aim::At(to)), window, cx);
+                self.open(Some(here), Landing::Cell(Aim::At(to)), true, window, cx);
                 return true;
             }
         }
@@ -347,7 +350,7 @@ impl MarkdownDocument {
             return false;
         };
         let landing = if down { Landing::Start } else { Landing::End };
-        self.open(Some(next), landing, window, cx);
+        self.open(Some(next), landing, true, window, cx);
         true
     }
 }

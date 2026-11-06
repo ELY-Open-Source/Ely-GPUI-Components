@@ -835,9 +835,11 @@ pub fn ely_documents::Glossary::into_any_element(self) -> gpui::element::AnyElem
 pub fn ely_documents::Glossary::into_element(self) -> Self::Element
 pub fn ely_documents::Glossary::new(impl core::iter::traits::collect::IntoIterator<Item = (impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>)>) -> Self
 pub fn ely_documents::Glossary::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_documents::HeldPicture::bytes(&self) -> &alloc::rcs::arc::Arc<[u8]>
 pub fn ely_documents::HeldPicture::clone(&self) -> Self
 pub fn ely_documents::HeldPicture::eq(&self, &Self) -> bool
 pub fn ely_documents::HeldPicture::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::HeldPicture::format(&self) -> gpui::platform::ImageFormat
 pub fn ely_documents::HeldPicture::hash<H: core::hash::Hasher>(&self, &mut H)
 pub fn ely_documents::HeldPicture::new(gpui::platform::ImageFormat, impl core::convert::Into<alloc::rcs::arc::Arc<[u8]>>) -> Self
 pub fn ely_documents::Inline::clone(&self) -> Self
@@ -878,6 +880,7 @@ pub fn ely_documents::MarkdownDocument::mode(&self) -> ely_documents::MarkdownMo
 pub fn ely_documents::MarkdownDocument::new(impl core::convert::Into<alloc::string::String>, ely_documents::MarkdownMode, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> Self
 pub fn ely_documents::MarkdownDocument::on_link(&mut self, impl core::ops::function::Fn(&str, &mut gpui::window::Window, &mut gpui::app::App) + 'static)
 pub fn ely_documents::MarkdownDocument::outline(&self, &gpui::app::App) -> alloc::vec::Vec<(ely_documents::DocumentHeading, usize)>
+pub fn ely_documents::MarkdownDocument::point_match(&mut self, core::ops::range::Range<usize>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_documents::MarkdownDocument::read_now(&self, &gpui::app::App) -> bool
 pub fn ely_documents::MarkdownDocument::render(&mut self, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> impl gpui::element::IntoElement
 pub fn ely_documents::MarkdownDocument::replace(&mut self, alloc::vec::Vec<(core::ops::range::Range<usize>, alloc::string::String)>, &mut gpui::app::context::Context<'_, Self>) -> bool

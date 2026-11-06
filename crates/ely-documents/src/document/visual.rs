@@ -296,7 +296,7 @@ impl MarkdownDocument {
                     }
                     window.prevent_default();
                     cx.stop_propagation();
-                    document.open(ix, Landing::End, window, cx);
+                    document.open(ix, Landing::End, true, window, cx);
                     document.pressed_open();
                 }),
             )
@@ -311,7 +311,7 @@ impl MarkdownDocument {
             .on_click(
                 cx.listener(move |document, event: &ClickEvent, window, cx| {
                     if event.is_keyboard() {
-                        document.open(ix, Landing::End, window, cx);
+                        document.open(ix, Landing::End, true, window, cx);
                     }
                 }),
             )
