@@ -173,3 +173,23 @@ fn lists_copy_with_their_markers(cx: &mut TestAppContext) {
         Some("3. first\n4. second\n  ◦ inner\n[x] done")
     );
 }
+
+#[test]
+fn a_span_ending_at_an_items_start_takes_no_marker() {
+    let item = |lead: &str, text: &str| super::Drawn {
+        lead: lead.into(),
+        text: text.into(),
+        layout: gpui::TextLayout::default(),
+        links: Vec::new(),
+    };
+    let texts = [item("• ", "first"), item("• ", "second")];
+    let at = |text, at| super::Spot { text, at };
+    let span = |from, to| super::copied(&texts, (from, to));
+    assert_eq!(
+        span(at(0, 5), at(1, 0)).as_deref(),
+        Some("\n"),
+        "the break alone"
+    );
+    assert_eq!(span(at(0, 0), at(1, 3)).as_deref(), Some("• first\n• sec"));
+    assert_eq!(span(at(0, 2), at(1, 6)).as_deref(), Some("rst\n• second"));
+}

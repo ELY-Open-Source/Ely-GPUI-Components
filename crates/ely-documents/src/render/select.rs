@@ -68,30 +68,7 @@ impl Selection {
 
     /// The selected text, blocks joined by line ends.
     fn selected(&self) -> Option<String> {
-        let (from, to) = self.span();
-        if from == to {
-            return None;
-        }
-        let mut parts = Vec::new();
-        for (k, drawn) in self
-            .texts
-            .iter()
-            .enumerate()
-            .take(to.text + 1)
-            .skip(from.text)
-        {
-            let range = part(k, drawn.text.len(), (from, to));
-            let whole = range.start == 0;
-            let Some(text) = drawn.text.get(range) else {
-                log::error!("markdown: a selection fell inside a character");
-                return None;
-            };
-            parts.push(match whole {
-                true => format!("{}{text}", drawn.lead),
-                false => text.to_owned(),
-            });
-        }
-        Some(parts.join("\n"))
+        copied(&self.texts, self.span())
     }
 
     /// The spot under `position`: a text beside it, or one past it.
@@ -131,6 +108,27 @@ impl Selection {
         let (_, url) = links.iter().find(|(range, _)| range.contains(&spot.at))?;
         Some(url.clone())
     }
+}
+
+/// `texts` inside the span; a marker leads text taken from its start.
+fn copied(texts: &[Drawn], (from, to): (Spot, Spot)) -> Option<String> {
+    if from == to {
+        return None;
+    }
+    let mut parts = Vec::new();
+    for (k, drawn) in texts.iter().enumerate().take(to.text + 1).skip(from.text) {
+        let range = part(k, drawn.text.len(), (from, to));
+        let led = range.start == 0 && !range.is_empty();
+        let Some(text) = drawn.text.get(range) else {
+            log::error!("markdown: a selection fell inside a character");
+            return None;
+        };
+        parts.push(match led {
+            true => format!("{}{text}", drawn.lead),
+            false => text.to_owned(),
+        });
+    }
+    Some(parts.join("\n"))
 }
 
 /// Text `k`'s bytes inside the span.
