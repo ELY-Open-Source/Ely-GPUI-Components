@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-documents`: `MarkdownRenderer::selectable` lets the pointer select its text across blocks, paragraphs, headings, lists, quotes, table cells and code; the secondary C copies it, blocks joined by line ends, and A selects all while it holds focus. A right press hands a `RightPress` with the selection and the link or picture under it to the owner, which builds its menu. New text drops the selection. Inline math and front matter stay unselectable. `HeldPicture::format` and `HeldPicture::bytes` read a held picture back, so an owner can copy or save it.
 - All crates: gpui, gpui_platform and gpui_web from `gpui-pre` `=0.3.11`, the snapshot GPUI Kit 0.9.0 pins, so Ely and Kit still share a window; an app on Ely moves its own `gpui-pre` pins to `=0.3.11`. A breaking change, so each published crate's minor rises: `ely-core` 0.3.0, every other 0.2.0.
 - `ely-gallery`: `--audit` also opens a `SearchableMenu`, arrows to a button checking a screen reader hears each marked row, and presses it through UI Automation's Invoke: it must run once and close the menu.
 - `ely-core`: a `PromptDialog`'s field takes the dialog's label as its accessible name, and a failed check's reason as its description, so a screen reader names the field.

@@ -38,6 +38,16 @@ impl HeldPicture {
             digest: hasher.finish(),
         }
     }
+
+    /// The picture's format.
+    pub fn format(&self) -> ImageFormat {
+        self.format
+    }
+
+    /// The picture's bytes, as held.
+    pub fn bytes(&self) -> &Arc<[u8]> {
+        &self.bytes
+    }
 }
 
 impl PartialEq for HeldPicture {

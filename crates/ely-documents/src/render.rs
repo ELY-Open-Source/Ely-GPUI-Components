@@ -2,8 +2,8 @@ use std::{ops::Range, path::Path, rc::Rc, sync::Arc};
 
 use gpui::{
     AnyElement, App, ElementId, Entity, FontWeight, HighlightStyle, InteractiveText, IntoElement,
-    ParentElement, RenderOnce, Role, SharedString, Styled, StyledText, TextLayout, Window, div,
-    prelude::*, relative,
+    MouseButton, ParentElement, RenderOnce, Role, SharedString, Styled, StyledText, TextLayout,
+    Window, div, prelude::*, relative,
 };
 
 use super::{
@@ -24,10 +24,13 @@ use crate::{
 mod blocks;
 mod math_text;
 mod point;
+mod select;
 mod style;
 mod table;
 
 pub(crate) use point::{OnPoint, Place, Pointed, point_lines};
+pub use select::RightPress;
+use select::{Gather, OnMenu, Selection};
 use style::highlight;
 pub(crate) use table::{CellAt, OpenCell};
 
@@ -58,6 +61,7 @@ pub struct MarkdownRenderer {
     /// Drawn instead of the source when given.
     blocks: Option<Rc<[Node]>>,
     pictures: Option<Rc<Pictures>>,
+    on_menu: Option<OnMenu>,
 }
 
 impl MarkdownRenderer {
@@ -73,6 +77,7 @@ impl MarkdownRenderer {
             base: None,
             blocks: None,
             pictures: None,
+            on_menu: None,
         }
     }
 
@@ -113,6 +118,24 @@ impl MarkdownRenderer {
         draw: impl Fn(ElementId, Option<SharedString>, SharedString) -> AnyElement + 'static,
     ) -> Self {
         self.code = Some(Rc::new(draw));
+        self
+    }
+
+    /// Text the pointer selects; the secondary C copies it, A selects all.
+    ///
+    /// A right press hands what it found to `on_menu`.
+    ///
+    /// ```
+    /// use ely_documents::MarkdownRenderer;
+    ///
+    /// let body = MarkdownRenderer::new("mail", "Order *42* ships today.")
+    ///     .selectable(|press, _, _| drop(press.selected));
+    /// ```
+    pub fn selectable(
+        mut self,
+        on_menu: impl Fn(RightPress, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_menu = Some(Rc::new(on_menu));
         self
     }
 
@@ -198,6 +221,8 @@ struct Draw<'a> {
     scale: f32,
     /// Lists open around the node drawn.
     lists: std::cell::Cell<usize>,
+    /// The selection drawing reads and feeds.
+    select: Option<&'a Gather>,
     /// Drawing a table's cells.
     table: std::cell::Cell<bool>,
     /// Tables drawn so far.
@@ -214,8 +239,13 @@ impl Draw<'_> {
     fn inline(&self, inline: &Inline, cx: &App) -> AnyElement {
         let links = (!inline.links.is_empty()).then(|| self.key("links"));
         if !inline.styles.iter().any(|(_, style)| *style == Style::Math) {
-            let (drawn, layout) =
-                drawn_text(inline, (&[], Vec::new()), links, self.hooks.on_link, cx);
+            let over = self
+                .select
+                .map_or_else(Vec::new, |select| select.over(inline.text.len(), cx));
+            let (drawn, layout) = drawn_text(inline, (&[], over), links, self.hooks.on_link, cx);
+            if let Some(select) = self.select {
+                select.push(&inline.text, layout.clone(), &inline.links);
+            }
             let at = move |position| {
                 layout
                     .index_for_position(position)
@@ -305,8 +335,15 @@ impl Draw<'_> {
                         .map_or_else(Vec::new, |syntax| code_colors_with(text, syntax, cx)),
                     None => code_colors(text, cx),
                 };
+                let over = self
+                    .select
+                    .map_or_else(Vec::new, |select| select.over(text.len(), cx));
+                let styles = crate::editor::stack(styles.into_iter().chain(over).collect());
                 let code = StyledText::new(text.clone()).with_highlights(styles);
                 let layout = code.layout().clone();
+                if let Some(select) = self.select {
+                    select.push(text, layout.clone(), &[]);
+                }
                 let block = div()
                     .flex()
                     .flex_col()
@@ -345,7 +382,7 @@ impl Draw<'_> {
                 })
                 .into_any_element(),
             Node::Image { alt, url, link, at } => {
-                let picture = div().id(self.key("image")).child(Picture {
+                let mut picture = div().id(self.key("image")).child(Picture {
                     id: self.key("picture"),
                     alt: alt.clone(),
                     url: url.clone(),
@@ -356,6 +393,22 @@ impl Draw<'_> {
                         .as_ref()
                         .and_then(|held| held.get(url).cloned()),
                 });
+                if let Some(select) = self.select {
+                    let (state, on_menu) = (select.state.clone(), select.on_menu.clone());
+                    let found = (url.clone(), link.clone());
+                    picture =
+                        picture.on_mouse_down(MouseButton::Right, move |event, window, cx| {
+                            cx.stop_propagation();
+                            select::picture_press(
+                                &state,
+                                &on_menu,
+                                found.clone(),
+                                event.position,
+                                window,
+                                cx,
+                            );
+                        });
+                }
                 let drawn = match link.clone() {
                     None => picture.into_any_element(),
                     Some(address) => {
@@ -423,6 +476,7 @@ pub(crate) fn draw_nodes(
         body: TextSize::Base,
         scale,
         lists: std::cell::Cell::new(0),
+        select: None,
         table: std::cell::Cell::new(false),
         tables: std::cell::Cell::new(0),
     };
@@ -430,7 +484,11 @@ pub(crate) fn draw_nodes(
 }
 
 impl RenderOnce for MarkdownRenderer {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let gather = self.on_menu.clone().map(|on_menu| {
+            let state = window.use_keyed_state(self.id.clone(), cx, |_, cx| Selection::new(cx));
+            Gather::new(state, on_menu, cx)
+        });
         let theme = cx.theme();
         let parsed;
         let nodes: &[Node] = match &self.blocks {
@@ -457,16 +515,24 @@ impl RenderOnce for MarkdownRenderer {
             body: self.size,
             scale: 1.0,
             lists: std::cell::Cell::new(0),
+            select: gather.as_ref(),
             table: std::cell::Cell::new(false),
             tables: std::cell::Cell::new(0),
         };
-        div()
+        let body = div()
             .flex()
             .flex_col()
             .gap_3()
             .text_size(theme.text_size(self.size))
             .line_height(theme.text_size(self.size) * LINE)
-            .children(draw.nodes(nodes, cx))
+            .children(draw.nodes(nodes, cx));
+        match (gather, self.on_menu) {
+            (Some(gather), Some(on_menu)) => {
+                let state = gather.finish(cx);
+                select::selectable(body, state, on_menu, cx)
+            }
+            _ => body,
+        }
     }
 }
 
