@@ -68,6 +68,19 @@ impl Draw<'_> {
                         .child(bullet)
                         .into_any_element(),
                 };
+                if let Some(select) = self.select {
+                    let mark = match (task, start) {
+                        (Some(true), _) => "[x]".to_owned(),
+                        (Some(false), _) => "[ ]".to_owned(),
+                        (None, Some(first)) => format!("{}.", first + ix as u64),
+                        (None, None) => bullet.to_owned(),
+                    };
+                    select.lead(format!("{}{mark} ", "  ".repeat(depth)));
+                }
+                let inner = self.nodes(body, cx);
+                if let Some(select) = self.select {
+                    select.lead(String::new());
+                }
                 div()
                     .flex()
                     .gap_2()
@@ -89,7 +102,7 @@ impl Draw<'_> {
                             .when(*task == Some(true), |body| {
                                 body.text_color(colors.fg_subtle)
                             })
-                            .children(self.nodes(body, cx)),
+                            .children(inner),
                     )
             }))
             .into_any_element();

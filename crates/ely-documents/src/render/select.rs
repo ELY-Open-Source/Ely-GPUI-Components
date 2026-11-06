@@ -35,6 +35,8 @@ pub(crate) struct Spot {
 /// One drawn text, as the last frame laid it out.
 #[derive(Clone)]
 pub(crate) struct Drawn {
+    /// A list item's marker, copied before its first text.
+    lead: String,
     text: String,
     layout: TextLayout,
     links: Vec<(Range<usize>, String)>,
@@ -79,11 +81,15 @@ impl Selection {
             .skip(from.text)
         {
             let range = part(k, drawn.text.len(), (from, to));
+            let whole = range.start == 0;
             let Some(text) = drawn.text.get(range) else {
                 log::error!("markdown: a selection fell inside a character");
                 return None;
             };
-            parts.push(text);
+            parts.push(match whole {
+                true => format!("{}{text}", drawn.lead),
+                false => text.to_owned(),
+            });
         }
         Some(parts.join("\n"))
     }
@@ -140,6 +146,7 @@ pub(crate) struct Gather {
     pub(crate) on_menu: OnMenu,
     span: (Spot, Spot),
     texts: RefCell<Vec<Drawn>>,
+    lead: RefCell<String>,
 }
 
 impl Gather {
@@ -150,15 +157,23 @@ impl Gather {
             on_menu,
             span,
             texts: RefCell::default(),
+            lead: RefCell::default(),
         }
     }
 
-    /// The selection's highlight on the next text drawn.
-    pub(crate) fn over(&self, len: usize, cx: &App) -> Vec<(Range<usize>, HighlightStyle)> {
+    /// The selection's highlight on `text`, the next drawn.
+    pub(crate) fn over(&self, text: &str, cx: &App) -> Vec<(Range<usize>, HighlightStyle)> {
         let k = self.texts.borrow().len();
         let (from, to) = self.span;
-        let range = part(k, len, self.span);
+        let range = part(k, text.len(), self.span);
         if from == to || k < from.text || k > to.text || range.is_empty() {
+            return Vec::new();
+        }
+        // Last frame's span may not fit new text.
+        let fits = range.end <= text.len()
+            && text.is_char_boundary(range.start)
+            && text.is_char_boundary(range.end);
+        if !fits {
             return Vec::new();
         }
         let style = HighlightStyle {
@@ -171,22 +186,29 @@ impl Gather {
     /// Notes a drawn text, in order.
     pub(crate) fn push(&self, text: &str, layout: TextLayout, links: &[(Range<usize>, String)]) {
         self.texts.borrow_mut().push(Drawn {
+            lead: self.lead.take(),
             text: text.to_owned(),
             layout,
             links: links.to_vec(),
         });
     }
 
+    /// Sets the marker the next text copies with; empty drops it.
+    pub(crate) fn lead(&self, lead: String) {
+        *self.lead.borrow_mut() = lead;
+    }
+
     /// Keeps this frame's texts; other texts drop the selection.
     pub(crate) fn finish(self, cx: &mut App) -> Entity<Selection> {
         let texts = self.texts.into_inner();
-        self.state.update(cx, |selection, _| {
+        self.state.update(cx, |selection, cx| {
             let same = selection.texts.len() == texts.len()
                 && (selection.texts.iter().zip(&texts)).all(|(old, new)| old.text == new.text);
             if !same {
                 selection.anchor = Spot::default();
                 selection.head = Spot::default();
                 selection.dragging = false;
+                cx.notify();
             }
             selection.texts = texts;
         });

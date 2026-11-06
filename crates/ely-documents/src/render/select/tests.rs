@@ -142,3 +142,34 @@ fn a_right_press_on_a_picture_names_it(cx: &mut TestAppContext) {
     assert_eq!(press.image.as_deref(), Some("https://example.com/cat.png"));
     assert_eq!(press.selected, None);
 }
+
+#[gpui::test]
+fn shorter_text_in_as_many_blocks_drops_the_selection(cx: &mut TestAppContext) {
+    let long = "Long first paragraph here\n\n很长的第二段文字在这里\n";
+    let (view, cx) = opened(cx, long);
+    let body = cx.debug_bounds("body").expect("drawn");
+    cx.simulate_click(body.origin + point(px(2.0), px(4.0)), Modifiers::none());
+    cx.simulate_keystrokes("secondary-a");
+    cx.update(|_, app| {
+        view.update(app, |body, cx| {
+            body.source = "x\n\n字\n";
+            cx.notify();
+        })
+    });
+    cx.run_until_parked();
+    assert_eq!(copied(cx), None, "the old span fits no new text");
+    cx.simulate_keystrokes("secondary-a");
+    assert_eq!(copied(cx).as_deref(), Some("x\n字"));
+}
+
+#[gpui::test]
+fn lists_copy_with_their_markers(cx: &mut TestAppContext) {
+    let (_, cx) = opened(cx, "3. first\n4. second\n   - inner\n\n- [x] done\n");
+    let body = cx.debug_bounds("body").expect("drawn");
+    cx.simulate_click(body.origin + point(px(2.0), px(4.0)), Modifiers::none());
+    cx.simulate_keystrokes("secondary-a");
+    assert_eq!(
+        copied(cx).as_deref(),
+        Some("3. first\n4. second\n  ◦ inner\n[x] done")
+    );
+}

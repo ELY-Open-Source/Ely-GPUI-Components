@@ -241,7 +241,7 @@ impl Draw<'_> {
         if !inline.styles.iter().any(|(_, style)| *style == Style::Math) {
             let over = self
                 .select
-                .map_or_else(Vec::new, |select| select.over(inline.text.len(), cx));
+                .map_or_else(Vec::new, |select| select.over(&inline.text, cx));
             let (drawn, layout) = drawn_text(inline, (&[], over), links, self.hooks.on_link, cx);
             if let Some(select) = self.select {
                 select.push(&inline.text, layout.clone(), &inline.links);
@@ -337,7 +337,7 @@ impl Draw<'_> {
                 };
                 let over = self
                     .select
-                    .map_or_else(Vec::new, |select| select.over(text.len(), cx));
+                    .map_or_else(Vec::new, |select| select.over(text, cx));
                 let styles = crate::editor::stack(styles.into_iter().chain(over).collect());
                 let code = StyledText::new(text.clone()).with_highlights(styles);
                 let layout = code.layout().clone();
