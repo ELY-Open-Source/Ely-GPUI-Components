@@ -5,7 +5,7 @@ use crate::markdown::mdast::{self, AlignKind};
 use super::markdown::{span, tree, walk};
 
 mod blocks;
-mod emoji;
+pub(crate) mod emoji;
 pub(crate) mod html;
 mod html_block;
 mod sources;

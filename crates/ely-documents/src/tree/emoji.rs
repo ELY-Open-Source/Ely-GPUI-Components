@@ -49,7 +49,7 @@ fn candidate(text: &str) -> Option<usize> {
 
 /// One DOM text node's shortcodes, as GitHub reads them.
 #[derive(Default)]
-pub(super) struct Shortcodes {
+pub struct Shortcodes {
     /// Settled by the node's first `:name:`.
     reads: Option<bool>,
     /// Text before it held more than white space.
@@ -59,12 +59,12 @@ pub(super) struct Shortcodes {
 
 impl Shortcodes {
     /// A new DOM text node starts.
-    pub(super) fn split(&mut self) {
+    pub fn split(&mut self) {
         *self = Self::default();
     }
 
     /// Blank or spaced text before the first reads them all.
-    pub(super) fn read(&mut self, text: &str) -> String {
+    pub fn read(&mut self, text: &str) -> String {
         if self.reads.is_none() {
             let at = candidate(text);
             let lead = &text[..at.unwrap_or(text.len())];

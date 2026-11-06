@@ -73,6 +73,7 @@ pub use templates::{Template, TemplatePicker};
 pub use thumbs::PageThumbnailList;
 pub use todo::{Checklist, TodoItem};
 pub use toolbar::FixedFormatToolbar;
+pub use tree::emoji::Shortcodes;
 pub use tree::{AlertKind, Inline, Node as MarkdownBlock, Style};
 pub use tree::{Reader as MarkdownReader, alert, is_toc};
 pub use viewer::step as zoom_step;
