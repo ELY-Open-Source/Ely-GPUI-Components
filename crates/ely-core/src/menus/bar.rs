@@ -31,7 +31,13 @@ fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
             rows(&sub.items, window),
         )),
         OwnedMenuItem::SystemMenu(os) => menu.item(MenuItem::new(os.name.clone()).disabled(true)),
-        OwnedMenuItem::Action { name, action, .. } => {
+        OwnedMenuItem::Action {
+            name,
+            action,
+            checked,
+            disabled,
+            ..
+        } => {
             let keys = window
                 .highest_precedence_binding_for_action(action.as_ref())
                 .map(|binding| {
@@ -47,8 +53,14 @@ fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
                     strokes.join(" ")
                 });
             let action: Rc<Box<dyn Action>> = Rc::new(action.boxed_clone());
-            let row = MenuItem::new(name.clone())
-                .on_click(move |window, cx| window.dispatch_action(action.boxed_clone(), cx));
+            // gpui's Action carries a checked flag; show Ely's check mark when set.
+            let row = if *checked {
+                MenuItem::check(name.clone(), true)
+            } else {
+                MenuItem::new(name.clone())
+            }
+            .disabled(*disabled)
+            .on_click(move |window, cx| window.dispatch_action(action.boxed_clone(), cx));
             menu.item(match keys {
                 Some(keys) => row.keys(keys),
                 None => row,
