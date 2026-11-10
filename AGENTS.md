@@ -16,7 +16,8 @@ This file holds what every change needs. Before working in a crate or folder, re
 - `sh scripts/check.sh` is the gate: fmt, clippy, the wasm32 lint, the docs.rs build, lib, doc and app tests, the panic list and the house scans. It fails by its exit status; a pipe into `tail` hides it.
 - CI runs it on GitHub-hosted Linux, Windows and macOS, beside `api`, `semver`, `deny`, `msrv`, `pixels`, `bench` and `site`; `scripts/AGENTS.md` says what each checks and how to run it.
 - `cargo run -p ely-gallery` opens the gallery; `crates/ely-gallery/AGENTS.md` names its flags, captures and the web build. The site's commands are in `frontend/AGENTS.md`.
-- After each task item: `rm -rf target/debug/incremental target/kit/debug/incremental` and `cargo clean -p ely-gpui-component`. Old builds of the crate filled the disk once.
+- Local builds run on [huacnlee/cargo](https://huacnlee.github.io/cargo/), installed over `cargo`: build output lives in `~/.cargo/targets/` under a size cap it keeps itself, binaries in `./target` (Kit's in `compat/kit/target`). It ignores `--target-dir` and `CARGO_TARGET_DIR`, so a script asks `cargo metadata` where a build landed.
+- On stock Cargo, after each task item: `rm -rf target/debug/incremental compat/kit/target/debug/incremental` and `cargo clean -p ely-gpui-component`. Old builds of the crate filled the disk once.
 
 ## Layout
 

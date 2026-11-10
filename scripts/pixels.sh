@@ -26,7 +26,9 @@ for side in head base; do
   [ $side = base ] && dir=$here/$tree
   # Cargo keys a path crate by its place in the workspace, so both trees share fingerprints; fresh times rebuild this one.
   (cd "$dir" && git ls-files -z | xargs -0 touch && cargo build -p ely-gallery --quiet)
-  cp "target/debug/gallery$exe" "$out/gallery-$side$exe"
+  # huacnlee/cargo ignores CARGO_TARGET_DIR, so cargo names where this tree's gallery landed.
+  built=$(cd "$dir" && cargo metadata --no-deps --format-version 1 | "$py" -c 'import json,sys; print(json.load(sys.stdin)["target_directory"])')
+  cp "$built/debug/gallery$exe" "$out/gallery-$side$exe"
 done
 for side in head base; do
   dir=$here
