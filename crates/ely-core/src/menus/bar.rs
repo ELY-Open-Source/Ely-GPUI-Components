@@ -60,7 +60,18 @@ fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
                 MenuItem::new(name.clone())
             }
             .disabled(*disabled)
-            .on_click(move |window, cx| window.dispatch_action(action.boxed_clone(), cx));
+            .on_click(move |window, cx| {
+                // `Window::dispatch_action` defers and re-resolves focus in the rendered
+                // tree. After the menu closes its focus takeover, that lookup often
+                // misses on the first click so the action never runs. Dispatch
+                // synchronously on the restored focus first; keep the deferred path as
+                // a backup (handlers should be idempotent for a repeated action).
+                let action = action.boxed_clone();
+                if let Some(focus) = window.focused(cx) {
+                    focus.dispatch_action(action.as_ref(), window, cx);
+                }
+                window.dispatch_action(action, cx);
+            });
             menu.item(match keys {
                 Some(keys) => row.keys(keys),
                 None => row,
