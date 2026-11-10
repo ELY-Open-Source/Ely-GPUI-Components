@@ -22,7 +22,7 @@ use std::{ops::Range, path::Path, rc::Rc, sync::Arc, time::Duration};
 
 use gpui::{
     App, AppContext as _, Context, Entity, EventEmitter, FocusHandle, Focusable, ListAlignment,
-    ListState, Pixels, Subscription, Task, Window,
+    ListOffset, ListState, Pixels, Subscription, Task, Window,
 };
 
 pub use crate::tree::DocumentHeading;
@@ -373,6 +373,13 @@ impl MarkdownDocument {
         let old = self.parsed.blocks.len();
         self.list
             .splice(head..old - tail, read.blocks.len() - head - tail);
+        // A first read lands before the tail the list rested on.
+        if old == 0 {
+            self.list.scroll_to(ListOffset {
+                item_ix: 0,
+                offset_in_item: Pixels::ZERO,
+            });
+        }
         let headings: Vec<usize> = read.headings.iter().map(|heading| heading.at).collect();
         self.editor
             .update(cx, |editor, _| editor.set_anchors(headings));

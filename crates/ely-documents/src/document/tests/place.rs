@@ -237,3 +237,20 @@ fn a_visual_opening_starts_at_the_top(cx: &mut TestAppContext) {
     cx.run_until_parked();
     assert_eq!(landed(&document, cx), 0);
 }
+
+#[gpui::test]
+fn a_text_read_after_its_first_frame_opens_at_its_top(cx: &mut TestAppContext) {
+    let section = |n| format!("## Section {n}\n\nwords words words words words\n\n");
+    let text: String = (0..6000).map(section).collect();
+    // Over what is read at once: the blocks come later.
+    let (document, cx) = open(&text, MarkdownMode::Visual, cx);
+    cx.run_until_parked();
+    let (top, blocks) = document.read_with(cx, |document, _| {
+        (
+            document.list.logical_scroll_top(),
+            document.parsed.blocks.len(),
+        )
+    });
+    assert_eq!(blocks, 12000);
+    assert_eq!(top.item_ix, 0, "the view rests on block {}", top.item_ix);
+}
