@@ -149,6 +149,7 @@ impl core::default::Default for ely_documents::Margins
 impl core::default::Default for ely_documents::Paper
 impl core::default::Default for ely_documents::PrintSettings
 impl core::default::Default for ely_documents::RightPress
+impl core::default::Default for ely_documents::ShortcodeRun
 impl core::default::Default for ely_documents::Shortcodes
 impl core::error::Error for ely_documents::MathError
 impl core::fmt::Debug for ely_documents::AlertKind
@@ -305,6 +306,7 @@ impl ely_documents::PrintPreview
 impl ely_documents::ReadingProgress
 impl ely_documents::ReadingTime
 impl ely_documents::RichTextEditor
+impl ely_documents::ShortcodeRun
 impl ely_documents::Shortcodes
 impl ely_documents::TemplatePicker
 impl ely_documents::TodoItem
@@ -987,6 +989,10 @@ pub fn ely_documents::RightPress::clone(&self) -> Self
 pub fn ely_documents::RightPress::default() -> Self
 pub fn ely_documents::RightPress::eq(&self, &Self) -> bool
 pub fn ely_documents::RightPress::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn ely_documents::ShortcodeRun::default() -> Self
+pub fn ely_documents::ShortcodeRun::html(&mut self, &str) -> alloc::string::String
+pub fn ely_documents::ShortcodeRun::split(&mut self)
+pub fn ely_documents::ShortcodeRun::text(&mut self, &str) -> alloc::string::String
 pub fn ely_documents::Shortcodes::default() -> Self
 pub fn ely_documents::Shortcodes::read(&mut self, &str) -> alloc::string::String
 pub fn ely_documents::Shortcodes::split(&mut self)
@@ -1152,6 +1158,7 @@ pub struct ely_documents::ReadingProgress
 pub struct ely_documents::ReadingTime
 pub struct ely_documents::RichTextEditor
 pub struct ely_documents::RightPress
+pub struct ely_documents::ShortcodeRun
 pub struct ely_documents::Shortcodes
 pub struct ely_documents::Template
 pub struct ely_documents::TemplatePicker
@@ -1265,6 +1272,7 @@ pub use ely_documents::ReadingProgress = ely_documents::reading::ReadingProgress
 pub use ely_documents::ReadingTime = ely_documents::counts::ReadingTime
 pub use ely_documents::RichTextEditor = ely_documents::rich::RichTextEditor
 pub use ely_documents::RightPress = ely_documents::render::select::RightPress
+pub use ely_documents::ShortcodeRun = ely_documents::tree::stack::ShortcodeRun
 pub use ely_documents::Shortcodes = ely_documents::tree::emoji::Shortcodes
 pub use ely_documents::Style = ely_documents::tree::Style
 pub use ely_documents::TableEdit = ely_documents::document::tables::TableEdit

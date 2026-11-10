@@ -16,6 +16,7 @@ pub use blocks::{alert, is_toc};
 use html_block::html_block_text;
 pub(crate) use sources::Escapes;
 pub(crate) use sources::{inside, lines_at};
+pub use stack::ShortcodeRun;
 use stack::close;
 
 /// How a stretch of inline text prints.

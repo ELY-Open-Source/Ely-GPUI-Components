@@ -2,12 +2,13 @@
 
 use std::ops::Range;
 
-use gpui::{Context, Window};
+use gpui::{App, Context, Window};
 
 use super::{
     MarkdownDocument,
     cells::{self, Aim},
     edit::Landing,
+    parse::{Block, parsed},
 };
 use crate::MarkdownMode;
 
@@ -116,7 +117,29 @@ impl MarkdownDocument {
         // Its own change: an open block outlives it.
         self.writes += 1;
         self.editor.update(cx, |editor, cx| editor.edit(edits, cx));
+        if !self.open_stands(cx) {
+            log::info!("markdown document: a replacement moved the open block's bounds");
+            self.commit(cx);
+        }
         true
+    }
+
+    /// Whether the open block is still one block, one cell.
+    fn open_stands(&self, cx: &App) -> bool {
+        let Some(open) = self.open.as_ref().filter(|open| !open.append) else {
+            return true;
+        };
+        let text = self.editor.read(cx).text();
+        let read = parsed(text);
+        let holds = |block: &&Block| {
+            block.range.start <= open.range.start && open.range.end <= block.range.end
+        };
+        match (read.blocks.iter().find(holds), open.cell) {
+            (Some(block), Some(at)) => cells::find(text, block.range.clone(), Aim::At(at))
+                .is_some_and(|cell| cell.range == open.range),
+            (Some(block), None) => block.range == open.range,
+            (None, _) => false,
+        }
     }
 
     /// `edits` of the text as read, in the editor's bytes.
