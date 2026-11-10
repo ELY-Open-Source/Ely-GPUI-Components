@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`, `ely-git`: select and copy read-only text, diffs, blame and merge columns while preserving row actions and ellipsis.
 - `ely-git`: keep commit titles visible in narrow lists with many graph lanes; scale the graph within a quarter of the row and let reference badges yield to the title.
 - `ely-documents`: a replacement that would move the open block's bounds writes the block back before it lands, not after, so one undo takes the replacement alone and the typing stays.
 - `ely-documents`: a `MarkdownDocument` over 128 KB opens at its top in visual mode. Its blocks are read after the first frame; they landed before the tail item the list already rested on, so the view opened at the end of the text.
