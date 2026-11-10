@@ -104,7 +104,7 @@ impl MarkdownDocument {
         if self.mode == MarkdownMode::Preview {
             return false;
         }
-        self.commit(cx);
+        let edits = self.beside_open(edits, cx);
         let text = self.editor.read(cx).text();
         if edits
             .iter()
@@ -117,5 +117,51 @@ impl MarkdownDocument {
         self.writes += 1;
         self.editor.update(cx, |editor, cx| editor.edit(edits, cx));
         true
+    }
+
+    /// `edits` of the text as read, in the editor's bytes.
+    ///
+    /// The open block stays and moves with the edits before it; an edit
+    /// reaching into it writes it back first.
+    fn beside_open(
+        &mut self,
+        edits: Vec<(Range<usize>, String)>,
+        cx: &mut Context<Self>,
+    ) -> Vec<(Range<usize>, String)> {
+        let Some(open) = &self.open else {
+            return edits;
+        };
+        let held = open.range.clone();
+        let written = Self::typed(open, self.editor.read(cx).text(), cx).len();
+        let shown = held.start..held.start + written;
+        if edits
+            .iter()
+            .any(|(edit, _)| edit.start < shown.end && edit.end > shown.start)
+        {
+            log::info!("markdown document: a replacement reaches into the open block");
+            self.commit(cx);
+            return edits;
+        }
+        // Typing not yet written shifts every byte after it.
+        let unwritten = written as isize - held.len() as isize;
+        let mut before = 0isize;
+        let edits = edits
+            .into_iter()
+            .map(|(edit, with)| match edit.end <= shown.start {
+                true => {
+                    before += with.len() as isize - edit.len() as isize;
+                    (edit, with)
+                }
+                false => {
+                    let at = |byte: usize| byte.wrapping_add_signed(-unwritten);
+                    (at(edit.start)..at(edit.end), with)
+                }
+            })
+            .collect();
+        let at = |byte: usize| byte.wrapping_add_signed(before);
+        if let Some(open) = self.open.as_mut() {
+            open.range = at(held.start)..at(held.end);
+        }
+        edits
     }
 }

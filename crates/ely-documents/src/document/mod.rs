@@ -264,16 +264,21 @@ impl MarkdownDocument {
         let Some(open) = &self.open else {
             return text.to_string();
         };
+        let written = Self::typed(open, text, cx);
+        [&text[..open.range.start], &written, &text[open.range.end..]].concat()
+    }
+
+    /// What `open` holds now, as it would write back.
+    fn typed(open: &Open, text: &str, cx: &App) -> String {
         let typed = open.input.read(cx).text();
-        let written = match open.append {
+        match open.append {
             true if typed.is_empty() => String::new(),
             true => format!("{}{typed}", joint(text)),
             false if open.cell.is_some() => {
                 cells::kept(typed, cells::edges(text, open.range.clone()))
             }
             false => typed.to_string(),
-        };
-        [&text[..open.range.start], &written, &text[open.range.end..]].concat()
+        }
     }
 
     /// Replaces the text in one step; open typing drops.
