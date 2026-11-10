@@ -149,3 +149,23 @@ fn a_row_added_above_the_open_cell_writes_the_cell_back(cx: &mut TestAppContext)
         "{read:?}"
     );
 }
+
+#[gpui::test]
+fn undo_after_a_replacement_that_closes_the_block_takes_the_replacement_alone(
+    cx: &mut TestAppContext,
+) {
+    let (document, cx) = open(TEXT, MarkdownMode::Visual, cx);
+    press(1, Modifiers::none(), cx);
+    cx.simulate_input("x");
+    replace(&document, "one\n\n", "one\n", cx);
+    let undo = |cx: &mut gpui::VisualTestContext| {
+        document.update(cx, |document, cx| {
+            document.editor().update(cx, |editor, cx| editor.undo(cx))
+        });
+        cx.run_until_parked();
+        text(&document, cx)
+    };
+    // The typing went in before the replacement did.
+    assert_eq!(undo(cx), "one\n\ntwox\n\nthree\n");
+    assert_eq!(undo(cx), TEXT);
+}

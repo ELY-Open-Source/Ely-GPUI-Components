@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-documents`: a replacement that would move the open block's bounds writes the block back before it lands, not after, so one undo takes the replacement alone and the typing stays.
 - `ely-documents`: a `MarkdownDocument` over 128 KB opens at its top in visual mode. Its blocks are read after the first frame; they landed before the tail item the list already rested on, so the view opened at the end of the text.
 - `ely-documents`: `MarkdownDocument::replace` writes the open block back and closes it when the replacement moves that block's bounds without touching it: the blank line before it removed, a code fence opened above, a row added above the open cell. The field no longer stays open over text that is no block, or on another row.
 - `ely-documents`: `ShortcodeRun` reads a block's `:name:` emoji as `MarkdownReader` does across inline HTML too: a tag or comment starts a new text, an open `<code>` keeps its text as written. An owner writing its own HTML from `markdown_tree` holds one per block.

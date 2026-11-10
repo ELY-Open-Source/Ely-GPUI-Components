@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use gpui::{App, Context, Window};
+use gpui::{Context, Window};
 
 use super::{
     MarkdownDocument,
@@ -10,7 +10,7 @@ use super::{
     edit::Landing,
     parse::{Block, parsed},
 };
-use crate::MarkdownMode;
+use crate::{MarkdownMode, render::CellAt};
 
 impl MarkdownDocument {
     /// `range` in view: selected, or in its opened block.
@@ -117,29 +117,7 @@ impl MarkdownDocument {
         // Its own change: an open block outlives it.
         self.writes += 1;
         self.editor.update(cx, |editor, cx| editor.edit(edits, cx));
-        if !self.open_stands(cx) {
-            log::info!("markdown document: a replacement moved the open block's bounds");
-            self.commit(cx);
-        }
         true
-    }
-
-    /// Whether the open block is still one block, one cell.
-    fn open_stands(&self, cx: &App) -> bool {
-        let Some(open) = self.open.as_ref().filter(|open| !open.append) else {
-            return true;
-        };
-        let text = self.editor.read(cx).text();
-        let read = parsed(text);
-        let holds = |block: &&Block| {
-            block.range.start <= open.range.start && open.range.end <= block.range.end
-        };
-        match (read.blocks.iter().find(holds), open.cell) {
-            (Some(block), Some(at)) => cells::find(text, block.range.clone(), Aim::At(at))
-                .is_some_and(|cell| cell.range == open.range),
-            (Some(block), None) => block.range == open.range,
-            (None, _) => false,
-        }
     }
 
     /// `edits` of the text as read, in the editor's bytes.
@@ -165,26 +143,58 @@ impl MarkdownDocument {
             self.commit(cx);
             return edits;
         }
+        let before: isize = (edits.iter())
+            .filter(|(edit, _)| edit.end <= shown.start)
+            .map(|(edit, with)| with.len() as isize - edit.len() as isize)
+            .sum();
+        let moved = |byte: usize| byte.wrapping_add_signed(before);
+        let after = edited(&self.text(cx), &edits);
+        if !open.append && !stands(&after, moved(shown.start)..moved(shown.end), open.cell) {
+            // Written first: undo takes the replacement alone.
+            log::info!("markdown document: a replacement moves the open block's bounds");
+            self.commit(cx);
+            return edits;
+        }
         // Typing not yet written shifts every byte after it.
         let unwritten = written as isize - held.len() as isize;
-        let mut before = 0isize;
         let edits = edits
             .into_iter()
             .map(|(edit, with)| match edit.end <= shown.start {
-                true => {
-                    before += with.len() as isize - edit.len() as isize;
-                    (edit, with)
-                }
+                true => (edit, with),
                 false => {
                     let at = |byte: usize| byte.wrapping_add_signed(-unwritten);
                     (at(edit.start)..at(edit.end), with)
                 }
             })
             .collect();
-        let at = |byte: usize| byte.wrapping_add_signed(before);
         if let Some(open) = self.open.as_mut() {
-            open.range = at(held.start)..at(held.end);
+            open.range = moved(held.start)..moved(held.end);
         }
         edits
+    }
+}
+
+/// `text` with `edits` made, however they are ordered.
+fn edited(text: &str, edits: &[(Range<usize>, String)]) -> String {
+    let mut sorted: Vec<_> = edits.iter().collect();
+    sorted.sort_by_key(|(range, _)| range.start);
+    let (mut out, mut at) = (String::new(), 0);
+    for (range, with) in sorted {
+        out.push_str(&text[at..range.start]);
+        out.push_str(with);
+        at = range.end;
+    }
+    out + &text[at..]
+}
+
+/// Whether `range` of `text` is still one block, or that cell.
+fn stands(text: &str, range: Range<usize>, cell: Option<CellAt>) -> bool {
+    let read = parsed(text);
+    let holds = |block: &&Block| block.range.start <= range.start && range.end <= block.range.end;
+    match (read.blocks.iter().find(holds), cell) {
+        (Some(block), Some(at)) => cells::find(text, block.range.clone(), Aim::At(at))
+            .is_some_and(|cell| cell.range == range),
+        (Some(block), None) => block.range == range,
+        (None, _) => false,
     }
 }
