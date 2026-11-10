@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`: a release build's `init` no longer lists every font family to prove the platform has a text system; on a Mac that list cost 50 ms of every start. A debug build still checks, and fails with the same message.
 - `ely-documents`: `MarkdownDocument::replace` leaves an open block open when no edit reaches into it: the block moves with the edits before it, and typing goes on at its caret. An edit that reaches into the open block still writes it back and closes it. Before, any replacement closed the block and the keys that followed were lost.
 - `ely-documents`: `Shortcodes` is public, so an owner writing its own HTML from `markdown_tree` reads `:name:` emoji as `MarkdownReader` does: one value per DOM text node, `split` at every element, `read` on its text.
 - `ely-documents`: `$$` math reads as GitHub pairs it: `$$` alone then `a.$$` on the next line is math and no longer takes the `$$` into the formula or the next block into it; `$$a` then `$$` is math, no longer an empty block; an unclosed `$$` is text.

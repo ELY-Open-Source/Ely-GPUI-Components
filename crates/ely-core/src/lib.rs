@@ -57,11 +57,13 @@ pub fn init(cx: &mut App) -> anyhow::Result<()> {
     }
     log::info!("assets: the app's source loads all of Ely's files");
     assets::load_fonts(cx).context("ely: embedded fonts failed to register")?;
-    if !cx
-        .text_system()
-        .all_font_names()
-        .iter()
-        .any(|name| name == "IBM Plex Sans")
+    // A build's features decide this, so a debug run settles it; the names of every family cost a Mac 50 ms a start.
+    if cfg!(debug_assertions)
+        && !cx
+            .text_system()
+            .all_font_names()
+            .iter()
+            .any(|name| name == "IBM Plex Sans")
     {
         anyhow::bail!(
             "ely: the platform has no text system, so nothing would draw words; turn on ely-core's `platform` feature, or gpui_platform's `font-kit` (macOS) and `wayland` and `x11` (Linux)"
