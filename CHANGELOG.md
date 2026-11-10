@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-git`: keep commit titles visible in narrow lists with many graph lanes; scale the graph within a quarter of the row and let reference badges yield to the title.
 - `ely-documents`: a replacement that would move the open block's bounds writes the block back before it lands, not after, so one undo takes the replacement alone and the typing stays.
 - `ely-documents`: a `MarkdownDocument` over 128 KB opens at its top in visual mode. Its blocks are read after the first frame; they landed before the tail item the list already rested on, so the view opened at the end of the text.
 - `ely-documents`: `MarkdownDocument::replace` writes the open block back and closes it when the replacement moves that block's bounds without touching it: the blank line before it removed, a code fence opened above, a row added above the open cell. The field no longer stays open over text that is no block, or on another row.
