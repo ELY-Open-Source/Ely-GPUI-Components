@@ -1,6 +1,7 @@
 use gpui::{
-    Context, IntoElement, Modifiers, ParentElement, Render, ScrollDelta, ScrollEvent, SharedString,
-    Styled, TestAppContext, TouchPhase, VisualTestContext, Window, div, point, px,
+    Context, IntoElement, Modifiers, MouseButton, MouseDownEvent, MouseUpEvent, ParentElement,
+    Render, ScrollDelta, ScrollEvent, SharedString, Styled, TestAppContext, TouchPhase,
+    VisualTestContext, Window, div, point, px,
 };
 
 use super::setup;
@@ -314,4 +315,46 @@ fn a_long_chosen_tab_fits_the_strip(cx: &mut TestAppContext) {
     let tab = cx.debug_bounds("tab-29").expect("the chosen tab");
     assert!(tab.left() >= px(0.0), "starts in view: {tab:?}");
     assert!(tab.right() <= px(250.0), "ends in view: {tab:?}");
+}
+
+struct EmptyBar {
+    opened: usize,
+}
+
+impl Render for EmptyBar {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        div().w(px(400.0)).child(
+            EditorTabs::new("docs", [EditorTab::new("only", "only.rs")])
+                .selected("only")
+                .on_empty(move |_, cx| {
+                    view.update(cx, |view, _| view.opened += 1);
+                }),
+        )
+    }
+}
+
+#[gpui::test]
+fn a_double_click_on_empty_tab_space_opens(cx: &mut TestAppContext) {
+    setup(cx);
+    let (view, cx) = cx.add_window_view(|_, _| EmptyBar { opened: 0 });
+    settle(cx);
+    let empty = cx.debug_bounds("tab-empty").expect("empty space after tabs");
+    let at = empty.center();
+    let (button, modifiers) = (MouseButton::Left, Modifiers::none());
+    cx.simulate_event(MouseDownEvent {
+        button,
+        position: at,
+        modifiers,
+        click_count: 2,
+        first_mouse: false,
+    });
+    cx.simulate_event(MouseUpEvent {
+        button,
+        position: at,
+        modifiers,
+        click_count: 2,
+    });
+    settle(cx);
+    assert_eq!(view.read_with(cx, |view, _| view.opened), 1);
 }
