@@ -21,12 +21,12 @@ enum Open {
 }
 
 /// Where a `case` clause reads.
-#[derive(Clone, Copy, PartialEq, Eq)]
 enum Clause {
     Subject,
-    /// Before a pattern list, where `esac` closes.
-    Start,
-    Pattern,
+    /// Patterns, listed from byte `from`.
+    Patterns {
+        from: usize,
+    },
     Body,
 }
 
@@ -43,19 +43,20 @@ impl Nesting {
                 keyword_end,
                 at: at @ Clause::Subject,
             }) if word == "in" && !source[*keyword_end..range.start].trim().is_empty() => {
-                *at = Clause::Start;
+                *at = Clause::Patterns { from: range.end };
             }
             Some(Open::Case {
-                at: Clause::Start, ..
-            }) if word == "esac" => {
+                at: Clause::Patterns { from },
+                ..
+            }) if word == "esac" && blank(&source[*from..range.start]) => {
                 self.opens.pop();
             }
             // Any other pattern is a plain word, `case` and `esac` too.
             Some(Open::Case {
-                at: at @ (Clause::Start | Clause::Pattern),
+                at: Clause::Patterns { .. },
                 ..
-            }) => *at = Clause::Pattern,
-            Some(Open::Glob) => {}
+            })
+            | Some(Open::Glob) => {}
             Some(Open::Case { .. }) if word == "esac" && reserved(before) => {
                 self.opens.pop();
             }
@@ -73,24 +74,16 @@ impl Nesting {
         let expansion = before.ends_with(['$', '<', '>']);
         let glob = before.ends_with(['@', '?', '*', '+', '!']);
         if glob || (!expansion && matches!(self.opens.last(), Some(Open::Glob))) {
-            if let Some(Open::Case {
-                at: at @ Clause::Start,
-                ..
-            }) = self.opens.last_mut()
-            {
-                *at = Clause::Pattern;
-            }
             self.opens.push(Open::Glob);
             return;
         }
         // A pattern's optional `(` pairs with its `)`.
-        if let Some(Open::Case {
-            at: at @ (Clause::Start | Clause::Pattern),
-            ..
-        }) = self.opens.last_mut()
-            && !expansion
+        if !expansion
+            && let Some(Open::Case {
+                at: Clause::Patterns { .. },
+                ..
+            }) = self.opens.last()
         {
-            *at = Clause::Pattern;
             return;
         }
         self.opens.push(Open::Paren { expansion });
@@ -100,7 +93,7 @@ impl Nesting {
     pub(crate) fn close(&mut self) -> bool {
         match self.opens.last_mut() {
             Some(Open::Case {
-                at: at @ (Clause::Start | Clause::Pattern),
+                at: at @ Clause::Patterns { .. },
                 ..
             }) => {
                 *at = Clause::Body;
@@ -125,9 +118,22 @@ impl Nesting {
         }) = self.opens.last_mut()
             && source[start + 1..].starts_with([';', '&'])
         {
-            *at = Clause::Start;
+            let end = if source[start..].starts_with(";;&") {
+                3
+            } else {
+                2
+            };
+            *at = Clause::Patterns { from: start + end };
         }
     }
+}
+
+/// Whether `gap` holds only blanks and comments.
+fn blank(gap: &str) -> bool {
+    gap.lines().all(|line| {
+        let line = line.trim();
+        line.is_empty() || line.starts_with('#')
+    })
 }
 
 /// Reserved words after which another reserved word may start.

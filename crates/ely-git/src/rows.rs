@@ -283,11 +283,29 @@ mod tests {
                 "echo N $(case a in a) echo y;;\nesac)# return 42",
                 "echo O $(case a in esac)# return 42",
                 "echo Q $(case a in @(b)|esac) echo n;; a) echo y;; esac)# return 42",
+                "echo R $(case esac in 1|esac) echo y;; esac)# return 42",
+                r#"echo S $(case esac in "foo"|esac) echo y;; esac)# return 42"#,
+                "echo T $(case esac in x-a|esac) echo y;; esac)# return 42",
+                "echo U $(case esac in ?|esac) echo y;; esac)# return 42",
                 r"echo \(x\)# return 42",
             ] {
                 let shell = color(line, "run.sh", cx);
                 assert!(
                     shell.iter().all(|(_, c)| *c != Some(syntax.comment)),
+                    "{line}: {shell:?}"
+                );
+            }
+            // A comment before `esac` leaves it the keyword.
+            for line in [
+                "echo V $(case a in # c\nesac)# return 42",
+                "echo W $(case a in a) echo y;;& # c\n esac)# return 42",
+            ] {
+                let tail = line.rfind('#').expect("a mark");
+                let shell = color(line, "run.sh", cx);
+                assert!(
+                    shell
+                        .iter()
+                        .all(|(r, c)| !r.contains(&tail) || *c != Some(syntax.comment)),
                     "{line}: {shell:?}"
                 );
             }
