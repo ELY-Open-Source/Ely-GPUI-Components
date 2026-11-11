@@ -366,7 +366,7 @@ fn windows_controls_end_the_last_header(cx: &mut TestAppContext) {
         column(1, cx),
     );
     assert_eq!(controls.right(), main.right());
-    assert!(controls.left() > main.left() && controls.bottom() <= main.top() + px(38.0));
+    assert!(controls.left() > main.left() && controls.bottom() <= main.top() + px(32.0));
     let close = cx.debug_bounds("caption-Close").expect("a close button");
     cx.simulate_click(close.center(), gpui::Modifiers::none());
     settle(cx);
