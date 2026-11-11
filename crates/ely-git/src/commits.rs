@@ -11,7 +11,7 @@ use crate::{
     data_display::{Avatar, Tag, Tone},
     primitives::FocusRing,
     theme::{ActiveTheme, AvatarSize, ControlSize, IconSize, Radius, TextSize},
-    typography::Ellipsis,
+    typography::SelectableText,
 };
 
 /// A commit as lists show it; first parent first.
@@ -123,22 +123,36 @@ impl RenderOnce for CommitItem {
                 Avatar::new((self.id.clone(), "author"), commit.author.clone())
                     .size(AvatarSize::Xs),
             )
-            .children(commit.refs.iter().enumerate().map(|(ix, name)| {
-                let tone = if name.starts_with('v') {
-                    Tone::Warning
-                } else if name.contains('/') {
-                    Tone::Neutral
-                } else {
-                    Tone::Info
-                };
-                Tag::new((self.id.clone(), format!("ref-{ix}")), name.clone()).tone(tone)
-            }))
             .child(
                 div()
                     .flex_1()
                     .min_w_24()
+                    .debug_selector({
+                        let id = commit.id.clone();
+                        move || format!("commit-title-{id}")
+                    })
                     .text_color(colors.fg)
-                    .child(Ellipsis::new(commit.subject)),
+                    .overflow_hidden()
+                    .whitespace_nowrap()
+                    .child(SelectableText::new("commit-subject", commit.subject).ellipsis()),
+            )
+            .child(
+                div()
+                    .flex()
+                    .gap_1()
+                    .flex_shrink(1.0)
+                    .min_w_0()
+                    .overflow_hidden()
+                    .children(commit.refs.iter().enumerate().map(|(ix, name)| {
+                        let tone = if name.starts_with('v') {
+                            Tone::Warning
+                        } else if name.contains('/') {
+                            Tone::Neutral
+                        } else {
+                            Tone::Info
+                        };
+                        Tag::new((self.id.clone(), format!("ref-{ix}")), name.clone()).tone(tone)
+                    })),
             )
             // Narrow, the details give way before the subject.
             .child(
@@ -149,14 +163,22 @@ impl RenderOnce for CommitItem {
                     .whitespace_nowrap()
                     .flex()
                     .gap_2()
-                    .child(div().text_color(colors.fg_muted).child(commit.author))
+                    .child(
+                        div()
+                            .text_color(colors.fg_muted)
+                            .child(SelectableText::new("commit-author", commit.author)),
+                    )
                     .child(
                         div()
                             .font_family(theme.mono_family.clone())
                             .text_color(colors.fg_subtle)
-                            .child(short),
+                            .child(SelectableText::new("commit-hash", short)),
                     )
-                    .child(div().text_color(colors.fg_subtle).child(commit.when)),
+                    .child(
+                        div()
+                            .text_color(colors.fg_subtle)
+                            .child(SelectableText::new("commit-when", commit.when)),
+                    ),
             )
     }
 }
@@ -247,6 +269,7 @@ fn lanes_cell(
     canvas(
         |_, _, _| {},
         move |bounds: Bounds<Pixels>, _, window, _| {
+            let lane = bounds.size.width / span.max(1) as f32;
             let x = |at: usize| bounds.origin.x + lane * (at as f32 + 0.5);
             let (top, middle, bottom) = (
                 bounds.origin.y,
@@ -281,6 +304,7 @@ fn lanes_cell(
     )
     .flex_none()
     .w(width)
+    .max_w(gpui::relative(0.25))
     .h(height)
     .into_any_element()
 }

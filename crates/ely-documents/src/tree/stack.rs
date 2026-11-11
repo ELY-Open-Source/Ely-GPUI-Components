@@ -86,3 +86,34 @@ pub(super) fn close(text: &mut Inline, opened: &Opened, end: usize) {
         text.links.push((opened.start..end, url.clone()));
     }
 }
+
+/// Inline text's shortcodes as the reader reads them.
+///
+/// For an owner writing its own HTML from `markdown_tree`: one value
+/// per block, `split` at every element, `text` on text and `html` on
+/// inline HTML, whose tags open and close elements here too.
+#[derive(Default)]
+pub struct ShortcodeRun(Run);
+
+impl ShortcodeRun {
+    /// A new DOM text node starts.
+    pub fn split(&mut self) {
+        self.0.shortcodes.split();
+    }
+
+    /// Text as shown; an open HTML `code` keeps it as written.
+    pub fn text(&mut self, written: &str) -> String {
+        self.0.shown(written)
+    }
+
+    /// Inline HTML as text: a tag as written, the rest as shown.
+    pub fn html(&mut self, written: &str) -> String {
+        if matches!(html::inline_tag(written), InlineTag::Text(_)) {
+            return self.0.shown(written);
+        }
+        self.0.html(written);
+        // Nothing is laid out from this run.
+        self.0.text = Inline::default();
+        written.to_string()
+    }
+}

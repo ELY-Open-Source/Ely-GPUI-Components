@@ -18,8 +18,8 @@ newest=$(cargo search gpui-kit --limit 1 --color never | sed -n 's/^gpui-kit = "
 cargo generate-lockfile $kit
 cargo update $kit -p gpui-kit --precise "$newest"
 cargo fmt $kit --check
-cargo clippy $kit --all-targets --target-dir target/kit -- -D warnings
-cargo test $kit --target-dir target/kit --quiet
+cargo clippy $kit --all-targets -- -D warnings
+cargo test $kit --quiet
 rustup target list --installed | grep -qx wasm32-unknown-unknown || {
   echo "the web lint needs wasm32: rustup target add wasm32-unknown-unknown" >&2
   exit 1

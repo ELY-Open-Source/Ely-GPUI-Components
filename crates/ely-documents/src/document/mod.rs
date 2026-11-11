@@ -22,7 +22,7 @@ use std::{ops::Range, path::Path, rc::Rc, sync::Arc, time::Duration};
 
 use gpui::{
     App, AppContext as _, Context, Entity, EventEmitter, FocusHandle, Focusable, ListAlignment,
-    ListState, Pixels, Subscription, Task, Window,
+    ListOffset, ListState, Pixels, Subscription, Task, Window,
 };
 
 pub use crate::tree::DocumentHeading;
@@ -264,16 +264,21 @@ impl MarkdownDocument {
         let Some(open) = &self.open else {
             return text.to_string();
         };
+        let written = Self::typed(open, text, cx);
+        [&text[..open.range.start], &written, &text[open.range.end..]].concat()
+    }
+
+    /// What `open` holds now, as it would write back.
+    fn typed(open: &Open, text: &str, cx: &App) -> String {
         let typed = open.input.read(cx).text();
-        let written = match open.append {
+        match open.append {
             true if typed.is_empty() => String::new(),
             true => format!("{}{typed}", joint(text)),
             false if open.cell.is_some() => {
                 cells::kept(typed, cells::edges(text, open.range.clone()))
             }
             false => typed.to_string(),
-        };
-        [&text[..open.range.start], &written, &text[open.range.end..]].concat()
+        }
     }
 
     /// Replaces the text in one step; open typing drops.
@@ -368,6 +373,13 @@ impl MarkdownDocument {
         let old = self.parsed.blocks.len();
         self.list
             .splice(head..old - tail, read.blocks.len() - head - tail);
+        // A first read lands before the tail the list rested on.
+        if old == 0 {
+            self.list.scroll_to(ListOffset {
+                item_ix: 0,
+                offset_in_item: Pixels::ZERO,
+            });
+        }
         let headings: Vec<usize> = read.headings.iter().map(|heading| heading.at).collect();
         self.editor
             .update(cx, |editor, _| editor.set_anchors(headings));

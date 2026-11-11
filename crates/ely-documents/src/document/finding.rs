@@ -8,8 +8,9 @@ use super::{
     MarkdownDocument,
     cells::{self, Aim},
     edit::Landing,
+    parse::{Block, parsed},
 };
-use crate::MarkdownMode;
+use crate::{MarkdownMode, render::CellAt};
 
 impl MarkdownDocument {
     /// `range` in view: selected, or in its opened block.
@@ -104,7 +105,7 @@ impl MarkdownDocument {
         if self.mode == MarkdownMode::Preview {
             return false;
         }
-        self.commit(cx);
+        let edits = self.beside_open(edits, cx);
         let text = self.editor.read(cx).text();
         if edits
             .iter()
@@ -117,5 +118,83 @@ impl MarkdownDocument {
         self.writes += 1;
         self.editor.update(cx, |editor, cx| editor.edit(edits, cx));
         true
+    }
+
+    /// `edits` of the text as read, in the editor's bytes.
+    ///
+    /// The open block stays and moves with the edits before it; an edit
+    /// reaching into it writes it back first.
+    fn beside_open(
+        &mut self,
+        edits: Vec<(Range<usize>, String)>,
+        cx: &mut Context<Self>,
+    ) -> Vec<(Range<usize>, String)> {
+        let Some(open) = &self.open else {
+            return edits;
+        };
+        let held = open.range.clone();
+        let written = Self::typed(open, self.editor.read(cx).text(), cx).len();
+        let shown = held.start..held.start + written;
+        if edits
+            .iter()
+            .any(|(edit, _)| edit.start < shown.end && edit.end > shown.start)
+        {
+            log::info!("markdown document: a replacement reaches into the open block");
+            self.commit(cx);
+            return edits;
+        }
+        let before: isize = (edits.iter())
+            .filter(|(edit, _)| edit.end <= shown.start)
+            .map(|(edit, with)| with.len() as isize - edit.len() as isize)
+            .sum();
+        let moved = |byte: usize| byte.wrapping_add_signed(before);
+        let after = edited(&self.text(cx), &edits);
+        if !open.append && !stands(&after, moved(shown.start)..moved(shown.end), open.cell) {
+            // Written first: undo takes the replacement alone.
+            log::info!("markdown document: a replacement moves the open block's bounds");
+            self.commit(cx);
+            return edits;
+        }
+        // Typing not yet written shifts every byte after it.
+        let unwritten = written as isize - held.len() as isize;
+        let edits = edits
+            .into_iter()
+            .map(|(edit, with)| match edit.end <= shown.start {
+                true => (edit, with),
+                false => {
+                    let at = |byte: usize| byte.wrapping_add_signed(-unwritten);
+                    (at(edit.start)..at(edit.end), with)
+                }
+            })
+            .collect();
+        if let Some(open) = self.open.as_mut() {
+            open.range = moved(held.start)..moved(held.end);
+        }
+        edits
+    }
+}
+
+/// `text` with `edits` made, however they are ordered.
+fn edited(text: &str, edits: &[(Range<usize>, String)]) -> String {
+    let mut sorted: Vec<_> = edits.iter().collect();
+    sorted.sort_by_key(|(range, _)| range.start);
+    let (mut out, mut at) = (String::new(), 0);
+    for (range, with) in sorted {
+        out.push_str(&text[at..range.start]);
+        out.push_str(with);
+        at = range.end;
+    }
+    out + &text[at..]
+}
+
+/// Whether `range` of `text` is still one block, or that cell.
+fn stands(text: &str, range: Range<usize>, cell: Option<CellAt>) -> bool {
+    let read = parsed(text);
+    let holds = |block: &&Block| block.range.start <= range.start && range.end <= block.range.end;
+    match (read.blocks.iter().find(holds), cell) {
+        (Some(block), Some(at)) => cells::find(text, block.range.clone(), Aim::At(at))
+            .is_some_and(|cell| cell.range == range),
+        (Some(block), None) => block.range == range,
+        (None, _) => false,
     }
 }

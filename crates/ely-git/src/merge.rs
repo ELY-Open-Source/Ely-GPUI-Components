@@ -14,6 +14,7 @@ use crate::{
     i18n,
     primitives::{Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, Palette, Radius, TextSize},
+    typography::selection,
 };
 
 type OnTake = Rc<dyn Fn(usize, Take, &mut Window, &mut App)>;
@@ -144,10 +145,9 @@ fn rows(regions: &[Region]) -> Vec<Line> {
 }
 
 impl RenderOnce for ThreeWayMerge {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let theme = cx.theme();
-        let colors = theme.colors.clone();
-        let height = theme.control_height(ControlSize::Sm);
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let colors = cx.theme().colors.clone();
+        let height = cx.theme().control_height(ControlSize::Sm);
         let rows = Rc::new(rows(&self.regions));
         let Self {
             id,
@@ -156,6 +156,35 @@ impl RenderOnce for ThreeWayMerge {
             on_take,
             ..
         } = self;
+        let selected: [_; 3] = std::array::from_fn(|side| {
+            let lines = Rc::new(
+                rows.iter()
+                    .map(|row| match row {
+                        Line::Code(_, lines) => lines[side].clone().map(SharedString::from),
+                        _ => None,
+                    })
+                    .collect(),
+            );
+            selection::state(
+                (id.clone(), format!("side-{side}")),
+                lines,
+                false,
+                window,
+                cx,
+            )
+        });
+        let scroll = window
+            .use_keyed_state((id.clone(), "scroll"), cx, |_, _| {
+                gpui::UniformListScrollHandle::new()
+            })
+            .read(cx)
+            .clone();
+        for side in &selected {
+            selection::scroll(side, scroll.clone(), cx);
+        }
+        let picks = selected.clone();
+        let select_id = id.clone();
+        let theme = cx.theme();
         let header = div()
             .flex()
             .gap_px()
@@ -229,26 +258,59 @@ impl RenderOnce for ThreeWayMerge {
                             row.gap_px()
                                 .role(Role::Label)
                                 .aria_label(SharedString::from(said.join(" · ")))
-                                .children(sides.iter().zip(washes).map(|(line, wash)| {
-                                    div()
-                                        .flex_1()
-                                        .min_w_0()
-                                        .h_full()
-                                        .px_2()
-                                        .flex()
-                                        .items_center()
-                                        .whitespace_nowrap()
-                                        .overflow_hidden()
-                                        .when_some(wash, |side, wash| side.bg(wash))
-                                        .children(line.clone())
-                                }))
+                                .children(sides.iter().zip(washes).enumerate().map(
+                                    |(side, (line, wash))| {
+                                        div()
+                                            .flex_1()
+                                            .min_w_0()
+                                            .h_full()
+                                            .px_2()
+                                            .flex()
+                                            .items_center()
+                                            .whitespace_nowrap()
+                                            .overflow_hidden()
+                                            .when_some(wash, |side, wash| side.bg(wash))
+                                            .children(line.clone().map(|text| {
+                                                let range = selection::range(&picks[side], ix, cx);
+                                                let style = gpui::HighlightStyle {
+                                                    background_color: Some(colors.selection),
+                                                    ..Default::default()
+                                                };
+                                                let styled = gpui::StyledText::new(text)
+                                                    .with_highlights(
+                                                        (!range.is_empty())
+                                                            .then_some((range, style)),
+                                                    );
+                                                selection::fragment(
+                                                    (id.clone(), format!("text-{side}-{ix}")),
+                                                    picks[side].clone(),
+                                                    ix,
+                                                    styled,
+                                                )
+                                            }))
+                                    },
+                                ))
                                 .into_any_element()
                         }
                     }
                 })
                 .collect()
         })
-        .flex_1();
+        .track_scroll(&scroll)
+        .size_full();
+        let list = selected.into_iter().enumerate().fold(
+            list.into_any_element(),
+            |child, (side, state)| {
+                selection::surface(
+                    (select_id.clone(), format!("select-{side}")),
+                    state,
+                    child,
+                    cx,
+                )
+                .size_full()
+                .into_any_element()
+            },
+        );
         div()
             .size_full()
             .flex()

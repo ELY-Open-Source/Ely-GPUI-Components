@@ -122,31 +122,37 @@ fn cut_line(text: SharedString, fit: fn(&str, Pixels, &mut Window) -> String) ->
         .overflow_hidden()
         .whitespace_nowrap()
         .child(div().text_color(transparent_black()).child(text))
-        .child(
-            canvas(
-                move |bounds, window, _| shape(&fit(&line, bounds.size.width, window), window),
-                |bounds, shaped, window, cx| {
-                    let style = window.text_style();
-                    let line = style.line_height_in_pixels(window.rem_size());
-                    let x = offset(style.text_align, bounds.size.width - shaped.width);
-                    let painted = shaped.paint(
-                        bounds.origin + point(x, Pixels::ZERO),
-                        line,
-                        TextAlign::Left,
-                        None,
-                        window,
-                        cx,
-                    );
-                    if let Err(error) = painted {
-                        log::error!("ellipsis: a cut line failed to paint: {error:#}");
-                    }
-                },
-            )
-            .absolute()
-            .top_0()
-            .left_0()
-            .size_full(),
-        )
+        .child(overlay(line, fit))
+}
+
+fn overlay(line: SharedString, fit: fn(&str, Pixels, &mut Window) -> String) -> impl IntoElement {
+    canvas(
+        move |bounds, window, _| shape(&fit(&line, bounds.size.width, window), window),
+        |bounds, shaped, window, cx| {
+            let style = window.text_style();
+            let line = style.line_height_in_pixels(window.rem_size());
+            let x = offset(style.text_align, bounds.size.width - shaped.width);
+            let painted = shaped.paint(
+                bounds.origin + point(x, Pixels::ZERO),
+                line,
+                TextAlign::Left,
+                None,
+                window,
+                cx,
+            );
+            if let Err(error) = painted {
+                log::error!("ellipsis: a cut line failed to paint: {error:#}");
+            }
+        },
+    )
+    .absolute()
+    .top_0()
+    .left_0()
+    .size_full()
+}
+
+pub(super) fn end_overlay(text: SharedString) -> impl IntoElement {
+    overlay(text, fit_end)
 }
 
 /// One line in the text style around it, cut at the end with an ellipsis when its box is too narrow.

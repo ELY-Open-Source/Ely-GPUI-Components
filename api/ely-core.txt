@@ -2757,6 +2757,7 @@ pub fn ely_core::data_display::DescriptionList::item(self, impl core::convert::I
 pub fn ely_core::data_display::DescriptionList::lined(self) -> Self
 pub fn ely_core::data_display::DescriptionList::new() -> Self
 pub fn ely_core::data_display::DescriptionList::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_core::data_display::DescriptionList::selectable_text(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
 pub fn ely_core::data_display::DescriptionList::stacked(self) -> Self
 pub fn ely_core::data_display::DescriptionList::text(self, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
 pub fn ely_core::data_display::DotBadge::default() -> Self
@@ -4059,6 +4060,7 @@ pub fn ely_core::lists::ListItem::on_secondary(self, impl core::ops::function::F
 pub fn ely_core::lists::ListItem::place(self, usize, usize) -> Self
 pub fn ely_core::lists::ListItem::quiet(self, bool) -> Self
 pub fn ely_core::lists::ListItem::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_core::lists::ListItem::selectable_text(self) -> Self
 pub fn ely_core::lists::ListItem::selected(self, bool) -> Self
 pub fn ely_core::lists::ListItem::strong(self, bool) -> Self
 pub fn ely_core::lists::ListItem::struck(self, bool) -> Self
@@ -5384,6 +5386,7 @@ pub fn ely_core::typography::RelativeTime::into_any_element(self) -> gpui::eleme
 pub fn ely_core::typography::RelativeTime::into_element(self) -> Self::Element
 pub fn ely_core::typography::RelativeTime::new(impl core::convert::Into<gpui::window::ElementId>, jiff::timestamp::Timestamp) -> Self
 pub fn ely_core::typography::RelativeTime::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
+pub fn ely_core::typography::SelectableText::ellipsis(self) -> Self
 pub fn ely_core::typography::SelectableText::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::typography::SelectableText::into_element(self) -> Self::Element
 pub fn ely_core::typography::SelectableText::new(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self

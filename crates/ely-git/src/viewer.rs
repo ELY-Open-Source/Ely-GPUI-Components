@@ -17,7 +17,7 @@ use crate::{
     i18n,
     primitives::FocusRing,
     theme::{ActiveTheme, ControlSize, TextSize},
-    typography::LEADING,
+    typography::{LEADING, selection},
 };
 
 /// How a diff lays out.
@@ -174,10 +174,46 @@ impl DiffViewer {
 }
 
 impl RenderOnce for DiffViewer {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let rows = Rc::new(shown(&self.stretches, self.layout, &self.open));
+        let document = |right: bool| {
+            Rc::new(
+                rows.iter()
+                    .map(|row| match row {
+                        Shown::Line(_, line) => Some(line.text.clone()),
+                        Shown::Pair(left, other) => if right { other } else { left }
+                            .as_ref()
+                            .map(|(_, line)| line.text.clone()),
+                        _ => None,
+                    })
+                    .collect(),
+            )
+        };
+        let left = selection::state(
+            (self.id.clone(), "text-left"),
+            document(false),
+            false,
+            window,
+            cx,
+        );
+        let right = selection::state(
+            (self.id.clone(), "text-right"),
+            document(true),
+            false,
+            window,
+            cx,
+        );
+        let scroll = window
+            .use_keyed_state((self.id.clone(), "scroll"), cx, |_, _| {
+                gpui::UniformListScrollHandle::new()
+            })
+            .read(cx)
+            .clone();
+        selection::scroll(&left, scroll.clone(), cx);
+        selection::scroll(&right, scroll.clone(), cx);
+        let (left_rows, right_rows) = (left.clone(), right.clone());
         let theme = cx.theme();
         let colors = theme.colors.clone();
-        let rows = Rc::new(shown(&self.stretches, self.layout, &self.open));
         let layout = SegmentedControl::new(
             (self.id.clone(), "layout"),
             match self.layout {
@@ -271,6 +307,8 @@ impl RenderOnce for DiffViewer {
                 let side = |line: Option<&(Place, DiffLine)>,
                             shown: Option<usize>,
                             at: &str,
+                            ix: usize,
+                            selection: &gpui::Entity<selection::TextSelection>,
                             cx: &App|
                  -> AnyElement {
                     let (wash, _) = line.map_or(
@@ -290,8 +328,23 @@ impl RenderOnce for DiffViewer {
                         .child(number(shown))
                         .children(line.map(|(_, line)| {
                             div()
+                                .debug_selector({
+                                    let at = at.to_string();
+                                    move || format!("diff-text-{at}")
+                                })
                                 .whitespace_nowrap()
-                                .child(code(line, &colors, syntax, cx))
+                                .child(selection::fragment(
+                                    at.to_string(),
+                                    selection.clone(),
+                                    ix,
+                                    code(
+                                        line,
+                                        &colors,
+                                        syntax,
+                                        selection::range(selection, ix, cx),
+                                        cx,
+                                    ),
+                                ))
                         }));
                     match line {
                         Some((place, line)) => {
@@ -345,13 +398,20 @@ impl RenderOnce for DiffViewer {
                                     .child(
                                         div().flex_none().text_color(colors.fg_subtle).child(sign),
                                     )
-                                    .child(
-                                        div()
-                                            .flex_1()
-                                            .min_w_0()
-                                            .overflow_hidden()
-                                            .child(code(line, &colors, syntax, cx)),
-                                    )
+                                    .child(div().flex_1().min_w_0().overflow_hidden().child(
+                                        selection::fragment(
+                                            (id.clone(), format!("text-{ix}")),
+                                            left_rows.clone(),
+                                            ix,
+                                            code(
+                                                line,
+                                                &colors,
+                                                syntax,
+                                                selection::range(&left_rows, ix, cx),
+                                                cx,
+                                            ),
+                                        ),
+                                    ))
                                     .into_any_element()
                             }
                             Shown::Pair(left, right) => {
@@ -361,8 +421,22 @@ impl RenderOnce for DiffViewer {
                                 );
                                 row.id(ix)
                                     .gap_1()
-                                    .child(side(left.as_ref(), old, &format!("left-{ix}"), cx))
-                                    .child(side(right.as_ref(), new, &format!("right-{ix}"), cx))
+                                    .child(side(
+                                        left.as_ref(),
+                                        old,
+                                        &format!("left-{ix}"),
+                                        ix,
+                                        &left_rows,
+                                        cx,
+                                    ))
+                                    .child(side(
+                                        right.as_ref(),
+                                        new,
+                                        &format!("right-{ix}"),
+                                        ix,
+                                        &right_rows,
+                                        cx,
+                                    ))
                                     .into_any_element()
                             }
                             Shown::Fold(stretch, count) => {
@@ -409,6 +483,7 @@ impl RenderOnce for DiffViewer {
                     .collect()
             },
         )
+        .track_scroll(&scroll)
         .size_full();
         div()
             .size_full()
@@ -443,7 +518,16 @@ impl RenderOnce for DiffViewer {
                     .min_h_0()
                     .font_family(theme.mono_family.clone())
                     .text_size(theme.text_size(TextSize::Xs))
-                    .child(list),
+                    .child(
+                        selection::surface(
+                            (self.id.clone(), "select-left"),
+                            left,
+                            selection::surface((self.id.clone(), "select-right"), right, list, cx)
+                                .size_full(),
+                            cx,
+                        )
+                        .size_full(),
+                    ),
             )
     }
 }

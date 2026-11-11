@@ -4,6 +4,14 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`, `ely-git`: select and copy read-only text, diffs, blame and merge columns while preserving row actions and ellipsis.
+- `ely-git`: keep commit titles visible in narrow lists with many graph lanes; scale the graph within a quarter of the row and let reference badges yield to the title.
+- `ely-documents`: a replacement that would move the open block's bounds writes the block back before it lands, not after, so one undo takes the replacement alone and the typing stays.
+- `ely-documents`: a `MarkdownDocument` over 128 KB opens at its top in visual mode. Its blocks are read after the first frame; they landed before the tail item the list already rested on, so the view opened at the end of the text.
+- `ely-documents`: `MarkdownDocument::replace` writes the open block back and closes it when the replacement moves that block's bounds without touching it: the blank line before it removed, a code fence opened above, a row added above the open cell. The field no longer stays open over text that is no block, or on another row.
+- `ely-documents`: `ShortcodeRun` reads a block's `:name:` emoji as `MarkdownReader` does across inline HTML too: a tag or comment starts a new text, an open `<code>` keeps its text as written. An owner writing its own HTML from `markdown_tree` holds one per block.
+- `ely-core`: a release build's `init` no longer lists every font family to prove the platform has a text system; on a Mac that list cost 50 ms of every start. A debug build still checks, and fails with the same message.
+- `ely-documents`: `MarkdownDocument::replace` leaves an open block open when no edit reaches into it: the block moves with the edits before it, and typing goes on at its caret. An edit that reaches into the open block still writes it back and closes it. Before, any replacement closed the block and the keys that followed were lost.
 - `ely-documents`: `Shortcodes` is public, so an owner writing its own HTML from `markdown_tree` reads `:name:` emoji as `MarkdownReader` does: one value per DOM text node, `split` at every element, `read` on its text.
 - `ely-documents`: `$$` math reads as GitHub pairs it: `$$` alone then `a.$$` on the next line is math and no longer takes the `$$` into the formula or the next block into it; `$$a` then `$$` is math, no longer an empty block; an unclosed `$$` is text.
 - `ely-documents`: `MarkdownDocument::point_match` shows a match as `show_match` does, in visual mode its block opened with the match selected, but leaves focus where it is, so a find box keeps its keys and Enter steps on.
