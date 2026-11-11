@@ -182,3 +182,26 @@ fn task_boxes_match_the_text_and_centre_on_its_first_line(cx: &mut TestAppContex
         }
     }
 }
+
+#[gpui::test]
+fn a_footnotes_task_box_matches_its_smaller_text(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| Page("a[^1]\n\n[^1]:\n    - above\n    - [ ] note\n"));
+    cx.run_until_parked();
+    let small = cx.update(|window, cx| {
+        cx.theme()
+            .text_size(TextSize::Sm)
+            .to_pixels(window.rem_size())
+    });
+    let bullet = cx.debug_bounds("markdown-bullet-0").expect("drawn");
+    let task = cx.debug_bounds("markdown-task-1").expect("drawn");
+    assert_eq!(task.size.width, small, "{task:?}");
+    let line = bullet.size.height;
+    assert!((line - small * super::LINE).abs() < px(0.5), "{bullet:?}");
+    let gap = cx.update(|window, _| rems(0.25).to_pixels(window.rem_size()));
+    assert_eq!(
+        task.center().y,
+        bullet.bottom() + gap + line / 2.0,
+        "{task:?}"
+    );
+}

@@ -19,7 +19,7 @@ impl Draw<'_> {
         cx: &App,
     ) -> AnyElement {
         let colors = cx.theme().colors.clone();
-        let text = cx.theme().text_size(self.body) * self.scale;
+        let text = cx.theme().text_size(self.body.get()) * self.scale;
         let depth = self.lists.get();
         self.lists.set(depth + 1);
         let bullet = match depth {

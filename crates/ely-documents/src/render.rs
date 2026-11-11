@@ -215,8 +215,8 @@ struct Draw<'a> {
     sections: &'a Option<Entity<Sections>>,
     headings: std::cell::Cell<usize>,
     code: &'a Option<DrawCode>,
-    /// The body's size; headings step up from it.
-    body: TextSize,
+    /// The size where drawing stands; headings step up.
+    body: std::cell::Cell<TextSize>,
     /// Text size against the theme's.
     scale: f32,
     /// Lists open around the node drawn.
@@ -281,7 +281,7 @@ impl Draw<'_> {
                 .into_any_element(),
             Node::Heading(level, inline) => {
                 // Every level bold.
-                let size = theme.text_size(self.body) * heading_step(*level) * self.scale;
+                let size = theme.text_size(self.body.get()) * heading_step(*level) * self.scale;
                 let ordinal = self.headings.get();
                 self.headings.set(ordinal + 1);
                 let heading = div()
@@ -427,20 +427,21 @@ impl Draw<'_> {
                 };
                 self.point_image(drawn, *at, url, link)
             }
-            Node::Footnote { label, body } => div()
-                .flex()
-                .gap_2()
-                .text_size(theme.text_size(TextSize::Sm))
-                .text_color(colors.fg_muted)
-                .child(div().flex_none().child(format!("[{label}]")))
-                .child(
-                    div()
-                        .flex_1()
-                        .flex()
-                        .flex_col()
-                        .children(self.nodes(body, cx)),
-                )
-                .into_any_element(),
+            Node::Footnote { label, body } => {
+                let size = theme.text_size(TextSize::Sm) * self.scale;
+                let outer = self.body.replace(TextSize::Sm);
+                let drawn = self.nodes(body, cx);
+                self.body.set(outer);
+                div()
+                    .flex()
+                    .gap_2()
+                    .text_size(size)
+                    .line_height(size * LINE)
+                    .text_color(colors.fg_muted)
+                    .child(div().flex_none().child(format!("[{label}]")))
+                    .child(div().flex_1().flex().flex_col().children(drawn))
+                    .into_any_element()
+            }
             Node::Alert { kind, body } => self.alert(*kind, body, cx),
             Node::Toc(headings) => self.toc(headings, cx),
             Node::FrontMatter { text, from } => self.front_matter(text, *from, cx),
@@ -473,7 +474,7 @@ pub(crate) fn draw_nodes(
         sections: &None,
         headings: std::cell::Cell::new(0),
         code: &None,
-        body: TextSize::Base,
+        body: std::cell::Cell::new(TextSize::Base),
         scale,
         lists: std::cell::Cell::new(0),
         select: None,
@@ -512,7 +513,7 @@ impl RenderOnce for MarkdownRenderer {
             sections: &self.sections,
             headings: std::cell::Cell::new(0),
             code: &self.code,
-            body: self.size,
+            body: std::cell::Cell::new(self.size),
             scale: 1.0,
             lists: std::cell::Cell::new(0),
             select: gather.as_ref(),

@@ -365,3 +365,35 @@ fn source_numbers_its_lines_when_asked(cx: &mut TestAppContext) {
     });
     assert_eq!(numbers(cx), crate::editor::LineNumbers::Hidden);
 }
+
+#[gpui::test]
+fn a_zoomed_task_box_matches_its_text(cx: &mut TestAppContext) {
+    use crate::theme::{ActiveTheme, TextSize};
+    let note = "a[^1]\n\n[^1]:\n    - above\n    - [ ] note\n";
+    for (source, size) in [
+        ("- above\n- [ ] body\n", TextSize::Base),
+        (note, TextSize::Sm),
+    ] {
+        for mode in [MarkdownMode::Visual, MarkdownMode::Preview] {
+            let (document, cx) = open(source, mode, &mut *cx);
+            let look = DocumentLook {
+                scale: 1.5,
+                ..DocumentLook::default()
+            };
+            document.update(cx, |document, cx| document.set_look(look, cx));
+            frames(cx);
+            let text =
+                cx.update(|window, cx| cx.theme().text_size(size).to_pixels(window.rem_size()));
+            let task = cx.debug_bounds("markdown-task-1").expect("drawn");
+            assert_eq!(task.size.width, text * 1.5, "{mode:?} {size:?}: {task:?}");
+            // The first item's line scales with its text.
+            let line = cx
+                .debug_bounds("markdown-bullet-0")
+                .expect("drawn")
+                .size
+                .height;
+            let off = (line - text * 1.5 * crate::render::LINE).abs();
+            assert!(off < px(0.5), "{mode:?} {size:?}: {line:?}");
+        }
+    }
+}
