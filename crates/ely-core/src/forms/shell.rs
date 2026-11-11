@@ -130,7 +130,8 @@ impl Nesting {
 
 /// Whether `gap` holds only blanks and comments.
 fn blank(gap: &str) -> bool {
-    gap.lines().all(|line| {
+    // A backslash before a newline joins the lines.
+    gap.replace("\\\n", "").lines().all(|line| {
         let line = line.trim();
         line.is_empty() || line.starts_with('#')
     })

@@ -299,6 +299,9 @@ mod tests {
             for line in [
                 "echo V $(case a in # c\nesac)# return 42",
                 "echo W $(case a in a) echo y;;& # c\n esac)# return 42",
+                "echo X $(case a in \\\nesac)# return 42",
+                "echo Y $(case a in a) echo y;; \\\nesac)# return 42",
+                "echo Z $(case a in a) echo y;;& \\\n# c\nesac)# return 42",
             ] {
                 let tail = line.rfind('#').expect("a mark");
                 let shell = color(line, "run.sh", cx);
