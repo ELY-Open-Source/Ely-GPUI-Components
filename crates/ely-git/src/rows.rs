@@ -276,6 +276,13 @@ mod tests {
                 "echo F $(case a in a) for i in 1; do echo $i; done esac)# return 42",
                 "echo G $(case a in x-esac) echo n;; a) echo y;; esac)# return 42",
                 "echo H $(case a in a) echo done esac;; esac)# return 42",
+                "echo I $(case case in @(case|foo)) echo y;; esac)# return 42",
+                "echo J $(case esac in (esac) echo y;; esac)# return 42",
+                "echo K $(case esac in foo|esac) echo y;; esac)# return 42",
+                "echo M $(case a in @(b|(c))) echo n;; a) echo y;; esac)# return 42",
+                "echo N $(case a in a) echo y;;\nesac)# return 42",
+                "echo O $(case a in esac)# return 42",
+                "echo Q $(case a in @(b)|esac) echo n;; a) echo y;; esac)# return 42",
                 r"echo \(x\)# return 42",
             ] {
                 let shell = color(line, "run.sh", cx);
