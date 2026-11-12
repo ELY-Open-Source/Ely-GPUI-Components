@@ -258,3 +258,23 @@ fn a_change_that_leaves_toc_alone_on_its_line_is_refused() {
         );
     }
 }
+
+#[test]
+fn only_a_top_level_toc_reads_as_one() {
+    // A list's `[toc]` is text; unwrapped, it would draw a toc.
+    for (source, command) in [
+        ("- [toc]‸", BlockCommand::BulletList),
+        ("1. [toc]‸", BlockCommand::OrderedList),
+        ("- [x] [toc]‸", BlockCommand::TaskList),
+    ] {
+        assert_eq!(
+            ran(source, command),
+            Err(EditRefusal::Misread),
+            "{command:?}: {source:?}"
+        );
+    }
+    assert_eq!(
+        ran("- # [toc]‸", BlockCommand::Paragraph),
+        Ok("- [toc]‸".to_string())
+    );
+}

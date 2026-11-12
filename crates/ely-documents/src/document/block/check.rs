@@ -81,10 +81,17 @@ impl<'a> Shown<'a> {
         out
     }
 
+    /// A paragraph the drawing shows as a table of contents.
+    fn toc(&self, node: &Node) -> bool {
+        // Only a top-level paragraph is read so.
+        let top = |kids: &Vec<Node>| kids.iter().any(|kid| std::ptr::eq(kid, node));
+        is_toc(node, self.source) && self.root.children().is_some_and(top)
+    }
+
     fn read(&self, node: &Node, out: &mut Vec<(char, u16)>) {
         let (value, format) = match node {
             // Drawn as a table of contents, not its words.
-            Node::Paragraph(_) if is_toc(node, self.source) => return out.push(('\0', TOC)),
+            Node::Paragraph(_) if self.toc(node) => return out.push(('\0', TOC)),
             Node::Paragraph(_) | Node::Heading(_) | Node::TableCell(_) => {
                 return out.extend(self.inline(node));
             }
@@ -122,14 +129,17 @@ impl<'a> Shown<'a> {
         let mut nodes = Vec::new();
         walk(self.root, &mut nodes);
         nodes.into_iter().find_map(|node| {
+            let whole = span(node);
+            if !(whole.start <= at && at <= whole.end) {
+                return None;
+            }
             let level = match node {
-                Node::Paragraph(_) if is_toc(node, self.source) => TOC_LEVEL,
+                Node::Paragraph(_) if self.toc(node) => TOC_LEVEL,
                 Node::Paragraph(_) => 0,
                 Node::Heading(heading) => heading.depth,
                 _ => return None,
             };
-            let whole = span(node);
-            (whole.start <= at && at <= whole.end).then(|| (level, self.inline(node)))
+            Some((level, self.inline(node)))
         })
     }
 }
