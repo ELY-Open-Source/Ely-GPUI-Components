@@ -96,8 +96,13 @@ impl Kept<'_> {
         use Node::*;
         let whole = span(node);
         let name = match node {
-            InlineCode(_) | InlineMath(_) | Image(_) | ImageReference(_) | FootnoteReference(_) => {
+            InlineCode(_) | InlineMath(_) | Image(_) | ImageReference(_) => {
                 return self.kept[whole].fill(true);
+            }
+            // The reader writes it as an `a`: the open one ends.
+            FootnoteReference(_) => {
+                self.kept[whole.clone()].fill(true);
+                return self.change(whole, |open| end(open, "a"));
             }
             Html(_) => return self.html(whole),
             Link(_) | LinkReference(_) => {

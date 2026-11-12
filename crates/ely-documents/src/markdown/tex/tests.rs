@@ -107,6 +107,12 @@ fn code_and_tags_stay_literal() {
         assert_eq!(tex(container), ["y"], "{container:?}");
     }
     untouched(r"*<code>x* \(y\)");
+    let note = "a <a href=\"/u\"><kbd>x[^n] \\(y\\)\n\n[^n]: note\n";
+    assert_eq!(tex(note), ["y"], "a footnote ends the link and its kbd");
+    assert!(
+        tex(&note.replace("kbd", "code")).is_empty(),
+        "code reopens past it"
+    );
     untouched(r"a <b><code>x</b> \(y\) b");
     let reopened = crate::tree::parse(r"a <b><code>x</b> \(y\) b");
     let crate::tree::Node::Paragraph(inline) = &reopened[0] else {
