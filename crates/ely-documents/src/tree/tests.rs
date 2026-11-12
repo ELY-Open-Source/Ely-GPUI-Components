@@ -601,3 +601,10 @@ fn a_crossed_close_keeps_marks_nested_and_linear() {
     let [small, large] = best;
     assert!(large < small * 8, "{small:?} then {large:?}");
 }
+
+#[test]
+fn a_crossed_close_keeps_every_block() {
+    // GitHub's answer, `.work/R4.2-r7/github-oracle.log`.
+    let text = line("a <b><pre><pre>x</b> :smile:</pre> :smile:</pre> :smile:");
+    assert_eq!(text.text, "a x :smile: :smile: 😄");
+}

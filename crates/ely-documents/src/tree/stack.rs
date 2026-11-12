@@ -58,24 +58,33 @@ impl Run {
         if let Some((_, from)) = &mut self.owed {
             *from = (*from).min(at);
         }
-        // A formatting close leaves a block above it open.
-        let block = match html::reopens(name) {
-            true => (at + 1..self.open.len())
-                .find(|&ix| html::inline_style(&self.open[ix].name).is_none()),
-            false => None,
-        };
-        let Some(block) = block else {
-            let closed = self.open.split_off(at);
-            return self.rebuild(closed, 1, end);
-        };
-        let mut between = self.open.split_off(at);
-        let above = between.split_off(block - at + 1);
-        let held = between.split_off(block - at);
-        let ended = between.remove(0);
+        let mut rest = self.open.split_off(at);
+        if !html::reopens(name) {
+            return self.rebuild(rest, 1, end);
+        }
+        let ended = rest.remove(0);
         self.finish(&ended, end);
-        // The three nearest formatting elements wrap the block.
-        let wraps = between.len().saturating_sub(3);
-        for (ix, mut opened) in between.into_iter().enumerate() {
+        // HTML5's adoption agency: blocks stay, at most eight.
+        let (mut segment, mut blocks, mut rest) = (Vec::new(), 0, rest.into_iter());
+        while let Some(opened) = rest.next() {
+            if html::inline_style(&opened.name).is_some() {
+                segment.push(opened);
+                continue;
+            }
+            self.wrap(std::mem::take(&mut segment), end);
+            self.open.push(opened);
+            blocks += 1;
+            if blocks == 8 {
+                return self.open.extend(rest);
+            }
+        }
+        self.rebuild(segment, 0, end);
+    }
+
+    /// The three nearest formatting elements of `segment` wrap the block.
+    fn wrap(&mut self, segment: Vec<Opened>, end: usize) {
+        let wraps = segment.len().saturating_sub(3);
+        for (ix, mut opened) in segment.into_iter().enumerate() {
             if ix < wraps || !html::reopens(&opened.name) {
                 self.finish(&opened, end);
                 continue;
@@ -84,8 +93,6 @@ impl Run {
             opened.start = end;
             self.open.push(opened);
         }
-        self.open.extend(held);
-        self.rebuild(above, 0, end);
     }
 
     /// Closes `closed` at `end`; past `skip`, three alike reopen.
