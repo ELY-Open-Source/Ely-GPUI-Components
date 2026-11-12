@@ -199,11 +199,11 @@ fn blank(cell: &str) -> bool {
 
 /// Byte `at` of `typed` within `kept(typed, edges)`.
 pub(super) fn kept_at(typed: &str, at: usize, edges: Edges) -> usize {
-    let bare = blank(typed) && (edges.first || edges.last);
-    match at == typed.len() {
-        true if bare && !edges.first => 0,
-        true if bare => kept(typed, edges).len(),
-        _ => guarded(&typed[..at]).len(),
+    // A blank bare edge cell is written as one pipe.
+    match blank(typed) && (edges.first || edges.last) {
+        true if edges.first => kept(typed, edges).len(),
+        true => 0,
+        false => guarded(&typed[..at]).len(),
     }
 }
 

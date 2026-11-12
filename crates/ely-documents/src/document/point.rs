@@ -85,6 +85,22 @@ pub(super) struct PointWait {
     text: String,
 }
 
+/// The one span `old` changed to become `new`, as `moved` takes it.
+fn since(old: &str, new: &str) -> Option<(Range<usize>, usize)> {
+    if old == new {
+        return None;
+    }
+    let head = old
+        .bytes()
+        .zip(new.bytes())
+        .take_while(|(a, b)| a == b)
+        .count();
+    let room = old.len().min(new.len()) - head;
+    let pairs = old.bytes().rev().zip(new.bytes().rev()).take(room);
+    let tail = pairs.take_while(|(a, b)| a == b).count();
+    Some((head..old.len() - tail, new.len() - head - tail))
+}
+
 /// What a secondary press landed on.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct DocumentTarget {
@@ -202,8 +218,10 @@ impl MarkdownDocument {
             }
         });
         let at = at.or(block.map(|block| block.range.start));
-        let written = self.commit(cx);
-        if written.is_some() {
+        let committed = self.commit(cx);
+        // The drawing read an older text; its bytes move by the change.
+        let written = since(&self.parsed.text, self.editor.read(cx).text());
+        if committed.is_some() {
             self.reparse(true, cx);
         }
         let mut wait = PointWait {

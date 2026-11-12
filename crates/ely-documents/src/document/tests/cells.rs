@@ -354,3 +354,52 @@ fn a_long_text_right_press_beside_a_written_cell_points(cx: &mut TestAppContext)
         text(&document, cx).find("beta").expect("the cell") + 4
     );
 }
+
+#[gpui::test]
+fn a_caret_inside_a_blank_edge_cell_stays_in_the_cell(cx: &mut TestAppContext) {
+    let (document, cx) = open(BARE, MarkdownMode::Visual, cx);
+    press_cell(0, 0, cx);
+    cx.simulate_keystrokes("backspace backspace backspace backspace backspace");
+    cx.simulate_input(&" ".repeat(64));
+    cx.simulate_keystrokes("left");
+    // The cell writes as one pipe; the caret stays on its line.
+    let caret = document.read_with(cx, |document, cx| document.caret(cx));
+    assert_eq!(caret.0, 0, "{caret:?}");
+}
+
+#[gpui::test]
+fn two_right_presses_before_a_long_read_keep_their_cell(cx: &mut TestAppContext) {
+    let long = format!("{WORDS}\n```\n{}\n```\n", "x".repeat(super::super::AT_ONCE));
+    let (document, cx) = open(&long, MarkdownMode::Visual, cx);
+    document.update_in(cx, |document, window, cx| document.reveal(0, window, cx));
+    super::frames(cx);
+    let heard = heard(&document, cx);
+    press_cell(0, 0, cx);
+    cx.simulate_input(&"X".repeat(64));
+    let on_point = document.update(cx, |document, cx| document.on_point(0, cx));
+    let beta = || crate::render::Pointed {
+        place: crate::render::Place::Cell(crate::render::CellAt {
+            table: 0,
+            row: 0,
+            column: 1,
+        }),
+        link: None,
+        image: None,
+        code: None,
+        table: true,
+    };
+    // Both land before the write-back is read.
+    cx.update(|window, cx| {
+        for _ in 0..2 {
+            on_point(beta(), MouseButton::Right, window, cx);
+        }
+    });
+    cx.run_until_parked();
+    super::frames(cx);
+    let targets = heard.borrow();
+    assert_eq!(targets.len(), 1, "only the latest press points");
+    assert_eq!(
+        targets[0].at,
+        text(&document, cx).find("beta").expect("the cell") + 4
+    );
+}
