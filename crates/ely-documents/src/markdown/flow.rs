@@ -195,17 +195,25 @@ fn next_run(text: &str, from: usize, len: usize, held: &[Range<usize>]) -> Optio
 /// All but prose, as the text reads without math: code, HTML, link targets.
 fn not_prose(text: &str, options: Options) -> Vec<Range<usize>> {
     let mut held = Vec::new();
-    let (mut at, mut autolinks) = (0, 0usize);
+    // Inside code, front matter or an autolink, text is not prose.
+    let (mut at, mut quiet) = (0, 0usize);
     let plain = options.difference(Options::ENABLE_MATH);
     for (event, range) in Parser::new_ext(text, plain).into_offset_iter() {
         match event {
-            Event::Start(Tag::Link {
-                link_type: LinkType::Autolink | LinkType::Email,
-                ..
-            }) => autolinks += 1,
-            Event::End(TagEnd::Link) if autolinks > 0 => autolinks -= 1,
-            // An autolink's text is its address.
-            Event::Text(_) if autolinks == 0 && range.start >= at => {
+            Event::Start(
+                Tag::CodeBlock(_)
+                | Tag::MetadataBlock(_)
+                | Tag::Link {
+                    link_type: LinkType::Autolink | LinkType::Email,
+                    ..
+                },
+            ) => quiet += 1,
+            Event::End(TagEnd::CodeBlock | TagEnd::MetadataBlock(_) | TagEnd::Link)
+                if quiet > 0 =>
+            {
+                quiet -= 1
+            }
+            Event::Text(_) if quiet == 0 && range.start >= at => {
                 held.push(at..range.start);
                 at = range.end;
             }
@@ -298,6 +306,13 @@ mod tests {
     fn dollars_inside_code_stay_dollars() {
         let flow = rewrite("```\n$$\n```\n", Options::empty());
         assert_eq!(flow.text, "```\n$$\n```\n");
+        // Code dollars take no fence that follows.
+        let after = "\n\n$$\na\n$$\n\n$$\nb\n$$\n";
+        for code in ["```\n$$\n```", "    $$x", "~~~\n$$\n\n$$\n$$\n~~~"] {
+            let flow = rewrite(&format!("{code}{after}"), Options::empty());
+            let want = format!("{code}\n\n~~~\na\n~~~\n\n~~~\nb\n~~~\n");
+            assert_eq!(flow.text, want, "{code:?}");
+        }
     }
 
     #[test]
