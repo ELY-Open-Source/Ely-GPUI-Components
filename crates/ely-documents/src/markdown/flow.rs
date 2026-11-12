@@ -195,7 +195,7 @@ fn next_run(text: &str, from: usize, len: usize, held: &[Range<usize>]) -> Optio
 /// All but prose, as the text reads without math: code, HTML, link targets.
 fn not_prose(text: &str, options: Options) -> Vec<Range<usize>> {
     let mut held = Vec::new();
-    // Inside code, front matter or an autolink, text is not prose.
+    // Code, front matter, alt text and autolinks are no prose.
     let (mut at, mut quiet) = (0, 0usize);
     let plain = options.difference(Options::ENABLE_MATH);
     for (event, range) in Parser::new_ext(text, plain).into_offset_iter() {
@@ -203,16 +203,15 @@ fn not_prose(text: &str, options: Options) -> Vec<Range<usize>> {
             Event::Start(
                 Tag::CodeBlock(_)
                 | Tag::MetadataBlock(_)
+                | Tag::Image { .. }
                 | Tag::Link {
                     link_type: LinkType::Autolink | LinkType::Email,
                     ..
                 },
             ) => quiet += 1,
-            Event::End(TagEnd::CodeBlock | TagEnd::MetadataBlock(_) | TagEnd::Link)
-                if quiet > 0 =>
-            {
-                quiet -= 1
-            }
+            Event::End(
+                TagEnd::CodeBlock | TagEnd::MetadataBlock(_) | TagEnd::Image | TagEnd::Link,
+            ) if quiet > 0 => quiet -= 1,
             Event::Text(_) if quiet == 0 && range.start >= at => {
                 held.push(at..range.start);
                 at = range.end;
@@ -331,6 +330,7 @@ mod tests {
             "[l](https://x.test/$$)",
             "[l](https://x.test/ \"$$\")",
             "![i](i-$$.png)",
+            "![literal $$](i.png)",
             "<span title=\"$$\">t</span>",
             "<https://x.test/$$>",
         ] {
