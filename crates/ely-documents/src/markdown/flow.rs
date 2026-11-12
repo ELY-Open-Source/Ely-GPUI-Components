@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag};
+use pulldown_cmark::{CodeBlockKind, Event, LinkType, Options, Parser, Tag, TagEnd};
 
 /// A text with its `$$` fences as tildes, and the way back.
 pub(super) struct Flow {
@@ -130,7 +130,7 @@ pub(super) fn rewrite(text: &str, options: Options) -> Flow {
     let runs = fences(text);
     let held = match runs.is_empty() {
         true => Vec::new(),
-        false => code(text, options),
+        false => not_prose(text, options),
     };
     let mut active = paired(text, &outside_code(runs, &held), &held);
     loop {
@@ -192,15 +192,29 @@ fn next_run(text: &str, from: usize, len: usize, held: &[Range<usize>]) -> Optio
     None
 }
 
-/// Code and HTML blocks and code spans, as the text reads without math.
-fn code(text: &str, options: Options) -> Vec<Range<usize>> {
-    Parser::new_ext(text, options)
-        .into_offset_iter()
-        .filter_map(|(event, range)| match event {
-            Event::Start(Tag::CodeBlock(_) | Tag::HtmlBlock) | Event::Code(_) => Some(range),
-            _ => None,
-        })
-        .collect()
+/// All but prose, as the text reads without math: code, HTML, link targets.
+fn not_prose(text: &str, options: Options) -> Vec<Range<usize>> {
+    let mut held = Vec::new();
+    let (mut at, mut autolinks) = (0, 0usize);
+    let plain = options.difference(Options::ENABLE_MATH);
+    for (event, range) in Parser::new_ext(text, plain).into_offset_iter() {
+        match event {
+            Event::Start(Tag::Link {
+                link_type: LinkType::Autolink | LinkType::Email,
+                ..
+            }) => autolinks += 1,
+            Event::End(TagEnd::Link) if autolinks > 0 => autolinks -= 1,
+            // An autolink's text is its address.
+            Event::Text(_) if autolinks == 0 && range.start >= at => {
+                held.push(at..range.start);
+                at = range.end;
+            }
+            _ => {}
+        }
+    }
+    held.push(at..text.len());
+    held.retain(|gap| !gap.is_empty());
+    held
 }
 
 /// `runs` less those in `held`.
@@ -293,6 +307,22 @@ mod tests {
             flow.text, "`$$`\n\n~~~\na\n~~~\n\n~~~\nb\n~~~\n",
             "GitHub shows both"
         );
+    }
+
+    #[test]
+    fn dollars_in_link_targets_and_tags_pair_with_nothing() {
+        let after = "\n\n$$\na\n$$\n\n$$\nb\n$$\n";
+        for first in [
+            "[l](https://x.test/$$)",
+            "[l](https://x.test/ \"$$\")",
+            "![i](i-$$.png)",
+            "<span title=\"$$\">t</span>",
+            "<https://x.test/$$>",
+        ] {
+            let flow = rewrite(&format!("{first}{after}"), Options::empty());
+            let want = format!("{first}\n\n~~~\na\n~~~\n\n~~~\nb\n~~~\n");
+            assert_eq!(flow.text, want, "GitHub shows both after {first:?}");
+        }
     }
 
     #[test]
