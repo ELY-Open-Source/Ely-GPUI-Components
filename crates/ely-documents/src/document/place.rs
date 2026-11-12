@@ -251,15 +251,15 @@ impl MarkdownDocument {
         if !self.read_now(cx) {
             self.reparse(true, cx);
         }
-        if !self.read_now(cx) {
-            return log::warn!("markdown document: a heading pressed while the text is read again");
-        }
-        if !self
-            .parsed
-            .headings
-            .iter()
-            .any(|heading| heading.at == found)
-        {
+        // A long text reads later; the anchor already followed the edits.
+        let heading = |document: &Self| {
+            document
+                .parsed
+                .headings
+                .iter()
+                .any(|heading| heading.at == found)
+        };
+        if self.read_now(cx) && !heading(self) {
             return log::warn!("markdown document: the pressed heading reads as no heading now");
         }
         let line = self.editor.read(cx).buffer().line_of(found);

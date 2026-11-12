@@ -60,7 +60,8 @@ impl Run {
         }
         let mut rest = self.open.split_off(at);
         if !html::reopens(name) {
-            return self.rebuild(rest, 1, end);
+            let skip = if html::scope(name) { rest.len() } else { 1 };
+            return self.rebuild(rest, skip, end);
         }
         let ended = rest.remove(0);
         self.finish(&ended, end);
@@ -112,7 +113,7 @@ impl Run {
     }
 
     /// Records `opened` up to `end`; it is no longer open.
-    fn finish(&mut self, opened: &Opened, end: usize) {
+    pub(super) fn finish(&mut self, opened: &Opened, end: usize) {
         close(&mut self.text, opened, end);
         *self.named.get_mut(&opened.name).expect("counted") -= 1;
     }

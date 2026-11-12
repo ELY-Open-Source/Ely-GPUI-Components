@@ -133,6 +133,22 @@ fn a_press_while_the_text_waits_to_be_read_finds_the_heading(cx: &mut TestAppCon
     );
 }
 
+#[gpui::test]
+fn a_press_while_a_long_text_waits_finds_the_heading(cx: &mut TestAppContext) {
+    // Past `AT_ONCE`, the text reads in the background.
+    let long = format!("[toc]\n\n## B\n\n{}", "word ".repeat(26_215));
+    let (document, cx) = open(&long, MarkdownMode::Split, cx);
+    document.update(cx, |document, cx| {
+        document.editor.update(cx, |editor, cx| {
+            editor.edit([(0..0, "x\n\n".to_string())], cx)
+        });
+    });
+    cx.run_until_parked();
+    assert!(!document.read_with(cx, |document, cx| document.read_now(cx)));
+    press_entry(0, Modifiers::none(), cx);
+    assert_eq!(caret(&document, cx), (4, 0));
+}
+
 /// Makes `edits` while the text waits, caret at the top.
 fn edit_waiting<'a>(
     text: &str,

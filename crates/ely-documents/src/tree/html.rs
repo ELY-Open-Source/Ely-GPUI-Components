@@ -151,50 +151,59 @@ pub(super) fn inline_tag(written: &str) -> InlineTag {
     }
 }
 
-/// Start tags ending an open `p`, per HTML5.
+/// Start tags ending an open `p`, as GitHub reads them.
+pub(crate) const P_CLOSERS: [&str; 37] = [
+    "address",
+    "article",
+    "aside",
+    "blockquote",
+    "center",
+    "details",
+    "dir",
+    "div",
+    "dl",
+    "dd",
+    "dt",
+    "fieldset",
+    "figcaption",
+    "figure",
+    "footer",
+    "form",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "header",
+    "hgroup",
+    "hr",
+    "li",
+    "listing",
+    "main",
+    "menu",
+    "nav",
+    "ol",
+    "p",
+    "pre",
+    "section",
+    "summary",
+    "table",
+    "ul",
+];
+
 pub(crate) fn closes_p(name: &str) -> bool {
-    matches!(
-        name,
-        "address"
-            | "article"
-            | "aside"
-            | "blockquote"
-            | "center"
-            | "details"
-            | "dialog"
-            | "dir"
-            | "div"
-            | "dl"
-            | "dd"
-            | "dt"
-            | "fieldset"
-            | "figcaption"
-            | "figure"
-            | "footer"
-            | "form"
-            | "h1"
-            | "h2"
-            | "h3"
-            | "h4"
-            | "h5"
-            | "h6"
-            | "header"
-            | "hgroup"
-            | "hr"
-            | "li"
-            | "listing"
-            | "main"
-            | "menu"
-            | "nav"
-            | "ol"
-            | "p"
-            | "pre"
-            | "search"
-            | "section"
-            | "summary"
-            | "table"
-            | "ul"
-    )
+    P_CLOSERS.contains(&name)
+}
+
+/// Table cells: what opens inside ends with them.
+pub(crate) fn cell(name: &str) -> bool {
+    matches!(name, "td" | "th")
+}
+
+/// Table parts whose end reopens nothing, as HTML5's markers.
+pub(crate) fn scope(name: &str) -> bool {
+    matches!(name, "td" | "th" | "tr" | "table")
 }
 
 /// Bytes through the `>` ending the tag at `html`'s start.

@@ -166,6 +166,8 @@ struct Run {
     shortcodes: emoji::Shortcodes,
     /// White space owed, and the open elements before it.
     owed: Option<(char, usize)>,
+    /// Formatting set aside by each open table.
+    tables: Vec<Vec<Opened>>,
 }
 
 impl Run {

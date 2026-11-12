@@ -17,7 +17,7 @@ fn moved(offset: usize, edits: &[(Range<usize>, usize)]) -> Option<usize> {
     Some(at as usize)
 }
 
-/// Where the character at `offset` lands; text written at it goes before.
+/// Where `offset`'s character lands; text written there goes before.
 fn carried(offset: usize, edits: &[(Range<usize>, usize)]) -> Option<usize> {
     let mut at = offset as isize;
     for (range, written) in edits {
@@ -86,7 +86,7 @@ impl CodeEditor {
         self.marks.anchors = offsets.into_iter().map(whole).collect();
     }
 
-    /// Where each anchor is now; none once an edit took it.
+    /// Each anchor now; none once an edit took it.
     pub fn anchors(&self) -> &[Option<usize>] {
         &self.marks.anchors
     }

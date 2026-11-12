@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use super::{Escapes, Inline, Run, html, sources::LineMap};
+use super::{Escapes, Inline, Opened, Run, html, sources::LineMap};
 
 /// An HTML block's text, as a browser shows it.
 pub(super) fn html_block_text(written: &str, source: &str, span: Range<usize>) -> Inline {
@@ -48,10 +48,19 @@ pub(super) fn html_block_text(written: &str, source: &str, span: Range<usize>) -
             // A block closes what opened inside it.
             Some(tag) if html::breaks(&tag.name) => {
                 run.line();
+                let table = tag.name == "table";
                 match tag.closing {
-                    true => run.end(&tag.name),
+                    true => {
+                        run.end(&tag.name);
+                        if table {
+                            run.take_back();
+                        }
+                    }
                     false => {
                         run.implied(&tag.name);
+                        if table {
+                            run.set_aside();
+                        }
                         match tag.name == "hr" {
                             true => run.shortcodes.split(),
                             false => run.start(&tag.name, None, None),
@@ -59,6 +68,13 @@ pub(super) fn html_block_text(written: &str, source: &str, span: Range<usize>) -
                     }
                 }
             }
+            Some(tag) if html::cell(&tag.name) => match tag.closing {
+                true => run.end(&tag.name),
+                false => {
+                    run.implied(&tag.name);
+                    run.start(&tag.name, None, None);
+                }
+            },
             // It ends a `p` but lays no block.
             Some(tag) if !tag.closing && html::closes_p(&tag.name) => {
                 run.implied(&tag.name);
@@ -126,6 +142,8 @@ impl Run {
         let items: &[&str] = match name {
             "li" => &["li"],
             "dd" | "dt" => &["dd", "dt"],
+            "td" | "th" => &["td", "th"],
+            "tr" => &["tr"],
             _ => &[],
         };
         // The search stops at a special element.
@@ -146,6 +164,33 @@ impl Run {
         if html::closes_p(name) && self.count("p") > 0 {
             self.line();
             self.end("p");
+        }
+    }
+}
+
+impl Run {
+    /// Formatting outside a table stays out of its cells.
+    fn set_aside(&mut self) {
+        let end = self.text.text.len();
+        let open = std::mem::take(&mut self.open);
+        let (held, kept): (Vec<Opened>, Vec<Opened>) = open
+            .into_iter()
+            .partition(|opened| html::reopens(&opened.name));
+        for opened in &held {
+            self.finish(opened, end);
+        }
+        self.open = kept;
+        if let Some((_, from)) = &mut self.owed {
+            *from = (*from).min(self.open.len());
+        }
+        self.tables.push(held);
+    }
+
+    /// The table ended: its outside formatting resumes.
+    fn take_back(&mut self) {
+        let start = self.text.text.len();
+        for opened in self.tables.pop().unwrap_or_default() {
+            self.push(Opened { start, ..opened });
         }
     }
 }
@@ -277,12 +322,43 @@ mod tests {
     }
 
     #[test]
-    fn every_html5_p_closer_ends_a_p() {
-        for name in ["fieldset", "menu"] {
+    fn every_p_closer_ends_a_p_as_github_does() {
+        // GitHub's answers, `.work/R19/r43/gh-pclose.log`.
+        for name in crate::tree::html::P_CLOSERS {
             let line = html(&format!("<div><p><mark>x<{name}>y</{name}>z</div>")).expect("text");
-            let mark = [(0..1, Style::Mark)];
-            assert_eq!((line.text.as_str(), &line.styles[..]), ("x\nyz", &mark[..]));
+            assert_eq!(line.styles, [(0..1, Style::Mark)], "{name}: {line:?}");
+            assert!(line.text.starts_with("x\n"), "{name}: {line:?}");
         }
+        for name in ["dialog", "search"] {
+            let line = html(&format!("<div><p><mark>x<{name}>y</{name}>z</div>")).expect("text");
+            assert_eq!(
+                (line.text.as_str(), &line.styles[..]),
+                ("xyz", &[(0..3, Style::Mark)][..])
+            );
+        }
+    }
+
+    #[test]
+    fn a_table_cell_holds_what_opens_in_it() {
+        // GitHub's answers, `.work/R19/r43/gh-gfm2.log`.
+        for tag in ["b", "mark", "i"] {
+            let cells = html(&format!(
+                "<div><table><tr><td><{tag}>x</td><td>y</td></tr></table>z</div>"
+            ))
+            .expect("text");
+            assert_eq!(cells.styles.len(), 1, "{tag}: {cells:?}");
+            assert!(
+                cells.styles[0].0.contains(&0) && cells.styles[0].0.len() == 1,
+                "{tag}: {cells:?}"
+            );
+        }
+        let around = html("<div><p>a<b>x<table><tr><td>y</td></tr></table>z</div>").expect("text");
+        let bold: Vec<&str> = around
+            .styles
+            .iter()
+            .map(|(range, _)| &around.text[range.clone()])
+            .collect();
+        assert_eq!(bold, ["x", "z"], "{around:?}");
     }
 
     #[test]
