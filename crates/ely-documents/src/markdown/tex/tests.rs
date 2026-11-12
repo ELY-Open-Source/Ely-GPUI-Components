@@ -97,6 +97,16 @@ fn code_and_tags_stay_literal() {
             "a crossed close ends code: {crossed:?}"
         );
     }
+    // A Markdown container's end closes the kbd in it.
+    for container in [
+        r"*<kbd>x* \(y\)",
+        r"**<kbd>x** \(y\)",
+        r"[<kbd>x](/u) \(y\)",
+        r"~~<kbd>x~~ \(y\)",
+    ] {
+        assert_eq!(tex(container), ["y"], "{container:?}");
+    }
+    untouched(r"*<code>x* \(y\)");
     untouched(r"a <b><code>x</b> \(y\) b");
     let reopened = crate::tree::parse(r"a <b><code>x</b> \(y\) b");
     let crate::tree::Node::Paragraph(inline) = &reopened[0] else {

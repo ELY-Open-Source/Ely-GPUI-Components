@@ -67,58 +67,101 @@ pub(super) fn parse(text: &str, frontmatter: bool) -> Node {
 
 /// Marks what in `container` is not prose: code, tags, addresses.
 fn keep(container: &Node, text: &str, kept: &mut [bool]) {
-    let mut nodes = Vec::new();
-    walk(container, &mut nodes);
-    // Open styled tags, and where code text last started.
-    let (mut open, mut from) = (Vec::new(), 0);
-    for node in &nodes[1..] {
+    let mut kept = Kept {
+        text,
+        kept,
+        open: Vec::new(),
+        from: 0,
+    };
+    for child in container.children().into_iter().flatten() {
+        kept.visit(child);
+    }
+    // An unclosed `<code>` runs to its block's end.
+    if coded(&kept.open) {
+        kept.kept[kept.from..span(container).end].fill(true);
+    }
+}
+
+/// The walk's state: elements open as the reader opens them.
+struct Kept<'a> {
+    text: &'a str,
+    kept: &'a mut [bool],
+    open: Vec<String>,
+    /// Where code text last started.
+    from: usize,
+}
+
+impl Kept<'_> {
+    fn visit(&mut self, node: &Node) {
         use Node::*;
         let whole = span(node);
-        match node {
+        let name = match node {
             InlineCode(_) | InlineMath(_) | Image(_) | ImageReference(_) | FootnoteReference(_) => {
-                kept[whole].fill(true)
+                return self.kept[whole].fill(true);
             }
+            Html(_) => return self.html(whole),
             Link(_) | LinkReference(_) => {
-                kept[whole.clone()].fill(true);
+                self.kept[whole.clone()].fill(true);
                 // Bracketed text is prose; its address is not.
                 let last = node.children().and_then(|children| children.last());
-                if text[whole.clone()].starts_with('[')
+                if self.text[whole.clone()].starts_with('[')
                     && let Some(last) = last
                 {
                     // A text's span skips a leading escape: start at `[`.
-                    kept[whole.start + 1..span(last).end].fill(false);
+                    self.kept[whole.start + 1..span(last).end].fill(false);
                 }
+                Some("a")
             }
-            Html(_) => {
-                kept[whole.clone()].fill(true);
-                let Some(tag) = html::tag(&text[whole.clone()]) else {
-                    continue;
-                };
-                if html::inline_style(&tag.name).is_none() {
-                    continue;
+            Strong(_) => Some("strong"),
+            Emphasis(_) => Some("em"),
+            Delete(_) => Some("del"),
+            _ => None,
+        };
+        // Markdown's containers open and close as their tags do.
+        if let Some(name) = name {
+            self.change(whole.start..whole.start, |open| {
+                if name == "a" {
+                    end(open, "a");
                 }
-                let was = coded(&open);
-                match tag.closing {
-                    true => end(&mut open, &tag.name),
-                    false => {
-                        if tag.name == "a" {
-                            end(&mut open, "a");
-                        }
-                        open.push(tag.name);
-                    }
-                }
-                match (was, coded(&open)) {
-                    (false, true) => from = whole.end,
-                    (true, false) => kept[from..whole.start].fill(true),
-                    _ => {}
-                }
-            }
-            _ => {}
+                open.push(name.to_string());
+            });
+        }
+        for child in node.children().into_iter().flatten() {
+            self.visit(child);
+        }
+        if let Some(name) = name {
+            self.change(whole.end..whole.end, |open| end(open, name));
         }
     }
-    // An unclosed `<code>` runs to its block's end.
-    if coded(&open) {
-        kept[from..span(container).end].fill(true);
+
+    fn html(&mut self, whole: Range<usize>) {
+        self.kept[whole.clone()].fill(true);
+        let Some(tag) = html::tag(&self.text[whole.clone()]) else {
+            return;
+        };
+        if html::inline_style(&tag.name).is_none() {
+            return;
+        }
+        self.change(whole, |open| match tag.closing {
+            true => end(open, &tag.name),
+            false => {
+                if tag.name == "a" {
+                    end(open, "a");
+                }
+                open.push(tag.name);
+            }
+        });
+    }
+
+    /// Changes what is open; code may start or end at `at`.
+    fn change(&mut self, at: Range<usize>, change: impl FnOnce(&mut Vec<String>)) {
+        let was = coded(&self.open);
+        change(&mut self.open);
+        match (was, coded(&self.open)) {
+            (false, true) => self.from = at.end,
+            (true, false) => self.kept[self.from..at.start].fill(true),
+            _ => {}
+        }
     }
 }
 
