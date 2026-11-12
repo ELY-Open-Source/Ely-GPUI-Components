@@ -186,17 +186,23 @@ pub(super) fn kept(typed: &str, edges: Edges) -> String {
         out.push(' ');
     }
     // An emptied bare edge cell keeps its column.
-    if out.is_empty() && (edges.first || edges.last) {
-        out.push('|');
+    if blank(&out) && (edges.first || edges.last) {
+        out = "|".to_string();
     }
     out
 }
 
+/// Whether a cell reads empty: spaces and tabs alone.
+fn blank(cell: &str) -> bool {
+    cell.trim_matches([' ', '\t']).is_empty()
+}
+
 /// Byte `at` of `typed` within `kept(typed, edges)`.
 pub(super) fn kept_at(typed: &str, at: usize, edges: Edges) -> usize {
+    let bare = blank(typed) && (edges.first || edges.last);
     match at == typed.len() {
-        true if typed.is_empty() && !edges.first => 0,
-        true if typed.is_empty() => kept(typed, edges).len(),
+        true if bare && !edges.first => 0,
+        true if bare => kept(typed, edges).len(),
         _ => guarded(&typed[..at]).len(),
     }
 }

@@ -123,6 +123,8 @@ pub struct MarkdownDocument {
     writes: usize,
     /// A match asked before its text was read; its version.
     showing: Option<(Range<usize>, bool, u64)>,
+    /// A right press waiting for its text to be read.
+    point_wait: Option<point::PointWait>,
     /// A heading pressed before its text was read, and that text.
     revealing: Option<(usize, String)>,
     /// A block asked open before its text was read.
@@ -203,6 +205,7 @@ impl MarkdownDocument {
             writes: 0,
             showing: None,
             revealing: None,
+            point_wait: None,
             waiting: None,
             look: DocumentLook::default(),
             typed: 0,

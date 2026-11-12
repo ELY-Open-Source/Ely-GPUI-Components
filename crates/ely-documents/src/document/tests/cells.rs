@@ -300,3 +300,57 @@ fn tab_in_a_long_document_opens_the_next_cell_once_read(cx: &mut TestAppContext)
     assert_eq!(opened(&document, cx), "beta");
     assert!(text(&document, cx).starts_with("| alphaX | beta |"));
 }
+
+/// Clears bare edge cell (`row`, `column`) of `count` bytes, types a space.
+fn blank_edge(row: usize, column: usize, count: usize, cx: &mut TestAppContext) {
+    let (document, cx) = open(BARE, MarkdownMode::Visual, cx);
+    press_cell(row, column, cx);
+    for _ in 0..count {
+        cx.simulate_keystrokes("backspace");
+    }
+    cx.simulate_input(" ");
+    cx.simulate_keystrokes("escape");
+    cx.run_until_parked();
+    let written = text(&document, cx);
+    let kind = document.read_with(cx, |document, _| document.parsed.blocks[0].kind);
+    assert_eq!(kind, crate::TargetBlock::Table, "{written:?}");
+    press_cell(1, 1, cx);
+    assert_eq!(
+        opened(&document, cx),
+        "d",
+        "the next cell keeps its column: {written:?}"
+    );
+}
+
+#[gpui::test]
+fn a_blank_bare_edge_cell_keeps_the_table(cx: &mut TestAppContext) {
+    // A space alone reads as an empty cell.
+    blank_edge(0, 0, 5, cx);
+    blank_edge(0, 1, 4, cx);
+    blank_edge(1, 0, 1, cx);
+}
+
+#[gpui::test]
+fn a_long_text_right_press_beside_a_written_cell_points(cx: &mut TestAppContext) {
+    // Past `AT_ONCE` the write-back reads in the background.
+    let long = format!("{WORDS}\n```\n{}\n```\n", "x".repeat(super::super::AT_ONCE));
+    let (document, cx) = open(&long, MarkdownMode::Visual, cx);
+    document.update_in(cx, |document, window, cx| document.reveal(0, window, cx));
+    super::frames(cx);
+    let heard = heard(&document, cx);
+    press_cell(0, 0, cx);
+    cx.simulate_input("X");
+    press_cell_with(0, 1, MouseButton::Right, cx);
+    cx.run_until_parked();
+    super::frames(cx);
+    let target = heard
+        .borrow()
+        .last()
+        .cloned()
+        .expect("the press points once read");
+    assert!(target.in_table);
+    assert_eq!(
+        target.at,
+        text(&document, cx).find("beta").expect("the cell") + 4
+    );
+}

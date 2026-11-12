@@ -72,6 +72,19 @@ impl TargetBlock {
     }
 }
 
+/// A right press waiting for its write-back to be read.
+pub(super) struct PointWait {
+    at: Option<usize>,
+    written: Option<(Range<usize>, usize)>,
+    pressed: Option<(TargetBlock, String, Option<Vec<Node>>)>,
+    pointed: Pointed,
+    kind: Option<TargetBlock>,
+    code: Option<String>,
+    /// The press's number and the text it waits on.
+    press: u64,
+    text: String,
+}
+
 /// What a secondary press landed on.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct DocumentTarget {
@@ -193,9 +206,50 @@ impl MarkdownDocument {
         if written.is_some() {
             self.reparse(true, cx);
         }
+        let mut wait = PointWait {
+            at,
+            written,
+            pressed,
+            pointed,
+            kind,
+            code,
+            press: self.pressed,
+            text: String::new(),
+        };
         if !self.read_now(cx) {
-            return log::warn!("markdown document: pressed while the text is read again");
+            // A long text reads in the background; the press waits.
+            wait.text = self.editor.read(cx).text().to_string();
+            self.point_wait = Some(wait);
+            return cx.notify();
         }
+        self.point_read(wait, window, cx);
+    }
+
+    /// The right press waiting for its text, once read.
+    pub(super) fn point_waiting(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.read_now(cx) {
+            return;
+        }
+        let Some(wait) = self.point_wait.take() else {
+            return;
+        };
+        if wait.press != self.pressed || self.editor.read(cx).text() != wait.text {
+            return log::info!("markdown document: a waiting right press lapsed");
+        }
+        self.point_read(wait, window, cx);
+    }
+
+    /// Ends a right press once its text is read.
+    fn point_read(&mut self, wait: PointWait, window: &mut Window, cx: &mut Context<Self>) {
+        let PointWait {
+            at,
+            written,
+            pressed,
+            pointed,
+            kind,
+            code,
+            ..
+        } = wait;
         let at = match at {
             None => self.editor.read(cx).text().len(),
             Some(at) => match moved(at, &written) {
