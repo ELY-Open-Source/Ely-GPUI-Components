@@ -69,8 +69,10 @@ pub(super) fn run(
         | BlockCommand::Promote
         | BlockCommand::Demote => heading::run(&here, command),
         BlockCommand::Quote => quote::run(&here),
+        // A list only regroups: what shows stays.
         BlockCommand::OrderedList | BlockCommand::BulletList | BlockCommand::TaskList => {
-            list::run(&here, command)
+            let change = list::run(&here, command)?;
+            check::same(text, &root, change, "a list change would reread otherwise")
         }
         BlockCommand::FrontMatter => insert::front_matter(&here),
         BlockCommand::ParagraphBefore => insert::paragraph(&here, true),

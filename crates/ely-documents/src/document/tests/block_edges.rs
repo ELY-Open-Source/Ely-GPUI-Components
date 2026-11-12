@@ -221,3 +221,40 @@ fn an_empty_heading_becomes_an_empty_paragraph() {
 fn an_escaped_alert_marker_on_its_own_line_unwraps() {
     assert_eq!(plain(&ok("> \\[!NOTE]\n> a‸", BlockCommand::Quote)), "a");
 }
+
+#[test]
+fn a_list_change_that_would_reread_otherwise_is_refused() {
+    // Code loses its indent; marks split across items.
+    let code = ["-     code‸", "-\t\tcode‸", "-     **code**‸"]
+        .map(|source| (source, BlockCommand::BulletList));
+    let marks = ["**a\nb**‸", "<u>a\nb</u>‸", "[a\nb](/url)‸", "`a\nb`‸"];
+    let lists = [
+        BlockCommand::OrderedList,
+        BlockCommand::BulletList,
+        BlockCommand::TaskList,
+    ];
+    let split = marks
+        .iter()
+        .flat_map(|source| lists.map(|command| (*source, command)));
+    for (source, command) in code.into_iter().chain(split) {
+        assert_eq!(
+            ran(source, command),
+            Err(EditRefusal::Misread),
+            "{command:?}: {source:?}"
+        );
+    }
+}
+
+#[test]
+fn a_change_that_leaves_toc_alone_on_its_line_is_refused() {
+    for (source, command) in [
+        ("# [toc]‸", BlockCommand::Paragraph),
+        ("a ‸[toc]", BlockCommand::Rule),
+    ] {
+        assert_eq!(
+            ran(source, command),
+            Err(EditRefusal::Misread),
+            "{command:?}: {source:?}"
+        );
+    }
+}

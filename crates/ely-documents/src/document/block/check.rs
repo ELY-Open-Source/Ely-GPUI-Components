@@ -6,7 +6,8 @@ use crate::markdown::mdast::Node;
 
 use crate::{
     MarkdownReader, Style,
-    document::format::EditRefusal,
+    document::format::{Change, EditRefusal},
+    is_toc,
     markdown::{file_tree, span, walk},
 };
 
@@ -14,11 +15,28 @@ const KEPT: u16 = bit(Style::Code) | bit(Style::Math);
 const CODE: u16 = 1 << 9;
 const MATH: u16 = 1 << 10;
 const HTML: u16 = 1 << 11;
+const TOC: u16 = 1 << 12;
+/// The level `at` gives a paragraph drawn as a table of contents.
+const TOC_LEVEL: u8 = u8::MAX;
 
 /// Refuses a result that reads as something else.
 pub(super) fn misread(why: &str) -> EditRefusal {
     log::warn!("block command: {why}");
     EditRefusal::Misread
+}
+
+/// Refuses `change` unless every shown character and format stays.
+pub(super) fn same(
+    text: &str,
+    root: &Node,
+    change: Change,
+    why: &str,
+) -> Result<Change, EditRefusal> {
+    let (written, after) = reread(text, &change.0);
+    match Shown::new(&written, &after).all() == Shown::new(text, root).all() {
+        true => Ok(change),
+        false => Err(misread(why)),
+    }
 }
 
 /// `text` with sorted `edits` written, and its parse.
@@ -41,6 +59,7 @@ const fn bit(style: Style) -> u16 {
 
 /// A parsed document read as the drawing reads it.
 pub(super) struct Shown<'a> {
+    source: &'a str,
     root: &'a Node,
     reader: MarkdownReader<'a>,
 }
@@ -48,7 +67,11 @@ pub(super) struct Shown<'a> {
 impl<'a> Shown<'a> {
     pub(super) fn new(source: &'a str, root: &'a Node) -> Self {
         let reader = MarkdownReader::new(source, root);
-        Self { root, reader }
+        Self {
+            source,
+            root,
+            reader,
+        }
     }
 
     /// Each shown character, with its formats.
@@ -60,6 +83,8 @@ impl<'a> Shown<'a> {
 
     fn read(&self, node: &Node, out: &mut Vec<(char, u16)>) {
         let (value, format) = match node {
+            // Drawn as a table of contents, not its words.
+            Node::Paragraph(_) if is_toc(node, self.source) => return out.push(('\0', TOC)),
             Node::Paragraph(_) | Node::Heading(_) | Node::TableCell(_) => {
                 return out.extend(self.inline(node));
             }
@@ -98,6 +123,7 @@ impl<'a> Shown<'a> {
         walk(self.root, &mut nodes);
         nodes.into_iter().find_map(|node| {
             let level = match node {
+                Node::Paragraph(_) if is_toc(node, self.source) => TOC_LEVEL,
                 Node::Paragraph(_) => 0,
                 Node::Heading(heading) => heading.depth,
                 _ => return None,
