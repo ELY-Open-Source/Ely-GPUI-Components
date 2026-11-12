@@ -81,10 +81,12 @@ pub(super) fn html_block_text(written: &str, source: &str, span: Range<usize>) -
                 run.html(tag_text);
             }
             // A line's end drops its space.
-            Some(tag) if tag.closing => run.html(tag_text),
+            Some(tag) if tag.closing && tag.name != "br" => run.html(tag_text),
             // An inline start rebuilds what waited, as text does.
             Some(tag) => {
-                run.pending.clear();
+                if !html::head(&tag.name) {
+                    run.pending.clear();
+                }
                 match tag.name == "br" {
                     true => run.owed = None,
                     false => run.pay(),
@@ -413,6 +415,20 @@ mod tests {
                 .any(|(range, style)| *style == Style::Strong && range.contains(&at));
             assert!(bold, "{source}: {line:?}");
         }
+    }
+
+    #[test]
+    fn head_tags_rebuild_nothing_and_an_end_br_drops_its_space() {
+        // GitHub's answers, `.work/R4.3-r7/github-oracles.log`.
+        let line =
+            html("<div><p><b>x</p><meta name=\"k\"><table><tr><td>y</td></tr></table>z</div>")
+                .expect("text");
+        let at = line.text.find('y').expect("the cell");
+        assert!(
+            !line.styles.iter().any(|(range, _)| range.contains(&at)),
+            "{line:?}"
+        );
+        assert_eq!(html("<div>a </br>b</div>").expect("text").text, "a\nb");
     }
 
     #[test]

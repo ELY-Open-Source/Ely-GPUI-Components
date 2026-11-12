@@ -196,6 +196,23 @@ pub(crate) fn closes_p(name: &str) -> bool {
     P_CLOSERS.contains(&name)
 }
 
+/// Tags HTML5 reads as the head's, rebuilding no formatting.
+pub(crate) fn head(name: &str) -> bool {
+    matches!(
+        name,
+        "base"
+            | "basefont"
+            | "bgsound"
+            | "link"
+            | "meta"
+            | "noframes"
+            | "script"
+            | "style"
+            | "template"
+            | "title"
+    )
+}
+
 /// Table cells: what opens inside ends with them.
 pub(crate) fn cell(name: &str) -> bool {
     matches!(name, "td" | "th")
