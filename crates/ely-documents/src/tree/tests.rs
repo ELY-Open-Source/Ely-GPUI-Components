@@ -558,3 +558,46 @@ fn a_crossed_close_leaves_pre_open() {
     let note = line("x <a href=/x><pre>before [^n] :smile:</pre></a> y\n\n[^n]: note");
     assert_eq!(note.text, "x before ¹ :smile: y");
 }
+
+#[test]
+fn a_crossed_close_keeps_marks_nested_and_linear() {
+    // Inner marks above the block close and reopen.
+    let text = line("a <b>before<pre><i>x</b>y</i></pre> z");
+    assert_eq!(text.text, "a beforexy z");
+    assert_eq!(
+        text.styles,
+        [
+            (2..9, Style::Strong),
+            (8..9, Style::Emphasis),
+            (9..10, Style::Emphasis)
+        ]
+    );
+    let wrapped = line("<b>a<u>b<pre>c</b>d</pre>");
+    assert_eq!(
+        wrapped.styles,
+        [
+            (0..3, Style::Strong),
+            (1..3, Style::Underline),
+            (3..4, Style::Underline)
+        ]
+    );
+    let source = |n: usize| {
+        format!(
+            "a {}<pre>{}{} z",
+            "<i>".repeat(n),
+            "<b>".repeat(n),
+            "</i>".repeat(n)
+        )
+    };
+    let texts = [source(1 << 8), source(1 << 10)];
+    let mut best = [std::time::Duration::MAX; 2];
+    for _ in 0..5 {
+        for (text, best) in texts.iter().zip(&mut best) {
+            *best = (*best).min(crate::clock::spent(|| {
+                parse(text);
+            }));
+        }
+    }
+    let [small, large] = best;
+    assert!(large < small * 8, "{small:?} then {large:?}");
+}

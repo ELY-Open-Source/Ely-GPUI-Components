@@ -64,14 +64,37 @@ impl Run {
                 .find(|&ix| html::inline_style(&self.open[ix].name).is_none()),
             false => None,
         };
-        let kept = block.map_or_else(Vec::new, |block| self.open.split_off(block));
-        let closed = self.open.split_off(at);
-        for opened in &closed {
-            close(&mut self.text, opened, end);
-            *self.named.get_mut(&opened.name).expect("counted") -= 1;
+        let Some(block) = block else {
+            let closed = self.open.split_off(at);
+            return self.rebuild(closed, 1, end);
+        };
+        let mut between = self.open.split_off(at);
+        let above = between.split_off(block - at + 1);
+        let held = between.split_off(block - at);
+        let ended = between.remove(0);
+        self.finish(&ended, end);
+        // The three nearest formatting elements wrap the block.
+        let wraps = between.len().saturating_sub(3);
+        for (ix, mut opened) in between.into_iter().enumerate() {
+            if ix < wraps || !html::reopens(&opened.name) {
+                self.finish(&opened, end);
+                continue;
+            }
+            close(&mut self.text, &opened, end);
+            opened.start = end;
+            self.open.push(opened);
         }
-        let keep = rebuilt(&closed);
-        for (opened, keep) in closed.into_iter().zip(keep).skip(1) {
+        self.open.extend(held);
+        self.rebuild(above, 0, end);
+    }
+
+    /// Closes `closed` at `end`; past `skip`, three alike reopen.
+    fn rebuild(&mut self, closed: Vec<Opened>, skip: usize, end: usize) {
+        for opened in &closed {
+            self.finish(opened, end);
+        }
+        let keep = rebuilt(&closed[skip.min(closed.len())..]);
+        for (opened, keep) in closed.into_iter().skip(skip).zip(keep) {
             if keep {
                 self.push(Opened {
                     start: end,
@@ -79,17 +102,22 @@ impl Run {
                 });
             }
         }
-        self.open.extend(kept);
+    }
+
+    /// Records `opened` up to `end`; it is no longer open.
+    fn finish(&mut self, opened: &Opened, end: usize) {
+        close(&mut self.text, opened, end);
+        *self.named.get_mut(&opened.name).expect("counted") -= 1;
     }
 }
 
-/// Which of `closed`, past its first, reopen.
+/// Which of `closed` reopen.
 ///
 /// HTML5 rebuilds at most the three latest alike (Noah's Ark).
 fn rebuilt(closed: &[Opened]) -> Vec<bool> {
     let mut keep = vec![false; closed.len()];
     let mut alike: Vec<(usize, usize)> = Vec::new();
-    for ix in (1..closed.len()).rev() {
+    for ix in (0..closed.len()).rev() {
         let opened = &closed[ix];
         if !html::reopens(&opened.name) {
             continue;
