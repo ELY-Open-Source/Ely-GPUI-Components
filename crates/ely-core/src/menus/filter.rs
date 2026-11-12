@@ -2,14 +2,14 @@
 
 use gpui::{
     App, Div, ElementInputHandler, Entity, EntityInputHandler, FocusHandle, InteractiveElement,
-    ParentElement, Stateful, Styled, Window, canvas,
+    Keystroke, ParentElement, Stateful, Styled, Window, canvas,
 };
 
 use super::{
     menu::{Open, keys, on_buttons},
     model::Menu,
 };
-use crate::forms::{Backspace, Down, Enter, Left, Right, Run, TextInput, Up};
+use crate::forms::{Down, Enter, Left, Right, Run, TextInput, Up};
 
 /// The panel `root` takes the filter's arrows and its typing.
 pub(super) fn arrows(
@@ -93,16 +93,25 @@ pub(super) fn settle(
     }
 }
 
-/// Backspace on the rows edits the filter from there.
-pub(super) fn backspace(
+/// Whether `stroke` edits text; plain characters go through `typing`.
+pub(super) fn edits(stroke: &Keystroke) -> bool {
+    let shortcut = stroke.modifiers.control || stroke.modifiers.platform;
+    stroke.key != "tab" && (stroke.key_char.is_none() || shortcut)
+}
+
+/// A key the rows leave goes back to the filter.
+pub(super) fn replay(
     state: &Entity<Open>,
     field: &Entity<TextInput>,
+    stroke: Keystroke,
     window: &mut Window,
     cx: &mut App,
 ) {
+    log::info!("filtered menu: a key goes back to the filter");
     back(state, field, window, cx);
-    let focus = field.read(cx).focus().clone();
-    focus.dispatch_action(&Backspace, window, cx);
+    window.defer(cx, move |window, cx| {
+        window.dispatch_keystroke(stroke, cx);
+    });
 }
 
 /// The field's text handler while the panel holds focus.

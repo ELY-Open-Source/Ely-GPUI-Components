@@ -412,14 +412,6 @@ pub(crate) fn hang(
         .on_key_down(move |event, window, cx| {
             let stroke = &event.keystroke;
             let key = stroke.key.as_str();
-            if let Some(field) = &back
-                && key == "backspace"
-                && back_focus.is_focused(window)
-            {
-                cx.stop_propagation();
-                filter::backspace(&keyed, field, window, cx);
-                return;
-            }
             if matches!(key, "enter" | "space") {
                 if confirm(key) && !stroke.modifiers.modified() {
                     cx.stop_propagation();
@@ -428,6 +420,14 @@ pub(crate) fn hang(
             }
             if keys(&key_menu, &keyed, key, &key_close, window, cx) {
                 cx.stop_propagation();
+                return;
+            }
+            if let Some(field) = &back
+                && back_focus.is_focused(window)
+                && filter::edits(stroke)
+            {
+                cx.stop_propagation();
+                filter::replay(&keyed, field, stroke.clone(), window, cx);
             }
         })
         .on_key_up(move |event, window, cx| {

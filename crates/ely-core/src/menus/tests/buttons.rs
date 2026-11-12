@@ -201,10 +201,15 @@ fn arrows_lend_the_rows_focus_and_typing_takes_it_back(cx: &mut TestAppContext) 
     press("enter", cx);
     assert!(typing(cx), "the filter types first");
     // A reader hears a mark only under the focused panel.
-    for key in ["down", "right", "up"] {
+    // Up reaches the buttons; right crosses them.
+    for key in ["down", "up", "right"] {
         press(key, cx);
         assert!(!typing(cx), "{key} leaves the filter");
     }
+    press("down", cx);
+    press("left", cx);
+    assert!(typing(cx), "left on a plain row moves the caret");
+    press("down", cx);
     cx.simulate_input("sel");
     settle(cx);
     assert!(typing(cx), "typing goes back to the filter");
@@ -214,6 +219,38 @@ fn arrows_lend_the_rows_focus_and_typing_takes_it_back(cx: &mut TestAppContext) 
     assert!(typing(cx), "backspace edits the filter");
     press("enter", cx);
     assert_eq!(ran(&view, cx), ["select all"], "se still finds it");
+}
+
+#[gpui::test]
+fn every_editing_key_after_an_arrow_edits_the_filter(cx: &mut TestAppContext) {
+    let word = crate::word_key!("backspace");
+    let all = crate::secondary!("a");
+    // Each clears "pas" or pastes, then "sel" must find its row.
+    for keys in [vec![word], vec![all, "delete"], vec![all, "backspace"]] {
+        let (view, cx) = clip(cx);
+        cx.update(|window, cx| window.focus_next(cx));
+        press("enter", cx);
+        cx.simulate_input("pas");
+        settle(cx);
+        press("down", cx);
+        for key in &keys {
+            press(key, cx);
+        }
+        assert!(typing(cx), "{keys:?} hands the filter focus");
+        cx.simulate_input("sel");
+        settle(cx);
+        press("enter", cx);
+        assert_eq!(ran(&view, cx), ["select all"], "{keys:?}");
+    }
+    let (view, cx) = clip(cx);
+    cx.update(|window, cx| window.focus_next(cx));
+    press("enter", cx);
+    press("down", cx);
+    cx.write_to_clipboard(gpui::ClipboardItem::new_string("sel".into()));
+    press(crate::secondary!("v"), cx);
+    assert!(typing(cx), "paste hands the filter focus");
+    press("enter", cx);
+    assert_eq!(ran(&view, cx), ["select all"], "the paste filters");
 }
 
 #[gpui::test]
