@@ -501,3 +501,50 @@ fn latex_delimiters_leave_code_escapes_and_open_pairs() {
         "a blank line ends the formula: {split:?}"
     );
 }
+
+#[test]
+fn a_close_rebuilds_at_most_three_alike() {
+    let source = |n: usize| {
+        format!(
+            "a {}{}{} z",
+            "<i>".repeat(n),
+            "<b>".repeat(n),
+            "</i>".repeat(n)
+        )
+    };
+    let text = line(&source(8));
+    let z = text.text.len() - 1;
+    let bold = |at: usize| {
+        text.styles
+            .iter()
+            .any(|(r, s)| *s == Style::Strong && r.contains(&at))
+    };
+    assert!(bold(z), "the rebuilt `b` still holds z: {text:?}");
+    // Rebuilding every `b` at each close was quadratic.
+    let texts = [source(1 << 8), source(1 << 10)];
+    let mut best = [std::time::Duration::MAX; 2];
+    for _ in 0..5 {
+        for (text, best) in texts.iter().zip(&mut best) {
+            *best = (*best).min(crate::clock::spent(|| {
+                parse(text);
+            }));
+        }
+    }
+    let [small, large] = best;
+    assert!(large < small * 8, "{small:?} then {large:?}");
+}
+
+#[test]
+fn a_footnote_reference_ends_the_open_anchor() {
+    let text = line("a <a href=\"/x\">see [^1] more</a> end\n\n[^1]: n");
+    assert_eq!(text.text, "a see ¹ more end");
+    assert_eq!(text.links, [(2..6, "/x".to_string())]);
+    assert!(text.styles.contains(&(6..8, Style::Footnote)), "{text:?}");
+}
+
+#[test]
+fn pre_keeps_shortcodes_as_written() {
+    assert_eq!(line("a <pre>:smile:</pre> b").text, "a :smile: b");
+    assert_eq!(line("x <pre><b>:smile:</b></pre> y").text, "x :smile: y");
+    assert_eq!(line("<pre>:smile:</pre>\n").text, ":smile:");
+}

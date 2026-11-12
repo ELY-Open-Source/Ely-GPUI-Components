@@ -184,9 +184,9 @@ impl Run {
         self.named.get(name).copied().unwrap_or(0)
     }
 
-    /// Text with its shortcodes read, outside autolinks and `<code>`.
+    /// Text with shortcodes read, outside autolinks, `code` and `pre`.
     fn shown(&mut self, written: &str) -> String {
-        match !self.verbatim && self.count("code") == 0 {
+        match !self.verbatim && self.count("code") == 0 && self.count("pre") == 0 {
             true => self.shortcodes.read(written),
             false => written.to_string(),
         }
@@ -317,7 +317,7 @@ impl<'a> Reader<'a> {
             }
             mdast::Node::Table(table) => {
                 let mut rows = table.children.iter().map(|row| match row {
-                    // Cells past the head's columns stay undrawn, as GitHub reads them.
+                    // Cells past the head's columns stay undrawn, as on GitHub.
                     mdast::Node::TableRow(row) => (row.children.iter())
                         .take(table.align.len())
                         .map(|cell| {
@@ -423,8 +423,10 @@ impl<'a> Reader<'a> {
             mdast::Node::InlineCode(code) => return styled(text, &code.value, Style::Code),
             mdast::Node::InlineMath(math) => return styled(text, &math.value, Style::Math),
             mdast::Node::FootnoteReference(note) => {
+                // GitHub writes it as an `a`: it ends the open one.
+                run.end("a");
                 let number = self.notes[&note.identifier];
-                return styled(text, &html::superscript(number), Style::Footnote);
+                return styled(&mut run.text, &html::superscript(number), Style::Footnote);
             }
             mdast::Node::Image(_) | mdast::Node::ImageReference(_) => {
                 let (alt, url) = match node {

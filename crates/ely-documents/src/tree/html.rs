@@ -124,12 +124,21 @@ pub(super) fn inline_tag(written: &str) -> InlineTag {
     if tag.name == "br" {
         return InlineTag::Break;
     }
-    let Some(style) = inline_style(&tag.name) else {
-        return InlineTag::Gone;
+    // A `pre` draws nothing but keeps shortcodes as written.
+    let style = match inline_style(&tag.name) {
+        None if tag.name != "pre" => return InlineTag::Gone,
+        style => style,
     };
     if tag.closing {
         return InlineTag::Close(tag.name);
     }
+    let Some(style) = style else {
+        return InlineTag::Open {
+            name: tag.name,
+            style: None,
+            href: None,
+        };
+    };
     let href = match style {
         Style::Link => tag.attribute("href").map(str::to_string),
         _ => None,
@@ -142,7 +151,7 @@ pub(super) fn inline_tag(written: &str) -> InlineTag {
     }
 }
 
-/// Start tags that end an open `p`, as HTML5 lists them.
+/// Start tags ending an open `p`, per HTML5.
 pub(crate) fn closes_p(name: &str) -> bool {
     matches!(
         name,
@@ -349,7 +358,7 @@ fn legacy(name: &str) -> bool {
     named(name, false).is_some()
 }
 
-/// The text a named reference stands for, written with or without its `;`.
+/// A named reference's text, with or without its `;`.
 pub(super) fn named(name: &str, semicolon: bool) -> Option<&'static str> {
     static NAMES: OnceLock<HashMap<&'static str, &'static str>> = OnceLock::new();
     let names = NAMES.get_or_init(|| {

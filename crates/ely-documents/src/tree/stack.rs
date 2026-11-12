@@ -63,8 +63,9 @@ impl Run {
             close(&mut self.text, opened, end);
             *self.named.get_mut(&opened.name).expect("counted") -= 1;
         }
-        for opened in closed.into_iter().skip(1) {
-            if html::reopens(&opened.name) {
+        let keep = rebuilt(&closed);
+        for (opened, keep) in closed.into_iter().zip(keep).skip(1) {
+            if keep {
                 self.push(Opened {
                     start: end,
                     ..opened
@@ -72,6 +73,35 @@ impl Run {
             }
         }
     }
+}
+
+/// Which of `closed`, past its first, reopen.
+///
+/// HTML5 rebuilds at most the three latest alike (Noah's Ark).
+fn rebuilt(closed: &[Opened]) -> Vec<bool> {
+    let mut keep = vec![false; closed.len()];
+    let mut alike: Vec<(usize, usize)> = Vec::new();
+    for ix in (1..closed.len()).rev() {
+        let opened = &closed[ix];
+        if !html::reopens(&opened.name) {
+            continue;
+        }
+        let same = |other: &Opened| {
+            (&other.name, other.style, &other.url) == (&opened.name, opened.style, &opened.url)
+        };
+        match alike.iter_mut().find(|(at, _)| same(&closed[*at])) {
+            Some((_, seen)) if *seen == 3 => {}
+            Some((_, seen)) => {
+                *seen += 1;
+                keep[ix] = true;
+            }
+            None => {
+                alike.push((ix, 1));
+                keep[ix] = true;
+            }
+        }
+    }
+    keep
 }
 
 /// Records `opened` as styled up to `end`.
@@ -101,7 +131,7 @@ impl ShortcodeRun {
         self.0.shortcodes.split();
     }
 
-    /// Text as shown; an open HTML `code` keeps it as written.
+    /// Text as shown; an open `code` or `pre` keeps it.
     pub fn text(&mut self, written: &str) -> String {
         self.0.shown(written)
     }
