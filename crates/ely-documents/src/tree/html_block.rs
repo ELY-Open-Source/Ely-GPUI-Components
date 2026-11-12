@@ -81,12 +81,14 @@ pub(super) fn html_block_text(written: &str, source: &str, span: Range<usize>) -
                 run.html(tag_text);
             }
             // A line's end drops its space.
-            Some(tag) if tag.closing || tag.name == "br" => {
-                run.owed = run.owed.filter(|_| tag.name != "br");
-                run.html(tag_text);
-            }
-            Some(_) => {
-                run.pay();
+            Some(tag) if tag.closing => run.html(tag_text),
+            // An inline start rebuilds what waited, as text does.
+            Some(tag) => {
+                run.pending.clear();
+                match tag.name == "br" {
+                    true => run.owed = None,
+                    false => run.pay(),
+                }
                 run.html(tag_text);
             }
             None => run.shortcodes.split(),
@@ -395,6 +397,22 @@ mod tests {
             bold("<div><table><tr><td><section><b>x<tr><td>y</tr></table>z</div>").trim(),
             "x"
         );
+    }
+
+    #[test]
+    fn an_inline_start_rebuilds_before_a_table() {
+        // GitHub's answers, `.work/R4.3-r6/github-oracles.log`.
+        for tag in ["i", "span", "u", "mark"] {
+            let source =
+                format!("<div><p><b>x</p><{tag}><table><tr><td>y</td></tr></table>z</{tag}></div>");
+            let line = html(&source).expect("text");
+            let at = line.text.find('y').expect("the cell");
+            let bold = line
+                .styles
+                .iter()
+                .any(|(range, style)| *style == Style::Strong && range.contains(&at));
+            assert!(bold, "{source}: {line:?}");
+        }
     }
 
     #[test]

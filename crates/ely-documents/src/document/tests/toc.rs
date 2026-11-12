@@ -162,6 +162,21 @@ fn a_long_text_press_on_a_heading_written_away_moves_nothing(cx: &mut TestAppCon
     assert_eq!(press_long((9..10, ""), cx), (0, 0));
 }
 
+#[gpui::test]
+fn a_long_visual_press_writes_back_then_reveals(cx: &mut TestAppContext) {
+    // The press's own write-back is no later edit.
+    let long = format!(
+        "before\n\n[toc]\n\n# A\n\ntext\n\n## B\n\n{}",
+        "word ".repeat(26_215)
+    );
+    let (document, cx) = open(&long, MarkdownMode::Visual, cx);
+    type_in(&document, Some(0), Some("before\nextra\nextra"), cx);
+    frames(cx);
+    press_entry(1, cx.read(Modifiers::secondary_key), cx);
+    frames(cx);
+    assert_eq!(caret(&document, cx), (10, 0));
+}
+
 /// Makes `edits` while the text waits, caret at the top.
 fn edit_waiting<'a>(
     text: &str,

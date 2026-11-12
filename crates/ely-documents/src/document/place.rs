@@ -253,7 +253,9 @@ impl MarkdownDocument {
         }
         if !self.read_now(cx) {
             // A long text reads in the background; the press waits.
-            self.revealing = Some((found, self.edits));
+            // Its own write-back counts later; the text itself is kept.
+            let text = self.editor.read(cx).text().to_string();
+            self.revealing = Some((found, text));
             return cx.notify();
         }
         self.reveal_heading(found, window, cx);
@@ -267,7 +269,7 @@ impl MarkdownDocument {
         let Some((found, expected)) = self.revealing.take() else {
             return;
         };
-        if self.edits != expected {
+        if self.editor.read(cx).text() != expected {
             return log::info!("markdown document: a waiting heading press lapsed with its text");
         }
         self.reveal_heading(found, window, cx);
