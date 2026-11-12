@@ -261,10 +261,12 @@ impl MarkdownDocument {
 
     /// The press waiting for its text, once read.
     pub(super) fn reveal_waiting(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if self.revealing.is_none() || !self.read_now(cx) {
+        if !self.read_now(cx) {
             return;
         }
-        let (found, expected) = self.revealing.take().expect("checked above");
+        let Some((found, expected)) = self.revealing.take() else {
+            return;
+        };
         if self.edits != expected {
             return log::info!("markdown document: a waiting heading press lapsed with its text");
         }
