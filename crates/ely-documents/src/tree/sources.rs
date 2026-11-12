@@ -334,7 +334,7 @@ fn aligned(drawn: &str, written: &str, escapes: Escapes) -> Vec<(usize, usize)> 
                 break source[j].at;
             }
             // White space, line ends and marks the text dropped.
-            if s.lead || matches!(s.ch, ' ' | '\t') || s.ends_line() {
+            if s.lead || html::spacing(s.ch) || s.ends_line() {
                 j -= 1;
                 continue;
             }

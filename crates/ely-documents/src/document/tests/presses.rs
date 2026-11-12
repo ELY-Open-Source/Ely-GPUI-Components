@@ -120,3 +120,16 @@ fn prior_crlf_definition_press(cx: &mut TestAppContext) {
     press_on(0, 10, MouseButton::Right, cx);
     assert_eq!(*events.borrow(), [target(10, TargetBlock::Definition)]);
 }
+
+#[gpui::test]
+fn a_form_feed_html_drops_leaves_the_press_on_its_word(cx: &mut TestAppContext) {
+    // HTML drops the decoded form feed as white space.
+    let source = "<div>ab&#12;</div>";
+    let (document, cx) = open(source, MarkdownMode::Visual, cx);
+    let events = heard(&document, cx);
+    press_on(0, 1, MouseButton::Right, cx);
+    assert_eq!(*events.borrow(), [target(6, TargetBlock::Html)]);
+    let (document, cx) = open(source, MarkdownMode::Visual, &mut *cx);
+    press_on(0, 1, MouseButton::Left, cx);
+    assert_eq!(opened_caret(&document, cx), 6);
+}

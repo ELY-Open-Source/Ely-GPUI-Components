@@ -437,3 +437,26 @@ fn a_press_beside_the_code_still_names_it(cx: &mut TestAppContext) {
         .and_then(|target| target.code.clone());
     assert_eq!(code.as_deref(), Some("let x;"));
 }
+
+#[gpui::test]
+fn a_definition_written_back_never_points_a_table_to_its_old_url(cx: &mut TestAppContext) {
+    let source = "[ref]: https://old.dev\n\n| Go [there][ref] |\n| --- |\n| cell |\n";
+    let (document, cx) = open(source, MarkdownMode::Visual, cx);
+    let events = heard(&document, cx);
+    type_in(&document, Some(0), Some("[ref]: https://new.dev"), cx);
+    let bounds = cx.debug_bounds("markdown-block-1").expect("drawn");
+    let (body, _) = sizes(cx);
+    let x = bounds.left() + px(26.0) + body * 0.6 * 4.25;
+    press_at(x, bounds.top() + px(17.0), MouseButton::Right, cx);
+    assert_eq!(
+        super::text(&document, cx),
+        source.replace("old.dev", "new.dev")
+    );
+    // The write-back changed the table: the press is refused.
+    assert!(
+        events
+            .borrow()
+            .iter()
+            .all(|event| event.link.as_deref() != Some("https://old.dev"))
+    );
+}

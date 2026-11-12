@@ -179,3 +179,15 @@ fn autolink_does_not_decode_literal_reference() {
     let source = "<https://example.com/?a=&amp;b=2>";
     assert_eq!(read_back(source, "xample"), source.find("xample"));
 }
+
+#[test]
+fn html_white_space_reads_back_as_drawn() {
+    for source in [
+        "<div>ab&#12;</div>",
+        "<div>ab\u{c}</div>",
+        "<div>ab&#12; cd</div>",
+        "<div>ab&#9; cd</div>",
+    ] {
+        assert_eq!(read_back(source, "b"), source.find('b'), "{source:?}");
+    }
+}

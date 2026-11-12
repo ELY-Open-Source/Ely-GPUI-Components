@@ -204,11 +204,18 @@ impl MarkdownDocument {
             },
         };
         // A write-back may change the pressed block.
-        let now = (self.parsed.blocks.iter())
-            .find(|block| block.range.start <= at && at <= block.range.end)
-            .map(|block| self.drawn(block));
-        // A cell beside the written one keeps its place.
-        let beside = pointed.table && now.as_ref().is_some_and(|now| now.0 == TargetBlock::Table);
+        let block = (self.parsed.blocks.iter())
+            .find(|block| block.range.start <= at && at <= block.range.end);
+        let now = block.map(|block| self.drawn(block));
+        // A cell beside the written one, in its table, keeps its place.
+        let inside = |block: &&Block| {
+            written.as_ref().is_some_and(|(range, len)| {
+                block.range.start <= range.start && range.start + len <= block.range.end
+            })
+        };
+        let beside = pointed.table
+            && now.as_ref().is_some_and(|now| now.0 == TargetBlock::Table)
+            && block.is_some_and(|block| inside(&block));
         if written.is_some() && pressed.is_some() && now != pressed && !beside {
             return log::warn!("markdown document: the write-back changed the pressed block");
         }
