@@ -146,8 +146,12 @@ impl Run {
             "tr" => &["tr"],
             _ => &[],
         };
-        // The search stops at a special element.
-        let stops = |name: &str| html::breaks(name) && !matches!(name, "address" | "div" | "p");
+        // The search stops at a special element; a cell's at its table.
+        let cells = html::scope(name);
+        let stops = |name: &str| match cells {
+            true => name == "table",
+            false => html::breaks(name) && !matches!(name, "address" | "div" | "p"),
+        };
         let found = items
             .iter()
             .any(|item| self.count(item) > 0)
@@ -169,17 +173,22 @@ impl Run {
 }
 
 impl Run {
-    /// Formatting outside a table stays out of its cells.
+    /// Formatting waiting to reopen stays out of a table's cells.
     fn set_aside(&mut self) {
         let end = self.text.text.len();
-        let open = std::mem::take(&mut self.open);
-        let (held, kept): (Vec<Opened>, Vec<Opened>) = open
+        let mut waiting = std::mem::take(&mut self.pending);
+        waiting.retain(|&ix| self.open.get(ix).is_some_and(|opened| opened.start == end));
+        waiting.sort_unstable();
+        waiting.dedup();
+        let mut held: Vec<Opened> = waiting
             .into_iter()
-            .partition(|opened| html::reopens(&opened.name));
+            .rev()
+            .map(|ix| self.open.remove(ix))
+            .collect();
+        held.reverse();
         for opened in &held {
             self.finish(opened, end);
         }
-        self.open = kept;
         if let Some((_, from)) = &mut self.owed {
             *from = (*from).min(self.open.len());
         }
@@ -190,6 +199,7 @@ impl Run {
     fn take_back(&mut self) {
         let start = self.text.text.len();
         for opened in self.tables.pop().unwrap_or_default() {
+            self.pending.push(self.open.len());
             self.push(Opened { start, ..opened });
         }
     }
@@ -359,6 +369,50 @@ mod tests {
             .map(|(range, _)| &around.text[range.clone()])
             .collect();
         assert_eq!(bold, ["x", "z"], "{around:?}");
+    }
+
+    #[test]
+    fn open_formatting_reaches_the_cells_and_a_cell_ends_at_the_next() {
+        // GitHub's answers, `.work/R4.3-r5/github-oracles.log`.
+        let bold = |source: &str| {
+            let line = html(source).expect("text");
+            let words: Vec<String> = line
+                .styles
+                .iter()
+                .map(|(range, _)| line.text[range.clone()].to_string())
+                .collect();
+            words.concat()
+        };
+        assert_eq!(
+            bold("<div><b>x<table><tr><td>y</td></tr></table>z</b></div>").replace('\n', ""),
+            "xyz"
+        );
+        assert_eq!(
+            bold("<div><table><tr><td><section><b>x<td>y</tr></table>z</div>").trim(),
+            "x"
+        );
+        assert_eq!(
+            bold("<div><table><tr><td><section><b>x<tr><td>y</tr></table>z</div>").trim(),
+            "x"
+        );
+    }
+
+    #[test]
+    fn nested_tables_read_in_linear_time() {
+        let source = |n: usize| {
+            format!(
+                "<div>{}x{}</div>",
+                "<table><tr><td>".repeat(n),
+                "</td></tr></table>".repeat(n)
+            )
+        };
+        let time = |n| crate::clock::spent(|| drop(parse(&source(n))));
+        let (mut small, mut large) = (std::time::Duration::MAX, std::time::Duration::MAX);
+        for _ in 0..5 {
+            small = small.min(time(1 << 8));
+            large = large.min(time(1 << 10));
+        }
+        assert!(large < small * 8, "{small:?} then {large:?}");
     }
 
     #[test]

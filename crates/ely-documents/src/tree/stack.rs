@@ -58,6 +58,9 @@ impl Run {
         if let Some((_, from)) = &mut self.owed {
             *from = (*from).min(at);
         }
+        // Text written since rebuilt what waited.
+        let open = &self.open;
+        self.pending.retain(|&ix| ix < at && open[ix].start == end);
         let mut rest = self.open.split_off(at);
         if !html::reopens(name) {
             let skip = if html::scope(name) { rest.len() } else { 1 };
@@ -104,6 +107,7 @@ impl Run {
         let keep = rebuilt(&closed[skip.min(closed.len())..]);
         for (opened, keep) in closed.into_iter().skip(skip).zip(keep) {
             if keep {
+                self.pending.push(self.open.len());
                 self.push(Opened {
                     start: end,
                     ..opened

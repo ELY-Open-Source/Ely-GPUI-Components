@@ -123,6 +123,8 @@ pub struct MarkdownDocument {
     writes: usize,
     /// A match asked before its text was read; its version.
     showing: Option<(Range<usize>, bool, u64)>,
+    /// A heading pressed before its text was read, and that edit.
+    revealing: Option<(usize, u64)>,
     /// A block asked open before its text was read.
     waiting: Option<(Option<usize>, edit::Landing, bool, u64)>,
     look: DocumentLook,
@@ -200,6 +202,7 @@ impl MarkdownDocument {
             asks: 0,
             writes: 0,
             showing: None,
+            revealing: None,
             waiting: None,
             look: DocumentLook::default(),
             typed: 0,

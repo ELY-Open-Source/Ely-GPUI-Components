@@ -251,15 +251,34 @@ impl MarkdownDocument {
         if !self.read_now(cx) {
             self.reparse(true, cx);
         }
-        // A long text reads later; the anchor already followed the edits.
-        let heading = |document: &Self| {
-            document
-                .parsed
-                .headings
-                .iter()
-                .any(|heading| heading.at == found)
-        };
-        if self.read_now(cx) && !heading(self) {
+        if !self.read_now(cx) {
+            // A long text reads in the background; the press waits.
+            self.revealing = Some((found, self.edits));
+            return cx.notify();
+        }
+        self.reveal_heading(found, window, cx);
+    }
+
+    /// The press waiting for its text, once read.
+    pub(super) fn reveal_waiting(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if self.revealing.is_none() || !self.read_now(cx) {
+            return;
+        }
+        let (found, expected) = self.revealing.take().expect("checked above");
+        if self.edits != expected {
+            return log::info!("markdown document: a waiting heading press lapsed with its text");
+        }
+        self.reveal_heading(found, window, cx);
+    }
+
+    /// Reveals the heading at byte `found`, if it still reads as one.
+    fn reveal_heading(&mut self, found: usize, window: &mut Window, cx: &mut Context<Self>) {
+        if !self
+            .parsed
+            .headings
+            .iter()
+            .any(|heading| heading.at == found)
+        {
             return log::warn!("markdown document: the pressed heading reads as no heading now");
         }
         let line = self.editor.read(cx).buffer().line_of(found);

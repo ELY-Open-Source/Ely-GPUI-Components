@@ -133,20 +133,33 @@ fn a_press_while_the_text_waits_to_be_read_finds_the_heading(cx: &mut TestAppCon
     );
 }
 
-#[gpui::test]
-fn a_press_while_a_long_text_waits_finds_the_heading(cx: &mut TestAppContext) {
-    // Past `AT_ONCE`, the text reads in the background.
+/// A long text past `AT_ONCE`, edited, pressed before it reads.
+fn press_long(edit: (std::ops::Range<usize>, &str), cx: &mut TestAppContext) -> (usize, usize) {
     let long = format!("[toc]\n\n## B\n\n{}", "word ".repeat(26_215));
     let (document, cx) = open(&long, MarkdownMode::Split, cx);
     document.update(cx, |document, cx| {
-        document.editor.update(cx, |editor, cx| {
-            editor.edit([(0..0, "x\n\n".to_string())], cx)
-        });
+        let (range, with) = (edit.0, edit.1.to_string());
+        document
+            .editor
+            .update(cx, |editor, cx| editor.edit([(range, with)], cx));
+        document.set_caret(0, 0, cx);
     });
     cx.run_until_parked();
     assert!(!document.read_with(cx, |document, cx| document.read_now(cx)));
     press_entry(0, Modifiers::none(), cx);
-    assert_eq!(caret(&document, cx), (4, 0));
+    frames(cx);
+    caret(&document, cx)
+}
+
+#[gpui::test]
+fn a_press_while_a_long_text_waits_finds_the_heading(cx: &mut TestAppContext) {
+    assert_eq!(press_long((0..0, "x\n\n"), cx), (4, 0));
+}
+
+#[gpui::test]
+fn a_long_text_press_on_a_heading_written_away_moves_nothing(cx: &mut TestAppContext) {
+    // `## B` loses its space: no heading once read.
+    assert_eq!(press_long((9..10, ""), cx), (0, 0));
 }
 
 /// Makes `edits` while the text waits, caret at the top.

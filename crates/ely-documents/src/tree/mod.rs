@@ -168,6 +168,8 @@ struct Run {
     owed: Option<(char, usize)>,
     /// Formatting set aside by each open table.
     tables: Vec<Vec<Opened>>,
+    /// Where formatting reopened; HTML5 rebuilds it only at text.
+    pending: Vec<usize>,
 }
 
 impl Run {
