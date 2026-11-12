@@ -548,3 +548,13 @@ fn pre_keeps_shortcodes_as_written() {
     assert_eq!(line("x <pre><b>:smile:</b></pre> y").text, "x :smile: y");
     assert_eq!(line("<pre>:smile:</pre>\n").text, ":smile:");
 }
+
+#[test]
+fn a_crossed_close_leaves_pre_open() {
+    // GitHub's answers, `.work/R4.2-r5/github-oracle.log`.
+    let text = line("a <b><pre>before</b> :smile:</pre> :smile:");
+    assert_eq!(text.text, "a before :smile: 😄");
+    assert_eq!(text.styles, [(2..8, Style::Strong)]);
+    let note = line("x <a href=/x><pre>before [^n] :smile:</pre></a> y\n\n[^n]: note");
+    assert_eq!(note.text, "x before ¹ :smile: y");
+}

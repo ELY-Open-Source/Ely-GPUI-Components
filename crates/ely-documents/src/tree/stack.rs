@@ -58,6 +58,13 @@ impl Run {
         if let Some((_, from)) = &mut self.owed {
             *from = (*from).min(at);
         }
+        // A formatting close leaves a block above it open.
+        let block = match html::reopens(name) {
+            true => (at + 1..self.open.len())
+                .find(|&ix| html::inline_style(&self.open[ix].name).is_none()),
+            false => None,
+        };
+        let kept = block.map_or_else(Vec::new, |block| self.open.split_off(block));
         let closed = self.open.split_off(at);
         for opened in &closed {
             close(&mut self.text, opened, end);
@@ -72,6 +79,7 @@ impl Run {
                 });
             }
         }
+        self.open.extend(kept);
     }
 }
 
