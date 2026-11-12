@@ -278,3 +278,15 @@ fn only_a_top_level_toc_reads_as_one() {
         Ok("- [toc]‸".to_string())
     );
 }
+
+#[test]
+fn a_plain_quote_unwrap_keeps_its_text() {
+    assert_eq!(
+        ran("> [toc]‸", BlockCommand::Quote),
+        Err(EditRefusal::Misread)
+    );
+    assert_eq!(
+        ran("> plain‸", BlockCommand::Quote),
+        Ok("plain‸".to_string())
+    );
+}

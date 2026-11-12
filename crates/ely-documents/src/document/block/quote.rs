@@ -20,10 +20,20 @@ pub(super) fn run(here: &Here) -> Result<Change, EditRefusal> {
         Some(_) => here.path.len() - 2,
         None => here.path.len() - 1,
     };
-    if let Node::Blockquote(_) = here.path[ix]
+    if let Node::Blockquote(quote) = here.path[ix]
         && whole(here, ix)
     {
-        return unwrap(here, ix).map(|edits| change(edits, caret));
+        let off = change(unwrap(here, ix)?, caret);
+        // An alert sheds its marker; a plain quote's text stays.
+        return match alert(quote) {
+            Some(_) => Ok(off),
+            None => check::same(
+                here.text,
+                here.root,
+                off,
+                "a quote change would reread otherwise",
+            ),
+        };
     }
     if here.leaf().is_none() && here.selection.is_empty() {
         if !here.blank() {
@@ -39,7 +49,13 @@ pub(super) fn run(here: &Here) -> Result<Change, EditRefusal> {
     if task_head(here.path[k], blocks[0]) {
         return Err(EditRefusal::Outside);
     }
-    Ok(change(wrap(here, k, &blocks), caret))
+    let on = change(wrap(here, k, &blocks), caret);
+    check::same(
+        here.text,
+        here.root,
+        on,
+        "a quote change would reread otherwise",
+    )
 }
 
 /// Whether the selection takes in the whole quote at `ix`.
