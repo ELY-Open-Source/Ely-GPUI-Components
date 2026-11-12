@@ -130,7 +130,7 @@ pub(super) fn rewrite(text: &str, options: Options) -> Flow {
     let runs = fences(text);
     let held = match runs.is_empty() {
         true => Vec::new(),
-        false => code_blocks(text, options),
+        false => code(text, options),
     };
     let mut active = paired(text, &outside_code(runs, &held), &held);
     loop {
@@ -192,12 +192,12 @@ fn next_run(text: &str, from: usize, len: usize, held: &[Range<usize>]) -> Optio
     None
 }
 
-/// Code and HTML blocks, as the text reads without math.
-fn code_blocks(text: &str, options: Options) -> Vec<Range<usize>> {
+/// Code and HTML blocks and code spans, as the text reads without math.
+fn code(text: &str, options: Options) -> Vec<Range<usize>> {
     Parser::new_ext(text, options)
         .into_offset_iter()
         .filter_map(|(event, range)| match event {
-            Event::Start(Tag::CodeBlock(_) | Tag::HtmlBlock) => Some(range),
+            Event::Start(Tag::CodeBlock(_) | Tag::HtmlBlock) | Event::Code(_) => Some(range),
             _ => None,
         })
         .collect()
@@ -284,6 +284,15 @@ mod tests {
     fn dollars_inside_code_stay_dollars() {
         let flow = rewrite("```\n$$\n```\n", Options::empty());
         assert_eq!(flow.text, "```\n$$\n```\n");
+    }
+
+    #[test]
+    fn dollars_in_a_code_span_pair_with_nothing() {
+        let flow = rewrite("`$$`\n\n$$\na\n$$\n\n$$\nb\n$$\n", Options::empty());
+        assert_eq!(
+            flow.text, "`$$`\n\n~~~\na\n~~~\n\n~~~\nb\n~~~\n",
+            "GitHub shows both"
+        );
     }
 
     #[test]
