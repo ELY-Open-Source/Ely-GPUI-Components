@@ -1,9 +1,10 @@
 use gpui::{
-    Context, FocusHandle, IntoElement, KeyBinding, KeyUpEvent, Keystroke, Modifiers, MouseButton,
-    ParentElement, Render, Styled, TestAppContext, VisualTestContext, Window, div, point, px,
+    AppContext, Context, FocusHandle, Focusable, IntoElement, KeyBinding, KeyUpEvent, Keystroke,
+    Modifiers, MouseButton, ParentElement, Render, Styled, TestAppContext, VisualTestContext,
+    Window, div, point, px,
 };
 
-use super::{Button, SegmentedControl, ToggleButton, ToggleGroup, ToggleItem};
+use super::{Button, ButtonVariant, SegmentedControl, ToggleButton, ToggleGroup, ToggleItem};
 use crate::{
     primitives::{FocusNext, FocusScope, IconName},
     theme::Theme,
@@ -218,5 +219,98 @@ fn a_right_press_names_its_segment_and_keeps_the_focus(cx: &mut TestAppContext) 
     assert!(
         cx.update(|window, _| root.is_focused(window)),
         "focus stays put"
+    );
+}
+
+/// A code field above a link button, as a sign-in page lays them out.
+struct CodePage {
+    root: FocusHandle,
+    field: gpui::Entity<crate::forms::TextInput>,
+    backs: usize,
+}
+
+impl Render for CodePage {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        FocusScope::new(&self.root).root().size_full().child(
+            div()
+                .flex()
+                .flex_col()
+                .child(crate::forms::Input::new(&self.field))
+                .child(
+                    Button::new("back", "Change number")
+                        .variant(ButtonVariant::Link)
+                        .on_click(move |_, _, cx| view.update(cx, |page, _| page.backs += 1)),
+                ),
+        )
+    }
+}
+
+/// The link variant, reached from the field above it, runs once on Enter and on Space.
+#[gpui::test]
+fn a_link_button_runs_from_the_field_above_it(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        cx.bind_keys([KeyBinding::new("tab", FocusNext, None)]);
+    });
+    let (view, cx) = cx.add_window_view(|window, cx| CodePage {
+        root: cx.focus_handle(),
+        field: cx.new(|cx| crate::forms::TextInput::new(window, cx)),
+        backs: 0,
+    });
+    let field = view.read_with(cx, |page, cx| page.field.read(cx).focus_handle(cx));
+    cx.update(|window, cx| window.focus(&field, cx));
+    cx.run_until_parked();
+    cx.update(|window, cx| window.focus_next(cx));
+    cx.run_until_parked();
+    press("enter", cx);
+    assert_eq!(
+        view.read_with(cx, |page, _| page.backs),
+        1,
+        "Enter on the focused link runs it once"
+    );
+    press("space", cx);
+    assert_eq!(
+        view.read_with(cx, |page, _| page.backs),
+        2,
+        "Space runs it once too"
+    );
+    press("secondary-enter", cx);
+    assert_eq!(
+        view.read_with(cx, |page, _| page.backs),
+        2,
+        "a chord changes nothing"
+    );
+}
+
+/// An icon button answers the same keys.
+struct Icons {
+    presses: usize,
+}
+
+impl Render for Icons {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        FocusScope::new(&cx.focus_handle()).size_full().child(
+            crate::buttons::IconButton::new("close", IconName::X)
+                .on_click(move |_, _, cx| view.update(cx, |icons, _| icons.presses += 1)),
+        )
+    }
+}
+
+#[gpui::test]
+fn an_icon_button_answers_enter_once(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        cx.bind_keys([KeyBinding::new("tab", FocusNext, None)]);
+    });
+    let (view, cx) = cx.add_window_view(|_, _| Icons { presses: 0 });
+    cx.update(|window, cx| window.focus_next(cx));
+    cx.run_until_parked();
+    press("enter", cx);
+    assert_eq!(
+        view.read_with(cx, |icons, _| icons.presses),
+        1,
+        "Enter runs the icon button once"
     );
 }

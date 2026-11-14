@@ -497,3 +497,4 @@
 | G19 | 1 | PASS | codex gpt-6.1-sol xhigh; the date popup's click no longer reaches the area below; 589 core tests |
 | G20 | 1 | FAIL | TextInput, Knob, Rating, ListItem and NavigationMenu links still drew enabled nodes when disabled |
 | G20 | 2 | PASS | 21 sites set AccessKit's disabled flag; tabs and chips found by a sweep; the Windows audit checks a disabled Button |
+| G21 | 1 | PASS | merge holds main's 5 tests and the PR's 6, 7 by name; gate passed |
