@@ -498,3 +498,6 @@
 | G20 | 1 | FAIL | TextInput, Knob, Rating, ListItem and NavigationMenu links still drew enabled nodes when disabled |
 | G20 | 2 | PASS | 21 sites set AccessKit's disabled flag; tabs and chips found by a sweep; the Windows audit checks a disabled Button |
 | G21 | 1 | PASS | merge holds main's 5 tests and the PR's 6, 7 by name; gate passed |
+| G22 | 1 | FAIL | a stale index after a data change, the release point unchecked against 4px, and no keyboard or accessible path to a node |
+| G22 | 2 | FAIL | the node label's click ran for a drag inside the label |
+| G22 | 3 | PASS | the label's mouse click holds to 4px; keyboard and touch run; tests count exact calls |

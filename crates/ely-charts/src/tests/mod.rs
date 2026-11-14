@@ -6,8 +6,9 @@ use std::{
 };
 
 use gpui::{
-    Context, IntoElement, KeyUpEvent, Keystroke, Modifiers, MouseMoveEvent, ParentElement, Render,
-    SharedString, Styled, TestAppContext, VisualTestContext, Window, black, div, point, px,
+    Context, IntoElement, KeyUpEvent, Keystroke, Modifiers, MouseButton, MouseMoveEvent,
+    ParentElement, Pixels, Point, Render, SharedString, Styled, TestAppContext, VisualTestContext,
+    Window, black, div, point, px,
 };
 use jiff::civil::date;
 
@@ -408,4 +409,153 @@ fn entries_past_their_lists_are_skipped(cx: &mut TestAppContext) {
     cx.update(Theme::init);
     let (_, cx) = cx.add_window_view(|_, _| Dangling);
     settle(cx);
+}
+
+/// A graph of `nodes` nodes whose click is reported to the test.
+struct ClickableNetwork {
+    clicked: Rc<RefCell<Vec<usize>>>,
+    nodes: usize,
+}
+
+impl Render for ClickableNetwork {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let clicked = self.clicked.clone();
+        (0..self.nodes)
+            .fold(NetworkGraph::new("click-network"), |graph, ix| {
+                graph.node(format!("node {ix}"), 0)
+            })
+            .h(px(TALL))
+            .on_node_click(move |ix, _, _| clicked.borrow_mut().push(ix))
+    }
+}
+
+/// A settled one-node graph, its view and the node's place.
+fn network_node(
+    cx: &mut TestAppContext,
+) -> (
+    gpui::Entity<ClickableNetwork>,
+    &mut VisualTestContext,
+    Point<Pixels>,
+) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| ClickableNetwork {
+        clicked: Rc::new(RefCell::new(Vec::new())),
+        nodes: 1,
+    });
+    settle(cx);
+    for _ in 0..20 {
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+    }
+    let bounds = cx.debug_bounds("chart-root").expect("the chart drew");
+    (view, cx, bounds.center())
+}
+
+#[gpui::test]
+fn clicking_a_network_node_reports_it(cx: &mut TestAppContext) {
+    let (view, cx, at) = network_node(cx);
+    cx.simulate_click(at, Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0],
+        "a press and release on a node reports its index"
+    );
+}
+
+#[gpui::test]
+fn dragging_a_network_node_reports_no_click(cx: &mut TestAppContext) {
+    let (view, cx, at) = network_node(cx);
+    let to = point(at.x + px(40.0), at.y);
+    cx.simulate_mouse_down(at, MouseButton::Left, Modifiers::default());
+    cx.simulate_mouse_move(to, Some(MouseButton::Left), Modifiers::default());
+    cx.simulate_mouse_up(to, MouseButton::Left, Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0usize; 0],
+        "a drag is no click"
+    );
+}
+
+#[gpui::test]
+fn a_release_far_from_the_press_reports_no_click(cx: &mut TestAppContext) {
+    let (view, cx, at) = network_node(cx);
+    let to = point(at.x + px(40.0), at.y);
+    cx.simulate_mouse_down(at, MouseButton::Left, Modifiers::default());
+    cx.simulate_mouse_up(to, MouseButton::Left, Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0usize; 0],
+        "the release, not a move, is too far"
+    );
+}
+
+#[gpui::test]
+fn a_press_on_a_node_the_data_removed_reports_no_click(cx: &mut TestAppContext) {
+    let (view, cx, at) = network_node(cx);
+    cx.simulate_mouse_down(at, MouseButton::Left, Modifiers::default());
+    view.update(cx, |network, cx| {
+        network.nodes = 0;
+        cx.notify();
+    });
+    settle(cx);
+    cx.simulate_mouse_up(at, MouseButton::Left, Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0usize; 0],
+        "node 0 is gone"
+    );
+}
+
+#[gpui::test]
+fn tab_reaches_a_network_node_and_enter_clicks_it(cx: &mut TestAppContext) {
+    let (view, cx, _) = network_node(cx);
+    cx.update(|window, cx| {
+        window.activate_window();
+        window.focus_next(cx);
+    });
+    settle(cx);
+    cx.simulate_keystrokes("enter");
+    cx.simulate_event(KeyUpEvent {
+        keystroke: Keystroke::parse("enter").expect("a key"),
+    });
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0],
+        "Enter on the focused node clicks it once"
+    );
+}
+
+#[gpui::test]
+fn dragging_across_a_node_label_reports_no_click(cx: &mut TestAppContext) {
+    let (view, cx, _) = network_node(cx);
+    let label = cx.debug_bounds("network-label-0").expect("the label drew");
+    let at = point(label.left() + px(2.0), label.center().y);
+    let to = point(at.x + px(10.0), at.y);
+    cx.simulate_mouse_down(at, MouseButton::Left, Modifiers::default());
+    cx.simulate_mouse_move(to, Some(MouseButton::Left), Modifiers::default());
+    cx.simulate_mouse_up(to, MouseButton::Left, Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0usize; 0],
+        "a drag across the label is no click"
+    );
+}
+
+#[gpui::test]
+fn clicking_a_node_label_reports_it_once(cx: &mut TestAppContext) {
+    let (view, cx, _) = network_node(cx);
+    let label = cx.debug_bounds("network-label-0").expect("the label drew");
+    cx.simulate_click(label.center(), Modifiers::default());
+    settle(cx);
+    assert_eq!(
+        view.read_with(cx, |network, _| network.clicked.borrow().clone()),
+        [0],
+        "one press on the label is one click"
+    );
 }
