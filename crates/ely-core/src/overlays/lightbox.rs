@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -51,9 +52,7 @@ pub fn media_button(
         .id(id)
         .role(Role::Button)
         .aria_label(name)
-        .when(!enabled, |button| {
-            button.aria_description(i18n::text(cx, "state.unavailable", &[]))
-        })
+        .when(!enabled, |button| button.unavailable(cx))
         .flex()
         .flex_none()
         .items_center()

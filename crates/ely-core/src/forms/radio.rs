@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -11,7 +12,7 @@ use super::{
     options::{OnValue, Run, step},
 };
 use crate::{
-    i18n, motion,
+    motion,
     primitives::tab_stop,
     theme::{ActiveTheme, TextSize},
 };
@@ -139,9 +140,7 @@ impl RenderOnce for Radio {
             .role(Role::RadioButton)
             .aria_toggled(on.into())
             .when_some(self.label.clone(), |row, label| row.aria_label(label))
-            .when(self.disabled, |row| {
-                row.aria_description(i18n::text(cx, "state.unavailable", &[]))
-            })
+            .when(self.disabled, |row| row.unavailable(cx))
             .track_focus(&focus)
             .flex()
             .items_center()

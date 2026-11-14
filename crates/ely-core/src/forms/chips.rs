@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -94,6 +95,7 @@ impl RenderOnce for ChoiceChips {
                     })
                     .aria_toggled(on.into())
                     .aria_label(choice.label.clone())
+                    .when(choice.disabled, |chip| chip.unavailable(cx))
                     .flex()
                     .items_center()
                     .gap_1p5()

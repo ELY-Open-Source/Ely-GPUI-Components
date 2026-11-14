@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -207,6 +208,7 @@ impl RenderOnce for ListItem {
             .aria_label(self.title.clone())
             .aria_selected(self.selected)
             .when(self.current, |row| row.aria_active_descendant())
+            .when(self.disabled, |row| row.unavailable(cx))
             .when_some(self.description.clone(), |row, text| {
                 row.aria_description(text)
             })

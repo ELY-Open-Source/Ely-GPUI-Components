@@ -1,8 +1,8 @@
 //! What many components can do, as traits generic code can name.
 
-use gpui::{App, Window};
+use gpui::{App, StatefulInteractiveElement, Window};
 
-use crate::theme::ControlSize;
+use crate::{i18n, theme::ControlSize};
 
 /// A component drawn at one of the theme's control sizes.
 pub trait Sizable: Sized {
@@ -33,6 +33,17 @@ pub trait Changeable: Sized {
     /// Runs `handler` with each new value.
     fn on_change(self, handler: impl Fn(Self::Value<'_>, &mut Window, &mut App) + 'static) -> Self;
 }
+
+/// A control a screen reader hears as unavailable.
+pub(crate) trait Unavailable: StatefulInteractiveElement {
+    /// Sets AccessKit's disabled flag (UI Automation's `IsEnabled`) and says so in its description.
+    fn unavailable(self, cx: &App) -> Self {
+        self.aria_description(i18n::text(cx, "state.unavailable", &[]))
+            .a11y_synthetic_children(|nodes| nodes.parent_node().set_disabled())
+    }
+}
+
+impl<E: StatefulInteractiveElement> Unavailable for E {}
 
 /// Implements capability traits by the component's own methods of the same name.
 #[doc(hidden)]

@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -11,7 +12,6 @@ use super::{
     button::{Slot, label_size},
 };
 use crate::{
-    i18n,
     layout::{measure_width, text_width},
     primitives::{FocusRing, Icon, IconName, Tooltip},
     theme::{ActiveTheme, ControlSize, Radius},
@@ -158,10 +158,7 @@ fn toggle_face(
         .text_color(fg)
         .when(on, |face| face.bg(colors.active))
         .map(|face| match press {
-            None => face
-                .aria_description(i18n::text(cx, "state.unavailable", &[]))
-                .opacity(0.45)
-                .cursor_not_allowed(),
+            None => face.unavailable(cx).opacity(0.45).cursor_not_allowed(),
             Some(press) => face
                 .when(!on, |face| face.hover(|style| style.bg(hover)))
                 .cursor_pointer()

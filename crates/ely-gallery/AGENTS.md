@@ -14,7 +14,7 @@ The gallery, its capture harness, scripts, stories and web build.
 - `cargo run -p ely-gallery -- --narrow 280 --capture <dir>` lays each page, header and body, at that width in a padded card and shoots it without its script, whose aims are measured at full width. Demos that set their own width run past the card.
 - `RUSTC_BOOTSTRAP=1 cargo check --lib --target wasm32-unknown-unknown` checks the web build; gpui_web's `wasm_thread` needs the bootstrap, as Zed's web examples do.
 - `ELY_GALLERY_ASSETS=<address of out/assets/> scripts/web.sh <out>` builds the gallery for the browser, profile `web`, and fails past Cloudflare's 25 MiB. It opens at `?page=<slug>&story=<title or slug>&theme=light|dark`; the host page calls `gallery.setTheme(mode)` or posts `{ ely: "theme", theme }`, before the wasm runs or after, and the page posts `{ ely: "ready" }` to its parent once it runs.
-- `cargo run -p ely-gallery -- --audit <report.tsv>` (Windows) tabs through every page under a UI Automation client and writes each stop's role, name and place; it exits 1 on a stop a screen reader cannot name. CI's Windows leg runs it. It takes the window's focus for about nine minutes.
+- `cargo run -p ely-gallery -- --audit <report.tsv>` (Windows) tabs through every page under a UI Automation client and writes each stop's role, name and place; it exits 1 on a stop a screen reader cannot name, or on a disabled `Button` UI Automation reports enabled. CI's Windows leg runs it. It takes the window's focus for about nine minutes.
 
 ## Layout
 

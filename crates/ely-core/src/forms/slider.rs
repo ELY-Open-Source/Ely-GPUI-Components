@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -89,9 +90,6 @@ impl Track {
                 )
             })
             .collect();
-        let unavailable = self
-            .disabled
-            .then(|| i18n::text(cx, "state.unavailable", &[]));
         let orientation = match vertical {
             true => Orientation::Vertical,
             false => Orientation::Horizontal,
@@ -175,9 +173,7 @@ impl Track {
                     .aria_max_numeric_value(ceiling)
                     .aria_numeric_value_step(step)
                     .aria_orientation(orientation)
-                    .when_some(unavailable.clone(), |thumb, text| {
-                        thumb.aria_description(text)
-                    })
+                    .when(self.disabled, |thumb| thumb.unavailable(cx))
                     .track_focus(&handles[k])
                     .absolute()
                     .size(thumb)

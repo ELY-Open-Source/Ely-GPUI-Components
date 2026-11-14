@@ -20,6 +20,7 @@ mod tooltip;
 mod tests;
 
 pub use backdrop::{Backdrop, Place};
+pub(crate) use capability::Unavailable;
 pub use capability::{Changeable, Disableable, Selectable, Sizable};
 pub use caret::caret_bar;
 pub(crate) use caret::caret_width;

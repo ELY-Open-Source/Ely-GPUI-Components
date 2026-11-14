@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -205,6 +206,7 @@ impl RenderOnce for NavigationMenu {
                     .role(Role::MenuItem)
                     .aria_label(choice.label.clone())
                     .when(ix == link, |row| row.aria_active_descendant())
+                    .when(choice.disabled, |row| row.unavailable(cx))
                     .flex()
                     .gap_3()
                     .p_2()

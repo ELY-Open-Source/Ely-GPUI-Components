@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -140,9 +141,7 @@ pub fn marked_row(
         .aria_label(choice.label.clone())
         .aria_selected(checked == Some(true))
         .when(highlighted, |row| row.aria_active_descendant())
-        .when(choice.disabled, |row| {
-            row.aria_description(crate::i18n::text(cx, "state.unavailable", &[]))
-        })
+        .when(choice.disabled, |row| row.unavailable(cx))
         .flex()
         .items_center()
         .gap_2()

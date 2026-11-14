@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`: a disabled control (button, icon button, button group item, checkbox, radio, switch, select, slider, knob, rating, text input, chip, tab, list item, date picker and calendar day, option, menu row, navigation menu link, lightbox button) sets AccessKit's disabled flag, so Windows UI Automation reports `IsEnabled=false` and screen readers hear it dimmed.
 - `ely-core`, `ely-messaging`: every floating card on `forms::surface` takes the pointer, so a click on a date, range, time, date-time, week or period picker's popup, a cascade's columns, a navigation menu or a status popup no longer reaches what lies below.
 - `ely-core`, `ely-git`: select and copy read-only text, diffs, blame and merge columns while preserving row actions and ellipsis.
 - `ely-git`: keep commit titles visible in narrow lists with many graph lanes; scale the graph within a quarter of the row and let reference badges yield to the title.

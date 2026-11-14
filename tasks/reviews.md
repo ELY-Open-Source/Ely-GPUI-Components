@@ -495,3 +495,5 @@
 | T56 park | 3 | PASS | on Windows parking also moves the system cursor (capture::point_cursor), so a real cursor mid-screen no longer hovers rows; macOS VideoPlayer top-row change traced to gpui atlas padding: 0, recorded as upstream |
 | G18 | 1 | PASS | codex gpt-6.1-sol xhigh; Kit 0.9.1's manifest pins =0.3.12; the re-dated claims hold in 0.3.12's sources |
 | G19 | 1 | PASS | codex gpt-6.1-sol xhigh; the date popup's click no longer reaches the area below; 589 core tests |
+| G20 | 1 | FAIL | TextInput, Knob, Rating, ListItem and NavigationMenu links still drew enabled nodes when disabled |
+| G20 | 2 | PASS | 21 sites set AccessKit's disabled flag; tabs and chips found by a sweep; the Windows audit checks a disabled Button |

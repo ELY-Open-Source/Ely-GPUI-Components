@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -302,9 +303,7 @@ impl RenderOnce for Calendar {
                     .aria_label(show_date(date, cx))
                     .aria_selected(chosen)
                     .when(date == at, |day| day.aria_active_descendant())
-                    .when(!open, |day| {
-                        day.aria_description(text(cx, "state.unavailable", &[]))
-                    })
+                    .when(!open, |day| day.unavailable(cx))
                     .flex()
                     .items_center()
                     .justify_center()

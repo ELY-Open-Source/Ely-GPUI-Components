@@ -1,9 +1,10 @@
-//! A filtered menu's marked button is heard and pressed.
+//! A filtered menu's marked button is heard and pressed; a disabled button reads as not enabled.
 
 use std::{process::Command, time::Duration};
 
 use anyhow::{Context as _, Result, anyhow, bail};
 use ely_gpui_component::{
+    buttons::Button,
     menus::{Menu, MenuItem, SearchableMenu},
     primitives::{FocusScope, IconName},
 };
@@ -17,6 +18,7 @@ use super::{connect, hwnd, wake};
 use crate::script;
 
 const ROWS: [&str; 3] = ["Cut", "Paste", "Select all"];
+const OFF: &str = "Unavailable action";
 const PRESSED: Duration = Duration::from_secs(10);
 
 /// A filtered menu headed by two buttons, counting Cut's runs.
@@ -42,6 +44,7 @@ impl Render for Probe {
         FocusScope::new(&self.root)
             .root()
             .size_full()
+            .child(Button::new("off", OFF).disabled(true))
             .child(SearchableMenu::new("probe", "Find", menu))
     }
 }
@@ -78,7 +81,16 @@ async fn drive(window: WindowHandle<Probe>, any: AnyWindowHandle, cx: &mut Async
     if heard != ROWS[0] {
         bail!("down arrows never marked {}", ROWS[0]);
     }
-    invoke(any, ROWS[0], cx).await?;
+    automate(
+        any,
+        ROWS[0],
+        "$press = $null; \
+         if (-not $node.TryGetCurrentPattern(\
+         [System.Windows.Automation.InvokePattern]::Pattern, [ref]$press)) { exit 3 }; \
+         $press.Invoke()",
+        cx,
+    )
+    .await?;
     let start = cx.background_executor().now();
     while window.update(cx, |probe, _, _| probe.cuts)? == 0 {
         if cx.background_executor().now() - start > PRESSED {
@@ -97,6 +109,8 @@ async fn drive(window: WindowHandle<Probe>, any: AnyWindowHandle, cx: &mut Async
         bail!("the menu stayed open after Invoke");
     }
     log::info!("audit: a filtered menu's marked button is heard and pressed once");
+    automate(any, OFF, "if ($node.Current.IsEnabled) { exit 4 }", cx).await?;
+    log::info!("audit: a disabled button reads as not enabled");
     Ok(())
 }
 
@@ -136,8 +150,8 @@ fn labels(tree: &Value) -> impl Iterator<Item = &str> {
         .filter_map(|node| node["aria"]["label"].as_str())
 }
 
-/// Presses `name` through UI Automation's Invoke, from another process.
-async fn invoke(any: AnyWindowHandle, name: &str, cx: &mut AsyncApp) -> Result<()> {
+/// Runs `act` on the node named `name` through UI Automation, from another process.
+async fn automate(any: AnyWindowHandle, name: &str, act: &str, cx: &mut AsyncApp) -> Result<()> {
     let hwnd = any.update(cx, |_, window, _| hwnd(window))??;
     let query = format!(
         "Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes; \
@@ -145,10 +159,7 @@ async fn invoke(any: AnyWindowHandle, name: &str, cx: &mut AsyncApp) -> Result<(
          $named = New-Object System.Windows.Automation.PropertyCondition(\
          [System.Windows.Automation.AutomationElement]::NameProperty, '{name}'); \
          $node = $root.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $named); \
-         if (-not $node) {{ exit 2 }}; $press = $null; \
-         if (-not $node.TryGetCurrentPattern(\
-         [System.Windows.Automation.InvokePattern]::Pattern, [ref]$press)) {{ exit 3 }}; \
-         $press.Invoke()"
+         if (-not $node) {{ exit 2 }}; {act}"
     );
     let mut client = Command::new("powershell")
         .args(["-NoProfile", "-NonInteractive", "-Command", &query])
@@ -172,6 +183,7 @@ async fn invoke(any: AnyWindowHandle, name: &str, cx: &mut AsyncApp) -> Result<(
         Some(0) => Ok(()),
         Some(2) => bail!("UI Automation finds no node named {name}"),
         Some(3) => bail!("UI Automation offers no Invoke on {name}"),
+        Some(4) => bail!("UI Automation reports {name} enabled"),
         _ => bail!("the UI Automation client failed: {status}"),
     }
 }

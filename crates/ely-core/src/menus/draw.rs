@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -13,7 +14,6 @@ use super::{
 };
 use crate::{
     forms::{Run, surface},
-    i18n,
     navigation::marked,
     primitives::{Icon, IconName, Tooltip},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
@@ -42,9 +42,7 @@ fn row(item: &MenuItem, ix: usize, current: bool, cx: &App) -> Stateful<Div> {
         })
         .aria_label(item.label.clone())
         .aria_selected(current)
-        .when(item.disabled, |row| {
-            row.aria_description(i18n::text(cx, "state.unavailable", &[]))
-        })
+        .when(item.disabled, |row| row.unavailable(cx))
         .relative()
         .flex()
         .items_center()
@@ -128,9 +126,7 @@ pub(super) fn button(
         .border_1()
         .border_color(colors.border)
         .when(current && !item.disabled, |button| button.bg(colors.hover))
-        .when(item.disabled, |button| {
-            button.aria_description(i18n::text(cx, "state.unavailable", &[]))
-        })
+        .when(item.disabled, |button| button.unavailable(cx))
         .when(!item.disabled, |button| {
             let read = press.clone();
             button

@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -361,9 +362,7 @@ impl RenderOnce for Select {
         .when_some(shown.as_ref(), |trigger, choice| {
             trigger.aria_value(choice.label.clone())
         })
-        .when(self.disabled, |trigger| {
-            trigger.aria_description(i18n::text(cx, "state.unavailable", &[]))
-        })
+        .when(self.disabled, |trigger| trigger.unavailable(cx))
         .when_some(
             shown.as_ref().and_then(|choice| choice.icon),
             |trigger, icon| {

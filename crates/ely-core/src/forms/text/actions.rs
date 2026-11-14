@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use gpui::{
     App, ClipboardItem, Context, CursorStyle, InteractiveElement, IntoElement, KeyBinding,
     MouseButton, MouseDownEvent, MouseMoveEvent, ParentElement, Render, Role,
@@ -420,6 +421,7 @@ impl Render for TextInput {
                     .cloned(),
                 |el, name| el.aria_label(name),
             )
+            .when(self.disabled, |el| el.unavailable(cx))
             .when_some(self.field.note.clone(), |el, note| {
                 el.aria_description(note)
             })

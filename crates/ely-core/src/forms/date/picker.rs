@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -117,9 +118,7 @@ pub fn picker_field(
         .role(Role::ComboBox)
         .aria_label(placeholder.clone())
         .when_some(shown.clone(), |field, shown| field.aria_value(shown))
-        .when(disabled, |field| {
-            field.aria_description(text(cx, "state.unavailable", &[]))
-        })
+        .when(disabled, |field| field.unavailable(cx))
         .when(!disabled, |field| {
             let focus_keys = focus.clone();
             field

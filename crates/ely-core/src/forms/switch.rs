@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -8,7 +9,7 @@ use gpui::{
 
 use super::options::OnFlag;
 use crate::{
-    i18n, motion,
+    motion,
     primitives::tab_stop,
     theme::{ActiveTheme, Elevation, Mix, TextSize},
 };
@@ -142,9 +143,7 @@ impl RenderOnce for Switch {
             .when_some(self.label.clone().or(self.name), |row, label| {
                 row.aria_label(label)
             })
-            .when(self.disabled, |row| {
-                row.aria_description(i18n::text(cx, "state.unavailable", &[]))
-            })
+            .when(self.disabled, |row| row.unavailable(cx))
             .track_focus(&focus)
             .flex()
             .items_center()

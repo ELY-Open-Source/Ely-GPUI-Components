@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::{cell::Cell, f32::consts::PI, rc::Rc};
 
 use gpui::{
@@ -155,6 +156,7 @@ impl RenderOnce for Knob {
             .aria_min_numeric_value(min)
             .aria_max_numeric_value(max)
             .aria_numeric_value_step(step)
+            .when(self.disabled, |knob| knob.unavailable(cx))
             .track_focus(&focus)
             .relative()
             .flex_none()

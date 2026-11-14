@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -201,6 +202,7 @@ impl RenderOnce for Tabs {
                     .aria_selected(on)
                     .when(on, |item| item.aria_active_descendant())
                     .aria_label(tab.label.clone())
+                    .when(tab.disabled, |item| item.unavailable(cx))
                     .relative()
                     .flex()
                     .items_center()

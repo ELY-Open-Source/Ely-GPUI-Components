@@ -1,3 +1,4 @@
+use crate::primitives::Unavailable;
 use std::rc::Rc;
 
 use gpui::{
@@ -145,6 +146,7 @@ impl RenderOnce for Rating {
             .aria_min_numeric_value(0.0)
             .aria_max_numeric_value(f64::from(max))
             .aria_numeric_value_step(1.0)
+            .when(self.disabled, |row| row.unavailable(cx))
             .track_focus(&focus)
             .flex()
             .gap_0p5()
