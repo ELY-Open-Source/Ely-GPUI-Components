@@ -29,7 +29,7 @@
 A PR lands by merging its head into `main`, so GitHub marks it merged; fixes follow as commits.
 
 - [x] G18 Pin: `scripts/check.sh` fails to resolve GPUI Kit 0.9.1, which pins `gpui-pre =0.3.12` (zed@d2a4fb6); Ely's three gpui pins follow, with an ADR, the docs that name the pin and a CHANGELOG line; two two-line comments on `main` become one line, so the gate passes again
-- [ ] G19 Issue #7: the date, range, time, date-time, week and period pickers' popups occlude, so a click on the calendar reaches nothing below; the issue's test lands
+- [x] G19 Issue #7: the date, range, time, date-time, week and period pickers' popups occlude, so a click on the calendar reaches nothing below; the issue's test lands
 - [ ] G20 Issue #15: gpui-pre 0.3.11 and 0.3.12 have no AccessKit disabled setter, so Ely cannot set UIA `IsEnabled=false`; the gap goes into `crates/ely-core/AGENTS.md`; the issue gets the finding
 - [ ] G21 PR #5: Enter and Space tests for `Button` and `IconButton` merged over 111 commits of `main`, the import conflict resolved
 - [ ] G22 PR #6: `as_chunks` already on `main`, its first commit is PR #5's; `NetworkGraph::on_node_click` lands with the drag log kept, API snapshot and CHANGELOG line

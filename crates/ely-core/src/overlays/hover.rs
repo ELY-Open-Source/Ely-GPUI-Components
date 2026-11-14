@@ -115,7 +115,6 @@ impl RenderOnce for HoverCard {
         let (over, tall) = (state.clone(), state.clone());
         let card = surface((self.id.clone(), "card"), cx)
             .relative()
-            .occlude()
             .p_4()
             .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
             .on_hover(move |hovered, window, cx| {

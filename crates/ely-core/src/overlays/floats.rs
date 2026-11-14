@@ -87,7 +87,6 @@ impl RenderOnce for FloatingToolbar {
                             .snap_to_window()
                             .child(
                                 surface((self.id.clone(), "bar"), cx)
-                                    .occlude()
                                     .flex()
                                     .items_center()
                                     .gap_0p5()

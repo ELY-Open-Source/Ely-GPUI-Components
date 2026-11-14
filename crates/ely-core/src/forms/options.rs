@@ -189,7 +189,7 @@ pub fn marked_row(
         })
 }
 
-/// The card a floating list sits on.
+/// The card a floating list sits on; it takes the pointer from what lies below.
 #[doc(hidden)]
 pub fn surface(id: impl Into<ElementId>, cx: &App) -> Stateful<Div> {
     let theme = cx.theme();
@@ -202,6 +202,7 @@ pub fn surface(id: impl Into<ElementId>, cx: &App) -> Stateful<Div> {
         .border_color(colors.border)
         .shadow(theme.elevation(Elevation::Floating))
         .text_size(theme.text_size(TextSize::Sm))
+        .occlude()
 }
 
 /// Floats `content` of about `rows` rows under `anchor`, or over it when only above has room; `id` is its owner's.
@@ -350,7 +351,6 @@ impl Popup<'_> {
             })
             .max_w(window.viewport_size().width - theme.window_margin() * 2.0)
             .max_h(theme.list_max_height())
-            .occlude()
             .overflow_y_scroll()
             .when_some(self.scroll, |list, handle| list.track_scroll(handle))
             .p_1()

@@ -271,8 +271,6 @@ pub(super) fn panel(
         .role(Role::Menu)
         .debug_selector(move || format!("menu-panel-{depth}"))
         .relative()
-        // Rows under this panel take no hover.
-        .occlude()
         // Presses here are the menu's, not its host's.
         .on_mouse_down(MouseButton::Left, |_, window, cx| {
             window.prevent_default();
