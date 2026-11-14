@@ -493,3 +493,4 @@
 | T56 park | 1 | FAIL | --story renders no sidebar, so the title probe never existed and story captures (scripts/shots.py) exited 1 |
 | T56 park | 2 | PASS | a capture parks on shell::REST, the sidebar title in a page and a 32px band above the scroll box in a story; the story probe exits 0 with both shots |
 | T56 park | 3 | PASS | on Windows parking also moves the system cursor (capture::point_cursor), so a real cursor mid-screen no longer hovers rows; macOS VideoPlayer top-row change traced to gpui atlas padding: 0, recorded as upstream |
+| G18 | 1 | PASS | codex gpt-6.1-sol xhigh; Kit 0.9.1's manifest pins =0.3.12; the re-dated claims hold in 0.3.12's sources |

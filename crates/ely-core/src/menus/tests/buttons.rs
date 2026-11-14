@@ -200,8 +200,7 @@ fn arrows_lend_the_rows_focus_and_typing_takes_it_back(cx: &mut TestAppContext) 
     cx.update(|window, cx| window.focus_next(cx));
     press("enter", cx);
     assert!(typing(cx), "the filter types first");
-    // A reader hears a mark only under the focused panel.
-    // Up reaches the buttons; right crosses them.
+    // Up reaches the buttons, right crosses them, under the focused panel.
     for key in ["down", "up", "right"] {
         press(key, cx);
         assert!(!typing(cx), "{key} leaves the filter");

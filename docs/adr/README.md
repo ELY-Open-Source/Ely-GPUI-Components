@@ -62,4 +62,5 @@ One record per decision, numbered by date. A superseded record names the one tha
 - [0058 gpui-pre 0.3.10](0058-gpui-pre-0-3-10.md): 2026-10-26, superseded by 0061.
 - [0059 gpui_platform behind a feature](0059-gpui-platform-behind-a-feature.md): 2026-10-26, accepted.
 - [0060 Semver against releases](0060-semver-against-releases.md): 2026-10-26, accepted.
-- [0061 gpui-pre 0.3.11](0061-gpui-pre-0-3-11.md): 2026-11-05, accepted.
+- [0061 gpui-pre 0.3.11](0061-gpui-pre-0-3-11.md): 2026-11-05, superseded by 0063.
+- [0063 gpui-pre 0.3.12](0063-gpui-pre-0-3-12.md): 2026-11-14, accepted.

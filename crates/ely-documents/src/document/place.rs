@@ -252,8 +252,7 @@ impl MarkdownDocument {
             self.reparse(true, cx);
         }
         if !self.read_now(cx) {
-            // A long text reads in the background; the press waits.
-            // Its own write-back counts later; the text itself is kept.
+            // A long text reads in the background; the press waits with the text.
             let text = self.editor.read(cx).text().to_string();
             self.revealing = Some((found, text));
             return cx.notify();

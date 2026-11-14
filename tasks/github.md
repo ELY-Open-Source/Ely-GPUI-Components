@@ -23,3 +23,15 @@
 - [x] G15 Issue #7: BlockEditor turns into Markdown and back; tested. Six reviews: the fifth finding (a slash ended an unquoted HTML value) fixed and tested; the sixth, at the owner's word, passed
 - [x] G16 Issue #7: a selection across blocks: drag or Shift-press selects, copy, cut, delete and typing act on it, undo restores; tested
 - [x] G17 Push, reply on #7 and #12
+
+# GitHub round, 2026-11-14
+
+A PR lands by merging its head into `main`, so GitHub marks it merged; fixes follow as commits.
+
+- [x] G18 Pin: `scripts/check.sh` fails to resolve GPUI Kit 0.9.1, which pins `gpui-pre =0.3.12` (zed@d2a4fb6); Ely's three gpui pins follow, with an ADR, the docs that name the pin and a CHANGELOG line; two two-line comments on `main` become one line, so the gate passes again
+- [ ] G19 Issue #7: the date, range, time, date-time, week and period pickers' popups occlude, so a click on the calendar reaches nothing below; the issue's test lands
+- [ ] G20 Issue #15: gpui-pre 0.3.11 and 0.3.12 have no AccessKit disabled setter, so Ely cannot set UIA `IsEnabled=false`; the gap goes into `crates/ely-core/AGENTS.md`; the issue gets the finding
+- [ ] G21 PR #5: Enter and Space tests for `Button` and `IconButton` merged over 111 commits of `main`, the import conflict resolved
+- [ ] G22 PR #6: `as_chunks` already on `main`, its first commit is PR #5's; `NetworkGraph::on_node_click` lands with the drag log kept, API snapshot and CHANGELOG line
+- [ ] G23 PR #17: MenuBar shows a checked action's mark and honours its disabled flag, tested; its sync-then-deferred double dispatch replaced by one dispatch at the root cause; zh-TW gets a gallery catalog and the i18n docs; `EditorTabs::on_empty` and the 32px title bar land with API snapshot and CHANGELOG lines
+- [ ] G24 Push; a short reply with thanks on #7, #15, #5, #6 and #17; close #7 and #15
