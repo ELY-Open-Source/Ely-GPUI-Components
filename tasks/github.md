@@ -35,3 +35,4 @@ A PR lands by merging its head into `main`, so GitHub marks it merged; fixes fol
 - [x] G22 PR #6: `as_chunks` already on `main`, its first commit is PR #5's; `NetworkGraph::on_node_click` lands with the drag log kept, API snapshot and CHANGELOG line
 - [x] G23 PR #17: MenuBar shows a checked action's mark and honours its disabled flag, tested; its sync-then-deferred double dispatch replaced by one dispatch at the root cause; zh-TW gets a gallery catalog and the i18n docs; `EditorTabs::on_empty` and the 32px title bar land with API snapshot and CHANGELOG lines
 - [x] G24 Push; a short reply with thanks on #7, #15, #5, #6 and #17; close #7 and #15
+- [x] G25 CI: `deny` fails on RUSTSEC-2026-0486, unsound xattr functions in rustix 1.1.5; `Cargo.lock` takes rustix 1.1.6, the fixed release

@@ -504,3 +504,5 @@
 | G23 | 1 | FAIL | the empty tab space ran on a double click alone: no Tab stop, role, name or key path |
 | G23 | 2 | PASS | the empty space is a named Tab stop; Enter runs it, a mouse needs a double click; menu rows dispatch once |
 | G24 | 1 | PASS | five replies name the right commits; #7 and #15 closed; #5, #6 and #17 merged |
+| G25 | 1 | FAIL | `cargo update` also moved windows-sys edges on 9 packages beside rustix |
+| G25 | 2 | PASS | the lock changes rustix's version and checksum alone; 1.1.6 is the fixed release |
