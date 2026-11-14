@@ -501,3 +501,5 @@
 | G22 | 1 | FAIL | a stale index after a data change, the release point unchecked against 4px, and no keyboard or accessible path to a node |
 | G22 | 2 | FAIL | the node label's click ran for a drag inside the label |
 | G22 | 3 | PASS | the label's mouse click holds to 4px; keyboard and touch run; tests count exact calls |
+| G23 | 1 | FAIL | the empty tab space ran on a double click alone: no Tab stop, role, name or key path |
+| G23 | 2 | PASS | the empty space is a named Tab stop; Enter runs it, a mouse needs a double click; menu rows dispatch once |

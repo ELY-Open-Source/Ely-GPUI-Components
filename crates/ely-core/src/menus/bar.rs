@@ -23,7 +23,7 @@ struct Titles {
 }
 
 /// gpui's menu model as rows: actions run through dispatch and show the keys bound to them.
-fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
+pub(super) fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
     items.iter().fold(Menu::new(), |menu, item| match item {
         OwnedMenuItem::Separator => menu.separator(),
         OwnedMenuItem::Submenu(sub) => menu.item(MenuItem::submenu(
@@ -31,7 +31,13 @@ fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
             rows(&sub.items, window),
         )),
         OwnedMenuItem::SystemMenu(os) => menu.item(MenuItem::new(os.name.clone()).disabled(true)),
-        OwnedMenuItem::Action { name, action, .. } => {
+        OwnedMenuItem::Action {
+            name,
+            action,
+            checked,
+            disabled,
+            ..
+        } => {
             let keys = window
                 .highest_precedence_binding_for_action(action.as_ref())
                 .map(|binding| {
@@ -47,8 +53,20 @@ fn rows(items: &[OwnedMenuItem], window: &Window) -> Menu {
                     strokes.join(" ")
                 });
             let action: Rc<Box<dyn Action>> = Rc::new(action.boxed_clone());
-            let row = MenuItem::new(name.clone())
-                .on_click(move |window, cx| window.dispatch_action(action.boxed_clone(), cx));
+            let row = if *checked {
+                MenuItem::check(name.clone(), true)
+            } else {
+                MenuItem::new(name.clone())
+            }
+            .disabled(*disabled)
+            .on_click(move |window, cx| {
+                log::info!(
+                    "menu bar: {}, focus held: {}",
+                    action.name(),
+                    window.focused(cx).is_some()
+                );
+                window.dispatch_action(action.boxed_clone(), cx)
+            });
             menu.item(match keys {
                 Some(keys) => row.keys(keys),
                 None => row,

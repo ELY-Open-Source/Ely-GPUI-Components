@@ -366,7 +366,7 @@ fn windows_controls_end_the_last_header(cx: &mut TestAppContext) {
         column(1, cx),
     );
     assert_eq!(controls.right(), main.right());
-    assert!(controls.left() > main.left() && controls.bottom() <= main.top() + px(38.0));
+    assert!(controls.left() > main.left() && controls.bottom() <= main.top() + px(32.0));
     let close = cx.debug_bounds("caption-Close").expect("a close button");
     cx.simulate_click(close.center(), gpui::Modifiers::none());
     settle(cx);
@@ -382,7 +382,7 @@ fn drawn_traffic_lights_lead_the_first_header(cx: &mut TestAppContext) {
         column(0, cx),
     );
     assert!(lights.left() > side.left() && lights.right() < side.right());
-    assert_eq!(lights.center().y, side.top() + px(19.0));
+    assert_eq!(lights.center().y, side.top() + px(16.0));
 }
 
 /// The shell fills a padded column's width.

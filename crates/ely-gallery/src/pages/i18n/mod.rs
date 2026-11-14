@@ -134,6 +134,15 @@ const CATALOGS: [(&str, &[(&str, &str)]); LOCALES.len()] = [
         ],
     ),
     (
+        "zh-TW",
+        &[
+            ("welcome", "歡迎回來，{name}"),
+            ("files", "{folder}中有{count}個檔案"),
+            ("saved", "上次儲存於{date}"),
+            ("change", "較昨日{change}%"),
+        ],
+    ),
+    (
         "he-IL",
         &[
             ("welcome", "ברוך שובך, {name}"),

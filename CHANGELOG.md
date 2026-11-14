@@ -4,6 +4,10 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`: `LOCALES` gains zh-TW, 繁體中文, with Ely's own copy in Traditional Chinese; zh-CN's name reads 简体中文. Breaking: `LOCALES` is `[Locale; 11]`.
+- `ely-core`: `MenuBar` draws a gpui action's `checked` flag as a check mark and its `disabled` flag as a dimmed row that runs nothing.
+- `ely-core`: `EditorTabs::on_empty` runs on a double click in the strip after the tabs.
+- `ely-core`: a title bar is 32 pixels tall, down from 38; the macOS traffic lights center in it.
 - `ely-charts`: `NetworkGraph::on_node_click` runs with a node's index when it is released within 4 pixels of its press, or activated by Enter or Space; a drag runs nothing.
 - `ely-core`: a disabled control (button, icon button, button group item, checkbox, radio, switch, select, slider, knob, rating, text input, chip, tab, list item, date picker and calendar day, option, menu row, navigation menu link, lightbox button) sets AccessKit's disabled flag, so Windows UI Automation reports `IsEnabled=false` and screen readers hear it dimmed.
 - `ely-core`, `ely-messaging`: every floating card on `forms::surface` takes the pointer, so a click on a date, range, time, date-time, week or period picker's popup, a cascade's columns, a navigation menu or a status popup no longer reaches what lies below.

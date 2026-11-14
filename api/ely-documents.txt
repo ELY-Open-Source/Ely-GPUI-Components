@@ -1158,7 +1158,7 @@ pub struct ely_documents::ReadingProgress
 pub struct ely_documents::ReadingTime
 pub struct ely_documents::RichTextEditor
 pub struct ely_documents::RightPress
-pub struct ely_documents::ShortcodeRun
+pub struct ely_documents::ShortcodeRun(_)
 pub struct ely_documents::Shortcodes
 pub struct ely_documents::Template
 pub struct ely_documents::TemplatePicker

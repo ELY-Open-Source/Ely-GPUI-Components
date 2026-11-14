@@ -212,7 +212,7 @@ impl Theme {
 
     /// A title bar's height.
     pub fn titlebar_height(&self) -> Rems {
-        px_to_rems(38.0)
+        px_to_rems(32.0)
     }
 
     /// Room kept for the macOS traffic lights.

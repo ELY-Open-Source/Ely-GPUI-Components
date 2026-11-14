@@ -6,7 +6,7 @@ use gpui::{
 
 use super::{press, settle};
 use crate::{
-    menus::{MenuBar, PieItem, PieMenu},
+    menus::{MenuBar, PieItem, PieMenu, model::Kind},
     primitives::{FocusScope, IconName},
     theme::Theme,
 };
@@ -102,6 +102,66 @@ fn arrows_move_between_closed_titles(cx: &mut TestAppContext) {
     press("down", cx);
     press("enter", cx);
     assert_eq!(view.read_with(cx, |bar, _| bar.ran.clone()), ["undo"]);
+}
+
+#[gpui::test]
+fn a_click_on_a_row_runs_its_action_once(cx: &mut TestAppContext) {
+    let (view, cx) = bar(cx);
+    press("down", cx);
+    let row = cx
+        .debug_bounds("menu-row-Save")
+        .expect("the File menu is open");
+    cx.simulate_click(row.center(), Modifiers::none());
+    settle(cx);
+    assert_eq!(view.read_with(cx, |bar, _| bar.ran.clone()), ["save"]);
+}
+
+#[gpui::test]
+fn a_mouse_opened_menu_runs_its_row_once_with_nothing_focused(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, cx| Bar {
+        root: cx.focus_handle(),
+        ran: Vec::new(),
+    });
+    settle(cx);
+    cx.simulate_click(point(px(12.0), px(10.0)), Modifiers::none());
+    settle(cx);
+    let row = cx
+        .debug_bounds("menu-row-Save")
+        .expect("a click opened File");
+    cx.simulate_click(row.center(), Modifiers::none());
+    settle(cx);
+    assert_eq!(view.read_with(cx, |bar, _| bar.ran.clone()), ["save"]);
+}
+
+#[gpui::test]
+fn a_bar_row_shows_its_check_and_its_disabled_flag(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, cx| Bar {
+        root: cx.focus_handle(),
+        ran: Vec::new(),
+    });
+    let items = [
+        OwnedMenuItem::Action {
+            name: "Wrap".into(),
+            action: Box::new(Save),
+            os_action: None,
+            checked: true,
+            disabled: false,
+        },
+        OwnedMenuItem::Action {
+            name: "Print".into(),
+            action: Box::new(OpenFile),
+            os_action: None,
+            checked: false,
+            disabled: true,
+        },
+    ];
+    let menu = cx.update(|window, _| crate::menus::bar::rows(&items, window));
+    let wrap = menu.item_at(0, 0).expect("a Wrap row");
+    let print = menu.item_at(1, 0).expect("a Print row");
+    assert!(matches!(wrap.kind, Kind::Check(true)) && !wrap.disabled);
+    assert!(matches!(print.kind, Kind::Run) && print.disabled);
 }
 
 /// Four slices around a big area: Copy on top, then Cut, Paste and Share clockwise.

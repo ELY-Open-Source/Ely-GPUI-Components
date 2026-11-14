@@ -7,9 +7,10 @@ mod ja;
 mod ko;
 mod vi;
 mod zh_cn;
+mod zh_tw;
 
 /// Ely's table per locale; en-GB reads the English one.
-const TABLES: [(&str, &[(&str, &str)]); 10] = [
+const TABLES: [(&str, &[(&str, &str)]); 11] = [
     ("en-US", en::TABLE),
     ("en-GB", en::TABLE),
     ("es-ES", es::TABLE),
@@ -19,6 +20,7 @@ const TABLES: [(&str, &[(&str, &str)]); 10] = [
     ("ko-KR", ko::TABLE),
     ("vi-VN", vi::TABLE),
     ("zh-CN", zh_cn::TABLE),
+    ("zh-TW", zh_tw::TABLE),
     ("he-IL", he::TABLE),
 ];
 

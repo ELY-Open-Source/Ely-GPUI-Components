@@ -1798,7 +1798,7 @@ impl<const N: usize> ely_core::theme::Mix for [gpui::color::Hsla; N]
 pub const ely_core::forms::COUNTRIES: [(&str, &str, &str, &str); 6]
 pub const ely_core::forms::PICTURES: [&str; 5]
 pub const ely_core::forms::RelativeRange::ALL: [Self; 8]
-pub const ely_core::i18n::LOCALES: [ely_core::i18n::Locale; 10]
+pub const ely_core::i18n::LOCALES: [ely_core::i18n::Locale; 11]
 pub const ely_core::layout::WORKSPACE_VERSION: u32
 pub const ely_core::motion::BASE: core::time::Duration
 pub const ely_core::motion::FAST: core::time::Duration
@@ -4414,6 +4414,7 @@ pub fn ely_core::navigation::EditorTabs::into_element(self) -> Self::Element
 pub fn ely_core::navigation::EditorTabs::new(impl core::convert::Into<gpui::window::ElementId>, impl core::iter::traits::collect::IntoIterator<Item = ely_core::navigation::EditorTab>) -> Self
 pub fn ely_core::navigation::EditorTabs::on_close(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::navigation::EditorTabs::on_context(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, gpui::geometry::Point<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
+pub fn ely_core::navigation::EditorTabs::on_empty(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::navigation::EditorTabs::on_keep(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::navigation::EditorTabs::on_pin(self, impl core::ops::function::Fn(&gpui_shared_string::SharedString, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::navigation::EditorTabs::on_reorder(self, impl core::ops::function::Fn(usize, usize, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self

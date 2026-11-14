@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use gpui::{
-    AnyElement, App, ElementId, EntityId, InteractiveElement, IntoElement, MouseButton,
+    AnyElement, App, ClickEvent, ElementId, EntityId, InteractiveElement, IntoElement, MouseButton,
     ParentElement, Pixels, Point, RenderOnce, Role, ScrollHandle, SharedString,
     StatefulInteractiveElement, Styled, Window, canvas, div, prelude::*,
 };
@@ -11,7 +11,7 @@ use crate::{
     buttons::{ButtonVariant, IconButton},
     forms::Choice,
     i18n,
-    primitives::{DragGhost, Icon, IconName},
+    primitives::{DragGhost, FocusRing, Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
 };
 
@@ -72,6 +72,7 @@ struct TabDrag {
 type OnTab = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnReorder = Rc<dyn Fn(usize, usize, &mut Window, &mut App)>;
 type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
+type OnEmpty = Rc<dyn Fn(&mut Window, &mut App)>;
 
 /// Document tabs: close, pin, drag to reorder, keep a preview. Every tab is listed at the end.
 ///
@@ -96,6 +97,7 @@ pub struct EditorTabs {
     on_keep: Option<OnTab>,
     on_reorder: Option<OnReorder>,
     on_context: Option<OnContext>,
+    on_empty: Option<OnEmpty>,
 }
 
 impl EditorTabs {
@@ -111,6 +113,7 @@ impl EditorTabs {
             on_keep: None,
             on_reorder: None,
             on_context: None,
+            on_empty: None,
         }
     }
 
@@ -171,6 +174,12 @@ impl EditorTabs {
         handler: impl Fn(usize, usize, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.on_reorder = Some(Rc::new(handler));
+        self
+    }
+
+    /// A double click on the empty space after the tabs, or Enter on it, as for a new document.
+    pub fn on_empty(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
+        self.on_empty = Some(Rc::new(handler));
         self
     }
 }
@@ -383,8 +392,30 @@ impl RenderOnce for EditorTabs {
                 None => menu,
             }
         });
+        let tab_h = theme.control_height(ControlSize::Lg);
+        let new_tab = i18n::text(cx, "tabs.new", &[]);
+        let empty = self.on_empty.map(|handler| {
+            div()
+                .id((self.id.clone(), "empty"))
+                .debug_selector(|| "tab-empty".into())
+                .role(Role::Button)
+                .aria_label(new_tab)
+                .tab_index(0)
+                .border_1()
+                .border_color(gpui::transparent_black())
+                .focus_ring(cx)
+                .flex_1()
+                .h(tab_h)
+                .min_w_0()
+                .on_click(move |event, window, cx| {
+                    if matches!(event, ClickEvent::Keyboard(_)) || event.click_count() == 2 {
+                        log::info!("editor tabs: empty");
+                        handler(window, cx);
+                    }
+                })
+        });
         div()
-            .id(self.id)
+            .id(self.id.clone())
             .flex()
             .items_center()
             .bg(colors.sunken)
@@ -399,6 +430,7 @@ impl RenderOnce for EditorTabs {
                     .overflow_x_scroll()
                     .track_scroll(&scroll)
                     .children(tabs)
+                    .children(empty)
                     .children(follow.map(|(followed, selected, scroll)| {
                         canvas(
                             move |_, window, cx| {
