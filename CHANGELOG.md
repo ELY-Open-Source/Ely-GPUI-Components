@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`: a clickable `StatusBarItem` is a Tab stop with a focus ring; Enter and Space press it.
 - `ely-core`: `LOCALES` gains zh-TW, 繁體中文, with Ely's own copy in Traditional Chinese; zh-CN's name reads 简体中文. Breaking: `LOCALES` is `[Locale; 11]`.
 - `ely-core`: `MenuBar` draws a gpui action's `checked` flag as a check mark and its `disabled` flag as a dimmed row that runs nothing.
 - `ely-core`: `EditorTabs::on_empty` runs on a double click in the strip after the tabs.

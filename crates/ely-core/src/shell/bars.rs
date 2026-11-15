@@ -1,12 +1,12 @@
 use gpui::{
-    AnyElement, App, ClickEvent, Div, ElementId, InteractiveElement, IntoElement, ParentElement,
-    RenderOnce, Role, SharedString, StatefulInteractiveElement, StyleRefinement, Styled, Window,
-    div, prelude::*,
+    AnyElement, App, ClickEvent, Div, ElementId, InteractiveElement, IntoElement, MouseButton,
+    ParentElement, RenderOnce, Role, SharedString, StatefulInteractiveElement, StyleRefinement,
+    Styled, Window, div, prelude::*,
 };
 use smallvec::SmallVec;
 
 use crate::{
-    primitives::{Icon, IconName, Tooltip},
+    primitives::{FocusRing, Icon, IconName, Tooltip},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
     typography::Ellipsis,
 };
@@ -321,8 +321,14 @@ impl RenderOnce for StatusBarItem {
                     Some(name) => item.aria_label(name),
                     None => item,
                 };
-                item.cursor_pointer()
+                // A Tab stop: Enter and Space press it.
+                item.tab_index(0)
+                    .border_1()
+                    .border_color(gpui::transparent_black())
+                    .focus_ring(cx)
+                    .cursor_pointer()
                     .hover(|style| style.bg(hover))
+                    .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
                     .on_click(handler)
             })
     }

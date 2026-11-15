@@ -1,4 +1,5 @@
 mod border;
+mod status;
 mod title;
 mod zoom;
 
