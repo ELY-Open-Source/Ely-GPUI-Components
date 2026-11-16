@@ -10,6 +10,7 @@ use crate::{
     forms::OnValue,
     primitives::{FocusRing, Icon, IconName},
     theme::{ActiveTheme, IconSize, Radius, TextSize},
+    typography::Ellipsis,
 };
 
 /// Gets a section's title and whether it is now folded.
@@ -137,10 +138,14 @@ impl RenderOnce for Sections {
             let fold = self.fold.as_ref().filter(|_| !fixed);
             let folded = fold.is_some_and(|(folded, _)| folded.contains(&title));
             let words = div()
+                .min_w_0()
+                .overflow_hidden()
+                .whitespace_nowrap()
                 .font_weight(FontWeight::SEMIBOLD)
                 .text_color(colors.fg_muted)
-                .child(title.clone());
+                .child(Ellipsis::new(title.clone()));
             let head = div()
+                .min_w_0()
                 .px_3()
                 .flex()
                 .items_center()
@@ -171,9 +176,11 @@ impl RenderOnce for Sections {
                         .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
                         .on_click(move |_, window, cx| on_fold(&folding, !folded, window, cx))
                         .child(
-                            Icon::new(chevron)
-                                .size(IconSize::Xs)
-                                .color(colors.fg_subtle),
+                            div().flex_none().child(
+                                Icon::new(chevron)
+                                    .size(IconSize::Xs)
+                                    .color(colors.fg_subtle),
+                            ),
                         )
                         .child(words)
                         .into_any_element()
@@ -184,15 +191,23 @@ impl RenderOnce for Sections {
                 .items_center()
                 .justify_between()
                 .pr_3()
-                .child(div().flex().items_baseline().gap_2().child(head).children(
-                    self.counted.then(|| {
-                        div()
-                            .text_size(theme.text_size(TextSize::Xs))
-                            .text_color(colors.fg_subtle)
-                            .child(count.to_string())
-                    }),
-                ))
-                .children(badge);
+                .child(
+                    div()
+                        .flex_1()
+                        .min_w_0()
+                        .flex()
+                        .items_baseline()
+                        .gap_2()
+                        .child(head)
+                        .children(self.counted.then(|| {
+                            div()
+                                .flex_none()
+                                .text_size(theme.text_size(TextSize::Xs))
+                                .text_color(colors.fg_subtle)
+                                .child(count.to_string())
+                        })),
+                )
+                .children(badge.map(|badge| div().flex_none().child(badge)));
             let lit = self
                 .selected
                 .clone()

@@ -1,6 +1,9 @@
 //! Folding sections, and a right press on a box.
 
-use gpui::{Entity, IntoElement, Modifiers, MouseButton, TestAppContext};
+use gpui::{
+    Entity, IntoElement, Modifiers, MouseButton, ParentElement as _, Styled as _, TestAppContext,
+    div, px,
+};
 
 use super::{Mailing, heard, mailing, note, press, tab_to};
 use crate::{
@@ -34,6 +37,40 @@ fn a_folded_section_hides_its_boxes_and_sums_their_mail(cx: &mut TestAppContext)
     let (_, cx) = mailing(|owner| list(owner, &["Labels"]), cx);
     assert!(cx.debug_bounds("item-selected-Clients").is_none());
     assert!(cx.debug_bounds("folded-unread Labels").is_some());
+}
+
+macro_rules! long {
+    () => {
+        "someone.with.a.long.address@example.com"
+    };
+}
+const LONG: &str = long!();
+
+fn narrow(owner: Entity<Mailing>) -> gpui::AnyElement {
+    let list = MailboxList::new("boxes")
+        .section(LONG, [Mailbox::label("atrium", "Atrium", 0).unread(224)])
+        .folded([LONG.to_string()])
+        .on_fold(move |title, folded, _, cx| note(&owner, format!("fold {title} {folded}"), cx));
+    div().w(px(160.0)).child(list).into_any_element()
+}
+
+#[gpui::test]
+fn a_narrow_column_shortens_the_title_and_keeps_the_count(cx: &mut TestAppContext) {
+    let (_, cx) = mailing(narrow, cx);
+    let badge = cx
+        .debug_bounds(concat!("folded-unread ", long!()))
+        .expect("the count");
+    let title = cx
+        .debug_bounds(concat!("fold ", long!()))
+        .expect("the title");
+    assert!(
+        badge.right() <= px(160.0),
+        "the count stays in the column: {badge:?}"
+    );
+    assert!(
+        title.right() <= badge.left(),
+        "the title gives way: {title:?} {badge:?}"
+    );
 }
 
 #[gpui::test]
