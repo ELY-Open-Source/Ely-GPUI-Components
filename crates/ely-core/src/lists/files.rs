@@ -124,27 +124,19 @@ fn nodes(
         folders.sort_by_key(|(name, _)| name.to_lowercase());
         for (name, inner) in folders {
             let path = format!("{prefix}{name}");
-            let (found, inner_changed) =
-                walk(inner, &format!("{path}/"), query, state, open, icons);
+            let inside = format!("{path}/");
             let named = !query.is_empty() && matches(name, query);
-            if found.is_empty() && !named {
+            // A folder found by name keeps all it holds, folded.
+            let (children, inner_changed) = match named {
+                true => walk(inner, &inside, "", state, &mut Vec::new(), icons),
+                false => walk(inner, &inside, query, state, open, icons),
+            };
+            if children.is_empty() && !named {
                 continue;
             }
-            if !query.is_empty() && !found.is_empty() {
+            if !query.is_empty() && !named {
                 open.push(path.clone().into());
             }
-            // A folder found by name keeps all it holds.
-            let (children, inner_changed) = match named {
-                true => walk(
-                    inner,
-                    &format!("{path}/"),
-                    "",
-                    state,
-                    &mut Vec::new(),
-                    icons,
-                ),
-                false => (found, inner_changed),
-            };
             changed |= inner_changed;
             let node = TreeNode::new(path, name.clone())
                 .icon(IconName::Folder)
@@ -374,6 +366,23 @@ mod tests {
         let (labels, open) = shown("ui");
         assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
         assert_eq!(open, ["src"].map(SharedString::from));
+        // `u` names `ui` and a file in it: `ui` stays folded.
+        let (labels, open) = shown("u");
+        assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
+        assert_eq!(open, ["src"].map(SharedString::from));
+        // `s` names `src`, and `ui` in it holds a match.
+        let (labels, open) = shown("s");
+        let all = [
+            "assets",
+            "logo.svg",
+            "src •",
+            "ui •",
+            "Button.rs M",
+            "app.rs",
+            "main.rs",
+        ];
+        assert_eq!(labels, all);
+        assert!(open.is_empty(), "{open:?}");
     }
 
     struct Project(Option<SharedString>);
