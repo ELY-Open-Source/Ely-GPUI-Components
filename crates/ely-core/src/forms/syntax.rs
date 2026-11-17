@@ -20,32 +20,22 @@ pub enum CommentStart {
     Anywhere,
     /// At line start or after a space (YAML).
     Spaced,
-    /// Where a Shell word starts, not after an expansion's `)`.
-    Word,
+    /// Where Bash's lexer starts one.
+    Bash,
 }
 
 impl CommentStart {
-    /// Whether the mark opens a comment after `before`.
-    pub(crate) fn after(self, before: &str, shut_expansion: bool) -> bool {
-        let Some(last) = before.chars().next_back() else {
-            return true;
-        };
+    /// Whether the mark at `at` opens a comment; `marks` are Bash's.
+    pub(crate) fn opens(self, source: &str, at: usize, marks: &[usize]) -> bool {
         match self {
             Self::Anywhere => true,
-            Self::Spaced => last.is_whitespace(),
-            Self::Word => {
-                !escaped(&before[..before.len() - last.len_utf8()])
-                    && (last.is_whitespace()
-                        || matches!(last, ';' | '&' | '|' | '(' | '<' | '>')
-                        || (last == ')' && !shut_expansion))
-            }
+            Self::Spaced => source[..at]
+                .chars()
+                .next_back()
+                .is_none_or(char::is_whitespace),
+            Self::Bash => marks.binary_search(&at).is_ok(),
         }
     }
-}
-
-/// Whether an odd run of backslashes ends `before`.
-pub(crate) fn escaped(before: &str) -> bool {
-    before.chars().rev().take_while(|ch| *ch == '\\').count() % 2 == 1
 }
 
 impl Syntax {
@@ -103,7 +93,7 @@ const RUBY: Syntax = Syntax::new("#", &[
 ], &["true", "false", "nil", "self"]);
 
 #[rustfmt::skip]
-const SHELL: Syntax = Syntax { comment_start: CommentStart::Word, ..Syntax::new("#", &[
+const SHELL: Syntax = Syntax { comment_start: CommentStart::Bash, ..Syntax::new("#", &[
     "case", "do", "done", "elif", "else", "esac", "export", "fi", "for", "function", "if", "in",
     "local", "return", "then", "until", "while",
 ], &["true", "false"]) };
