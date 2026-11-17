@@ -254,7 +254,6 @@ fn an_area_shows_its_thumb_unhovered_when_bars_stay(cx: &mut TestAppContext) {
     cx.simulate_mouse_move(point(px(350.), px(250.)), None, Modifiers::none());
     // Past the hold and the fade.
     let later = |cx: &mut gpui::VisualTestContext| {
-        std::thread::sleep(std::time::Duration::from_millis(1500));
         cx.executor()
             .advance_clock(std::time::Duration::from_millis(1500));
         cx.update(|window, _| window.refresh());
@@ -282,7 +281,6 @@ fn an_area_turned_to_stay_mid_hold_never_wakes(cx: &mut TestAppContext) {
     cx.update(|window, _| window.refresh());
     cx.run_until_parked();
     let from = cx.update(|_, app| view.read(app).0);
-    std::thread::sleep(std::time::Duration::from_millis(1500));
     cx.executor()
         .advance_clock(std::time::Duration::from_millis(1500));
     cx.run_until_parked();
