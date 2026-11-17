@@ -299,3 +299,9 @@ fn a_change_that_makes_a_block_another_kind_is_refused() {
     let off = ran("> [!NOTE]\n> x‸", BlockCommand::Quote);
     assert_eq!(off, Ok("x‸".to_string()));
 }
+
+#[test]
+fn a_heading_in_an_alert_s_first_paragraph_keeps_the_alert() {
+    let out = ok("> [!NOTE]\n> h‸", BlockCommand::Heading(2));
+    assert_eq!(out, "> [!NOTE]\n> ## h‸");
+}

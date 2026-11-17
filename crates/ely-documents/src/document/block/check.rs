@@ -150,7 +150,19 @@ impl<'a> Shown<'a> {
                     // The rest are the tree's own nodes: goals find them.
                     let rest = &quote.children[1..];
                     let head = &body[..body.len() - rest.len()];
-                    return (head.iter().chain(rest)).for_each(|kid| self.read(kid, kind, out));
+                    // The head stands for the marker's paragraph.
+                    let first = quote.children.first();
+                    let loose = match self.goal {
+                        Some((target, Goal::Relevel))
+                            if first.is_some_and(|first| std::ptr::eq(first, target)) =>
+                        {
+                            LOOSE
+                        }
+                        _ => 0,
+                    };
+                    head.iter()
+                        .for_each(|kid| self.read(kid, kind | loose, out));
+                    return rest.iter().for_each(|kid| self.read(kid, kind, out));
                 }
                 return self.kids(node, kind, out);
             }
