@@ -1,5 +1,9 @@
 //! Bash's lexer, read for where comments start.
 
+mod delimiter;
+
+use delimiter::unquoted;
+
 /// Byte offsets of every `#` that opens a Bash comment.
 pub(crate) fn comments(source: &str) -> Vec<usize> {
     let mut lexer = Lexer {
@@ -48,10 +52,18 @@ const OPERATORS: [&[u8]; 21] = [
 ];
 
 /// Reserved words after which a command starts.
-const OPENERS: [&[u8]; 15] = [
+const OPENERS: [&[u8]; 13] = [
     b"then", b"do", b"done", b"else", b"elif", b"fi", b"if", b"while", b"until", b"esac", b"{",
-    b"}", b"!", b"time", b"coproc",
+    b"}", b"!",
 ];
+
+/// What `time` or `coproc` leaves open.
+#[derive(Clone, Copy, PartialEq)]
+enum Prefix {
+    None,
+    Time,
+    Coproc,
+}
 
 struct Lexer<'a> {
     s: &'a [u8],
@@ -69,6 +81,7 @@ impl Lexer<'_> {
     /// Reads commands until `until` closes them.
     fn list(&mut self, until: Until) -> Stop {
         let mut command = true;
+        let mut prefix = Prefix::None;
         loop {
             match self.token() {
                 Token::End => return Stop::End,
@@ -92,17 +105,29 @@ impl Lexer<'_> {
                         self.token();
                     }
                 }
-                Token::Operator(_) => command = true,
+                Token::Operator(_) => {
+                    command = true;
+                    prefix = Prefix::None;
+                }
                 Token::Word { start, end, plain } => {
-                    let word = &self.s[start..end];
+                    let word = self.text(start, end);
+                    let word = word.as_slice();
+                    let after = std::mem::replace(&mut prefix, Prefix::None);
                     if !(command && plain) {
                         command = false;
                     } else if word == b"case" {
                         self.case();
                     } else if word == b"esac" && until == Until::Clause {
                         return Stop::Esac;
+                    } else if word == b"time"
+                        || (after == Prefix::Time && matches!(word, b"-p" | b"--"))
+                    {
+                        prefix = Prefix::Time;
+                    } else if word == b"coproc" {
+                        prefix = Prefix::Coproc;
                     } else {
-                        command = OPENERS.contains(&word);
+                        // A coprocess's name leaves command position.
+                        command = OPENERS.contains(&word) || after == Prefix::Coproc;
                     }
                 }
             }
@@ -115,7 +140,9 @@ impl Lexer<'_> {
         loop {
             match self.token() {
                 Token::Newline => {}
-                Token::Word { start, end, plain } if plain && &self.s[start..end] == b"in" => break,
+                Token::Word { start, end, plain } if plain && self.text(start, end) == b"in" => {
+                    break;
+                }
                 _ => return,
             }
         }
@@ -127,7 +154,7 @@ impl Lexer<'_> {
                     Token::End => return,
                     Token::Newline => {}
                     Token::Word { start, end, plain }
-                        if first && plain && &self.s[start..end] == b"esac" =>
+                        if first && plain && self.text(start, end) == b"esac" =>
                     {
                         return;
                     }
@@ -198,12 +225,7 @@ impl Lexer<'_> {
         let Token::Word { end, .. } = self.word() else {
             return;
         };
-        let delimiter = self.s[start..end]
-            .iter()
-            .copied()
-            .filter(|b| !matches!(b, b'\'' | b'"' | b'\\'))
-            .collect();
-        self.docs.push((delimiter, tabs));
+        self.docs.push((unquoted(&self.s[start..end]), tabs));
     }
 
     /// Skips the bodies of here-docs begun on the last line.
@@ -228,6 +250,43 @@ impl Lexer<'_> {
         }
     }
 
+    /// A word's bytes, line continuations removed.
+    fn text(&self, start: usize, end: usize) -> Vec<u8> {
+        let mut text = Vec::with_capacity(end - start);
+        let mut at = start;
+        while at < end {
+            if self.s[at] == b'\\' && self.s.get(at + 1) == Some(&b'\n') {
+                at += 2;
+            } else {
+                text.push(self.s[at]);
+                at += 1;
+            }
+        }
+        text
+    }
+
+    /// A backquoted command, read as Shell up to its close.
+    fn backtick(&mut self) {
+        let start = self.at;
+        while let Some(byte) = self.byte(self.at) {
+            match byte {
+                b'\\' => self.at += 2,
+                b'`' => break,
+                _ => self.at += 1,
+            }
+        }
+        let close = self.at.min(self.s.len());
+        let mut inner = Lexer {
+            s: &self.s[..close],
+            at: start,
+            marks: Vec::new(),
+            docs: Vec::new(),
+        };
+        inner.list(Until::End);
+        self.marks.extend(inner.marks);
+        self.at = (close + 1).min(self.s.len());
+    }
+
     /// Reads one word, quotes and expansions inside it.
     fn word(&mut self) -> Token {
         let start = self.at;
@@ -243,7 +302,7 @@ impl Lexer<'_> {
                 }
                 b'<' | b'>' | b'(' => break,
                 b'\\' => {
-                    plain = false;
+                    plain &= next == Some(b'\n');
                     self.at = (self.at + 2).min(self.s.len());
                 }
                 b'\'' => {
@@ -259,7 +318,7 @@ impl Lexer<'_> {
                 b'`' => {
                     plain = false;
                     self.at += 1;
-                    self.until(b'`', true);
+                    self.backtick();
                 }
                 b'$' => {
                     self.at += 1;
@@ -301,7 +360,7 @@ impl Lexer<'_> {
                 b'\\' => self.at += 2,
                 b'`' => {
                     self.at += 1;
-                    self.until(b'`', true);
+                    self.backtick();
                 }
                 b'$' => {
                     self.at += 1;

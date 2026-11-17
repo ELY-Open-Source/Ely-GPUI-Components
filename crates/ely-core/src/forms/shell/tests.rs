@@ -188,6 +188,40 @@ const CASES: &[(&str, bool, &[&str])] = &[
     ("echo $'a\\'b'# return 42", false, &[]),
     ("f() { echo y; }; f # return 42", true, &[]),
     ("echo <<<x # return 42", true, &[]),
+    (
+        "echo `echo hi # inner\nprintf y` # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "echo \"`echo hi # inner\nprintf y`\" # tail",
+        true,
+        &["# inner"],
+    ),
+    ("cat <<'E\\OF'\n# body\nE\\OF\necho x # tail", true, &[]),
+    ("cat <<$'EOF'\n# body\nEOF\necho x # tail", true, &[]),
+    ("cat <<E\\\nOF\n# body\nEOF\necho x # tail", true, &[]),
+    ("cat <<\"E\\\"OF\"\n# body\nE\"OF\necho x # tail", true, &[]),
+    ("echo $(c\\\nase a in a) echo y;; esac)#tail", false, &[]),
+    ("echo $(case a i\\\nn a) echo y;; esac)#tail", false, &[]),
+    ("echo $(case a in a) echo y;; es\\\nac)#tail", false, &[]),
+    (
+        "echo $(time -p case a in a) echo y;; esac)#tail",
+        false,
+        &[],
+    ),
+    (
+        "echo $(time -p -- case a in a) echo y;; esac)#tail",
+        false,
+        &[],
+    ),
+    ("echo $(time case a in a) echo y;; esac)#tail", false, &[]),
+    (
+        "echo $(coproc N case a in a) echo y;; esac)#tail",
+        false,
+        &[],
+    ),
+    ("coproc N { echo y; }; wait # tail", true, &[]),
 ];
 
 #[test]
