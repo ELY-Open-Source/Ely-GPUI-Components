@@ -81,7 +81,7 @@ pub(super) fn draw(
     lines: bool,
     split: bool,
 ) -> Vec<Drawn> {
-    let dom = fragment(&format!("{}{}{}", wrap.0, written.html, wrap.1), "body");
+    let dom = fragment(&[wrap.0, &written.html, wrap.1].concat(), "body");
     let mut draw = Draw {
         dom: &dom,
         chunks: &written.chunks,

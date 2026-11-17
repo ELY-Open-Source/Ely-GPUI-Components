@@ -440,13 +440,13 @@ impl<'a> Reader<'a> {
             other => unreachable!("{other:?} is no inline outside MDX"),
         };
         // A container is the element GitHub writes.
-        out.html.push_str(&format!("<{name}{attributes}>"));
+        out.html.extend(["<", name, &attributes, ">"]);
         let autolink =
             matches!(node, mdast::Node::Link(_)) && !self.source[span(node)].starts_with('[');
         for child in children {
             self.write_into(child, out, images, (verbatim || autolink, table, alt));
         }
-        out.html.push_str(&format!("</{name}>"));
+        out.html.extend(["</", name, ">"]);
     }
 }
 
@@ -470,9 +470,9 @@ fn image(images: &[Picture], index: usize, link: Option<String>) -> Option<Node>
 
 /// `text` inside a `name` element with `attributes`.
 fn wrapped(out: &mut Written, name: &str, attributes: &str, text: &str) {
-    out.html.push_str(&format!("<{name}{attributes}>"));
+    out.html.extend(["<", name, attributes, ">"]);
     out.text(text);
-    out.html.push_str(&format!("</{name}>"));
+    out.html.extend(["</", name, ">"]);
 }
 
 /// Text left between images, unless it is blank.

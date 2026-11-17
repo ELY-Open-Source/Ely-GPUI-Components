@@ -64,6 +64,11 @@ impl Dom {
 
 /// `html` parsed as the children of a `context` element.
 pub(crate) fn fragment(html: &str, context: &str) -> Dom {
+    if context == "body"
+        && let Some(dom) = nested(html)
+    {
+        return dom;
+    }
     let context = QualName::new(None, ns!(html), LocalName::from(context));
     parse_fragment(
         Sink::default(),
@@ -73,6 +78,137 @@ pub(crate) fn fragment(html: &str, context: &str) -> Dom {
         false,
     )
     .one(html)
+}
+
+/// Well-nested markdown markup as html5ever builds it; else `None`.
+fn nested(html: &str) -> Option<Dom> {
+    if html.contains('\0') {
+        return None;
+    }
+    // HTML's input stream reads line endings as line feeds.
+    let html = match html.contains('\r') {
+        true => Cow::Owned(html.replace("\r\n", "\n").replace('\r', "\n")),
+        false => Cow::Borrowed(html),
+    };
+    let sink = Sink::default();
+    let root = sink.make(
+        Data::Element {
+            attributes: Vec::new(),
+        },
+        element("html"),
+    );
+    sink.append(&0, NodeOrText::AppendNode(root));
+    let mut open: Vec<(usize, &str)> = Vec::new();
+    let mut rest = &*html;
+    while !rest.is_empty() {
+        let (parent, name) = open
+            .last()
+            .map_or((root, None), |(node, name)| (*node, Some(*name)));
+        let Some(tag) = rest.strip_prefix('<') else {
+            let end = rest.find('<').unwrap_or(rest.len());
+            // Text in a table's rows moves out of it.
+            if matches!(name, Some("table" | "tbody" | "tr")) {
+                return None;
+            }
+            let text = sink.make(Data::Text(decoded(&rest[..end])?), unnamed());
+            sink.append(&parent, NodeOrText::AppendNode(text));
+            rest = &rest[end..];
+            continue;
+        };
+        let end = tag.find('>')?;
+        rest = &tag[end + 1..];
+        if let Some(closing) = tag[..end].strip_prefix('/') {
+            match open.pop() {
+                Some((_, opened)) if opened == closing => continue,
+                _ => return None,
+            }
+        }
+        let (tag, written) = tag[..end].split_once(' ').unwrap_or((&tag[..end], ""));
+        if !fits(tag, name) || (tag == "a" && open.iter().any(|(_, name)| *name == "a")) {
+            return None;
+        }
+        let node = sink.make(
+            Data::Element {
+                attributes: attributes(written)?,
+            },
+            element(tag),
+        );
+        sink.append(&parent, NodeOrText::AppendNode(node));
+        if !matches!(tag, "br" | "img") {
+            open.push((node, tag));
+        }
+    }
+    open.is_empty().then(|| sink.finish())
+}
+
+/// Whether markdown's `name` opens in `parent` as written.
+fn fits(name: &str, parent: Option<&str>) -> bool {
+    match name {
+        "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "table" => parent.is_none(),
+        "tbody" => parent == Some("table"),
+        "tr" => parent == Some("tbody"),
+        "td" => parent == Some("tr"),
+        "strong" | "em" | "del" | "a" | "code" | "span" | "br" | "img" => {
+            !matches!(parent, Some("table" | "tbody" | "tr"))
+        }
+        _ => false,
+    }
+}
+
+fn element(name: &str) -> QualName {
+    QualName::new(None, ns!(html), LocalName::from(name))
+}
+
+/// Attributes written ` name` or ` name="value"`, each once.
+fn attributes(mut rest: &str) -> Option<Vec<Attribute>> {
+    let mut out: Vec<Attribute> = Vec::new();
+    while !rest.is_empty() {
+        let end = rest.find([' ', '=']).unwrap_or(rest.len());
+        let name = &rest[..end];
+        let odd = |ch: char| ch.is_ascii_uppercase() || "\"'<>/\t\n\x0c".contains(ch);
+        if name.is_empty() || name.contains(odd) || out.iter().any(|a| &*a.name.local == name) {
+            return None;
+        }
+        rest = &rest[end..];
+        let value = match rest.strip_prefix("=\"") {
+            Some(quoted) => {
+                let close = quoted.find('"')?;
+                rest = &quoted[close + 1..];
+                decoded(&quoted[..close])?
+            }
+            None => String::new(),
+        };
+        if !rest.is_empty() {
+            rest = rest.strip_prefix(' ').filter(|rest| !rest.is_empty())?;
+        }
+        out.push(Attribute {
+            name: QualName::new(None, ns!(), LocalName::from(name)),
+            value: value.into(),
+        });
+    }
+    Some(out)
+}
+
+/// Text with the references `escaped` writes read; `None` at others.
+fn decoded(text: &str) -> Option<String> {
+    let mut out = String::with_capacity(text.len());
+    let mut rest = text;
+    while let Some(at) = rest.find('&') {
+        out.push_str(&rest[..at]);
+        rest = &rest[at..];
+        let (reference, ch) = [
+            ("&amp;", '&'),
+            ("&lt;", '<'),
+            ("&gt;", '>'),
+            ("&quot;", '"'),
+        ]
+        .into_iter()
+        .find(|(reference, _)| rest.starts_with(reference))?;
+        out.push(ch);
+        rest = &rest[reference.len()..];
+    }
+    out.push_str(rest);
+    Some(out)
 }
 
 struct Sink {

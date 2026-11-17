@@ -135,13 +135,12 @@ impl Written {
     /// Marks where a chunk written at `span` starts drawing.
     pub(super) fn chunk(&mut self, span: Range<usize>, escapes: Escapes) {
         self.html.push(OPEN);
-        let index = format!("{:x}", self.chunks.len());
-        for digit in index.bytes() {
-            let value = match digit {
-                b'0'..=b'9' => digit - b'0',
-                _ => digit - b'a' + 10,
-            };
-            self.html.push(DIGITS[usize::from(value)]);
+        let index = self.chunks.len();
+        // Hex digits, most significant first, as `{:x}` writes them.
+        let mut shift = (usize::BITS - index.leading_zeros()).div_ceil(4).max(1) * 4;
+        while shift > 0 {
+            shift -= 4;
+            self.html.push(DIGITS[(index >> shift) & 0xF]);
         }
         self.html.push(CLOSE);
         self.chunks.push((span, escapes));
@@ -149,7 +148,7 @@ impl Written {
 
     /// Text, escaped so the parser reads it as text.
     pub(super) fn text(&mut self, text: &str) {
-        self.html.push_str(&escaped(text));
+        escape(&mut self.html, text, |out, ch| out.extend([ESC, ch]));
     }
 
     /// Markup as written; GFM's tag filter shows some as text.
@@ -204,27 +203,29 @@ impl Written {
 
 /// `text` safe as HTML text.
 pub(super) fn escaped(text: &str) -> String {
-    escape(text, |out, ch| out.extend([ESC, ch]))
+    let mut out = String::with_capacity(text.len());
+    escape(&mut out, text, |out, ch| out.extend([ESC, ch]));
+    out
 }
 
 /// `text` safe as a quoted attribute value.
 pub(super) fn quoted(text: &str) -> String {
-    escape(text, |out, ch| out.push_str(&reference(ch)))
+    let mut out = String::with_capacity(text.len());
+    escape(&mut out, text, |out, ch| out.push_str(&reference(ch)));
+    out
 }
 
-fn escape(text: &str, reserved_as: impl Fn(&mut String, char)) -> String {
-    let mut out = String::with_capacity(text.len());
+fn escape(out: &mut String, text: &str, reserved_as: impl Fn(&mut String, char)) {
     for ch in text.chars() {
         match ch {
             '&' => out.push_str("&amp;"),
             '<' => out.push_str("&lt;"),
             '>' => out.push_str("&gt;"),
             '"' => out.push_str("&quot;"),
-            ch if reserved(ch) => reserved_as(&mut out, ch),
+            ch if reserved(ch) => reserved_as(out, ch),
             ch => out.push(ch),
         }
     }
-    out
 }
 
 /// Markup with reserved characters as references: names never decode them.

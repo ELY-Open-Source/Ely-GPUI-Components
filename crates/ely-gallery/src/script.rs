@@ -270,7 +270,14 @@ pub async fn shown(window: gpui::AnyWindowHandle, cx: &mut AsyncApp) -> Result<(
             Either::Left((Ok(()), _)) => {}
             Either::Left((Err(_), _)) => anyhow::bail!("the window dropped its frame callback"),
             Either::Right(_) => {
-                anyhow::bail!("the window drew no frame in {SHOWN:?}; is it hidden?")
+                let state = window.update(cx, |_, window, _| {
+                    format!(
+                        "active {}, bounds {:?}",
+                        window.is_window_active(),
+                        window.bounds()
+                    )
+                })?;
+                anyhow::bail!("the window drew no frame in {SHOWN:?}; is it hidden? {state}")
             }
         }
     }

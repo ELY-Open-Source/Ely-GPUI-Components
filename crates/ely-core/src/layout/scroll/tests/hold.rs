@@ -145,7 +145,8 @@ fn a_pointer_resting_on_the_bar_draws_nothing_and_leaving_fades(cx: &mut TestApp
     cx.simulate_mouse_move(thumb, None, gpui::Modifiers::none());
     cx.run_until_parked();
     let from = host.read_with(cx, |host, _| host.renders);
-    let rested: Vec<usize> = [710, 100, 300]
+    // Leaves mid-fade, 900 to 1220 ms after scrolling.
+    let rested: Vec<usize> = [710, 100, 150]
         .into_iter()
         .map(|millis| after(millis, from, &host, cx))
         .collect();
