@@ -313,9 +313,10 @@ fn a_task_list_keeps_checked_boxes() {
 }
 
 #[test]
-fn an_alert_in_an_item_keeps_the_item() {
+fn a_quote_in_an_item_keeps_its_marker_as_text() {
+    // GitHub draws alerts only at the root.
     let out = ok("- > [!NOTE]\n  > a‸\n- b", BlockCommand::Quote);
-    assert_eq!(out, "- a‸\n- b");
+    assert_eq!(out, "- [!NOTE]\n  a‸\n- b");
     assert_eq!(items(&out), [vec!["p"], vec!["p"]]);
 }
 

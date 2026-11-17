@@ -113,17 +113,14 @@ fn a_task_cannot_box_code() {
 }
 
 #[test]
-fn an_alert_unwraps_into_its_holder() {
-    assert_eq!(
-        plain(&ok("- > [!NOTE]‸\n    a", BlockCommand::Quote)),
-        "- a"
-    );
-    assert_eq!(
-        plain(&ok("> > [!NOTE]‸\n>   a", BlockCommand::Quote)),
-        "> a"
-    );
-    let out = plain(&ok("- > [!NOTE]‸\n  >\n  >\n  > a", BlockCommand::Quote));
-    assert_eq!(out, "- a");
+fn a_root_alert_sheds_its_marker_and_a_nested_one_keeps_it() {
+    use BlockCommand::Quote;
+    assert_eq!(plain(&ok("> [!NOTE]‸\n>\n>\n> a", Quote)), "a");
+    assert_eq!(plain(&ok("- > [!NOTE]‸\n    a", Quote)), "- [!NOTE]\n    a");
+    // The outer quote would turn alert.
+    assert_eq!(ran("> > [!NOTE]‸\n>   a", Quote), Err(EditRefusal::Misread));
+    let out = plain(&ok("- > [!NOTE]‸\n  >\n  >\n  > a", Quote));
+    assert_eq!(out, "- [!NOTE]\n  \n  \n  a");
     assert_eq!(kinds(&out), ["list"]);
 }
 
@@ -261,7 +258,7 @@ fn a_change_that_leaves_toc_alone_on_its_line_is_refused() {
 
 #[test]
 fn only_a_top_level_toc_reads_as_one() {
-    // A list's `[toc]` is text; unwrapped, it would draw a toc.
+    // A list's `[toc]` is text; unwrapped, it draws contents.
     for (source, command) in [
         ("- [toc]‸", BlockCommand::BulletList),
         ("1. [toc]‸", BlockCommand::OrderedList),
@@ -289,4 +286,16 @@ fn a_plain_quote_unwrap_keeps_its_text() {
         ran("> plain‸", BlockCommand::Quote),
         Ok("plain‸".to_string())
     );
+}
+
+#[test]
+fn a_change_that_makes_a_block_another_kind_is_refused() {
+    for (text, command) in [
+        ("[!NOTE]\nx‸", BlockCommand::Quote),
+        ("> [!NOTE]\n> y‸\n>\n> > [!TIP]\n> > x", BlockCommand::Quote),
+    ] {
+        assert_eq!(ran(text, command), Err(EditRefusal::Misread), "{text:?}");
+    }
+    let off = ran("> [!NOTE]\n> x‸", BlockCommand::Quote);
+    assert_eq!(off, Ok("x‸".to_string()));
 }

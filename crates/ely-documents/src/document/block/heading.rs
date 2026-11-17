@@ -67,14 +67,14 @@ pub(super) fn run(here: &Here, command: BlockCommand) -> Result<Change, EditRefu
     let change = change(edits, caret);
     // Every shown character stays; the caret's block is `goal`.
     let (written, after) = check::reread(text, &change.0);
-    let before = check::Shown::new(text, here.root);
+    let before = check::Shown::new(text, here.root).with(node, check::Goal::Relevel);
     let now = check::Shown::new(&written, &after);
     let placed = match now.at(change.1.start) {
         Some((level, _)) => level == goal,
         // An empty paragraph has no node.
         None => goal == 0 && before.inline(node).is_empty(),
     };
-    let kept = placed && now.all() == before.all();
+    let kept = placed && check::kept(&before.all(), &now.all());
     match kept {
         true => Ok(change),
         false => Err(check::misread("a heading change would reread otherwise")),
