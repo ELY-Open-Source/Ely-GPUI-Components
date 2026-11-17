@@ -174,7 +174,7 @@ fn nodes(
 type OnOpen = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
-/// A project's files as a tree: folders first, an icon for each kind, git status by letter and tint, a dot on folders with changes, and a filter that keeps matches and opens the folders that hold them; a folder matched by name keeps its contents, folded. Enter or a double press opens a file. Give it a height.
+/// Project files; filter keeps matches, named folders whole; set height.
 ///
 /// ```
 /// use ely_core::lists::{FileTree, GitStatus};
