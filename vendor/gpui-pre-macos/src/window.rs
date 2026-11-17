@@ -2158,16 +2158,22 @@ impl PlatformWindow for MacWindow {
     // GPUI calls this without waking the frame waker when a window only needs
     // a present, so a paused Metal link must resume here too.
     fn schedule_frame(&self) {
-        if let Some(metal_frames) = &self.2 {
-            metal_frames.wake();
+        if let Some(metal_frames) = &self.2
+            && metal_frames.wake()
+        {
+            rebuild_link(&self.0);
         }
     }
 
     fn frame_waker(&self) -> Option<Rc<dyn Fn()>> {
         let metal_frames = Rc::downgrade(self.2.as_ref()?);
+        let state = Rc::downgrade(&self.0);
         Some(Rc::new(move || {
-            if let Some(metal_frames) = metal_frames.upgrade() {
-                metal_frames.wake();
+            if let Some(metal_frames) = metal_frames.upgrade()
+                && metal_frames.wake()
+                && let Some(state) = state.upgrade()
+            {
+                rebuild_link(&state);
             }
         }))
     }
@@ -3437,6 +3443,16 @@ extern "C" fn step(view: *mut c_void) {
         });
         window_state.lock().request_frame_callback = Some(callback);
     }
+}
+
+/// A Metal link that stopped sending updates is built again.
+fn rebuild_link(window_state: &Rc<Mutex<MacWindowState>>) {
+    // A wake under the window's lock retries at the next wake.
+    let Some(mut lock) = window_state.try_lock() else {
+        return;
+    };
+    log::warn!("frames: building the silent Metal link again");
+    lock.start_display_link(window_state);
 }
 
 fn metal_frame(
