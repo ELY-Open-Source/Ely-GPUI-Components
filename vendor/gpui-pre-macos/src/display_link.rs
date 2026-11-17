@@ -320,10 +320,12 @@ impl MetalFrames {
     pub fn wake(&self) {
         self.woken.set(true);
         // A source being replaced starts unpaused, so skipping it is safe.
-        if let Ok(source) = self.source.try_borrow()
-            && let Some(source) = source.as_ref()
-        {
-            source.set_paused(false);
+        match self.source.try_borrow() {
+            Ok(source) => match source.as_ref() {
+                Some(source) => source.set_paused(false),
+                None => log::debug!("frames: a wake found no Metal link"),
+            },
+            Err(_) => log::debug!("frames: a wake met the link being replaced"),
         }
     }
 

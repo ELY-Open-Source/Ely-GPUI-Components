@@ -157,4 +157,5 @@ lto = true
 codegen-units = 1
 
 [patch.crates-io]
+gpui-pre-macos = { path = "vendor/gpui-pre-macos" }
 pulldown-cmark = { path = "vendor/pulldown-cmark" }
