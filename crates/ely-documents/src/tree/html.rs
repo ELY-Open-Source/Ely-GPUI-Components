@@ -2,21 +2,11 @@ use std::{collections::HashMap, sync::OnceLock};
 
 use super::Style;
 
-/// One HTML tag as written: its lowercase name and attributes.
+/// One HTML tag as written: its lowercase name.
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Tag {
     pub name: String,
     pub closing: bool,
-    pub attributes: Vec<(String, String)>,
-}
-
-impl Tag {
-    pub(crate) fn attribute(&self, name: &str) -> Option<&str> {
-        self.attributes
-            .iter()
-            .find(|(key, _)| key == name)
-            .map(|(_, value)| value.as_str())
-    }
 }
 
 /// How Typora shows an inline tag; others show text.
@@ -96,133 +86,6 @@ pub(crate) fn breaks(name: &str) -> bool {
     )
 }
 
-/// What one inline HTML tag does, as GitHub shows it.
-#[derive(Clone, Debug, PartialEq)]
-pub(super) enum InlineTag {
-    /// Opens `name`; an anchor styles only with an address.
-    Open {
-        name: String,
-        style: Option<Style>,
-        href: Option<String>,
-    },
-    Close(String),
-    Break,
-    /// A filtered tag, shown as its text.
-    Text(String),
-    /// Gone; the text around it stays.
-    Gone,
-}
-
-/// What the inline HTML `written` does.
-pub(super) fn inline_tag(written: &str) -> InlineTag {
-    let Some(tag) = tag(written) else {
-        return InlineTag::Gone;
-    };
-    if filtered(&tag.name) {
-        return InlineTag::Text(text(written));
-    }
-    if tag.name == "br" {
-        return InlineTag::Break;
-    }
-    // A `pre` draws nothing but keeps shortcodes as written.
-    let style = match inline_style(&tag.name) {
-        None if tag.name != "pre" => return InlineTag::Gone,
-        style => style,
-    };
-    if tag.closing {
-        return InlineTag::Close(tag.name);
-    }
-    let Some(style) = style else {
-        return InlineTag::Open {
-            name: tag.name,
-            style: None,
-            href: None,
-        };
-    };
-    let href = match style {
-        Style::Link => tag.attribute("href").map(str::to_string),
-        _ => None,
-    };
-    let style = (style != Style::Link || href.is_some()).then_some(style);
-    InlineTag::Open {
-        name: tag.name,
-        style,
-        href,
-    }
-}
-
-/// Start tags ending an open `p`, as GitHub reads them.
-pub(crate) const P_CLOSERS: [&str; 37] = [
-    "address",
-    "article",
-    "aside",
-    "blockquote",
-    "center",
-    "details",
-    "dir",
-    "div",
-    "dl",
-    "dd",
-    "dt",
-    "fieldset",
-    "figcaption",
-    "figure",
-    "footer",
-    "form",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "header",
-    "hgroup",
-    "hr",
-    "li",
-    "listing",
-    "main",
-    "menu",
-    "nav",
-    "ol",
-    "p",
-    "pre",
-    "section",
-    "summary",
-    "table",
-    "ul",
-];
-
-pub(crate) fn closes_p(name: &str) -> bool {
-    P_CLOSERS.contains(&name)
-}
-
-/// Tags HTML5 reads as the head's, rebuilding no formatting.
-pub(crate) fn head(name: &str) -> bool {
-    matches!(
-        name,
-        "base"
-            | "basefont"
-            | "bgsound"
-            | "link"
-            | "meta"
-            | "noframes"
-            | "script"
-            | "style"
-            | "template"
-            | "title"
-    )
-}
-
-/// Table cells: what opens inside ends with them.
-pub(crate) fn cell(name: &str) -> bool {
-    matches!(name, "td" | "th")
-}
-
-/// Table parts whose end reopens nothing, as HTML5's markers.
-pub(crate) fn scope(name: &str) -> bool {
-    matches!(name, "td" | "th" | "tr" | "table")
-}
-
 /// Bytes through the `>` ending the tag at `html`'s start.
 pub(crate) fn tag_end(html: &str) -> Option<usize> {
     let (mut quote, mut last) = (None, '<');
@@ -257,78 +120,12 @@ pub(crate) fn tag(html: &str) -> Option<Tag> {
     Some(Tag {
         name: inner[..named].to_ascii_lowercase(),
         closing,
-        attributes: attributes(&inner[named..]),
     })
-}
-
-/// `name="value"`, `name='value'`, `name=value` and bare names.
-fn attributes(mut rest: &str) -> Vec<(String, String)> {
-    let mut out = Vec::new();
-    loop {
-        rest = rest.trim_start_matches(spacing);
-        // A slash between attributes closes the tag itself.
-        if let Some(after) = rest.strip_prefix('/') {
-            rest = after;
-            continue;
-        }
-        let named = rest
-            .find(|ch: char| spacing(ch) || ch == '=' || ch == '/')
-            .unwrap_or(rest.len());
-        if named == 0 {
-            return out;
-        }
-        let name = rest[..named].to_ascii_lowercase();
-        rest = rest[named..].trim_start_matches(spacing);
-        let Some(after) = rest.strip_prefix('=') else {
-            out.push((name, String::new()));
-            continue;
-        };
-        let after = after.trim_start_matches(spacing);
-        let (value, left) = match after.chars().next() {
-            Some(quote @ ('"' | '\'')) => match after[1..].find(quote) {
-                Some(end) => (&after[1..1 + end], &after[2 + end..]),
-                None => (&after[1..], ""),
-            },
-            _ => {
-                let end = after.find(spacing).unwrap_or(after.len());
-                (&after[..end], &after[end..])
-            }
-        };
-        out.push((name, decoded(value, true)));
-        rest = left;
-    }
 }
 
 /// HTML's whitespace, which is ASCII alone.
 pub(crate) fn spacing(ch: char) -> bool {
     matches!(ch, ' ' | '\t' | '\n' | '\r' | '\x0C')
-}
-
-/// Text between tags, references decoded as HTML does.
-pub(crate) fn text(written: &str) -> String {
-    decoded(written, false)
-}
-
-/// References decoded as HTML does, in a value or text.
-fn decoded(text: &str, attribute: bool) -> String {
-    let mut out = String::with_capacity(text.len());
-    let mut rest = text;
-    while let Some(at) = rest.find('&') {
-        out.push_str(&rest[..at]);
-        rest = &rest[at..];
-        match reference(rest, attribute) {
-            Some((value, len)) => {
-                out.push_str(&value);
-                rest = &rest[len..];
-            }
-            None => {
-                out.push('&');
-                rest = &rest[1..];
-            }
-        }
-    }
-    out.push_str(rest);
-    out
 }
 
 /// Longest reference name HTML knows, in bytes.
@@ -428,12 +225,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn a_tag_reads_its_name_and_attributes() {
+    fn a_tag_reads_its_name() {
         let link = tag("<A HREF=\"https://ely.dev\" title='x' hidden>").expect("a tag");
         assert_eq!((link.name.as_str(), link.closing), ("a", false));
-        assert_eq!(link.attribute("href"), Some("https://ely.dev"));
-        assert_eq!(link.attribute("title"), Some("x"));
-        assert_eq!(link.attribute("hidden"), Some(""));
         assert_eq!(
             tag("</u>").map(|t| (t.name, t.closing)),
             Some(("u".into(), true))
@@ -442,65 +236,6 @@ mod tests {
         assert_eq!(tag("<u-box>").map(|t| t.name), Some("u-box".into()));
         assert_eq!(tag("<!-- note -->"), None);
         assert_eq!(tag("<1>"), None);
-    }
-
-    #[test]
-    fn attribute_values_keep_slashes_and_decode_references() {
-        let bare = tag("<a href=/path/>").expect("a tag");
-        assert_eq!(bare.attribute("href"), Some("/path/"));
-        let closed = tag("<img src=\"a.png\" />").expect("a tag");
-        assert_eq!(closed.attribute("src"), Some("a.png"));
-        let query = tag("<a href=\"https://x.test/?q=1&amp;p=2&#38;r=&#x33;&nope;\">");
-        let query = query.expect("a tag");
-        assert_eq!(
-            query.attribute("href"),
-            Some("https://x.test/?q=1&p=2&r=3&nope;")
-        );
-    }
-
-    #[test]
-    fn values_decode_as_a_browser_decodes_them() {
-        let href = |html: &str| {
-            tag(html)
-                .expect("a tag")
-                .attribute("href")
-                .map(str::to_owned)
-        };
-        let cases = [
-            ("<a href=\"?q=1&#38page=2\">", "?q=1&page=2"),
-            ("<a href=\"/&#128;&#x9F;&#129;\">", "/€Ÿ\u{81}"),
-            (
-                "<a href=\"&#0;&#x110000;&#xD800;\">",
-                "\u{FFFD}\u{FFFD}\u{FFFD}",
-            ),
-            (
-                "<a href=\"&amp page&ampx&amp=&notin;&AMP\">",
-                "& page&ampx&amp=∉&",
-            ),
-            ("<a href=/a\u{A0}b>", "/a\u{A0}b"),
-        ];
-        for (html, want) in cases {
-            assert_eq!(href(html).as_deref(), Some(want), "{html}");
-        }
-    }
-
-    #[test]
-    fn long_runs_scan_in_linear_time() {
-        let amps = "&".repeat(1 << 18);
-        let started = web_time::Instant::now();
-        assert_eq!(decoded(&amps, true).len(), amps.len());
-        assert_eq!(text(&amps).len(), amps.len());
-        let spent = started.elapsed();
-        assert!(spent.as_secs() < 2, "256 KiB took {spent:?}");
-    }
-
-    #[test]
-    fn text_takes_the_longest_legacy_name() {
-        assert_eq!(
-            text("&notit; &amp &ampx &lt3 &nope;"),
-            "¬it; & &x <3 &nope;"
-        );
-        assert_eq!(decoded("&notit;&ampx", true), "&notit;&ampx");
     }
 
     #[test]

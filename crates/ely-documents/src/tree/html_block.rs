@@ -1,212 +1,84 @@
 use std::ops::Range;
 
-use super::{Escapes, Inline, Opened, Run, html, sources::LineMap};
+use super::{
+    Escapes, Inline, drawn,
+    drawn::{Drawn, Mode, Written, draw},
+    html,
+    sources::LineMap,
+};
+
+/// HTML text with reserved characters escaped, references too.
+fn guarded(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    let mut rest = text;
+    while let Some(ch) = rest.chars().next() {
+        let decoded = (ch == '&').then(|| html::reference(rest, false)).flatten();
+        match decoded {
+            Some((value, used)) if value.chars().any(drawn::reserved) => {
+                for ch in value.chars() {
+                    out.push_str(&drawn::escaped(&ch.to_string()));
+                }
+                rest = &rest[used..];
+            }
+            _ => {
+                match drawn::reserved(ch) {
+                    true => out.push_str(&drawn::escaped(&ch.to_string())),
+                    false => out.push(ch),
+                }
+                rest = &rest[ch.len_utf8()..];
+            }
+        }
+    }
+    out
+}
 
 /// An HTML block's text, as a browser shows it.
 pub(super) fn html_block_text(written: &str, source: &str, span: Range<usize>) -> Inline {
-    let (mut run, map) = (Run::default(), LineMap::new(source, span.start, written));
+    let (mut out, map) = (
+        Written::default(),
+        LineMap::new(source, span.start, written),
+    );
     let mut rest = written;
     // Each text run keeps where it was written.
-    let words = |run: &mut Run, rest: &str, text: &str| {
+    let words = |out: &mut Written, rest: &str, text: &str| {
         let from = written.len() - rest.len();
         let at = |value| map.as_ref()?.at(value);
         // Blank text draws nothing where it stands.
-        if text.chars().all(html::spacing) {
-            return run.words(text);
-        }
-        match at(from).zip(at(from + text.len())) {
-            Some((start, end)) => {
-                (run.text.sources).push((run.text.text.len(), start..end, Escapes::Html))
+        if !text.chars().all(html::spacing) {
+            match at(from).zip(at(from + text.len())) {
+                Some((start, end)) => out.chunk(start..end, Escapes::Html),
+                None => log::warn!("markdown: an HTML block's text lost its source"),
             }
-            None => log::warn!("markdown: an HTML block's text lost its source"),
         }
-        run.words(text);
+        out.html.push_str(&guarded(text));
     };
     while let Some(at) = rest.find('<') {
-        words(&mut run, rest, &rest[..at]);
+        words(&mut out, rest, &rest[..at]);
         rest = &rest[at..];
-        if let Some(comment) = rest.strip_prefix("<!--") {
-            rest = comment.split_once("-->").map_or("", |(_, after)| after);
-            run.shortcodes.split();
-            continue;
-        }
         let opens =
             rest[1..].starts_with(|ch: char| ch.is_ascii_alphabetic() || "/!?".contains(ch));
         if !opens {
-            words(&mut run, rest, "<");
+            words(&mut out, rest, "<");
             rest = &rest[1..];
             continue;
         }
-        // An unclosed tag drops the rest, as HTML5 does.
-        let Some(end) = html::tag_end(rest) else {
-            rest = "";
-            break;
+        // Markup goes to the parser as written.
+        let end = match rest.strip_prefix("<!--") {
+            Some(comment) => comment.find("-->").map(|close| close + 7),
+            None => html::tag_end(rest),
         };
-        let (tag_text, after) = rest.split_at(end);
-        match html::tag(tag_text) {
-            Some(tag) if html::filtered(&tag.name) => words(&mut run, rest, tag_text),
-            // A block closes what opened inside it.
-            Some(tag) if html::breaks(&tag.name) => {
-                run.line();
-                let table = tag.name == "table";
-                match tag.closing {
-                    true => {
-                        run.end(&tag.name);
-                        if table {
-                            run.take_back();
-                        }
-                    }
-                    false => {
-                        run.implied(&tag.name);
-                        if table {
-                            run.set_aside();
-                        }
-                        match tag.name == "hr" {
-                            true => run.shortcodes.split(),
-                            false => run.start(&tag.name, None, None),
-                        }
-                    }
-                }
-            }
-            Some(tag) if html::cell(&tag.name) => match tag.closing {
-                true => run.end(&tag.name),
-                false => {
-                    run.implied(&tag.name);
-                    run.start(&tag.name, None, None);
-                }
-            },
-            // It ends a `p` but lays no block.
-            Some(tag) if !tag.closing && html::closes_p(&tag.name) => {
-                run.implied(&tag.name);
-                run.html(tag_text);
-            }
-            // A line's end drops its space.
-            Some(tag) if tag.closing && tag.name != "br" => run.html(tag_text),
-            // An inline start rebuilds what waited, as text does.
-            Some(tag) => {
-                if !html::head(&tag.name) {
-                    run.pending.clear();
-                }
-                match tag.name == "br" {
-                    true => run.owed = None,
-                    false => run.pay(),
-                }
-                run.html(tag_text);
-            }
-            None => run.shortcodes.split(),
-        }
+        let (markup, after) = rest.split_at(end.unwrap_or(rest.len()));
+        out.raw(markup);
         rest = after;
     }
-    words(&mut run, rest, rest);
-    run.cut()
-}
-
-impl Run {
-    /// HTML text: references decoded, white space collapsed.
-    fn words(&mut self, written: &str) {
-        let shown = self.shown(&html::text(written));
-        self.spaced(&shown);
-    }
-
-    /// Text with its white space collapsed.
-    fn spaced(&mut self, shown: &str) {
-        for ch in shown.chars() {
-            if !html::spacing(ch) {
-                self.pay();
-                self.text.text.push(ch);
-            } else if self.owed.is_none() && !self.text.text.ends_with('\n') {
-                let open = self.open.len();
-                self.owed = (!self.text.text.is_empty()).then_some((' ', open));
-            }
+    words(&mut out, rest, rest);
+    let mut text = Inline::default();
+    for piece in draw(&out, ("", ""), Mode::Block, false, false) {
+        if let Drawn::Text(drawn) = piece {
+            text = drawn;
         }
     }
-
-    /// A line owed where a block element starts or ends.
-    fn line(&mut self) {
-        let from = self.owed.map_or(self.open.len(), |(_, from)| from);
-        let text = &self.text.text;
-        self.owed = (!(text.is_empty() || text.ends_with('\n'))).then_some(('\n', from));
-    }
-
-    /// Writes the white space owed, before a word or tag.
-    fn pay(&mut self) {
-        let Some((owed, from)) = self.owed.take() else {
-            return;
-        };
-        self.text.text.push(owed);
-        let start = self.text.text.len();
-        // What opened after it starts after it.
-        for opened in &mut self.open[from..] {
-            opened.start = start;
-        }
-    }
-
-    /// Ends what a block's start tag closes, as HTML5 does.
-    fn implied(&mut self, name: &str) {
-        let items: &[&str] = match name {
-            "li" => &["li"],
-            "dd" | "dt" => &["dd", "dt"],
-            "td" | "th" => &["td", "th"],
-            "tr" => &["tr"],
-            _ => &[],
-        };
-        // The search stops at a special element; a cell's at its table.
-        let cells = html::scope(name);
-        let stops = |name: &str| match cells {
-            true => name == "table",
-            false => html::breaks(name) && !matches!(name, "address" | "div" | "p"),
-        };
-        let found = items
-            .iter()
-            .any(|item| self.count(item) > 0)
-            .then(|| {
-                let mut names = self.open.iter().rev().map(|opened| opened.name.as_str());
-                names.find(|name| items.contains(name) || stops(name))
-            })
-            .flatten()
-            .filter(|name| items.contains(name))
-            .map(str::to_string);
-        if let Some(item) = found {
-            self.end(&item);
-        }
-        if html::closes_p(name) && self.count("p") > 0 {
-            self.line();
-            self.end("p");
-        }
-    }
-}
-
-impl Run {
-    /// Formatting waiting to reopen stays out of a table's cells.
-    fn set_aside(&mut self) {
-        let end = self.text.text.len();
-        let mut waiting = std::mem::take(&mut self.pending);
-        waiting.retain(|&ix| self.open.get(ix).is_some_and(|opened| opened.start == end));
-        waiting.sort_unstable();
-        waiting.dedup();
-        let mut held: Vec<Opened> = waiting
-            .into_iter()
-            .rev()
-            .map(|ix| self.open.remove(ix))
-            .collect();
-        held.reverse();
-        for opened in &held {
-            self.finish(opened, end);
-        }
-        if let Some((_, from)) = &mut self.owed {
-            *from = (*from).min(self.open.len());
-        }
-        self.tables.push(held);
-    }
-
-    /// The table ended: its outside formatting resumes.
-    fn take_back(&mut self) {
-        let start = self.text.text.len();
-        for opened in self.tables.pop().unwrap_or_default() {
-            self.pending.push(self.open.len());
-            self.push(Opened { start, ..opened });
-        }
-    }
+    text
 }
 
 #[cfg(test)]
@@ -337,18 +209,52 @@ mod tests {
 
     #[test]
     fn every_p_closer_ends_a_p_as_github_does() {
-        // GitHub's answers, `.work/R19/r43/gh-pclose.log`.
-        for name in crate::tree::html::P_CLOSERS {
+        // Start tags ending a `p`, as GitHub and browsers read.
+        const P_CLOSERS: [&str; 39] = [
+            "address",
+            "article",
+            "aside",
+            "blockquote",
+            "center",
+            "details",
+            "dialog",
+            "dir",
+            "div",
+            "dl",
+            "dd",
+            "dt",
+            "fieldset",
+            "figcaption",
+            "figure",
+            "footer",
+            "form",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "header",
+            "hgroup",
+            "hr",
+            "li",
+            "listing",
+            "main",
+            "menu",
+            "nav",
+            "ol",
+            "p",
+            "pre",
+            "search",
+            "section",
+            "summary",
+            "table",
+            "ul",
+        ];
+        for name in P_CLOSERS {
             let line = html(&format!("<div><p><mark>x<{name}>y</{name}>z</div>")).expect("text");
             assert_eq!(line.styles, [(0..1, Style::Mark)], "{name}: {line:?}");
             assert!(line.text.starts_with("x\n"), "{name}: {line:?}");
-        }
-        for name in ["dialog", "search"] {
-            let line = html(&format!("<div><p><mark>x<{name}>y</{name}>z</div>")).expect("text");
-            assert_eq!(
-                (line.text.as_str(), &line.styles[..]),
-                ("xyz", &[(0..3, Style::Mark)][..])
-            );
         }
     }
 
@@ -478,5 +384,34 @@ mod tests {
         let (small, large) = (time(1 << 14), time(1 << 16));
         // Four times the input, at most eight the time.
         assert!(large < small * 8, "{small:?} then {large:?}");
+    }
+
+    #[test]
+    fn references_and_long_runs_read_as_a_browser_reads_them() {
+        let line = html("<div>&notit; &amp &ampx &lt3 &nope;</div>").expect("text");
+        assert_eq!(line.text, "¬it; & &x <3 &nope;");
+        let amps = "&".repeat(1 << 18);
+        let started = web_time::Instant::now();
+        let line = html(&format!("<div>{amps}</div>")).expect("text");
+        assert_eq!(line.text.len(), amps.len());
+        let spent = started.elapsed();
+        assert!(spent.as_secs() < 2, "256 KiB took {spent:?}");
+    }
+
+    #[test]
+    fn the_source_s_own_noncharacters_draw_as_written() {
+        let line = html("<div>a&#xFDD0;b\u{FDE5}c</div>").expect("text");
+        assert_eq!(line.text, "a\u{FDD0}b\u{FDE5}c");
+    }
+
+    #[test]
+    fn nesting_past_the_bound_reads_as_text() {
+        let line = html(&format!("<div>{}x</div>", "<b>".repeat(1100))).expect("text");
+        assert!(
+            line.text.starts_with("<b>") && line.text.ends_with("<b>x"),
+            "{:?}",
+            &line.text[..9]
+        );
+        assert_eq!(line.text.matches("<b>").count(), 1100 - 1024 + 1);
     }
 }

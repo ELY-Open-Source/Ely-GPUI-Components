@@ -1885,6 +1885,7 @@ dependencies = [
  "emojis",
  "entities",
  "gpui-pre",
+ "html5ever",
  "image",
  "jiff",
  "log",

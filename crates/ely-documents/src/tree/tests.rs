@@ -561,14 +561,15 @@ fn a_crossed_close_leaves_pre_open() {
 
 #[test]
 fn a_crossed_close_keeps_marks_nested_and_linear() {
-    // Inner marks above the block close and reopen.
+    // The tree html5ever builds: each element its own range.
     let text = line("a <b>before<pre><i>x</b>y</i></pre> z");
     assert_eq!(text.text, "a beforexy z");
     assert_eq!(
         text.styles,
         [
-            (2..9, Style::Strong),
+            (2..8, Style::Strong),
             (8..9, Style::Emphasis),
+            (8..9, Style::Strong),
             (9..10, Style::Emphasis)
         ]
     );
@@ -576,8 +577,10 @@ fn a_crossed_close_keeps_marks_nested_and_linear() {
     assert_eq!(
         wrapped.styles,
         [
-            (0..3, Style::Strong),
-            (1..3, Style::Underline),
+            (0..2, Style::Strong),
+            (1..2, Style::Underline),
+            (2..3, Style::Underline),
+            (2..3, Style::Strong),
             (3..4, Style::Underline)
         ]
     );
@@ -607,4 +610,32 @@ fn a_crossed_close_keeps_every_block() {
     // GitHub's answer, `.work/R4.2-r7/github-oracle.log`.
     let text = line("a <b><pre><pre>x</b> :smile:</pre> :smile:</pre> :smile:");
     assert_eq!(text.text, "a x :smile: :smile: 😄");
+}
+
+#[test]
+fn an_inline_link_s_address_decodes_as_a_browser_decodes_it() {
+    let cases = [
+        ("<a href=/path/>", "/path/"),
+        (
+            "<a href=\"https://x.test/?q=1&amp;p=2&#38;r=&#x33;&nope;\">",
+            "https://x.test/?q=1&p=2&r=3&nope;",
+        ),
+        ("<a href=\"?q=1&#38page=2\">", "?q=1&page=2"),
+        ("<a href=\"/&#128;&#x9F;&#129;\">", "/€Ÿ\u{81}"),
+        (
+            "<a href=\"&#0;&#x110000;&#xD800;\">",
+            "\u{FFFD}\u{FFFD}\u{FFFD}",
+        ),
+        (
+            "<a href=\"&amp page&ampx&amp=&notin;&AMP\">",
+            "& page&ampx&amp=∉&",
+        ),
+        ("<a href=/a\u{A0}b>", "/a\u{A0}b"),
+    ];
+    for (tag, want) in cases {
+        let Some(Node::Paragraph(line)) = parse(&format!("{tag}x</a>")).into_iter().next() else {
+            panic!("{tag}: a paragraph")
+        };
+        assert_eq!(line.links, [(0..1, want.to_string())], "{tag}");
+    }
 }

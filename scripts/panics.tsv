@@ -275,8 +275,6 @@ crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("a table holds row
 crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("matched as an image")	linux,macos,windows	matched as an image
 crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("{other:?} is no block outside MDX")	linux,macos,windows	{other:?} is no block outside MDX
 crates/ely-documents/src/tree/mod.rs	unreachable	unreachable!("{other:?} is no inline outside MDX")	linux,macos,windows	{other:?} is no inline outside MDX
-crates/ely-documents/src/tree/stack.rs	expect_used	self .open .iter() .rposition(|opened| opened.name == name) .expect("a counted name is open")	linux,macos,windows	a counted name is open
-crates/ely-documents/src/tree/stack.rs	expect_used	self.named.get_mut(&opened.name).expect("counted")	linux,macos,windows	each open element was counted in named when it opened
 crates/ely-documents/src/viewer.rs	expect_used	scroll .bounds_for_item(hit.page) .expect("the hit's page is laid out")	linux,macos,windows	the hit's page is laid out
 crates/ely-editor/src/line.rs	expect_used	all.last_mut().expect("an editor keeps a cursor")	linux,macos,windows	an editor keeps a cursor
 crates/ely-editor/src/line.rs	expect_used	all.last_mut().expect("an editor keeps a cursor")	linux,macos,windows	an editor keeps a cursor
