@@ -96,7 +96,7 @@ fn matches(name: &str, query: &str) -> bool {
     query.is_empty() || name.to_lowercase().contains(&query.to_lowercase())
 }
 
-/// Paths as nodes, folders first, then files, each by name; with a query, only matches and the folders that hold them, which it opens.
+/// Paths as nodes, folders first, then files, each by name; with a query, only matches and the folders that hold them, which it opens; a folder matching by name keeps all it holds, folded.
 fn nodes(
     paths: &[SharedString],
     status: &[(SharedString, GitStatus)],
@@ -124,14 +124,27 @@ fn nodes(
         folders.sort_by_key(|(name, _)| name.to_lowercase());
         for (name, inner) in folders {
             let path = format!("{prefix}{name}");
-            let (children, inner_changed) =
+            let (found, inner_changed) =
                 walk(inner, &format!("{path}/"), query, state, open, icons);
-            if children.is_empty() && !matches(name, query) {
+            let named = !query.is_empty() && matches(name, query);
+            if found.is_empty() && !named {
                 continue;
             }
-            if !query.is_empty() {
+            if !query.is_empty() && !found.is_empty() {
                 open.push(path.clone().into());
             }
+            // A folder found by name keeps all it holds.
+            let (children, inner_changed) = match named {
+                true => walk(
+                    inner,
+                    &format!("{path}/"),
+                    "",
+                    state,
+                    &mut Vec::new(),
+                    icons,
+                ),
+                false => (found, inner_changed),
+            };
             changed |= inner_changed;
             let node = TreeNode::new(path, name.clone())
                 .icon(IconName::Folder)
@@ -354,6 +367,13 @@ mod tests {
         let (labels, open) = shown("butt");
         assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
         assert_eq!(open, ["src/ui", "src"].map(SharedString::from));
+    }
+
+    #[test]
+    fn a_folder_found_by_name_keeps_its_files_folded() {
+        let (labels, open) = shown("ui");
+        assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
+        assert_eq!(open, ["src"].map(SharedString::from));
     }
 
     struct Project(Option<SharedString>);
