@@ -155,3 +155,6 @@ inherits = "release"
 opt-level = "z"
 lto = true
 codegen-units = 1
+
+[patch.crates-io]
+pulldown-cmark = { path = "vendor/pulldown-cmark" }

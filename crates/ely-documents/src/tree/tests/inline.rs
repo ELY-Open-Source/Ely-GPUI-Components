@@ -407,3 +407,11 @@ fn source_html_cannot_name_the_writer_s_controls() {
     let linked = line("<a title=\"\u{FDD0}\" href=\"x\u{FDD0}y\">z</a>");
     assert_eq!(linked.links, [(0..1, "x\u{FDD0}y".to_string())]);
 }
+
+#[test]
+fn a_link_around_a_footnote_reference_stays_a_link() {
+    // The footnote's `a` ends the link, as on GitHub.
+    let drawn = line("[a [^1] b](/x)\n\n[^1]: n");
+    assert_eq!(drawn.text, "a ¹ b");
+    assert_eq!(drawn.links, [(0..2, "/x".to_string())]);
+}
