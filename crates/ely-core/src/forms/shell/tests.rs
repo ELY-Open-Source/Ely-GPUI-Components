@@ -222,6 +222,65 @@ const CASES: &[(&str, bool, &[&str])] = &[
         &[],
     ),
     ("coproc N { echo y; }; wait # tail", true, &[]),
+    (
+        "echo $(function f { case a in a) echo y;; esac; }; f)#tail",
+        false,
+        &[],
+    ),
+    (
+        "echo $(function f() { case a in a) echo y;; esac; }; f)#tail",
+        false,
+        &[],
+    ),
+    (
+        "echo $(function f\n{ case a in a) echo y;; esac; }; f)#tail",
+        false,
+        &[],
+    ),
+    ("cat <<$'E\\x4fF'\n# body\nEOF\necho x # tail", true, &[]),
+    ("cat <<$'E\\117F'\n# body\nEOF\necho x # tail", true, &[]),
+    ("cat <<$'E\\u004fF'\n# body\nEOF\necho x # tail", true, &[]),
+    ("cat <<$'E\\qF'\n# body\nE\\qF\necho x # tail", true, &[]),
+    (
+        "echo ${x:-`echo hi # inner\nprintf y`} # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "echo $(case a in @(a|$(echo b # inner\nprintf c))) echo y;; esac)#tail",
+        false,
+        &["# inner"],
+    ),
+    (
+        "echo $(case a in @(a|`echo b # inner\nprintf c`)) echo y;; esac)#tail",
+        false,
+        &["# inner"],
+    ),
+    (
+        "echo $((1 + `echo 2 # inner\n`)) # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<EOF\n$(echo a # inner\n)\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<EOF\n`echo a # inner\n`\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<'EOF'\n$(echo a # body\n)\nEOF\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<EOF\n\\$(echo a # body)\nEOF\necho x # tail",
+        true,
+        &[],
+    ),
 ];
 
 #[test]
