@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`, `ely-terminal`, `ely-account`, `ely-onboarding`: `DurationPicker`'s h, m and s units, `LogViewer`'s level names, line count and Follow tooltip, the account and workspace switchers' and `UserMenu`'s menu copy, and `SetupChecklist`'s tally, Start, Hide and "All set." read `i18n::text`, so an app's catalog says them in its language. Ely's tables carry them in every locale; level names stay TRACE to ERROR unless an app's catalog renames them. English reads as before.
 - `ely-core`: a clickable `StatusBarItem` is a Tab stop with a focus ring; Enter and Space press it.
 - `ely-core`: `LOCALES` gains zh-TW, 繁體中文, with Ely's own copy in Traditional Chinese; zh-CN's name reads 简体中文. Breaking: `LOCALES` is `[Locale; 11]`.
 - `ely-core`: `MenuBar` draws a gpui action's `checked` flag as a check mark and its `disabled` flag as a dimmed row that runs nothing.

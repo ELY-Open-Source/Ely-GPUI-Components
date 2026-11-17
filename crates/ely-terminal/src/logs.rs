@@ -9,9 +9,10 @@ use gpui::{
 use super::ansi::{AnsiText, printed};
 use crate::{
     buttons::{SegmentedControl, ToggleButton, ToggleItem},
+    i18n,
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Palette, TextSize},
-    typography::format,
+    typography::format::{self, Separators},
 };
 
 /// How loud a log line is, quietest first.
@@ -38,13 +39,14 @@ const LEVELS: [LogLevel; 5] = [
 ];
 
 impl LogLevel {
-    fn word(self) -> &'static str {
+    /// Its catalog key, which also names its segment.
+    fn key(self) -> &'static str {
         match self {
-            Self::Trace => "TRACE",
-            Self::Debug => "DEBUG",
-            Self::Info => "INFO",
-            Self::Warn => "WARN",
-            Self::Error => "ERROR",
+            Self::Trace => "logs.level.trace",
+            Self::Debug => "logs.level.debug",
+            Self::Info => "logs.level.info",
+            Self::Warn => "logs.level.warn",
+            Self::Error => "logs.level.error",
         }
     }
 
@@ -167,22 +169,43 @@ impl RenderOnce for LogViewer {
             })
             .read(cx)
             .clone();
+        let words: Rc<[SharedString]> = LEVELS
+            .iter()
+            .map(|level| i18n::text(cx, level.key(), &[]))
+            .collect();
+        let rows = Rc::new(shown(&self.lines, self.least, &self.query));
+        let total = self.lines.len();
+        let count = i18n::text(
+            cx,
+            if total == 1 {
+                "logs.count.one"
+            } else {
+                "logs.count.other"
+            },
+            &[
+                ("shown", &rows.len().to_string()),
+                (
+                    "n",
+                    &format::group_digits(&total.to_string(), Separators::EN.group),
+                ),
+            ],
+        );
+        let follow_tip = i18n::text(cx, "logs.follow", &[]);
         let theme = cx.theme();
         let colors = theme.colors.clone();
-        let rows = Rc::new(shown(&self.lines, self.least, &self.query));
         if self.follow && !rows.is_empty() {
             scroll.scroll_to_item(rows.len() - 1, ScrollStrategy::Bottom);
         }
-        let levels = LEVELS.iter().fold(
-            SegmentedControl::new((self.id.clone(), "levels"), self.least.word())
+        let levels = LEVELS.iter().zip(words.iter()).fold(
+            SegmentedControl::new((self.id.clone(), "levels"), self.least.key())
                 .size(ControlSize::Sm),
-            |control, level| control.segment(level.word(), level.word(), None),
+            |control, (level, word)| control.segment(level.key(), word.clone(), None),
         );
         let levels = match self.on_least {
-            Some(on_least) => levels.on_change(move |word, window, cx| {
+            Some(on_least) => levels.on_change(move |key, window, cx| {
                 let level = LEVELS
                     .into_iter()
-                    .find(|level| level.word() == word.as_ref())
+                    .find(|level| level.key() == key.as_ref())
                     .expect("a segment names a level");
                 on_least(level, window, cx)
             }),
@@ -192,7 +215,7 @@ impl RenderOnce for LogViewer {
             (self.id.clone(), "follow"),
             ToggleItem::new("follow")
                 .icon(IconName::ArrowDownToLine)
-                .tooltip("Follow new lines"),
+                .tooltip(follow_tip),
             self.follow,
         )
         .size(ControlSize::Sm);
@@ -204,6 +227,7 @@ impl RenderOnce for LogViewer {
             None => (None, follow),
         };
         let (lines, painted) = (self.lines.clone(), rows.clone());
+        let shown_words = words.clone();
         let list = uniform_list(
             (self.id.clone(), "lines"),
             rows.len(),
@@ -234,7 +258,7 @@ impl RenderOnce for LogViewer {
                                     .flex_none()
                                     .w_12()
                                     .text_color(line.level.color(&colors))
-                                    .child(line.level.word()),
+                                    .child(shown_words[line.level as usize].clone()),
                             )
                             .child(
                                 div()
@@ -268,11 +292,7 @@ impl RenderOnce for LogViewer {
                     .gap_2()
                     .pb_2()
                     .child(levels)
-                    .child(div().flex_1().text_color(colors.fg_subtle).child(format!(
-                        "{} of {}",
-                        rows.len(),
-                        format::plural(self.lines.len() as u64, "line", "lines")
-                    )))
+                    .child(div().flex_1().text_color(colors.fg_subtle).child(count))
                     .child(follow),
             )
             .child(

@@ -394,7 +394,7 @@ crates/ely-settings/src/network.rs	panic	panic!("proxy settings: no way named {o
 crates/ely-terminal/src/links.rs	expect_used	Regex::new(r"(?:\.{1,2}/|/|~/)?(?:[\w.-]+/)+[\w.-]+\.\w+(?::(\d+))?(?::(\d+))?") .expect("the path pattern compiles")	linux,macos,windows	the path pattern compiles
 crates/ely-terminal/src/links.rs	expect_used	Regex::new(r#"\b(?:https?|file)://[^\s<>"'`]+"#).expect("the URL pattern compiles")	linux,macos,windows	the URL pattern compiles
 crates/ely-terminal/src/links.rs	expect_used	hit.get(0).expect("a capture has its match")	linux,macos,windows	a capture has its match
-crates/ely-terminal/src/logs.rs	expect_used	LEVELS .into_iter() .find(|level| level.word() == word.as_ref()) .expect("a segment names a level")	linux,macos,windows	a segment names a level
+crates/ely-terminal/src/logs.rs	expect_used	LEVELS .into_iter() .find(|level| level.key() == key.as_ref()) .expect("a segment names a level")	linux,macos,windows	a segment names a level
 crates/ely-terminal/src/processes.rs	expect_used	key.parse().expect("a process row is keyed by its pid")	linux,macos,windows	a process row is keyed by its pid
 crates/ely-tooling/src/playground.rs	panic	panic!("playground knob {name} is {other:?}, not a choice")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)
 crates/ely-tooling/src/playground.rs	panic	panic!("playground knob {name} is {other:?}, not a number")	linux,macos,windows	the preview asks its knobs by names in its own code (panics.md P43)

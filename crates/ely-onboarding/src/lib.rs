@@ -2,8 +2,8 @@
 #![deny(missing_docs)]
 
 use ely_core::{
-    buttons, data_display, forms, layout, lists, motion, navigation, overlays, primitives, theme,
-    typography,
+    buttons, data_display, forms, i18n, layout, lists, motion, navigation, overlays, primitives,
+    theme, typography,
 };
 use ely_documents as documents;
 use ely_settings as settings;
