@@ -448,6 +448,7 @@ pub struct DurationPicker {
     id: ElementId,
     value: Duration,
     seconds: bool,
+    blank: bool,
     on_change: Option<OnDuration>,
 }
 
@@ -458,6 +459,7 @@ impl DurationPicker {
             id: id.into(),
             value,
             seconds: false,
+            blank: false,
             on_change: None,
         }
     }
@@ -465,6 +467,12 @@ impl DurationPicker {
     /// Adds a seconds field.
     pub fn seconds(mut self) -> Self {
         self.seconds = true;
+        self
+    }
+
+    /// Shows empty fields, not `value`, as for a limit with no duration yet; a number typed in one runs `on_change`.
+    pub fn blank(mut self) -> Self {
+        self.blank = true;
         self
     }
 
@@ -512,7 +520,9 @@ impl RenderOnce for DurationPicker {
                             on_change(total, window, cx);
                         }
                     });
-                div().w(width).child(field)
+                div()
+                    .w(width)
+                    .child(if self.blank { field.blank("") } else { field })
             })
             .collect();
         div().flex().items_center().gap_2().children(fields)
