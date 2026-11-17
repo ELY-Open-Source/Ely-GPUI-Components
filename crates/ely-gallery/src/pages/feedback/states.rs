@@ -273,7 +273,6 @@ pub fn clocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     // Under `--still` each face is a stopped timer: same digits, no tick.
     let still = !live("Countdown / Timer", cx);
     let held = |id: &'static str, left: Duration| Timer::new(id, since).stopped(Some(since + left));
-    let halt = halt.or(still.then_some(since));
     let (restart, toggle, done, reset) =
         (short.clone(), stopped.clone(), over.clone(), opened.clone());
     let reopen = over.clone();
@@ -321,7 +320,7 @@ pub fn clocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     .flex()
                     .items_center()
                     .gap_3()
-                    .child(Timer::new("timer", since).stopped(halt))
+                    .child(Timer::new("timer", since).stopped(halt.or(still.then_some(since))))
                     .child(
                         Button::new(
                             "timer-toggle",

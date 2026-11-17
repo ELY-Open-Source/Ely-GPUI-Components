@@ -272,8 +272,9 @@ pub async fn shown(window: gpui::AnyWindowHandle, cx: &mut AsyncApp) -> Result<(
             Either::Right(_) => {
                 let state = window.update(cx, |_, window, _| {
                     format!(
-                        "active {}, bounds {:?}",
+                        "active {}, {:?}, bounds {:?}",
                         window.is_window_active(),
+                        window.visibility(),
                         window.bounds()
                     )
                 })?;

@@ -134,9 +134,16 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           VK_ICD_FILENAMES: /usr/share/vulkan/icd.d/lvp_icd.json
-      - if: runner.os != 'Linux'
+      - if: runner.os == 'Windows'
         shell: bash
         run: sh scripts/pixels.sh "$BASE"
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+      # An idle display occludes the window; gpui then draws no frames.
+      - if: runner.os == 'macOS'
+        run: |
+          defaults -currentHost write com.apple.screensaver idleTime -int 0
+          caffeinate -d -i sh scripts/pixels.sh "$BASE"
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       - if: always()
