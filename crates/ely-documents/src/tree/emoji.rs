@@ -79,10 +79,7 @@ impl Shortcodes {
     }
 }
 
-/// Shortcodes for an owner writing its own HTML.
-///
-/// One value per block: `split` at every element, `text` on text,
-/// `html` on inline HTML. Text inside `code` or `pre` stays as written.
+/// Shortcodes for HTML an owner writes; `code`, `pre` stay literal.
 #[derive(Default)]
 pub struct ShortcodeRun {
     shortcodes: Shortcodes,

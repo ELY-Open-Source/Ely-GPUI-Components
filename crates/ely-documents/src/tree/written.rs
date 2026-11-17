@@ -15,7 +15,7 @@ pub(super) const DIGITS: [char; 16] = [
     '\u{FDE8}', '\u{FDE9}', '\u{FDEA}', '\u{FDEB}', '\u{FDEC}', '\u{FDED}', '\u{FDEE}', '\u{FDEF}',
 ];
 
-/// Attributes only the writer names: the source's `OPEN` is a reference.
+/// Attribute names source HTML cannot write.
 pub(super) const MATH: &str = "\u{FDD0}math";
 pub(super) const NOTE: &str = "\u{FDD0}note";
 pub(super) const IMAGE: &str = "\u{FDD0}image";
@@ -26,12 +26,10 @@ pub(super) fn reserved(ch: char) -> bool {
     ('\u{FDD0}'..='\u{FDEF}').contains(&ch)
 }
 
-/// Elements open at most; deeper start tags go as text.
-///
-/// HTML5's scope checks walk the open elements: this bounds them.
+/// Open elements at most: HTML5's scope checks walk them.
 const DEEPEST: usize = 1024;
 
-/// Elements a later start tag may end, and voids: not counted.
+/// Voids and elements later tags end: never counted.
 fn ends_itself(name: &str) -> bool {
     matches!(
         name,
@@ -178,7 +176,7 @@ impl Written {
         }
     }
 
-    /// Counts a start tag; `false` when it is one too deep.
+    /// Counts a start tag; `false` past the bound.
     fn opens(&mut self, name: &str, slash: bool) -> bool {
         let outer = std::mem::take(&mut self.foreign);
         let root = matches!(name, "svg" | "math");

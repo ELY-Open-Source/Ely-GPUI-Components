@@ -368,7 +368,7 @@ impl<'a> Reader<'a> {
         (written, images)
     }
 
-    /// One node; `how` is inside an autolink, in a cell, images as alt.
+    /// One node; `how`: in autolink, in cell, images as alt.
     fn write_into(
         &self,
         node: &mdast::Node,
@@ -393,7 +393,7 @@ impl<'a> Reader<'a> {
                 return wrapped(out, "span", &format!(" {MATH}"), &math.value);
             }
             mdast::Node::FootnoteReference(note) => {
-                // GitHub writes it as an `a`: it ends the open one.
+                // GitHub writes an `a`: it ends the open one.
                 let number = html::superscript(self.notes[&note.identifier]);
                 return wrapped(out, "a", &format!(" {NOTE}"), &number);
             }

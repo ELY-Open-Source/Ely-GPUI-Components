@@ -114,7 +114,7 @@ impl Sink {
         }
     }
 
-    /// Puts `child` into `parent` at `at`; text joins text beside it.
+    /// Inserts `child` at `at`; text merges with text beside it.
     fn insert(&self, parent: usize, at: usize, child: NodeOrText<usize>) {
         match child {
             NodeOrText::AppendText(text) => {

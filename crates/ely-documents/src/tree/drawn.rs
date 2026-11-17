@@ -44,7 +44,7 @@ struct Within<'a> {
     link: Option<&'a str>,
 }
 
-/// One step of the walk: a node to read, or an element to close.
+/// A walk step: enter a node, or leave an element.
 enum Step<'a> {
     Enter(usize, Within<'a>),
     Leave { block: bool },
@@ -252,7 +252,7 @@ impl<'a> Draw<'a> {
                         segment.push(digit);
                     }
                 },
-                // HTML drops a `pre`'s first line feed; our mark hid it.
+                // Our mark hid the line feed HTML drops.
                 ('\n', None) if self.lead.take() == Some(true) => {}
                 (ch, None) => {
                     self.lead = None;
@@ -312,9 +312,7 @@ impl<'a> Draw<'a> {
         self.owed = (!(text.is_empty() || text.ends_with('\n'))).then_some('\n');
     }
 
-    /// Writes the white space owed before a character.
-    ///
-    /// It belongs to no element that has not drawn yet.
+    /// Writes owed white space; it starts no element.
     fn pay(&mut self) {
         if let Some(owed) = self.owed.take() {
             self.text.text.push(owed);
@@ -328,9 +326,7 @@ impl<'a> Draw<'a> {
         }
     }
 
-    /// Records an element's style and link over `range`.
-    ///
-    /// One range per element: they nest, as the tree does.
+    /// One range per element: they nest as the tree.
     fn record(&mut self, range: std::ops::Range<usize>, style: Option<Style>, url: Option<String>) {
         if let Some(style) = style {
             self.text.styles.push((range.clone(), style));

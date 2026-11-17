@@ -174,7 +174,7 @@ fn a_heading_keeps_its_images_after_it() {
 fn display_math_stands_alone() {
     assert_eq!(parse("$$c = 1$$"), [Node::Math("c = 1".into())]);
     assert_eq!(parse("$$\nc = 1\n$$"), [Node::Math("c = 1".into())]);
-    // GitHub closes at the first `$$`, even on a text line.
+    // GitHub closes at the first `$$`, even mid-text.
     let both = parse("$$\na.$$\n\n$$\nb\\tag{8}$$\n");
     assert_eq!(
         both,
