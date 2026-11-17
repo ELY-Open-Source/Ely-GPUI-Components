@@ -96,7 +96,7 @@ fn matches(name: &str, query: &str) -> bool {
     query.is_empty() || name.to_lowercase().contains(&query.to_lowercase())
 }
 
-/// Paths as nodes, folders first, then files, each by name; with a query, only matches and the folders that hold them, which it opens; a folder matching by name keeps all it holds, folded.
+/// Sorted nodes; a query keeps matches, named folders whole.
 fn nodes(
     paths: &[SharedString],
     status: &[(SharedString, GitStatus)],
@@ -174,7 +174,7 @@ fn nodes(
 type OnOpen = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
-/// A project's files as a tree: folders first, an icon for each kind, git status by letter and tint, a dot on folders with changes, and a filter that keeps matches and opens the folders that hold them. Enter or a double press opens a file. Give it a height.
+/// A project's files as a tree: folders first, an icon for each kind, git status by letter and tint, a dot on folders with changes, and a filter that keeps matches and opens the folders that hold them; a folder matched by name keeps its contents, folded. Enter or a double press opens a file. Give it a height.
 ///
 /// ```
 /// use ely_core::lists::{FileTree, GitStatus};
@@ -366,7 +366,7 @@ mod tests {
         let (labels, open) = shown("ui");
         assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
         assert_eq!(open, ["src"].map(SharedString::from));
-        // `u` names `ui` and a file in it: `ui` stays folded.
+        // `u` names `ui` and its file: `ui` stays folded.
         let (labels, open) = shown("u");
         assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
         assert_eq!(open, ["src"].map(SharedString::from));
