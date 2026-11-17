@@ -270,8 +270,8 @@ fn a_close_rebuilds_at_most_three_alike() {
             .any(|(r, s)| *s == Style::Strong && r.contains(&at))
     };
     assert!(bold(z), "the rebuilt `b` still holds z: {text:?}");
-    // Rebuilding every `b` at each close was quadratic.
-    let texts = [source(1 << 8), source(1 << 10)];
+    // Past `DEEPEST`; rebuilding every `b` was quadratic.
+    let texts = [source(1 << 11), source(1 << 13)];
     let mut best = [std::time::Duration::MAX; 2];
     for _ in 0..5 {
         for (text, best) in texts.iter().zip(&mut best) {
@@ -342,7 +342,8 @@ fn a_crossed_close_keeps_marks_nested_and_linear() {
             "</i>".repeat(n)
         )
     };
-    let texts = [source(1 << 8), source(1 << 10)];
+    // Both past `DEEPEST`, where each tag's cost is bounded.
+    let texts = [source(1 << 11), source(1 << 13)];
     let mut best = [std::time::Duration::MAX; 2];
     for _ in 0..5 {
         for (text, best) in texts.iter().zip(&mut best) {

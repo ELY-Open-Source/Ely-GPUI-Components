@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`: `Theme::update` passes `reduced_motion` to gpui's `App::reduce_motion`, so gpui's own animations stop with it: an `img` GIF shows its first frame.
 - `ely-documents`: `[a [^1] b](/x)` keeps its link up to the footnote, as GitHub draws it; the workspace swaps in `vendor/pulldown-cmark`, and an app on Ely patches it the same.
 - `ely-core`: a clickable `StatusBarItem` is a Tab stop with a focus ring; Enter and Space press it.
 - `ely-core`: `LOCALES` gains zh-TW, 繁體中文, with Ely's own copy in Traditional Chinese; zh-CN's name reads 简体中文. Breaking: `LOCALES` is `[Locale; 11]`.
