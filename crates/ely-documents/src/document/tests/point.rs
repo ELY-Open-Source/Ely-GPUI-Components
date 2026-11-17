@@ -414,7 +414,7 @@ fn an_html_space_moved_by_a_tag_presses_on_its_word(cx: &mut TestAppContext) {
     let source = "<div>alpha <b> beta</b></div>";
     let (document, cx) = open(source, MarkdownMode::Visual, cx);
     let events = heard(&document, cx);
-    // One space, as a browser draws it: `e` is the eighth glyph.
+    // One space, as browsers draw: `e` is glyph eight.
     press_on(0, 7, MouseButton::Right, cx);
     let at = source.find("eta").unwrap();
     assert_eq!(*events.borrow(), [target(at, TargetBlock::Html)]);

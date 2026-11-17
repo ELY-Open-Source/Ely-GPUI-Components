@@ -79,6 +79,55 @@ impl Shortcodes {
     }
 }
 
+/// Shortcodes for an owner writing its own HTML.
+///
+/// One value per block: `split` at every element, `text` on text,
+/// `html` on inline HTML. Text inside `code` or `pre` stays as written.
+#[derive(Default)]
+pub struct ShortcodeRun {
+    shortcodes: Shortcodes,
+    /// How many `code` are open.
+    code: usize,
+    /// How many `pre` are open.
+    pre: usize,
+}
+
+impl ShortcodeRun {
+    /// A new DOM text node starts.
+    pub fn split(&mut self) {
+        self.shortcodes.split();
+    }
+
+    /// Text as shown; an open `code` or `pre` keeps it.
+    pub fn text(&mut self, written: &str) -> String {
+        match self.code + self.pre {
+            0 => self.shortcodes.read(written),
+            _ => written.to_string(),
+        }
+    }
+
+    /// Inline HTML as written; a filtered tag shows as text.
+    pub fn html(&mut self, written: &str) -> String {
+        self.shortcodes.split();
+        let Some(tag) = super::html::tag(written) else {
+            return written.to_string();
+        };
+        if super::html::filtered(&tag.name) {
+            return self.text(written);
+        }
+        let open = match tag.name.as_str() {
+            "code" => &mut self.code,
+            "pre" => &mut self.pre,
+            _ => return written.to_string(),
+        };
+        *open = match tag.closing {
+            true => open.saturating_sub(1),
+            false => *open + 1,
+        };
+        written.to_string()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -99,5 +148,25 @@ mod tests {
         assert_eq!(Shortcodes::default().read(&colons).len(), colons.len());
         let spent = started.elapsed();
         assert!(spent.as_secs() < 2, "192 KiB took {spent:?}");
+    }
+
+    #[test]
+    fn a_close_ends_only_its_own_kind() {
+        let mut run = ShortcodeRun::default();
+        let mut read = |parts: &[&str]| -> String {
+            parts
+                .iter()
+                .map(|part| match part.starts_with('<') {
+                    true => run.html(part),
+                    false => run.text(part),
+                })
+                .collect()
+        };
+        let crossed = read(&[
+            "a ", "<pre>", "x", "</code>", " :smile:", "</pre>", " :smile:",
+        ]);
+        assert_eq!(crossed, "a <pre>x</code> :smile:</pre> 😄");
+        let unmatched = read(&["<code>", "</pre>", " :smile:", "</code>", " :smile:"]);
+        assert_eq!(unmatched, "<code></pre> :smile:</code> 😄");
     }
 }

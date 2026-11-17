@@ -1,10 +1,11 @@
 use std::ops::Range;
 
 use super::{
-    Escapes, Inline, drawn,
-    drawn::{Drawn, Mode, Written, draw},
+    Escapes, Inline,
+    drawn::{Drawn, Mode, draw},
     html,
     sources::LineMap,
+    written::{self, Written},
 };
 
 /// HTML text with reserved characters escaped, references too.
@@ -14,15 +15,15 @@ fn guarded(text: &str) -> String {
     while let Some(ch) = rest.chars().next() {
         let decoded = (ch == '&').then(|| html::reference(rest, false)).flatten();
         match decoded {
-            Some((value, used)) if value.chars().any(drawn::reserved) => {
+            Some((value, used)) if value.chars().any(written::reserved) => {
                 for ch in value.chars() {
-                    out.push_str(&drawn::escaped(&ch.to_string()));
+                    out.push_str(&written::escaped(&ch.to_string()));
                 }
                 rest = &rest[used..];
             }
             _ => {
-                match drawn::reserved(ch) {
-                    true => out.push_str(&drawn::escaped(&ch.to_string())),
+                match written::reserved(ch) {
+                    true => out.push_str(&written::escaped(&ch.to_string())),
                     false => out.push(ch),
                 }
                 rest = &rest[ch.len_utf8()..];
@@ -369,6 +370,7 @@ mod tests {
                 "<b> ".repeat(n),
                 "<li><b>x ".repeat(n / 2),
                 "<p><i>x ".repeat(n / 2),
+                "<div/>".repeat(n),
             ]
         };
         let time = |n| {
@@ -413,5 +415,44 @@ mod tests {
             &line.text[..9]
         );
         assert_eq!(line.text.matches("<b>").count(), 1100 - 1024 + 1);
+    }
+
+    #[test]
+    fn pre_keeps_its_white_space() {
+        let line = html("<pre>a  b\nc\t d</pre>").expect("text");
+        assert_eq!(line.text, "a  b\nc\t d");
+        let nested = html("<div>x  y<pre>a  b\n <i>c  d</i></pre>z  w</div>").expect("text");
+        assert_eq!(nested.text, "x y\na  b\n c  d\nz w");
+        let lines = html("<pre>\nline one\n\n  two</pre>").expect("text");
+        assert_eq!(lines.text, "line one\n\n  two");
+    }
+
+    #[test]
+    fn a_slash_closes_only_what_html_closes() {
+        let divs = html(&format!("<div>{}x</div>", "<div/>".repeat(1100))).expect("text");
+        assert_eq!(divs.text.matches("<div/>").count(), 1100 - 1024 + 1);
+        let paths = "<path/>".repeat(1100);
+        let svg = html(&format!("<div><svg>{paths}</svg>x</div>")).expect("text");
+        assert_eq!(svg.text, "x");
+        let left = html(&format!("<div><svg><p>{}x</div>", "<g/>".repeat(1100)));
+        assert_eq!(
+            left.expect("text").text.matches("<g/>").count(),
+            1100 - 1022
+        );
+    }
+
+    #[test]
+    fn source_html_cannot_name_the_writer_s_controls() {
+        for name in ["math", "note", "auto", "image=\"0\""] {
+            for lead in ["\u{FDD0}", "&#xFDD0;", "data-ely-"] {
+                let block = html(&format!("<div><span {lead}{name}>:smile:</span></div>"));
+                let block = block.expect("text");
+                assert_eq!(
+                    (block.text.as_str(), block.styles.len()),
+                    ("😄", 0),
+                    "{lead}{name}"
+                );
+            }
+        }
     }
 }

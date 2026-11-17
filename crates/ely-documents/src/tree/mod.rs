@@ -11,14 +11,16 @@ pub(crate) mod emoji;
 pub(crate) mod html;
 mod html_block;
 mod sources;
+mod written;
 
 pub use blocks::{AlertKind, DocumentHeading};
 pub use blocks::{alert, is_toc};
-pub use drawn::ShortcodeRun;
-use drawn::{Drawn, Mode, Written, draw, escaped};
+use drawn::{Drawn, Mode, draw};
+pub use emoji::ShortcodeRun;
 use html_block::html_block_text;
 pub(crate) use sources::Escapes;
 pub(crate) use sources::{inside, lines_at};
+use written::{AUTO, IMAGE, MATH, NOTE, Written, quoted};
 
 /// How a stretch of inline text prints.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -388,12 +390,12 @@ impl<'a> Reader<'a> {
             mdast::Node::Break(_) => return out.html.push_str("<br>"),
             mdast::Node::InlineCode(code) => return wrapped(out, "code", "", &code.value),
             mdast::Node::InlineMath(math) => {
-                return wrapped(out, "span", " data-ely-math", &math.value);
+                return wrapped(out, "span", &format!(" {MATH}"), &math.value);
             }
             mdast::Node::FootnoteReference(note) => {
                 // GitHub writes it as an `a`: it ends the open one.
                 let number = html::superscript(self.notes[&note.identifier]);
-                return wrapped(out, "a", " data-ely-note", &number);
+                return wrapped(out, "a", &format!(" {NOTE}"), &number);
             }
             mdast::Node::Image(_) | mdast::Node::ImageReference(_) => {
                 let (alt_text, url) = match node {
@@ -412,9 +414,7 @@ impl<'a> Reader<'a> {
                     url,
                     at: span(node).start,
                 });
-                return out
-                    .html
-                    .push_str(&format!("<img data-ely-image=\"{index}\">"));
+                return out.html.push_str(&format!("<img {IMAGE}=\"{index}\">"));
             }
             mdast::Node::Html(written) => return out.raw(&written.value),
             mdast::Node::Strong(strong) => (&strong.children, "strong", String::new()),
@@ -422,15 +422,19 @@ impl<'a> Reader<'a> {
             mdast::Node::Delete(delete) => (&delete.children, "del", String::new()),
             mdast::Node::Link(link) => {
                 let auto = !self.source[span(node)].starts_with('[');
-                let tail = if auto { " data-ely-auto" } else { "" };
+                let tail = if auto {
+                    format!(" {AUTO}")
+                } else {
+                    String::new()
+                };
                 (
                     &link.children,
                     "a",
-                    format!(" href=\"{}\"{tail}", escaped(&link.url)),
+                    format!(" href=\"{}\"{tail}", quoted(&link.url)),
                 )
             }
             mdast::Node::LinkReference(link) => {
-                let url = escaped(&self.url(&link.identifier));
+                let url = quoted(&self.url(&link.identifier));
                 (&link.children, "a", format!(" href=\"{url}\""))
             }
             other => unreachable!("{other:?} is no inline outside MDX"),
