@@ -197,21 +197,23 @@ fn not_prose(text: &str, options: Options) -> Vec<Range<usize>> {
     let mut held = Vec::new();
     // Code, front matter, alt text and autolinks are no prose.
     let (mut at, mut quiet) = (0, 0usize);
+    // Whether each open link is an autolink.
+    let mut links = Vec::new();
     let plain = options.difference(Options::ENABLE_MATH);
     for (event, range) in Parser::new_ext(text, plain).into_offset_iter() {
         match event {
-            Event::Start(
-                Tag::CodeBlock(_)
-                | Tag::MetadataBlock(_)
-                | Tag::Image { .. }
-                | Tag::Link {
-                    link_type: LinkType::Autolink | LinkType::Email,
-                    ..
-                },
-            ) => quiet += 1,
-            Event::End(
-                TagEnd::CodeBlock | TagEnd::MetadataBlock(_) | TagEnd::Image | TagEnd::Link,
-            ) if quiet > 0 => quiet -= 1,
+            Event::Start(Tag::CodeBlock(_) | Tag::MetadataBlock(_) | Tag::Image { .. }) => {
+                quiet += 1;
+            }
+            Event::End(TagEnd::CodeBlock | TagEnd::MetadataBlock(_) | TagEnd::Image) => {
+                quiet -= 1;
+            }
+            Event::Start(Tag::Link { link_type, .. }) => {
+                let auto = matches!(link_type, LinkType::Autolink | LinkType::Email);
+                quiet += usize::from(auto);
+                links.push(auto);
+            }
+            Event::End(TagEnd::Link) => quiet -= usize::from(links.pop() == Some(true)),
             Event::Text(_) if quiet == 0 && range.start >= at => {
                 held.push(at..range.start);
                 at = range.end;
@@ -331,6 +333,8 @@ mod tests {
             "[l](https://x.test/ \"$$\")",
             "![i](i-$$.png)",
             "![literal $$](i.png)",
+            "![a [b](/u) $$](i.png)",
+            "![a <https://x.test/> $$](i.png)",
             "<span title=\"$$\">t</span>",
             "<https://x.test/$$>",
         ] {
