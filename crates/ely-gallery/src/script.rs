@@ -278,7 +278,18 @@ pub async fn shown(window: gpui::AnyWindowHandle, cx: &mut AsyncApp) -> Result<(
                         window.bounds()
                     )
                 })?;
-                anyhow::bail!("the window drew no frame in {SHOWN:?}; is it hidden? {state}")
+                // A second ask shows whether a fresh wake revives the link.
+                let (again, frame) = futures::channel::oneshot::channel();
+                window.update(cx, |_, window, _| {
+                    window.on_next_frame(move |_, _| again.send(()).unwrap_or_default())
+                })?;
+                let revived = matches!(
+                    select(frame, cx.background_executor().timer(SHOWN)).await,
+                    Either::Left((Ok(()), _))
+                );
+                anyhow::bail!(
+                    "the window drew no frame in {SHOWN:?}; {state}; a second ask drew: {revived}"
+                )
             }
         }
     }
