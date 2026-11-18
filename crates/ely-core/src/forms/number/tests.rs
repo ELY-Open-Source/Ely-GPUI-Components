@@ -121,3 +121,60 @@ fn the_owner_echo_of_a_commit_keeps_the_next_draft(cx: &mut TestAppContext) {
     cx.run_until_parked();
     assert_eq!(commits(&view, cx), [12.0, 18.0]);
 }
+
+/// A limit that may hold no number yet: blank while `None`, back to `None` once cleared.
+struct Limit {
+    value: Option<f64>,
+    clears: usize,
+}
+
+impl Render for Limit {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let (typed, cleared) = (cx.entity(), cx.entity());
+        let field = NumberInput::new("limit", self.value.unwrap_or_default())
+            .on_change(move |value, _, cx| {
+                typed.update(cx, |limit, cx| {
+                    limit.value = Some(value);
+                    cx.notify();
+                })
+            })
+            .on_clear(move |_, cx| {
+                cleared.update(cx, |limit, cx| {
+                    limit.value = None;
+                    limit.clears += 1;
+                    cx.notify();
+                })
+            });
+        match self.value {
+            Some(_) => field,
+            None => field.blank(""),
+        }
+    }
+}
+
+#[gpui::test]
+fn a_cleared_field_stays_empty_once_its_owner_shows_it_blank(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        bind_keys(cx);
+    });
+    let (view, cx) = cx.add_window_view(|_, _| Limit {
+        value: Some(10.0),
+        clears: 0,
+    });
+    cx.update(|window, cx| {
+        window.activate_window();
+        window.focus_next(cx);
+    });
+    cx.simulate_keystrokes("secondary-a backspace");
+    cx.run_until_parked();
+    cx.update(|window, cx| window.blur(cx));
+    cx.run_until_parked();
+    let read =
+        |cx: &mut VisualTestContext| view.read_with(cx, |limit, _| (limit.value, limit.clears));
+    assert_eq!(read(cx), (None, 1), "the blur brings no number back");
+    cx.update(|window, cx| window.focus_next(cx));
+    cx.simulate_input("7");
+    cx.run_until_parked();
+    assert_eq!(read(cx), (Some(7.0), 1));
+}

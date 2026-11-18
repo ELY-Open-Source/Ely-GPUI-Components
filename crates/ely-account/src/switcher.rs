@@ -174,10 +174,11 @@ impl RenderOnce for AccountSwitcher {
                 },
             )
         });
-        let mut menu = Menu::new().group("Accounts", items.collect::<Vec<_>>());
+        let title = crate::i18n::text(cx, "account.switcher.accounts", &[]);
+        let mut menu = Menu::new().group(title, items.collect::<Vec<_>>());
         if let Some(add) = self.on_add {
             menu = menu.separator().item(
-                MenuItem::new("Add account")
+                MenuItem::new(crate::i18n::text(cx, "account.switcher.add", &[]))
                     .icon(IconName::UserPlus)
                     .on_click(move |window, cx| add(window, cx)),
             );
@@ -272,10 +273,11 @@ impl RenderOnce for WorkspaceSwitcher {
                 )
             })
             .collect();
-        let mut menu = Menu::new().group("Workspaces", items);
+        let title = crate::i18n::text(cx, "account.switcher.workspaces", &[]);
+        let mut menu = Menu::new().group(title, items);
         if let Some(create) = self.on_create {
             menu = menu.separator().item(
-                MenuItem::new("Create workspace")
+                MenuItem::new(crate::i18n::text(cx, "account.switcher.create", &[]))
                     .icon(IconName::Plus)
                     .on_click(move |window, cx| create(window, cx)),
             );
@@ -369,16 +371,16 @@ impl RenderOnce for UserMenu {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let id = self.id;
         let sign_out = self.on_sign_out;
-        let menu =
-            Menu::new()
-                .group(format!("Signed in as {}", self.email), self.items)
-                .separator()
-                .item(MenuItem::new("Sign out").icon(IconName::LogOut).on_click(
-                    move |window, cx| {
-                        log::info!("user menu: sign out");
-                        sign_out(window, cx);
-                    },
-                ));
+        let signed_in = crate::i18n::text(cx, "account.menu.signed-in", &[("email", &self.email)]);
+        let sign_out_label = crate::i18n::text(cx, "account.menu.sign-out", &[]);
+        let menu = Menu::new().group(signed_in, self.items).separator().item(
+            MenuItem::new(sign_out_label)
+                .icon(IconName::LogOut)
+                .on_click(move |window, cx| {
+                    log::info!("user menu: sign out");
+                    sign_out(window, cx);
+                }),
+        );
         let name = self.name.clone();
         let mut avatar = Avatar::new((id.clone(), "avatar"), self.name).size(AvatarSize::Sm);
         if let Some(image) = self.image {

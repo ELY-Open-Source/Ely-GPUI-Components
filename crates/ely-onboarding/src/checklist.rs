@@ -8,6 +8,7 @@ use gpui::{
 use crate::{
     buttons::{Button, ButtonVariant},
     forms::Run,
+    i18n,
     motion::{self, ProgressBar},
     primitives::{Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, TextSize},
@@ -87,7 +88,14 @@ impl RenderOnce for SetupChecklist {
             self.tasks.iter().filter(|task| task.done).count(),
             self.tasks.len(),
         );
-        let tally = format!("{done} of {all} done");
+        let tally = i18n::text(
+            cx,
+            "onboarding.checklist.tally",
+            &[("done", &done.to_string()), ("all", &all.to_string())],
+        );
+        let start_label = i18n::text(cx, "onboarding.checklist.start", &[]);
+        let finished_label = i18n::text(cx, "onboarding.checklist.finished", &[]);
+        let hide_label = i18n::text(cx, "onboarding.checklist.hide", &[]);
         let turns: Vec<usize> = self
             .tasks
             .iter()
@@ -126,13 +134,16 @@ impl RenderOnce for SetupChecklist {
                     );
                 let start = (!task.done).then(|| {
                     let (key, start) = (task.key.clone(), on_start.clone());
-                    Button::new((id.clone(), format!("start-{}", task.key)), "Start")
-                        .variant(ButtonVariant::Ghost)
-                        .size(ControlSize::Sm)
-                        .on_click(move |_, window, cx| {
-                            log::info!("setup checklist: start {key}");
-                            start(&key, window, cx)
-                        })
+                    Button::new(
+                        (id.clone(), format!("start-{}", task.key)),
+                        start_label.clone(),
+                    )
+                    .variant(ButtonVariant::Ghost)
+                    .size(ControlSize::Sm)
+                    .on_click(move |_, window, cx| {
+                        log::info!("setup checklist: start {key}");
+                        start(&key, window, cx)
+                    })
                 });
                 let key = task.key.clone();
                 div()
@@ -178,10 +189,10 @@ impl RenderOnce for SetupChecklist {
                     div()
                         .text_size(theme.text_size(TextSize::Sm))
                         .text_color(theme.colors.success)
-                        .child("All set."),
+                        .child(finished_label),
                 )
                 .children(self.on_dismiss.map(|run| {
-                    Button::new((id.clone(), "hide"), "Hide")
+                    Button::new((id.clone(), "hide"), hide_label)
                         .size(ControlSize::Sm)
                         .on_click(move |_, window, cx| {
                             log::info!("setup checklist: hidden");

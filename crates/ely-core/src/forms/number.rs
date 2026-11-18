@@ -7,7 +7,7 @@ use gpui::{
 };
 
 use super::{
-    Input, InputEvent, TextInput,
+    Input, InputEvent, Run, TextInput,
     text::{Down, Up},
 };
 use crate::{
@@ -24,6 +24,7 @@ struct Numeric {
     input: Entity<TextInput>,
     on_change: Option<OnChange>,
     on_commit: Option<OnChange>,
+    on_clear: Option<Run>,
     value: f64,
     limits: (f64, f64, f64, usize),
     /// Shows no number; an empty field commits nothing.
@@ -103,6 +104,15 @@ fn numeric(id: &ElementId, window: &mut Window, cx: &mut App) -> Entity<Numeric>
                     );
                 }
                 InputEvent::Changed if input.read(cx).focus().is_focused(window) => {
+                    if input.read(cx).text().trim().is_empty() {
+                        if let Some(on_clear) = numeric.on_clear.clone()
+                            && !numeric.blank
+                        {
+                            log::info!("number input: cleared");
+                            on_clear(window, cx);
+                        }
+                        return;
+                    }
                     let Some(typed) = parse(input.read(cx).text()) else {
                         return;
                     };
@@ -123,6 +133,7 @@ fn numeric(id: &ElementId, window: &mut Window, cx: &mut App) -> Entity<Numeric>
             input,
             on_change: None,
             on_commit: None,
+            on_clear: None,
             value: 0.0,
             limits: (f64::MIN, f64::MAX, 1.0, 0),
             blank: false,
@@ -203,6 +214,7 @@ pub struct NumberInput {
     size: ControlSize,
     on_change: Option<OnChange>,
     on_commit: Option<OnChange>,
+    on_clear: Option<Run>,
     scrub_label: Option<SharedString>,
     label: SharedString,
     blank: Option<SharedString>,
@@ -223,6 +235,7 @@ impl NumberInput {
             size: ControlSize::default(),
             on_change: None,
             on_commit: None,
+            on_clear: None,
             scrub_label: None,
             label: SharedString::default(),
             blank: None,
@@ -304,6 +317,12 @@ impl NumberInput {
         self.on_commit = Some(Rc::new(handler));
         self
     }
+
+    /// Runs when typing empties the field. An owner that then shows `blank` keeps it empty, as for a limit with no value yet; otherwise leaving the field brings the number back.
+    pub fn on_clear(mut self, handler: impl Fn(&mut Window, &mut App) + 'static) -> Self {
+        self.on_clear = Some(Rc::new(handler));
+        self
+    }
 }
 
 impl RenderOnce for NumberInput {
@@ -320,6 +339,7 @@ impl RenderOnce for NumberInput {
         let reseed = state.update(cx, |numeric, _| {
             numeric.on_change = self.on_change.clone();
             numeric.on_commit = self.on_commit.clone();
+            numeric.on_clear = self.on_clear.clone();
             numeric.limits = (min, max, step, self.precision);
             numeric.blank = self.blank.is_some();
             if numeric.owner.as_ref() != Some(&shown) {

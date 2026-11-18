@@ -62,6 +62,22 @@ const SHIPPED: &[(&str, &str)] = &[
         "settings/appearance.rs",
         include_str!("../crates/ely-settings/src/appearance.rs"),
     ),
+    (
+        "forms/date/time.rs",
+        include_str!("../crates/ely-core/src/forms/date/time.rs"),
+    ),
+    (
+        "terminal/logs.rs",
+        include_str!("../crates/ely-terminal/src/logs.rs"),
+    ),
+    (
+        "account/switcher.rs",
+        include_str!("../crates/ely-account/src/switcher.rs"),
+    ),
+    (
+        "onboarding/checklist.rs",
+        include_str!("../crates/ely-onboarding/src/checklist.rs"),
+    ),
 ];
 
 #[test]

@@ -448,6 +448,7 @@ pub struct DurationPicker {
     id: ElementId,
     value: Duration,
     seconds: bool,
+    blank: bool,
     on_change: Option<OnDuration>,
 }
 
@@ -458,6 +459,7 @@ impl DurationPicker {
             id: id.into(),
             value,
             seconds: false,
+            blank: false,
             on_change: None,
         }
     }
@@ -465,6 +467,12 @@ impl DurationPicker {
     /// Adds a seconds field.
     pub fn seconds(mut self) -> Self {
         self.seconds = true;
+        self
+    }
+
+    /// Shows empty fields, not `value`, as for a limit with no duration yet; a number typed in one runs `on_change`.
+    pub fn blank(mut self) -> Self {
+        self.blank = true;
         self
     }
 
@@ -489,36 +497,32 @@ impl RenderOnce for DurationPicker {
         let now = parts(self.value);
         let theme = cx.theme();
         let width = theme.control_height(ControlSize::Md) * 4.0;
-        let units: &[(&str, &str, f64)] = if self.seconds {
-            &[
-                ("hours", "h", 9999.0),
-                ("minutes", "m", 59.0),
-                ("seconds", "s", 59.0),
-            ]
+        let units: &[(&str, f64)] = if self.seconds {
+            &[("hours", 9999.0), ("minutes", 59.0), ("seconds", 59.0)]
         } else {
-            &[("hours", "h", 9999.0), ("minutes", "m", 59.0)]
+            &[("hours", 9999.0), ("minutes", 59.0)]
         };
         let fields: Vec<_> = units
             .iter()
             .enumerate()
-            .map(|(ix, (key, unit, max))| {
+            .map(|(ix, (key, max))| {
                 let (id, on_change) = (self.id.clone(), self.on_change.clone());
-                div().w(width).child(
-                    NumberInput::new((self.id.clone(), *key), now[ix] as f64)
-                        .range(0.0, *max)
-                        .label(text(cx, &format!("duration.{key}"), &[]))
-                        .suffix(div().child(*unit))
-                        .on_change(move |value, window, cx| {
-                            let mut next = now;
-                            next[ix] = value as u64;
-                            let total =
-                                Duration::from_secs(next[0] * 3600 + next[1] * 60 + next[2]);
-                            log::info!("duration picker {id:?}: {total:?}");
-                            if let Some(on_change) = &on_change {
-                                on_change(total, window, cx);
-                            }
-                        }),
-                )
+                let field = NumberInput::new((self.id.clone(), *key), now[ix] as f64)
+                    .range(0.0, *max)
+                    .label(text(cx, &format!("duration.{key}"), &[]))
+                    .suffix(div().child(text(cx, &format!("duration.{key}.unit"), &[])))
+                    .on_change(move |value, window, cx| {
+                        let mut next = now;
+                        next[ix] = value as u64;
+                        let total = Duration::from_secs(next[0] * 3600 + next[1] * 60 + next[2]);
+                        log::info!("duration picker {id:?}: {total:?}");
+                        if let Some(on_change) = &on_change {
+                            on_change(total, window, cx);
+                        }
+                    });
+                div()
+                    .w(width)
+                    .child(if self.blank { field.blank("") } else { field })
             })
             .collect();
         div().flex().items_center().gap_2().children(fields)
