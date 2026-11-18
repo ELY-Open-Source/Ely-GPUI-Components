@@ -5,22 +5,25 @@ use crate::markdown::mdast::{self, AlignKind};
 use super::markdown::{span, tree, walk};
 
 mod blocks;
+mod dom;
+mod drawn;
 pub(crate) mod emoji;
 pub(crate) mod html;
 mod html_block;
 mod sources;
-mod stack;
+mod written;
 
 pub use blocks::{AlertKind, DocumentHeading};
 pub use blocks::{alert, is_toc};
+use drawn::{Drawn, Mode, draw};
+pub use emoji::ShortcodeRun;
 use html_block::html_block_text;
 pub(crate) use sources::Escapes;
 pub(crate) use sources::{inside, lines_at};
-pub use stack::ShortcodeRun;
-use stack::close;
+use written::{AUTO, IMAGE, MATH, NOTE, Written, quoted};
 
 /// How a stretch of inline text prints.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Style {
     /// Bold.
     Strong,
@@ -141,74 +144,6 @@ pub struct Reader<'a> {
     lines: bool,
 }
 
-/// An open element, as HTML names it.
-struct Opened {
-    name: String,
-    start: usize,
-    style: Option<Style>,
-    url: Option<String>,
-}
-
-/// Inline text being built, and the containers open around it.
-#[derive(Default)]
-struct Run {
-    text: Inline,
-    open: Vec<Opened>,
-    /// How many of each name are open.
-    named: HashMap<String, usize>,
-    /// Inside an autolink: its text stays as written.
-    verbatim: bool,
-    /// In a table cell, whose code reads `\|` as `|`.
-    table: bool,
-    /// Soft breaks as lines, not spaces.
-    lines: bool,
-    /// The current DOM text node's shortcodes.
-    shortcodes: emoji::Shortcodes,
-    /// White space owed, and the open elements before it.
-    owed: Option<(char, usize)>,
-    /// Formatting set aside by each open table.
-    tables: Vec<Vec<Opened>>,
-    /// Where formatting reopened; HTML5 rebuilds it only at text.
-    pending: Vec<usize>,
-}
-
-impl Run {
-    /// Text so far; open styles close here, reopen at zero.
-    fn cut(&mut self) -> Inline {
-        let mut done = std::mem::take(&mut self.text);
-        let end = done.text.len();
-        for opened in self.open.iter_mut().rev() {
-            close(&mut done, opened, end);
-            opened.start = 0;
-        }
-        done
-    }
-
-    fn count(&self, name: &str) -> usize {
-        self.named.get(name).copied().unwrap_or(0)
-    }
-
-    /// Text with shortcodes read, outside autolinks, `code` and `pre`.
-    fn shown(&mut self, written: &str) -> String {
-        match !self.verbatim && self.count("code") == 0 && self.count("pre") == 0 {
-            true => self.shortcodes.read(written),
-            false => written.to_string(),
-        }
-    }
-
-    /// Text as shown: shortcodes read, lines joined.
-    fn push_text(&mut self, written: &str) {
-        let shown = self.shown(written);
-        self.push_plain(&shown);
-    }
-
-    fn push_plain(&mut self, shown: &str) {
-        let soft = if self.lines { "\n" } else { " " };
-        let shown = shown.replace("\r\n", soft).replace(['\r', '\n'], soft);
-        self.text.text.push_str(&shown);
-    }
-}
-
 /// `markdown` as blocks.
 pub(crate) fn parse(markdown: &str) -> Vec<Node> {
     let root = tree(markdown);
@@ -293,11 +228,27 @@ impl<'a> Reader<'a> {
         match node {
             mdast::Node::Paragraph(paragraph) => self.paragraph(node, &paragraph.children, out),
             mdast::Node::Heading(heading) => {
-                let (mut run, mut after) = (self.run(), Vec::new());
-                for child in &heading.children {
-                    self.inline_into(child, &mut run, &mut Images::After(&mut after));
+                let wrap = (
+                    format!("<h{}>", heading.depth),
+                    format!("</h{}>", heading.depth),
+                );
+                let (written, images) = self.write(&heading.children, false, false);
+                let mut text = Inline::default();
+                let mut after = Vec::new();
+                let drawn = draw(
+                    &written,
+                    (&wrap.0, &wrap.1),
+                    Mode::Inline,
+                    self.lines,
+                    false,
+                );
+                for piece in drawn {
+                    match piece {
+                        Drawn::Text(drawn) => text = drawn,
+                        Drawn::Image(index, link) => after.extend(image(&images, index, link)),
+                    }
                 }
-                out.push(Node::Heading(heading.depth, run.cut()));
+                out.push(Node::Heading(heading.depth, text));
                 out.extend(after);
             }
             mdast::Node::Blockquote(quote) => out.push(Node::Quote(self.nested(&quote.children))),
@@ -367,20 +318,18 @@ impl<'a> Reader<'a> {
         {
             return out.push(Node::Math(math.value.trim().to_string()));
         }
-        let mut run = Run {
-            table: matches!(node, mdast::Node::TableCell(_)),
-            ..self.run()
+        let table = matches!(node, mdast::Node::TableCell(_));
+        let (written, images) = self.write(children, table, false);
+        // GitHub writes a cell's text inside its table.
+        let wrap = match table {
+            true => ("<table><tbody><tr><td>", "</td></tr></tbody></table>"),
+            false => ("<p>", "</p>"),
         };
-        for child in children {
-            self.inline_into(child, &mut run, &mut Images::Split(out));
-        }
-        text_block(run.cut(), out);
-    }
-
-    fn run(&self) -> Run {
-        Run {
-            lines: self.lines,
-            ..Run::default()
+        for piece in draw(&written, wrap, Mode::Inline, self.lines, true) {
+            match piece {
+                Drawn::Text(text) => text_block(text, out),
+                Drawn::Image(index, link) => out.extend(image(&images, index, link)),
+            }
         }
     }
 
@@ -399,91 +348,131 @@ impl<'a> Reader<'a> {
 
     /// Inline text where images draw as their alt text.
     pub fn inline(&self, nodes: &[mdast::Node]) -> Inline {
-        let mut run = self.run();
-        for node in nodes {
-            self.inline_into(node, &mut run, &mut Images::Alt);
+        let (written, _) = self.write(nodes, false, true);
+        let drawn = draw(&written, ("<p>", "</p>"), Mode::Inline, self.lines, false);
+        let mut text = Inline::default();
+        for piece in drawn {
+            if let Drawn::Text(drawn) = piece {
+                text = drawn;
+            }
         }
-        run.cut()
+        text
     }
 
-    fn inline_into(&self, node: &mdast::Node, run: &mut Run, images: &mut Images) {
-        // Any element ends the DOM text node.
-        if !matches!(node, mdast::Node::Text(_) | mdast::Node::Html(_)) {
-            run.shortcodes.split();
+    /// Inline nodes as the HTML GitHub writes, images set aside.
+    fn write(&self, nodes: &[mdast::Node], table: bool, alt: bool) -> (Written, Vec<Picture>) {
+        let (mut written, mut images) = (Written::default(), Vec::new());
+        for node in nodes {
+            self.write_into(node, &mut written, &mut images, (false, table, alt));
         }
+        (written, images)
+    }
+
+    /// One node; `how`: in autolink, in cell, images as alt.
+    fn write_into(
+        &self,
+        node: &mdast::Node,
+        out: &mut Written,
+        images: &mut Vec<Picture>,
+        how: (bool, bool, bool),
+    ) {
+        let (verbatim, table, alt) = how;
         if let Some((written, escapes)) = sources::written(node, self.source) {
             let escapes = match (escapes, node) {
-                (Escapes::Markdown, _) if run.verbatim => Escapes::Plain,
-                (_, mdast::Node::InlineCode(_)) if run.table => Escapes::Pipes,
+                (Escapes::Markdown, _) if verbatim => Escapes::Plain,
+                (_, mdast::Node::InlineCode(_)) if table => Escapes::Pipes,
                 _ => escapes,
             };
-            let at = run.text.text.len();
-            run.text.sources.push((at, written, escapes));
+            out.chunk(written, escapes);
         }
-        let text = &mut run.text;
-        let (children, (name, style), url) = match node {
-            mdast::Node::Text(words) => return run.push_text(&words.value),
-            mdast::Node::Break(_) => return text.text.push('\n'),
-            mdast::Node::InlineCode(code) => return styled(text, &code.value, Style::Code),
-            mdast::Node::InlineMath(math) => return styled(text, &math.value, Style::Math),
+        let (children, name, attributes) = match node {
+            mdast::Node::Text(words) => return out.text(&words.value),
+            mdast::Node::Break(_) => return out.html.push_str("<br>"),
+            mdast::Node::InlineCode(code) => return wrapped(out, "code", "", &code.value),
+            mdast::Node::InlineMath(math) => {
+                return wrapped(out, "span", &format!(" {MATH}"), &math.value);
+            }
             mdast::Node::FootnoteReference(note) => {
-                // GitHub writes it as an `a`: it ends the open one.
-                run.end("a");
-                let number = self.notes[&note.identifier];
-                return styled(&mut run.text, &html::superscript(number), Style::Footnote);
+                // GitHub writes an `a`: it ends the open one.
+                let number = html::superscript(self.notes[&note.identifier]);
+                return wrapped(out, "a", &format!(" {NOTE}"), &number);
             }
             mdast::Node::Image(_) | mdast::Node::ImageReference(_) => {
-                let (alt, url) = match node {
+                let (alt_text, url) = match node {
                     mdast::Node::Image(image) => (image.alt.clone(), image.url.clone()),
                     mdast::Node::ImageReference(image) => {
                         (image.alt.clone(), self.url(&image.identifier))
                     }
                     _ => unreachable!("matched as an image"),
                 };
-                let (link, at) = (run.link(), span(node).start);
-                return match images {
-                    Images::Alt => run.text.text.push_str(&alt),
-                    Images::Split(out) => {
-                        text_block(run.cut(), out);
-                        out.push(Node::Image { alt, url, link, at })
-                    }
-                    Images::After(out) => out.push(Node::Image { alt, url, link, at }),
-                };
+                if alt {
+                    return out.text(&alt_text);
+                }
+                let index = images.len();
+                images.push(Picture {
+                    alt: alt_text,
+                    url,
+                    at: span(node).start,
+                });
+                return out.html.push_str(&format!("<img {IMAGE}=\"{index}\">"));
             }
-            mdast::Node::Html(written) => return run.html(&written.value),
-            mdast::Node::Strong(strong) => (&strong.children, ("strong", Style::Strong), None),
-            mdast::Node::Emphasis(emphasis) => (&emphasis.children, ("em", Style::Emphasis), None),
-            mdast::Node::Delete(delete) => (&delete.children, ("del", Style::Strike), None),
-            mdast::Node::Link(link) => (&link.children, ("a", Style::Link), Some(link.url.clone())),
-            mdast::Node::LinkReference(link) => (
-                &link.children,
-                ("a", Style::Link),
-                Some(self.url(&link.identifier)),
-            ),
+            mdast::Node::Html(written) => return out.raw(&written.value),
+            mdast::Node::Strong(strong) => (&strong.children, "strong", String::new()),
+            mdast::Node::Emphasis(emphasis) => (&emphasis.children, "em", String::new()),
+            mdast::Node::Delete(delete) => (&delete.children, "del", String::new()),
+            mdast::Node::Link(link) => {
+                let auto = !self.source[span(node)].starts_with('[');
+                let tail = if auto {
+                    format!(" {AUTO}")
+                } else {
+                    String::new()
+                };
+                (
+                    &link.children,
+                    "a",
+                    format!(" href=\"{}\"{tail}", quoted(&link.url)),
+                )
+            }
+            mdast::Node::LinkReference(link) => {
+                let url = quoted(&self.url(&link.identifier));
+                (&link.children, "a", format!(" href=\"{url}\""))
+            }
             other => unreachable!("{other:?} is no inline outside MDX"),
         };
         // A container is the element GitHub writes.
-        run.start(name, Some(style), url);
+        out.html.extend(["<", name, &attributes, ">"]);
         let autolink =
             matches!(node, mdast::Node::Link(_)) && !self.source[span(node)].starts_with('[');
-        let outer = run.verbatim;
-        run.verbatim |= autolink;
         for child in children {
-            self.inline_into(child, run, images);
+            self.write_into(child, out, images, (verbatim || autolink, table, alt));
         }
-        run.verbatim = outer;
-        run.end(name);
+        out.html.extend(["</", name, ">"]);
     }
 }
 
-/// Where an inline image goes.
-enum Images<'a> {
-    /// Its alt text stays in the line.
-    Alt,
-    /// It splits the text into blocks.
-    Split(&'a mut Vec<Node>),
-    /// It follows the text, as a heading's.
-    After(&'a mut Vec<Node>),
+/// An image set aside while its text was written.
+#[derive(Clone)]
+struct Picture {
+    alt: String,
+    url: String,
+    at: usize,
+}
+
+/// The image numbered `index`, linked by `link`.
+fn image(images: &[Picture], index: usize, link: Option<String>) -> Option<Node> {
+    let Some(picture) = images.get(index) else {
+        log::error!("markdown: an image placeholder names no image");
+        return None;
+    };
+    let Picture { alt, url, at } = picture.clone();
+    Some(Node::Image { alt, url, link, at })
+}
+
+/// `text` inside a `name` element with `attributes`.
+fn wrapped(out: &mut Written, name: &str, attributes: &str, text: &str) {
+    out.html.extend(["<", name, attributes, ">"]);
+    out.text(text);
+    out.html.extend(["</", name, ">"]);
 }
 
 /// Text left between images, unless it is blank.
@@ -491,12 +480,6 @@ fn text_block(text: Inline, out: &mut Vec<Node>) {
     if !text.text.trim().is_empty() {
         out.push(Node::Paragraph(text));
     }
-}
-
-fn styled(inline: &mut Inline, text: &str, style: Style) {
-    let start = inline.text.len();
-    inline.text.push_str(text);
-    inline.styles.push((start..inline.text.len(), style));
 }
 
 #[cfg(test)]

@@ -20,20 +20,15 @@ pub(super) fn run(here: &Here) -> Result<Change, EditRefusal> {
         Some(_) => here.path.len() - 2,
         None => here.path.len() - 1,
     };
-    if let Node::Blockquote(quote) = here.path[ix]
-        && whole(here, ix)
-    {
+    if matches!(here.path[ix], Node::Blockquote(_)) && whole(here, ix) {
         let off = change(unwrap(here, ix)?, caret);
-        // An alert sheds its marker; a plain quote's text stays.
-        return match alert(quote) {
-            Some(_) => Ok(off),
-            None => check::same(
-                here.text,
-                here.root,
-                off,
-                "a quote change would reread otherwise",
-            ),
+        let before = check::Shown::new(here.text, here.root);
+        // An alert sheds its marker; its body stays.
+        let before = match alerted(here, ix) {
+            true => before.with(here.path[ix], check::Goal::Unquoted),
+            false => before,
         };
+        return check::same(&before, off, "a quote change would reread otherwise");
     }
     if here.leaf().is_none() && here.selection.is_empty() {
         if !here.blank() {
@@ -50,12 +45,8 @@ pub(super) fn run(here: &Here) -> Result<Change, EditRefusal> {
         return Err(EditRefusal::Outside);
     }
     let on = change(wrap(here, k, &blocks), caret);
-    check::same(
-        here.text,
-        here.root,
-        on,
-        "a quote change would reread otherwise",
-    )
+    let before = check::Shown::new(here.text, here.root);
+    check::same(&before, on, "a quote change would reread otherwise")
 }
 
 /// Whether the selection takes in the whole quote at `ix`.
@@ -85,16 +76,12 @@ fn unwrap(here: &Here, ix: usize) -> Result<Vec<(Range<usize>, String)>, EditRef
     if here.joins_before(&whole, &[quote]) {
         edits.push((line..line, blank.clone()));
     }
-    if let Node::Blockquote(inner) = quote
-        && alert(inner).is_some()
-    {
+    if alerted(here, ix) {
         if !marker_only(&text[whole.start..line_end(text, line)]) {
             return Err(check::misread("an alert marker shares its line"));
         }
         // A body block keeps its indent; text sheds it.
-        let continues = inner
-            .children
-            .first()
+        let continues = (quote.children().and_then(|kids| kids.first()))
             .is_some_and(|head| span(head).end > line_end(text, line));
         // The marker goes with blank lines; an outer opener stays.
         let (mut cut, mut rest) = (whole.end, whole.end);
@@ -130,6 +117,11 @@ fn unwrap(here: &Here, ix: usize) -> Result<Vec<(Range<usize>, String)>, EditRef
         edits.push((next..next, blank.clone()));
     }
     Ok(edits)
+}
+
+/// Whether the drawing reads `path[ix]` as an alert: roots only.
+fn alerted(here: &Here, ix: usize) -> bool {
+    matches!(here.path[ix], Node::Blockquote(quote) if ix == 1 && alert(quote).is_some())
 }
 
 /// Whether `line`, a quote's first, holds only an alert marker.

@@ -270,7 +270,26 @@ pub async fn shown(window: gpui::AnyWindowHandle, cx: &mut AsyncApp) -> Result<(
             Either::Left((Ok(()), _)) => {}
             Either::Left((Err(_), _)) => anyhow::bail!("the window dropped its frame callback"),
             Either::Right(_) => {
-                anyhow::bail!("the window drew no frame in {SHOWN:?}; is it hidden?")
+                let state = window.update(cx, |_, window, _| {
+                    format!(
+                        "active {}, {:?}, bounds {:?}",
+                        window.is_window_active(),
+                        window.visibility(),
+                        window.bounds()
+                    )
+                })?;
+                // A second ask shows whether a fresh wake revives it.
+                let (again, frame) = futures::channel::oneshot::channel();
+                window.update(cx, |_, window, _| {
+                    window.on_next_frame(move |_, _| again.send(()).unwrap_or_default())
+                })?;
+                let revived = matches!(
+                    select(frame, cx.background_executor().timer(SHOWN)).await,
+                    Either::Left((Ok(()), _))
+                );
+                anyhow::bail!(
+                    "the window drew no frame in {SHOWN:?}; {state}; a second ask drew: {revived}"
+                )
             }
         }
     }

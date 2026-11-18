@@ -6,6 +6,8 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 - `ely-core`: `NumberInput::on_clear` runs when typing empties the field; an owner that then shows `blank` keeps it empty, so a limit can be on with no number yet. `DurationPicker::blank` shows empty fields until a number is typed in one.
 - `ely-core`, `ely-terminal`, `ely-account`, `ely-onboarding`: `DurationPicker`'s h, m and s units, `LogViewer`'s level names, line count and Follow tooltip, the account and workspace switchers' and `UserMenu`'s menu copy, and `SetupChecklist`'s tally, Start, Hide and "All set." read `i18n::text`, so an app's catalog says them in its language. Ely's tables carry them in every locale; level names stay TRACE to ERROR unless an app's catalog renames them. English reads as before.
+- `ely-core`: `Theme::update` passes `reduced_motion` to gpui's `App::reduce_motion`, so gpui's own animations stop with it: an `img` GIF shows its first frame.
+- `ely-documents`: `[a [^1] b](/x)` keeps its link up to the footnote, as GitHub draws it; the workspace swaps in `vendor/pulldown-cmark`, and an app on Ely patches it the same.
 - `ely-core`: a clickable `StatusBarItem` is a Tab stop with a focus ring; Enter and Space press it.
 - `ely-core`: `LOCALES` gains zh-TW, 繁體中文, with Ely's own copy in Traditional Chinese; zh-CN's name reads 简体中文. Breaking: `LOCALES` is `[Locale; 11]`.
 - `ely-core`: `MenuBar` draws a gpui action's `checked` flag as a check mark and its `disabled` flag as a dimmed row that runs nothing.

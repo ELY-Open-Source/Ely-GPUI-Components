@@ -37,15 +37,15 @@ impl Activity {
     }
 }
 
-/// Visibility 0..=1: full while active, fading after `IDLE`.
-fn presence(activity: &Activity, fade: Duration) -> f32 {
+/// Visibility 0..=1 at `now`: full while active, fading after `IDLE`.
+fn presence(activity: &Activity, fade: Duration, now: Instant) -> f32 {
     if activity.held() {
         return 1.0;
     }
     let Some(at) = activity.active_at else {
         return 0.0;
     };
-    let quiet = at.elapsed().saturating_sub(IDLE);
+    let quiet = now.saturating_duration_since(at).saturating_sub(IDLE);
     1.0 - (quiet.as_secs_f32() / fade.as_secs_f32()).min(1.0)
 }
 
@@ -64,15 +64,17 @@ pub(super) fn track_activity(
     window: &mut Window,
     cx: &mut App,
 ) -> f32 {
+    // The executor's clock, which its timers and tests share.
+    let now = cx.background_executor().now();
     if state.read(cx).last != offset {
         state.update(cx, |activity, _| {
             activity.last = offset;
-            activity.active_at = Some(Instant::now());
+            activity.active_at = Some(now);
         });
     }
     let fade = motion::duration(motion::SLOW, cx);
     let activity = state.read(cx);
-    let presence = presence(activity, fade);
+    let presence = presence(activity, fade, now);
     if activity.held() {
         // A held bar draws nothing; its pending wake goes.
         if activity.wake.is_some() {
@@ -83,9 +85,9 @@ pub(super) fn track_activity(
     if presence <= 0.0 {
         return presence;
     }
-    let left = activity
-        .active_at
-        .map_or(Duration::ZERO, |at| IDLE.saturating_sub(at.elapsed()));
+    let left = activity.active_at.map_or(Duration::ZERO, |at| {
+        IDLE.saturating_sub(now.saturating_duration_since(at))
+    });
     if left.is_zero() {
         window.request_animation_frame();
     } else if let Some(at) = activity

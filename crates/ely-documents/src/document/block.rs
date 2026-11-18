@@ -25,7 +25,7 @@ pub enum BlockCommand {
     Promote,
     /// A level down; level 6 turns a paragraph.
     Demote,
-    /// Wrap the block in a quote, or take the quote off.
+    /// Wrap the block in a quote, or unwrap it.
     Quote,
     /// Make it a numbered list, or take the list off.
     OrderedList,
@@ -72,7 +72,8 @@ pub(super) fn run(
         // A list only regroups: what shows stays.
         BlockCommand::OrderedList | BlockCommand::BulletList | BlockCommand::TaskList => {
             let change = list::run(&here, command)?;
-            check::same(text, &root, change, "a list change would reread otherwise")
+            let before = check::Shown::new(text, &root);
+            check::same(&before, change, "a list change would reread otherwise")
         }
         BlockCommand::FrontMatter => insert::front_matter(&here),
         BlockCommand::ParagraphBefore => insert::paragraph(&here, true),

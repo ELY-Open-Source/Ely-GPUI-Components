@@ -183,6 +183,9 @@ impl Theme {
     /// Edits non-color tokens, then repaints.
     pub fn update(cx: &mut App, edit: impl FnOnce(&mut Theme)) {
         edit(cx.global_mut::<Theme>());
+        // gpui's own animations, GIFs among them, read it there.
+        let still = cx.theme().reduced_motion;
+        cx.set_reduce_motion(still);
         cx.refresh_windows();
     }
 

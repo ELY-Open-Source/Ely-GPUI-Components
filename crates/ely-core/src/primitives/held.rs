@@ -9,9 +9,9 @@ use gpui::{App, Asset, ElementId, Global, RenderImage, Window};
 
 type Key = (TypeId, u64);
 
-/// Each held asset's holders and its painted image.
+/// Each held asset's holders, its painted image, and whether it loaded.
 #[derive(Default)]
-struct Holders(HashMap<Key, (usize, Option<Arc<RenderImage>>)>);
+struct Holders(HashMap<Key, (usize, Option<Arc<RenderImage>>, bool)>);
 
 impl Global for Holders {}
 
@@ -22,6 +22,7 @@ impl Holders {
 
     fn loaded(&mut self, key: Key, image: Option<Arc<RenderImage>>) {
         let record = self.0.get_mut(&key).expect("a loaded asset is held");
+        record.2 = true;
         if image.is_some() {
             record.1 = image;
         }
@@ -34,8 +35,18 @@ impl Holders {
         if record.0 > 0 {
             return None;
         }
-        self.0.remove(&key).map(|(_, image)| image)
+        self.0.remove(&key).map(|(_, image, _)| image)
     }
+
+    fn loading(&self) -> bool {
+        self.0.values().any(|(_, _, loaded)| !loaded)
+    }
+}
+
+/// Whether a held asset is still loading.
+#[doc(hidden)]
+pub fn loading(cx: &App) -> bool {
+    cx.try_global::<Holders>().is_some_and(Holders::loading)
 }
 
 fn key<A: Asset>(source: &A::Source) -> Key {
@@ -118,8 +129,10 @@ mod tests {
         let (mut holders, key) = (Holders::default(), (TypeId::of::<()>(), 7));
         holders.join(key);
         holders.join(key);
+        assert!(holders.loading(), "joined, not loaded");
         let painted = picture();
         holders.loaded(key, Some(painted.clone()));
+        assert!(!holders.loading(), "loaded");
         // The pending holder reports nothing yet.
         holders.loaded(key, None);
         assert!(holders.leave(key).is_none(), "one holder remains");

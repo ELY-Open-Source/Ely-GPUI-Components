@@ -96,7 +96,7 @@ fn matches(name: &str, query: &str) -> bool {
     query.is_empty() || name.to_lowercase().contains(&query.to_lowercase())
 }
 
-/// Paths as nodes, folders first, then files, each by name; with a query, only matches and the folders that hold them, which it opens; a folder matching by name keeps all it holds, folded.
+/// Sorted nodes; a query keeps matches, named folders whole.
 fn nodes(
     paths: &[SharedString],
     status: &[(SharedString, GitStatus)],
@@ -124,27 +124,19 @@ fn nodes(
         folders.sort_by_key(|(name, _)| name.to_lowercase());
         for (name, inner) in folders {
             let path = format!("{prefix}{name}");
-            let (found, inner_changed) =
-                walk(inner, &format!("{path}/"), query, state, open, icons);
+            let inside = format!("{path}/");
             let named = !query.is_empty() && matches(name, query);
-            if found.is_empty() && !named {
+            // A folder found by name keeps all it holds, folded.
+            let (children, inner_changed) = match named {
+                true => walk(inner, &inside, "", state, &mut Vec::new(), icons),
+                false => walk(inner, &inside, query, state, open, icons),
+            };
+            if children.is_empty() && !named {
                 continue;
             }
-            if !query.is_empty() && !found.is_empty() {
+            if !query.is_empty() && !named {
                 open.push(path.clone().into());
             }
-            // A folder found by name keeps all it holds.
-            let (children, inner_changed) = match named {
-                true => walk(
-                    inner,
-                    &format!("{path}/"),
-                    "",
-                    state,
-                    &mut Vec::new(),
-                    icons,
-                ),
-                false => (found, inner_changed),
-            };
             changed |= inner_changed;
             let node = TreeNode::new(path, name.clone())
                 .icon(IconName::Folder)
@@ -182,7 +174,7 @@ fn nodes(
 type OnOpen = Rc<dyn Fn(&SharedString, &mut Window, &mut App)>;
 type OnContext = Rc<dyn Fn(&SharedString, Point<Pixels>, &mut Window, &mut App)>;
 
-/// A project's files as a tree: folders first, an icon for each kind, git status by letter and tint, a dot on folders with changes, and a filter that keeps matches and opens the folders that hold them. Enter or a double press opens a file. Give it a height.
+/// Project files; filter keeps matches, named folders whole; set height.
 ///
 /// ```
 /// use ely_core::lists::{FileTree, GitStatus};
@@ -374,6 +366,23 @@ mod tests {
         let (labels, open) = shown("ui");
         assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
         assert_eq!(open, ["src"].map(SharedString::from));
+        // `u` names `ui` and its file: `ui` stays folded.
+        let (labels, open) = shown("u");
+        assert_eq!(labels, ["src •", "ui •", "Button.rs M"]);
+        assert_eq!(open, ["src"].map(SharedString::from));
+        // `s` names `src`, and `ui` in it holds a match.
+        let (labels, open) = shown("s");
+        let all = [
+            "assets",
+            "logo.svg",
+            "src •",
+            "ui •",
+            "Button.rs M",
+            "app.rs",
+            "main.rs",
+        ];
+        assert_eq!(labels, all);
+        assert!(open.is_empty(), "{open:?}");
     }
 
     struct Project(Option<SharedString>);

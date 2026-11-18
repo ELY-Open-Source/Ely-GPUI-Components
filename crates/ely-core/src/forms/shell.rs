@@ -63,6 +63,15 @@ enum Prefix {
     None,
     Time,
     Coproc,
+    Function,
+}
+
+/// A here-doc waiting for its body.
+struct Doc {
+    delimiter: Vec<u8>,
+    tabs: bool,
+    /// An unquoted delimiter: the body expands.
+    expands: bool,
 }
 
 struct Lexer<'a> {
@@ -70,7 +79,7 @@ struct Lexer<'a> {
     at: usize,
     marks: Vec<usize>,
     /// Here-doc delimiters waiting for the next line.
-    docs: Vec<(Vec<u8>, bool)>,
+    docs: Vec<Doc>,
 }
 
 impl Lexer<'_> {
@@ -113,7 +122,10 @@ impl Lexer<'_> {
                     let word = self.text(start, end);
                     let word = word.as_slice();
                     let after = std::mem::replace(&mut prefix, Prefix::None);
-                    if !(command && plain) {
+                    if after == Prefix::Function {
+                        // The name; its body starts a command.
+                        command = true;
+                    } else if !(command && plain) {
                         command = false;
                     } else if word == b"case" {
                         self.case();
@@ -125,6 +137,8 @@ impl Lexer<'_> {
                         prefix = Prefix::Time;
                     } else if word == b"coproc" {
                         prefix = Prefix::Coproc;
+                    } else if word == b"function" {
+                        prefix = Prefix::Function;
                     } else {
                         // A coprocess's name leaves command position.
                         command = OPENERS.contains(&word) || after == Prefix::Coproc;
@@ -225,27 +239,39 @@ impl Lexer<'_> {
         let Token::Word { end, .. } = self.word() else {
             return;
         };
-        self.docs.push((unquoted(&self.s[start..end]), tabs));
+        let word = &self.s[start..end];
+        self.docs.push(Doc {
+            delimiter: unquoted(word),
+            tabs,
+            expands: !word.iter().any(|b| matches!(b, b'\'' | b'"' | b'\\')),
+        });
     }
 
     /// Skips the bodies of here-docs begun on the last line.
     fn bodies(&mut self) {
-        for (delimiter, tabs) in std::mem::take(&mut self.docs) {
+        for doc in std::mem::take(&mut self.docs) {
+            let start = self.at;
+            let mut body = self.s.len();
             while self.at < self.s.len() {
                 let end = self.s[self.at..]
                     .iter()
                     .position(|b| *b == b'\n')
                     .map_or(self.s.len(), |n| self.at + n);
                 let mut line = &self.s[self.at..end];
-                if tabs {
+                if doc.tabs {
                     while let [b'\t', rest @ ..] = line {
                         line = rest;
                     }
                 }
-                self.at = (end + 1).min(self.s.len());
-                if line == delimiter.as_slice() {
+                if line == doc.delimiter.as_slice() {
+                    body = self.at;
+                    self.at = (end + 1).min(self.s.len());
                     break;
                 }
+                self.at = (end + 1).min(self.s.len());
+            }
+            if doc.expands {
+                self.inside(start, body, |inner| inner.quoted(None));
             }
         }
     }
@@ -276,15 +302,47 @@ impl Lexer<'_> {
             }
         }
         let close = self.at.min(self.s.len());
+        self.inside(start, close, |inner| {
+            inner.list(Until::End);
+        });
+        self.at = (close + 1).min(self.s.len());
+    }
+
+    /// Reads `start..end` alone with `read`, keeping its comments.
+    fn inside(&mut self, start: usize, end: usize, read: impl FnOnce(&mut Lexer)) {
         let mut inner = Lexer {
-            s: &self.s[..close],
+            s: &self.s[..end],
             at: start,
             marks: Vec::new(),
             docs: Vec::new(),
         };
-        inner.list(Until::End);
+        read(&mut inner);
         self.marks.extend(inner.marks);
-        self.at = (close + 1).min(self.s.len());
+    }
+
+    /// Steps over an escape, quote or expansion at the cursor.
+    fn nested(&mut self, quotes: bool) -> bool {
+        match self.byte(self.at) {
+            Some(b'\\') => self.at = (self.at + 2).min(self.s.len()),
+            Some(b'\'') if quotes => {
+                self.at += 1;
+                self.until(b'\'', false);
+            }
+            Some(b'"') if quotes => {
+                self.at += 1;
+                self.quoted(Some(b'"'));
+            }
+            Some(b'`') => {
+                self.at += 1;
+                self.backtick();
+            }
+            Some(b'$') => {
+                self.at += 1;
+                self.dollar();
+            }
+            _ => return false,
+        }
+        true
     }
 
     /// Reads one word, quotes and expansions inside it.
@@ -301,28 +359,9 @@ impl Lexer<'_> {
                     self.list(Until::Paren);
                 }
                 b'<' | b'>' | b'(' => break,
-                b'\\' => {
-                    plain &= next == Some(b'\n');
-                    self.at = (self.at + 2).min(self.s.len());
-                }
-                b'\'' => {
-                    plain = false;
-                    self.at += 1;
-                    self.until(b'\'', false);
-                }
-                b'"' => {
-                    plain = false;
-                    self.at += 1;
-                    self.quoted();
-                }
-                b'`' => {
-                    plain = false;
-                    self.at += 1;
-                    self.backtick();
-                }
-                b'$' => {
-                    self.at += 1;
-                    self.dollar();
+                b'\\' | b'\'' | b'"' | b'`' | b'$' => {
+                    plain &= byte == b'$' || (byte == b'\\' && next == Some(b'\n'));
+                    self.nested(true);
                 }
                 b'@' | b'?' | b'*' | b'+' | b'!' if next == Some(b'(') => {
                     self.at += 2;
@@ -349,27 +388,17 @@ impl Lexer<'_> {
         self.at = self.at.min(self.s.len());
     }
 
-    /// Inside double quotes, through the closing one.
-    fn quoted(&mut self) {
+    /// Through `close`, or the end; only expansions inside.
+    fn quoted(&mut self, close: Option<u8>) {
         while let Some(byte) = self.byte(self.at) {
-            match byte {
-                b'"' => {
-                    self.at += 1;
-                    return;
-                }
-                b'\\' => self.at += 2,
-                b'`' => {
-                    self.at += 1;
-                    self.backtick();
-                }
-                b'$' => {
-                    self.at += 1;
-                    self.dollar();
-                }
-                _ => self.at += 1,
+            if Some(byte) == close {
+                self.at += 1;
+                return;
+            }
+            if !self.nested(false) {
+                self.at += 1;
             }
         }
-        self.at = self.at.min(self.s.len());
     }
 
     /// After a `$`: an expansion, or a plain dollar.
@@ -389,7 +418,7 @@ impl Lexer<'_> {
             self.until(b'\'', true);
         } else if rest.starts_with(b"\"") {
             self.at += 1;
-            self.quoted();
+            self.quoted(Some(b'"'));
         }
     }
 
@@ -405,66 +434,44 @@ impl Lexer<'_> {
                         return;
                     }
                 }
-                b'\\' => self.at += 1,
-                b'$' => {
-                    self.at += 1;
-                    self.dollar();
-                    continue;
-                }
+                _ if self.nested(true) => continue,
                 _ => {}
             }
             self.at += 1;
         }
-        self.at = self.at.min(self.s.len());
     }
 
     /// `${...}`, nested expansions and quotes inside.
     fn brace(&mut self) {
         while let Some(byte) = self.byte(self.at) {
-            match byte {
-                b'}' => {
-                    self.at += 1;
-                    return;
-                }
-                b'\\' => self.at += 2,
-                b'\'' => {
-                    self.at += 1;
-                    self.until(b'\'', false);
-                }
-                b'"' => {
-                    self.at += 1;
-                    self.quoted();
-                }
-                b'$' => {
-                    self.at += 1;
-                    self.dollar();
-                }
-                _ => self.at += 1,
+            if byte == b'}' {
+                self.at += 1;
+                return;
+            }
+            if !self.nested(true) {
+                self.at += 1;
             }
         }
-        self.at = self.at.min(self.s.len());
     }
 
     /// An extglob's pattern, through its closing paren.
     fn glob(&mut self) {
         let mut depth = 1;
         while let Some(byte) = self.byte(self.at) {
-            self.at += 1;
             match byte {
                 b'(' => depth += 1,
                 b')' => {
                     depth -= 1;
                     if depth == 0 {
+                        self.at += 1;
                         return;
                     }
                 }
-                b'\\' => self.at += 1,
-                b'\'' => self.until(b'\'', false),
-                b'"' => self.quoted(),
+                _ if self.nested(true) => continue,
                 _ => {}
             }
+            self.at += 1;
         }
-        self.at = self.at.min(self.s.len());
     }
 }
 

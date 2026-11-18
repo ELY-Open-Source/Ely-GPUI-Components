@@ -90,3 +90,15 @@ fn glass_lets_the_blur_through_until_high_contrast() {
         assert_eq!(strong.glass, strong.bg);
     }
 }
+
+/// gpui's own images, GIFs too, stop with Ely's reduced motion.
+#[gpui::test]
+fn reduced_motion_reaches_gpui(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        Theme::update(cx, |theme| theme.reduced_motion = true);
+        assert!(cx.reduce_motion(), "on");
+        Theme::update(cx, |theme| theme.reduced_motion = false);
+        assert!(!cx.reduce_motion(), "off");
+    });
+}

@@ -72,9 +72,8 @@ fn scroll(to: f32, position: &Position, host: &Entity<Host>, cx: &mut VisualTest
     }
 }
 
-/// Waits `millis` of real and test time; renders since `from`.
+/// Advances the test clock `millis`; renders since `from`.
 fn after(millis: u64, from: usize, host: &Entity<Host>, cx: &mut VisualTestContext) -> usize {
-    std::thread::sleep(Duration::from_millis(millis));
     cx.executor().advance_clock(Duration::from_millis(millis));
     cx.run_until_parked();
     host.read_with(cx, |host, _| host.renders) - from
@@ -145,7 +144,8 @@ fn a_pointer_resting_on_the_bar_draws_nothing_and_leaving_fades(cx: &mut TestApp
     cx.simulate_mouse_move(thumb, None, gpui::Modifiers::none());
     cx.run_until_parked();
     let from = host.read_with(cx, |host, _| host.renders);
-    let rested: Vec<usize> = [710, 100, 300]
+    // Leaves mid-fade, 900 to 1220 ms after scrolling.
+    let rested: Vec<usize> = [710, 100, 150]
         .into_iter()
         .map(|millis| after(millis, from, &host, cx))
         .collect();
@@ -168,4 +168,24 @@ fn a_pointer_resting_on_the_bar_draws_nothing_and_leaving_fades(cx: &mut TestApp
         0,
         "the fade ends and stays still"
     );
+}
+
+#[gpui::test]
+fn the_fade_ends_by_the_executor_s_clock(cx: &mut TestAppContext) {
+    let (position, host, cx) = hosted(cx);
+    scroll(0.4, &position, &host, cx);
+    // Past the hold and the fade, by test time alone.
+    after(1300, 0, &host, cx);
+    let frames = |cx: &mut VisualTestContext| {
+        (0..4)
+            .map(|_| {
+                let ran = cx.update(|window, cx| window.simulate_next_frame(cx));
+                cx.run_until_parked();
+                ran
+            })
+            .collect::<Vec<_>>()
+    };
+    // The frame asked before the fade ended lands first.
+    frames(cx);
+    assert_eq!(frames(cx), [0, 0, 0, 0], "the faded bar asks no frames");
 }

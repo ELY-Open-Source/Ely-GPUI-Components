@@ -17,7 +17,7 @@ use web_time::Instant;
 
 use crate::{
     probe::probe,
-    ui::{keep, row, section, set, specimen, specimens},
+    ui::{keep, live, row, section, set, specimen, specimens},
 };
 
 fn frame(cx: &App) -> Div {
@@ -269,6 +269,10 @@ pub fn clocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let stopped = keep("clock-stopped", || None::<Instant>, window, cx);
     let over = keep("clock-over", || false, window, cx);
     let (since, until, halt) = (*opened.read(cx), *short.read(cx), *stopped.read(cx));
+    let launch = Duration::from_secs(2 * 3_600 + 14 * 60 + 7);
+    // Under `--still` each face is a stopped timer: same digits, no tick.
+    let still = !live("Countdown / Timer", cx);
+    let held = |id: &'static str, left: Duration| Timer::new(id, since).stopped(Some(since + left));
     let (restart, toggle, done, reset) =
         (short.clone(), stopped.clone(), over.clone(), opened.clone());
     let reopen = over.clone();
@@ -281,10 +285,10 @@ pub fn clocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         specimens()
             .child(specimen(
                 "launch in",
-                Countdown::new(
-                    "countdown-launch",
-                    since + Duration::from_secs(2 * 3_600 + 14 * 60 + 7),
-                ),
+                match still {
+                    true => held("countdown-launch", launch).into_any_element(),
+                    false => Countdown::new("countdown-launch", since + launch).into_any_element(),
+                },
                 cx,
             ))
             .child(specimen(
@@ -293,10 +297,12 @@ pub fn clocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     .flex()
                     .items_center()
                     .gap_3()
-                    .child(
-                        Countdown::new("countdown-short", until)
-                            .on_done(move |_, cx| set(&done, true, cx)),
-                    )
+                    .child(match still {
+                        true => held("countdown-short", until - since).into_any_element(),
+                        false => Countdown::new("countdown-short", until)
+                            .on_done(move |_, cx| set(&done, true, cx))
+                            .into_any_element(),
+                    })
                     .child(probe(
                         "countdown-restart",
                         Button::new("countdown-restart", "Restart")
@@ -314,7 +320,7 @@ pub fn clocks(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                     .flex()
                     .items_center()
                     .gap_3()
-                    .child(Timer::new("timer", since).stopped(halt))
+                    .child(Timer::new("timer", since).stopped(halt.or(still.then_some(since))))
                     .child(
                         Button::new(
                             "timer-toggle",
