@@ -34,7 +34,7 @@ pub use focus::{
     lent, tab_stop, take_focus,
 };
 pub use ghost::DragGhost;
-pub use held::hold;
+pub use held::{hold, loading};
 pub use icon::{Icon, IconName};
 pub use image::{Image, checked_ratio, framed};
 pub use layer::{Raised, raise};

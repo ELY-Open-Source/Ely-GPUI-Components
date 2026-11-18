@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::{Context as _, Result, bail};
-use ely_gpui_component::theme::Theme;
+use ely_gpui_component::{primitives, theme::Theme};
 use gpui::{App, AsyncApp, Pixels, Size, Window, WindowHandle, px};
 
 use crate::{
@@ -149,6 +149,15 @@ pub async fn steady(
         std::fs::remove_file(&mask).with_context(|| format!("remove {}", mask.display()))?;
     }
     script::shown(frames, cx).await?;
+    // A formula or picture still loading draws blank but still.
+    let loading = cx.background_executor().now();
+    while cx.update(|cx| primitives::loading(cx)) {
+        if cx.background_executor().now() - loading >= PATIENCE {
+            bail!("{} kept loading for {PATIENCE:?}", path.display());
+        }
+        cx.background_executor().timer(STEADY).await;
+        script::shown(frames, cx).await?;
+    }
     shoot(path)?;
     let start = cx.background_executor().now();
     let (mut since, mut moves) = (start, Vec::new());
