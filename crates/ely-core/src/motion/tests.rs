@@ -435,3 +435,90 @@ fn a_stagger_box_takes_in_its_first_row_rise(cx: &mut TestAppContext) {
     );
     assert_eq!(last.bottom(), held.bottom(), "the box ends with its rows");
 }
+
+const SWITCH: std::time::Duration = std::time::Duration::from_millis(200);
+
+#[test]
+fn a_new_key_starts_a_switch_from_nothing() {
+    let at = web_time::Instant::now();
+    let turn = super::page::Turn::settled("a".into(), at).switch("b".into(), at, SWITCH);
+    assert_eq!(turn.shown, "b");
+    assert_eq!(turn.leaving.as_deref(), Some("a"));
+    assert_eq!(turn.share(at, SWITCH), 0.0);
+    assert_eq!(turn.share(at + SWITCH / 4, SWITCH), 0.25);
+    assert_eq!(
+        turn.share(at + SWITCH * 2, SWITCH),
+        1.0,
+        "a switch ends whole"
+    );
+}
+
+#[test]
+fn a_key_asked_back_mid_switch_turns_around_where_it_stands() {
+    let at = web_time::Instant::now();
+    let going = super::page::Turn::settled("a".into(), at).switch("b".into(), at, SWITCH);
+    let back = going.switch("a".into(), at + SWITCH / 4, SWITCH);
+    assert_eq!(back.shown, "a");
+    assert_eq!(back.leaving.as_deref(), Some("b"));
+    assert_eq!(
+        back.share(at + SWITCH / 4, SWITCH),
+        0.75,
+        "a was three quarters in view"
+    );
+}
+
+#[test]
+fn a_third_key_mid_switch_drops_the_leaving_page() {
+    let at = web_time::Instant::now();
+    let going = super::page::Turn::settled("a".into(), at).switch("b".into(), at, SWITCH);
+    let next = going.switch("c".into(), at + SWITCH / 4, SWITCH);
+    assert_eq!(next.leaving.as_deref(), Some("b"), "a leaves at once");
+    assert_eq!(next.share(at + SWITCH / 4, SWITCH), 0.0);
+}
+
+/// Pages under a key; the builder logs each key it draws.
+struct Pages {
+    key: &'static str,
+    drawn: Rc<std::cell::RefCell<Vec<String>>>,
+}
+
+impl Render for Pages {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let drawn = self.drawn.clone();
+        super::PageTransition::new("pages", self.key, move |page, _, _| {
+            drawn.borrow_mut().push(page.key().to_string());
+            div().h(px(20.0)).child(page.key().clone())
+        })
+    }
+}
+
+#[gpui::test]
+fn a_switch_draws_both_pages_then_the_new_one_alone(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        Theme::update(cx, |theme| theme.reduced_motion = true);
+    });
+    let drawn = Rc::new(std::cell::RefCell::new(Vec::new()));
+    let (view, cx) = cx.add_window_view(|_, _| Pages {
+        key: "a",
+        drawn: drawn.clone(),
+    });
+    settle(cx);
+    assert!(drawn.borrow().iter().all(|key| key == "a"));
+    drawn.borrow_mut().clear();
+    view.update(cx, |pages, cx| {
+        pages.key = "b";
+        cx.notify();
+    });
+    cx.run_until_parked();
+    assert_eq!(
+        drawn.borrow()[..2],
+        ["b", "a"],
+        "the switch's frame draws both"
+    );
+    settle(cx);
+    drawn.borrow_mut().clear();
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    assert_eq!(*drawn.borrow(), ["b"], "the old page is gone");
+}

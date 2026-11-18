@@ -48,6 +48,9 @@ const SCRIPT: &[Step] = &[
     Step::Wait(80),
     Step::Shot("transition-leaving"),
     Step::Click("transition-toggle"),
+    Step::Click("pages-tabs"),
+    Step::Wait(80),
+    Step::Shot("pages-switching"),
     Step::Click("presence-add"),
     Step::Wait(80),
     Step::Shot("presence-arriving"),
@@ -78,6 +81,7 @@ fn render(window: &mut Window, cx: &mut App) -> AnyElement {
         .child(progress::refresh(window, cx))
         .child(progress::uploads(window, cx))
         .child(moves::transitions(window, cx))
+        .child(moves::pages(window, cx))
         .child(moves::stagger(window, cx))
         .child(moves::presence(window, cx))
         .child(moves::flip(window, cx))

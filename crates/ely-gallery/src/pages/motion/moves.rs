@@ -1,6 +1,6 @@
 use ely_gpui_component::{
-    buttons::{Button, ButtonVariant, IconButton},
-    motion::{AnimatePresence, Entrance, Flip, Reorder, Stagger, Transition},
+    buttons::{Button, ButtonVariant, IconButton, SegmentedControl},
+    motion::{AnimatePresence, Entrance, Flip, PageTransition, Reorder, Stagger, Transition},
     primitives::{Icon, IconName},
     theme::{ActiveTheme, ControlSize, IconSize, Radius},
     typography::Caption,
@@ -96,6 +96,54 @@ pub fn stagger(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
                 .on_click(move |_, _, cx| set(&replay, now + 1, cx)),
         )),
     )
+}
+
+/// The pages demo: each page's rows, by key.
+const PAGES: [(&str, &str, [&str; 3]); 3] = [
+    (
+        "inbox",
+        "Inbox",
+        [
+            "Ana: the brief is in",
+            "Bo: lunch at noon?",
+            "Cy: the build passed",
+        ],
+    ),
+    (
+        "drafts",
+        "Drafts",
+        ["Notes for Friday", "Reply to Bo", "Release checklist"],
+    ),
+    (
+        "sent",
+        "Sent",
+        ["To Ana: thanks!", "To Cy: merged", "To the team: slides"],
+    ),
+];
+
+pub fn pages(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
+    let open = keep("pages-open", || SharedString::from("inbox"), window, cx);
+    let (now, pick) = (open.read(cx).clone(), open.clone());
+    let tabs = PAGES.iter().fold(
+        SegmentedControl::new("pages-tabs", now.clone())
+            .on_change(move |key, _, cx| set(&pick, key.clone(), cx)),
+        |tabs, (key, name, _)| tabs.segment(*key, *name, None),
+    );
+    let pages = PageTransition::new("pages", now, |page, _, cx| {
+        let rows = PAGES
+            .iter()
+            .filter(|(key, _, _)| *key == page.key().as_ref())
+            .flat_map(|(_, _, rows)| rows.map(|text| line(text, cx)));
+        div().flex().flex_col().children(rows)
+    })
+    .entrance(Entrance::Slide);
+    section(
+        "PageTransition",
+        "Pages slide and fade as you move between them: the old page leaves while the new one arrives.",
+        cx,
+    )
+    .child(row().child(probe("pages-tabs", tabs)))
+    .child(div().w_96().child(pages))
 }
 
 /// A tag in the presence demo: a stable number, its name, and whether it shows.
