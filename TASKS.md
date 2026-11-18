@@ -211,8 +211,8 @@ Assumptions, unconfirmed:
 
 - [ ] T57a PR #19 read whole against AGENTS.md; `main` merged into its branch, CHANGELOG resolved, `api/` snapshot held; check.sh on the three hosts; CI green; merged, the PR shows merged
 - [ ] T58a Catalog: `apps/colab-playground/` with manifest, README and the repo's MIT PNG previews, credited; `pnpm test` and `pnpm validate`; pushed to `main`, its CI green; the author told
-- [x] T59a `motion::PageTransition`: one page under a key; on a new key the leaving page draws over the arriving one, blocked to the pointer, by `Entrance`, timed by `motion::duration`; a key back mid-switch reverses; a gallery story, `stories.json`, CHANGELOG, `api/`; lib tests
-- [ ] T59b Shared elements: a child under one key on both pages glides from its old bounds toward its latest new ones; the gallery story shows one; CHANGELOG, `api/`; lib tests
+- [x] T59a `motion::PageTransition`: one page under a key; on a new key the leaving page draws under the arriving one, behind a layer that takes the pointer, by `Entrance`, timed by `motion::duration`; a key back mid-switch reverses; a gallery story, `stories.json`, CHANGELOG, `api/`; lib tests
+- [x] T59b Shared elements: a child under one key on both pages glides from its old bounds toward its latest new ones; the gallery story shows one; CHANGELOG, `api/`; lib tests
 - [ ] T59c Sidebar: the gallery's rails keep their labels, unwrapped, the icon fixed, so the column clips them as WinUI's pane does; `Sidebar`'s rustdoc says so
 - [ ] T59d Issue #18: `tasks/ch11-20.md` lines; a reply naming what ships and what does not (no scale, no back or forward direction); closed
 - [ ] T58b Site: the Showcase workflow deploys the new pin; `/showcase/colab-playground/` answers on elygpui.com

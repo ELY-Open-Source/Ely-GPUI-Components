@@ -4264,6 +4264,7 @@ pub fn ely_core::motion::Marquee::new<E: gpui::element::IntoElement>(impl core::
 pub fn ely_core::motion::Marquee::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::motion::Marquee::style(&mut self) -> &mut gpui::style::StyleRefinement
 pub fn ely_core::motion::Page::key(&self) -> &gpui_shared_string::SharedString
+pub fn ely_core::motion::Page::shared(&self, impl core::convert::Into<gpui_shared_string::SharedString>, impl gpui::element::IntoElement) -> gpui::element::AnyElement
 pub fn ely_core::motion::PageTransition::entrance(self, ely_core::motion::Entrance) -> Self
 pub fn ely_core::motion::PageTransition::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::motion::PageTransition::into_element(self) -> Self::Element

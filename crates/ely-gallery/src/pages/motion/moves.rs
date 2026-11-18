@@ -130,16 +130,29 @@ pub fn pages(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
         |tabs, (key, name, _)| tabs.segment(*key, *name, None),
     );
     let pages = PageTransition::new("pages", now, |page, _, cx| {
-        let rows = PAGES
+        let Some((at, (_, name, rows))) = PAGES
             .iter()
-            .filter(|(key, _, _)| *key == page.key().as_ref())
-            .flat_map(|(_, _, rows)| rows.map(|text| line(text, cx)));
-        div().flex().flex_col().children(rows)
+            .enumerate()
+            .find(|(_, (key, _, _))| *key == page.key().as_ref())
+        else {
+            return div();
+        };
+        let place = div().flex().py_2();
+        let place = match at {
+            0 => place.justify_start(),
+            1 => place.justify_center(),
+            _ => place.justify_end(),
+        };
+        div()
+            .flex()
+            .flex_col()
+            .child(place.child(page.shared("name", card(*name, cx))))
+            .children(rows.map(|text| line(text, cx)))
     })
     .entrance(Entrance::Slide);
     section(
         "PageTransition",
-        "Pages slide and fade as you move between them: the old page leaves while the new one arrives.",
+        "Pages slide and fade as you move between them: the old page leaves while the new one arrives, and the name card each page shares flies to its new place.",
         cx,
     )
     .child(row().child(probe("pages-tabs", tabs)))

@@ -4,6 +4,7 @@ What changes for an app built on Ely, newest first. An entry names the crates it
 
 ## Unreleased
 
+- `ely-core`: `motion::Page::shared` marks a child as one element on every page that uses its key; during a `PageTransition` switch it flies from its box on the leaving page to its box on the arriving one, resized on the way. Issue #18.
 - `ely-core`: `NumberInput::on_clear` runs when typing empties the field; an owner that then shows `blank` keeps it empty, so a limit can be on with no number yet. `DurationPicker::blank` shows empty fields until a number is typed in one.
 - `ely-core`, `ely-terminal`, `ely-account`, `ely-onboarding`: `DurationPicker`'s h, m and s units, `LogViewer`'s level names, line count and Follow tooltip, the account and workspace switchers' and `UserMenu`'s menu copy, and `SetupChecklist`'s tally, Start, Hide and "All set." read `i18n::text`, so an app's catalog says them in its language. Ely's tables carry them in every locale; level names stay TRACE to ERROR unless an app's catalog renames them. English reads as before.
 - `ely-core`: `motion::PageTransition` draws one page per key; when the key changes, the old page leaves while the new one arrives, by fade, rise or slide, and a key asked back mid-switch turns around. The leaving page takes no pointer. Issue #18.

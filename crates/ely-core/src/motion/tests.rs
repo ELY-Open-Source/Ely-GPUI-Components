@@ -522,3 +522,67 @@ fn a_switch_draws_both_pages_then_the_new_one_alone(cx: &mut TestAppContext) {
     cx.run_until_parked();
     assert_eq!(*drawn.borrow(), ["b"], "the old page is gone");
 }
+
+#[test]
+fn a_shared_box_moves_and_grows_on_its_way() {
+    let from = gpui::Bounds::new(point(px(0.0), px(0.0)), gpui::size(px(40.0), px(20.0)));
+    let to = gpui::Bounds::new(point(px(300.0), px(100.0)), gpui::size(px(80.0), px(60.0)));
+    let half = super::page::between(from, to, 0.5);
+    assert_eq!(half.origin, point(px(150.0), px(50.0)));
+    assert_eq!(half.size, gpui::size(px(60.0), px(40.0)));
+}
+
+/// Two pages that place one shared title apart.
+struct Places {
+    key: &'static str,
+}
+
+impl Render for Places {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        super::PageTransition::new("places", self.key, |page, _, _| {
+            let key = page.key().clone();
+            let inset = if key == "far" { px(300.0) } else { px(0.0) };
+            let title = div()
+                .debug_selector(move || format!("title-{key}"))
+                .w(px(40.0))
+                .h(px(20.0));
+            div()
+                .w(px(400.0))
+                .pl(inset)
+                .child(page.shared("title", title))
+        })
+    }
+}
+
+fn after_a_switch(cx: &mut VisualTestContext) {
+    for _ in 0..3 {
+        std::thread::sleep(super::BASE / 2);
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+    }
+}
+
+#[gpui::test]
+fn a_shared_title_flies_from_its_old_place(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Places { key: "near" });
+    cx.run_until_parked();
+    let x = |cx: &mut VisualTestContext, name: &'static str| {
+        f32::from(cx.debug_bounds(name).expect("drawn").left())
+    };
+    for key in ["far", "near"] {
+        view.update(cx, |places, cx| {
+            places.key = key;
+            cx.notify();
+        });
+        cx.run_until_parked();
+        if key == "near" {
+            assert!(
+                x(cx, "title-near") > 150.0,
+                "it starts where the far page held it"
+            );
+        }
+        after_a_switch(cx);
+    }
+    assert_eq!(x(cx, "title-near"), 0.0, "it lands in its own place");
+}
