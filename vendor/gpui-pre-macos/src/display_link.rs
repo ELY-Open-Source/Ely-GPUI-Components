@@ -323,8 +323,7 @@ impl MetalFrames {
         self.source.borrow().is_some()
     }
 
-    /// Resumes the link; `true` when it ignored wakes for 2 s.
-    pub fn wake(&self) -> bool {
+    pub fn wake(&self) {
         self.woken.set(true);
         // A source being replaced starts unpaused, so skipping it is safe.
         match self.source.try_borrow() {
@@ -332,22 +331,14 @@ impl MetalFrames {
                 Some(source) => {
                     let asked = *self.asked.get().get_or_insert_with(std::time::Instant::now);
                     self.asked.set(Some(asked));
-                    let dead = asked.elapsed().as_secs() >= 2;
-                    if dead && !self.silent.replace(true) {
+                    if asked.elapsed().as_secs() >= 2 && !self.silent.replace(true) {
                         log::warn!("frames: the Metal link ignored wakes for {:?}", asked.elapsed());
                     }
                     source.set_paused(false);
-                    dead
                 }
-                None => {
-                    log::debug!("frames: a wake found no Metal link");
-                    false
-                }
+                None => log::debug!("frames: a wake found no Metal link"),
             },
-            Err(_) => {
-                log::debug!("frames: a wake met the link being replaced");
-                false
-            }
+            Err(_) => log::debug!("frames: a wake met the link being replaced"),
         }
     }
 

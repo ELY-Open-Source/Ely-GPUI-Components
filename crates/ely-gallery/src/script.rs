@@ -278,7 +278,7 @@ pub async fn shown(window: gpui::AnyWindowHandle, cx: &mut AsyncApp) -> Result<(
                         window.bounds()
                     )
                 })?;
-                // A second wake rebuilds a link that stopped sending.
+                // A second ask shows whether a fresh wake revives it.
                 let (again, frame) = futures::channel::oneshot::channel();
                 window.update(cx, |_, window, _| {
                     window.on_next_frame(move |_, _| again.send(()).unwrap_or_default())
@@ -287,11 +287,9 @@ pub async fn shown(window: gpui::AnyWindowHandle, cx: &mut AsyncApp) -> Result<(
                     select(frame, cx.background_executor().timer(SHOWN)).await,
                     Either::Left((Ok(()), _))
                 );
-                anyhow::ensure!(
-                    revived,
-                    "the window drew no frame in {SHOWN:?} nor after a second ask; {state}"
-                );
-                log::warn!("capture: a frame came only on a second ask; {state}");
+                anyhow::bail!(
+                    "the window drew no frame in {SHOWN:?}; {state}; a second ask drew: {revived}"
+                )
             }
         }
     }
