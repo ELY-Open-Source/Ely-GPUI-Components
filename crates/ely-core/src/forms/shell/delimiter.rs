@@ -1,63 +1,170 @@
-//! A here-doc delimiter, quotes removed as Bash does.
+//! A here-doc's delimiter and lines, as Bash reads them.
 
-/// A here-doc delimiter after Bash's quote removal.
-pub(super) fn unquoted(word: &[u8]) -> Vec<u8> {
-    let mut out = Vec::with_capacity(word.len());
+use super::Lexer;
+
+/// The delimiter's text, and whether the body expands.
+pub(super) fn delimiter(word: &[u8]) -> (Vec<u8>, bool) {
+    let mut text = Vec::with_capacity(word.len());
+    if lexed(word, &mut text) {
+        (removed(&text), false)
+    } else {
+        (text, true)
+    }
+}
+
+/// The line at `at`, joined across continuations when `joins`; the next's start.
+pub(super) fn line(s: &[u8], mut at: usize, joins: bool) -> (Vec<u8>, usize) {
+    let mut text = Vec::new();
+    while let Some(&byte) = s.get(at) {
+        match (byte, s.get(at + 1).copied()) {
+            (b'\n', _) => return (text, at + 1),
+            (b'\\', Some(b'\n')) if joins => at += 2,
+            (b'\\', Some(next)) if joins => {
+                text.extend([byte, next]);
+                at += 2;
+            }
+            _ => {
+                text.push(byte);
+                at += 1;
+            }
+        }
+    }
+    (text, at)
+}
+
+/// Appends `word` as Bash's lexer keeps it; true when quoted at its top.
+fn lexed(word: &[u8], out: &mut Vec<u8>) -> bool {
+    let mut quoted = false;
     let mut at = 0;
     while let Some(&byte) = word.get(at) {
         let next = word.get(at + 1).copied();
+        quoted |= matches!((byte, next), (b'\'' | b'"', _) | (b'$', Some(b'\'' | b'"')))
+            || (byte == b'\\' && next != Some(b'\n'));
+        at = match (byte, next) {
+            (b'$', Some(b'\'')) => translated(word, at + 2, out),
+            (b'$', Some(b'"')) => at + 1,
+            (b'"', _) => doubled(word, at, out),
+            (b'\'', _) => {
+                let end = (closing(word, at + 1) + 1).min(word.len());
+                out.extend_from_slice(&word[at..end]);
+                end
+            }
+            _ => step(word, at, out),
+        };
+    }
+    quoted
+}
+
+/// Appends a double-quoted string at `at`; returns its end.
+fn doubled(word: &[u8], mut at: usize, out: &mut Vec<u8>) -> usize {
+    out.push(b'"');
+    at += 1;
+    while let Some(&byte) = word.get(at) {
+        if byte == b'"' {
+            out.push(byte);
+            return at + 1;
+        }
+        at = step(word, at, out);
+    }
+    at
+}
+
+/// One escape, expansion or byte at `at`; returns its end.
+fn step(word: &[u8], at: usize, out: &mut Vec<u8>) -> usize {
+    match (word[at], word.get(at + 1).copied()) {
+        (b'\\', Some(b'\n')) => at + 2,
+        (b'\\', Some(next)) => {
+            out.extend([b'\\', next]);
+            at + 2
+        }
+        (b'$', Some(b'(' | b'{')) => {
+            let end = span(word, at);
+            out.extend_from_slice(&word[at..at + 2]);
+            lexed(&word[at + 2..end], out);
+            end
+        }
+        // Backquotes keep `$'`; only continuations go.
+        (b'`', _) => {
+            let end = span(word, at);
+            let mut rest = &word[at..end];
+            while let Some(n) = rest.windows(2).position(|pair| pair == b"\\\n") {
+                out.extend_from_slice(&rest[..n]);
+                rest = &rest[n + 2..];
+            }
+            out.extend_from_slice(rest);
+            end
+        }
+        (byte, _) => {
+            out.push(byte);
+            at + 1
+        }
+    }
+}
+
+/// Where the expansion at `at` ends, as the lexer reads it.
+fn span(word: &[u8], at: usize) -> usize {
+    let mut lexer = Lexer::new(word, at);
+    lexer.nested(true);
+    lexer.at.min(word.len())
+}
+
+/// The next `'` from `at`, or the end.
+fn closing(word: &[u8], at: usize) -> usize {
+    word[at.min(word.len())..]
+        .iter()
+        .position(|b| *b == b'\'')
+        .map_or(word.len(), |n| at + n)
+}
+
+/// Appends `$'...'` from `at`, translated, single-quoted; returns its end.
+fn translated(word: &[u8], mut at: usize, out: &mut Vec<u8>) -> usize {
+    let mut text = Vec::new();
+    while let Some(&byte) = word.get(at).filter(|b| **b != b'\'') {
+        at += 1;
+        if byte == b'\\' {
+            at = ansi(word, at, &mut text);
+        } else {
+            text.push(byte);
+        }
+    }
+    out.push(b'\'');
+    for byte in text {
+        if byte == b'\'' {
+            out.extend_from_slice(b"'\\''");
+        } else {
+            out.push(byte);
+        }
+    }
+    out.push(b'\'');
+    at + 1
+}
+
+/// Bash's quote removal of a lexed word.
+fn removed(word: &[u8]) -> Vec<u8> {
+    let mut out = Vec::with_capacity(word.len());
+    let mut double = false;
+    let mut at = 0;
+    while let Some(&byte) = word.get(at) {
+        at += 1;
         match byte {
-            b'\\' if next == Some(b'\n') => at += 2,
             b'\\' => {
-                out.extend(next);
-                at += 2;
-            }
-            b'\'' => {
-                let close = word[at + 1..]
-                    .iter()
-                    .position(|b| *b == b'\'')
-                    .map_or(word.len(), |n| at + 1 + n);
-                out.extend_from_slice(&word[at + 1..close]);
-                at = close + 1;
-            }
-            b'"' => {
-                at += 1;
-                while let Some(&inner) = word.get(at).filter(|b| **b != b'"') {
-                    let escaped = word
-                        .get(at + 1)
-                        .copied()
-                        .filter(|b| matches!(b, b'$' | b'`' | b'"' | b'\\' | b'\n'));
-                    match (inner, escaped) {
-                        (b'\\', Some(b'\n')) => at += 2,
-                        (b'\\', Some(kept)) => {
-                            out.push(kept);
-                            at += 2;
-                        }
-                        _ => {
-                            out.push(inner);
-                            at += 1;
-                        }
-                    }
+                let Some(&next) = word.get(at) else {
+                    out.push(byte);
+                    break;
+                };
+                if double && !matches!(next, b'$' | b'`' | b'"' | b'\\' | b'\n') {
+                    out.push(byte);
                 }
+                out.push(next);
                 at += 1;
             }
-            b'$' if next == Some(b'\'') => {
-                at += 2;
-                while let Some(&inner) = word.get(at).filter(|b| **b != b'\'') {
-                    at += 1;
-                    if inner == b'\\' {
-                        at = ansi(word, at, &mut out);
-                    } else {
-                        out.push(inner);
-                    }
-                }
-                at += 1;
+            b'\'' if !double => {
+                let end = closing(word, at);
+                out.extend_from_slice(&word[at..end]);
+                at = end + 1;
             }
-            b'$' if next == Some(b'"') => at += 1,
-            _ => {
-                out.push(byte);
-                at += 1;
-            }
+            b'"' => double = !double,
+            _ => out.push(byte),
         }
     }
     out

@@ -281,6 +281,126 @@ const CASES: &[(&str, bool, &[&str])] = &[
         true,
         &[],
     ),
+    (
+        "cat <<E\\\nOF\n$(echo a # inner\n)\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<E\\\nOF\n`echo a # inner\n`\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<\"E\\\nOF\"\n$(echo a # body\n)\nEOF\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "echo \"$'$(echo hi # inner\n)'\" # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<EOF\n$'$(echo hi # inner\n)'\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<EOF\n$\"$(echo hi # inner\n)\"\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    ("echo \"a$\"b # tail", true, &[]),
+    (
+        "echo \"${x:-$'$(echo hi # inner\n)'}\" # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "echo \"${x:-'$(echo hi # inner\n)'}\" # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<EOF\n${x:-'$(echo hi # inner\n)'}\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    ("echo \"${x:-'a}b'} # body\" # tail", true, &[]),
+    (
+        "cat <<EOF\n${x:-\"a}b\"} # body\nEOF\necho x # tail",
+        true,
+        &[],
+    ),
+    ("echo ${x:-$'$(echo hi # body\n)'} # tail", true, &[]),
+    (
+        "cat <<$(: \"x\")\n# body\n$(: \"x\")\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<$(: \"x\")\n$(echo a # inner\n)\n$(: \"x\")\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<`: \"x\"`\n# body\n`: \"x\"`\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<${x:-\"y\"}\n# body\n${x:-\"y\"}\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<a$(: \"x\")'b'\n# body\na$(: x)b\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<\"a\"$(: $'\\x41')\n# body\na$(: A)\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<$(: $'\\x41')\n# body\n$(: 'A')\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<\"a$(: $'\\x41')\"\n# body\na$(: 'A')\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<\"a\"`: $'\\x41'`\n# body\na`: $\\x41`\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<$(: \"x\\\ny\")\n# body\n$(: \"xy\")\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<\"a\"`: 'x\\\ny'`\n# body\na`: xy`\necho x # tail",
+        true,
+        &[],
+    ),
+    ("cat <<EOF\nE\\\nOF\necho x # tail", true, &[]),
+    ("cat <<'EOF'\nE\\\nOF\nEOF\necho x # tail", true, &[]),
+    ("cat <<EOF\nx\\\\\nEOF\necho x # tail", true, &[]),
+    ("cat <<EOF\nx\\\\\\\nEOF\nEOF\necho x # tail", true, &[]),
+    ("cat <<-EOF\n\tE\\\n\tOF\nEOF\necho x # tail", true, &[]),
+    (
+        "cat <<`: x\\\ny`\n# body\n`: x\\\ny`\necho x # tail",
+        true,
+        &[],
+    ),
+    ("echo \"${x:-'}\"'}\" # tail", true, &[]),
+    ("echo \"${x:-'}'\"y\"}\" # tail", true, &[]),
 ];
 
 #[test]

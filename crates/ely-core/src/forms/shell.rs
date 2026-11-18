@@ -2,16 +2,11 @@
 
 mod delimiter;
 
-use delimiter::unquoted;
+use delimiter::{delimiter, line};
 
 /// Byte offsets of every `#` that opens a Bash comment.
 pub(crate) fn comments(source: &str) -> Vec<usize> {
-    let mut lexer = Lexer {
-        s: source.as_bytes(),
-        at: 0,
-        marks: Vec::new(),
-        docs: Vec::new(),
-    };
+    let mut lexer = Lexer::new(source.as_bytes(), 0);
     lexer.list(Until::End);
     lexer.marks
 }
@@ -82,7 +77,16 @@ struct Lexer<'a> {
     docs: Vec<Doc>,
 }
 
-impl Lexer<'_> {
+impl<'a> Lexer<'a> {
+    fn new(s: &'a [u8], at: usize) -> Self {
+        Lexer {
+            s,
+            at,
+            marks: Vec::new(),
+            docs: Vec::new(),
+        }
+    }
+
     fn byte(&self, at: usize) -> Option<u8> {
         self.s.get(at).copied()
     }
@@ -239,11 +243,11 @@ impl Lexer<'_> {
         let Token::Word { end, .. } = self.word() else {
             return;
         };
-        let word = &self.s[start..end];
+        let (delimiter, expands) = delimiter(&self.s[start..end]);
         self.docs.push(Doc {
-            delimiter: unquoted(word),
+            delimiter,
             tabs,
-            expands: !word.iter().any(|b| matches!(b, b'\'' | b'"' | b'\\')),
+            expands,
         });
     }
 
@@ -253,22 +257,19 @@ impl Lexer<'_> {
             let start = self.at;
             let mut body = self.s.len();
             while self.at < self.s.len() {
-                let end = self.s[self.at..]
-                    .iter()
-                    .position(|b| *b == b'\n')
-                    .map_or(self.s.len(), |n| self.at + n);
-                let mut line = &self.s[self.at..end];
+                let (text, next) = line(self.s, self.at, doc.expands);
+                let mut text = text.as_slice();
                 if doc.tabs {
-                    while let [b'\t', rest @ ..] = line {
-                        line = rest;
+                    while let [b'\t', rest @ ..] = text {
+                        text = rest;
                     }
                 }
-                if line == doc.delimiter.as_slice() {
+                if text == doc.delimiter.as_slice() {
                     body = self.at;
-                    self.at = (end + 1).min(self.s.len());
+                    self.at = next;
                     break;
                 }
-                self.at = (end + 1).min(self.s.len());
+                self.at = next;
             }
             if doc.expands {
                 self.inside(start, body, |inner| inner.quoted(None));
@@ -310,12 +311,7 @@ impl Lexer<'_> {
 
     /// Reads `start..end` alone with `read`, keeping its comments.
     fn inside(&mut self, start: usize, end: usize, read: impl FnOnce(&mut Lexer)) {
-        let mut inner = Lexer {
-            s: &self.s[..end],
-            at: start,
-            marks: Vec::new(),
-            docs: Vec::new(),
-        };
+        let mut inner = Lexer::new(&self.s[..end], start);
         read(&mut inner);
         self.marks.extend(inner.marks);
     }
@@ -338,7 +334,7 @@ impl Lexer<'_> {
             }
             Some(b'$') => {
                 self.at += 1;
-                self.dollar();
+                self.dollar(quotes);
             }
             _ => return false,
         }
@@ -401,8 +397,8 @@ impl Lexer<'_> {
         }
     }
 
-    /// After a `$`: an expansion, or a plain dollar.
-    fn dollar(&mut self) {
+    /// After a `$`; `$'` and `$"` quote only when `quotes`.
+    fn dollar(&mut self, quotes: bool) {
         let rest = &self.s[self.at..];
         if rest.starts_with(b"((") {
             self.at += 2;
@@ -412,11 +408,11 @@ impl Lexer<'_> {
             self.list(Until::Paren);
         } else if rest.starts_with(b"{") {
             self.at += 1;
-            self.brace();
-        } else if rest.starts_with(b"'") {
+            self.brace(quotes);
+        } else if quotes && rest.starts_with(b"'") {
             self.at += 1;
             self.until(b'\'', true);
-        } else if rest.starts_with(b"\"") {
+        } else if quotes && rest.starts_with(b"\"") {
             self.at += 1;
             self.quoted(Some(b'"'));
         }
@@ -442,14 +438,20 @@ impl Lexer<'_> {
     }
 
     /// `${...}`, nested expansions and quotes inside.
-    fn brace(&mut self) {
+    fn brace(&mut self, quotes: bool) {
         while let Some(byte) = self.byte(self.at) {
-            if byte == b'}' {
-                self.at += 1;
-                return;
-            }
-            if !self.nested(true) {
-                self.at += 1;
+            match byte {
+                b'}' => {
+                    self.at += 1;
+                    return;
+                }
+                // Quoted, quotes group but expand inside.
+                b'\'' | b'"' if !quotes => {
+                    self.at += 1;
+                    self.quoted(Some(byte));
+                }
+                _ if self.nested(quotes) => {}
+                _ => self.at += 1,
             }
         }
     }
