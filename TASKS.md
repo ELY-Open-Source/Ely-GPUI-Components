@@ -191,8 +191,8 @@ Per-component lines live in `tasks/`. Tags there:
 - [x] T54 GPUI Kit · Ely and Kit share one app and one window — `tasks/kit.md`
 - [x] T55 Omarchy · every component wears Omarchy's theme when the app follows it — `tasks/omarchy.md`
 - [ ] T56 Optimization · OPTIMIZATION.md's 28 items, the workspace split first — `tasks/optimization.md`
-- [ ] T57 PR #19 · review, main merged into its branch, merge
-- [ ] T58 Showcase · Colab Playground in the catalog, live on elygpui.com
+- [x] T57 PR #19 · review, main merged into its branch, merge
+- [x] T58 Showcase · Colab Playground in the catalog, live on elygpui.com
 - [ ] T59 Issue #18 · page transitions and shared elements; the sidebar's fold
 - [ ] T60 Acceptance · `scripts/check.sh` on Omarchy Linux, Windows and macOS at the last commit; the table
 
@@ -209,8 +209,8 @@ Assumptions, unconfirmed:
 - The three hosts run check.sh before PR #19 merges and at T60; each other item runs its crate's tests and check.sh on Linux.
 - An item whose own work is done and which waits only on GitHub (CI, a deploy) stays open while the next item starts; it is ticked once GitHub answers. T58a and T59a started while PR #19's pixels jobs ran.
 
-- [ ] T57a PR #19 read whole against AGENTS.md; `main` merged into its branch, CHANGELOG resolved, `api/` snapshot held; check.sh on the three hosts; CI green; merged, the PR shows merged
-- [ ] T58a Catalog: `apps/colab-playground/` with manifest, README and the repo's MIT PNG previews, credited; `pnpm test` and `pnpm validate`; pushed to `main`, its CI green; the author told
+- [x] T57a PR #19 read whole against AGENTS.md; `main` merged into its branch, CHANGELOG resolved, `api/` snapshot held; check.sh on the three hosts; CI green; merged, the PR shows merged
+- [x] T58a Catalog: `apps/colab-playground/` with manifest, README and the repo's MIT PNG previews, credited; `pnpm test` and `pnpm validate`; pushed to `main`, its CI green; the author told
 - [x] T59a `motion::PageTransition`: one page under a key; on a new key the leaving page draws under the arriving one, behind a layer that takes the pointer, by `Entrance`, timed by `motion::duration`; a key back mid-switch reverses; a gallery story, `stories.json`, CHANGELOG, `api/`; lib tests
 - [x] T59b Shared elements: a child under one key on both pages glides from its old bounds toward its latest new ones; the gallery story shows one; CHANGELOG, `api/`; lib tests
 - [x] T59c Sidebar: the gallery's rail fades its labels in a `motion::Transition` over the width's 200 ms, unwrapped, the icon fixed; `Sidebar`'s rustdoc says so. Clipping alone left 12 px of label in the 56 px rail. `NavItem`'s folded form stays icon and tooltip
