@@ -215,7 +215,7 @@ Assumptions, unconfirmed:
 - [x] T59b Shared elements: a child under one key on both pages glides from its old bounds toward its latest new ones; the gallery story shows one; CHANGELOG, `api/`; lib tests
 - [x] T59c Sidebar: the gallery's rail fades its labels in a `motion::Transition` over the width's 200 ms, unwrapped, the icon fixed; `Sidebar`'s rustdoc says so. Clipping alone left 12 px of label in the 56 px rail. `NavItem`'s folded form stays icon and tooltip
 - [ ] T59d Issue #18: `tasks/ch11-20.md` lines; a reply naming what ships and what does not (no scale, no back or forward direction); closed
-- [ ] T58b Site: the Showcase workflow deploys the new pin; `/showcase/colab-playground/` answers on elygpui.com
+- [x] T58b Site: the Showcase workflow deploys the new pin; `/showcase/colab-playground/` answers on elygpui.com
 - [ ] T60a check.sh on the three hosts at the last commit; `tasks/acceptance.md` gains this round's table
 
 ## T00 detail
