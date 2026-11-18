@@ -61,6 +61,14 @@ enum Prefix {
     Function,
 }
 
+/// Where a `$` stands, for how `$'` and `$"` read.
+#[derive(Clone, Copy, PartialEq)]
+enum Quoting {
+    Bare,
+    Double,
+    Here,
+}
+
 /// A here-doc waiting for its body.
 struct Doc {
     delimiter: Vec<u8>,
@@ -272,7 +280,7 @@ impl<'a> Lexer<'a> {
                 self.at = next;
             }
             if doc.expands {
-                self.inside(start, body, |inner| inner.quoted(None));
+                self.inside(start, body, |inner| inner.quoted(None, Quoting::Here));
             }
         }
     }
@@ -317,16 +325,16 @@ impl<'a> Lexer<'a> {
     }
 
     /// Steps over an escape, quote or expansion at the cursor.
-    fn nested(&mut self, quotes: bool) -> bool {
+    fn nested(&mut self, quoting: Quoting) -> bool {
         match self.byte(self.at) {
             Some(b'\\') => self.at = (self.at + 2).min(self.s.len()),
-            Some(b'\'') if quotes => {
+            Some(b'\'') if quoting == Quoting::Bare => {
                 self.at += 1;
                 self.until(b'\'', false);
             }
-            Some(b'"') if quotes => {
+            Some(b'"') if quoting == Quoting::Bare => {
                 self.at += 1;
-                self.quoted(Some(b'"'));
+                self.quoted(Some(b'"'), Quoting::Double);
             }
             Some(b'`') => {
                 self.at += 1;
@@ -334,7 +342,7 @@ impl<'a> Lexer<'a> {
             }
             Some(b'$') => {
                 self.at += 1;
-                self.dollar(quotes);
+                self.dollar(quoting);
             }
             _ => return false,
         }
@@ -357,7 +365,7 @@ impl<'a> Lexer<'a> {
                 b'<' | b'>' | b'(' => break,
                 b'\\' | b'\'' | b'"' | b'`' | b'$' => {
                     plain &= byte == b'$' || (byte == b'\\' && next == Some(b'\n'));
-                    self.nested(true);
+                    self.nested(Quoting::Bare);
                 }
                 b'@' | b'?' | b'*' | b'+' | b'!' if next == Some(b'(') => {
                     self.at += 2;
@@ -385,20 +393,21 @@ impl<'a> Lexer<'a> {
     }
 
     /// Through `close`, or the end; only expansions inside.
-    fn quoted(&mut self, close: Option<u8>) {
+    fn quoted(&mut self, close: Option<u8>, quoting: Quoting) {
         while let Some(byte) = self.byte(self.at) {
             if Some(byte) == close {
                 self.at += 1;
                 return;
             }
-            if !self.nested(false) {
+            if !self.nested(quoting) {
                 self.at += 1;
             }
         }
     }
 
-    /// After a `$`; `$'` and `$"` quote only when `quotes`.
-    fn dollar(&mut self, quotes: bool) {
+    /// After a `$`; `$'` and `$"` quote only when bare.
+    fn dollar(&mut self, quoting: Quoting) {
+        let quotes = quoting == Quoting::Bare;
         let rest = &self.s[self.at..];
         if rest.starts_with(b"((") {
             self.at += 2;
@@ -408,13 +417,13 @@ impl<'a> Lexer<'a> {
             self.list(Until::Paren);
         } else if rest.starts_with(b"{") {
             self.at += 1;
-            self.brace(quotes);
+            self.brace(quoting);
         } else if quotes && rest.starts_with(b"'") {
             self.at += 1;
             self.until(b'\'', true);
         } else if quotes && rest.starts_with(b"\"") {
             self.at += 1;
-            self.quoted(Some(b'"'));
+            self.quoted(Some(b'"'), Quoting::Double);
         }
     }
 
@@ -430,7 +439,7 @@ impl<'a> Lexer<'a> {
                         return;
                     }
                 }
-                _ if self.nested(true) => continue,
+                _ if self.nested(Quoting::Bare) => continue,
                 _ => {}
             }
             self.at += 1;
@@ -438,19 +447,28 @@ impl<'a> Lexer<'a> {
     }
 
     /// `${...}`, nested expansions and quotes inside.
-    fn brace(&mut self, quotes: bool) {
+    fn brace(&mut self, quoting: Quoting) {
         while let Some(byte) = self.byte(self.at) {
             match byte {
                 b'}' => {
                     self.at += 1;
                     return;
                 }
-                // Quoted, quotes group but expand inside.
-                b'\'' | b'"' if !quotes => {
-                    self.at += 1;
-                    self.quoted(Some(byte));
+                // In a here-doc, `$"…"` loses its quotes.
+                b'$' if quoting == Quoting::Here && self.byte(self.at + 1) == Some(b'"') => {
+                    self.at += 2;
+                    match self.byte(self.at) {
+                        Some(b'$') => self.at += 1,
+                        _ => self.dollar(quoting),
+                    }
+                    self.quoted(Some(b'"'), quoting);
                 }
-                _ if self.nested(quotes) => {}
+                // Quoted, quotes group but expand inside.
+                b'\'' | b'"' if quoting != Quoting::Bare => {
+                    self.at += 1;
+                    self.quoted(Some(byte), quoting);
+                }
+                _ if self.nested(quoting) => {}
                 _ => self.at += 1,
             }
         }
@@ -469,7 +487,7 @@ impl<'a> Lexer<'a> {
                         return;
                     }
                 }
-                _ if self.nested(true) => continue,
+                _ if self.nested(Quoting::Bare) => continue,
                 _ => {}
             }
             self.at += 1;

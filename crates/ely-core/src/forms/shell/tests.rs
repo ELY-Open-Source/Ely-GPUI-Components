@@ -401,6 +401,38 @@ const CASES: &[(&str, bool, &[&str])] = &[
     ),
     ("echo \"${x:-'}\"'}\" # tail", true, &[]),
     ("echo \"${x:-'}'\"y\"}\" # tail", true, &[]),
+    ("cat <<`: x\\\\\ny`\n`: x\\y`\necho x # tail", false, &[]),
+    ("cat <<$(: $'\\'')\n$(: \\')\necho x # tail", true, &[]),
+    (
+        "cat <<$(: $'\\'')\n$(: ''\\''')\n# body\n$(: \\')\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<$(: $'a\\'b')\n$(: 'a'\\''b')\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<EOF\n${x:-$\"$(echo hi # inner\n)\"}\nEOF\necho x # tail",
+        true,
+        &[],
+    ),
+    (
+        "cat <<EOF\n${x:-$\"(echo hi # inner\n)\"}\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "cat <<EOF\n${x:-$\"`echo hi # inner\n`\"}\nEOF\necho x # tail",
+        true,
+        &["# inner"],
+    ),
+    (
+        "echo \"${x:-$\"$(echo hi # inner\n)\"}\" # tail",
+        true,
+        &["# inner"],
+    ),
 ];
 
 #[test]

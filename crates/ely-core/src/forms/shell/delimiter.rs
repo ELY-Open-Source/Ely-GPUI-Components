@@ -1,6 +1,6 @@
 //! A here-doc's delimiter and lines, as Bash reads them.
 
-use super::Lexer;
+use super::{Lexer, Quoting};
 
 /// The delimiter's text, and whether the body expands.
 pub(super) fn delimiter(word: &[u8]) -> (Vec<u8>, bool) {
@@ -86,12 +86,20 @@ fn step(word: &[u8], at: usize, out: &mut Vec<u8>) -> usize {
         // Backquotes keep `$'`; only continuations go.
         (b'`', _) => {
             let end = span(word, at);
-            let mut rest = &word[at..end];
-            while let Some(n) = rest.windows(2).position(|pair| pair == b"\\\n") {
-                out.extend_from_slice(&rest[..n]);
-                rest = &rest[n + 2..];
+            let mut inner = at;
+            while inner < end {
+                inner = match (word[inner], word.get(inner + 1).copied()) {
+                    (b'\\', Some(b'\n')) => inner + 2,
+                    (b'\\', Some(next)) => {
+                        out.extend([b'\\', next]);
+                        inner + 2
+                    }
+                    (byte, _) => {
+                        out.push(byte);
+                        inner + 1
+                    }
+                };
             }
-            out.extend_from_slice(rest);
             end
         }
         (byte, _) => {
@@ -104,7 +112,7 @@ fn step(word: &[u8], at: usize, out: &mut Vec<u8>) -> usize {
 /// Where the expansion at `at` ends, as the lexer reads it.
 fn span(word: &[u8], at: usize) -> usize {
     let mut lexer = Lexer::new(word, at);
-    lexer.nested(true);
+    lexer.nested(Quoting::Bare);
     lexer.at.min(word.len())
 }
 
@@ -126,6 +134,11 @@ fn translated(word: &[u8], mut at: usize, out: &mut Vec<u8>) -> usize {
         } else {
             text.push(byte);
         }
+    }
+    // Bash quotes a lone quote as `\'`.
+    if text == b"'" {
+        out.extend_from_slice(b"\\'");
+        return at + 1;
     }
     out.push(b'\'');
     for byte in text {
