@@ -743,6 +743,8 @@ impl ely_core::motion::Glow
 impl ely_core::motion::LazyLoad
 impl ely_core::motion::LoadingOverlay
 impl ely_core::motion::Marquee
+impl ely_core::motion::Page
+impl ely_core::motion::PageTransition
 impl ely_core::motion::ParticleBackground
 impl ely_core::motion::ProgressBar
 impl ely_core::motion::ProgressRing
@@ -1201,6 +1203,7 @@ impl gpui::element::IntoElement for ely_core::motion::Glow
 impl gpui::element::IntoElement for ely_core::motion::LazyLoad
 impl gpui::element::IntoElement for ely_core::motion::LoadingOverlay
 impl gpui::element::IntoElement for ely_core::motion::Marquee
+impl gpui::element::IntoElement for ely_core::motion::PageTransition
 impl gpui::element::IntoElement for ely_core::motion::ParticleBackground
 impl gpui::element::IntoElement for ely_core::motion::ProgressBar
 impl gpui::element::IntoElement for ely_core::motion::ProgressRing
@@ -1588,6 +1591,7 @@ impl gpui::element::RenderOnce for ely_core::motion::Glow
 impl gpui::element::RenderOnce for ely_core::motion::LazyLoad
 impl gpui::element::RenderOnce for ely_core::motion::LoadingOverlay
 impl gpui::element::RenderOnce for ely_core::motion::Marquee
+impl gpui::element::RenderOnce for ely_core::motion::PageTransition
 impl gpui::element::RenderOnce for ely_core::motion::ParticleBackground
 impl gpui::element::RenderOnce for ely_core::motion::ProgressBar
 impl gpui::element::RenderOnce for ely_core::motion::ProgressRing
@@ -4259,6 +4263,12 @@ pub fn ely_core::motion::Marquee::into_element(self) -> Self::Element
 pub fn ely_core::motion::Marquee::new<E: gpui::element::IntoElement>(impl core::convert::Into<gpui::window::ElementId>, impl core::ops::function::Fn() -> E + 'static) -> Self
 pub fn ely_core::motion::Marquee::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::motion::Marquee::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_core::motion::Page::key(&self) -> &gpui_shared_string::SharedString
+pub fn ely_core::motion::PageTransition::entrance(self, ely_core::motion::Entrance) -> Self
+pub fn ely_core::motion::PageTransition::into_any_element(self) -> gpui::element::AnyElement
+pub fn ely_core::motion::PageTransition::into_element(self) -> Self::Element
+pub fn ely_core::motion::PageTransition::new<E: gpui::element::IntoElement>(impl core::convert::Into<gpui::window::ElementId>, impl core::convert::Into<gpui_shared_string::SharedString>, impl core::ops::function::Fn(&ely_core::motion::Page, &mut gpui::window::Window, &mut gpui::app::App) -> E + 'static) -> Self
+pub fn ely_core::motion::PageTransition::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::motion::ParticleBackground::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
 pub fn ely_core::motion::ParticleBackground::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::motion::ParticleBackground::into_element(self) -> Self::Element
@@ -5694,6 +5704,8 @@ pub struct ely_core::motion::Glow
 pub struct ely_core::motion::LazyLoad
 pub struct ely_core::motion::LoadingOverlay
 pub struct ely_core::motion::Marquee
+pub struct ely_core::motion::Page
+pub struct ely_core::motion::PageTransition
 pub struct ely_core::motion::ParticleBackground
 pub struct ely_core::motion::ProgressBar
 pub struct ely_core::motion::ProgressRing
@@ -6115,6 +6127,7 @@ pub type ely_core::motion::Glow::Element = gpui::view::ViewElement<ely_core::mot
 pub type ely_core::motion::LazyLoad::Element = gpui::view::ViewElement<ely_core::motion::LazyLoad>
 pub type ely_core::motion::LoadingOverlay::Element = gpui::view::ViewElement<ely_core::motion::LoadingOverlay>
 pub type ely_core::motion::Marquee::Element = gpui::view::ViewElement<ely_core::motion::Marquee>
+pub type ely_core::motion::PageTransition::Element = gpui::view::ViewElement<ely_core::motion::PageTransition>
 pub type ely_core::motion::ParticleBackground::Element = gpui::view::ViewElement<ely_core::motion::ParticleBackground>
 pub type ely_core::motion::ProgressBar::Element = gpui::view::ViewElement<ely_core::motion::ProgressBar>
 pub type ely_core::motion::ProgressRing::Element = gpui::view::ViewElement<ely_core::motion::ProgressRing>
@@ -6529,6 +6542,8 @@ pub use ely_core::motion::Glow = ely_core::motion::effects::Glow
 pub use ely_core::motion::LazyLoad = ely_core::motion::overlay::LazyLoad
 pub use ely_core::motion::LoadingOverlay = ely_core::motion::overlay::LoadingOverlay
 pub use ely_core::motion::Marquee = ely_core::motion::effects::Marquee
+pub use ely_core::motion::Page = ely_core::motion::page::Page
+pub use ely_core::motion::PageTransition = ely_core::motion::page::PageTransition
 pub use ely_core::motion::ParticleBackground = ely_core::motion::particles::ParticleBackground
 pub use ely_core::motion::ProgressBar = ely_core::motion::progress::ProgressBar
 pub use ely_core::motion::ProgressRing = ely_core::motion::progress::ProgressRing
