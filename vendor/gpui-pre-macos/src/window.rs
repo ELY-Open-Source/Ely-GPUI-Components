@@ -1115,7 +1115,8 @@ impl MacWindow {
             let native_view: *mut AnyObject = msg_send![native_view, initWithFrame: content_bounds];
             assert!(!native_view.is_null());
 
-            let metal_frames = MetalFrameSource::is_available().then(Rc::<MetalFrames>::default);
+            // CVDisplayLink: CAMetalDisplayLink stalls seconds on hosted VMs.
+            let metal_frames: Option<Rc<MetalFrames>> = None;
             let state = Rc::new(Mutex::new(MacWindowState {
                 handle,
                 foreground_executor,

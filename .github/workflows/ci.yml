@@ -143,8 +143,6 @@ jobs:
       - if: runner.os == 'macOS'
         run: |
           defaults -currentHost write com.apple.screensaver idleTime -int 0
-          # The gallery's memory each minute, GPU memory among it.
-          (while sleep 60; do for p in $(pgrep -f 'pixels/gallery-'); do echo "memory: $(date -u +%T) $(footprint -p $p 2>/dev/null | grep -E 'phys_footprint:|IOAccelerator \(graphics\)|IOSurface' | tr -s ' ' | paste -sd'|' -)"; done; done) &
           caffeinate -d -i sh scripts/pixels.sh "$BASE"
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
