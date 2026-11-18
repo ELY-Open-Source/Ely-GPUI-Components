@@ -644,7 +644,7 @@ pub(super) const TABLE: &[(&str, &str)] = &[
     ("logs.level.warn", "WARN"),
     ("logs.level.error", "ERROR"),
     ("logs.follow", "מעקב אחר שורות חדשות"),
-    ("logs.count.one", "{shown} מתוך שורה {n}"),
+    ("logs.count.one", "{shown} מתוך {n} שורה"),
     ("logs.count.other", "{shown} מתוך {n} שורות"),
     ("account.switcher.accounts", "חשבונות"),
     ("account.switcher.add", "הוספת חשבון"),
