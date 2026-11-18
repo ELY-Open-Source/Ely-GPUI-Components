@@ -5,7 +5,7 @@ use super::{Lexer, Quoting};
 /// The delimiter's text, and whether the body expands.
 pub(super) fn delimiter(word: &[u8]) -> (Vec<u8>, bool) {
     let mut text = Vec::with_capacity(word.len());
-    if lexed(word, &mut text) {
+    if lexed(word, &mut text, false, true) {
         (removed(&text), false)
     } else {
         (text, true)
@@ -33,7 +33,7 @@ pub(super) fn line(s: &[u8], mut at: usize, joins: bool) -> (Vec<u8>, usize) {
 }
 
 /// Appends `word` as Bash's lexer keeps it; true when quoted at its top.
-fn lexed(word: &[u8], out: &mut Vec<u8>) -> bool {
+fn lexed(word: &[u8], out: &mut Vec<u8>, in_double: bool, quote_ansi: bool) -> bool {
     let mut quoted = false;
     let mut at = 0;
     while let Some(&byte) = word.get(at) {
@@ -41,7 +41,7 @@ fn lexed(word: &[u8], out: &mut Vec<u8>) -> bool {
         quoted |= matches!((byte, next), (b'\'' | b'"', _) | (b'$', Some(b'\'' | b'"')))
             || (byte == b'\\' && next != Some(b'\n'));
         at = match (byte, next) {
-            (b'$', Some(b'\'')) => translated(word, at + 2, out),
+            (b'$', Some(b'\'')) => translated(word, at + 2, out, quote_ansi),
             (b'$', Some(b'"')) => at + 1,
             (b'"', _) => doubled(word, at, out),
             (b'\'', _) => {
@@ -49,7 +49,7 @@ fn lexed(word: &[u8], out: &mut Vec<u8>) -> bool {
                 out.extend_from_slice(&word[at..end]);
                 end
             }
-            _ => step(word, at, out),
+            _ => step(word, at, out, in_double),
         };
     }
     quoted
@@ -64,23 +64,32 @@ fn doubled(word: &[u8], mut at: usize, out: &mut Vec<u8>) -> usize {
             out.push(byte);
             return at + 1;
         }
-        at = step(word, at, out);
+        at = step(word, at, out, true);
     }
     at
 }
 
 /// One escape, expansion or byte at `at`; returns its end.
-fn step(word: &[u8], at: usize, out: &mut Vec<u8>) -> usize {
+fn step(word: &[u8], at: usize, out: &mut Vec<u8>, in_double: bool) -> usize {
     match (word[at], word.get(at + 1).copied()) {
         (b'\\', Some(b'\n')) => at + 2,
         (b'\\', Some(next)) => {
             out.extend([b'\\', next]);
             at + 2
         }
-        (b'$', Some(b'(' | b'{')) => {
+        (b'$', Some(b'(')) => {
             let end = span(word, at);
             out.extend_from_slice(&word[at..at + 2]);
-            lexed(&word[at + 2..end], out);
+            lexed(&word[at + 2..end], out, false, true);
+            end
+        }
+        // Quoted, only a pattern keeps `$'` results quoted.
+        (b'$', Some(b'{')) => {
+            let end = span(word, at);
+            let inner = &word[at + 2..end];
+            out.extend_from_slice(&word[at..at + 2]);
+            let quote_ansi = !in_double || pattern(inner);
+            lexed(inner, out, in_double, quote_ansi);
             end
         }
         // Backquotes keep `$'`; only continuations go.
@@ -109,6 +118,12 @@ fn step(word: &[u8], at: usize, out: &mut Vec<u8>) -> usize {
     }
 }
 
+/// Whether Bash's parser reads this `${...}` as a pattern.
+fn pattern(inner: &[u8]) -> bool {
+    let first = inner.iter().position(|b| b"#%^,~:-=?+/".contains(b));
+    first.is_some_and(|at| at > 0 && b"%#/^,".contains(&inner[at]))
+}
+
 /// Where the expansion at `at` ends, as the lexer reads it.
 fn span(word: &[u8], at: usize) -> usize {
     let mut lexer = Lexer::new(word, at);
@@ -125,7 +140,7 @@ fn closing(word: &[u8], at: usize) -> usize {
 }
 
 /// Appends `$'...'` from `at`, translated, single-quoted; returns its end.
-fn translated(word: &[u8], mut at: usize, out: &mut Vec<u8>) -> usize {
+fn translated(word: &[u8], mut at: usize, out: &mut Vec<u8>, quoted: bool) -> usize {
     let mut text = Vec::new();
     while let Some(&byte) = word.get(at).filter(|b| **b != b'\'') {
         at += 1;
@@ -134,6 +149,10 @@ fn translated(word: &[u8], mut at: usize, out: &mut Vec<u8>) -> usize {
         } else {
             text.push(byte);
         }
+    }
+    if !quoted {
+        out.extend_from_slice(&text);
+        return at + 1;
     }
     // Bash quotes a lone quote as `\'`.
     if text == b"'" {

@@ -1,5 +1,7 @@
 use super::comments;
 
+mod braces;
+
 /// Source, whether its last `#` comments, other comments.
 const CASES: &[(&str, bool, &[&str])] = &[
     ("echo x;# return 42", true, &[]),
@@ -437,7 +439,7 @@ const CASES: &[(&str, bool, &[&str])] = &[
 
 #[test]
 fn comments_start_where_bash_starts_them() {
-    for (source, tail, inner) in CASES {
+    for (source, tail, inner) in CASES.iter().chain(braces::CASES) {
         let mut want: Vec<usize> = inner
             .iter()
             .map(|needle| source.find(needle).expect("the needle"))

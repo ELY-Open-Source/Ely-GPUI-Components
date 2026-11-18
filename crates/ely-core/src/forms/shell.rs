@@ -1,5 +1,6 @@
 //! Bash's lexer, read for where comments start.
 
+mod brace;
 mod delimiter;
 
 use delimiter::{delimiter, line};
@@ -443,34 +444,6 @@ impl<'a> Lexer<'a> {
                 _ => {}
             }
             self.at += 1;
-        }
-    }
-
-    /// `${...}`, nested expansions and quotes inside.
-    fn brace(&mut self, quoting: Quoting) {
-        while let Some(byte) = self.byte(self.at) {
-            match byte {
-                b'}' => {
-                    self.at += 1;
-                    return;
-                }
-                // In a here-doc, `$"…"` loses its quotes.
-                b'$' if quoting == Quoting::Here && self.byte(self.at + 1) == Some(b'"') => {
-                    self.at += 2;
-                    match self.byte(self.at) {
-                        Some(b'$') => self.at += 1,
-                        _ => self.dollar(quoting),
-                    }
-                    self.quoted(Some(b'"'), quoting);
-                }
-                // Quoted, quotes group but expand inside.
-                b'\'' | b'"' if quoting != Quoting::Bare => {
-                    self.at += 1;
-                    self.quoted(Some(byte), quoting);
-                }
-                _ if self.nested(quoting) => {}
-                _ => self.at += 1,
-            }
         }
     }
 
