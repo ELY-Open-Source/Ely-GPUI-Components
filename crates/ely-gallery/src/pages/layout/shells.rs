@@ -1,6 +1,7 @@
 use ely_gpui_component::{
     buttons::{Button, ButtonVariant},
     layout::{AppShell, Drawer, MasterDetail, Page, Sheet, Sidebar, h_stack},
+    motion::Transition,
     primitives::{Icon, IconName, Place},
     theme::{ActiveTheme, ControlSize, IconSize, Radius, TextSize},
     typography::{Caption, Paragraph},
@@ -52,6 +53,7 @@ fn nav(collapsed: bool, cx: &App) -> impl IntoElement + use<> {
         .children(items.map(|(icon, label)| {
             h_stack()
                 .gap_3()
+                .whitespace_nowrap()
                 .h(theme.control_height(ControlSize::Md))
                 .px_2()
                 .rounded(theme.radius(Radius::Md))
@@ -62,13 +64,18 @@ fn nav(collapsed: bool, cx: &App) -> impl IntoElement + use<> {
                         .size(IconSize::Sm)
                         .color(theme.colors.fg_muted),
                 )
-                .when(!collapsed, |item| item.child(label))
+                .child(Transition::new(label, !collapsed).child(label))
         }))
 }
 
 pub fn sidebar(window: &mut Window, cx: &mut App) -> impl IntoElement + use<> {
     let (state, collapsed) = toggle(window, cx, "sidebar-collapsed");
-    section("Sidebar", "Folds to an icon rail; the width eases.", cx).child(
+    section(
+        "Sidebar",
+        "Folds to an icon rail; the width eases while the labels fade, as WinUI's pane folds.",
+        cx,
+    )
+    .child(
         frame(560.0, 200.0, cx)
             .flex()
             .child(Sidebar::new("demo-sidebar", collapsed).child(nav(collapsed, cx)))

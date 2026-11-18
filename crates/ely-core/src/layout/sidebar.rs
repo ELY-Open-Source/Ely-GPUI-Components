@@ -29,7 +29,7 @@ pub struct Sidebar {
 }
 
 impl Sidebar {
-    /// Children should render their own compact form when `collapsed`.
+    /// Children draw their own compact form when `collapsed`; a label in a `motion::Transition` shown while open fades as the width folds, both over `motion::BASE`.
     pub fn new(id: impl Into<ElementId>, collapsed: bool) -> Self {
         Self {
             id: id.into(),
