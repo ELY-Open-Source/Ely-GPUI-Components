@@ -1,4 +1,7 @@
-use super::{dom::Stream, written::Written};
+use std::borrow::Cow;
+
+use super::{dom::Stream, wrap, written::Written};
+use crate::markdown::mdast;
 
 /// `text` with each known `:shortcode:` as its emoji.
 fn emoji(text: &str) -> String {
@@ -82,8 +85,9 @@ impl Shortcodes {
 }
 
 /// Shortcodes for HTML an owner writes; `code`, `pre` stay literal.
-#[derive(Default)]
 pub struct ShortcodeRun {
+    /// The markup the composer reads the block inside.
+    open: Cow<'static, str>,
     shortcodes: Shortcodes,
     /// Markup not yet fed, as the drawing writes it.
     written: Written,
@@ -91,7 +95,27 @@ pub struct ShortcodeRun {
     tree: Option<Stream>,
 }
 
+/// A paragraph's run.
+impl Default for ShortcodeRun {
+    fn default() -> Self {
+        Self::new(&mdast::Node::Paragraph(mdast::Parent {
+            children: Vec::new(),
+            position: 0..0,
+        }))
+    }
+}
+
 impl ShortcodeRun {
+    /// A run for `block`, read as the composer reads it.
+    pub fn new(block: &mdast::Node) -> Self {
+        Self {
+            open: wrap(block).0,
+            shortcodes: Shortcodes::default(),
+            written: Written::default(),
+            tree: None,
+        }
+    }
+
     /// A new DOM text node starts.
     pub fn split(&mut self) {
         self.shortcodes.split();
@@ -125,7 +149,7 @@ impl ShortcodeRun {
             return self.text(written);
         }
         if tag.is_some() && self.tree.is_none() {
-            self.tree = Some(Stream::paragraph());
+            self.tree = Some(Stream::within(&self.open));
         }
         if let Some(tree) = &mut self.tree {
             self.written.raw(written);
@@ -198,5 +222,22 @@ mod tests {
         // Text in a row moves out before the table.
         let row = ["<table>", "<tr>", "<td>", "<pre>", "x", "</td>", " :smile:"];
         assert_eq!(read(&row), "<table><tr><td><pre>x</td> 😄");
+    }
+
+    #[test]
+    fn a_cell_s_end_closes_pre_as_the_composer_reads_it() {
+        let cell = mdast::Node::TableCell(mdast::Parent {
+            children: Vec::new(),
+            position: 0..0,
+        });
+        let mut run = ShortcodeRun::new(&cell);
+        let read = [run.html("<pre>"), run.text("x"), run.html("</td>")];
+        assert_eq!(read.concat(), "<pre>x</td>");
+        assert_eq!(run.text(" :smile:"), " 😄");
+        // In a paragraph `</td>` ends nothing.
+        let mut run = ShortcodeRun::default();
+        let read = [run.html("<pre>"), run.text("x"), run.html("</td>")];
+        assert_eq!(read.concat(), "<pre>x</td>");
+        assert_eq!(run.text(" :smile:"), " :smile:");
     }
 }

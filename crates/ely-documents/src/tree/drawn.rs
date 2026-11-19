@@ -191,6 +191,8 @@ impl<'a> Draw<'a> {
                 let text = self.cut();
                 self.out.push(Drawn::Text(text));
             }
+            // A picture is ink: spaces before it stay.
+            self.solid = self.text.text.len();
             self.out
                 .push(Drawn::Image(index, within.link.map(str::to_string)));
             return None;
@@ -199,9 +201,9 @@ impl<'a> Draw<'a> {
         if name == "template" {
             return None;
         }
-        let lines = match (self.mode, name) {
-            // Markdown's paragraphs part with a blank line.
-            (Mode::Inline, "p") => 2,
+        // Paragraphs part with a blank line, as innerText.
+        let lines = match name {
+            "p" => 2,
             _ => usize::from(html::breaks(name)),
         };
         self.line(lines);
@@ -434,6 +436,9 @@ impl<'a> Draw<'a> {
 
     /// The text so far; open elements carry on after it.
     fn cut(&mut self) -> Inline {
+        if let Owed::Lines(_) = self.owed {
+            self.trim();
+        }
         let end = self.text.text.len();
         for ix in (0..self.open.len()).rev() {
             if let Some(start) = self.open[ix].start.take().filter(|start| *start < end) {

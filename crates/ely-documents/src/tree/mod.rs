@@ -1,4 +1,4 @@
-use std::{collections::HashMap, ops::Range};
+use std::{borrow::Cow, collections::HashMap, ops::Range};
 
 use crate::markdown::mdast::{self, AlignKind};
 
@@ -228,10 +228,7 @@ impl<'a> Reader<'a> {
         match node {
             mdast::Node::Paragraph(paragraph) => self.paragraph(node, &paragraph.children, out),
             mdast::Node::Heading(heading) => {
-                let wrap = (
-                    format!("<h{}>", heading.depth),
-                    format!("</h{}>", heading.depth),
-                );
+                let wrap = wrap(node);
                 let (written, images) = self.write(&heading.children, false, false);
                 let mut text = Inline::default();
                 let mut after = Vec::new();
@@ -320,12 +317,8 @@ impl<'a> Reader<'a> {
         }
         let table = matches!(node, mdast::Node::TableCell(_));
         let (written, images) = self.write(children, table, false);
-        // GitHub writes a cell's text inside its table.
-        let wrap = match table {
-            true => ("<table><tbody><tr><td>", "</td></tr></tbody></table>"),
-            false => ("<p>", "</p>"),
-        };
-        for piece in draw(&written, wrap, Mode::Inline, self.lines, true) {
+        let wrap = wrap(node);
+        for piece in draw(&written, (&wrap.0, &wrap.1), Mode::Inline, self.lines, true) {
             match piece {
                 Drawn::Text(text) => text_block(text, out),
                 Drawn::Image(index, link) => out.extend(image(&images, index, link)),
@@ -447,6 +440,22 @@ impl<'a> Reader<'a> {
             self.write_into(child, out, images, (verbatim || autolink, table, alt));
         }
         out.html.extend(["</", name, ">"]);
+    }
+}
+
+/// The markup GitHub writes around `block`'s inline text.
+pub(crate) fn wrap(block: &mdast::Node) -> (Cow<'static, str>, Cow<'static, str>) {
+    match block {
+        mdast::Node::Heading(heading) => (
+            format!("<h{}>", heading.depth).into(),
+            format!("</h{}>", heading.depth).into(),
+        ),
+        // A cell's text sits inside its table.
+        mdast::Node::TableCell(_) => (
+            "<table><tbody><tr><td>".into(),
+            "</td></tr></tbody></table>".into(),
+        ),
+        _ => ("<p>".into(), "</p>".into()),
     }
 }
 

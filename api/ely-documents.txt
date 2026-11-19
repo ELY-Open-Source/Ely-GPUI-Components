@@ -992,6 +992,7 @@ pub fn ely_documents::RightPress::eq(&self, &Self) -> bool
 pub fn ely_documents::RightPress::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 pub fn ely_documents::ShortcodeRun::default() -> Self
 pub fn ely_documents::ShortcodeRun::html(&mut self, &str) -> alloc::string::String
+pub fn ely_documents::ShortcodeRun::new(&ely_documents::mdast::Node) -> Self
 pub fn ely_documents::ShortcodeRun::split(&mut self)
 pub fn ely_documents::ShortcodeRun::text(&mut self, &str) -> alloc::string::String
 pub fn ely_documents::Shortcodes::default() -> Self

@@ -84,8 +84,8 @@ pub(crate) fn fragment(html: &str, context: &str) -> Dom {
 pub(crate) struct Stream(Parser<Sink>);
 
 impl Stream {
-    /// A paragraph's stream, as the drawing wraps one.
-    pub(crate) fn paragraph() -> Self {
+    /// A stream inside `open`, the markup the drawing wraps.
+    pub(crate) fn within(open: &str) -> Self {
         let context = element("body");
         let mut stream = Self(parse_fragment(
             Sink::default(),
@@ -94,7 +94,7 @@ impl Stream {
             Vec::new(),
             false,
         ));
-        stream.feed("<p>".into());
+        stream.feed(open.into());
         stream
     }
 

@@ -107,7 +107,7 @@ mod tests {
             [(bold, Style::Strong), (code, Style::Code)]
         );
         let parts = html("<p>one <b>two </b></p>\n<p>three &lt;b&gt;</p>").expect("text");
-        assert_eq!(parts.text, "one two\nthree <b>");
+        assert_eq!(parts.text, "one two\n\nthree <b>");
         assert_eq!(
             html("<div>\na <br> b</br>c</div>").expect("text").text,
             "a\nb\nc"
@@ -145,22 +145,20 @@ mod tests {
         let bold = html("<div><b>x</div>y").expect("text");
         assert_eq!(bold.styles, [(0..1, Style::Strong), (2..3, Style::Strong)]);
         let kept = html("<div><mark><p>x</p>y</mark></div>").expect("text");
-        assert_eq!(kept.styles, [(0..3, Style::Mark)]);
+        assert_eq!(kept.styles, [(0..4, Style::Mark)]);
     }
 
     #[test]
     fn a_block_start_ends_what_html5_ends() {
         let mark = [(0..1, Style::Mark)];
-        for source in [
-            "<ul><li><mark>x<li>y</ul>z",
-            "<div><p><mark>x<div>y</div>z</div>",
-            "<dl><dt><mark>x<dd>y</dl>z",
+        // A `p` ends with a blank line, as innerText.
+        for (source, shown) in [
+            ("<ul><li><mark>x<li>y</ul>z", "x\ny\nz"),
+            ("<div><p><mark>x<div>y</div>z</div>", "x\n\ny\nz"),
+            ("<dl><dt><mark>x<dd>y</dl>z", "x\ny\nz"),
         ] {
             let line = html(source).expect("text");
-            assert_eq!(
-                (line.text.as_str(), &line.styles[..]),
-                ("x\ny\nz", &mark[..])
-            );
+            assert_eq!((line.text.as_str(), &line.styles[..]), (shown, &mark[..]));
         }
         let kbd = html("<div><p><kbd>x<p>y</div>z").expect("text");
         assert_eq!(kbd.styles, [(0..1, Style::Code)]);
@@ -349,6 +347,23 @@ mod tests {
             (
                 "<div><table>\n<tr><th>a</th> <th>b</th></tr>\n<tr><td>c</td><td></td><td>e</td></tr>\n</table>z</div>",
                 "a\tb\nc\t\te\nz",
+            ),
+            (
+                "<div><table><tr><td><p>a</p></td><td>b</td></tr></table></div>",
+                "a\n\n\tb",
+            ),
+            (
+                "<div><table><tr><td></td><td>x</td></tr></table></div>",
+                "\tx",
+            ),
+            (
+                "<div><table><caption>t</caption><tr><td>a</td><td>b</td></tr><tr><td>c</td></tr></table>z</div>",
+                "t\na\tb\nc\nz",
+            ),
+            ("<div><p>one</p><p>two</p></div>", "one\n\ntwo"),
+            (
+                "<div><fieldset><legend>k</legend>v</fieldset></div>",
+                "k\nv",
             ),
         ] {
             assert_eq!(html(source).expect("text").text, shown, "{source:?}");

@@ -431,6 +431,19 @@ fn a_block_moved_out_of_the_paragraph_takes_its_own_lines() {
         ("a <div><b>b</b></div>c", "a\n\nb\nc"),
         ("a <h2>b</h2>", "a\n\nb"),
         ("a <br> <div>b</div>", "a\n\n\nb"),
+        ("a <div>b </div>", "a\n\nb"),
+        ("a <pre>b </pre> c", "a\n\nb \nc"),
+    ] {
+        assert_eq!(line(source).text, shown, "{source:?}");
+    }
+    // Every visible block closes the `p`, `.work/R20.35/oracle`.
+    for name in ["form", "fieldset", "hgroup", "search"] {
+        let source = format!("a <{name}>b</{name}> c");
+        assert_eq!(line(&source).text, "a\n\nb\nc", "{source:?}");
+    }
+    for (source, shown) in [
+        ("a <menu><li>b</li></menu> c", "a\n\nb\nc"),
+        ("a <dir><li>b</li></dir> c", "a\n\nb\nc"),
     ] {
         assert_eq!(line(source).text, shown, "{source:?}");
     }
