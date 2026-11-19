@@ -44,10 +44,21 @@ struct Within<'a> {
     link: Option<&'a str>,
 }
 
+/// White space owed before the next character.
+#[derive(Clone, Copy, PartialEq)]
+enum Owed {
+    Nothing,
+    Space,
+    /// Line ends a block owes; they merge.
+    Lines(usize),
+}
+
 /// A walk step: enter a node, or leave an element.
 enum Step<'a> {
-    Enter(usize, Within<'a>),
-    Leave { block: bool },
+    /// A node; true for a cell another follows.
+    Enter(usize, Within<'a>, bool),
+    /// Line ends owed after it; a tab after a cell.
+    Leave { lines: usize, tab: bool },
 }
 
 struct Draw<'a> {
@@ -61,7 +72,9 @@ struct Draw<'a> {
     text: Inline,
     out: Vec<Drawn>,
     shortcodes: Shortcodes,
-    owed: Option<char>,
+    owed: Owed,
+    /// Text a break keeps; spaces after it hide.
+    solid: usize,
     open: Vec<Open>,
     /// Open elements from here on have no character yet.
     unstarted: usize,
@@ -91,7 +104,8 @@ pub(super) fn draw(
         text: Inline::default(),
         out: Vec::new(),
         shortcodes: Shortcodes::default(),
-        owed: None,
+        owed: Owed::Nothing,
+        solid: 0,
         open: Vec::new(),
         unstarted: 0,
         reading: None,
@@ -111,19 +125,20 @@ impl<'a> Draw<'a> {
         let mut steps: Vec<Step> = top
             .iter()
             .rev()
-            .map(|&node| Step::Enter(node, Within::default()))
+            .map(|&node| Step::Enter(node, Within::default(), false))
             .collect();
         while let Some(step) = steps.pop() {
-            let (node, within) = match step {
-                Step::Enter(node, within) => (node, within),
-                Step::Leave { block } => {
+            let (node, within, tab) = match step {
+                Step::Enter(node, within, tab) => (node, within, tab),
+                Step::Leave { lines, tab } => {
                     if let Some(open) = self.open.pop() {
                         self.close(&open);
                     }
                     self.unstarted = self.unstarted.min(self.open.len());
                     self.shortcodes.split();
-                    if block {
-                        self.line();
+                    self.line(lines);
+                    if tab {
+                        self.tab();
                     }
                     continue;
                 }
@@ -138,25 +153,28 @@ impl<'a> Draw<'a> {
                     self.shortcodes.split();
                 }
                 Data::Element { .. } => {
-                    let Some(within) = self.enter(node, within) else {
+                    let Some((within, lines)) = self.enter(node, within) else {
                         continue;
                     };
-                    let block = self.mode == Mode::Block && html::breaks(dom.name(node));
-                    steps.push(Step::Leave { block });
+                    steps.push(Step::Leave { lines, tab });
                     let children = &dom.nodes[node].children;
-                    steps.extend(
-                        children
-                            .iter()
-                            .rev()
-                            .map(|&child| Step::Enter(child, within)),
-                    );
+                    let cell = |child: usize| matches!(dom.name(child), "td" | "th");
+                    // Cells but a row's last owe a tab.
+                    let last = match dom.name(node) {
+                        "tr" => children.iter().rposition(|&child| cell(child)),
+                        _ => None,
+                    };
+                    steps.extend(children.iter().enumerate().rev().map(|(at, &child)| {
+                        let tab = last.is_some_and(|last| at < last) && cell(child);
+                        Step::Enter(child, within, tab)
+                    }));
                 }
             }
         }
     }
 
-    /// Opens an element; `None` when nothing inside it draws.
-    fn enter<'d>(&mut self, node: usize, within: Within<'d>) -> Option<Within<'d>>
+    /// Opens an element, owing lines; `None` if nothing draws.
+    fn enter<'d>(&mut self, node: usize, within: Within<'d>) -> Option<(Within<'d>, usize)>
     where
         'a: 'd,
     {
@@ -181,12 +199,16 @@ impl<'a> Draw<'a> {
         if name == "template" {
             return None;
         }
-        if self.mode == Mode::Block && html::breaks(name) {
-            self.line();
-        }
+        let lines = match (self.mode, name) {
+            // Markdown's paragraphs part with a blank line.
+            (Mode::Inline, "p") => 2,
+            _ => usize::from(html::breaks(name)),
+        };
+        self.line(lines);
         if name == "br" {
-            self.owed = None;
-            self.push('\n');
+            self.owed = Owed::Nothing;
+            self.trim();
+            self.push('\n', true);
             return None;
         }
         let (style, url) = if dom.attribute(node, NOTE).is_some() {
@@ -209,11 +231,12 @@ impl<'a> Draw<'a> {
             style,
             url: url.map(str::to_string),
         });
-        Some(Within {
+        let within = Within {
             raw,
             pre: within.pre || matches!(name, "pre" | "listing"),
             link: url.or(within.link),
-        })
+        };
+        Some((within, lines))
     }
 
     /// A text node: marks note sources, the rest draws.
@@ -279,17 +302,40 @@ impl<'a> Draw<'a> {
                     true => shown,
                     false => shown.replace("\r\n", soft).replace(['\r', '\n'], soft),
                 };
-                for ch in shown.chars() {
-                    self.push(ch);
+                let kept = raw || within.pre;
+                let mut shown = shown.as_str();
+                if self.owed != Owed::Nothing {
+                    // A break hides the white space after it.
+                    if !kept {
+                        shown = shown.trim_start_matches(html::spacing);
+                    }
+                    if shown.is_empty() {
+                        return;
+                    }
+                    self.pay();
+                }
+                let loose = match kept {
+                    true => 0,
+                    false => shown.len() - shown.trim_end_matches(html::spacing).len(),
+                };
+                let mut chars = shown.chars();
+                if let Some(first) = chars.next() {
+                    self.push(first, false);
+                    self.text.text.push_str(chars.as_str());
+                }
+                if loose < shown.len() {
+                    self.solid = self.text.text.len() - loose;
                 }
             }
             Mode::Block => {
                 for ch in shown.chars() {
                     if within.pre || !html::spacing(ch) {
                         self.pay();
-                        self.push(ch);
-                    } else if self.owed.is_none() && !self.text.text.ends_with('\n') {
-                        self.owed = (!self.text.text.is_empty()).then_some(' ');
+                        self.push(ch, true);
+                    } else if self.owed == Owed::Nothing
+                        && !(self.text.text.is_empty() || self.text.text.ends_with(['\n', '\t']))
+                    {
+                        self.owed = Owed::Space;
                     }
                 }
             }
@@ -297,26 +343,76 @@ impl<'a> Draw<'a> {
     }
 
     /// Draws `ch`; elements still empty start before it.
-    fn push(&mut self, ch: char) {
+    fn push(&mut self, ch: char, solid: bool) {
         let at = self.text.text.len();
         for open in &mut self.open[self.unstarted..] {
             open.start = Some(at);
         }
         self.unstarted = self.open.len();
         self.text.text.push(ch);
+        if solid {
+            self.solid = self.text.text.len();
+        }
     }
 
-    /// A line owed where a block element starts or ends.
-    fn line(&mut self) {
-        let text = &self.text.text;
-        self.owed = (!(text.is_empty() || text.ends_with('\n'))).then_some('\n');
+    /// `count` line ends owed where a block starts or ends.
+    fn line(&mut self, count: usize) {
+        if count == 0 || self.text.text.is_empty() {
+            return;
+        }
+        // Owed breaks merge; a `br`'s own line does not.
+        self.owed = match self.owed {
+            Owed::Lines(had) => Owed::Lines(had.max(count)),
+            _ => Owed::Lines(count),
+        };
+    }
+
+    /// A tab between cells, written at once.
+    fn tab(&mut self) {
+        match self.owed {
+            Owed::Lines(_) => self.pay(),
+            _ => {
+                self.owed = Owed::Nothing;
+                self.trim();
+            }
+        }
+        self.text.text.push('\t');
+        self.solid = self.text.text.len();
     }
 
     /// Writes owed white space; it starts no element.
     fn pay(&mut self) {
-        if let Some(owed) = self.owed.take() {
-            self.text.text.push(owed);
+        match std::mem::replace(&mut self.owed, Owed::Nothing) {
+            Owed::Nothing => return,
+            Owed::Space => self.text.text.push(' '),
+            Owed::Lines(count) => {
+                self.trim();
+                self.text.text.extend(std::iter::repeat_n('\n', count));
+            }
         }
+        self.solid = self.text.text.len();
+    }
+
+    /// Drops the spaces before a break, as a browser does.
+    fn trim(&mut self) {
+        let kept = self.solid;
+        if kept == self.text.text.len() {
+            return;
+        }
+        self.text.text.truncate(kept);
+        clamp(&mut self.text.styles, kept);
+        clamp(&mut self.text.links, kept);
+        let moved = self.text.sources.partition_point(|(at, ..)| *at <= kept);
+        for source in &mut self.text.sources[moved..] {
+            source.0 = kept;
+        }
+        // Elements that started in the spaces start again.
+        let open = &mut self.open[..self.unstarted];
+        let from = open.partition_point(|open| open.start.is_some_and(|start| start < kept));
+        for open in &mut open[from..] {
+            open.start = None;
+        }
+        self.unstarted = from;
     }
 
     fn close(&mut self, open: &Open) {
@@ -346,7 +442,8 @@ impl<'a> Draw<'a> {
             }
         }
         self.unstarted = 0;
-        self.owed = None;
+        self.owed = Owed::Nothing;
+        self.solid = 0;
         let mut done = std::mem::take(&mut self.text);
         // By start, the wider first: the walk's order is incidental.
         done.styles
@@ -355,4 +452,15 @@ impl<'a> Draw<'a> {
             .sort_by_key(|(range, _)| (range.start, std::cmp::Reverse(range.end)));
         done
     }
+}
+
+/// Ranges, by end, cut at `end`; emptied ones go.
+fn clamp<T>(ranges: &mut Vec<(Range<usize>, T)>, end: usize) {
+    let from = ranges.partition_point(|(range, _)| range.end <= end);
+    let cut = ranges.split_off(from);
+    ranges.extend(
+        cut.into_iter()
+            .filter(|(range, _)| range.start < end)
+            .map(|(range, it)| (range.start..end, it)),
+    );
 }

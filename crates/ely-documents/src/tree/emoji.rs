@@ -1,3 +1,5 @@
+use super::{dom::Stream, written::Written};
+
 /// `text` with each known `:shortcode:` as its emoji.
 fn emoji(text: &str) -> String {
     let mut out = String::with_capacity(text.len());
@@ -83,10 +85,10 @@ impl Shortcodes {
 #[derive(Default)]
 pub struct ShortcodeRun {
     shortcodes: Shortcodes,
-    /// How many `code` are open.
-    code: usize,
-    /// How many `pre` are open.
-    pre: usize,
+    /// Markup not yet fed, as the drawing writes it.
+    written: Written,
+    /// The tree so far, once a tag came.
+    tree: Option<Stream>,
 }
 
 impl ShortcodeRun {
@@ -95,32 +97,40 @@ impl ShortcodeRun {
         self.shortcodes.split();
     }
 
-    /// Text as shown; an open `code` or `pre` keeps it.
+    /// Text as shown; inside `code` or `pre` it stays.
     pub fn text(&mut self, written: &str) -> String {
-        match self.code + self.pre {
-            0 => self.shortcodes.read(written),
-            _ => written.to_string(),
+        let raw = match &mut self.tree {
+            None => false,
+            Some(tree) => {
+                self.written.text(written);
+                // A comment places text a table holds back.
+                self.written.html.push_str("<!---->");
+                tree.feed(std::mem::take(&mut self.written.html));
+                tree.text_within(&["code", "pre"])
+            }
+        };
+        match raw {
+            true => written.to_string(),
+            false => self.shortcodes.read(written),
         }
     }
 
     /// Inline HTML as written; a filtered tag shows as text.
     pub fn html(&mut self, written: &str) -> String {
         self.shortcodes.split();
-        let Some(tag) = super::html::tag(written) else {
-            return written.to_string();
-        };
-        if super::html::filtered(&tag.name) {
+        let tag = super::html::tag(written);
+        if let Some(tag) = &tag
+            && super::html::filtered(&tag.name)
+        {
             return self.text(written);
         }
-        let open = match tag.name.as_str() {
-            "code" => &mut self.code,
-            "pre" => &mut self.pre,
-            _ => return written.to_string(),
-        };
-        *open = match tag.closing {
-            true => open.saturating_sub(1),
-            false => *open + 1,
-        };
+        if tag.is_some() && self.tree.is_none() {
+            self.tree = Some(Stream::paragraph());
+        }
+        if let Some(tree) = &mut self.tree {
+            self.written.raw(written);
+            tree.feed(std::mem::take(&mut self.written.html));
+        }
         written.to_string()
     }
 }
@@ -165,5 +175,28 @@ mod tests {
         assert_eq!(crossed, "a <pre>x</code> :smile:</pre> 😄");
         let unmatched = read(&["<code>", "</pre>", " :smile:", "</code>", " :smile:"]);
         assert_eq!(unmatched, "<code></pre> :smile:</code> 😄");
+    }
+
+    #[test]
+    fn code_and_pre_end_where_the_html5_tree_ends_them() {
+        let read = |parts: &[&str]| -> String {
+            let mut run = ShortcodeRun::default();
+            parts
+                .iter()
+                .map(|part| match part.starts_with('<') {
+                    true => run.html(part),
+                    false => run.text(part),
+                })
+                .collect()
+        };
+        // The `div`'s end closes the `pre` inside it.
+        let closed = read(&["a ", "<div>", "<pre>", "x", "</div>", " :smile:"]);
+        assert_eq!(closed, "a <div><pre>x</div> 😄");
+        // A formatting `code` reopens past the block's end.
+        let reopened = read(&["<div>", "<code>", "x", "</div>", " :smile:"]);
+        assert_eq!(reopened, "<div><code>x</div> :smile:");
+        // Text in a row moves out before the table.
+        let row = ["<table>", "<tr>", "<td>", "<pre>", "x", "</td>", " :smile:"];
+        assert_eq!(read(&row), "<table><tr><td><pre>x</td> 😄");
     }
 }

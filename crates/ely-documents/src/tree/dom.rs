@@ -2,11 +2,11 @@
 
 use std::{
     borrow::Cow,
-    cell::{Ref, RefCell},
+    cell::{Cell, Ref, RefCell},
 };
 
 use html5ever::{
-    Attribute, LocalName, ParseOpts, QualName, local_name, ns, parse_fragment,
+    Attribute, LocalName, ParseOpts, Parser, QualName, local_name, ns, parse_fragment,
     tendril::{StrTendril, TendrilSink},
     tree_builder::{ElementFlags, NodeOrText, QuirksMode, TreeSink},
 };
@@ -78,6 +78,43 @@ pub(crate) fn fragment(html: &str, context: &str) -> Dom {
         false,
     )
     .one(html)
+}
+
+/// HTML fed in pieces, its tree built as it goes.
+pub(crate) struct Stream(Parser<Sink>);
+
+impl Stream {
+    /// A paragraph's stream, as the drawing wraps one.
+    pub(crate) fn paragraph() -> Self {
+        let context = element("body");
+        let mut stream = Self(parse_fragment(
+            Sink::default(),
+            ParseOpts::default(),
+            context,
+            Vec::new(),
+            false,
+        ));
+        stream.feed("<p>".into());
+        stream
+    }
+
+    pub(crate) fn feed(&mut self, html: String) {
+        self.0.process(html.into());
+    }
+
+    /// Whether the last text lies inside an element named `names`.
+    pub(crate) fn text_within(&self, names: &[&str]) -> bool {
+        let sink = &self.0.tokenizer.sink.sink;
+        let (nodes, named) = (sink.nodes.borrow(), sink.names.borrow());
+        let mut at = nodes[sink.last.get()].parent;
+        while let Some(node) = at {
+            if names.contains(&&*named[node].local) {
+                return true;
+            }
+            at = nodes[node].parent;
+        }
+        false
+    }
 }
 
 /// Well-nested markdown markup as html5ever builds it; else `None`.
@@ -214,6 +251,8 @@ fn decoded(text: &str) -> Option<String> {
 struct Sink {
     nodes: RefCell<Vec<Node>>,
     names: RefCell<Vec<QualName>>,
+    /// The node text last went to.
+    last: Cell<usize>,
 }
 
 impl Default for Sink {
@@ -221,6 +260,7 @@ impl Default for Sink {
         let sink = Self {
             nodes: RefCell::new(Vec::new()),
             names: RefCell::new(Vec::new()),
+            last: Cell::new(0),
         };
         sink.make(Data::Document, unnamed());
         sink
@@ -259,10 +299,12 @@ impl Sink {
                 if let Some(before) = before
                     && let Data::Text(written) = &mut nodes[before].data
                 {
+                    self.last.set(before);
                     return written.push_str(&text);
                 }
                 drop(nodes);
                 let node = self.make(Data::Text(text.to_string()), unnamed());
+                self.last.set(node);
                 let mut nodes = self.nodes.borrow_mut();
                 nodes[node].parent = Some(parent);
                 nodes[parent].children.insert(at, node);

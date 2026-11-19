@@ -294,8 +294,12 @@ fn a_footnote_reference_ends_the_open_anchor() {
 
 #[test]
 fn pre_keeps_shortcodes_as_written() {
-    assert_eq!(line("a <pre>:smile:</pre> b").text, "a :smile: b");
-    assert_eq!(line("x <pre><b>:smile:</b></pre> y").text, "x :smile: y");
+    // The `pre` leaves the `p`: lines as Chromium's innerText.
+    assert_eq!(line("a <pre>:smile:</pre> b").text, "a\n\n:smile:\nb");
+    assert_eq!(
+        line("x <pre><b>:smile:</b></pre> y").text,
+        "x\n\n:smile:\ny"
+    );
     assert_eq!(line("<pre>:smile:</pre>\n").text, ":smile:");
 }
 
@@ -303,35 +307,36 @@ fn pre_keeps_shortcodes_as_written() {
 fn a_crossed_close_leaves_pre_open() {
     // GitHub's answers, `.work/R4.2-r5/github-oracle.log`.
     let text = line("a <b><pre>before</b> :smile:</pre> :smile:");
-    assert_eq!(text.text, "a before :smile: 😄");
-    assert_eq!(text.styles, [(2..8, Style::Strong)]);
+    assert_eq!(text.text, "a\n\nbefore :smile:\n😄");
+    assert_eq!(text.styles, [(3..9, Style::Strong)]);
     let note = line("x <a href=/x><pre>before [^n] :smile:</pre></a> y\n\n[^n]: note");
-    assert_eq!(note.text, "x before ¹ :smile: y");
+    assert_eq!(note.text, "x\n\nbefore ¹ :smile:\ny");
 }
 
 #[test]
 fn a_crossed_close_keeps_marks_nested_and_linear() {
     // The tree html5ever builds: each element its own range.
     let text = line("a <b>before<pre><i>x</b>y</i></pre> z");
-    assert_eq!(text.text, "a beforexy z");
+    assert_eq!(text.text, "a before\n\nxy\nz");
     assert_eq!(
         text.styles,
         [
             (2..8, Style::Strong),
-            (8..9, Style::Emphasis),
-            (8..9, Style::Strong),
-            (9..10, Style::Emphasis)
+            (10..11, Style::Emphasis),
+            (10..11, Style::Strong),
+            (11..12, Style::Emphasis)
         ]
     );
     let wrapped = line("<b>a<u>b<pre>c</b>d</pre>");
+    assert_eq!(wrapped.text, "ab\n\ncd");
     assert_eq!(
         wrapped.styles,
         [
             (0..2, Style::Strong),
             (1..2, Style::Underline),
-            (2..3, Style::Underline),
-            (2..3, Style::Strong),
-            (3..4, Style::Underline)
+            (4..5, Style::Underline),
+            (4..5, Style::Strong),
+            (5..6, Style::Underline)
         ]
     );
     let source = |n: usize| {
@@ -360,7 +365,7 @@ fn a_crossed_close_keeps_marks_nested_and_linear() {
 fn a_crossed_close_keeps_every_block() {
     // GitHub's answer, `.work/R4.2-r7/github-oracle.log`.
     let text = line("a <b><pre><pre>x</b> :smile:</pre> :smile:</pre> :smile:");
-    assert_eq!(text.text, "a x :smile: :smile: 😄");
+    assert_eq!(text.text, "a\n\nx :smile:\n :smile:\n😄");
 }
 
 #[test]
@@ -415,4 +420,22 @@ fn a_link_around_a_footnote_reference_stays_a_link() {
     let drawn = line("[a [^1] b](/x)\n\n[^1]: n");
     assert_eq!(drawn.text, "a ¹ b");
     assert_eq!(drawn.links, [(0..2, "/x".to_string())]);
+}
+
+#[test]
+fn a_block_moved_out_of_the_paragraph_takes_its_own_lines() {
+    // Chromium's innerText of GitHub's HTML for each.
+    for (source, shown) in [
+        ("a <pre>b</pre> c", "a\n\nb\nc"),
+        ("a <div>b</div> c", "a\n\nb\nc"),
+        ("a <div><b>b</b></div>c", "a\n\nb\nc"),
+        ("a <h2>b</h2>", "a\n\nb"),
+        ("a <br> <div>b</div>", "a\n\n\nb"),
+    ] {
+        assert_eq!(line(source).text, shown, "{source:?}");
+    }
+    let bold = line("a <b>x <div>y</div> z</b>");
+    assert_eq!(bold.text, "a x\n\ny\nz");
+    // The `b` splits round the `div`, as html5ever builds it.
+    assert_eq!(marked(&bold, Style::Strong), [(2, 3), (5, 6), (7, 8)]);
 }

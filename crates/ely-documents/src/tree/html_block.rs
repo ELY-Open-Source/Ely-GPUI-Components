@@ -339,6 +339,23 @@ mod tests {
     }
 
     #[test]
+    fn cells_part_with_tabs_and_rows_with_lines() {
+        // Chromium's innerText: a tab between cells.
+        for (source, shown) in [
+            (
+                "<div><table><tr><td>hello</td><td>world</td></tr></table></div>",
+                "hello\tworld",
+            ),
+            (
+                "<div><table>\n<tr><th>a</th> <th>b</th></tr>\n<tr><td>c</td><td></td><td>e</td></tr>\n</table>z</div>",
+                "a\tb\nc\t\te\nz",
+            ),
+        ] {
+            assert_eq!(html(source).expect("text").text, shown, "{source:?}");
+        }
+    }
+
+    #[test]
     fn nested_tables_read_in_linear_time() {
         let source = |n: usize| {
             format!(
