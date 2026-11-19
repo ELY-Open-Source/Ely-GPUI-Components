@@ -1,8 +1,16 @@
+use std::collections::HashMap;
+
 use gpui::{
-    AnyElement, App, Div, ElementId, IntoElement, ParentElement, Pixels, RenderOnce,
-    StyleRefinement, Styled, Window, canvas, div,
+    AnyElement, App, Div, ElementId, Global, GlobalElementId, IntoElement, ParentElement, Pixels,
+    RenderOnce, StyleRefinement, Styled, Window, canvas, div,
 };
 use smallvec::SmallVec;
+
+/// The width each grid measured last at its id, kept across mounts; keyed state forgets it.
+#[derive(Default)]
+struct Widths(HashMap<GlobalElementId, Pixels>);
+
+impl Global for Widths {}
 
 /// Columns for `width`, each at least `min`, `gap` apart.
 pub(crate) fn columns_for(width: Pixels, min: Pixels, gap: Pixels) -> u16 {
@@ -27,10 +35,13 @@ fn shortest(heights: &[Pixels]) -> usize {
         .expect("at least one column")
 }
 
-fn measure_width(state: gpui::Entity<Pixels>) -> impl IntoElement {
+fn measure_width(key: GlobalElementId, state: gpui::Entity<Pixels>) -> impl IntoElement {
     canvas(
         move |bounds, window, cx| {
             if *state.read(cx) != bounds.size.width {
+                cx.default_global::<Widths>()
+                    .0
+                    .insert(key.clone(), bounds.size.width);
                 state.update(cx, |width, cx| {
                     *width = bounds.size.width;
                     cx.notify();
@@ -83,15 +94,22 @@ impl ParentElement for SimpleGrid {
 
 impl RenderOnce for SimpleGrid {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let width = window.use_keyed_state(self.id, cx, |_, _| Pixels::ZERO);
-        let columns = columns_for(*width.read(cx), self.min, self.gap);
-        self.base
-            .relative()
-            .grid()
-            .grid_cols(columns)
-            .gap(self.gap)
-            .children(self.children)
-            .child(measure_width(width))
+        let key = window.with_global_id(self.id.clone(), |id, _| id.clone());
+        let seed = cx
+            .try_global::<Widths>()
+            .and_then(|widths| widths.0.get(&key).copied())
+            .unwrap_or(Pixels::ZERO);
+        let width = window.use_keyed_state(self.id, cx, |_, _| seed);
+        let measured = *width.read(cx);
+        let mut base = self.base.relative();
+        if measured > Pixels::ZERO {
+            base = base
+                .grid()
+                .grid_cols(columns_for(measured, self.min, self.gap))
+                .gap(self.gap)
+                .children(self.children);
+        }
+        base.child(measure_width(key, width))
     }
 }
 
