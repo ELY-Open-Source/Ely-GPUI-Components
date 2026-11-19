@@ -163,7 +163,11 @@ impl<'a> Draw<'a> {
                     };
                     steps.push(Step::Leave { lines, tab });
                     let children = &dom.nodes[node].children;
-                    let cell = |child: usize| matches!(dom.name(child), "td" | "th");
+                    // Hidden cells owe no tab, nor take one.
+                    let cell = |child: usize| {
+                        matches!(dom.name(child), "td" | "th")
+                            && (!dom.veiled || html::shown(dom, child))
+                    };
                     // Cells but a row's last owe a tab.
                     let last = match dom.name(node) {
                         "tr" => children.iter().rposition(|&child| cell(child)),

@@ -301,3 +301,25 @@ fn what_a_browser_hides_draws_nothing() {
         assert_eq!(read(&format!("<div>{source}</div>")), block, "{source:?}");
     }
 }
+
+#[test]
+fn hidden_cells_owe_no_tab() {
+    // Chromium's innerText, `.work/R20.56/oracle/cells.html`.
+    let read = |source: &str| match parse(source).into_iter().next() {
+        Some(Node::Paragraph(line)) => line.text,
+        other => panic!("a paragraph, not {other:?}"),
+    };
+    for (row, shown) in [
+        ("<td>a</td><td hidden>b</td>", "a"),
+        ("<td>a</td><td>b</td><td hidden>c</td>", "a\tb"),
+        ("<td>a</td><td hidden>b</td><td hidden>c</td>", "a"),
+        ("<td>a</td><td hidden>b</td><td>c</td>", "a\tc"),
+        ("<td hidden>a</td><td>b</td>", "b"),
+        ("<td>a</td><td hidden>b</td> ", "a"),
+    ] {
+        let source = format!("<div><table><tr>{row}</tr></table></div>");
+        assert_eq!(read(&source), shown, "{source:?}");
+    }
+    let rows = "<div><table><tr><th>a</th><th hidden>b</th></tr><tr><td>c</td><td hidden>d</td><td hidden>e</td></tr></table>z</div>";
+    assert_eq!(read(rows), "a\nc\nz");
+}
