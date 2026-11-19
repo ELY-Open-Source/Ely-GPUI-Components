@@ -11,6 +11,8 @@ use html5ever::{
     tree_builder::{ElementFlags, NodeOrText, QuirksMode, TreeSink},
 };
 
+use super::html::veils;
+
 /// What a node is.
 #[derive(Debug)]
 pub(crate) enum Data {
@@ -35,6 +37,8 @@ pub(crate) struct Node {
 pub(crate) struct Dom {
     pub nodes: Vec<Node>,
     pub names: Vec<QualName>,
+    /// Some element may hide or replace what it holds.
+    pub veiled: bool,
 }
 
 impl Dom {
@@ -50,6 +54,14 @@ impl Dom {
                 .find(|attribute| &*attribute.name.local == name)
                 .map(|attribute| &*attribute.value),
             _ => None,
+        }
+    }
+
+    /// Whether element `node` carries the attribute `name`.
+    pub(crate) fn has(&self, node: usize, name: &LocalName) -> bool {
+        match &self.nodes[node].data {
+            Data::Element { attributes } => attributes.iter().any(|it| it.name.local == *name),
+            _ => false,
         }
     }
 
@@ -164,12 +176,15 @@ fn nested(html: &str) -> Option<Dom> {
         if !fits(tag, name) || (tag == "a" && open.iter().any(|(_, name)| *name == "a")) {
             return None;
         }
-        let node = sink.make(
-            Data::Element {
-                attributes: attributes(written)?,
-            },
-            element(tag),
-        );
+        let attributes = attributes(written)?;
+        // `fits` admits no element that hides; `hidden` still does.
+        if attributes
+            .iter()
+            .any(|it| it.name.local == local_name!("hidden"))
+        {
+            sink.veiled.set(true);
+        }
+        let node = sink.make(Data::Element { attributes }, element(tag));
         sink.append(&parent, NodeOrText::AppendNode(node));
         if !matches!(tag, "br" | "img") {
             open.push((node, tag));
@@ -253,6 +268,7 @@ struct Sink {
     names: RefCell<Vec<QualName>>,
     /// The node text last went to.
     last: Cell<usize>,
+    veiled: Cell<bool>,
 }
 
 impl Default for Sink {
@@ -261,6 +277,7 @@ impl Default for Sink {
             nodes: RefCell::new(Vec::new()),
             names: RefCell::new(Vec::new()),
             last: Cell::new(0),
+            veiled: Cell::new(false),
         };
         sink.make(Data::Document, unnamed());
         sink
@@ -329,6 +346,7 @@ impl TreeSink for Sink {
         Dom {
             nodes: self.nodes.into_inner(),
             names: self.names.into_inner(),
+            veiled: self.veiled.get(),
         }
     }
 
@@ -348,6 +366,9 @@ impl TreeSink for Sink {
         attributes: Vec<Attribute>,
         flags: ElementFlags,
     ) -> usize {
+        if veils(&name.local, &attributes) {
+            self.veiled.set(true);
+        }
         let element = self.make(Data::Element { attributes }, name);
         // A template's contents hang under it, as a fragment.
         if flags.template {

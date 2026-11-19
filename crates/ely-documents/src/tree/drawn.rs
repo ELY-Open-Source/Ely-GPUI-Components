@@ -143,6 +143,11 @@ impl<'a> Draw<'a> {
                     continue;
                 }
             };
+            if dom.veiled && !html::shown(dom, node) {
+                self.lead = None;
+                self.shortcodes.split();
+                continue;
+            }
             match &dom.nodes[node].data {
                 Data::Text(text) => {
                     self.words(text, within);
@@ -197,8 +202,8 @@ impl<'a> Draw<'a> {
                 .push(Drawn::Image(index, within.link.map(str::to_string)));
             return None;
         }
-        // A template's contents never draw.
-        if name == "template" {
+        if dom.veiled && html::replaced(name) {
+            self.pay();
             return None;
         }
         // Paragraphs part with a blank line, as innerText.

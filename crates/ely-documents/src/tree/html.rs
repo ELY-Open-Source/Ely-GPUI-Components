@@ -1,6 +1,8 @@
 use std::{collections::HashMap, sync::OnceLock};
 
-use super::Style;
+use html5ever::{Attribute, LocalName, local_name};
+
+use super::{Style, dom::Dom};
 
 /// One HTML tag as written: its lowercase name.
 #[derive(Clone, Debug, PartialEq)]
@@ -58,6 +60,7 @@ pub(crate) fn breaks(name: &str) -> bool {
             | "center"
             | "caption"
             | "details"
+            | "dialog"
             | "dir"
             | "div"
             | "dl"
@@ -84,6 +87,8 @@ pub(crate) fn breaks(name: &str) -> bool {
             | "menu"
             | "nav"
             | "ol"
+            | "optgroup"
+            | "option"
             | "p"
             | "pre"
             | "search"
@@ -93,6 +98,72 @@ pub(crate) fn breaks(name: &str) -> bool {
             | "tr"
             | "ul"
     )
+}
+
+/// Replaced elements: a box, their content only a fallback.
+pub(crate) fn replaced(name: &str) -> bool {
+    matches!(
+        name,
+        "audio" | "canvas" | "meter" | "object" | "progress" | "video"
+    )
+}
+
+/// Whether an element may hide or replace its content.
+pub(crate) fn veils(name: &LocalName, attributes: &[Attribute]) -> bool {
+    [
+        local_name!("audio"),
+        local_name!("canvas"),
+        local_name!("datalist"),
+        local_name!("details"),
+        local_name!("dialog"),
+        local_name!("meter"),
+        local_name!("noscript"),
+        local_name!("object"),
+        local_name!("progress"),
+        local_name!("rp"),
+        local_name!("template"),
+        local_name!("video"),
+    ]
+    .contains(name)
+        || attributes
+            .iter()
+            .any(|it| it.name.local == local_name!("hidden"))
+}
+
+/// Whether a browser draws `node` at all.
+pub(crate) fn shown(dom: &Dom, node: usize) -> bool {
+    let name = &dom.names[node].local;
+    let has = |attribute| dom.has(node, &attribute);
+    if has(local_name!("hidden")) {
+        return false;
+    }
+    if [
+        local_name!("datalist"),
+        local_name!("noscript"),
+        local_name!("rp"),
+        local_name!("template"),
+    ]
+    .contains(name)
+    {
+        return false;
+    } else if *name == local_name!("dialog") {
+        return has(local_name!("open"));
+    } else if *name == local_name!("audio") {
+        return has(local_name!("controls"));
+    }
+    // A closed `details` shows its first `summary` alone.
+    let Some(parent) = dom.nodes[node].parent else {
+        return true;
+    };
+    if dom.names[parent].local != local_name!("details") || dom.has(parent, &local_name!("open")) {
+        return true;
+    }
+    let children = &dom.nodes[parent].children;
+    let summary = local_name!("summary");
+    children
+        .iter()
+        .find(|&&child| dom.names[child].local == summary)
+        == Some(&node)
 }
 
 /// Bytes through the `>` ending the tag at `html`'s start.

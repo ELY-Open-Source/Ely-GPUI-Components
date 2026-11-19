@@ -253,3 +253,51 @@ fn footnotes_number_their_references_and_hold_their_body() {
 }
 
 mod inline;
+
+#[test]
+fn what_a_browser_hides_draws_nothing() {
+    // Chromium's innerText, `.work/R20.35/oracle/sweep.html`.
+    let read = |source: &str| -> String {
+        let texts: Vec<String> = (parse(source).into_iter())
+            .map(|node| match node {
+                Node::Paragraph(line) => line.text,
+                other => panic!("a paragraph, not {other:?}"),
+            })
+            .collect();
+        texts.join("\n\n")
+    };
+    for (inner, inline, block) in [
+        ("<dialog open>b</dialog>", "a\n\nb\nc", "a\nb\nc"),
+        ("<dialog>b</dialog>", "a\n\nc", "a c"),
+        ("<span hidden><b>x</b></span>", "a  c", "a c"),
+        ("<span hidden>x</span>", "a  c", "a c"),
+        ("<div hidden>b</div>", "a\n\nc", "a c"),
+        ("<datalist>b</datalist>", "a  c", "a c"),
+        ("<audio>b</audio>", "a  c", "a c"),
+        ("<audio controls>b</audio>", "a  c", "a  c"),
+        ("<video><b>x</b> y</video>", "a  c", "a  c"),
+        ("<canvas>b</canvas>", "a  c", "a  c"),
+        ("<details><p>b</p></details>", "a\n\nc", "a\nc"),
+        (
+            "<details><summary>s</summary><summary>t</summary>b</details>",
+            "a\n\ns\nc",
+            "a\ns\nc",
+        ),
+        (
+            "<details open><summary>s</summary>b</details>",
+            "a\n\ns\nb\nc",
+            "a\ns\nb\nc",
+        ),
+        (
+            "<option>b</option><option>d</option>",
+            "a\nb\nd\nc",
+            "a\nb\nd\nc",
+        ),
+        ("<ul><li>b<li hidden>x</ul>", "a\n\nb\nc", "a\nb\nc"),
+    ] {
+        let source = format!("a {inner} c");
+        // Inline text keeps its spaces as written.
+        assert_eq!(read(&source), inline, "{source:?}");
+        assert_eq!(read(&format!("<div>{source}</div>")), block, "{source:?}");
+    }
+}
