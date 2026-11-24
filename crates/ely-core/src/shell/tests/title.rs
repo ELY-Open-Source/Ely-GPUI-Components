@@ -224,3 +224,40 @@ fn the_drawn_close_asks_the_close_check(cx: &mut TestAppContext) {
         );
     }
 }
+
+/// A shell whose headers come and go.
+struct Headed {
+    headers: bool,
+}
+
+impl Render for Headed {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        div().w(px(600.0)).h(px(400.0)).flex().flex_col().child(
+            ColumnShell::new("shell")
+                .platform(Platform::Linux)
+                .headers(self.headers)
+                .column(
+                    ShellColumn::new("main")
+                        .title("main")
+                        .child(div().size_full()),
+                ),
+        )
+    }
+}
+
+/// Without headers, nothing of the title bar draws, controls included.
+#[gpui::test]
+fn a_shell_without_headers_draws_no_title_bar(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Headed { headers: true });
+    cx.run_until_parked();
+    assert!(cx.debug_bounds("column-shell-items-0").is_some());
+    assert!(cx.debug_bounds("column-shell-controls").is_some());
+    view.update(cx, |view, cx| {
+        view.headers = false;
+        cx.notify();
+    });
+    cx.run_until_parked();
+    assert!(cx.debug_bounds("column-shell-items-0").is_none());
+    assert!(cx.debug_bounds("column-shell-controls").is_none());
+}

@@ -149,6 +149,7 @@ pub struct ColumnShell {
     on_close: Option<OnClose>,
     columns: Vec<ShellColumn>,
     glass: bool,
+    headers: bool,
 }
 
 impl ColumnShell {
@@ -160,6 +161,7 @@ impl ColumnShell {
             on_close: None,
             columns: Vec::new(),
             glass: false,
+            headers: true,
         }
     }
 
@@ -184,6 +186,12 @@ impl ColumnShell {
     /// Grounds the columns in the palette's glass, so a blurred window shows through them.
     pub fn glass(mut self) -> Self {
         self.glass = true;
+        self
+    }
+
+    /// Draws the columns' headers, as by default; a full-screen window may go without.
+    pub fn headers(mut self, shown: bool) -> Self {
+        self.headers = shown;
         self
     }
 }
@@ -261,7 +269,7 @@ impl RenderOnce for ColumnShell {
                 })
                 .border_color(colors.border)
                 .debug_selector(move || format!("column-shell-{ix}"))
-                .child(header)
+                .when(self.headers, |box_| box_.child(header))
                 .child(
                     // Absolute, so only the header sets the least width.
                     div().flex_1().min_h_0().relative().child(
