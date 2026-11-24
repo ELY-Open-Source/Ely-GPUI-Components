@@ -181,6 +181,27 @@ fn drag_divider(cx: &mut VisualTestContext) -> Point<Pixels> {
     grab
 }
 
+/// Two panes whose split draws its line only while hovered.
+struct Edged;
+
+impl Render for Edged {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let pane = |name: &'static str| div().debug_selector(move || name.into()).size_full();
+        let split = SplitPane::new("edged", Axis::Horizontal, px(10.0))
+            .edges()
+            .pane(pane("first"))
+            .pane(pane("second"));
+        div().w(px(300.0)).h(px(100.0)).child(split)
+    }
+}
+
+#[gpui::test]
+fn an_edged_split_still_drags(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (_, cx) = cx.add_window_view(|_, _| Edged);
+    drag_divider(cx);
+}
+
 #[gpui::test]
 fn a_pane_added_mid_drag_drops_the_drag(cx: &mut TestAppContext) {
     cx.update(Theme::init);
