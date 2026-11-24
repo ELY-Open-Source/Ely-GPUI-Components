@@ -6,7 +6,7 @@ mod menu;
 mod model;
 mod pie;
 #[cfg(all(test, feature = "test-support"))]
-mod tests;
+pub(crate) mod tests;
 
 pub use bar::MenuBar;
 pub(crate) use hosts::menu_under;

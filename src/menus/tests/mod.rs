@@ -99,14 +99,14 @@ impl Render for Desk {
     }
 }
 
-pub(super) fn settle(cx: &mut VisualTestContext) {
+pub(crate) fn settle(cx: &mut VisualTestContext) {
     cx.run_until_parked();
     cx.update(|window, _| window.refresh());
     cx.run_until_parked();
 }
 
 /// Presses and releases `key`, with a frame in between as on a real keyboard.
-pub(super) fn press(key: &str, cx: &mut VisualTestContext) {
+pub(crate) fn press(key: &str, cx: &mut VisualTestContext) {
     cx.simulate_keystrokes(key);
     settle(cx);
     cx.simulate_event(KeyUpEvent {

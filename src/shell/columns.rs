@@ -10,6 +10,7 @@ use smallvec::SmallVec;
 use super::chrome::{OnClose, WindowControls, controls_style, drag_region, route_close};
 use crate::{
     layout::{on_axis, resize_handle},
+    menus::{ContextMenu, Menu},
     theme::{ActiveTheme, ControlSize, Platform, TextSize},
     typography::Ellipsis,
 };
@@ -51,6 +52,7 @@ pub struct ShellColumn {
     resize: Option<Resize>,
     leading: SmallVec<[AnyElement; 2]>,
     title: Option<SharedString>,
+    title_menu: Option<Menu>,
     actions: SmallVec<[AnyElement; 2]>,
     body: SmallVec<[AnyElement; 2]>,
 }
@@ -64,6 +66,7 @@ impl ShellColumn {
             resize: None,
             leading: SmallVec::new(),
             title: None,
+            title_menu: None,
             actions: SmallVec::new(),
             body: SmallVec::new(),
         }
@@ -106,6 +109,12 @@ impl ShellColumn {
 
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.title = Some(title.into());
+        self
+    }
+
+    /// A right press on the title opens `menu`, not the system's window menu.
+    pub fn title_menu(mut self, menu: Menu) -> Self {
+        self.title_menu = Some(menu);
         self
     }
 
@@ -223,7 +232,13 @@ impl RenderOnce for ColumnShell {
                     items(
                         column.id.clone(),
                         column.leading,
-                        title(column.id.clone(), column.title, window, cx),
+                        title(
+                            column.id.clone(),
+                            column.title,
+                            column.title_menu,
+                            window,
+                            cx,
+                        ),
                         column.actions,
                     )
                     .min_w(cx.theme().control_height(ControlSize::Lg))
@@ -384,7 +399,7 @@ fn header(id: ElementId, window: &mut Window, cx: &mut App) -> gpui::Stateful<gp
 fn items(
     id: ElementId,
     leading: SmallVec<[AnyElement; 2]>,
-    title: gpui::Stateful<gpui::Div>,
+    title: AnyElement,
     actions: SmallVec<[AnyElement; 2]>,
 ) -> gpui::Div {
     let group = || div().flex_none().flex().items_center().gap_2();
@@ -404,16 +419,17 @@ fn items(
     )
 }
 
-/// Title or spacer: drags the window, adds no width.
+/// Title or spacer: drags the window, adds no width; a menu, when given, opens on a right press.
 fn title(
     id: ElementId,
     title: Option<SharedString>,
+    menu: Option<Menu>,
     window: &mut Window,
     cx: &mut App,
-) -> gpui::Stateful<gpui::Div> {
-    let region = drag_region((id, "title"), window, cx);
+) -> AnyElement {
+    let region = drag_region((id.clone(), "title"), window, cx);
     let theme = cx.theme();
-    region.flex_1().min_w_0().h_full().relative().child(
+    let region = region.flex_1().min_w_0().h_full().relative().child(
         div()
             .absolute()
             .inset_0()
@@ -423,5 +439,14 @@ fn title(
             .font_weight(FontWeight::MEDIUM)
             .text_color(theme.colors.fg_muted)
             .children(title.map(Ellipsis::new)),
-    )
+    );
+    match menu {
+        Some(menu) => ContextMenu::new((id, "title-menu"), menu)
+            .flex_1()
+            .min_w_0()
+            .h_full()
+            .child(region)
+            .into_any_element(),
+        None => region.into_any_element(),
+    }
 }
