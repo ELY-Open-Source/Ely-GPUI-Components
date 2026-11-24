@@ -324,11 +324,14 @@ impl RenderOnce for ContextMenu {
             .id(self.id.clone())
             .relative()
             .when(self.request.is_none(), |host| {
+                // Taken whole, so a press over a caption opens no system menu.
                 host.on_mouse_down(MouseButton::Right, move |event, window, cx| {
                     window.prevent_default();
+                    cx.stop_propagation();
                     log::info!("context menu: at {:?}", event.position);
                     Open::show(&open, &menu, Spot::At(event.position), false, cx);
                 })
+                .on_mouse_up(MouseButton::Right, |_, _, cx| cx.stop_propagation())
             })
             .on_mouse_down(MouseButton::Left, move |_, window, cx| {
                 if shut.read(cx).is_open() {

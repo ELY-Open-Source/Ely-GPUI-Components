@@ -261,3 +261,58 @@ fn a_shell_without_headers_draws_no_title_bar(cx: &mut TestAppContext) {
     assert!(cx.debug_bounds("column-shell-items-0").is_none());
     assert!(cx.debug_bounds("column-shell-controls").is_none());
 }
+
+/// A titled column whose title opens a menu, inside a box that counts the right presses it hears.
+struct Titled {
+    picked: usize,
+    heard: usize,
+}
+
+impl Render for Titled {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let (pick, hear) = (cx.entity(), cx.entity());
+        let menu = crate::menus::Menu::new().item(
+            crate::menus::MenuItem::new("Rename")
+                .on_click(move |_, cx| pick.update(cx, |titled, _| titled.picked += 1)),
+        );
+        div()
+            .w(px(600.0))
+            .h(px(400.0))
+            .flex()
+            .flex_col()
+            .on_mouse_down(MouseButton::Right, move |_, _, cx| {
+                hear.update(cx, |titled, _| titled.heard += 1)
+            })
+            .child(
+                ColumnShell::new("shell").platform(Platform::Linux).column(
+                    ShellColumn::new("main")
+                        .title("main")
+                        .title_menu(menu)
+                        .child(div().size_full()),
+                ),
+            )
+    }
+}
+
+/// A right press on the title opens its menu and goes no further, as a caption's system menu would.
+#[gpui::test]
+fn a_right_press_on_a_title_opens_its_menu(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let (view, cx) = cx.add_window_view(|_, _| Titled {
+        picked: 0,
+        heard: 0,
+    });
+    cx.run_until_parked();
+    let items = cx.debug_bounds("column-shell-items-0").expect("the header");
+    let at = point(items.left() + px(40.0), items.center().y);
+    cx.simulate_mouse_move(at, None, Modifiers::none());
+    cx.simulate_mouse_down(at, MouseButton::Right, Modifiers::none());
+    cx.simulate_mouse_up(at, MouseButton::Right, Modifiers::none());
+    crate::menus::tests::settle(cx);
+    crate::menus::tests::press("down", cx);
+    crate::menus::tests::press("enter", cx);
+    assert_eq!(
+        view.read_with(cx, |titled, _| (titled.picked, titled.heard)),
+        (1, 0)
+    );
+}
