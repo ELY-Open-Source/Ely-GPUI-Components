@@ -101,6 +101,7 @@ pub struct SplitPane {
     sizes: Option<Vec<f32>>,
     min: Pixels,
     on_resize: Option<OnResize>,
+    edges: bool,
 }
 
 impl SplitPane {
@@ -113,6 +114,7 @@ impl SplitPane {
             sizes: None,
             min,
             on_resize: None,
+            edges: false,
         }
     }
 
@@ -124,6 +126,12 @@ impl SplitPane {
     /// Shares, one per pane, normalized. A new value replaces dragged ones.
     pub fn sizes(mut self, sizes: &[f32]) -> Self {
         self.sizes = Some(sizes.to_vec());
+        self
+    }
+
+    /// Its panes draw their own borders, so a handle's line shows only while hovered.
+    pub fn edges(mut self) -> Self {
+        self.edges = true;
         self
     }
 
@@ -215,8 +223,13 @@ impl RenderOnce for SplitPane {
                     start: shares.clone(),
                     anchor: Rc::new(Cell::new(None)),
                 };
-                children.push(
+                let handle = if self.edges {
+                    resize_edge(("divider", ix), axis, cx)
+                } else {
                     resize_handle(("divider", ix), axis, cx)
+                };
+                children.push(
+                    handle
                         .on_drag(drag, |_, _, _, cx| cx.new(|_| EmptyView))
                         .into_any_element(),
                 );
