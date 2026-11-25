@@ -1,3 +1,4 @@
+mod bars;
 mod chinese;
 mod stale;
 mod wide;

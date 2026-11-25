@@ -152,7 +152,12 @@ impl CodeEditor {
 
     /// The row the primary cursor draws on, or the fold header above it when a fold hides it.
     pub(crate) fn primary_row(&self) -> usize {
-        let line = self.buffer.line_of(self.primary().head);
+        self.row_of(self.primary().head)
+    }
+
+    /// The row `offset` draws on, or the fold header above it when a fold hides it.
+    fn row_of(&self, offset: usize) -> usize {
+        let line = self.buffer.line_of(offset);
         let hide = hidden(self.buffer.lines(), &folds(&self.buffer), &self.folded);
         rows(&self.buffer, &hide, &self.marks)
             .iter()
@@ -169,6 +174,14 @@ impl CodeEditor {
             ScrollStrategy::Top
         };
         self.scroll.scroll_to_item(self.primary_row(), strategy);
+        cx.notify();
+    }
+
+    /// Scrolls the row of `offset` to the middle of the view, even when it shows already; the selection stays.
+    pub fn center_on(&mut self, offset: usize, cx: &mut Context<Self>) {
+        let offset = offset.min(self.buffer.len());
+        self.scroll
+            .scroll_to_item_strict(self.row_of(offset), ScrollStrategy::Center);
         cx.notify();
     }
 }

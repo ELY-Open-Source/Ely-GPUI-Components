@@ -158,7 +158,7 @@ impl MarkdownDocument {
             },
         };
         let source = text[range.clone()].to_string();
-        let (input, subscriptions) = Self::new_field(source, cell.is_some(), window, cx);
+        let (input, subscriptions) = self.new_field(source, cell.is_some(), window, cx);
         if let Some(caret) = caret {
             input.update(cx, |input, cx| input.select(caret..caret, cx));
         }
@@ -182,13 +182,32 @@ impl MarkdownDocument {
 
     /// An open block's field holding `source`, and its watch.
     pub(super) fn new_field(
+        &self,
         source: String,
         cell: bool,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> (Entity<TextInput>, Vec<Subscription>) {
+        let found = self.found_open.clone();
         let input = cx.new(|cx| {
-            let input = TextInput::new(window, cx).highlighter(markdown_highlights);
+            // A find's matches over the syntax's colors.
+            let input = TextInput::new(window, cx).highlighter(move |text, cx| {
+                let mut spans = markdown_highlights(text, cx);
+                // Typing since the last frame can leave one past the text.
+                let fits = |range: &Range<usize>| {
+                    range.end <= text.len()
+                        && text.is_char_boundary(range.start)
+                        && text.is_char_boundary(range.end)
+                };
+                spans.extend(
+                    found
+                        .borrow()
+                        .iter()
+                        .filter(|(range, _)| fits(range))
+                        .cloned(),
+                );
+                spans
+            });
             match cell {
                 true => input,
                 false => input.multi_line(1, usize::MAX),

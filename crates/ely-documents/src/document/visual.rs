@@ -214,11 +214,13 @@ impl MarkdownDocument {
         let block = div()
             .id(("block", ix))
             .debug_selector(move || format!("markdown-block-{ix}"))
+            .relative()
             .px_3()
             .py_1()
             .rounded(radius)
             .when(faded, |block| block.opacity(FADED))
-            .child(shown);
+            .child(shown)
+            .children(self.found_bar(ix));
         match editing {
             true => self.pressable(block, Some(ix), cx).into_any_element(),
             false => block.into_any_element(),
@@ -244,11 +246,13 @@ impl MarkdownDocument {
                 MouseButton::Left,
                 cx.listener(|document, _: &MouseDownEvent, _, _| document.pressed_open()),
             )
+            .relative()
             .px_3()
             .py_1()
             .border_1()
             .border_color(gpui::transparent_black())
             .child(text.child(open.input.clone()))
+            .children(block.and_then(|_| self.found_bar(self.block_at(open.range.start))))
             .into_any_element()
     }
 
@@ -323,6 +327,8 @@ impl Render for MarkdownDocument {
         self.take_orphan(window, cx);
         // A top line asked before its text was read.
         self.place_top(window, cx);
+        self.center_waiting(window, cx);
+        self.mark_open(cx);
         self.show_waiting(window, cx);
         self.reveal_waiting(window, cx);
         self.point_waiting(window, cx);

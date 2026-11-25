@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use gpui::{Context, Window};
+use gpui::{Context, Focusable as _, Window};
 
 use super::{
     MarkdownDocument,
@@ -44,10 +44,12 @@ impl MarkdownDocument {
         self.showing = None;
         match self.mode {
             MarkdownMode::Source | MarkdownMode::Split => {
+                let at = line(self, cx);
                 self.editor
                     .update(cx, |editor, cx| editor.select(std::iter::once(range), cx));
+                self.center_line(at, window, cx);
             }
-            MarkdownMode::Preview => self.reveal(line(self, cx), window, cx),
+            MarkdownMode::Preview => self.land(line(self, cx), focus, window, cx),
             MarkdownMode::Visual => {
                 if self.commit(cx).is_some() || !self.read_now(cx) {
                     self.reparse(true, cx);
@@ -64,7 +66,7 @@ impl MarkdownDocument {
                     held.filter(|block| block.start <= range.start && range.end <= block.end)
                 else {
                     // Outside one block: its line.
-                    return self.reveal(line(self, cx), window, cx);
+                    return self.land(line(self, cx), focus, window, cx);
                 };
                 // A match in a table opens its cell.
                 let text = self.editor.read(cx).text();
@@ -74,17 +76,27 @@ impl MarkdownDocument {
                     {
                         Landing::Cell(Aim::At(cell.at))
                     }
-                    Some(_) => return self.reveal(line(self, cx), window, cx),
+                    Some(_) => return self.land(line(self, cx), focus, window, cx),
                     None => Landing::End,
                 };
                 self.open(Some(ix), landing, focus, window, cx);
-                self.list.scroll_to_reveal_item(ix);
+                self.center_line(line(self, cx), window, cx);
                 if let Some(open) = &self.open {
                     let input = open.input.clone();
                     let inside = range.start - open.range.start..range.end - open.range.start;
                     input.update(cx, |input, cx| input.select(inside, cx));
                 }
             }
+        }
+    }
+
+    /// The caret to the start of `line`, mid-view; focus only when asked.
+    fn land(&mut self, line: usize, focus: bool, window: &mut Window, cx: &mut Context<Self>) {
+        self.set_caret(line, 0, cx);
+        self.center_line(line, window, cx);
+        if focus {
+            let handle = self.focus_handle(cx);
+            window.focus(&handle, cx);
         }
     }
 

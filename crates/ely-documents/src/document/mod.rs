@@ -7,6 +7,7 @@ mod finding;
 mod format;
 mod lists;
 mod look;
+mod marks;
 mod parse;
 mod place;
 mod point;
@@ -130,6 +131,12 @@ pub struct MarkdownDocument {
     /// A block asked open before its text was read.
     waiting: Option<(Option<usize>, edit::Landing, bool, u64)>,
     look: DocumentLook,
+    /// A find's matches, marked in every mode.
+    found: marks::Found,
+    /// The matches in the open block's field, as its highlighter reads them.
+    found_open: marks::FoundOpen,
+    /// A line asked mid-view, its ask, and whether it is scrolled.
+    middle: Option<(usize, u64, bool)>,
     /// Typing in the open block, counted.
     typed: u64,
     /// Typewriter room past each end of the list.
@@ -208,6 +215,9 @@ impl MarkdownDocument {
             point_wait: None,
             waiting: None,
             look: DocumentLook::default(),
+            found: marks::Found::default(),
+            found_open: Rc::default(),
+            middle: None,
             typed: 0,
             centered: None,
             room: Pixels::ZERO,

@@ -89,6 +89,8 @@ pub(crate) struct Marks {
     pub ghost: Option<GhostText>,
     pub hunks: Vec<DiffHunk>,
     pub git: Vec<(usize, GitMark)>,
+    /// Spans whose lines the owner marks in the gutter's bar, as a find marks its matches.
+    pub bars: Vec<(Range<usize>, gpui::Hsla)>,
     pub breakpoints: BTreeSet<usize>,
     pub chat: Option<usize>,
     /// The owner's offsets; an edit over one drops it.
@@ -414,6 +416,21 @@ impl CodeEditor {
             return;
         }
         self.marks.backgrounds = ranges;
+        cx.notify();
+    }
+
+    /// Bars in the gutter beside the lines of these spans, where git marks none; the first on a line wins. They move with edits; one that does not fit is logged and dropped.
+    pub fn set_gutter_bars(
+        &mut self,
+        mut bars: Vec<(Range<usize>, gpui::Hsla)>,
+        cx: &mut Context<Self>,
+    ) {
+        let text = self.buffer.text();
+        bars.retain(|(range, _)| kept(anchors::fits(text, range), "a gutter bar"));
+        if self.marks.bars == bars {
+            return;
+        }
+        self.marks.bars = bars;
         cx.notify();
     }
 

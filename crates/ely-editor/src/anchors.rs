@@ -49,6 +49,11 @@ pub(crate) fn shift(marks: &mut Marks, edits: &[(Range<usize>, usize)]) {
             .map(|moved| *range = moved)
             .is_some()
     });
+    marks.bars.retain_mut(|(range, _)| {
+        moved_range(range, edits)
+            .map(|moved| *range = moved)
+            .is_some()
+    });
     marks.hints.retain_mut(|hint| {
         moved(hint.offset, edits)
             .map(|at| hint.offset = at)
@@ -67,6 +72,7 @@ pub(crate) fn shift(marks: &mut Marks, edits: &[(Range<usize>, usize)]) {
 pub(crate) fn clear(marks: &mut Marks) {
     marks.diagnostics.clear();
     marks.backgrounds.clear();
+    marks.bars.clear();
     marks.hints.clear();
     marks.ghost = None;
     marks.anchors.fill(None);

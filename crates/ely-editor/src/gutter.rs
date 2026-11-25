@@ -85,6 +85,14 @@ impl CodeEditor {
             })
     }
 
+    /// The owner's bar on a line: the first span reaching it.
+    pub(crate) fn bar(&self, line: usize) -> Option<Hsla> {
+        let range = self.buffer.line_range(line);
+        (self.marks.bars.iter())
+            .find(|(span, _)| span.start <= range.end && range.start <= span.end)
+            .map(|(_, color)| *color)
+    }
+
     /// The gutter cell for a row.
     pub(crate) fn gutter(&self, cell: Cell, row: usize, cx: &mut Context<Self>) -> AnyElement {
         let theme = cx.theme();
@@ -143,7 +151,7 @@ impl CodeEditor {
         let chevron = opens.then(|| Disclosure::new(("fold", line), !folded).into_any_element());
         let entity = cx.entity();
         let toggle = entity.clone();
-        let git = self.git_color(line, cx);
+        let git = self.git_color(line, cx).or_else(|| self.bar(line));
         let number = self.number(line);
         base.child(
             frame()
