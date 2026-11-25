@@ -232,3 +232,39 @@ fn closed_and_previewed_blocks_wash_their_matches(cx: &mut TestAppContext) {
         );
     }
 }
+
+#[gpui::test]
+fn a_match_no_drawn_text_shows_washes_its_block(cx: &mut TestAppContext) {
+    // Each: source, match, washed as text (else as a block).
+    let cases = [
+        ("Intro needle.\n\nMore.\n", "needle", true),
+        ("---\ntitle: needle\n---\n\nBody.\n", "needle", true),
+        ("Intro.\n\n![a needle](n.png)\n", "needle", false),
+        ("Intro.\n\n$$\nx_{needle}\n$$\n", "needle", false),
+        ("Intro.\n\n[TOC]\n\n# Head\n", "TOC", false),
+    ];
+    for mode in [MarkdownMode::Visual, MarkdownMode::Preview] {
+        for (source, word, as_text) in cases {
+            let (document, cx) = open(source, mode, cx);
+            let at = source.find(word).expect("the match is in the source");
+            let hit = at..at + word.len();
+            document.update(cx, |document, cx| document.set_found(vec![hit], None, cx));
+            frames(cx);
+            let (text, block) = (
+                cx.debug_bounds("markdown-washed").is_some(),
+                cx.debug_bounds("markdown-washed-block").is_some(),
+            );
+            assert_eq!(
+                (text, block),
+                (as_text, !as_text),
+                "{mode:?} {source:?}: washed as text {as_text}"
+            );
+            document.update(cx, |document, cx| document.set_found(Vec::new(), None, cx));
+            frames(cx);
+            assert!(
+                cx.debug_bounds("markdown-washed-block").is_none(),
+                "{mode:?} {source:?}: no matches, no block wash"
+            );
+        }
+    }
+}

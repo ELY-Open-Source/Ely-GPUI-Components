@@ -172,9 +172,18 @@ impl MarkdownDocument {
             })
         });
         let washes = self.washes_in(&block.range);
+        let seen = std::cell::RefCell::new(vec![false; washes.len()]);
+        // The open cell's field washes its own.
+        if let Some(open) = open.filter(|_| cell.is_some()) {
+            let at = block.range.start;
+            for (seen, (hit, _)) in seen.borrow_mut().iter_mut().zip(&washes) {
+                *seen = open.range.start <= at + hit.start && at + hit.end <= open.range.end;
+            }
+        }
         let found = Washes {
             source: &self.parsed.text[block.range.start..],
             hits: &washes,
+            seen: &seen,
         };
         let shown = match &block.nodes {
             Some(nodes) => div()
@@ -201,13 +210,15 @@ impl MarkdownDocument {
                 )),
             None => {
                 let raw = &self.parsed.text[block.range.clone()];
-                let drawn = StyledText::new(raw.to_string()).with_highlights(found.raw());
+                let over = found.raw();
+                let washed = !over.is_empty();
+                let drawn = StyledText::new(raw.to_string()).with_highlights(over);
                 let layout = drawn.layout().clone();
                 let shown = div()
                     .text_size(body)
                     .font_family(mono)
                     .text_color(colors.fg_muted)
-                    .child(drawn)
+                    .child(crate::render::washed_mark(drawn.into_any_element(), washed))
                     .into_any_element();
                 div().child(point_lines(
                     shown,
@@ -219,6 +230,8 @@ impl MarkdownDocument {
                 ))
             }
         };
+        // A match no drawn text shows washes its whole block.
+        let missed = found.missed();
         let block = div()
             .id(("block", ix))
             .debug_selector(move || format!("markdown-block-{ix}"))
@@ -227,7 +240,14 @@ impl MarkdownDocument {
             .py_1()
             .rounded(radius)
             .when(faded, |block| block.opacity(FADED))
-            .child(shown)
+            .when_some(missed, |block, wash| block.bg(wash))
+            .child(match missed {
+                Some(_) => div()
+                    .debug_selector(|| "markdown-washed-block".to_string())
+                    .child(shown)
+                    .into_any_element(),
+                None => shown.into_any_element(),
+            })
             .children(self.found_bar(ix));
         match editing {
             true => self.pressable(block, Some(ix), cx).into_any_element(),

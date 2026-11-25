@@ -210,7 +210,7 @@ fn drawn_text(
 }
 
 /// `drawn`, findable in tests once a match washes it.
-fn washed_mark(drawn: AnyElement, washed: bool) -> AnyElement {
+pub(crate) fn washed_mark(drawn: AnyElement, washed: bool) -> AnyElement {
     match washed {
         true => div()
             .debug_selector(|| "markdown-washed".to_string())

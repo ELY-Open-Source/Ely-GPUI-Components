@@ -203,7 +203,9 @@ impl Draw<'_> {
     /// Front matter as written, inside its box.
     pub(super) fn front_matter(&self, text: &str, from: usize, cx: &App) -> AnyElement {
         let theme = cx.theme();
-        let drawn = StyledText::new(text.to_string());
+        let found = (self.hooks.found).map_or_else(Vec::new, |found| found.code(text, from));
+        let washed = !found.is_empty();
+        let drawn = StyledText::new(text.to_string()).with_highlights(found);
         let layout = drawn.layout().clone();
         let block = div()
             .p_3()
@@ -212,7 +214,7 @@ impl Draw<'_> {
             .font_family(theme.mono_family.clone())
             .text_size(theme.text_size(TextSize::Sm) * self.scale)
             .text_color(theme.colors.fg_muted)
-            .child(drawn)
+            .child(super::washed_mark(drawn.into_any_element(), washed))
             .into_any_element();
         point_lines(
             block,
