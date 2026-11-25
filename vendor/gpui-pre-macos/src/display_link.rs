@@ -306,16 +306,10 @@ pub struct MetalFrames {
     source: RefCell<Option<MetalFrameSource>>,
     /// Whether GPUI asked for a frame since the current update began.
     woken: Cell<bool>,
-    /// The first wake no update has answered yet.
-    asked: Cell<Option<std::time::Instant>>,
-    /// That wait was logged; cleared when the link sends.
-    silent: Cell<bool>,
 }
 
 impl MetalFrames {
     pub fn replace(&self, source: Option<MetalFrameSource>) {
-        self.asked.set(None);
-        self.silent.set(false);
         *self.source.borrow_mut() = source;
     }
 
@@ -326,28 +320,29 @@ impl MetalFrames {
     pub fn wake(&self) {
         self.woken.set(true);
         // A source being replaced starts unpaused, so skipping it is safe.
-        match self.source.try_borrow() {
-            Ok(source) => match source.as_ref() {
-                Some(source) => {
-                    let asked = *self.asked.get().get_or_insert_with(std::time::Instant::now);
-                    self.asked.set(Some(asked));
-                    if asked.elapsed().as_secs() >= 2 && !self.silent.replace(true) {
-                        log::warn!("frames: the Metal link ignored wakes for {:?}", asked.elapsed());
-                    }
-                    source.set_paused(false);
-                }
-                None => log::debug!("frames: a wake found no Metal link"),
-            },
-            Err(_) => log::debug!("frames: a wake met the link being replaced"),
+        if let Ok(source) = self.source.try_borrow()
+            && let Some(source) = source.as_ref()
+        {
+            source.set_paused(false);
         }
     }
 
     pub fn begin_frame(&self) {
-        if self.silent.replace(false) {
-            log::warn!("frames: the Metal link sends again");
-        }
-        self.asked.set(None);
         self.woken.set(false);
+    }
+
+    pub fn debug_state(&self) -> serde_json::Value {
+        let paused = self
+            .source
+            .try_borrow()
+            .ok()
+            .and_then(|source| source.as_ref().map(MetalFrameSource::is_paused));
+        serde_json::json!({
+            "kind": "CAMetalDisplayLink",
+            "attached": self.is_attached(),
+            "paused": paused,
+            "woken": self.woken.get(),
+        })
     }
 
     /// Ends an update, pausing the link if GPUI neither used its drawable nor
@@ -399,6 +394,14 @@ impl WindowFrameSource {
             subscribe(display_id, self.frame_requests.clone(), self.signal.clone())?;
         self.registration = Some((display_id, subscriber_id));
         Ok(())
+    }
+
+    pub fn debug_state(&self) -> serde_json::Value {
+        serde_json::json!({
+            "kind": "CVDisplayLink",
+            "attached": self.registration.is_some(),
+            "display_id": self.registration.map(|(display_id, _)| display_id),
+        })
     }
 
     pub fn take_signal(&self) -> Option<(Instant, FrameRequestSource)> {
