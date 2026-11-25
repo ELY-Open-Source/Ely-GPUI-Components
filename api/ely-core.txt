@@ -1261,7 +1261,6 @@ impl gpui::element::IntoElement for ely_core::primitives::Image
 impl gpui::element::IntoElement for ely_core::primitives::IntersectionObserver
 impl gpui::element::IntoElement for ely_core::primitives::Measure
 impl gpui::element::IntoElement for ely_core::primitives::Pressable
-impl gpui::element::IntoElement for ely_core::primitives::Raised
 impl gpui::element::IntoElement for ely_core::primitives::TooltipTrigger
 impl gpui::element::IntoElement for ely_core::shell::AboutDialog
 impl gpui::element::IntoElement for ely_core::shell::ActivityBar
@@ -3944,6 +3943,7 @@ pub fn ely_core::layout::SimpleGrid::into_element(self) -> Self::Element
 pub fn ely_core::layout::SimpleGrid::new(impl core::convert::Into<gpui::window::ElementId>, gpui::geometry::Pixels, gpui::geometry::Pixels) -> Self
 pub fn ely_core::layout::SimpleGrid::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::layout::SimpleGrid::style(&mut self) -> &mut gpui::style::StyleRefinement
+pub fn ely_core::layout::SplitPane::edges(self) -> Self
 pub fn ely_core::layout::SplitPane::extend(&mut self, impl core::iter::traits::collect::IntoIterator<Item = gpui::element::AnyElement>)
 pub fn ely_core::layout::SplitPane::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::layout::SplitPane::into_element(self) -> Self::Element
@@ -4714,7 +4714,6 @@ pub fn ely_core::primitives::Pressable::on_long_press(self, impl core::ops::func
 pub fn ely_core::primitives::Pressable::on_press(self, impl core::ops::function::Fn(&mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::primitives::Pressable::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::primitives::Raised::id(&self) -> core::option::Option<gpui::window::ElementId>
-pub fn ely_core::primitives::Raised::into_element(self) -> Self::Element
 pub fn ely_core::primitives::Raised::paint(&mut self, core::option::Option<&gpui::element::GlobalElementId>, core::option::Option<&gpui::inspector::InspectorElementId>, gpui::geometry::Bounds<gpui::geometry::Pixels>, &mut (), &mut (), &mut gpui::window::Window, &mut gpui::app::App)
 pub fn ely_core::primitives::Raised::prepaint(&mut self, core::option::Option<&gpui::element::GlobalElementId>, core::option::Option<&gpui::inspector::InspectorElementId>, gpui::geometry::Bounds<gpui::geometry::Pixels>, &mut (), &mut gpui::window::Window, &mut gpui::app::App)
 pub fn ely_core::primitives::Raised::request_layout(&mut self, core::option::Option<&gpui::element::GlobalElementId>, core::option::Option<&gpui::inspector::InspectorElementId>, &mut gpui::window::Window, &mut gpui::app::App) -> (gpui::taffy::LayoutId, ())
@@ -4770,6 +4769,7 @@ pub fn ely_core::shell::ActivityItem::clone(&self) -> Self
 pub fn ely_core::shell::ActivityItem::new(impl core::convert::Into<gpui_shared_string::SharedString>, ely_core::primitives::IconName, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
 pub fn ely_core::shell::ColumnShell::column(self, ely_core::shell::ShellColumn) -> Self
 pub fn ely_core::shell::ColumnShell::glass(self) -> Self
+pub fn ely_core::shell::ColumnShell::headers(self, bool) -> Self
 pub fn ely_core::shell::ColumnShell::into_any_element(self) -> gpui::element::AnyElement
 pub fn ely_core::shell::ColumnShell::into_element(self) -> Self::Element
 pub fn ely_core::shell::ColumnShell::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
@@ -4811,6 +4811,7 @@ pub fn ely_core::shell::ShellColumn::leading(self, impl gpui::element::IntoEleme
 pub fn ely_core::shell::ShellColumn::new(impl core::convert::Into<gpui::window::ElementId>) -> Self
 pub fn ely_core::shell::ShellColumn::resizable(self, gpui::geometry::Pixels, gpui::geometry::Pixels, gpui::geometry::Pixels, impl core::ops::function::Fn(gpui::geometry::Pixels, &mut gpui::window::Window, &mut gpui::app::App) + 'static) -> Self
 pub fn ely_core::shell::ShellColumn::title(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
+pub fn ely_core::shell::ShellColumn::title_menu(self, ely_core::menus::Menu) -> Self
 pub fn ely_core::shell::ShellColumn::width(self, impl core::convert::Into<gpui::geometry::DefiniteLength>) -> Self
 pub fn ely_core::shell::SplashScreen::clone(&self) -> Self
 pub fn ely_core::shell::SplashScreen::icon(self, ely_core::primitives::IconName) -> Self
@@ -5222,6 +5223,7 @@ pub fn ely_core::theme::Theme::radius(&self, ely_core::theme::Radius) -> gpui::g
 pub fn ely_core::theme::Theme::rail_width(&self) -> gpui::geometry::Rems
 pub fn ely_core::theme::Theme::scrollbar_min_thumb(&self) -> gpui::geometry::Rems
 pub fn ely_core::theme::Theme::scrollbar_thickness(&self) -> gpui::geometry::Rems
+pub fn ely_core::theme::Theme::scrollbar_track(&self) -> gpui::geometry::Rems
 pub fn ely_core::theme::Theme::set_color_blind_safe(bool, &mut gpui::app::App)
 pub fn ely_core::theme::Theme::set_high_contrast(bool, &mut gpui::app::App)
 pub fn ely_core::theme::Theme::set_mode(ely_core::theme::Mode, &mut gpui::app::App)
@@ -6192,7 +6194,6 @@ pub type ely_core::primitives::Image::Element = gpui::view::ViewElement<ely_core
 pub type ely_core::primitives::IntersectionObserver::Element = gpui::view::ViewElement<ely_core::primitives::IntersectionObserver>
 pub type ely_core::primitives::Measure::Element = gpui::view::ViewElement<ely_core::primitives::Measure>
 pub type ely_core::primitives::Pressable::Element = gpui::view::ViewElement<ely_core::primitives::Pressable>
-pub type ely_core::primitives::Raised::Element = ely_core::primitives::Raised
 pub type ely_core::primitives::Raised::PrepaintState = ()
 pub type ely_core::primitives::Raised::RequestLayoutState = ()
 pub type ely_core::primitives::TooltipTrigger::Element = gpui::view::ViewElement<ely_core::primitives::TooltipTrigger>

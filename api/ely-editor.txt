@@ -522,6 +522,7 @@ pub fn ely_editor::CodeEditor::breakpoints(&self) -> &alloc::collections::btree:
 pub fn ely_editor::CodeEditor::buffer(&self) -> &ely_editor::Buffer
 pub fn ely_editor::CodeEditor::can_undo(&self) -> bool
 pub fn ely_editor::CodeEditor::center_again(&mut self)
+pub fn ely_editor::CodeEditor::center_on(&mut self, usize, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_editor::CodeEditor::character_index_for_point(&mut self, gpui::geometry::Point<gpui::geometry::Pixels>, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>) -> core::option::Option<usize>
 pub fn ely_editor::CodeEditor::chat_line(&self) -> core::option::Option<usize>
 pub fn ely_editor::CodeEditor::cursor_shape(self, ely_editor::CursorShape) -> Self
@@ -563,6 +564,7 @@ pub fn ely_editor::CodeEditor::set_diff(&mut self, alloc::vec::Vec<ely_editor::D
 pub fn ely_editor::CodeEditor::set_focus_line(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_editor::CodeEditor::set_ghost_text(&mut self, core::option::Option<ely_editor::GhostText>, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_editor::CodeEditor::set_git_marks(&mut self, alloc::vec::Vec<(usize, ely_editor::GitMark)>, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_editor::CodeEditor::set_gutter_bars(&mut self, alloc::vec::Vec<(core::ops::range::Range<usize>, gpui::color::Hsla)>, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_editor::CodeEditor::set_inlay_hints(&mut self, alloc::vec::Vec<ely_editor::InlayHint>, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_editor::CodeEditor::set_line_numbers(&mut self, ely_editor::LineNumbers, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_editor::CodeEditor::set_read_only(&mut self, bool, &mut gpui::app::context::Context<'_, Self>)

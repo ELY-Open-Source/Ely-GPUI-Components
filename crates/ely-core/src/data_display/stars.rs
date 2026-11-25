@@ -8,7 +8,7 @@ use gpui::{
 use crate::theme::{ActiveTheme, IconSize};
 
 /// A five-point star inside `bounds`, filled or outlined with Lucide's stroke ratio.
-pub(crate) fn star(bounds: Bounds<Pixels>, fill: bool) -> Path<Pixels> {
+pub(crate) fn star(bounds: Bounds<Pixels>, fill: bool) -> Path {
     let side = bounds.size.width.min(bounds.size.height);
     let stroke = side / 12.0;
     let center = bounds.center();

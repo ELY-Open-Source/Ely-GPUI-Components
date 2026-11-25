@@ -4,8 +4,8 @@ use std::{cell::RefCell, ops::Range, rc::Rc, sync::Arc};
 
 use gpui::{
     AnyElement, App, Bounds, Corners, Element, ElementId, GlobalElementId, HighlightStyle,
-    InspectorElementId, IntoElement, LayoutId, Pixels, Point, RenderImage, SharedString, Size,
-    TextLayout, TextStyleRefinement, Window, point,
+    InspectorElementId, LayoutId, Pixels, Point, RenderImage, SharedString, Size, TextLayout,
+    TextStyleRefinement, Window, point,
 };
 
 use super::{OnLink, Over, drawn_text};
@@ -131,14 +131,6 @@ fn shown(inline: &Inline, swaps: &mut [Swap], drawn_as: &[String]) -> Inline {
             .map(|(range, url)| (span(range), url.clone()))
             .collect(),
         sources: Vec::new(),
-    }
-}
-
-impl IntoElement for MathText {
-    type Element = Self;
-
-    fn into_element(self) -> Self {
-        self
     }
 }
 
@@ -346,7 +338,11 @@ mod tests {
     }
 
     impl gpui::Render for Probe {
-        fn render(&mut self, _: &mut Window, _: &mut gpui::Context<Self>) -> impl IntoElement {
+        fn render(
+            &mut self,
+            _: &mut Window,
+            _: &mut gpui::Context<Self>,
+        ) -> impl gpui::IntoElement {
             use gpui::{ParentElement as _, Styled as _};
             let inline = Inline {
                 text: self.text.into(),

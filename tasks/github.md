@@ -36,3 +36,4 @@ A PR lands by merging its head into `main`, so GitHub marks it merged; fixes fol
 - [x] G23 PR #17: MenuBar shows a checked action's mark and honours its disabled flag, tested; its sync-then-deferred double dispatch replaced by one dispatch at the root cause; zh-TW gets a gallery catalog and the i18n docs; `EditorTabs::on_empty` and the 32px title bar land with API snapshot and CHANGELOG lines
 - [x] G24 Push; a short reply with thanks on #7, #15, #5, #6 and #17; close #7 and #15
 - [x] G25 CI: `deny` fails on RUSTSEC-2026-0486, unsound xattr functions in rustix 1.1.5; `Cargo.lock` takes rustix 1.1.6, the fixed release
+- [ ] G26 Pin: `scripts/check.sh` fails to resolve GPUI Kit 0.11.0, which pins `gpui-pre =0.3.14` (zed@f126950); Ely's three gpui pins follow, `vendor/gpui-pre-macos` is 0.3.14 with the frame link changes replayed, `Path` loses its parameter and the identity `IntoElement` impls go, with ADR 0064, the docs that name the pin and the CHANGELOG line

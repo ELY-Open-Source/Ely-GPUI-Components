@@ -28,7 +28,7 @@ fn at_angle(center: Point<Pixels>, radius: Pixels, angle: f32) -> Point<Pixels> 
 }
 
 /// A stroked arc clockwise from `from` to `to`, in radians.
-fn arc(center: Point<Pixels>, radius: Pixels, from: f32, to: f32, width: Pixels) -> Path<Pixels> {
+fn arc(center: Point<Pixels>, radius: Pixels, from: f32, to: f32, width: Pixels) -> Path {
     let mut path = PathBuilder::stroke(width);
     path.move_to(at_angle(center, radius, from));
     path.arc_to(

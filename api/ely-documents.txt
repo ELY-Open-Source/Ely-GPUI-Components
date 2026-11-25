@@ -894,6 +894,7 @@ pub fn ely_documents::MarkdownDocument::reveal(&mut self, usize, &mut gpui::wind
 pub fn ely_documents::MarkdownDocument::selected(&self, &gpui::app::App) -> alloc::string::String
 pub fn ely_documents::MarkdownDocument::set_base(&mut self, impl core::convert::Into<alloc::rcs::arc::Arc<std::path::Path>>, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_documents::MarkdownDocument::set_caret(&mut self, usize, usize, &mut gpui::app::context::Context<'_, Self>)
+pub fn ely_documents::MarkdownDocument::set_found(&mut self, alloc::vec::Vec<core::ops::range::Range<usize>>, core::option::Option<usize>, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_documents::MarkdownDocument::set_look(&mut self, ely_documents::DocumentLook, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_documents::MarkdownDocument::set_mode(&mut self, ely_documents::MarkdownMode, &mut gpui::window::Window, &mut gpui::app::context::Context<'_, Self>)
 pub fn ely_documents::MarkdownDocument::set_text(&mut self, impl core::convert::Into<alloc::string::String>, &mut gpui::app::context::Context<'_, Self>)

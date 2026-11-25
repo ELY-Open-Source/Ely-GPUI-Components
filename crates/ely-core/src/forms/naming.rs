@@ -2,7 +2,7 @@
 
 use gpui::{
     AnyElement, App, Bounds, Element, ElementId, Global, GlobalElementId, InspectorElementId,
-    IntoElement, LayoutId, Pixels, SharedString, Window,
+    LayoutId, Pixels, SharedString, Window,
 };
 
 /// A field's label, and the line under it: its error, else its description.
@@ -39,14 +39,6 @@ pub(crate) struct Named {
 impl Named {
     pub(crate) fn new(naming: Naming, child: AnyElement) -> Self {
         Self { naming, child }
-    }
-}
-
-impl IntoElement for Named {
-    type Element = Self;
-
-    fn into_element(self) -> Self {
-        self
     }
 }
 

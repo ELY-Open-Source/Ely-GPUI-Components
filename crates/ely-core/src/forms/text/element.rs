@@ -2,9 +2,9 @@ use std::rc::Rc;
 
 use gpui::{
     App, AvailableSpace, Bounds, ContentMask, DispatchPhase, Element, ElementId,
-    ElementInputHandler, Entity, FontStyle, GlobalElementId, Hsla, InspectorElementId, IntoElement,
-    LayoutId, MouseMoveEvent, Pixels, Point, SharedString, StrikethroughStyle, Style, TextAlign,
-    TextRun, UnderlineStyle, Window, WrappedLine, fill, point, relative, size,
+    ElementInputHandler, Entity, FontStyle, GlobalElementId, Hsla, InspectorElementId, LayoutId,
+    MouseMoveEvent, Pixels, Point, SharedString, StrikethroughStyle, Style, TextAlign, TextRun,
+    UnderlineStyle, Window, WrappedLine, fill, point, relative, size,
 };
 
 use super::{Highlight, Layout, TextInput};
@@ -20,14 +20,6 @@ pub(crate) struct TextElement {
 impl TextElement {
     pub(crate) fn new(input: Entity<TextInput>) -> Self {
         Self { input }
-    }
-}
-
-impl IntoElement for TextElement {
-    type Element = Self;
-
-    fn into_element(self) -> Self::Element {
-        self
     }
 }
 

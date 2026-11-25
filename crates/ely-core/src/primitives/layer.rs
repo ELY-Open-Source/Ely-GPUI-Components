@@ -45,14 +45,6 @@ impl Raised {
     }
 }
 
-impl IntoElement for Raised {
-    type Element = Self;
-
-    fn into_element(self) -> Self::Element {
-        self
-    }
-}
-
 impl Element for Raised {
     type RequestLayoutState = ();
     type PrepaintState = ();
@@ -122,14 +114,6 @@ impl Element for Raised {
 /// What a raised element draws: its content, then what was raised inside it, each laid out on its own and the higher priority last.
 struct Layer {
     child: AnyElement,
-}
-
-impl IntoElement for Layer {
-    type Element = Self;
-
-    fn into_element(self) -> Self::Element {
-        self
-    }
 }
 
 /// Runs `f` with a fresh queue on the stack, and hands back what was raised meanwhile.
