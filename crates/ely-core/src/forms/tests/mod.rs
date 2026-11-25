@@ -6,6 +6,7 @@ mod other;
 #[cfg(unix)]
 mod path;
 mod popup;
+mod shown;
 mod stale;
 mod structure;
 mod tags;

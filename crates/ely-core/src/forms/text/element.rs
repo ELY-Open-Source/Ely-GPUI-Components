@@ -248,8 +248,10 @@ impl Element for TextElement {
         let input = self.input.read(cx);
         let caret_at = input.position_for(input.display_offset(input.cursor()));
         let scroll = match caret_at {
-            // Unfocused, a line shows its start, as AppKit's fields do.
-            Some(_) if !focused && !input.is_multi_line() => Point::default(),
+            // Unfocused, a line shows its start, unless something is selected.
+            Some(_) if !focused && !input.is_multi_line() && input.selection().is_empty() => {
+                Point::default()
+            }
             Some(at) => keep_in_view(input, &lines, at, caret_width, bounds, line_height),
             None => input.scroll,
         };
