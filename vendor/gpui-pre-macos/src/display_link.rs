@@ -306,10 +306,16 @@ pub struct MetalFrames {
     source: RefCell<Option<MetalFrameSource>>,
     /// Whether GPUI asked for a frame since the current update began.
     woken: Cell<bool>,
+    /// The first wake no update has answered yet.
+    asked: Cell<Option<std::time::Instant>>,
+    /// That wait was logged; cleared when the link sends.
+    silent: Cell<bool>,
 }
 
 impl MetalFrames {
     pub fn replace(&self, source: Option<MetalFrameSource>) {
+        self.asked.set(None);
+        self.silent.set(false);
         *self.source.borrow_mut() = source;
     }
 
@@ -320,14 +326,27 @@ impl MetalFrames {
     pub fn wake(&self) {
         self.woken.set(true);
         // A source being replaced starts unpaused, so skipping it is safe.
-        if let Ok(source) = self.source.try_borrow()
-            && let Some(source) = source.as_ref()
-        {
-            source.set_paused(false);
+        match self.source.try_borrow() {
+            Ok(source) => match source.as_ref() {
+                Some(source) => {
+                    let asked = *self.asked.get().get_or_insert_with(std::time::Instant::now);
+                    self.asked.set(Some(asked));
+                    if asked.elapsed().as_secs() >= 2 && !self.silent.replace(true) {
+                        log::warn!("frames: the Metal link ignored wakes for {:?}", asked.elapsed());
+                    }
+                    source.set_paused(false);
+                }
+                None => log::debug!("frames: a wake found no Metal link"),
+            },
+            Err(_) => log::debug!("frames: a wake met the link being replaced"),
         }
     }
 
     pub fn begin_frame(&self) {
+        if self.silent.replace(false) {
+            log::warn!("frames: the Metal link sends again");
+        }
+        self.asked.set(None);
         self.woken.set(false);
     }
 

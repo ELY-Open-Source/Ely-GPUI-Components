@@ -887,11 +887,13 @@ impl MacWindowState {
             .occlusionState()
             .contains(NSWindowOcclusionState::Visible)
         {
+            log::info!("frames: no link, the window is occluded");
             return;
         }
         match &mut self.frame_source {
             FrameSource::Metal(metal_frames) => {
                 let Some(layer) = self.renderer.layer() else {
+                    log::warn!("frames: no link, the renderer has no layer");
                     return;
                 };
                 let main_thread =
@@ -902,9 +904,13 @@ impl MacWindowState {
                         metal_frame(&window_state, update);
                     }
                 });
-                if let Some(source) = source {
-                    metal_frames.replace(Some(source));
-                    self.renderer.set_display_link_attached(true);
+                match source {
+                    Some(source) => {
+                        metal_frames.replace(Some(source));
+                        self.renderer.set_display_link_attached(true);
+                        log::info!("frames: Metal link attached");
+                    }
+                    None => log::warn!("frames: CAMetalDisplayLink refused the layer"),
                 }
             }
             FrameSource::DisplayLink(frame_source) => {
@@ -930,6 +936,7 @@ impl MacWindowState {
                     // draw can use the layer's `nextDrawable`.
                     metal_frames.replace(None);
                     self.renderer.set_display_link_attached(false);
+                    log::info!("frames: Metal link detached");
                 }
             }
             FrameSource::DisplayLink(Some(frame_source)) => frame_source.stop(),
@@ -1162,7 +1169,8 @@ impl MacWindow {
             let native_view: *mut AnyObject = msg_send![native_view, initWithFrame: content_bounds];
             assert!(!native_view.is_null());
 
-            let metal_frames = MetalFrameSource::is_available().then(Rc::<MetalFrames>::default);
+            // CVDisplayLink: CAMetalDisplayLink stalls seconds on hosted VMs.
+            let metal_frames: Option<Rc<MetalFrames>> = None;
             let state = Rc::new(Mutex::new(MacWindowState {
                 handle,
                 foreground_executor,
@@ -3634,6 +3642,7 @@ fn metal_frame(
     };
     let metal_frames = metal_frames.clone();
     let Some(mut callback) = lock.request_frame_callback.take() else {
+        log::warn!("frames: a Metal update found no frame callback");
         return;
     };
     lock.renderer.set_frame_drawable(Some(update.drawable()));
