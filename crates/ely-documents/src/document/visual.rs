@@ -342,8 +342,9 @@ impl Render for MarkdownDocument {
         self.make_room();
         let blocks = list(self.list.clone(), cx.processor(Self::item)).size_full();
         // The text column: its measure, font, centered.
+        let track = cx.theme().scrollbar_track().to_pixels(window.rem_size());
         let column = |content: gpui::AnyElement, look: &super::DocumentLook| {
-            div().size_full().flex().justify_center().child(
+            div().size_full().pr(track).flex().justify_center().child(
                 div()
                     .h_full()
                     .w_full()

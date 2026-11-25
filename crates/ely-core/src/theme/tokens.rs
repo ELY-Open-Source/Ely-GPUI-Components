@@ -200,6 +200,11 @@ impl Theme {
         px_to_rems(6.0)
     }
 
+    /// The strip a scrollbar's track takes; content keeps out.
+    pub fn scrollbar_track(&self) -> Rems {
+        px_to_rems(12.0)
+    }
+
     /// The shortest a scrollbar's thumb gets.
     pub fn scrollbar_min_thumb(&self) -> Rems {
         px_to_rems(24.0)

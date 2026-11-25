@@ -187,6 +187,7 @@ impl RenderOnce for Scrollbar {
         let theme = cx.theme();
         let rem = window.rem_size();
         let thickness = theme.scrollbar_thickness().to_pixels(rem);
+        let track_width = theme.scrollbar_track().to_pixels(rem);
         let min_thumb = theme.scrollbar_min_thumb().to_pixels(rem);
         let stays = theme.scrollbars_shown;
         let activity = matches!(self.shown, Shown::Auto).then(|| {
@@ -290,14 +291,14 @@ impl RenderOnce for Scrollbar {
                 .top_0()
                 .bottom_0()
                 .right_0()
-                .w(thickness * 2.0)
-                .pl(thickness * 0.5),
+                .w(track_width)
+                .pl((track_width - thickness) * 0.5),
             Axis::Horizontal => track
                 .left_0()
                 .right_0()
                 .bottom_0()
-                .h(thickness * 2.0)
-                .pt(thickness * 0.5),
+                .h(track_width)
+                .pt((track_width - thickness) * 0.5),
         }
         .child(thumb)
         .child(follows)
@@ -370,6 +371,8 @@ impl ParentElement for ScrollArea {
 impl RenderOnce for ScrollArea {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let state = window.use_keyed_state(self.id.clone(), cx, |_, _| Activity::new());
+        // The bars' strips stay clear, scrolling or not.
+        let gutter = cx.theme().scrollbar_track().to_pixels(window.rem_size());
         let handle = match self.handle {
             Some(handle) => handle,
             None => state.read(cx).handle.clone(),
@@ -396,10 +399,11 @@ impl RenderOnce for ScrollArea {
                 div()
                     .id("scroll-body")
                     .size_full()
+                    .pr(gutter)
                     .when(self.vertical, |body| {
                         body.overflow_y_scroll().overflow_x_hidden()
                     })
-                    .when(!self.vertical, |body| body.overflow_scroll())
+                    .when(!self.vertical, |body| body.overflow_scroll().pb(gutter))
                     .track_scroll(&handle)
                     .on_scroll({
                         let handle = handle.clone();

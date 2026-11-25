@@ -202,7 +202,8 @@ fn wrapped(word: &str, n: usize) -> String {
 
 /// Shift past a wrapped block's edge keeps the head's x.
 fn aims_at_the_old_x(down: bool, cx: &mut TestAppContext) {
-    let first = wrapped("one", 120);
+    // Its last line runs well past the aimed x.
+    let first = wrapped("one", 114);
     let source = format!("{first}\n\n{}\n", wrapped("two", 160));
     let (document, cx) = open(&source, MarkdownMode::Visual, cx);
     super::press(if down { 0 } else { 1 }, Modifiers::none(), cx);

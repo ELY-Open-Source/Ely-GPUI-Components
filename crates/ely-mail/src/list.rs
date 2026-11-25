@@ -221,6 +221,8 @@ impl RenderOnce for MailList {
         let zone = self
             .zone
             .unwrap_or_else(|| format::system_zone("mail list"));
+        // Rows end before the bar's strip.
+        let track = cx.theme().scrollbar_track().to_pixels(window.rem_size());
         let rows = {
             let (id, mails, pick, focus, on_star) = (
                 self.id.clone(),
@@ -263,6 +265,7 @@ impl RenderOnce for MailList {
             })
             .track_scroll(&scroll)
             .size_full()
+            .pr(track)
         };
         let bar = Scrollbar::new(
             (self.id.clone(), "scrollbar"),

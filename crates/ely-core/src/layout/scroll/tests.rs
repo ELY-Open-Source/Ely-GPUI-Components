@@ -244,6 +244,7 @@ fn a_bar_stays_while_the_pointer_rests_on_it(cx: &mut TestAppContext) {
     );
 }
 
+mod gutter;
 mod hold;
 
 #[gpui::test]
