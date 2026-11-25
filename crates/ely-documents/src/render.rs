@@ -1,9 +1,9 @@
 use std::{ops::Range, path::Path, rc::Rc, sync::Arc};
 
 use gpui::{
-    AnyElement, App, ElementId, Entity, FontWeight, HighlightStyle, InteractiveText, IntoElement,
-    MouseButton, ParentElement, RenderOnce, Role, SharedString, Styled, StyledText, TextLayout,
-    Window, div, prelude::*, relative,
+    AnyElement, App, ElementId, Entity, FontWeight, InteractiveText, IntoElement, MouseButton,
+    ParentElement, RenderOnce, Role, SharedString, Styled, StyledText, TextLayout, Window, div,
+    prelude::*, relative,
 };
 
 use super::{
@@ -22,12 +22,15 @@ use crate::{
 };
 
 mod blocks;
+mod found;
 mod math_text;
 mod point;
 mod select;
 mod style;
 mod table;
 
+use found::Over;
+pub(crate) use found::Washes;
 pub(crate) use point::{OnPoint, Place, Pointed, point_lines};
 pub use select::RightPress;
 use select::{Gather, OnMenu, Selection};
@@ -155,6 +158,8 @@ pub(crate) struct Hooks<'a> {
     pub on_point: &'a Option<OnPoint>,
     /// The cell typed in, drawn in its place.
     pub cell: Option<&'a OpenCell>,
+    /// A find's matches to wash.
+    pub found: Option<Washes<'a>>,
 }
 
 /// Headings and strong text share one weight.
@@ -170,9 +175,6 @@ pub(crate) fn heading_step(level: u8) -> f32 {
         _ => 1.0,
     }
 }
-
-/// Highlights laid over a text's own.
-type Over = Vec<(Range<usize>, HighlightStyle)>;
 
 /// `inline` as text; hidden ranges lose highlight, `over` adds some.
 fn drawn_text(
@@ -207,6 +209,17 @@ fn drawn_text(
     (drawn, layout)
 }
 
+/// `drawn`, findable in tests once a match washes it.
+fn washed_mark(drawn: AnyElement, washed: bool) -> AnyElement {
+    match washed {
+        true => div()
+            .debug_selector(|| "markdown-washed".to_string())
+            .child(drawn)
+            .into_any_element(),
+        false => drawn,
+    }
+}
+
 /// Draws nodes under one owner's ids and hooks.
 struct Draw<'a> {
     id: &'a ElementId,
@@ -238,11 +251,16 @@ impl Draw<'_> {
 
     fn inline(&self, inline: &Inline, cx: &App) -> AnyElement {
         let links = (!inline.links.is_empty()).then(|| self.key("links"));
+        let found = (self.hooks.found).map_or_else(Vec::new, |found| found.inline(inline));
+        let washed = !found.is_empty();
         if !inline.styles.iter().any(|(_, style)| *style == Style::Math) {
-            let over = self
-                .select
-                .map_or_else(Vec::new, |select| select.over(&inline.text, cx));
+            let over = (self.select)
+                .map_or_else(Vec::new, |select| select.over(&inline.text, cx))
+                .into_iter()
+                .chain(found)
+                .collect();
             let (drawn, layout) = drawn_text(inline, (&[], over), links, self.hooks.on_link, cx);
+            let drawn = washed_mark(drawn, washed);
             if let Some(select) = self.select {
                 select.push(&inline.text, layout.clone(), &inline.links);
             }
@@ -255,8 +273,9 @@ impl Draw<'_> {
         }
         let on_link = self.hooks.on_link.clone();
         let (drawn, at) =
-            math_text::MathText::new(self.key("math"), inline.clone(), links, on_link);
-        self.point_text(drawn.into_any_element(), at, inline)
+            math_text::MathText::new(self.key("math"), inline.clone(), (links, on_link), found);
+        let drawn = washed_mark(drawn.into_any_element(), washed);
+        self.point_text(drawn, at, inline)
     }
 
     fn nodes(&self, nodes: &[Node], cx: &App) -> Vec<AnyElement> {
@@ -338,7 +357,11 @@ impl Draw<'_> {
                 let over = self
                     .select
                     .map_or_else(Vec::new, |select| select.over(text, cx));
-                let styles = crate::editor::stack(styles.into_iter().chain(over).collect());
+                let found =
+                    (self.hooks.found).map_or_else(Vec::new, |found| found.code(text, *from));
+                let washed = !found.is_empty();
+                let styles =
+                    crate::editor::stack(styles.into_iter().chain(over).chain(found).collect());
                 let code = StyledText::new(text.clone()).with_highlights(styles);
                 let layout = code.layout().clone();
                 if let Some(select) = self.select {
@@ -360,7 +383,7 @@ impl Draw<'_> {
                             .text_color(colors.fg_subtle)
                             .child(name)
                     }))
-                    .child(code)
+                    .child(washed_mark(code.into_any_element(), washed))
                     .into_any_element();
                 self.point_code(block, Some(layout), text, *from)
             }
@@ -508,6 +531,7 @@ impl RenderOnce for MarkdownRenderer {
                 on_heading: &None,
                 on_point: &None,
                 cell: None,
+                found: None,
             },
             next: std::cell::Cell::new(0),
             sections: &self.sections,

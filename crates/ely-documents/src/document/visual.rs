@@ -14,7 +14,9 @@ use crate::{
     theme::{ActiveTheme, Radius, TextSize, Theme},
     {
         MarkdownMode, TargetBlock,
-        render::{HEAVY, Hooks, LINE, OpenCell, Pointed, draw_nodes, heading_step, point_lines},
+        render::{
+            HEAVY, Hooks, LINE, OpenCell, Pointed, Washes, draw_nodes, heading_step, point_lines,
+        },
     },
 };
 
@@ -169,6 +171,11 @@ impl MarkdownDocument {
                 )),
             })
         });
+        let washes = self.washes_in(&block.range);
+        let found = Washes {
+            source: &self.parsed.text[block.range.start..],
+            hits: &washes,
+        };
         let shown = match &block.nodes {
             Some(nodes) => div()
                 .flex()
@@ -187,13 +194,14 @@ impl MarkdownDocument {
                         on_heading: &self.on_heading,
                         on_point: &on_point,
                         cell: cell.as_ref(),
+                        found: Some(found),
                     },
                     self.look.scale,
                     cx,
                 )),
             None => {
                 let raw = &self.parsed.text[block.range.clone()];
-                let drawn = StyledText::new(raw.to_string());
+                let drawn = StyledText::new(raw.to_string()).with_highlights(found.raw());
                 let layout = drawn.layout().clone();
                 let shown = div()
                     .text_size(body)

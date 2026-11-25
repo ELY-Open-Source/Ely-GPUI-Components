@@ -8,7 +8,7 @@ use gpui::{
     TextLayout, TextStyleRefinement, Window, point,
 };
 
-use super::{OnLink, drawn_text};
+use super::{OnLink, Over, drawn_text};
 use crate::{
     theme::ActiveTheme,
     {
@@ -35,6 +35,8 @@ pub(super) struct MathText {
     inline: Inline,
     links: Option<ElementId>,
     on_link: Option<OnLink>,
+    /// Washes over the original text.
+    found: Over,
     shown: Rc<RefCell<Option<Shown>>>,
     text: Option<AnyElement>,
     /// Each picture, its size, and the drawn span it covers.
@@ -48,8 +50,8 @@ impl MathText {
     pub(super) fn new(
         id: ElementId,
         inline: Inline,
-        links: Option<ElementId>,
-        on_link: Option<OnLink>,
+        (links, on_link): (Option<ElementId>, Option<OnLink>),
+        found: Over,
     ) -> (Self, impl Fn(Point<Pixels>) -> usize + 'static) {
         let shown = Rc::new(RefCell::new(None));
         let read = shown.clone();
@@ -67,6 +69,7 @@ impl MathText {
             inline,
             links,
             on_link,
+            found,
             shown,
             text: None,
             pictures: Vec::new(),
@@ -207,8 +210,10 @@ impl Element for MathText {
             color: Some(cx.theme().colors.danger),
             ..HighlightStyle::default()
         };
+        let moved = |range: &Range<usize>| forward(&swaps, range.start)..forward(&swaps, range.end);
         let said = (errors.iter())
             .map(|ix| (swaps[*ix].1.clone(), danger))
+            .chain((self.found.iter()).map(|(range, wash)| (moved(range), *wash)))
             .collect();
         let (mut text, layout) = drawn_text(
             &inline,
@@ -348,7 +353,7 @@ mod tests {
                 styles: vec![(self.math.clone(), Style::Math)],
                 ..Inline::default()
             };
-            let (text, at) = MathText::new("probe".into(), inline, None, None);
+            let (text, at) = MathText::new("probe".into(), inline, (None, None), Vec::new());
             *self.found.borrow_mut() = Some((text.shown.clone(), Box::new(at)));
             let shell = gpui::div()
                 .w(gpui::px(self.width))

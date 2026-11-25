@@ -110,6 +110,20 @@ impl MarkdownDocument {
             .collect()
     }
 
+    /// The washes behind matches in `range`, from its start.
+    pub(super) fn washes_in(&self, range: &Range<usize>) -> Vec<(Range<usize>, Hsla)> {
+        let first = (self.found.hits).partition_point(|hit| hit.end <= range.start);
+        (first..self.found.hits.len())
+            .map(|at| (at, &self.found.hits[at]))
+            .take_while(|(_, hit)| hit.start < range.end)
+            .map(|(at, hit)| {
+                let inside =
+                    hit.start.max(range.start) - range.start..hit.end.min(range.end) - range.start;
+                (inside, self.found.tones(at).0)
+            })
+            .collect()
+    }
+
     /// A bar on the left edge of block `ix` when it holds a match.
     pub(super) fn found_bar(&self, ix: usize) -> Option<Div> {
         let range = &self.parsed.blocks.get(ix)?.range;

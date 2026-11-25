@@ -197,3 +197,38 @@ fn preview_steps_leave_focus_in_the_find_box(cx: &mut TestAppContext) {
         "focus stays in the find box"
     );
 }
+
+#[gpui::test]
+fn closed_and_previewed_blocks_wash_their_matches(cx: &mut TestAppContext) {
+    let source = "Nothing here.\n\nA **bold** needle.\n\n```\nlet needle = 1;\n```\n";
+    for (mode, word) in [
+        (MarkdownMode::Visual, "needle."),
+        (MarkdownMode::Preview, "needle."),
+        (MarkdownMode::Preview, "needle ="),
+    ] {
+        let (document, cx) = open(source, mode, cx);
+        let at = source.find(word).expect("the match is in the source");
+        let hit = at..at + 6;
+        document.update(cx, |document, cx| {
+            document.set_found(vec![hit.clone()], None, cx)
+        });
+        frames(cx);
+        let open = document.read_with(cx, |document, _| document.open.is_some());
+        assert!(!open, "{mode:?}: no block opened, the match is drawn");
+        assert!(
+            cx.debug_bounds("markdown-washed").is_some(),
+            "{mode:?}: the drawn match is washed"
+        );
+        let washes = document.read_with(cx, |document, _| {
+            let block = &document.parsed.blocks[document.block_at(hit.start)];
+            document.washes_in(&block.range)
+        });
+        assert_eq!(washes.len(), 1, "{mode:?}: one wash in the match's block");
+        document.update(cx, |document, cx| document.set_found(Vec::new(), None, cx));
+        frames(cx);
+        assert!(
+            cx.debug_bounds("markdown-washed").is_none(),
+            "{mode:?}: no matches, no washes"
+        );
+    }
+}
