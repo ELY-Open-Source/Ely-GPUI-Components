@@ -485,3 +485,73 @@ fn a_long_choice_keeps_its_list_inside_the_window(cx: &mut TestAppContext) {
         "{list:?}"
     );
 }
+
+/// A free size field that steps by one and keeps each value it sends.
+struct Stepped {
+    field: Entity<TextInput>,
+    sent: Vec<String>,
+}
+
+impl Render for Stepped {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let view = cx.entity();
+        let sizes = ["10", "12"].map(|size| Choice::new(size, size));
+        let combobox = Combobox::new("size", &self.field, sizes)
+            .free()
+            .selected("10")
+            .steps(|text, by| {
+                let size = text.trim().parse::<i32>().ok()? + i32::from(by);
+                Some(SharedString::from(size.to_string()))
+            })
+            .on_change(move |value, _, cx| {
+                view.update(cx, |view, cx| {
+                    view.sent.push(value.to_string());
+                    cx.notify();
+                })
+            });
+        div().pt(px(200.0)).w(px(240.0)).child(combobox)
+    }
+}
+
+#[gpui::test]
+fn the_arrows_and_keys_step_a_combobox(cx: &mut TestAppContext) {
+    setup(cx);
+    cx.update(|cx| Theme::update(cx, |theme| theme.reduced_motion = true));
+    let (view, cx) = cx.add_window_view(|window, cx| Stepped {
+        field: cx.new(|cx| TextInput::new(window, cx)),
+        sent: Vec::new(),
+    });
+    cx.update(|window, _| window.activate_window());
+    frames(cx);
+    for half in [
+        "combobox-step-up",
+        "combobox-step-down",
+        "combobox-step-down",
+    ] {
+        let at = cx
+            .debug_bounds(half)
+            .unwrap_or_else(|| panic!("{half} is drawn"))
+            .center();
+        cx.simulate_mouse_move(at, None, Modifiers::none());
+        cx.simulate_click(at, Modifiers::none());
+        frames(cx);
+    }
+    assert_eq!(
+        view.read_with(cx, |view, _| view.sent.clone()),
+        ["11", "10", "9"]
+    );
+    let field = view.read_with(cx, |view, _| view.field.clone());
+    let focus = field.read_with(cx, |field, _| field.focus().clone());
+    cx.update(|window, cx| focus.focus(window, cx));
+    frames(cx);
+    cx.simulate_keystrokes("up up down");
+    frames(cx);
+    assert_eq!(
+        view.read_with(cx, |view, _| view.sent.clone()),
+        ["11", "10", "9", "10", "11", "10"]
+    );
+    assert_eq!(
+        field.read_with(cx, |field, _| field.text().to_string()),
+        "10"
+    );
+}

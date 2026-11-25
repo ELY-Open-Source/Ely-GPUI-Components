@@ -3138,6 +3138,7 @@ pub fn ely_core::forms::Combobox::on_change(self, impl core::ops::function::Fn(&
 pub fn ely_core::forms::Combobox::render(self, &mut gpui::window::Window, &mut gpui::app::App) -> impl gpui::element::IntoElement
 pub fn ely_core::forms::Combobox::selected(self, impl core::convert::Into<gpui_shared_string::SharedString>) -> Self
 pub fn ely_core::forms::Combobox::size(self, ely_core::theme::ControlSize) -> Self
+pub fn ely_core::forms::Combobox::steps(self, impl core::ops::function::Fn(&str, i8) -> core::option::Option<gpui_shared_string::SharedString> + 'static) -> Self
 pub fn ely_core::forms::Copy::action_json_schema(&mut schemars::generate::SchemaGenerator) -> core::option::Option<schemars::schema::Schema>
 pub fn ely_core::forms::Copy::boxed_clone(&self) -> alloc::boxed::Box<dyn gpui::action::Action>
 pub fn ely_core::forms::Copy::build(serde_json::value::Value) -> anyhow::Result<alloc::boxed::Box<dyn gpui::action::Action>>

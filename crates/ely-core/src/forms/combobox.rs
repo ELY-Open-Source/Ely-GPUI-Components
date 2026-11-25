@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    App, Context, ElementId, Entity, InteractiveElement, IntoElement, ParentElement, RenderOnce,
-    SharedString, Styled, Subscription, Window, div, prelude::*,
+    App, Context, ElementId, Entity, InteractiveElement, IntoElement, MouseButton, ParentElement,
+    RenderOnce, SharedString, Styled, Subscription, Window, div, prelude::*,
 };
 
 use super::{
@@ -26,6 +26,12 @@ pub(crate) fn matching(choices: &[Choice], query: &str) -> Vec<Choice> {
         .cloned()
         .collect()
 }
+
+/// The value a step lands on from `text`, up for 1 and down for -1.
+type Stepping = Rc<dyn Fn(&str, i8) -> Option<SharedString>>;
+
+/// A step the field takes, up for 1 and down for -1.
+type Step = Rc<dyn Fn(i8, &mut Window, &mut App)>;
 
 /// What a combobox restores on blur, and whether Escape closed it.
 struct Typing {
@@ -57,6 +63,7 @@ pub struct Combobox {
     free: bool,
     size: ControlSize,
     on_change: Option<OnValue>,
+    steps: Option<Stepping>,
 }
 
 impl Combobox {
@@ -74,6 +81,7 @@ impl Combobox {
             free: false,
             size: ControlSize::default(),
             on_change: None,
+            steps: None,
         }
     }
 
@@ -92,6 +100,28 @@ impl Combobox {
     /// Its height and text size.
     pub fn size(mut self, size: ControlSize) -> Self {
         self.size = size;
+        self
+    }
+
+    /// Up and down arrows step the value: `next` turns the text and a direction (1 up, -1
+    /// down) into the new value, which `on_change` gets as a pick does. While the list is
+    /// closed, the Up and Down keys step too. `None` leaves the field as it is.
+    ///
+    /// ```
+    /// use ely_core::forms::{Choice, Combobox, TextInput};
+    /// use gpui::{App, AppContext, SharedString, Window};
+    ///
+    /// fn size(window: &mut Window, cx: &mut App) -> Combobox {
+    ///     let state = cx.new(|cx| TextInput::new(window, cx));
+    ///     let sizes = ["10", "11", "12"].map(|size| Choice::new(size, size));
+    ///     Combobox::new("size", &state, sizes).free().steps(|text, by| {
+    ///         let size = text.trim().parse::<i32>().ok()? + i32::from(by);
+    ///         Some(SharedString::from(size.to_string()))
+    ///     })
+    /// }
+    /// ```
+    pub fn steps(mut self, next: impl Fn(&str, i8) -> Option<SharedString> + 'static) -> Self {
+        self.steps = Some(Rc::new(next));
         self
     }
 
@@ -192,6 +222,30 @@ impl RenderOnce for Combobox {
         };
         let (anchor, scroll) = (picker.read(cx).anchor, picker.read(cx).scroll.clone());
         let reveal = Picker::reveal(&picker, open, highlighted, cx);
+        let stepping = self.steps.map(|next| {
+            let (id, state, typing, on_change) = (
+                self.id.clone(),
+                self.state.clone(),
+                typing.clone(),
+                self.on_change.clone(),
+            );
+            Rc::new(move |by: i8, window: &mut Window, cx: &mut App| {
+                let Some(value) = next(state.read(cx).text(), by) else {
+                    log::info!("combobox {id:?}: no value to step from");
+                    return;
+                };
+                log::info!("combobox {id:?}: stepped to {value}");
+                state.update(cx, |input, cx| input.set_text(value.clone(), cx));
+                typing.update(cx, |typing, cx| {
+                    typing.last = value.to_string();
+                    typing.dismissed = true;
+                    cx.notify();
+                });
+                if let Some(on_change) = &on_change {
+                    on_change(&value, window, cx);
+                }
+            }) as Step
+        });
         let pick: Pick = {
             let (id, rows, state, typing, on_change) = (
                 self.id.clone(),
@@ -220,26 +274,44 @@ impl RenderOnce for Combobox {
         let chosen: Vec<SharedString> = self.selected.iter().cloned().collect();
         let subtle = cx.theme().colors.fg_subtle;
         let (up, down, enter, escape) = (
-            (picker.clone(), rows.clone()),
-            (picker.clone(), rows.clone(), typing.clone()),
+            (picker.clone(), rows.clone(), stepping.clone()),
+            (
+                picker.clone(),
+                rows.clone(),
+                typing.clone(),
+                stepping.clone(),
+            ),
             pick.clone(),
             typing.clone(),
         );
+        let suffix = match &stepping {
+            Some(stepping) => stepper(&self.id, stepping, cx),
+            None => Icon::new(IconName::ChevronsUpDown)
+                .size(IconSize::Xs)
+                .color(subtle)
+                .into_any_element(),
+        };
         div()
             .id(self.id.clone())
             .relative()
-            .capture_action(move |_: &Up, _, cx| {
+            .capture_action(move |_: &Up, window, cx| {
                 if open {
                     cx.stop_propagation();
                     let at = step(&up.1, highlighted, -1);
                     Picker::show(&up.0, true, at, cx);
+                } else if let Some(stepping) = &up.2 {
+                    cx.stop_propagation();
+                    stepping(1, window, cx);
                 }
             })
-            .capture_action(move |_: &Down, _, cx| {
-                let (picker, rows, typing) = &down;
+            .capture_action(move |_: &Down, window, cx| {
+                let (picker, rows, typing, stepping) = &down;
                 if open {
                     cx.stop_propagation();
                     Picker::show(picker, true, step(rows, highlighted, 1), cx);
+                } else if let Some(stepping) = stepping {
+                    cx.stop_propagation();
+                    stepping(-1, window, cx);
                 } else if typing.read(cx).dismissed {
                     cx.stop_propagation();
                     typing.update(cx, |typing, cx| {
@@ -263,13 +335,7 @@ impl RenderOnce for Combobox {
                     });
                 }
             })
-            .child(
-                Input::new(&self.state).size(self.size).suffix(
-                    Icon::new(IconName::ChevronsUpDown)
-                        .size(IconSize::Xs)
-                        .color(subtle),
-                ),
-            )
+            .child(Input::new(&self.state).size(self.size).suffix(suffix))
             .child(measure_anchor(picker))
             .when(open, |field| {
                 field.child(
@@ -288,6 +354,37 @@ impl RenderOnce for Combobox {
                 )
             })
     }
+}
+
+/// The up and down halves beside the text, as `NumberInput` draws them.
+fn stepper(id: &ElementId, stepping: &Step, cx: &App) -> gpui::AnyElement {
+    let theme = cx.theme();
+    let colors = &theme.colors;
+    let half = |name: &'static str, icon: IconName, by: i8| {
+        let stepping = stepping.clone();
+        div()
+            .id((id.clone(), name))
+            .debug_selector(move || format!("combobox-step-{name}"))
+            .flex()
+            .flex_1()
+            .items_center()
+            .justify_center()
+            .w(theme.icon_size(IconSize::Lg))
+            .cursor_pointer()
+            .hover(|style| style.bg(colors.hover))
+            .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
+            .on_click(move |_, window, cx| stepping(by, window, cx))
+            .child(Icon::new(icon).size(IconSize::Xs).color(colors.fg_muted))
+    };
+    div()
+        .flex()
+        .flex_col()
+        .h_full()
+        .border_l_1()
+        .border_color(colors.border)
+        .child(half("up", IconName::ChevronUp, 1))
+        .child(half("down", IconName::ChevronDown, -1))
+        .into_any_element()
 }
 
 #[cfg(test)]
