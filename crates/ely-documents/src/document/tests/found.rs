@@ -28,7 +28,9 @@ fn a_match_late_in_a_long_cell_is_in_view(cx: &mut TestAppContext) {
         (
             input.text()[selection.clone()].to_string(),
             input.bounds().expect("the cell is laid out"),
-            input.bounds_for(selection.end).expect("the match is laid out"),
+            input
+                .bounds_for(selection.end)
+                .expect("the match is laid out"),
         )
     });
     assert_eq!(selected, "needle");

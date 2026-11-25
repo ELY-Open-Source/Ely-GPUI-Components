@@ -15,12 +15,7 @@ impl Render for Rows {
             .vertical()
             .w(px(300.))
             .h(px(200.))
-            .child(
-                div()
-                    .debug_selector(|| "row".into())
-                    .w_full()
-                    .h(px(self.0)),
-            )
+            .child(div().debug_selector(|| "row".into()).w_full().h(px(self.0)))
     }
 }
 
