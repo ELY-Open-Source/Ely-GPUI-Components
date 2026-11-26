@@ -42,6 +42,7 @@ use super::{
     render::{CellAt, OnHeading, OnLink},
 };
 use crate::{
+    Pictures,
     editor::{CodeEditor, EditorEvent, LineNumbers},
     forms::TextInput,
 };
@@ -104,6 +105,8 @@ pub struct MarkdownDocument {
     editor: Entity<CodeEditor>,
     mode: MarkdownMode,
     base: Option<Arc<Path>>,
+    /// Pictures the owner holds, by address.
+    pictures: Option<Rc<Pictures>>,
     parsed: Arc<Parsed>,
     /// Text changes counted; a read of an older one lapses.
     edits: u64,
@@ -198,6 +201,7 @@ impl MarkdownDocument {
             editor,
             mode,
             base: None,
+            pictures: None,
             parsed: Arc::default(),
             edits: 0,
             _parsing: None,
@@ -235,6 +239,12 @@ impl MarkdownDocument {
     /// The folder relative pictures load from.
     pub fn set_base(&mut self, folder: impl Into<Arc<Path>>, cx: &mut Context<Self>) {
         self.base = Some(folder.into());
+        cx.notify();
+    }
+
+    /// Draws these pictures in place of their addresses, as web ones fetched.
+    pub fn set_pictures(&mut self, pictures: Rc<Pictures>, cx: &mut Context<Self>) {
+        self.pictures = Some(pictures);
         cx.notify();
     }
 

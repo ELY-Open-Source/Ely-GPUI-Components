@@ -386,6 +386,7 @@ mod history;
 mod leave;
 mod lend;
 mod links;
+mod pictures;
 mod look;
 mod open_look;
 mod place;
