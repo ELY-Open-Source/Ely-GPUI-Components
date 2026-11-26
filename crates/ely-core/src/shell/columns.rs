@@ -7,7 +7,10 @@ use gpui::{
 };
 use smallvec::SmallVec;
 
-use super::chrome::{OnClose, WindowControls, controls_style, drag_region, route_close};
+use super::{
+    chrome::{OnClose, WindowControls, controls_style, drag_region, route_close},
+    frame::inner_radius,
+};
 use crate::{
     layout::{on_axis, resize_handle},
     menus::{ContextMenu, Menu},
@@ -315,11 +318,17 @@ impl RenderOnce for ColumnShell {
         } else {
             theme.colors.bg
         };
+        let radius = self
+            .platform
+            .is_none()
+            .then(|| inner_radius(window, cx))
+            .flatten();
         div()
             .flex()
             .h_full()
             .debug_selector(|| "column-shell".into())
             .bg(ground)
+            .when_some(radius, |shell, radius| shell.rounded(radius))
             .text_color(theme.colors.fg)
             .children(columns)
     }
