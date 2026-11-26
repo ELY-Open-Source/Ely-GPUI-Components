@@ -1,9 +1,9 @@
 use std::rc::Rc;
 
 use gpui::{
-    AnyElement, App, ElementId, FontWeight, Hsla, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window, div,
-    prelude::*,
+    AnyElement, App, ElementId, Font, FontWeight, Hsla, InteractiveElement, IntoElement,
+    MouseButton, ParentElement, Pixels, RenderOnce, SharedString, StatefulInteractiveElement,
+    Styled, Window, div, font, prelude::*,
 };
 
 use crate::{
@@ -139,6 +139,17 @@ impl RenderOnce for Badge {
     }
 }
 
+/// How far a line centred in its box sets digits below the middle.
+fn sag(family: SharedString, size: Pixels, cx: &App) -> Pixels {
+    let fonts = cx.text_system();
+    let id = fonts.resolve_font(&Font {
+        weight: FontWeight::MEDIUM,
+        ..font(family)
+    });
+    // Descent is negative: the baseline's middle minus the digits' middle.
+    (fonts.ascent(id, size) + fonts.descent(id, size) - fonts.cap_height(id, size)) / 2.
+}
+
 /// What a count badge reads past its cap, as 99+.
 fn capped(count: usize, max: usize) -> Option<String> {
     (count > max).then(|| format!("{max}+"))
@@ -185,10 +196,13 @@ impl CountBadge {
 }
 
 impl RenderOnce for CountBadge {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let theme = cx.theme();
         let (fill, text) = Tone::Accent.colors(&theme.colors);
         let height = theme.control_height(ControlSize::Sm) * 0.67;
+        let size = theme.text_size(TextSize::Xs).to_pixels(window.rem_size());
+        // Fonts differ in where digits sit in their line; centre the digits.
+        let lift = sag(theme.font_family.clone(), size, cx);
         let pill = (self.count > 0).then(|| {
             div()
                 .flex()
@@ -202,14 +216,16 @@ impl RenderOnce for CountBadge {
                 .text_color(text)
                 .text_size(theme.text_size(TextSize::Xs))
                 .font_weight(FontWeight::MEDIUM)
-                .child(if let Some(capped) = capped(self.count, self.max) {
-                    capped.into_any_element()
-                } else {
-                    AnimatedNumber::new(self.id, self.count as f64)
-                        .size(TextSize::Xs)
-                        .color(text)
-                        .into_any_element()
-                })
+                .child(div().relative().top(-lift).child(
+                    if let Some(capped) = capped(self.count, self.max) {
+                        capped.into_any_element()
+                    } else {
+                        AnimatedNumber::new(self.id, self.count as f64)
+                            .size(TextSize::Xs)
+                            .color(text)
+                            .into_any_element()
+                    },
+                ))
         });
         match self.over {
             Some(over) => corner(over, div().children(pill)),
