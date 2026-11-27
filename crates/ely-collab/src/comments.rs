@@ -7,6 +7,7 @@ use gpui::{
 use jiff::Timestamp;
 
 use super::{
+    edit::{self, OnComment, OnEdit, Open},
     peers::Peer,
     reactions::{Reaction, Reactions},
 };
@@ -141,6 +142,8 @@ pub struct CommentThread {
     reply: Option<(Entity<TextInput>, Run)>,
     on_resolve: Option<OnFlag>,
     on_react: Option<OnReact>,
+    on_edit: Option<OnEdit>,
+    on_delete: Option<OnComment>,
 }
 
 impl CommentThread {
@@ -158,6 +161,8 @@ impl CommentThread {
             reply: None,
             on_resolve: None,
             on_react: None,
+            on_edit: None,
+            on_delete: None,
         }
     }
 
@@ -191,10 +196,27 @@ impl CommentThread {
         self.on_react = Some(Rc::new(handler));
         self
     }
+
+    /// Offers Edit on each open comment; gets its index and new text.
+    pub fn on_edit(
+        mut self,
+        handler: impl Fn(usize, &SharedString, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_edit = Some(Rc::new(handler));
+        self
+    }
+
+    /// Offers Delete on each comment; index 0 takes the whole thread.
+    pub fn on_delete(mut self, handler: impl Fn(usize, &mut Window, &mut App) + 'static) -> Self {
+        self.on_delete = Some(Rc::new(handler));
+        self
+    }
 }
 
 impl RenderOnce for CommentThread {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let open = window.use_keyed_state((self.id.clone(), "editing"), cx, |_, _| Open::None);
+        let editing = open.read(cx).clone();
         let theme = cx.theme();
         let colors = theme.colors.clone();
         let resolved = self.thread.resolved;
@@ -224,6 +246,8 @@ impl RenderOnce for CommentThread {
                 resolve(!resolved, window, cx)
             })
         });
+        // A resolved thread takes no edits, as in Word.
+        let editable = self.on_edit.is_some() && !resolved;
         let comments = self
             .thread
             .comments
@@ -275,13 +299,38 @@ impl RenderOnce for CommentThread {
                                                 (self.id.clone(), format!("when-{ix}")),
                                                 comment.at,
                                             )),
+                                    )
+                                    .child(
+                                        div()
+                                            .ml_auto()
+                                            .flex_none()
+                                            .debug_selector(move || format!("comment-menu-{ix}"))
+                                            .child(edit::menu(
+                                                (self.id.clone(), format!("menu-{ix}")).into(),
+                                                ix,
+                                                &comment.body,
+                                                editable.then_some(&open),
+                                                self.on_delete.clone(),
+                                                cx,
+                                            )),
                                     ),
                             )
-                            .child(
-                                div()
+                            .child(match (&editing, &self.on_edit) {
+                                (Some((at, field)), Some(on_edit)) if *at == ix && editable => {
+                                    edit::field(
+                                        (self.id.clone(), format!("edit-{ix}")).into(),
+                                        ix,
+                                        field.clone(),
+                                        comment.body.clone(),
+                                        open.clone(),
+                                        on_edit.clone(),
+                                        cx,
+                                    )
+                                }
+                                _ => div()
                                     .text_color(if resolved { colors.fg_muted } else { colors.fg })
                                     .child(comment.body.clone()),
-                            )
+                            })
                             .children(reactions),
                     )
             });

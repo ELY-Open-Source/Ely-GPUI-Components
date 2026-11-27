@@ -17,6 +17,7 @@ use crate::{
 
 type OnThreadFlag = Rc<dyn Fn(&SharedString, bool, &mut Window, &mut App)>;
 type OnThreadReact = Rc<dyn Fn(&SharedString, usize, &SharedString, &mut Window, &mut App)>;
+type OnThreadComment = Rc<dyn Fn(&SharedString, usize, &mut Window, &mut App)>;
 
 /// Every conversation on a document down a column, split into open and resolved when the owner resolves: a press picks one, and the one picked takes replies.
 ///
@@ -42,6 +43,8 @@ pub struct CommentSidebar {
     on_select: Option<OnValue>,
     on_resolve: Option<OnThreadFlag>,
     on_react: Option<OnThreadReact>,
+    on_edit: Option<OnThreadReact>,
+    on_delete: Option<OnThreadComment>,
 }
 
 impl CommentSidebar {
@@ -55,6 +58,8 @@ impl CommentSidebar {
             on_select: None,
             on_resolve: None,
             on_react: None,
+            on_edit: None,
+            on_delete: None,
         }
     }
 
@@ -94,6 +99,24 @@ impl CommentSidebar {
         handler: impl Fn(&SharedString, usize, &SharedString, &mut Window, &mut App) + 'static,
     ) -> Self {
         self.on_react = Some(Rc::new(handler));
+        self
+    }
+
+    /// Offers Edit on open comments; gets a thread's key, a comment's index and its new text.
+    pub fn on_edit(
+        mut self,
+        handler: impl Fn(&SharedString, usize, &SharedString, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_edit = Some(Rc::new(handler));
+        self
+    }
+
+    /// Offers Delete; gets a thread's key and a comment's index, 0 for the whole thread.
+    pub fn on_delete(
+        mut self,
+        handler: impl Fn(&SharedString, usize, &mut Window, &mut App) + 'static,
+    ) -> Self {
+        self.on_delete = Some(Rc::new(handler));
         self
     }
 }
@@ -180,6 +203,14 @@ impl RenderOnce for CommentSidebar {
                 let key = key.clone();
                 item =
                     item.on_react(move |ix, emoji, window, cx| react(&key, ix, emoji, window, cx));
+            }
+            if let Some(edit) = self.on_edit.clone() {
+                let key = key.clone();
+                item = item.on_edit(move |ix, text, window, cx| edit(&key, ix, text, window, cx));
+            }
+            if let Some(delete) = self.on_delete.clone() {
+                let key = key.clone();
+                item = item.on_delete(move |ix, window, cx| delete(&key, ix, window, cx));
             }
             let select = self.on_select.clone().filter(|_| !active);
             let row = key.clone();

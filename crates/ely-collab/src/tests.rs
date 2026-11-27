@@ -212,3 +212,92 @@ fn a_press_on_a_suggestion_left_out_decides_nothing(cx: &mut TestAppContext) {
         [Decision::Accept(0)]
     );
 }
+
+/// A thread whose comments edit and delete, with what they asked.
+struct Notes {
+    edited: Vec<(usize, String)>,
+    deleted: Vec<usize>,
+}
+
+impl Render for Notes {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let (edit, delete) = (cx.entity(), cx.entity());
+        let comment = |body: &str| super::Comment {
+            author: Peer::new("ana", "Ana", 0),
+            at: jiff::Timestamp::UNIX_EPOCH,
+            body: body.to_string().into(),
+            reactions: Vec::new(),
+        };
+        let thread = super::Thread {
+            key: "t1".into(),
+            quote: None,
+            comments: vec![comment("Which boat?"), comment("The red one")],
+            resolved: false,
+        };
+        div().size_full().child(
+            super::CommentThread::new("thread", thread)
+                .on_edit(move |ix, text, _, cx| {
+                    edit.update(cx, |notes, _| notes.edited.push((ix, text.to_string())))
+                })
+                .on_delete(move |ix, _, cx| delete.update(cx, |notes, _| notes.deleted.push(ix))),
+        )
+    }
+}
+
+fn click(selector: &'static str, cx: &mut VisualTestContext) {
+    let at = cx.debug_bounds(selector).expect(selector).center();
+    cx.simulate_mouse_move(at, None, gpui::Modifiers::none());
+    cx.simulate_click(at, gpui::Modifiers::none());
+    cx.run_until_parked();
+}
+
+#[gpui::test]
+fn a_comment_edits_in_place_copies_and_deletes_from_its_menu(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        forms::bind_keys(cx);
+    });
+    let (notes, cx) = cx.add_window_view(|_, _| Notes {
+        edited: Vec::new(),
+        deleted: Vec::new(),
+    });
+    cx.run_until_parked();
+    // Edit: the text selected, replaced, saved once.
+    click("comment-menu-1", cx);
+    click("menu-row-Edit", cx);
+    cx.simulate_input("The blue one");
+    click("comment-save-1", cx);
+    assert_eq!(
+        notes.read_with(cx, |notes, _| notes.edited.clone()),
+        [(1, "The blue one".to_string())]
+    );
+    // Escape leaves; an unchanged save asks nothing.
+    click("comment-menu-1", cx);
+    click("menu-row-Edit", cx);
+    cx.simulate_input("x");
+    cx.simulate_keystrokes("escape");
+    cx.run_until_parked();
+    assert!(
+        cx.debug_bounds("comment-save-1").is_none(),
+        "the field closed"
+    );
+    click("comment-menu-0", cx);
+    click("menu-row-Edit", cx);
+    click("comment-save-0", cx);
+    assert_eq!(notes.read_with(cx, |notes, _| notes.edited.len()), 1);
+    click("comment-menu-0", cx);
+    click("menu-row-Copy", cx);
+    assert_eq!(
+        cx.read_from_clipboard().and_then(|item| item.text()),
+        Some("Which boat?".to_string())
+    );
+    // The first comment's delete takes the thread.
+    click("comment-menu-0", cx);
+    click("menu-row-Delete thread", cx);
+    click("comment-menu-1", cx);
+    click("menu-row-Delete", cx);
+    assert_eq!(
+        notes.read_with(cx, |notes, _| notes.deleted.clone()),
+        [0, 1]
+    );
+}

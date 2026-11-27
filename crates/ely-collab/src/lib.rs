@@ -2,12 +2,13 @@
 #![deny(missing_docs)]
 
 use ely_core::{
-    buttons, data_display, feedback, forms, i18n, overlays, primitives, theme, typography,
+    buttons, data_display, feedback, forms, i18n, menus, overlays, primitives, theme, typography,
 };
 use ely_documents as documents;
 
 mod annotate;
 mod comments;
+mod edit;
 mod peers;
 mod reactions;
 mod remote;
