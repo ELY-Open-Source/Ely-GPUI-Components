@@ -293,8 +293,10 @@ impl RenderOnce for StatusBarItem {
             .clone()
             .or_else(|| self.tooltip.clone())
             .or_else(|| self.icon.map(|icon| icon.name().into()));
+        let selector = format!("status-item {}", self.id);
         div()
             .id(self.id)
+            .debug_selector(move || selector)
             .flex()
             .flex_shrink_1()
             .min_w_0()
