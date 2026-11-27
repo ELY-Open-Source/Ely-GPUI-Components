@@ -372,6 +372,10 @@ fn a_thread_replies_resolves_and_deletes_from_a_right_click(cx: &mut TestAppCont
     click("menu-row-Reply", cx);
     let focused = cx.update(|window, cx| asked.read(cx).field.focus_handle(cx).is_focused(window));
     assert!(focused, "the reply field takes the caret");
+    assert!(
+        cx.debug_bounds("reply-box").is_some(),
+        "an open thread replies"
+    );
     right_click("comment-a", cx);
     click("menu-row-Resolve", cx);
     right_click("comment-a", cx);
@@ -384,8 +388,22 @@ fn a_thread_replies_resolves_and_deletes_from_a_right_click(cx: &mut TestAppCont
         "no reply on a resolved thread"
     );
     click("menu-row-Reopen", cx);
+    // Picked, it still shows no reply box.
+    click("comment-b", cx);
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    assert!(
+        cx.debug_bounds("reply-box").is_none(),
+        "a picked resolved thread takes no reply"
+    );
     assert_eq!(
         asked.read_with(cx, |asked, _| asked.asked.clone()),
-        ["pick a", "resolve a true", "delete a 0", "resolve b false"]
+        [
+            "pick a",
+            "resolve a true",
+            "delete a 0",
+            "resolve b false",
+            "pick b"
+        ]
     );
 }

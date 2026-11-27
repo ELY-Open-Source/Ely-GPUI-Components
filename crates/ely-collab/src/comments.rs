@@ -87,6 +87,7 @@ impl RenderOnce for Reply {
         let empty = self.field.read(cx).text().trim().is_empty();
         let (send, enter) = (self.on_send.clone(), self.on_send);
         div()
+            .debug_selector(|| "reply-box".into())
             .flex()
             .items_center()
             .gap_2()
