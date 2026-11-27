@@ -11,6 +11,7 @@ use crate::{
     feedback::EmptyState,
     forms::{OnValue, Run, TextInput},
     i18n,
+    menus::{ContextMenu, Menu, MenuItem},
     primitives::IconName,
     theme::{ActiveTheme, ControlSize, Radius},
 };
@@ -119,10 +120,68 @@ impl CommentSidebar {
         self.on_delete = Some(Rc::new(handler));
         self
     }
+
+    /// The right-click menu of thread `key`; none without actions.
+    fn thread_menu(
+        &self,
+        key: &SharedString,
+        resolved: bool,
+        active: bool,
+        cx: &App,
+    ) -> Option<Menu> {
+        let (mut menu, mut any) = (Menu::new(), false);
+        if !resolved && let Some((field, _)) = &self.reply {
+            any = true;
+            let (field, pick, key) = (field.clone(), self.on_select.clone(), key.clone());
+            menu = menu.item(
+                MenuItem::new(i18n::text(cx, "comments.reply", &[]))
+                    .icon(IconName::Reply)
+                    .on_click(move |window, cx| {
+                        log::info!("comment sidebar: reply to {key}");
+                        if let Some(pick) = pick.as_ref().filter(|_| !active) {
+                            pick(&key, window, cx);
+                        }
+                        field.read(cx).focus().clone().focus(window, cx);
+                    }),
+            );
+        }
+        if let Some(resolve) = self.on_resolve.clone() {
+            any = true;
+            let key = key.clone();
+            let (label, icon) = match resolved {
+                true => ("comments.reopen", IconName::RotateCcw),
+                false => ("comments.resolve", IconName::Check),
+            };
+            menu = menu.item(
+                MenuItem::new(i18n::text(cx, label, &[]))
+                    .icon(icon)
+                    .on_click(move |window, cx| {
+                        log::info!("comment sidebar: resolved {key} {}", !resolved);
+                        resolve(&key, !resolved, window, cx)
+                    }),
+            );
+        }
+        if let Some(delete) = self.on_delete.clone() {
+            let key = key.clone();
+            if any {
+                menu = menu.separator();
+            }
+            any = true;
+            menu = menu.item(
+                MenuItem::new(i18n::text(cx, "comments.delete_thread", &[]))
+                    .icon(IconName::Trash2)
+                    .on_click(move |window, cx| {
+                        log::info!("comment sidebar: delete thread {key}");
+                        delete(&key, 0, window, cx)
+                    }),
+            );
+        }
+        any.then_some(menu)
+    }
 }
 
 impl RenderOnce for CommentSidebar {
-    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(mut self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let showing = window.use_keyed_state((self.id.clone(), "resolved"), cx, |_, _| false);
         // Without resolving, one list.
         let resolving = self.on_resolve.is_some();
@@ -161,8 +220,7 @@ impl RenderOnce for CommentSidebar {
         {
             log::error!("comment sidebar: thread {active} is gone; none active");
         }
-        let shown: Vec<Thread> = self
-            .threads
+        let shown: Vec<Thread> = std::mem::take(&mut self.threads)
             .into_iter()
             .filter(|thread| !resolving || thread.resolved == resolved)
             .collect();
@@ -189,6 +247,7 @@ impl RenderOnce for CommentSidebar {
             };
             let key = thread.key.clone();
             let active = self.active.as_ref() == Some(&key);
+            let menu = self.thread_menu(&key, thread.resolved, active, cx);
             let mut item = CommentThread::new((self.id.clone(), format!("thread-{key}")), thread)
                 .active(active);
             if active && let Some((field, send)) = &self.reply {
@@ -214,7 +273,8 @@ impl RenderOnce for CommentSidebar {
             }
             let select = self.on_select.clone().filter(|_| !active);
             let row = key.clone();
-            div()
+            let menu_id = (self.id.clone(), format!("menu-{key}"));
+            let row = div()
                 .id((self.id.clone(), format!("pick-{key}")))
                 .debug_selector(move || format!("comment-{row}"))
                 .role(Role::ListItem)
@@ -243,7 +303,13 @@ impl RenderOnce for CommentSidebar {
                         }
                     })
                 })
-                .child(item)
+                .child(item);
+            match menu {
+                Some(menu) => ContextMenu::new(menu_id, menu)
+                    .child(row)
+                    .into_any_element(),
+                None => row.into_any_element(),
+            }
         });
         div()
             .id(self.id.clone())

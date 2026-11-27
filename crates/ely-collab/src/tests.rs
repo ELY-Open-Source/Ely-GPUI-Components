@@ -301,3 +301,91 @@ fn a_comment_edits_in_place_copies_and_deletes_from_its_menu(cx: &mut TestAppCon
         [0, 1]
     );
 }
+
+/// An open and a resolved thread with a reply field, and what their menus asked.
+struct Asked {
+    field: Entity<TextInput>,
+    active: Option<gpui::SharedString>,
+    asked: Vec<String>,
+}
+
+impl Render for Asked {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let thread = |key: &str, resolved| super::Thread {
+            key: key.to_string().into(),
+            quote: None,
+            comments: vec![super::Comment {
+                author: Peer::new("ada", "Ada", 0),
+                at: jiff::Timestamp::UNIX_EPOCH,
+                body: format!("About {key}").into(),
+                reactions: Vec::new(),
+            }],
+            resolved,
+        };
+        let (pick, resolve, delete) = (cx.entity(), cx.entity(), cx.entity());
+        div().size_full().child(
+            super::CommentSidebar::new("remarks", [thread("a", false), thread("b", true)])
+                .active(self.active.clone(), move |key, _, cx| {
+                    pick.update(cx, |asked, cx| {
+                        asked.asked.push(format!("pick {key}"));
+                        asked.active = Some(key.clone());
+                        cx.notify();
+                    })
+                })
+                .reply(&self.field, |_, _| {})
+                .on_resolve(move |key, on, _, cx| {
+                    resolve.update(cx, |asked, _| {
+                        asked.asked.push(format!("resolve {key} {on}"))
+                    })
+                })
+                .on_delete(move |key, ix, _, cx| {
+                    delete.update(cx, |asked, _| {
+                        asked.asked.push(format!("delete {key} {ix}"))
+                    })
+                }),
+        )
+    }
+}
+
+fn right_click(selector: &'static str, cx: &mut VisualTestContext) {
+    let at = cx.debug_bounds(selector).expect(selector).center();
+    cx.simulate_mouse_move(at, None, gpui::Modifiers::none());
+    cx.simulate_mouse_down(at, gpui::MouseButton::Right, gpui::Modifiers::none());
+    cx.simulate_mouse_up(at, gpui::MouseButton::Right, gpui::Modifiers::none());
+    cx.run_until_parked();
+}
+
+#[gpui::test]
+fn a_thread_replies_resolves_and_deletes_from_a_right_click(cx: &mut TestAppContext) {
+    cx.update(|cx| {
+        Theme::init(cx);
+        forms::bind_keys(cx);
+    });
+    let (asked, cx) = cx.add_window_view(|window, cx| Asked {
+        field: cx.new(|cx| TextInput::new(window, cx)),
+        active: None,
+        asked: Vec::new(),
+    });
+    cx.run_until_parked();
+    // Reply picks the thread and puts the caret in its field.
+    right_click("comment-a", cx);
+    click("menu-row-Reply", cx);
+    let focused = cx.update(|window, cx| asked.read(cx).field.focus_handle(cx).is_focused(window));
+    assert!(focused, "the reply field takes the caret");
+    right_click("comment-a", cx);
+    click("menu-row-Resolve", cx);
+    right_click("comment-a", cx);
+    click("menu-row-Delete thread", cx);
+    // A resolved thread reopens and takes no reply.
+    click("segment resolved", cx);
+    right_click("comment-b", cx);
+    assert!(
+        cx.debug_bounds("menu-row-Reply").is_none(),
+        "no reply on a resolved thread"
+    );
+    click("menu-row-Reopen", cx);
+    assert_eq!(
+        asked.read_with(cx, |asked, _| asked.asked.clone()),
+        ["pick a", "resolve a true", "delete a 0", "resolve b false"]
+    );
+}
