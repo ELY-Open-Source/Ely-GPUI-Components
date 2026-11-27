@@ -437,3 +437,58 @@ fn a_held_picture_draws_from_its_bytes(cx: &mut TestAppContext) {
     }
     assert_eq!(drawn.expect("drew").size, size(px(200.0), px(100.0)));
 }
+
+/// A laid-out print: two pages of their own sizes.
+struct Printing {
+    printed: Rc<RefCell<u32>>,
+}
+
+impl Render for Printing {
+    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let page = |width, height| DocPage {
+            source: "page.png".into(),
+            width,
+            height,
+        };
+        let printed = self.printed.clone();
+        div().size(px(800.)).child(super::PrintPreview::laid_out(
+            "print",
+            vec![page(595.0, 842.0), page(842.0, 595.0)],
+            move |_, _| *printed.borrow_mut() += 1,
+            |_, _| {},
+        ))
+    }
+}
+
+#[gpui::test]
+fn a_laid_out_print_keeps_page_sizes_and_asks_nothing(cx: &mut TestAppContext) {
+    cx.update(Theme::init);
+    let printed = Rc::new(RefCell::new(0));
+    let (_, cx) = cx.add_window_view(|_, _| Printing {
+        printed: printed.clone(),
+    });
+    cx.run_until_parked();
+    let tall = cx.debug_bounds("print-sheet-0").expect("the first sheet");
+    let wide = cx.debug_bounds("print-sheet-1").expect("the second sheet");
+    assert!(
+        tall.size.height > tall.size.width,
+        "a portrait page stays tall"
+    );
+    assert!(
+        wide.size.width > wide.size.height,
+        "a landscape page stays wide"
+    );
+    for row in ["print.paper", "print.turn", "print.margins", "print.copies"] {
+        assert!(
+            cx.debug_bounds(row).is_none(),
+            "{row} is the system dialog's"
+        );
+    }
+    let at = cx
+        .debug_bounds("print.print")
+        .expect("the print button")
+        .center();
+    cx.simulate_click(at, Modifiers::none());
+    cx.run_until_parked();
+    assert_eq!(*printed.borrow(), 1);
+}

@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use gpui::{
     App, ElementId, InteractiveElement, IntoElement, ObjectFit, ParentElement, RenderOnce,
-    SharedString, StatefulInteractiveElement, Styled, Window, div,
+    SharedString, StatefulInteractiveElement, Styled, Window, div, prelude::FluentBuilder as _,
 };
 
 use super::viewer::DocPage;
@@ -97,6 +97,8 @@ pub struct PrintPreview {
     on_change: OnSettings,
     on_print: OnSettings,
     on_cancel: Run,
+    /// Pages come laid out: no paper, margins or copies.
+    laid_out: bool,
 }
 
 impl PrintPreview {
@@ -116,6 +118,27 @@ impl PrintPreview {
             on_change: Rc::new(on_change),
             on_print: Rc::new(on_print),
             on_cancel: Rc::new(on_cancel),
+            laid_out: false,
+        }
+    }
+
+    /// A preview under `id` of `pages` the app already laid out, each at its own size; the system print dialog picks paper and copies after.
+    pub fn laid_out(
+        id: impl Into<ElementId>,
+        pages: impl Into<Rc<Vec<DocPage>>>,
+        on_print: impl Fn(&mut Window, &mut App) + 'static,
+        on_cancel: impl Fn(&mut Window, &mut App) + 'static,
+    ) -> Self {
+        Self {
+            laid_out: true,
+            ..Self::new(
+                id,
+                pages,
+                PrintSettings::default(),
+                |_, _, _| {},
+                move |_, window, cx| on_print(window, cx),
+                on_cancel,
+            )
         }
     }
 }
@@ -129,6 +152,7 @@ fn counted(key: &str, n: usize, cx: &App) -> SharedString {
 
 fn row(key: &'static str, control: impl IntoElement, cx: &App) -> impl IntoElement {
     div()
+        .debug_selector(move || key.to_string())
         .flex()
         .flex_col()
         .gap_1()
@@ -265,7 +289,15 @@ impl RenderOnce for PrintPreview {
                     .content_start()
                     .gap_4()
                     .children(self.pages.iter().enumerate().map(|(ix, page)| {
-                        let (width, height) = sheet(settings);
+                        let (width, height) = match self.laid_out {
+                            true => (page.width, page.height),
+                            false => sheet(settings),
+                        };
+                        let kept = if self.laid_out {
+                            0.0
+                        } else {
+                            margin(settings.margins)
+                        };
                         div()
                             .flex()
                             .flex_col()
@@ -273,11 +305,12 @@ impl RenderOnce for PrintPreview {
                             .gap_1()
                             .child(
                                 div()
+                                    .debug_selector(move || format!("print-sheet-{ix}"))
                                     .w(thumb)
                                     .h(thumb * (height / width))
                                     .bg(colors.paper)
                                     .shadow(theme.elevation(Elevation::Raised))
-                                    .p(thumb * margin(settings.margins))
+                                    .p(thumb * kept)
                                     .child(
                                         Image::new(
                                             (self.id.clone(), format!("sheet-{ix}")),
@@ -308,15 +341,25 @@ impl RenderOnce for PrintPreview {
                     .border_l_1()
                     .border_color(colors.border)
                     .bg(colors.surface)
-                    .child(div().text_color(colors.fg_muted).child(format!(
-                        "{} · {}",
-                        counted("print.count.page", self.pages.len(), cx),
-                        counted("print.count.copy", settings.copies as usize, cx)
-                    )))
-                    .child(row("print.paper", paper, cx))
-                    .child(row("print.turn", turn, cx))
-                    .child(row("print.margins", margins, cx))
-                    .child(row("print.copies", copies, cx))
+                    .child(
+                        div()
+                            .text_color(colors.fg_muted)
+                            .child(match self.laid_out {
+                                true => counted("print.count.page", self.pages.len(), cx),
+                                false => format!(
+                                    "{} · {}",
+                                    counted("print.count.page", self.pages.len(), cx),
+                                    counted("print.count.copy", settings.copies as usize, cx)
+                                )
+                                .into(),
+                            }),
+                    )
+                    .when(!self.laid_out, |side| {
+                        side.child(row("print.paper", paper, cx))
+                            .child(row("print.turn", turn, cx))
+                            .child(row("print.margins", margins, cx))
+                            .child(row("print.copies", copies, cx))
+                    })
                     .child(div().flex_1())
                     .child(
                         div()
@@ -332,15 +375,19 @@ impl RenderOnce for PrintPreview {
                                 .on_click(move |_, window, cx| cancel(window, cx)),
                             )
                             .child(
-                                Button::new(
-                                    (self.id.clone(), "print"),
-                                    i18n::text(cx, "print.print", &[]),
-                                )
-                                .variant(ButtonVariant::Primary)
-                                .on_click(move |_, window, cx| {
-                                    log::info!("print preview: print {settings:?}");
-                                    print(settings, window, cx)
-                                }),
+                                div().debug_selector(|| "print.print".into()).child(
+                                    Button::new(
+                                        (self.id.clone(), "print"),
+                                        i18n::text(cx, "print.print", &[]),
+                                    )
+                                    .variant(ButtonVariant::Primary)
+                                    .on_click(
+                                        move |_, window, cx| {
+                                            log::info!("print preview: print {settings:?}");
+                                            print(settings, window, cx)
+                                        },
+                                    ),
+                                ),
                             ),
                     ),
             )
