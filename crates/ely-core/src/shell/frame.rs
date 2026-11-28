@@ -1,11 +1,32 @@
 use gpui::{
     AnyElement, App, Bounds, CursorStyle, Decorations, HitboxBehavior, IntoElement, MouseButton,
     ParentElement, Pixels, Point, RenderOnce, ResizeEdge, Size, Styled, Tiling, Window, canvas,
-    div, point, prelude::*,
+    div, point, prelude::*, px,
 };
 use smallvec::SmallVec;
 
 use crate::theme::{ActiveTheme, Elevation, Radius};
+
+const PANE_RADIUS: Radius = Radius::Lg;
+const BORDER_WIDTH: Pixels = px(1.0);
+
+/// The corner radius inside `ResizeBorder`'s hairline for a floating client-drawn window; `None` when tiled or server-drawn.
+///
+/// GPUI's `overflow_hidden()` clips to a rectangle rather than a rounded box, so full-bleed
+/// backgrounds inside `ResizeBorder` match this radius to avoid poking past the border's corners.
+pub(super) fn inner_radius(window: &Window, cx: &App) -> Option<Pixels> {
+    pane_radius(
+        window.window_decorations(),
+        cx.theme().radius(PANE_RADIUS).to_pixels(window.rem_size()),
+    )
+}
+
+fn pane_radius(decorations: Decorations, outer: Pixels) -> Option<Pixels> {
+    let Decorations::Client { tiling } = decorations else {
+        return None;
+    };
+    (!tiling.is_tiled()).then(|| (outer - BORDER_WIDTH).max(Pixels::ZERO))
+}
 
 /// The untiled edge or corner `pos` grabs, within `inset`.
 fn resize_edge(
@@ -85,7 +106,7 @@ impl RenderOnce for ResizeBorder {
         let theme = cx.theme();
         let inset = theme.window_inset().to_pixels(window.rem_size());
         window.set_client_inset(inset);
-        let radius = theme.radius(Radius::Lg);
+        let radius = theme.radius(PANE_RADIUS);
         let floating = !tiling.is_tiled();
         let glass = self.glass;
         div()
@@ -146,9 +167,37 @@ impl RenderOnce for ResizeBorder {
 
 #[cfg(test)]
 mod tests {
-    use gpui::{ResizeEdge, Tiling, point, px, size};
+    use gpui::{Decorations, Pixels, ResizeEdge, Tiling, point, px, size};
 
-    use super::resize_edge;
+    use super::{pane_radius, resize_edge};
+
+    #[test]
+    fn inner_radius_applies_only_to_floating_client_windows() {
+        assert_eq!(pane_radius(Decorations::Server, px(12.0)), None);
+        let floating = Decorations::Client {
+            tiling: Tiling::default(),
+        };
+        assert_eq!(pane_radius(floating, px(12.0)), Some(px(11.0)));
+        assert_eq!(pane_radius(floating, px(0.5)), Some(Pixels::ZERO));
+        let left = Decorations::Client {
+            tiling: Tiling {
+                top: true,
+                left: true,
+                bottom: true,
+                right: false,
+            },
+        };
+        assert_eq!(pane_radius(left, px(12.0)), None);
+        assert_eq!(
+            pane_radius(
+                Decorations::Client {
+                    tiling: Tiling::tiled()
+                },
+                px(12.0)
+            ),
+            None
+        );
+    }
 
     #[test]
     fn corners_win_over_edges_and_the_middle_is_free() {
